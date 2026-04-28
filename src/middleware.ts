@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { decrypt } from '@/lib/auth';
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const session = request.cookies.get('session')?.value;
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
@@ -29,4 +29,4 @@ export const config = {
   matcher: ['/admin/:path*'],
 };
 
-export default proxy;
+export default middleware;
