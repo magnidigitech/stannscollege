@@ -4,49 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-}
-
-model Course {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  description String   @db.Text
-  duration    String?
-  image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Faculty {
-  id        String   @id @default(cuid())
-  name      String
-  role      String
-  image     String?
-  bio       String?  @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model BlogPost {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  content   String   @db.Text
-  excerpt   String?  @db.Text
-  image     String?
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Event {
-  id          String   @id @default(cuid())
-  title       String
-  date        DateTime
-  description String   @db.Text
-  location    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  url      = env("DATABASE_URL")
 }
 
 model Enquiry {
@@ -54,16 +12,7 @@ model Enquiry {
   name      String
   email     String
   phone     String
+  course    String
   message   String   @db.Text
-  status    String   @default("PENDING") // PENDING, REPLIED, CLOSED
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Admin {
-  id        String   @id @default(cuid())
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import { createEnquiryAction } from "@/app/actions";
-import { Sparkles, CheckCircle, GraduationCap, ArrowRight } from "lucide-react";
+import { Sparkles, CheckCircle, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
-export default function AdmissionsPage() {
+export default function ContactPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -32,51 +32,52 @@ export default function AdmissionsPage() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
-          {/* Information & Timeline */}
-          <div className="lg:col-span-6 max-w-xl flex flex-col justify-between">
+          {/* Detailed Context and Contact Blocks */}
+          <div className="lg:col-span-5 max-w-xl flex flex-col justify-between">
             <div>
               <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100/80 px-4 py-1.5 text-xs font-bold text-indigo-700 uppercase tracking-wider shadow-sm select-none">
-                <Sparkles className="h-3.5 w-3.5 text-indigo-600 animate-pulse" /> Apply for Academic Year
+                <Sparkles className="h-3.5 w-3.5 text-indigo-600 animate-pulse" /> Reach Out Anytime
               </span>
               <h1 className="mt-6 font-outfit text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl leading-[1.1] md:leading-[1.1]">
-                Join St. Ann&apos;s College
+                Get in Touch
               </h1>
               <p className="mt-4 font-sans text-base md:text-lg text-slate-600 leading-relaxed max-w-lg font-normal">
-                Take the bold first step in launching a remarkable, career-focused future. Let us guide you through our dynamic application process.
+                Have an inquiry about courses, scheduling, or campus amenities? We are here to help.
               </p>
             </div>
 
             <div className="mt-12 flex flex-col gap-6">
               <div className="flex items-start gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-700 font-bold text-white text-sm shadow-md">
-                  1
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-500 to-indigo-700 text-white font-bold text-sm shadow-md">
+                  <MapPin className="h-5 w-5" />
                 </span>
                 <div>
-                  <h4 className="font-outfit font-black text-slate-800 text-base leading-tight select-none">Submit Inquiry</h4>
-                  <p className="font-sans text-sm font-semibold text-slate-500 leading-normal mt-1 select-none">
-                    Fill in your essential profile, course preference, and past educational details.
+                  <h4 className="font-outfit font-black text-slate-800 text-base leading-tight select-none">Visit Us</h4>
+                  <p className="font-sans text-sm font-semibold text-slate-500 leading-normal mt-1.5 select-none max-w-xs">
+                    Gorantla, Guntur - 522034<br />
+                    Andhra Pradesh, India
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-500 to-purple-700 font-bold text-white text-sm shadow-md">
-                  2
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-500 to-purple-700 text-white font-bold text-sm shadow-md">
+                  <Phone className="h-5 w-5" />
                 </span>
                 <div>
-                  <h4 className="font-outfit font-black text-slate-800 text-base leading-tight select-none">Profile Review</h4>
-                  <p className="font-sans text-sm font-semibold text-slate-500 leading-normal mt-1 select-none">
-                    Our admissions team reviews your academic potential and calls for an onboarding session.
+                  <h4 className="font-outfit font-black text-slate-800 text-base leading-tight select-none">Direct Inquiries</h4>
+                  <p className="font-sans text-sm font-semibold text-slate-500 leading-normal mt-1.5 select-none">
+                    +91 863 2221234
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-teal-500 to-teal-700 font-bold text-white text-sm shadow-md">
-                  3
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-teal-500 to-teal-700 text-white font-bold text-sm shadow-md">
+                  <Mail className="h-5 w-5" />
                 </span>
                 <div>
-                  <h4 className="font-outfit font-black text-slate-800 text-base leading-tight select-none">Onboarding Complete</h4>
-                  <p className="font-sans text-sm font-semibold text-slate-500 leading-normal mt-1 select-none">
-                    Confirm your fee payment structure and join our vibrant starting cohort!
+                  <h4 className="font-outfit font-black text-slate-800 text-base leading-tight select-none">Direct Email</h4>
+                  <p className="font-sans text-sm font-semibold text-slate-500 leading-normal mt-1.5 select-none">
+                    principal@stannscollege.ac.in
                   </p>
                 </div>
               </div>
@@ -84,12 +85,12 @@ export default function AdmissionsPage() {
           </div>
 
           {/* Form Side */}
-          <div className="lg:col-span-6 bg-white border border-slate-200/60 p-8 md:p-10 shadow-xl shadow-indigo-50/20 rounded-3xl backdrop-blur-sm relative hover:border-indigo-100 transition-all duration-300">
+          <div className="lg:col-span-7 bg-white border border-slate-200/60 p-8 md:p-10 shadow-xl shadow-indigo-50/20 rounded-3xl backdrop-blur-sm relative hover:border-indigo-100 transition-all duration-300">
             <h3 className="font-outfit text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <GraduationCap className="h-6 w-6 text-indigo-600" /> Complete Admission Application
+              <Mail className="h-6 w-6 text-indigo-600" /> General Inquiry Form
             </h3>
             <p className="mt-2.5 font-sans text-sm text-slate-500 leading-normal max-w-sm">
-              Please enter your full details below. All submitted information is securely maintained.
+              We aim to respond to all inquiries within 24 business hours.
             </p>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -103,7 +104,7 @@ export default function AdmissionsPage() {
                     name="name"
                     type="text"
                     required
-                    placeholder="e.g. Anjali Verma"
+                    placeholder="e.g. Radhika Rao"
                     className="mt-1.5 block w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-100/40 transition-all duration-200"
                   />
                 </div>
@@ -116,54 +117,36 @@ export default function AdmissionsPage() {
                     name="email"
                     type="email"
                     required
-                    placeholder="e.g. anjali@example.com"
+                    placeholder="e.g. radhika@example.com"
                     className="mt-1.5 block w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-100/40 transition-all duration-200"
                   />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="font-outfit font-bold text-xs uppercase tracking-wider text-slate-700" htmlFor="phone">
-                    Phone Number
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    required
-                    placeholder="e.g. +91 98765 43210"
-                    className="mt-1.5 block w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-100/40 transition-all duration-200"
-                  />
-                </div>
-                <div>
-                  <label className="font-outfit font-bold text-xs uppercase tracking-wider text-slate-700" htmlFor="course">
-                    Preferred Degree Program
-                  </label>
-                  <select
-                    id="course"
-                    name="course"
-                    required
-                    className="mt-1.5 block w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-100/40 transition-all duration-200"
-                  >
-                    <option value="">Select Degree Program</option>
-                    <option value="Bachelor of Computer Science (B.Sc CS)">Bachelor of Computer Science (B.Sc CS)</option>
-                    <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
-                    <option value="B.Com in Computer Applications">B.Com in Computer Applications</option>
-                    <option value="B.A. in Psychology & Literature">B.A. in Psychology & Literature</option>
-                  </select>
                 </div>
               </div>
 
               <div>
+                <label className="font-outfit font-bold text-xs uppercase tracking-wider text-slate-700" htmlFor="phone">
+                  Phone Number
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  placeholder="e.g. +91 98765 43210"
+                  className="mt-1.5 block w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-100/40 transition-all duration-200"
+                />
+              </div>
+
+              <div>
                 <label className="font-outfit font-bold text-xs uppercase tracking-wider text-slate-700" htmlFor="message">
-                  Covering Statement / Background
+                  How Can We Assist You?
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={4}
-                  placeholder="Tell us about your past achievements, goals, and academic interest..."
+                  required
+                  placeholder="Describe your question, scheduling queries, or comments here..."
                   className="mt-1.5 block w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-100/40 transition-all duration-200 resize-none"
                 />
               </div>
@@ -186,7 +169,7 @@ export default function AdmissionsPage() {
                 disabled={submitting}
                 className="w-full rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 px-6 py-4 text-base font-extrabold text-white shadow-xl shadow-indigo-100 hover:shadow-indigo-200 active:scale-95 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-75 disabled:cursor-not-allowed select-none flex items-center justify-center gap-2"
               >
-                {submitting ? "Submitting Application..." : "Submit Application Form"}
+                {submitting ? "Sending Inquiry..." : "Submit Inquiry Form"}
                 {!submitting && <ArrowRight className="h-5 w-5" />}
               </button>
             </form>
