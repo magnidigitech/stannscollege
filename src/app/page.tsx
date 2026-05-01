@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Users, Calendar, Award, CheckCircle, Sparkles, Building, Briefcase } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Calendar, Award, CheckCircle, Sparkles, Building, Briefcase, Bell } from "lucide-react";
+import { getEvents, getNotices } from "@/lib/sanity";
 
-export default function HomePage() {
+export default async function HomePage() {
   const highlightFeatures = [
     {
       title: "Visionary Faculty",
@@ -35,6 +36,9 @@ export default function HomePage() {
     { label: "Corporate Partners", value: "85+" },
     { label: "Student Placement", value: "92%" },
   ];
+
+  const notices = await getNotices();
+  const events = await getEvents();
 
   return (
     <div className="flex flex-col gap-0 select-none overflow-hidden bg-slate-50/50">
@@ -126,6 +130,59 @@ export default function HomePage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dynamic Sanity Notices & Events section */}
+      <section className="py-24 bg-white border-b border-slate-200/40">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            {/* Left Side: Notices */}
+            <div className="lg:col-span-6">
+              <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 border border-indigo-100/80 px-3.5 py-1 text-xs font-bold text-indigo-700 uppercase tracking-wide">
+                <Bell className="h-3.5 w-3.5 text-indigo-600" /> Recent Notices
+              </span>
+              <h3 className="mt-4 font-outfit text-3xl font-black text-slate-900">Important Updates</h3>
+              <div className="mt-10 flex flex-col gap-6">
+                {notices.map((notice: any, idx: number) => (
+                  <div key={idx} className="p-6 bg-slate-50/60 border border-slate-200/50 rounded-2xl flex flex-col justify-between hover:shadow-lg transition-all">
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-outfit text-xs font-black text-indigo-600 uppercase tracking-wide">{notice.category || "General"}</span>
+                        <span className="font-sans text-xs font-semibold text-slate-400">{notice.date}</span>
+                      </div>
+                      <h4 className="mt-3 font-outfit text-xl font-bold text-slate-800 leading-snug">{notice.title}</h4>
+                      <p className="mt-2 font-sans text-sm text-slate-500 leading-relaxed">{notice.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Side: Events */}
+            <div className="lg:col-span-6">
+              <span className="inline-flex items-center gap-2 rounded-full bg-purple-50 border border-purple-100/80 px-3.5 py-1 text-xs font-bold text-purple-700 uppercase tracking-wide">
+                <Calendar className="h-3.5 w-3.5 text-purple-600" /> Upcoming Events
+              </span>
+              <h3 className="mt-4 font-outfit text-3xl font-black text-slate-900">On Campus Activities</h3>
+              <div className="mt-10 flex flex-col gap-6">
+                {events.map((ev: any, idx: number) => (
+                  <div key={idx} className="p-6 bg-slate-50/60 border border-slate-200/50 rounded-2xl flex flex-col justify-between hover:shadow-lg transition-all">
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-outfit text-xs font-black text-purple-600 uppercase tracking-wide">{ev.location}</span>
+                        <span className="font-sans text-xs font-semibold text-slate-400">{ev.date}</span>
+                      </div>
+                      <h4 className="mt-3 font-outfit text-xl font-bold text-slate-800 leading-snug">{ev.title}</h4>
+                      <p className="mt-2 font-sans text-sm text-slate-500 leading-relaxed">{ev.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

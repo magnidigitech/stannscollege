@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.4.1",
+    "@sanity/client": "^6.28.2",
     "@supabase/supabase-js": "^2.49.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
