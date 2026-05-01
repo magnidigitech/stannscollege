@@ -7,6 +7,7 @@ import { KeyFunctionaries } from "./governance-administration/KeyFunctionaries";
 import { Iqac } from "./governance-administration/Iqac";
 import { StatutoryCommittees } from "./governance-administration/StatutoryCommittees";
 import { InstitutionalPolicies } from "./governance-administration/InstitutionalPolicies";
+import { CodeOfConduct } from "./governance-administration/CodeOfConduct";
 import { ShieldCheck, Sparkles, UserCheck } from "lucide-react";
 
 export function GovernanceAdministration({ itemSlug }: { itemSlug: string }) {
@@ -59,6 +60,10 @@ export function GovernanceAdministration({ itemSlug }: { itemSlug: string }) {
 
   if (itemSlug === "institutional-policies") {
     return <InstitutionalPolicies />;
+  }
+
+  if (itemSlug === "code-of-conduct") {
+    return <CodeOfConduct />;
   }
 
   const defaultDetails: Record<string, { title: string; desc: string }> = {
