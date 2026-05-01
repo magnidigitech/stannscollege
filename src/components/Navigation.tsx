@@ -4,6 +4,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, GraduationCap, Users, Building, ShieldCheck } from "lucide-react";
 
+export function toSlug(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/^(i+|v+)\.\s*/, "")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export default function Navigation() {
   const [openMegaMenu, setOpenMegaMenu] = useState(false);
 
@@ -50,14 +59,14 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="hidden md:flex items-center gap-8 font-sans font-semibold text-sm text-slate-600 relative select-none">
+    <nav className="hidden md:flex items-center gap-8 font-sans font-semibold text-sm text-slate-600 select-none">
       <Link href="/" className="hover:text-indigo-600 transition-all duration-200">
         Home
       </Link>
 
       {/* About Us Mega Menu Trigger */}
       <div 
-        className="relative flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 transition-all duration-200 h-20"
+        className="flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 transition-all duration-200 h-14"
         onMouseEnter={() => setOpenMegaMenu(true)}
         onMouseLeave={() => setOpenMegaMenu(false)}
       >
@@ -66,9 +75,9 @@ export default function Navigation() {
         </span>
         <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openMegaMenu ? 'rotate-180 text-indigo-600' : 'text-slate-400'}`} />
 
-        {/* Mega Menu Contents */}
+        {/* Mega Menu Contents - Dynamic width bound exactly inside relative parent wrapper */}
         {openMegaMenu && (
-          <div className="absolute top-[80px] left-[-150px] md:left-[-350px] w-[900px] bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/50 rounded-3xl p-8 z-50 grid grid-cols-3 gap-8 cursor-default">
+          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
             {categories.map((cat, i) => (
               <div key={i} className="flex flex-col gap-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -79,16 +88,21 @@ export default function Navigation() {
                     {cat.title}
                   </h4>
                 </div>
-                <div className="flex flex-col gap-2">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/about?category=${encodeURIComponent(cat.title)}&item=${encodeURIComponent(item)}`}
-                      className="text-xs font-medium text-slate-500 hover:text-indigo-600 hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
-                    >
-                      {item}
-                    </Link>
-                  ))}
+                <div className="flex flex-col gap-1">
+                  {cat.items.map((item, idx) => {
+                    const catSlug = toSlug(cat.title);
+                    const itemSlug = toSlug(item);
+                    return (
+                      <Link
+                        key={idx}
+                        href={`/about/${catSlug}/${itemSlug}`}
+                        onClick={() => setOpenMegaMenu(false)}
+                        className="text-xs font-medium text-slate-500 hover:text-indigo-600 hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                      >
+                        {item}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             ))}

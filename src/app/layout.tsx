@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import { Award, Sparkles, Bell } from "lucide-react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,25 +30,60 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} antialiased scroll-smooth`}>
       <body className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col justify-between selection:bg-indigo-50 selection:text-indigo-900">
-        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50 shadow-sm">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex h-20 items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Link href="/" className="flex items-center gap-3.5 group">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-700 via-purple-700 to-indigo-600 font-serif font-black text-white text-xl shadow-md shadow-indigo-100 group-hover:scale-105 group-hover:rotate-2 transition-all duration-300 select-none">
-                    A
-                  </span>
-                  <div>
-                    <h1 className="font-outfit text-base md:text-lg font-black tracking-tight bg-gradient-to-r from-indigo-950 via-indigo-900 to-purple-900 bg-clip-text text-transparent select-none leading-tight">
-                      St. Ann&apos;s College for Women
-                    </h1>
-                    <p className="font-sans text-xs font-bold text-slate-400 tracking-wider uppercase select-none leading-tight mt-0.5">
-                      Gorantla, Guntur
-                    </p>
-                  </div>
-                </Link>
-              </div>
+        
+        {/* Strip line at the very top for announcements */}
+        <div className="w-full bg-slate-950 border-b border-slate-900 overflow-hidden select-none">
+          <div className="mx-auto max-w-7xl px-6 h-10 flex items-center justify-between text-xs font-semibold text-slate-300">
+            <div className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5 rounded bg-indigo-950 border border-indigo-800 px-2 py-0.5 text-indigo-200 font-bold tracking-wider uppercase animate-pulse select-none">
+                <Bell className="h-3 w-3" /> Announcement
+              </span>
+              <span className="hidden sm:inline font-sans font-medium text-indigo-50/90 truncate max-w-sm md:max-w-md">
+                Admissions are officially open for UG and PG programs for the 2026-2027 academic year.
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-slate-400">
+              <span className="hidden md:inline font-medium">AISHE Code: C-32612</span>
+              <span className="font-medium">Call Us: +91 86322 34222</span>
+            </div>
+          </div>
+        </div>
 
+        {/* Top bar with College Logo on left, Accreditations on right */}
+        <div className="w-full bg-white border-b border-slate-100 select-none">
+          <div className="mx-auto max-w-7xl px-6 h-24 flex items-center justify-between">
+            <Link href="/" className="flex items-center group">
+              <img 
+                src="/images/logo.webp" 
+                alt="St. Ann's Logo" 
+                className="h-20 w-auto max-w-[320px] md:max-w-[450px] object-contain select-none hover:scale-[1.02] transition-all duration-300"
+              />
+            </Link>
+
+            {/* Accreditations on the right */}
+            <div className="hidden sm:flex items-center gap-6">
+              <div className="flex flex-col items-end text-right">
+                <span className="font-outfit text-sm font-black text-slate-800 leading-tight">Accredited A+</span>
+                <span className="font-sans text-xs font-bold text-slate-400">By NAAC</span>
+              </div>
+              <div className="h-8 w-px bg-slate-200" />
+              <div className="flex flex-col items-end text-right">
+                <span className="font-outfit text-sm font-black text-slate-800 leading-tight">Affiliated</span>
+                <span className="font-sans text-xs font-bold text-slate-400">To ANU</span>
+              </div>
+              <div className="h-8 w-px bg-slate-200" />
+              <div className="flex flex-col items-end text-right">
+                <span className="font-outfit text-sm font-black text-slate-800 leading-tight">Approved</span>
+                <span className="font-sans text-xs font-bold text-slate-400">By AICTE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sticky Header below top bar for navigation */}
+        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-sm select-none">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 relative">
+            <div className="flex h-14 items-center justify-between">
               <Navigation />
             </div>
           </div>

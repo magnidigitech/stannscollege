@@ -106,3 +106,145 @@ export async function getAffiliations() {
     },
   ];
 }
+
+export async function getLaurels() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "studentLaurel"] | order(year desc)`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (laurels):", err);
+  }
+  return [
+    { year: "2022-2025", group: "B.Com (G)", hallTicketNumber: "Y222158013", studentName: "Gundala Usha Rani", achievement: "2 Place in Top 5" },
+    { year: "2015-2018", group: "BBC", hallTicketNumber: "Y153158018", studentName: "K. Anuja", achievement: "Pratibha Puraskar Award" },
+    { year: "2015-2018", group: "BBC", hallTicketNumber: "Y153158030", studentName: "V Bala Sri", achievement: "Pratibha Puraskar Award" },
+    { year: "2015-2018", group: "B.Com (G)", hallTicketNumber: "Y152158015", studentName: "K Pratima", achievement: "Pratibha Puraskar Award" },
+    { year: "2015-2018", group: "MCA", hallTicketNumber: "Y16MC58018", studentName: "Sk.Mastanbi", achievement: "Pratibha Puraskar Award" },
+    { year: "2015-2018", group: "MCA", hallTicketNumber: "Y16MC58044", studentName: "N. Suchandrika", achievement: "Pratibha Puraskar Award" },
+    { year: "2014-2017", group: "MCA", hallTicketNumber: "Y15MC58020", studentName: "S.Ravali", achievement: "Gold Medals (03)" },
+    { year: "2014-2017", group: "B.Com(G)", hallTicketNumber: "Y142158008", studentName: "D.Sai Swetha", achievement: "Pratibha Puraskar Award" },
+    { year: "2013-2016", group: "MBC", hallTicketNumber: "Y133158030", studentName: "Gayathri Thirumala", achievement: "Pratibha Puraskar Award" },
+    { year: "2012-2015", group: "MCA", hallTicketNumber: "Y13MC58010", studentName: "K.Naga Lakshmi", achievement: "Pratibha Puraskar Award" },
+    { year: "2012-2015", group: "BBC", hallTicketNumber: "", studentName: "S Hima Bindu", achievement: "Gold Medal" },
+    { year: "2012-2015", group: "B.Com (G)", hallTicketNumber: "Y122158049", studentName: "Y Satya Vani", achievement: "Pratibha Puraskar Award" },
+    { year: "2011-2024", group: "MBC", hallTicketNumber: "Y113158051", studentName: "V Anitha", achievement: "Pratibha Puraskar Award" },
+    { year: "2011-2014", group: "BBC", hallTicketNumber: "Y113158001", studentName: "P. Amala Mary", achievement: "Pratibha Puraskar Award" },
+    { year: "2011-2014", group: "MBC", hallTicketNumber: "Y113158033", studentName: "B. Maha Lakshmi", achievement: "Pratibha Puraskar Award" },
+    { year: "2011-2014", group: "MBC", hallTicketNumber: "Y113158050", studentName: "V.Sivaparvathi Devi", achievement: "Pratibha Puraskar Award" },
+    { year: "2011-2014", group: "MPC", hallTicketNumber: "", studentName: "P Hemalatha", achievement: "Pratibha Puraskar Award" },
+    { year: "1998-2001", group: "BCA", hallTicketNumber: "", studentName: "G. Neelima", achievement: "University Rank Holder" }
+  ];
+}
+
+export async function getLaurelImages() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "laurelImage"]{ "imageUrl": image.asset->url, title }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (laurel images):", err);
+  }
+  return [];
+}
+
+export async function getApscheOrders() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "apscheOrder"]{
+      _id,
+      title,
+      academicYear,
+      "fileUrl": file.asset->url
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (apsche orders):", err);
+  }
+  return [
+    {
+      _id: "mock1",
+      title: "APSCHE Orders 2025–2026",
+      academicYear: "2025–2026",
+      fileUrl: "/pdf-placeholder.pdf"
+    },
+    {
+      _id: "mock2",
+      title: "APSCHE Orders 2023–2024",
+      academicYear: "2023–2024",
+      fileUrl: "/pdf-placeholder.pdf"
+    }
+  ];
+}
+
+export async function getAnuAffiliations() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "anuAffiliation"]{
+      _id,
+      title,
+      academicYear,
+      "fileUrl": file.asset->url
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (anu affiliations):", err);
+  }
+  return [];
+}
+
+export async function getAicteApprovals() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "aicteApproval"]{
+      _id,
+      title,
+      academicYear,
+      "fileUrl": file.asset->url
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (aicte approvals):", err);
+  }
+  return [];
+}
+
+export async function getNirfReports() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "nirfReport"]{
+      _id,
+      title,
+      academicYear,
+      category,
+      "fileUrl": file.asset->url
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (nirf reports):", err);
+  }
+  return [];
+}
+
+export async function getNaacCertificates() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "naacCertificate"]{
+      _id,
+      title,
+      "imageUrl": image.asset->url
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (naac certificates):", err);
+  }
+  return [];
+}
+
+export async function getAisheCertifications() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "aisheCertification"]{
+      _id,
+      title,
+      academicYear,
+      "fileUrl": file.asset->url
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (aishe certifications):", err);
+  }
+  return [];
+}

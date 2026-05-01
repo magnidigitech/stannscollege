@@ -51,6 +51,87 @@ export default defineConfig({
           { name: "details", title: "Description/Details", type: "text" },
         ],
       },
+      {
+        name: "studentLaurel",
+        title: "Student Laurels",
+        type: "document",
+        fields: [
+          { name: "year", title: "Academic Year", type: "string" },
+          { name: "group", title: "Group/Stream", type: "string" },
+          { name: "hallTicketNumber", title: "Hall Ticket Number", type: "string" },
+          { name: "studentName", title: "Student Name", type: "string" },
+          { name: "achievement", title: "Achievement", type: "string" },
+        ],
+      },
+      {
+        name: "laurelImage",
+        title: "Laurel Images",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "image", title: "Image", type: "image", options: { hotspot: true } },
+        ],
+      },
+      {
+        name: "apscheOrder",
+        title: "APSCHE Orders",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "file", title: "PDF File", type: "file" },
+        ],
+      },
+      {
+        name: "anuAffiliation",
+        title: "ANU Affiliations",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "file", title: "PDF File", type: "file" },
+        ],
+      },
+      {
+        name: "aicteApproval",
+        title: "AICTE Approvals",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "file", title: "PDF File", type: "file" },
+        ],
+      },
+      {
+        name: "nirfReport",
+        title: "NIRF Reports",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "category", title: "NIRF Category", type: "string" },
+          { name: "file", title: "PDF File", type: "file" },
+        ],
+      },
+      {
+        name: "naacCertificate",
+        title: "NAAC Certificates",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "image", title: "Certificate Image", type: "image", options: { hotspot: true } },
+        ],
+      },
+      {
+        name: "aisheCertification",
+        title: "AISHE Certifications",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "file", title: "PDF File", type: "file" },
+        ],
+      },
     ],
   },
 });
