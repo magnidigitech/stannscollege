@@ -1,5 +1,5 @@
 import React from "react";
-import { Award, Clock, Phone, Mail, MapPin, Globe, Calendar, GraduationCap, CheckCircle2, ShieldCheck, Youtube, Instagram } from "lucide-react";
+import { Award, Clock, Phone, Mail, MapPin, Globe, Calendar, GraduationCap, CheckCircle2, ShieldCheck, Video, Camera } from "lucide-react";
 
 export function BasicInstitutionalInfo() {
   const details = [
@@ -200,7 +200,7 @@ export function BasicInstitutionalInfo() {
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-slate-50/60 border border-slate-100/80 rounded-2xl hover:bg-white hover:border-indigo-100 transition-all">
-            <Youtube className="h-4 w-4 text-rose-600 shrink-0" />
+            <Video className="h-4 w-4 text-rose-600 shrink-0" />
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">YouTube</span>
               <p className="font-sans text-xs font-semibold text-slate-700 mt-0.5 select-none leading-tight">
@@ -210,7 +210,7 @@ export function BasicInstitutionalInfo() {
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-slate-50/60 border border-slate-100/80 rounded-2xl hover:bg-white hover:border-indigo-100 transition-all">
-            <Instagram className="h-4 w-4 text-pink-600 shrink-0" />
+            <Camera className="h-4 w-4 text-pink-600 shrink-0" />
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Instagram</span>
               <p className="font-sans text-xs font-semibold text-slate-700 mt-0.5 select-none">
