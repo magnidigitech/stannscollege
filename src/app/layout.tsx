@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { GraduationCap } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -48,29 +48,7 @@ export default function RootLayout({
                 </Link>
               </div>
 
-              <nav className="hidden md:flex items-center gap-8 font-sans font-semibold text-sm text-slate-600">
-                <Link href="/" className="hover:text-indigo-600 transition-all duration-200">
-                  Home
-                </Link>
-                <Link href="/about" className="hover:text-indigo-600 transition-all duration-200">
-                  About
-                </Link>
-                <Link href="/courses" className="hover:text-indigo-600 transition-all duration-200">
-                  Courses
-                </Link>
-                <Link href="/admission" className="hover:text-indigo-600 transition-all duration-200">
-                  Admissions
-                </Link>
-                <Link href="/contact" className="hover:text-indigo-600 transition-all duration-200">
-                  Contact
-                </Link>
-                <Link 
-                  href="/admission" 
-                  className="rounded-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-95 duration-300 hover:-translate-y-0.5"
-                >
-                  Apply Now
-                </Link>
-              </nav>
+              <Navigation />
             </div>
           </div>
         </header>
