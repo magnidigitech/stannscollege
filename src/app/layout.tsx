@@ -35,10 +35,10 @@ export default function RootLayout({
         <div className="w-full bg-slate-950 border-b border-slate-900 overflow-hidden select-none">
           <div className="mx-auto max-w-7xl px-6 h-10 flex items-center justify-between text-xs font-semibold text-slate-300">
             <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded bg-indigo-950 border border-indigo-800 px-2 py-0.5 text-indigo-200 font-bold tracking-wider uppercase animate-pulse select-none">
+              <span className="flex items-center gap-1.5 rounded bg-[#002147] border border-[#003875] px-2 py-0.5 text-white font-bold tracking-wider uppercase animate-pulse select-none">
                 <Bell className="h-3 w-3" /> Announcement
               </span>
-              <span className="hidden sm:inline font-sans font-medium text-indigo-50/90 truncate max-w-sm md:max-w-md">
+              <span className="hidden sm:inline font-sans font-medium text-slate-200 truncate max-w-sm md:max-w-md">
                 Admissions are officially open for UG and PG programs for the 2026-2027 academic year.
               </span>
             </div>
@@ -51,31 +51,36 @@ export default function RootLayout({
 
         {/* Top bar with College Logo on left, Accreditations on right */}
         <div className="w-full bg-white border-b border-slate-100 select-none">
-          <div className="mx-auto max-w-7xl px-6 h-24 flex items-center justify-between">
-            <Link href="/" className="flex items-center group">
+          <div className="mx-auto max-w-7xl px-6 h-28 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-4 group">
               <img 
-                src="/images/logo.webp" 
-                alt="St. Ann's Logo" 
-                className="h-20 w-auto max-w-[320px] md:max-w-[450px] object-contain select-none hover:scale-[1.02] transition-all duration-300"
+                src="/images/collegelogo.png" 
+                alt="College Logo" 
+                className="h-16 w-auto object-contain select-none hover:scale-105 transition-all duration-300"
               />
+              <div className="flex flex-col">
+                <span className="font-outfit text-lg md:text-2xl font-black text-[#002147] tracking-tight leading-tight select-none uppercase">
+                  St. Ann&apos;s College for Women
+                </span>
+                <span className="font-sans text-xs md:text-sm font-semibold text-slate-500 tracking-wide select-none">
+                  Run by the Society of St Anne
+                </span>
+              </div>
             </Link>
 
-            {/* Accreditations on the right */}
-            <div className="hidden sm:flex items-center gap-6">
-              <div className="flex flex-col items-end text-right">
-                <span className="font-outfit text-sm font-black text-slate-800 leading-tight">Accredited A+</span>
-                <span className="font-sans text-xs font-bold text-slate-400">By NAAC</span>
-              </div>
-              <div className="h-8 w-px bg-slate-200" />
-              <div className="flex flex-col items-end text-right">
-                <span className="font-outfit text-sm font-black text-slate-800 leading-tight">Affiliated</span>
-                <span className="font-sans text-xs font-bold text-slate-400">To ANU</span>
-              </div>
-              <div className="h-8 w-px bg-slate-200" />
-              <div className="flex flex-col items-end text-right">
-                <span className="font-outfit text-sm font-black text-slate-800 leading-tight">Approved</span>
-                <span className="font-sans text-xs font-bold text-slate-400">By AICTE</span>
-              </div>
+            {/* Accreditations and Anniversary Icons on the right */}
+            <div className="hidden md:flex items-center gap-6">
+              <img 
+                src="/images/30 Years Icon.png" 
+                alt="30 Years Excellence" 
+                className="h-16 w-auto object-contain select-none"
+              />
+              <div className="h-10 w-px bg-slate-200" />
+              <img 
+                src="/images/naac logo.png" 
+                alt="NAAC Logo" 
+                className="h-16 w-auto object-contain select-none"
+              />
             </div>
           </div>
         </div>
@@ -97,13 +102,20 @@ export default function RootLayout({
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
               <div className="md:col-span-2">
-                <Link href="/" className="flex items-center gap-3.5 group">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white font-serif font-extrabold text-indigo-950 text-xl shadow-lg group-hover:scale-105 transition-all duration-300">
-                    A
-                  </span>
-                  <span className="font-outfit text-white font-black tracking-tight text-lg">
-                    St. Ann&apos;s College
-                  </span>
+                <Link href="/" className="flex items-center gap-3.5 group select-none">
+                  <img 
+                    src="/images/collegelogo.png" 
+                    alt="College Logo" 
+                    className="h-12 w-auto object-contain bg-white p-1.5 rounded-xl shadow-lg group-hover:scale-105 transition-all duration-300 select-none"
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-outfit text-white font-black tracking-tight text-base md:text-lg uppercase leading-tight">
+                      St. Ann&apos;s College for Women
+                    </span>
+                    <span className="font-sans text-xs font-semibold text-slate-400">
+                      Run by the Society of St Anne
+                    </span>
+                  </div>
                 </Link>
                 <p className="mt-5 text-slate-400 font-sans text-sm max-w-sm leading-relaxed">
                   Dedicated to shaping visionaries and cultivating top-notch academic excellence since our inception. Fostering future female leaders of the modern world.
@@ -112,10 +124,10 @@ export default function RootLayout({
 
               <div className="flex flex-col gap-4">
                 <h4 className="font-outfit text-white font-bold text-sm uppercase tracking-wider">Quick Menu</h4>
-                <Link href="/" className="hover:text-indigo-400 text-sm transition-colors duration-200">Home</Link>
-                <Link href="/about" className="hover:text-indigo-400 text-sm transition-colors duration-200">About Us</Link>
-                <Link href="/courses" className="hover:text-indigo-400 text-sm transition-colors duration-200">Courses</Link>
-                <Link href="/admission" className="hover:text-indigo-400 text-sm transition-colors duration-200">Admissions</Link>
+                <Link href="/" className="hover:text-[#005fb8] text-sm transition-colors duration-200">Home</Link>
+                <Link href="/about" className="hover:text-[#005fb8] text-sm transition-colors duration-200">About Us</Link>
+                <Link href="/courses" className="hover:text-[#005fb8] text-sm transition-colors duration-200">Courses</Link>
+                <Link href="/admission" className="hover:text-[#005fb8] text-sm transition-colors duration-200">Admissions</Link>
               </div>
 
               <div className="flex flex-col gap-4">

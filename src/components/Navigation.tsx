@@ -60,20 +60,20 @@ export default function Navigation() {
 
   return (
     <nav className="hidden md:flex items-center gap-8 font-sans font-semibold text-sm text-slate-600 select-none">
-      <Link href="/" className="hover:text-indigo-600 transition-all duration-200">
+      <Link href="/" className="hover:text-[#002147] transition-all duration-200">
         Home
       </Link>
 
       {/* About Us Mega Menu Trigger */}
-      <div 
-        className="flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 transition-all duration-200 h-14"
+      <div
+        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
         onMouseEnter={() => setOpenMegaMenu(true)}
         onMouseLeave={() => setOpenMegaMenu(false)}
       >
-        <span className="font-semibold text-sm text-slate-600 hover:text-indigo-600 select-none">
+        <Link href="/about" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
           About Us
-        </span>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openMegaMenu ? 'rotate-180 text-indigo-600' : 'text-slate-400'}`} />
+        </Link>
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openMegaMenu ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
 
         {/* Mega Menu Contents - Dynamic width bound exactly inside relative parent wrapper */}
         {openMegaMenu && (
@@ -81,7 +81,7 @@ export default function Navigation() {
             {categories.map((cat, i) => (
               <div key={i} className="flex flex-col gap-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/50 text-indigo-600 shadow-sm">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
                     <cat.icon className="h-4 w-4" />
                   </span>
                   <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
@@ -97,7 +97,7 @@ export default function Navigation() {
                         key={idx}
                         href={`/about/${catSlug}/${itemSlug}`}
                         onClick={() => setOpenMegaMenu(false)}
-                        className="text-xs font-medium text-slate-500 hover:text-indigo-600 hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
                       >
                         {item}
                       </Link>
@@ -110,19 +110,19 @@ export default function Navigation() {
         )}
       </div>
 
-      <Link href="/courses" className="hover:text-indigo-600 transition-all duration-200">
+      <Link href="/courses" className="hover:text-[#002147] transition-all duration-200">
         Courses
       </Link>
-      <Link href="/admission" className="hover:text-indigo-600 transition-all duration-200">
+      <Link href="/admission" className="hover:text-[#002147] transition-all duration-200">
         Admissions
       </Link>
-      <Link href="/contact" className="hover:text-indigo-600 transition-all duration-200">
+      <Link href="/contact" className="hover:text-[#002147] transition-all duration-200">
         Contact
       </Link>
 
-      <Link 
-        href="/admission" 
-        className="rounded-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-95 duration-300 hover:-translate-y-0.5"
+      <Link
+        href="/admission"
+        className="rounded-full bg-[#002147] hover:bg-[#003875] px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-[#002147]/20 transition-all active:scale-95 duration-300 hover:-translate-y-0.5"
       >
         Apply Now
       </Link>

@@ -10,6 +10,7 @@ import { InstitutionalAwards } from "@/components/about/the-institution/Institut
 import { StudentLaurels } from "@/components/about/the-institution/StudentLaurels";
 import { InstitutionalDistinctiveness } from "@/components/about/the-institution/InstitutionalDistinctiveness";
 import { HeadOfTheInstitution } from "@/components/about/the-institution/HeadOfTheInstitution";
+import AboutClientFallback from "@/components/about/AboutClientFallback";
 
 import { StatutoryAffiliations } from "@/components/about/StatutoryAffiliations";
 import { GovernanceAdministration } from "@/components/about/GovernanceAdministration";
@@ -139,14 +140,92 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
   const aisheCertificationsList = await getAisheCertifications();
 
   // Dynamic 2-column Grid Layout for Sections to maximize right-hand empty space
+  // Dynamic Grid Layout for Sections with Sidebar
   if (catSlug && itemSlug) {
+    const categories = [
+      {
+        catSlug: "the-institution",
+        title: "I. The Institution",
+        items: [
+          { text: "Basic Institutional Information", slug: "basic-institutional-information" },
+          { text: "History of the College", slug: "history-of-the-college" },
+          { text: "Vision, Mission, and Core Values", slug: "vision-mission-and-core-values" },
+          { text: "Institutional Awards & Recognitions", slug: "institutional-awards-recognitions" },
+          { text: "Student Laurels", slug: "student-laurels" },
+          { text: "Institutional Distinctiveness", slug: "institutional-distinctiveness" },
+          { text: "Head of the Institution", slug: "head-of-the-institution" },
+        ],
+      },
+      {
+        catSlug: "statutory-affiliations-recognitions",
+        title: "II. Statutory Affiliations & Recognitions",
+        items: [
+          { text: "APSCHE Orders", slug: "apsche-orders" },
+          { text: "ANU Affiliation Orders", slug: "anu-affiliation-orders-ug-pg" },
+          { text: "AICTE Approvals", slug: "aicte-approvals" },
+          { text: "UGC 2(f)", slug: "ugc-2f" },
+          { text: "AISHE Certificates", slug: "aishe-certificates" },
+          { text: "NAAC Accreditation", slug: "naac-accreditation" },
+          { text: "NIRF", slug: "nirf" },
+        ],
+      },
+      {
+        catSlug: "governance-administration",
+        title: "III. Governance & Administration",
+        items: [
+          { text: "Governing Body", slug: "governing-body" },
+          { text: "Organogram", slug: "organogram" },
+          { text: "Key Functionaries & IQAC", slug: "key-functionaries-iqac" },
+          { text: "Statutory & Non-Statutory Committees", slug: "statutory-non-statutory-committees" },
+          { text: "Institutional Policies", slug: "institutional-policies" },
+          { text: "Strategic Development Plan", slug: "strategic-development-plan" },
+          { text: "Code of Conduct", slug: "code-of-conduct" },
+        ],
+      },
+    ];
+
     return (
       <div className="bg-slate-50/40 min-h-screen py-12 select-none animate-fadeIn">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
-            {/* Full Width Content */}
-            <div className="lg:col-span-12 mb-16 flex flex-col justify-between">
+            {/* Desktop Sidebar with All Pages */}
+            <div className="lg:col-span-4 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 pr-2">
+              <span className="inline-flex items-center gap-1.5 font-outfit text-xs font-black text-[#002147] uppercase tracking-wider px-2">
+                About Navigation
+              </span>
+              <div className="flex flex-col gap-6">
+                {categories.map((cat) => (
+                  <div key={cat.catSlug} className="flex flex-col gap-2">
+                    <h4 className="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-1 px-2 select-none">
+                      {cat.title}
+                    </h4>
+                    <div className="flex flex-col gap-1.5">
+                      {cat.items.map((item) => {
+                        const isActive = catSlug === cat.catSlug && itemSlug === item.slug;
+                        return (
+                          <Link
+                            key={item.slug}
+                            href={`/about/${cat.catSlug}/${item.slug}`}
+                            className={`font-sans text-xs md:text-sm p-3 rounded-xl transition-all border border-transparent flex items-center justify-between select-none ${
+                              isActive
+                                ? 'bg-[#002147]/10 border-[#002147]/30 text-[#002147] font-bold shadow-sm'
+                                : 'text-slate-600 hover:bg-slate-50/60 hover:text-[#002147] font-medium'
+                            }`}
+                          >
+                            <span className="truncate pr-2">{item.text}</span>
+                            {isActive && <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 flex-shrink-0"></span>}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Individual Section Content */}
+            <div className="lg:col-span-8 mb-16 flex flex-col justify-between">
               <div>
                 <div>
                   {catSlug === "the-institution" && (
@@ -182,90 +261,14 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
     );
   }
 
-  // Fallback default full page
   return (
-    <div className="bg-slate-50/50 min-h-screen py-16 md:py-24 select-none">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="max-w-3xl text-left">
-          <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100/80 px-4 py-1.5 text-xs font-bold text-indigo-700 uppercase tracking-wider shadow-sm select-none">
-            <Sparkles className="h-3.5 w-3.5 text-indigo-600 animate-pulse" /> Our Legacy & Story
-          </span>
-          <h1 className="mt-6 font-outfit text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl leading-[1.1] md:leading-[1.1]">
-            About St. Ann&apos;s College
-          </h1>
-          <p className="mt-4 font-sans text-base md:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal">
-            An iconic institution in Gorantla, Guntur, shaping outstanding educational opportunities, lifelong critical skills, and holistic empowerment since 1997.
-          </p>
-        </div>
-
-        {/* Detailed Narrative Section with Vision/Mission cards */}
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-b border-slate-200/50 pb-16">
-          <div className="lg:col-span-7 flex flex-col gap-6 text-slate-600 leading-relaxed font-sans text-base md:text-lg max-w-2xl">
-            <p>
-              Founded in 1997, St. Ann&apos;s College for Women has evolved into a formidable center of excellence, continually providing students from all walks of life with an inspiring, supportive academic ecosystem. From cutting-edge research modules to comprehensive business management studies, our focus remains squarely on building confidence, technical prowess, and innovative problem-solving capability.
-            </p>
-            <p>
-              We firmly believe that high-quality higher education serves as the vital gateway to total personal development and successful professional integration. Our distinguished faculty members act not merely as teachers, but as dedicated mentors who nurture intellectual curiosity, critical assessment, and sound judgment.
-            </p>
-            <div className="mt-4 flex items-center gap-3 bg-white p-5 border border-slate-200/50 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-500 via-indigo-600 to-indigo-700 font-bold text-white shadow-md">
-                <CheckCircle className="h-6 w-6" />
-              </span>
-              <div>
-                <h4 className="font-outfit font-black text-slate-800 text-base leading-tight">Committed to Continuous Progress</h4>
-                <p className="font-sans text-xs font-semibold text-slate-500 leading-normal mt-1">
-                  Continuously upgrading technology, digital classrooms, and laboratory apparatus.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            {coreValues.map((val, i) => (
-              <div
-                key={i}
-                className="group relative flex flex-col justify-between rounded-3xl bg-white p-8 border border-slate-200/60 shadow-md hover:shadow-xl hover:shadow-indigo-50 hover:border-indigo-100 hover:-translate-y-0.5 duration-300 transition-all cursor-default"
-              >
-                <div>
-                  <span className="inline-flex items-center gap-1.5 font-outfit text-xs font-black text-indigo-600 uppercase tracking-wide">
-                    <Award className="h-4 w-4" /> {val.title}
-                  </span>
-                  <p className="mt-4 font-sans text-sm md:text-base text-slate-600 leading-relaxed font-normal">
-                    {val.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Dynamic Section for Affiliations from Sanity */}
-        <div className="mt-24 border-t border-slate-200/50 pt-20">
-          <div className="max-w-2xl text-left">
-            <span className="inline-flex items-center gap-2 rounded-full bg-purple-50 border border-purple-100/80 px-3.5 py-1 text-xs font-bold text-purple-700 uppercase tracking-wide">
-              <GraduationCap className="h-3.5 w-3.5 text-purple-600" /> Validated Accreditation
-            </span>
-            <h2 className="mt-4 font-outfit text-3xl font-black text-slate-900 md:text-4xl">Official Affiliations</h2>
-            <p className="mt-3 font-sans text-sm text-slate-500 leading-relaxed max-w-xl">
-              Certified educational standards that ensure our curriculum delivers top academic recognition.
-            </p>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-            {affiliationsList.map((aff: any, idx: number) => (
-              <div key={idx} className="p-6 bg-white border border-slate-200/60 rounded-3xl flex items-center gap-4 hover:shadow-lg transition-all duration-300">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-500 via-pink-500 to-indigo-600 text-white font-bold text-base shadow-md">
-                  <Award className="h-6 w-6" />
-                </span>
-                <div>
-                  <h4 className="font-outfit font-bold text-slate-800 text-base leading-tight">{aff.name}</h4>
-                  <p className="font-sans text-xs font-semibold text-slate-400 leading-normal mt-1">{aff.details}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <AboutClientFallback
+      apscheOrdersList={apscheOrdersList}
+      anuAffiliationsList={anuAffiliationsList}
+      aicteApprovalsList={aicteApprovalsList}
+      nirfReportsList={nirfReportsList}
+      naacCertificatesList={naacCertificatesList}
+      aisheCertificationsList={aisheCertificationsList}
+    />
   );
 }

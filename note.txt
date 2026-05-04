@@ -1,0 +1,40 @@
+let's build page by page
+
+home page at the end
+
+let's first build about us
+
+1.About Us
+
+I.The Institution 
+
+Basic Institutional Information
+History of the College 
+Emblem, Motto, Tagline, Vision, Mission, and Core Values
+Institutional Awards & Recognitions 
+Student Laurels (Pratibha Awards & Gold Medals)
+Institutional Distinctiveness 
+Head of the Institution 
+
+II.Statutory Affiliations & Recognitions
+APSCHE Orders 
+ANU Affiliation Orders (UG & PG)
+AICTE Approvals 
+UGC 2(f) 
+AISHE Certificates 
+NAAC Accreditation 
+NIRF 
+
+III. Governance & Administration
+Governing Body 
+Organogram 
+Key Functionaries
+IQAC 
+Statutory & Non-Statutory Committees 
+Institutional Policies 
+Strategic / Institutional Development Plan 
+Code of Conduct 
+
+
+I want mega menu with these 3 categories
+
