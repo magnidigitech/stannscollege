@@ -8,3 +8,12 @@ out
 .env.production.local
 .DS_Store
 *.local
+
+# Local Workspace Temps
+faculty-temp/
+student-temp/
+tsconfig.tsbuildinfo
+inject_library.js
+
+# Giant Raw Content Inputs (1.5GB)
+Content/
