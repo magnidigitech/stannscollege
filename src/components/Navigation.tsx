@@ -21,6 +21,38 @@ export default function Navigation() {
   const [openSupport, setOpenSupport] = useState(false);
   const [openInfra, setOpenInfra] = useState(false);
   const [openPlacements, setOpenPlacements] = useState(false);
+  const [openResearch, setOpenResearch] = useState(false);
+
+  const researchCategories = [
+    {
+      title: "I. Policy & Infrastructure",
+      icon: ShieldCheck,
+      items: [
+        { text: "Research Development Cell", slug: "research-development-cell" },
+        { text: "Research Infrastructure", slug: "research-infrastructure" },
+        { text: "Supervisors & Scholars", slug: "research-supervisors-scholars" },
+        { text: "Centres of Excellence", slug: "centres-of-excellence" },
+      ]
+    },
+    {
+      title: "II. Outputs & Grants",
+      icon: BookOpen,
+      items: [
+        { text: "Research Publications", slug: "research-publications" },
+        { text: "Patents & Innovations", slug: "patents-innovations" },
+        { text: "Funded Projects", slug: "funded-projects" },
+      ]
+    },
+    {
+      title: "III. Innovation & IPR",
+      icon: Lightbulb,
+      items: [
+        { text: "Intellectual Property Cell", slug: "ipr-cell" },
+        { text: "Institution Innovation Cell", slug: "institution-innovation-cell" },
+        { text: "Entrepreneurship Development", slug: "entrepreneurship-development" },
+      ]
+    }
+  ];
 
   const admissionsCategories = [
     {
@@ -305,7 +337,7 @@ export default function Navigation() {
       {/* About Us Mega Menu Trigger */}
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenAbout(true); setOpenAcademics(false); setOpenInfra(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); }}
+        onMouseEnter={() => { setOpenAbout(true); setOpenAcademics(false); setOpenInfra(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenAbout(false)}
       >
         <Link href="/about/basic-institutional-information" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -350,7 +382,7 @@ export default function Navigation() {
       {/* Academics Mega Menu Trigger */}
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenAcademics(true); setOpenAbout(false); setOpenInfra(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); }}
+        onMouseEnter={() => { setOpenAcademics(true); setOpenAbout(false); setOpenInfra(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenAcademics(false)}
       >
         <Link href="/academics/academic-programmes/undergraduate-programmes" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -448,7 +480,7 @@ export default function Navigation() {
 
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenInfra(true); setOpenAbout(false); setOpenAcademics(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); }}
+        onMouseEnter={() => { setOpenInfra(true); setOpenAbout(false); setOpenAcademics(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenInfra(false)}
       >
         <Link href="/infrastructure/campus-buildings" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -491,7 +523,7 @@ export default function Navigation() {
       </Link>
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenAdmissions(true); setOpenAbout(false); setOpenAcademics(false); setOpenInfra(false); setOpenSupport(false); setOpenFaculty(false); setOpenPlacements(false); }}
+        onMouseEnter={() => { setOpenAdmissions(true); setOpenAbout(false); setOpenAcademics(false); setOpenInfra(false); setOpenSupport(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenAdmissions(false)}
       >
         <Link href="/admissions/policy-process" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -531,7 +563,7 @@ export default function Navigation() {
 
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenFaculty(true); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenInfra(false); setOpenSupport(false); setOpenPlacements(false); }}
+        onMouseEnter={() => { setOpenFaculty(true); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenInfra(false); setOpenSupport(false); setOpenPlacements(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenFaculty(false)}
       >
         <Link href="/faculty/teaching-staff" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -571,7 +603,7 @@ export default function Navigation() {
 
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenSupport(true); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); setOpenPlacements(false); }}
+        onMouseEnter={() => { setOpenSupport(true); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); setOpenPlacements(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenSupport(false)}
       >
         <Link href="/student-support/mentor-mentee" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -611,7 +643,7 @@ export default function Navigation() {
 
       <div
         className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenPlacements(true); setOpenSupport(false); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); }}
+        onMouseEnter={() => { setOpenPlacements(true); setOpenSupport(false); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); setOpenResearch(false); }}
         onMouseLeave={() => setOpenPlacements(false)}
       >
         <Link href="/placements/training-placements" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
@@ -637,6 +669,46 @@ export default function Navigation() {
                       key={idx}
                       href={`/placements/${item.slug}`}
                       onClick={() => setOpenPlacements(false)}
+                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
+                    >
+                      {item.text}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div
+        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
+        onMouseEnter={() => { setOpenResearch(true); setOpenPlacements(false); setOpenSupport(false); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); }}
+        onMouseLeave={() => setOpenResearch(false)}
+      >
+        <Link href="/research-innovation/research-development-cell" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
+          Research
+        </Link>
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openResearch ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+        {openResearch && (
+          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
+            {researchCategories.map((cat, i) => (
+              <div key={i} className="flex flex-col gap-4">
+                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
+                    <cat.icon className="h-4 w-4" />
+                  </span>
+                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                    {cat.title}
+                  </h4>
+                </div>
+                <div className="flex flex-col gap-1">
+                  {cat.items.map((item, idx) => (
+                    <Link
+                      key={idx}
+                      href={`/research-innovation/${item.slug}`}
+                      onClick={() => setOpenResearch(false)}
                       className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
                     >
                       {item.text}

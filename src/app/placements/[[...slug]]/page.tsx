@@ -21,7 +21,8 @@ export function generateStaticParams() {
   return tabs;
 }
 
-export default function PlacementsPage({ params }: { params: { slug?: string[] } }) {
-  const activeSlug = params.slug?.[0] || "training-placements";
+export default async function PlacementsPage({ params }: { params: Promise<{ slug?: string[] }> }) {
+  const resolvedParams = await params;
+  const activeSlug = resolvedParams.slug?.[0] || "training-placements";
   return <PlacementsClientPortal activeSlug={activeSlug} />;
 }

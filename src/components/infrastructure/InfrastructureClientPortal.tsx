@@ -435,6 +435,17 @@ export default function InfrastructureClientPortal({
         );
       }
 
+      // Image Renderer
+      if (p.startsWith("<img")) {
+        const srcMatch = p.match(/src="(.*?)"/);
+        const src = srcMatch ? srcMatch[1] : "";
+        return (
+          <div key={idx} className="my-8 rounded-2xl overflow-hidden shadow-sm border border-slate-100">
+            <img src={src} alt="Content" className="w-full h-auto object-cover" />
+          </div>
+        );
+      }
+
       // Default Paragraph Renderer
       return (
         <p key={idx} className="text-slate-600 font-semibold text-sm md:text-base leading-relaxed mb-5 text-justify">

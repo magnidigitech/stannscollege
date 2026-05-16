@@ -380,6 +380,17 @@ export default function PlacementsClientPortal({
         );
       }
 
+      // Image Renderer
+      if (p.startsWith("<img")) {
+        const srcMatch = p.match(/src="(.*?)"/);
+        const src = srcMatch ? srcMatch[1] : "";
+        return (
+          <div key={idx} className="my-8 rounded-2xl overflow-hidden shadow-sm border border-slate-100">
+            <img src={src} alt="Content" className="w-full h-auto object-cover" />
+          </div>
+        );
+      }
+
       return (
         <p key={idx} className="text-slate-600 leading-[1.8] text-[15px] md:text-base mb-6 font-medium text-justify">
           {renderRichString(p)}
