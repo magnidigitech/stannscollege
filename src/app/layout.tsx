@@ -3,7 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
-import { Award, Sparkles, Bell } from "lucide-react";
+import { Award, Sparkles, Bell, ArrowRight } from "lucide-react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} antialiased scroll-smooth`} suppressHydrationWarning>
       <body className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col justify-between selection:bg-indigo-50 selection:text-indigo-900">
-        
+
         {/* Strip line at the very top for announcements */}
         <div className="w-full bg-slate-950 border-b border-slate-900 overflow-hidden select-none">
           <div className="mx-auto max-w-7xl px-6 h-10 flex items-center justify-between text-xs font-semibold text-slate-300">
@@ -43,8 +43,8 @@ export default function RootLayout({
               </span>
             </div>
             <div className="flex items-center gap-4 text-slate-400">
-              <span className="hidden md:inline font-medium">AISHE Code: C-32612</span>
-              <span className="font-medium">Call Us: +91 86322 34222</span>
+              <span className="hidden md:inline font-medium">AISHE Code: C-39493</span>
+              <span className="font-medium">Call Us: 0863-2236470 | 7382104655</span>
             </div>
           </div>
         </div>
@@ -52,45 +52,54 @@ export default function RootLayout({
         {/* Top bar with College Logo on left, Accreditations on right */}
         <div className="w-full bg-white border-b border-slate-100 select-none">
           <div className="mx-auto max-w-7xl px-6 h-28 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-4 group">
-              <img 
-                src="/images/collegelogo.png" 
-                alt="College Logo" 
-                className="h-16 w-auto object-contain select-none hover:scale-105 transition-all duration-300"
-              />
-              <div className="flex flex-col">
-                <span className="font-outfit text-lg md:text-2xl font-black text-[#002147] tracking-tight leading-tight select-none uppercase">
-                  St. Ann&apos;s College for Women
-                </span>
-                <span className="font-sans text-xs md:text-sm font-semibold text-slate-500 tracking-wide select-none">
-                  Run by the Society of St Anne
-                </span>
-              </div>
-            </Link>
+            <div className="flex items-center gap-6 md:gap-8">
+              <Link href="/" className="flex items-center gap-4 group">
+                <img
+                  src="/images/collegelogo.png"
+                  alt="College Logo"
+                  className="h-16 w-auto object-contain select-none hover:scale-105 transition-all duration-300"
+                />
+                <div className="flex flex-col">
+                  <span className="font-outfit text-lg md:text-2xl font-black text-[#002147] tracking-tight leading-tight select-none uppercase">
+                    St. Ann&apos;s College for Women
+                  </span>
+                  <span className="font-sans text-xs md:text-sm font-semibold text-slate-500 tracking-wide select-none">
+                    Run by the Society of St Anne
+                  </span>
+                </div>
+              </Link>
+
+              {/* Apply Now button beautifully placed next to Logo text */}
+              <Link
+                href="/admissions/policy-process"
+                className="hidden lg:flex items-center gap-2 rounded-full bg-[#002147] hover:bg-emerald-600 px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-emerald-500/20 transition-all active:scale-95 duration-350 hover:-translate-y-0.5 group/btn select-none shrink-0"
+              >
+                Apply Now
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
+              </Link>
+            </div>
 
             {/* Accreditations and Anniversary Icons on the right */}
             <div className="hidden md:flex items-center gap-6">
-              <img 
-                src="/images/30 Years Icon.png" 
-                alt="30 Years Excellence" 
+              <img
+                src="/images/30 Years Icon.png"
+                alt="30 Years Excellence"
                 className="h-16 w-auto object-contain select-none"
               />
               <div className="h-10 w-px bg-slate-200" />
-              <img 
-                src="/images/naac logo.png" 
-                alt="NAAC Logo" 
+              <img
+                src="/images/naac logo.png"
+                alt="NAAC Logo"
                 className="h-16 w-auto object-contain select-none"
               />
             </div>
           </div>
         </div>
 
-        {/* Sticky Header below top bar for navigation */}
-        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-sm select-none">
+        {/* Sticky Header below top bar for navigation (dynamic height to support dual row) */}
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/50 shadow-sm select-none">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 relative">
-            <div className="flex h-14 items-center justify-between">
-              <Navigation />
-            </div>
+            <Navigation />
           </div>
         </header>
 
@@ -103,9 +112,9 @@ export default function RootLayout({
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
               <div className="md:col-span-2">
                 <Link href="/" className="flex items-center gap-3.5 group select-none">
-                  <img 
-                    src="/images/collegelogo.png" 
-                    alt="College Logo" 
+                  <img
+                    src="/images/collegelogo.png"
+                    alt="College Logo"
                     className="h-12 w-auto object-contain bg-white p-1.5 rounded-xl shadow-lg group-hover:scale-105 transition-all duration-300 select-none"
                   />
                   <div className="flex flex-col">

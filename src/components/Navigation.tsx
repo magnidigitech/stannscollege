@@ -2,7 +2,27 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, GraduationCap, Users, Building, ShieldCheck, BookOpen, Lightbulb, LineChart, ArrowRight, HeartHandshake, Flag, Trophy, Briefcase, Handshake, Globe2 } from "lucide-react";
+import {
+  ChevronDown,
+  GraduationCap,
+  Users,
+  Building,
+  ShieldCheck,
+  BookOpen,
+  Lightbulb,
+  LineChart,
+  ArrowRight,
+  HeartHandshake,
+  Flag,
+  Trophy,
+  Briefcase,
+  Handshake,
+  Globe2,
+  Menu,
+  X,
+  Plus,
+  Minus
+} from "lucide-react";
 
 export function toSlug(text: string) {
   return text
@@ -14,14 +34,38 @@ export function toSlug(text: string) {
 }
 
 export default function Navigation() {
-  const [openAbout, setOpenAbout] = useState(false);
-  const [openAcademics, setOpenAcademics] = useState(false);
-  const [openAdmissions, setOpenAdmissions] = useState(false);
-  const [openFaculty, setOpenFaculty] = useState(false);
-  const [openSupport, setOpenSupport] = useState(false);
-  const [openInfra, setOpenInfra] = useState(false);
-  const [openPlacements, setOpenPlacements] = useState(false);
-  const [openResearch, setOpenResearch] = useState(false);
+  // Premium Unified Desktop Hover State with Millisecond Delay
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [timeoutId, setTimeoutId] = useState<any>(null);
+
+  const handleMouseEnter = (menuName: string) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setActiveMenu(menuName);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    const id = setTimeout(() => {
+      setActiveMenu(null);
+    }, 500); // Buttery-smooth 150ms transition tolerance
+    setTimeoutId(id);
+  };
+
+  // Mobile Drawer & Accordion States
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mAbout, setMAbout] = useState(false);
+  const [mAcademics, setMAcademics] = useState(false);
+  const [mAdmissions, setMAdmissions] = useState(false);
+  const [mInfra, setMInfra] = useState(false);
+  const [mFaculty, setMFaculty] = useState(false);
+  const [mSupport, setMSupport] = useState(false);
+  const [mPlacements, setMPlacements] = useState(false);
+  const [mResearch, setMResearch] = useState(false);
 
   const researchCategories = [
     {
@@ -329,409 +373,764 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="hidden md:flex items-center gap-8 font-sans font-semibold text-sm text-slate-600 select-none">
-      <Link href="/" className="hover:text-[#002147] transition-all duration-200">
-        Home
-      </Link>
+    <div className="w-full flex flex-col font-sans select-none relative">
 
-      {/* About Us Mega Menu Trigger */}
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenAbout(true); setOpenAcademics(false); setOpenInfra(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenAbout(false)}
-      >
-        <Link href="/about/basic-institutional-information" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          About Us
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openAbout ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+      {/* ============================================================== */}
+      {/* DESKTOP HEADER LAYOUT (Two Custom Single-Line Rows)            */}
+      {/* ============================================================== */}
 
-        {openAbout && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {aboutCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => {
-                    const catSlug = toSlug(cat.title);
-                    const itemSlug = toSlug(item);
-                    return (
-                      <Link
-                        key={idx}
-                        href={`/about/${catSlug}/${itemSlug}`}
-                        onClick={() => setOpenAbout(false)}
-                        className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
-                      >
-                        {item}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
+      <div className="hidden md:flex items-center justify-start py-3.5 text-xs lg:text-[13px] font-bold text-slate-700 relative w-full">
+        <nav className="flex items-center justify-start gap-x-8 lg:gap-x-10 w-full">
 
-      {/* Academics Mega Menu Trigger */}
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenAcademics(true); setOpenAbout(false); setOpenInfra(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenAcademics(false)}
-      >
-        <Link href="/academics/academic-programmes/undergraduate-programmes" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Academics
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openAcademics ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+          {/* 1. Home */}
+          <Link href="/" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Home
+          </Link>
 
-        {openAcademics && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[85vh] overflow-y-auto">
-            
-            {/* Column 1: I and II */}
-            <div className="md:col-span-4 flex flex-col gap-6">
-              {academicsCol1.map((cat, i) => (
-                <div key={i} className="flex flex-col gap-3 border-b border-slate-50 pb-4 last:border-0">
-                  <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 text-[#002147] border border-[#002147]/10">
-                      <GraduationCap className="h-3.5 w-3.5" />
-                    </span>
-                    <h4 className="font-outfit font-black text-slate-800 text-xs uppercase tracking-wider">{cat.title}</h4>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    {cat.items.map((item, idx) => (
-                      <Link
-                        key={idx}
-                        href={`/academics/${cat.cat}/${item.slug}`}
-                        onClick={() => setOpenAcademics(false)}
-                        className="text-[11px] font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/70 px-2 py-1 rounded transition-all leading-snug"
-                      >
-                        {item.text}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* 2. About Us */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("about")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/about/the-institution/basic-institutional-information" className="hover:text-[#002147] select-none font-bold">
+              About Us
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
 
-            {/* Column 2: III Departments (Populating all 14 in a compact 2-column mini-grid) */}
-            <div className="md:col-span-4 flex flex-col gap-4 bg-[#002147]/[0.02] border border-slate-100 rounded-2xl p-5">
-              <Link 
-                href="/academics/departments"
-                onClick={() => setOpenAcademics(false)}
-                className="flex items-center gap-2 pb-2 border-b border-[#002147]/10 hover:opacity-80 transition-opacity group cursor-pointer"
+            {activeMenu === "about" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("about")}
+                onMouseLeave={handleMouseLeave}
               >
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147] text-white">
-                  <BookOpen className="h-3.5 w-3.5" />
-                </span>
-                <div className="flex items-center gap-1">
-                  <h4 className="font-outfit font-black text-[#002147] text-xs uppercase tracking-wider">{academicsCol3.title}</h4>
-                  <ArrowRight className="h-3 w-3 text-[#002147] opacity-0 group-hover:opacity-100 transform group-hover:translate-x-0.5 transition-all" />
-                </div>
-              </Link>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
-                {academicsCol3.items.map((item, idx) => (
-                  <Link
-                    key={idx}
-                    href={`/academics/${academicsCol3.cat}/${item.slug}`}
-                    onClick={() => setOpenAcademics(false)}
-                    className="text-[10px] font-bold text-slate-600 hover:text-[#002147] hover:bg-white border border-transparent hover:border-slate-200/50 p-1.5 rounded transition-all truncate leading-snug"
-                  >
-                    {item.text}
-                  </Link>
+                {aboutCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => {
+                        const catSlug = toSlug(cat.title);
+                        const itemSlug = toSlug(item);
+                        return (
+                          <Link
+                            key={idx}
+                            href={`/about/${catSlug}/${itemSlug}`}
+                            onClick={() => setActiveMenu(null)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          >
+                            {item}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Column 3: IV, V, VI, VII */}
-            <div className="md:col-span-4 flex flex-col gap-5">
-              {academicsCol2.map((cat, i) => (
-                <div key={i} className="flex flex-col gap-2 border-b border-slate-50 last:border-0 pb-3 last:pb-0">
-                  <div className="flex items-center gap-2 pb-1 border-b border-slate-100">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
-                      <Lightbulb className="h-3 w-3" />
+          {/* 3. Academics */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("academics")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:text-[#002147] select-none font-bold">
+              Academics
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "academics" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[75vh] overflow-y-auto animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("academics")}
+                onMouseLeave={handleMouseLeave}
+              >
+
+                {/* Column 1: I and II */}
+                <div className="md:col-span-4 flex flex-col gap-6">
+                  {academicsCol1.map((cat, i) => (
+                    <div key={i} className="flex flex-col gap-3 border-b border-slate-50 pb-4 last:border-0">
+                      <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 text-[#002147] border border-[#002147]/10">
+                          <GraduationCap className="h-3.5 w-3.5" />
+                        </span>
+                        <h4 className="font-outfit font-black text-slate-800 text-xs uppercase tracking-wider">{cat.title}</h4>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        {cat.items.map((item, idx) => (
+                          <Link
+                            key={idx}
+                            href={`/academics/${cat.cat}/${item.slug}`}
+                            onClick={() => setActiveMenu(null)}
+                            className="text-[11px] font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/70 px-2 py-1 rounded transition-all leading-snug"
+                          >
+                            {item.text}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Column 2: III Departments */}
+                <div className="md:col-span-4 flex flex-col gap-4 bg-[#002147]/[0.02] border border-slate-100 rounded-2xl p-5">
+                  <Link
+                    href="/academics/departments"
+                    onClick={() => setActiveMenu(null)}
+                    className="flex items-center gap-2 pb-2 border-b border-[#002147]/10 hover:opacity-80 transition-opacity group cursor-pointer"
+                  >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147] text-white">
+                      <BookOpen className="h-3.5 w-3.5" />
                     </span>
-                    <h4 className="font-outfit font-black text-slate-800 text-[10px] uppercase tracking-wider">{cat.title}</h4>
-                  </div>
-                  <div className="flex flex-col gap-0.5">
-                    {cat.items.map((item, idx) => (
+                    <div className="flex items-center gap-1">
+                      <h4 className="font-outfit font-black text-[#002147] text-xs uppercase tracking-wider">{academicsCol3.title}</h4>
+                      <ArrowRight className="h-3 w-3 text-[#002147] opacity-0 group-hover:opacity-100 transform group-hover:translate-x-0.5 transition-all" />
+                    </div>
+                  </Link>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                    {academicsCol3.items.map((item, idx) => (
                       <Link
                         key={idx}
-                        href={`/academics/${cat.cat}/${item.slug}`}
-                        onClick={() => setOpenAcademics(false)}
-                        className="text-[11px] font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/70 px-2 py-1 rounded transition-all leading-snug"
+                        href={`/academics/${academicsCol3.cat}/${item.slug}`}
+                        onClick={() => setActiveMenu(null)}
+                        className="text-[10px] font-bold text-slate-600 hover:text-[#002147] hover:bg-white border border-transparent hover:border-slate-200/50 p-1.5 rounded transition-all truncate leading-snug"
                       >
                         {item.text}
                       </Link>
                     ))}
                   </div>
                 </div>
-              ))}
+
+                {/* Column 3: IV, V, VI, VII */}
+                <div className="md:col-span-4 flex flex-col gap-5">
+                  {academicsCol2.map((cat, i) => (
+                    <div key={i} className="flex flex-col gap-2 border-b border-slate-50 last:border-0 pb-3 last:pb-0">
+                      <div className="flex items-center gap-2 pb-1 border-b border-slate-100">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
+                          <Lightbulb className="h-3 w-3" />
+                        </span>
+                        <h4 className="font-outfit font-black text-slate-800 text-[10px] uppercase tracking-wider">{cat.title}</h4>
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        {cat.items.map((item, idx) => (
+                          <Link
+                            key={idx}
+                            href={`/academics/${cat.cat}/${item.slug}`}
+                            onClick={() => setActiveMenu(null)}
+                            className="text-[11px] font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/70 px-2 py-1 rounded transition-all leading-snug"
+                          >
+                            {item.text}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            )}
+          </div>
+
+          {/* 4. Admissions */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("admissions")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/admissions/policy-process" className="hover:text-[#002147] select-none font-bold">
+              Admissions
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "admissions" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("admissions")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {admissionsCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`/admissions/${item.slug}`}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 5. Infrastructure */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("infra")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/infrastructure/campus-buildings" className="hover:text-[#002147] select-none font-bold">
+              Infrastructure
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "infra" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("infra")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {infraCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`/infrastructure/${item.slug}`}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 6. Faculty */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("faculty")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/faculty/teaching-staff" className="hover:text-[#002147] select-none font-bold">
+              Faculty
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "faculty" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("faculty")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {facultyCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`/faculty/${item.slug}`}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 7. Student Support Services */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("support")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/student-support/mentor-mentee" className="hover:text-[#002147] select-none font-bold">
+              Student Support Services
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "support" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("support")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {supportCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`/student-support/${item.slug}`}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 8. Placements & Industry Linkages */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("placements")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/placements/training-placements" className="hover:text-[#002147] select-none font-bold">
+              Placements & Industry Linkages
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "placements" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("placements")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {placementsCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`/placements/${item.slug}`}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+        </nav>
+      </div>
+
+      {/* Row 2: Compliance, Research, & Utility Bar */}
+      {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
+      <div className="hidden md:flex items-center justify-start py-3.5 border-t border-slate-100 text-xs lg:text-[13px] font-bold text-slate-600 relative w-full">
+        <nav className="flex items-center justify-start gap-x-8 lg:gap-x-10 w-full">
+
+          <Link href="/alumni" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Alumni
+          </Link>
+
+          <Link href="/quality-assurance" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            IQAC, Quality Assurance & Accreditation
+          </Link>
+
+          <Link href="/mandatory-disclosures" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Mandatory Disclosures & Compliance
+          </Link>
+
+          {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("research")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/research-innovation/research-development-cell" className="hover:text-[#002147] select-none font-bold">
+              Research & Innovation
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+
+            {activeMenu === "research" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("research")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {researchCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`/research-innovation/${item.slug}`}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link href="/about/governance-administration/strategic-development-plan" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Strategic Plans & Future Directions
+          </Link>
+
+          <Link href="/contact" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Contact
+          </Link>
+
+        </nav>
+      </div>
+
+      {/* ============================================================== */}
+      {/* MOBILE RESPONSIVE DRAWER & TRIGGER                             */}
+      {/* ============================================================== */}
+
+      {/* Mobile Top Header (Visible only on mobile screens when sticky nav is active) */}
+      <div className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 bg-white">
+        <Link href="/" className="font-outfit font-black text-base text-[#002147] uppercase tracking-tight leading-none">
+          St. Ann&apos;s College
+        </Link>
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 hover:bg-slate-100 text-[#002147] transition-all"
+        >
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Sidebar Navigation Overlay & Drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex select-none animate-fadeIn">
+          {/* Transparent Backdrop */}
+          <div className="absolute inset-0 bg-slate-900/35 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
+
+          {/* Sliding Drawer Container */}
+          <div className="absolute right-0 top-0 bottom-0 w-[85vw] max-w-sm bg-white shadow-2xl flex flex-col h-full overflow-hidden border-l border-slate-100 animate-slideIn">
+
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between p-5 border-b border-slate-100 shrink-0 bg-slate-50/40">
+              <span className="font-outfit font-black text-sm text-[#002147] uppercase tracking-wider">Navigation Menu</span>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-2 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-slate-700"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Scrollable Navigation Items */}
+            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-2">
+
+              {/* Primary Direct Links */}
+              <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+                <span>1. Home</span>
+              </Link>
+
+              {/* 2. About Us Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMAbout(!mAbout)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>2. About Us</span>
+                  {mAbout ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mAbout && (
+                  <div className="flex flex-col gap-4 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {aboutCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-2">
+                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider border-b border-slate-50 pb-1">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link
+                            key={idx}
+                            href={`/about/${toSlug(cat.title)}/${toSlug(item)}`}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-1"
+                          >
+                            • {item}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 3. Academics Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMAcademics(!mAcademics)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>3. Academics</span>
+                  {mAcademics ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mAcademics && (
+                  <div className="flex flex-col gap-4 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <div className="flex flex-col gap-2">
+                      <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Academic Programmes</span>
+                      {academicsCol1[0].items.map((item, idx) => (
+                        <Link key={idx} href={`/academics/academic-programmes/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Academic Planning</span>
+                      {academicsCol1[1].items.map((item, idx) => (
+                        <Link key={idx} href={`/academics/curriculum-academic-planning/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Departments</span>
+                      <div className="grid grid-cols-1 gap-1">
+                        {academicsCol3.items.map((item, idx) => (
+                          <Link key={idx} href={`/academics/departments/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-[11px] font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 4. Admissions Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMAdmissions(!mAdmissions)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>4. Admissions</span>
+                  {mAdmissions ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mAdmissions && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {admissionsCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={`/admissions/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 5. Infrastructure Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMInfra(!mInfra)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>5. Infrastructure</span>
+                  {mInfra ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mInfra && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {infraCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={`/infrastructure/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 6. Faculty Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMFaculty(!mFaculty)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>6. Faculty</span>
+                  {mFaculty ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mFaculty && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {facultyCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={`/faculty/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 7. Student Support Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMSupport(!mSupport)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>7. Student Support Services</span>
+                  {mSupport ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mSupport && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {supportCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={`/student-support/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 8. Placements Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMPlacements(!mPlacements)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>8. Placements & Industry Linkages</span>
+                  {mPlacements ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mPlacements && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {placementsCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={`/placements/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 9. Research Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMResearch(!mResearch)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>9. Research & Innovation</span>
+                  {mResearch ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mResearch && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {researchCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={`/research-innovation/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 10. Alumni */}
+              <Link href="/alumni" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+                <span>10. Alumni</span>
+              </Link>
+
+              {/* 11. IQAC */}
+              <Link href="/quality-assurance" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+                <span>11. IQAC, Quality & Accreditation</span>
+              </Link>
+
+              {/* 12. Mandatory Disclosures */}
+              <Link href="/mandatory-disclosures" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+                <span>12. Mandatory Disclosures</span>
+              </Link>
+
+              {/* 13. Strategic Plans */}
+              <Link href="/about/governance-administration/strategic-development-plan" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+                <span>13. Strategic Plans</span>
+              </Link>
+
+              {/* Contact */}
+              <Link href="/contact" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+                <span>Contact Us</span>
+              </Link>
+
+            </div>
+
+            {/* Apply Now in mobile drawer footer */}
+            <div className="p-5 border-t border-slate-100 bg-slate-50/40 shrink-0 flex flex-col gap-2.5">
+              <Link
+                href="/admissions/policy-process"
+                onClick={() => setMobileOpen(false)}
+                className="w-full flex items-center justify-center gap-2 rounded-full bg-[#002147] hover:bg-[#003875] px-6 py-3 font-bold text-white text-xs tracking-wider uppercase hover:shadow-xl hover:shadow-[#002147]/20 transition-all duration-300"
+              >
+                Apply Now <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenInfra(true); setOpenAbout(false); setOpenAcademics(false); setOpenSupport(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenInfra(false)}
-      >
-        <Link href="/infrastructure/campus-buildings" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Infrastructure
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openInfra ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
-
-        {openInfra && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {infraCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/infrastructure/${item.slug}`}
-                      onClick={() => setOpenInfra(false)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
-                    >
-                      {item.text}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <Link href="/courses" className="hover:text-[#002147] transition-all duration-200">
-        Courses
-      </Link>
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenAdmissions(true); setOpenAbout(false); setOpenAcademics(false); setOpenInfra(false); setOpenSupport(false); setOpenFaculty(false); setOpenPlacements(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenAdmissions(false)}
-      >
-        <Link href="/admissions/policy-process" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Admissions
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openAdmissions ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
-
-        {openAdmissions && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {admissionsCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/admissions/${item.slug}`}
-                      onClick={() => setOpenAdmissions(false)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
-                    >
-                      {item.text}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenFaculty(true); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenInfra(false); setOpenSupport(false); setOpenPlacements(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenFaculty(false)}
-      >
-        <Link href="/faculty/teaching-staff" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Faculty
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openFaculty ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
-
-        {openFaculty && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {facultyCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/faculty/${item.slug}`}
-                      onClick={() => setOpenFaculty(false)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
-                    >
-                      {item.text}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenSupport(true); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); setOpenPlacements(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenSupport(false)}
-      >
-        <Link href="/student-support/mentor-mentee" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Student Support
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openSupport ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
-
-        {openSupport && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {supportCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/student-support/${item.slug}`}
-                      onClick={() => setOpenSupport(false)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
-                    >
-                      {item.text}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenPlacements(true); setOpenSupport(false); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); setOpenResearch(false); }}
-        onMouseLeave={() => setOpenPlacements(false)}
-      >
-        <Link href="/placements/training-placements" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Placements
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openPlacements ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
-
-        {openPlacements && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {placementsCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/placements/${item.slug}`}
-                      onClick={() => setOpenPlacements(false)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
-                    >
-                      {item.text}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div
-        className="flex items-center gap-1.5 cursor-pointer hover:text-[#002147] transition-all duration-200 h-14"
-        onMouseEnter={() => { setOpenResearch(true); setOpenPlacements(false); setOpenSupport(false); setOpenAbout(false); setOpenAcademics(false); setOpenAdmissions(false); setOpenFaculty(false); setOpenInfra(false); }}
-        onMouseLeave={() => setOpenResearch(false)}
-      >
-        <Link href="/research-innovation/research-development-cell" className="font-semibold text-sm text-slate-600 hover:text-[#002147] select-none">
-          Research
-        </Link>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${openResearch ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
-
-        {openResearch && (
-          <div className="absolute top-[56px] left-0 w-full bg-white border border-slate-200/60 shadow-2xl shadow-indigo-100/40 rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default">
-            {researchCategories.map((cat, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm">
-                    <cat.icon className="h-4 w-4" />
-                  </span>
-                  <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                    {cat.title}
-                  </h4>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cat.items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={`/research-innovation/${item.slug}`}
-                      onClick={() => setOpenResearch(false)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all leading-relaxed"
-                    >
-                      {item.text}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <Link href="/contact" className="hover:text-[#002147] transition-all duration-200">
-        Contact
-      </Link>
-
-      <Link
-        href="/admissions/policy-process"
-        className="rounded-full bg-[#002147] hover:bg-[#003875] px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-[#002147]/20 transition-all active:scale-95 duration-300 hover:-translate-y-0.5"
-      >
-        Apply Now
-      </Link>
-    </nav>
+    </div>
   );
 }
-
