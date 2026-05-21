@@ -230,18 +230,27 @@ export default function AcademicsClientFallback() {
       {activeModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white max-w-5xl w-full rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden relative max-h-[90vh] flex flex-col animate-scaleUp">
-            {/* Modal Header */}
-            <div className="relative bg-gradient-to-r from-[#002147] to-slate-900 p-6 text-white flex items-center justify-between border-b border-white/10 flex-shrink-0 shadow-sm">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.1),transparent)] pointer-events-none"></div>
-              <div className="relative z-10 flex flex-col gap-0.5">
-                <span className="inline-flex items-center gap-1 font-outfit text-[10px] uppercase tracking-widest font-bold text-blue-200 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full w-fit border border-white/10">
-                  <CheckCircle className="h-3 w-3 text-emerald-400" /> Direct Portal Insight
-                </span>
-                <h3 className="font-outfit text-lg md:text-xl font-black mt-1.5 leading-tight tracking-tight select-none">{activeModal.text}</h3>
+            {/* Header / Banner in the Popup - Styled with St. Ann's Branding */}
+            <div className="relative bg-[#002147] px-6 py-4 text-white flex items-center justify-between border-b border-white/10 flex-shrink-0">
+              <div className="flex items-center gap-4">
+                <img
+                  src="/images/collegelogo.png"
+                  alt="St. Ann's Logo"
+                  className="h-12 w-auto object-contain select-none bg-white rounded-xl p-1 shadow-sm"
+                />
+                <div className="h-8 w-px bg-white/20 hidden sm:block" />
+                <div className="flex flex-col">
+                  <span className="font-outfit text-sm md:text-lg font-black tracking-tight leading-tight select-none uppercase text-white">
+                    St. Ann&apos;s College for Women
+                  </span>
+                  <span className="font-sans text-[10px] md:text-xs font-semibold text-slate-300 tracking-wide select-none">
+                    Run by the Society of St Anne
+                  </span>
+                </div>
               </div>
               <button
                 onClick={closeModal}
-                className="relative z-10 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all duration-200 active:scale-95"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 hover:scale-105 transition-all active:scale-95 duration-200"
               >
                 <X className="h-5 w-5 text-white" />
               </button>
