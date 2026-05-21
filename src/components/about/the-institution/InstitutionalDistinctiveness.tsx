@@ -24,7 +24,7 @@ export function InstitutionalDistinctiveness() {
   return (
     <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
       {/* Narrative Section Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-900 via-indigo-950 to-teal-950 p-6 md:p-10 text-white shadow-xl border border-emerald-800/40 select-none">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#064e3b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>

@@ -591,7 +591,7 @@ export default function Navigation() {
             onMouseEnter={() => handleMouseEnter("infra")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/infrastructure/campus-buildings" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/infrastructure" className="hover:text-[#002147] select-none font-bold">
               Infrastructure
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
@@ -773,17 +773,6 @@ export default function Navigation() {
       <div className="hidden md:flex items-center justify-start py-3.5 border-t border-slate-100 text-xs lg:text-[13px] font-bold text-slate-600 relative w-full">
         <nav className="flex items-center justify-start gap-x-8 lg:gap-x-10 w-full">
 
-          <Link href="/alumni" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Alumni
-          </Link>
-
-          <Link href="/quality-assurance" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            IQAC, Quality Assurance & Accreditation
-          </Link>
-
-          <Link href="/mandatory-disclosures" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Mandatory Disclosures & Compliance
-          </Link>
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
           <div
@@ -830,12 +819,25 @@ export default function Navigation() {
             )}
           </div>
 
+
+          <Link href="/alumni" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Alumni
+          </Link>
+
+          <Link href="/quality-assurance" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            IQAC, Quality Assurance & Accreditation
+          </Link>
+
+          <Link href="/mandatory-disclosures" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+            Mandatory Disclosures & Compliance
+          </Link>
+
           <Link href="/about/governance-administration/strategic-development-plan" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
             Strategic Plans & Future Directions
           </Link>
 
           <Link href="/contact" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Contact
+            Contact Us
           </Link>
 
         </nav>
