@@ -32,7 +32,13 @@ function cleanText(text) {
 function cleanDocPath(href) {
   if (!href) return '';
   let h = href.trim();
-  h = h.split(' ')[0]; // Split at any space in case of malformed html like 'file.pdf" target="_blank"'
+  
+  // Strip trailing target_blank attributes, style strings, trailing HTML brackets/quotes cleanly
+  h = h.replace(/["'\s]+target=["']?_blank["']?/gi, '');
+  h = h.replace(/["'\s]+style=[\s\S]*$/gi, '');
+  h = h.replace(/["'>\s]+$/g, ''); // strip trailing quotes, close brackets or spaces
+  h = h.replace(/^["']+/g, '');    // strip leading quotes
+  h = h.trim();
   
   if (h === '#' || h === '---' || h === '') return '';
   if (h.toLowerCase().endsWith('.php')) return '';
@@ -133,7 +139,7 @@ function crawlSubpage(fileName, metricNum = '') {
       const desc = cellTexts[1];
       
       // If it looks like a header row, ignore
-      if (desc === 'DESCRIPTION' || desc === 'DESCRIPRION' || desc === 'Name of Certificate' || desc === 'LINK TO THE RELEVANT DOCUMENT') {
+      if (desc === 'DESCRIPTION' || desc === 'DESCRIPRION' || desc === 'Name of Certificate' || desc === 'LINK TO THE RELEVANT DOCUMENT' || desc === 'Programme') {
         return;
       }
       
