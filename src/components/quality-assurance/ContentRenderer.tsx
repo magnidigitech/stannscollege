@@ -241,6 +241,18 @@ const NaacAccreditationViewer = () => {
     loadData();
   }, []);
 
+  // Manage body class for modal overlays to hide page headers and lock scrolling
+  useEffect(() => {
+    if (activePdfUrl || activeSubpageData) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [activePdfUrl, activeSubpageData]);
+
   // Toggle sections
   const toggleSection = (secNum: string) => {
     const next = new Set(openSections);
@@ -334,6 +346,14 @@ const NaacAccreditationViewer = () => {
 
   return (
     <div className="flex flex-col gap-8 font-sans animate-fade-in relative z-10">
+      {/* Global overrides to hide site header, breadcrumbs, and sidebar when the modal is active */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        body.modal-open header,
+        body.modal-open .sticky,
+        body.modal-open aside {
+          display: none !important;
+        }
+      ` }} />
       
       {/* Header and Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 pb-8">
@@ -660,6 +680,14 @@ const NaacAccreditationViewer = () => {
                 </h3>
               </div>
               <div className="flex items-center gap-3.5 shrink-0">
+                <a 
+                  href={encodeURI(activePdfUrl)} 
+                  download
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-750 text-white text-xs font-bold transition-all shadow-4xs"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download
+                </a>
                 <a 
                   href={encodeURI(activePdfUrl)} 
                   target="_blank" 
