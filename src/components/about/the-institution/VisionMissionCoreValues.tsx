@@ -66,79 +66,115 @@ export function VisionMissionCoreValues() {
 
       {/* Emblem & Motto Narrative Section */}
       <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
-        <h3 className="font-outfit text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
-          Our Emblem & Motto: Educate • Enrich • Empower
-        </h3>
-        <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
-          The emblem of St. Ann&apos;s College for Women is a visual representation of our philosophical foundation. Established in 1997, it serves as a daily reminder of our mission to shape the future of women through three sacred symbols:
-        </p>
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 border-b border-slate-100 pb-6 mb-6">
+          <div className="flex-shrink-0 bg-slate-50 border border-slate-100 p-4 rounded-3xl shadow-sm">
+            <img
+              src="/images/collegelogo.png"
+              alt="St. Ann's College Emblem Logo"
+              className="h-28 md:h-36 w-auto object-contain select-none hover:scale-105 transition duration-300"
+            />
+          </div>
+          <div className="flex-1 text-left">
+            <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight leading-tight select-none">
+              The Emblem of St. Ann’s College
+            </h3>
+            <p className="mt-3 text-slate-600 text-sm md:text-base leading-relaxed font-normal">
+              The emblem of St. Ann&apos;s College for Women is a visual representation of our philosophical foundation. Established in 1997, it serves as a daily reminder of our mission to shape the future of women through three sacred symbols.
+            </p>
+            <div className="mt-5 flex flex-col gap-3.5 border-t border-slate-100 pt-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider min-w-[95px] shrink-0">Our Motto:</span>
+                <p className="font-outfit text-base font-black text-[#002147] tracking-tight whitespace-nowrap">Educate • Enrich • Empower</p>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider min-w-[95px] shrink-0 font-sans">Our Tagline:</span>
+                <p className="font-sans text-sm font-semibold text-[#002147] tracking-wide">Where Knowledge Ignites Empowerment</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl">
-            <h5 className="font-outfit font-black text-indigo-900 text-sm md:text-base leading-tight">The Candle</h5>
-            <span className="text-xs font-bold text-indigo-400 block mt-0.5 uppercase tracking-wide">The Light of Knowledge</span>
-            <p className="text-xs text-slate-500 font-normal leading-relaxed mt-2">
+          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl flex flex-col gap-2 hover:bg-white hover:border-indigo-100 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🕯️</span>
+              <h5 className="font-outfit font-black text-indigo-900 text-sm md:text-base leading-tight">The Candle</h5>
+            </div>
+            <span className="text-xs font-bold text-indigo-400 block uppercase tracking-wide">The Light of Knowledge</span>
+            <p className="text-xs text-slate-500 font-normal leading-relaxed">
               Symbolizes the light of hope and wisdom. It represents our mission to dispel the darkness of ignorance and inspire confidence and joy in learning.
             </p>
           </div>
-          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl">
-            <h5 className="font-outfit font-black text-indigo-900 text-sm md:text-base leading-tight">The Book</h5>
-            <span className="text-xs font-bold text-indigo-400 block mt-0.5 uppercase tracking-wide">The Foundation of Wisdom</span>
-            <p className="text-xs text-slate-500 font-normal leading-relaxed mt-2">
+          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl flex flex-col gap-2 hover:bg-white hover:border-indigo-100 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">📖</span>
+              <h5 className="font-outfit font-black text-indigo-900 text-sm md:text-base leading-tight">The Book</h5>
+            </div>
+            <span className="text-xs font-bold text-indigo-400 block uppercase tracking-wide">The Foundation of Wisdom</span>
+            <p className="text-xs text-slate-500 font-normal leading-relaxed">
               Signifies the depth of understanding and the academic foundation required for an educated mind.
             </p>
           </div>
-          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl">
-            <h5 className="font-outfit font-black text-indigo-900 text-sm md:text-base leading-tight">The Lotus</h5>
-            <span className="text-xs font-bold text-indigo-400 block mt-0.5 uppercase tracking-wide">The Spirit of Resilience</span>
-            <p className="text-xs text-slate-500 font-normal leading-relaxed mt-2">
+          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl flex flex-col gap-2 hover:bg-white hover:border-indigo-100 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🪷</span>
+              <h5 className="font-outfit font-black text-indigo-900 text-sm md:text-base leading-tight">The Lotus</h5>
+            </div>
+            <span className="text-xs font-bold text-indigo-400 block uppercase tracking-wide">The Spirit of Resilience</span>
+            <p className="text-xs text-slate-500 font-normal leading-relaxed">
               Reflecting purity and an open mind, the lotus signifies our commitment to nurturing personal growth and social responsibility.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Vision & Mission Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-        <div className="bg-gradient-to-br from-indigo-50/40 via-white to-indigo-50/20 p-6 md:p-8 border border-slate-200/60 rounded-3xl shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 flex flex-col justify-between">
-          <div>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 mb-4 border border-indigo-100 shadow-sm">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <h3 className="font-outfit text-lg font-black text-slate-900 uppercase tracking-wide leading-none select-none">Vision</h3>
-            <p className="mt-3 font-sans text-sm text-slate-600 leading-relaxed font-normal">
-              To be a premier center of Academic Excellence that fosters Value-Based Education and Innovative Skills, transforming Women into empowered leaders who contribute to the spirit of Viksit Bharat with integrity, professional ethics, and global purpose.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-purple-50/40 via-white to-purple-50/20 p-6 md:p-8 border border-slate-200/60 rounded-3xl shadow-sm hover:shadow-lg hover:border-purple-100 transition-all duration-300 flex flex-col justify-between">
-          <div>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 mb-4 border border-purple-100 shadow-sm">
-              <Award className="h-5 w-5" />
-            </span>
-            <h3 className="font-outfit text-lg font-black text-slate-900 uppercase tracking-wide leading-none select-none">Mission</h3>
-            <p className="mt-3 font-sans text-sm text-slate-600 leading-relaxed font-normal">
-              To realize our vision, we are committed to four pillars: <strong>Innovative Pedagogy</strong>, <strong>Character Building</strong>, <strong>Inclusive Environment</strong>, and <strong>Skill Integration</strong>.
-            </p>
-          </div>
+      {/* Vision Section - Full Width */}
+      <div className="bg-gradient-to-br from-indigo-50/40 via-white to-indigo-50/20 p-6 md:p-8 border border-slate-200/60 rounded-3xl shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300">
+        <div>
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 mb-4 border border-indigo-100 shadow-sm">
+            <Sparkles className="h-5 w-5" />
+          </span>
+          <h3 className="font-outfit text-lg md:text-xl font-black text-slate-900 uppercase tracking-wide leading-none select-none">Vision</h3>
+          <p className="mt-3 font-sans text-sm md:text-base text-slate-600 leading-relaxed font-normal">
+            To be a premier center of Academic Excellence that fosters Value-Based Education and Innovative Skills, transforming Women into empowered leaders who contribute to the spirit of Viksit Bharat with integrity, professional ethics, and global purpose.
+          </p>
         </div>
       </div>
 
-      {/* Four Pillars details */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm">
-        <h3 className="font-outfit text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
-          Four Pillars of Institutional Growth
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {pillars.map((p, idx) => (
-            <div key={idx} className="p-4 bg-slate-50/50 border border-slate-100 rounded-xl flex items-start gap-3 hover:bg-white hover:border-indigo-100 transition-all">
-              <CheckCircle className="h-5 w-5 shrink-0 text-indigo-600 mt-0.5" />
-              <div>
-                <h5 className="font-outfit font-black text-slate-800 text-sm md:text-base leading-tight">{p.title}</h5>
-                <p className="text-slate-500 font-sans text-xs mt-1 leading-relaxed font-normal">{p.desc}</p>
-              </div>
+      {/* Mission & Four Pillars Grouped Together inside a Single Unified Card */}
+      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 flex flex-col gap-8">
+        
+        {/* Mission Sub-Card */}
+        <div className="bg-gradient-to-br from-purple-50/40 via-white to-purple-50/20 p-5 border border-purple-100/50 rounded-2xl">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100 shadow-sm">
+              <Award className="h-5 w-5" />
+            </span>
+            <div>
+              <h3 className="font-outfit text-lg font-black text-slate-900 uppercase tracking-wide leading-none select-none font-outfit">Mission</h3>
+              <p className="mt-2 font-sans text-sm text-slate-600 leading-relaxed font-normal">
+                To realize our vision, we are committed to four pillars: <strong>Innovative Pedagogy</strong>, <strong>Character Building</strong>, <strong>Inclusive Environment</strong>, and <strong>Skill Integration</strong>.
+              </p>
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Four Pillars Grid Block */}
+        <div className="flex flex-col gap-4">
+          <h4 className="font-outfit text-lg font-black text-slate-900 border-b border-slate-100 pb-3 select-none">
+            Four Pillars of Institutional Growth
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {pillars.map((p, idx) => (
+              <div key={idx} className="p-4 bg-slate-50/50 border border-slate-100 rounded-xl flex items-start gap-3 hover:bg-white hover:border-indigo-100 transition-all duration-300">
+                <CheckCircle className="h-5 w-5 shrink-0 text-indigo-600 mt-0.5" />
+                <div>
+                  <h5 className="font-outfit font-black text-slate-800 text-sm md:text-base leading-tight">{p.title}</h5>
+                  <p className="text-slate-500 font-sans text-xs mt-1 leading-relaxed font-normal">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

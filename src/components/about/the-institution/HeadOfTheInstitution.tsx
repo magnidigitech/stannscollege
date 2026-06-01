@@ -35,10 +35,10 @@ export function HeadOfTheInstitution() {
 
       {/* Main Grid: Profile Details and Message */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
+
         {/* Left/Middle Column - Complete Narrative */}
         <div className="md:col-span-2 flex flex-col gap-8">
-          
+
           {/* Profile Section */}
           <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all">
             <h3 className="font-outfit text-xl font-black text-slate-800 border-b border-slate-100 pb-3 mb-4 select-none">
@@ -69,14 +69,18 @@ export function HeadOfTheInstitution() {
 
         {/* Right Column - Principal's Message & Visual Accents */}
         <div className="flex flex-col gap-6">
-          
-          {/* Visual card or placeholder avatar */}
-          <div className="bg-white border border-slate-200/60 p-6 rounded-3xl shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center justify-center min-h-[220px] group">
-            <div className="h-24 w-24 rounded-full bg-slate-50 border border-slate-200/60 p-1 flex items-center justify-center group-hover:scale-105 transition duration-300">
-              <span className="text-4xl text-slate-300">👩‍💼</span>
+
+          {/* Visual card showing the actual Principal photo */}
+          <div className="bg-white border border-slate-200/60 p-4 rounded-3xl shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center justify-center min-h-[250px] group">
+            <div className="h-60 w-40 rounded-2xl overflow-hidden border border-slate-200 p-1 flex items-center justify-center group-hover:scale-105 transition duration-300 bg-slate-50">
+              <img
+                src="/images/principal.jpg"
+                alt="Dr. Sr. Sandhya Thumma - Principal"
+                className="w-full h-full object-cover rounded-xl select-none"
+              />
             </div>
             <h4 className="font-outfit text-base font-black text-slate-800 leading-snug mt-4">Dr. Sr. Sandhya Thumma</h4>
-            <p className="text-xs font-semibold text-slate-400 mt-1 leading-tight">Principal Message Slot</p>
+            <p className="text-xs font-semibold text-slate-400 mt-1 leading-tight">Principal, St. Ann&apos;s College</p>
           </div>
 
           {/* Message Spotlight */}

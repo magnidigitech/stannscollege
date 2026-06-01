@@ -17,24 +17,25 @@ export function AnuAffiliations({ anuAffiliations = [] }: { anuAffiliations?: An
 
   return (
     <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
-      {/* Banner with Icon */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-md transition-all font-sans text-slate-600 text-base md:text-lg leading-relaxed">
-        <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md">
-            <ShieldCheck className="h-6 w-6" />
-          </span>
+      {/* Dark Gradient Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h3 className="font-outfit text-2xl font-black text-slate-800 leading-tight">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase">
+              <ShieldCheck className="h-3.5 w-3.5" /> University Affiliation
+            </span>
+            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
               ANU Affiliation Orders
-            </h3>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">
-              Acharya Nagarjuna University
+            </h2>
+            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
+              St. Ann’s College for Women, Gorantla, Guntur, is proud to be affiliated with <strong className="text-white font-bold">Acharya Nagarjuna University (ANU)</strong>, a NAAC ‘A’ Grade institution. For the academic year <strong className="text-white font-bold">2025–2026</strong>, the university has granted <strong className="text-white font-bold">Extension of Temporary Affiliation</strong> for both Undergraduate (UG) and Postgraduate (PG) programmes.
             </p>
           </div>
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
+            <GraduationCap className="h-6 w-6 animate-pulse" />
+          </span>
         </div>
-        <p className="mt-4 leading-relaxed font-normal text-slate-600">
-          St. Ann’s College for Women, Gorantla, Guntur, is proud to be affiliated with <strong className="text-indigo-600 font-bold">Acharya Nagarjuna University (ANU)</strong>, a NAAC ‘A’ Grade institution. For the academic year <strong className="text-slate-800 font-bold">2025–2026</strong>, the university has granted <strong className="text-indigo-600 font-bold">Extension of Temporary Affiliation</strong> for both Undergraduate (UG) and Postgraduate (PG) programmes.
-        </p>
       </div>
 
       {/* Narrative Cards Grid */}

@@ -17,3 +17,6 @@ inject_library.js
 
 # Giant Raw Content Inputs (1.5GB)
 Content/
+
+# Exclude local copy of the site
+stannscollegeforwomen.org/

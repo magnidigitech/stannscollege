@@ -23,28 +23,52 @@ export function NirfReports({ nirfReports = [] }: { nirfReports?: NirfReport[] }
     groupedByYear[report.academicYear].push(report);
   });
 
+  // Sort reports within each year in the order: College Data, Management, Overall Data
+  const getOrderIndex = (title: string, category: string) => {
+    const text = `${title} ${category}`.toLowerCase();
+    if (text.includes("college")) return 0;
+    if (text.includes("management")) return 1;
+    if (text.includes("overall")) return 2;
+    return 3;
+  };
+
+  const getCleanFileName = (title: string, category: string) => {
+    const text = `${title} ${category}`.toLowerCase();
+    if (text.includes("college")) return "College Data";
+    if (text.includes("management")) return "Management Data";
+    if (text.includes("overall")) return "Overall Data";
+    return category || "NIRF Data";
+  };
+
+  Object.keys(groupedByYear).forEach((year) => {
+    groupedByYear[year].sort((a, b) => {
+      return getOrderIndex(a.title, a.category) - getOrderIndex(b.title, b.category);
+    });
+  });
+
   const sortedYears = Object.keys(groupedByYear).sort((a, b) => b.localeCompare(a));
 
   return (
     <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
-      {/* Banner with Icon */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-md transition-all font-sans text-slate-600 text-base md:text-lg leading-relaxed">
-        <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md">
-            <ShieldCheck className="h-6 w-6" />
-          </span>
+      {/* Dark Gradient Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h3 className="font-outfit text-2xl font-black text-slate-800 leading-tight">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase">
+              <ShieldCheck className="h-3.5 w-3.5" /> Institutional Rankings
+            </span>
+            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
               NIRF Reports
-            </h3>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">
-              National Institutional Ranking Framework
+            </h2>
+            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
+              St. Ann’s College for Women has submitted its institutional data to the <strong className="text-white font-bold">National Institutional Ranking Framework (NIRF), Ministry of Education, Government of India</strong>, reflecting its unwavering commitment to transparency, academic quality, and continuous improvement.
             </p>
           </div>
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-50/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
+            <Award className="h-6 w-6 animate-pulse" />
+          </span>
         </div>
-        <p className="mt-4 leading-relaxed font-normal text-slate-600">
-          St. Ann’s College for Women has submitted its institutional data to the <strong className="text-indigo-600 font-bold">National Institutional Ranking Framework (NIRF), Ministry of Education, Government of India</strong>, reflecting its unwavering commitment to transparency, academic quality, and continuous improvement.
-        </p>
       </div>
 
       {/* Narrative Cards Grid */}
@@ -139,7 +163,7 @@ export function NirfReports({ nirfReports = [] }: { nirfReports?: NirfReport[] }
             <div key={year} className="border-b border-slate-100/80 pb-8 last:border-b-0">
               <div className="flex items-center gap-2.5 mb-5">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-600 uppercase tracking-wider">
-                  Academic Year {year}
+                  NIRF Report - Academic Year {year}
                 </span>
                 <span className="h-px flex-1 bg-slate-100" />
               </div>
@@ -152,10 +176,10 @@ export function NirfReports({ nirfReports = [] }: { nirfReports?: NirfReport[] }
                   >
                     <div>
                       <h5 className="font-outfit font-black text-slate-800 text-base leading-snug group-hover:text-indigo-600 transition-colors">
-                        {order.title}
+                        {getCleanFileName(order.title, order.category)}
                       </h5>
                       <p className="text-xs text-slate-400 mt-1 font-semibold">
-                        {order.category} Category Data submission.
+                        NIRF Report Academic Report {order.academicYear}
                       </p>
                     </div>
 

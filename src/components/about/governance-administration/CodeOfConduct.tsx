@@ -568,29 +568,33 @@ export function CodeOfConduct() {
 
   return (
     <div className="flex flex-col gap-8 font-sans select-none animate-fadeIn">
-      {/* Top action/header block */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-        <div>
-          <h3 className="font-outfit text-2xl font-black text-slate-800 leading-tight">
-            Code of Conduct
-          </h3>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">
-            Institutional Values & Standards
-          </p>
+      {/* Dark Gradient Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase">
+              <ShieldCheck className="h-3.5 w-3.5" /> Institutional Values
+            </span>
+            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
+              Code of Conduct
+            </h2>
+            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
+              Establishing standard rules, ethical values, and professional behaviors expected of students and employees.
+            </p>
+          </div>
+          <a
+            href={
+              activeTab === "students"
+                ? "/documents/code-of-conduct/3.8 Students Code of Conduct.pdf"
+                : "/documents/code-of-conduct/Code of Conduct for Employees.pdf"
+            }
+            download
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 px-5 py-3 text-xs md:text-sm font-bold text-white transition-all shadow-md active:scale-95 backdrop-blur-md shrink-0"
+          >
+            <Download className="h-4 w-4" /> Download Official PDF
+          </a>
         </div>
-
-        {/* Action button to download the PDF */}
-        <a
-          href={
-            activeTab === "students"
-              ? "/documents/code-of-conduct/3.8 Students Code of Conduct.pdf"
-              : "/documents/code-of-conduct/Code of Conduct for Employees.pdf"
-          }
-          download
-          className="flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-bold text-xs md:text-sm py-3 px-5 shadow-md transition-all active:scale-95 w-fit"
-        >
-          <Download className="h-4 w-4" /> Download Official PDF
-        </a>
       </div>
 
       {/* Tab switches */}

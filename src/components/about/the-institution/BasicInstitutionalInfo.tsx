@@ -153,10 +153,10 @@ export function BasicInstitutionalInfo() {
             <div>
               <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Office Timings</span>
               <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
-                9:00 AM – 4:30 PM
+                8:30 AM – 5:00 PM (Mon - Fri)
               </p>
-              <p className="font-sans text-xs font-semibold text-slate-400 mt-0.5">
-                Excludes standard public holidays
+              <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
+                8:30 AM - 2:00 PM (Sat)
               </p>
             </div>
           </div>
@@ -179,6 +179,9 @@ export function BasicInstitutionalInfo() {
               <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Email & Digital</span>
               <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
                 st_anns_coll@yahoo.co.in
+              </p>
+              <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
+                stannscollegegnt@gmail.com
               </p>
               <p className="font-sans text-xs font-semibold text-slate-400 mt-0.5 leading-normal">
                 General administration and student support

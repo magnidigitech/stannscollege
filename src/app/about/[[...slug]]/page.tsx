@@ -10,6 +10,7 @@ import { InstitutionalAwards } from "@/components/about/the-institution/Institut
 import { StudentLaurels } from "@/components/about/the-institution/StudentLaurels";
 import { InstitutionalDistinctiveness } from "@/components/about/the-institution/InstitutionalDistinctiveness";
 import { HeadOfTheInstitution } from "@/components/about/the-institution/HeadOfTheInstitution";
+import { LegacyOfLeadership } from "@/components/about/the-institution/LegacyOfLeadership";
 import AboutClientFallback from "@/components/about/AboutClientFallback";
 
 import { StatutoryAffiliations } from "@/components/about/StatutoryAffiliations";
@@ -20,6 +21,7 @@ import { AicteApprovals } from "@/components/about/statutory-affiliations-recogn
 import { NirfReports } from "@/components/about/statutory-affiliations-recognitions/NirfReports";
 import { NaacCertificates } from "@/components/about/statutory-affiliations-recognitions/NaacCertificates";
 import { AisheCertifications } from "@/components/about/statutory-affiliations-recognitions/AisheCertifications";
+import { Ugc2f } from "@/components/about/statutory-affiliations-recognitions/Ugc2f";
 
 const categoryMapping: Record<string, string> = {
   "the-institution": "I. The Institution",
@@ -35,6 +37,7 @@ const itemsMapping: Record<string, string> = {
   "student-laurels": "Student Laurels",
   "institutional-distinctiveness": "Institutional Distinctiveness",
   "head-of-the-institution": "Head of the Institution",
+  "legacy-of-leadership": "A Legacy of Leadership",
   "apsche-orders": "APSCHE Orders",
   "anu-affiliation-orders-ug-pg": "ANU Affiliation Orders (UG & PG)",
   "aicte-approvals": "AICTE Approvals",
@@ -154,6 +157,7 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
           { text: "Student Laurels", slug: "student-laurels" },
           { text: "Institutional Distinctiveness", slug: "institutional-distinctiveness" },
           { text: "Head of the Institution", slug: "head-of-the-institution" },
+          { text: "A Legacy of Leadership", slug: "legacy-of-leadership" },
         ],
       },
       {
@@ -237,6 +241,7 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
                       {itemSlug === "student-laurels" && <StudentLaurels />}
                       {itemSlug === "institutional-distinctiveness" && <InstitutionalDistinctiveness />}
                       {itemSlug === "head-of-the-institution" && <HeadOfTheInstitution />}
+                      {itemSlug === "legacy-of-leadership" && <LegacyOfLeadership />}
                     </>
                   )}
                   {catSlug === "statutory-affiliations-recognitions" && (
@@ -244,10 +249,11 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
                       {itemSlug === "apsche-orders" && <ApscheOrders apscheOrders={apscheOrdersList} />}
                       {itemSlug === "anu-affiliation-orders-ug-pg" && <AnuAffiliations anuAffiliations={anuAffiliationsList} />}
                       {itemSlug === "aicte-approvals" && <AicteApprovals aicteApprovals={aicteApprovalsList} />}
+                      {itemSlug === "ugc-2f" && <Ugc2f />}
                       {itemSlug === "nirf" && <NirfReports nirfReports={nirfReportsList} />}
-                      {(itemSlug === "naac-certificates" || itemSlug === "naac-certficates") && <NaacCertificates naacCertificates={naacCertificatesList} />}
-                      {itemSlug === "aishe-mhrd" && <AisheCertifications aisheCertifications={aisheCertificationsList} />}
-                      {itemSlug !== "apsche-orders" && itemSlug !== "anu-affiliation-orders-ug-pg" && itemSlug !== "aicte-approvals" && itemSlug !== "nirf" && itemSlug !== "naac-certificates" && itemSlug !== "naac-certficates" && itemSlug !== "aishe-mhrd" && <StatutoryAffiliations itemSlug={itemSlug} />}
+                      {(itemSlug === "naac-certificates" || itemSlug === "naac-certficates" || itemSlug === "naac-accreditation") && <NaacCertificates naacCertificates={naacCertificatesList} />}
+                      {(itemSlug === "aishe-mhrd" || itemSlug === "aishe-certificates") && <AisheCertifications aisheCertifications={aisheCertificationsList} />}
+                      {itemSlug !== "apsche-orders" && itemSlug !== "anu-affiliation-orders-ug-pg" && itemSlug !== "aicte-approvals" && itemSlug !== "ugc-2f" && itemSlug !== "nirf" && itemSlug !== "naac-certificates" && itemSlug !== "naac-certficates" && itemSlug !== "naac-accreditation" && itemSlug !== "aishe-mhrd" && itemSlug !== "aishe-certificates" && <StatutoryAffiliations itemSlug={itemSlug} />}
                     </>
                   )}
                   {catSlug === "governance-administration" && <GovernanceAdministration itemSlug={itemSlug} />}

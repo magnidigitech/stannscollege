@@ -1,7 +1,62 @@
-import React from "react";
-import { Award, ShieldCheck, Sparkles, CheckCircle, Trophy, Calendar } from "lucide-react";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Award, ShieldCheck, Sparkles, CheckCircle, Trophy, Calendar, Eye, X, ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 export function InstitutionalAwards() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const awardCertificates = [
+    { src: "/images/about/the-institution/institutional-awards/2026.jpg", title: "AP Higher Education Conclave Certificate 2026" },
+    { src: "/images/about/the-institution/institutional-awards/2024.jpeg", title: "NAAC 'A' Grade Accreditation 2024" },
+    { src: "/images/about/the-institution/institutional-awards/2019.jpg", title: "ANU Best Professional PG College 2019" },
+    { src: "/images/about/the-institution/institutional-awards/2017.jpg", title: "ANU Best Degree College 2017" },
+    { src: "/images/about/the-institution/institutional-awards/2008.jpg", title: "ANU PG Certificate of Merit 2008" },
+    { src: "/images/about/the-institution/institutional-awards/NIRF.jpg", title: "NIRF National Ranking Certificate" },
+    { src: "/images/about/the-institution/institutional-awards/20181026_100642.jpg", title: "Red Cross Society Voluntary Appreciation" },
+    { src: "/images/about/the-institution/institutional-awards/IMG20260415160014.jpg", title: "Institutional Excellence Award" },
+    { src: "/images/about/the-institution/institutional-awards/IMG20260415160105.jpg", title: "Academic Development & Leadership Award" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_1.jpg", title: "APSCHE Development Certificate" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_7.jpg", title: "Swachh Bharat Clean Campus Award" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_10.jpg", title: "Skill India Entrepreneurship Appreciation" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_11.jpg", title: "Heartfulness Global Essay Event Appreciation" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_12.jpg", title: "Guntur Municipal Corporation Award" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_13.jpg", title: "UGC & AICTE Institutional Approval" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_16.jpg", title: "Higher Education Excellence Certificate" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_17.jpg", title: "Empowering Women through Professional Training" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_18.jpg", title: "Green Campus Sustainability Certificate" },
+    { src: "/images/about/the-institution/institutional-awards/New Doc 02-11-2025 12.12_19.jpg", title: "Decennial Anniversary Appreciation Certificate" }
+  ];
+
+  const handlePrev = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const currentIndex = awardCertificates.findIndex(c => c.src === selectedImage);
+    const prevIndex = (currentIndex - 1 + awardCertificates.length) % awardCertificates.length;
+    setSelectedImage(awardCertificates[prevIndex].src);
+  };
+
+  const handleNext = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const currentIndex = awardCertificates.findIndex(c => c.src === selectedImage);
+    const nextIndex = (currentIndex + 1) % awardCertificates.length;
+    setSelectedImage(awardCertificates[nextIndex].src);
+  };
+
+  useEffect(() => {
+    if (!selectedImage) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        handlePrev();
+      } else if (e.key === "ArrowRight") {
+        handleNext();
+      } else if (e.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImage]);
+
   const recentHighlights = [
     {
       date: "March 1, 2026",
@@ -109,7 +164,6 @@ export function InstitutionalAwards() {
       {/* Landmark Achievement: NAAC 'A' Grade */}
       <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-xl">🏆</span>
           <h3 className="font-outfit text-xl font-black text-slate-900 select-none">
             Landmark Achievement: NAAC ‘A’ Grade
           </h3>
@@ -146,7 +200,6 @@ export function InstitutionalAwards() {
       {/* Notable Institutional Achievements - Recent Highlights */}
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
-          <span className="text-xl">🌟</span>
           <h3 className="font-outfit text-xl font-black text-slate-800 select-none leading-none">
             Recent Highlights (2023 – 2026)
           </h3>
@@ -186,6 +239,109 @@ export function InstitutionalAwards() {
           ))}
         </div>
       </div>
+
+      {/* Award & Appreciation Certificates Gallery */}
+      <div className="flex flex-col gap-6 border-t border-slate-100 pt-8">
+        <div className="flex items-center gap-2">
+          <h3 className="font-outfit text-xl font-black text-slate-800 select-none leading-none">
+            Awards & Appreciation Certificates
+          </h3>
+        </div>
+        <p className="text-slate-500 font-sans text-xs md:text-sm font-normal leading-relaxed -mt-3">
+          Click any certificate to view in high resolution with full-screen dynamic lighting preview.
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {awardCertificates.map((cert, index) => (
+            <div
+              key={index}
+              onClick={() => setSelectedImage(cert.src)}
+              className="bg-white border border-slate-200/80 p-2 rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+            >
+              <div className="aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 relative">
+                {/* Floating Download Button on Thumbnail */}
+                <a
+                  href={cert.src}
+                  download={cert.title}
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-xl bg-white/80 hover:bg-white text-slate-800 shadow-sm border border-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105 active:scale-95"
+                  title="Download Certificate"
+                >
+                  <Download className="h-4 w-4" />
+                </a>
+
+                <img
+                  src={cert.src}
+                  alt={cert.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[#002147]/50 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <Eye className="h-6 w-6 text-white scale-75 group-hover:scale-100 transition-transform duration-300" />
+                </div>
+              </div>
+              <h5 className="font-outfit text-[10px] md:text-xs font-black text-slate-700 mt-2 truncate text-center px-0.5 leading-snug">
+                {cert.title}
+              </h5>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Lightbox Modal for high-resolution certificate preview */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/85 backdrop-blur-md animate-fadeIn"
+          onClick={() => setSelectedImage(null)}
+        >
+          {/* Left Navigation Arrow */}
+          <button
+            onClick={handlePrev}
+            className="fixed left-4 md:left-8 top-1/2 -translate-y-1/2 z-[210] flex h-12 w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer shadow-md select-none"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          {/* Right Navigation Arrow */}
+          <button
+            onClick={handleNext}
+            className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[210] flex h-12 w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer shadow-md select-none"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          <div
+            className="relative max-w-2xl w-full flex flex-col items-center animate-scaleUp z-[205]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Download Button inside Modal */}
+            <a
+              href={selectedImage}
+              download={awardCertificates.find(c => c.src === selectedImage)?.title || "Certificate"}
+              onClick={(e) => e.stopPropagation()}
+              className="absolute -top-12 left-0 flex h-9 px-4 items-center justify-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-105 transition-all duration-200 font-sans text-xs font-semibold"
+            >
+              <Download className="h-4 w-4" /> Download Certificate
+            </a>
+
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-12 right-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-105 transition-all duration-200"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <div className="bg-white p-3 rounded-3xl shadow-2xl border border-white/10 max-h-[80vh] overflow-hidden flex items-center justify-center">
+              <img
+                src={selectedImage}
+                alt="Award Certificate Preview"
+                className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-inner select-none"
+              />
+            </div>
+            <p className="mt-4 font-outfit text-xs md:text-sm font-black text-white/95 uppercase tracking-widest text-center px-4 leading-normal select-none">
+              {awardCertificates.find(c => c.src === selectedImage)?.title || "Certificate View"}
+            </p>
+          </div>
+        </div>
+      )}
 
     </div>
   );

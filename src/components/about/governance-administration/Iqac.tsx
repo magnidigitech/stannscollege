@@ -37,22 +37,38 @@ export function Iqac() {
 
   return (
     <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
-      {/* Overview Banner with Coordinator Card */}
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12 bg-white border border-slate-200/60 p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-md transition-all">
+      {/* Dark Gradient Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase">
+              <Compass className="h-3.5 w-3.5" /> St. Ann&apos;s College for Women
+            </span>
+            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
+              Internal Quality Assurance Cell (IQAC)
+            </h2>
+            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
+              Playing a pivotal role in sustaining and enhancing academic excellence as a structured quality sustenance mechanism.
+            </p>
+          </div>
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
+            <Sparkles className="h-6 w-6 animate-pulse" />
+          </span>
+        </div>
+      </div>
+
+      {/* Overview with Coordinator Card */}
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all">
         {/* Narrative */}
         <div className="flex-1 flex flex-col justify-center">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md">
-              <Compass className="h-6 w-6" />
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-3 mb-4">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/60 text-indigo-600 shadow-sm">
+              <Compass className="h-5 w-5" />
             </span>
-            <div>
-              <h3 className="font-outfit text-2xl font-black text-slate-800 leading-tight">
-                Internal Quality Assurance Cell (IQAC)
-              </h3>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">
-                St. Ann&apos;s College for Women
-              </p>
-            </div>
+            <h3 className="font-outfit text-lg md:text-xl font-black text-slate-800 leading-tight">
+              Facilitative & Participative Growth
+            </h3>
           </div>
           <p className="leading-relaxed font-normal text-slate-600 text-sm md:text-base mb-4">
             The **Internal Quality Assurance Cell (IQAC)** plays a pivotal role in sustaining and enhancing academic excellence. Established in line with NAAC guidelines, IQAC functions as a <strong className="text-indigo-600 font-bold">post-accreditation quality sustenance mechanism</strong>, ensuring continuous improvement in institutional performance.
@@ -63,8 +79,8 @@ export function Iqac() {
         </div>
 
         {/* Coordinator Image */}
-        <div className="w-full md:w-1/3 flex flex-col items-center justify-center select-none">
-          <div className="relative group overflow-hidden rounded-2xl border border-slate-100/80 shadow-md aspect-[4/5] w-full max-w-[280px]">
+        <div className="w-full md:w-1/3 flex flex-col items-center justify-center select-none shrink-0">
+          <div className="relative group overflow-hidden rounded-2xl border border-slate-100/80 shadow-md aspect-[4/5] w-full max-w-[240px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/key-functionaries/iqac-coordinator.jpg"

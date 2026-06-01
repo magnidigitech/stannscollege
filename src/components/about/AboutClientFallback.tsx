@@ -11,6 +11,7 @@ import { InstitutionalAwards } from "@/components/about/the-institution/Institut
 import { StudentLaurels } from "@/components/about/the-institution/StudentLaurels";
 import { InstitutionalDistinctiveness } from "@/components/about/the-institution/InstitutionalDistinctiveness";
 import { HeadOfTheInstitution } from "@/components/about/the-institution/HeadOfTheInstitution";
+import { LegacyOfLeadership } from "@/components/about/the-institution/LegacyOfLeadership";
 
 import { StatutoryAffiliations } from "@/components/about/StatutoryAffiliations";
 import { GovernanceAdministration } from "@/components/about/GovernanceAdministration";
@@ -20,6 +21,7 @@ import { AicteApprovals } from "@/components/about/statutory-affiliations-recogn
 import { NirfReports } from "@/components/about/statutory-affiliations-recognitions/NirfReports";
 import { NaacCertificates } from "@/components/about/statutory-affiliations-recognitions/NaacCertificates";
 import { AisheCertifications } from "@/components/about/statutory-affiliations-recognitions/AisheCertifications";
+import { Ugc2f } from "@/components/about/statutory-affiliations-recognitions/Ugc2f";
 
 interface AboutClientFallbackProps {
   apscheOrdersList: any[];
@@ -54,6 +56,7 @@ export default function AboutClientFallback({
         { text: "Student Laurels", slug: "student-laurels" },
         { text: "Institutional Distinctiveness", slug: "institutional-distinctiveness" },
         { text: "Head of the Institution", slug: "head-of-the-institution" },
+        { text: "A Legacy of Leadership", slug: "legacy-of-leadership" },
       ],
     },
     {
@@ -111,6 +114,7 @@ export default function AboutClientFallback({
         case "student-laurels": return <StudentLaurels />;
         case "institutional-distinctiveness": return <InstitutionalDistinctiveness />;
         case "head-of-the-institution": return <HeadOfTheInstitution />;
+        case "legacy-of-leadership": return <LegacyOfLeadership />;
         default: return <p className="text-slate-500 font-sans p-4">Component not found.</p>;
       }
     }
@@ -120,6 +124,7 @@ export default function AboutClientFallback({
         case "apsche-orders": return <ApscheOrders apscheOrders={apscheOrdersList} />;
         case "anu-affiliation-orders-ug-pg": return <AnuAffiliations anuAffiliations={anuAffiliationsList} />;
         case "aicte-approvals": return <AicteApprovals aicteApprovals={aicteApprovalsList} />;
+        case "ugc-2f": return <Ugc2f />;
         case "nirf": return <NirfReports nirfReports={nirfReportsList} />;
         case "naac-accreditation":
         case "naac-certificates": return <NaacCertificates naacCertificates={naacCertificatesList} />;

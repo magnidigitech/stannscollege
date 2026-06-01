@@ -74,24 +74,25 @@ export function Organogram() {
 
   return (
     <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
-      {/* Banner */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-md transition-all font-sans text-slate-600 text-base md:text-lg leading-relaxed">
-        <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md">
-            <Workflow className="h-6 w-6" />
-          </span>
+      {/* Dark Gradient Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h3 className="font-outfit text-2xl font-black text-slate-800 leading-tight">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase">
+              <Workflow className="h-3.5 w-3.5" /> Governance & Framework
+            </span>
+            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
               Institutional Organogram
-            </h3>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">
-              Governance & Framework
+            </h2>
+            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
+              St. Ann’s College for Women maintains a robust governance framework emphasizing <strong className="text-white font-bold">decentralization</strong>, <strong className="text-white font-bold">accountability</strong>, and <strong className="text-white font-bold">participative management</strong>.
             </p>
           </div>
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
+            <Workflow className="h-6 w-6 animate-pulse" />
+          </span>
         </div>
-        <p className="mt-4 leading-relaxed font-normal text-slate-600">
-          St. Ann’s College for Women maintains a robust governance framework that emphasizes <strong className="text-indigo-600 font-bold">decentralization</strong>, <strong className="text-indigo-600 font-bold">accountability</strong>, and <strong className="text-indigo-600 font-bold">participative management</strong>. Our multi-tiered organizational structure strictly ensures that every stakeholder contributes effectively to the institutional vision and student success.
-        </p>
       </div>
 
       {/* High-End Visual Hierarchical Chart */}
@@ -147,40 +148,88 @@ export function Organogram() {
         </div>
 
         {/* Final Horizontal Branch Row */}
-        <div className="border-t border-slate-200 pt-6 mt-2 max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center select-none">
-            <div className="p-3 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white rounded-xl transition-all">
-              <span className="font-outfit font-black text-indigo-600 block text-xs md:text-sm uppercase tracking-wider mb-1">
-                IQAC
-              </span>
-              <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
-                Benchmark Quality Controls
-              </p>
+        <div className="border-t border-slate-200 pt-8 mt-2 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start text-center select-none">
+            
+            {/* Column 1: IQAC */}
+            <div className="flex flex-col items-center gap-3 h-full">
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0 animate-bounce" />
+              <div className="w-full p-4 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-700 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  IQAC
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  Internal Quality Assurance Cell
+                </p>
+              </div>
             </div>
-            <div className="p-3 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white rounded-xl transition-all">
-              <span className="font-outfit font-black text-indigo-600 block text-xs md:text-sm uppercase tracking-wider mb-1">
-                HODs & Faculty
-              </span>
-              <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
-                Curriculum Delivery & Mentorship
-              </p>
+
+            {/* Column 2: HODs & Faculty */}
+            <div className="flex flex-col items-center gap-3">
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0 animate-bounce" />
+              <div className="w-full p-4 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-700 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  HODs
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  Heads of Departments
+                </p>
+              </div>
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0" />
+              <div className="w-full p-4 bg-white border border-indigo-100/80 hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-900 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  Faculty
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  Teaching Staff & Educators
+                </p>
+              </div>
             </div>
-            <div className="p-3 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white rounded-xl transition-all">
-              <span className="font-outfit font-black text-indigo-600 block text-xs md:text-sm uppercase tracking-wider mb-1">
-                CDC
-              </span>
-              <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
-                Strategic Development & Scaling
-              </p>
+
+            {/* Column 3: CDC & Convenors of the Committees */}
+            <div className="flex flex-col items-center gap-3">
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0 animate-bounce" />
+              <div className="w-full p-4 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-700 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  CDC
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  College Development Committee
+                </p>
+              </div>
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0" />
+              <div className="w-full p-4 bg-white border border-indigo-100/80 hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-900 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  Convenors of the Committees
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  Cell & Statutory Chairpersons
+                </p>
+              </div>
             </div>
-            <div className="p-3 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white rounded-xl transition-all">
-              <span className="font-outfit font-black text-indigo-600 block text-xs md:text-sm uppercase tracking-wider mb-1">
-                Office Admin
-              </span>
-              <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
-                Logistics, Finance & Support
-              </p>
+
+            {/* Column 4: Administrative Staff & Supporting Staff */}
+            <div className="flex flex-col items-center gap-3">
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0 animate-bounce" />
+              <div className="w-full p-4 bg-slate-50 border border-slate-100 hover:border-indigo-100 hover:bg-white hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-700 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  Administrative Staff
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  Office & Operations Management
+                </p>
+              </div>
+              <ArrowDown className="h-4 w-4 text-indigo-400 shrink-0" />
+              <div className="w-full p-4 bg-white border border-indigo-100/80 hover:shadow-md rounded-2xl transition-all duration-300">
+                <span className="font-outfit font-black text-indigo-900 block text-xs md:text-sm uppercase tracking-wider mb-1">
+                  Supporting Staff
+                </span>
+                <p className="text-[10px] md:text-xs text-slate-400 font-semibold leading-tight">
+                  Technical & Auxiliary Services
+                </p>
+              </div>
             </div>
+
           </div>
         </div>
       </div>

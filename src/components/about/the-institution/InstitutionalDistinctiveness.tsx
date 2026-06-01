@@ -44,11 +44,55 @@ export function InstitutionalDistinctiveness() {
         </div>
       </div>
 
-      {/* Narrative & Inception Context */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
-        <h3 className="font-outfit text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
-          Our Singular Vision Since 1997
-        </h3>
+      {/* Full Width Building Photo Showcase Card */}
+      <div className="bg-white border border-slate-200/60 p-2 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 group overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 aspect-[16/9] md:aspect-[21/8] bg-slate-50 relative">
+          <img 
+            src="/images/about/cbnew2.webp" 
+            alt="St. Ann's College Campus Building" 
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-102 select-none" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-4 md:p-6">
+            <div>
+              <span className="bg-emerald-600 text-white font-sans text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md select-none">
+                Campus Showcase
+              </span>
+              <h4 className="font-outfit text-white text-base md:text-lg font-black mt-2 select-none">
+                Main Institutional Building – Gorantla, Guntur
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Narrative & Inception Context card */}
+      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div className="flex items-center gap-4">
+            <img 
+              src="/images/collegelogo.png" 
+              alt="St. Ann's Emblem Logo" 
+              className="h-14 w-auto object-contain select-none"
+            />
+            <div>
+              <h3 className="font-outfit text-xl font-black text-[#002147] select-none leading-tight">
+                Our Singular Vision Since 1997
+              </h3>
+              <p className="font-sans text-[10px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">
+                Institutional Identity & Philosophy
+              </p>
+            </div>
+          </div>
+          <div className="text-left sm:text-right shrink-0">
+            <p className="font-outfit text-sm font-black text-[#002147]">
+              Educate • Enrich • Empower
+            </p>
+            <p className="text-slate-400 font-sans text-[10px] font-bold uppercase tracking-wider mt-0.5">
+              Where Knowledge Ignites Empowerment
+            </p>
+          </div>
+        </div>
+        
         <p className="leading-relaxed font-normal text-slate-600 text-sm md:text-base">
           At St. Ann’s College for Women, Gorantla, our distinctiveness is not just in what we teach, but in who our students become. Since our inception in 1997, our institutional identity has been defined by a singular, powerful thrust: Transforming rural and economically challenged young women into self-reliant, ethical leaders of tomorrow.
         </p>
@@ -57,7 +101,7 @@ export function InstitutionalDistinctiveness() {
       {/* Philosophy of Our Symbols */}
       <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm">
         <h3 className="font-outfit text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
-          🌟 The Philosophy of Our Symbols
+          The Philosophy of Our Symbols
         </h3>
         <p className="font-sans text-xs font-semibold text-slate-400 uppercase tracking-wider mb-6">Foundational Identity</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -94,7 +138,6 @@ export function InstitutionalDistinctiveness() {
       {/* Pillars of Distinctive Excellence */}
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
-          <span className="text-xl">🏛️</span>
           <h3 className="font-outfit text-xl font-black text-slate-800 select-none leading-none">
             Pillars of Our Distinctive Excellence
           </h3>
@@ -112,7 +155,6 @@ export function InstitutionalDistinctiveness() {
       {/* Impact & Evidence Card */}
       <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-xl">📈</span>
           <h3 className="font-outfit text-xl font-black text-slate-900 select-none">
             Impact & Evidence: The Empowerment Loop
           </h3>

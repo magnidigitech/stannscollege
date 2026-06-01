@@ -409,7 +409,7 @@ export default function HomePage() {
                 <div className="relative overflow-hidden rounded-3xl bg-slate-100 border border-slate-200/60 p-4 shadow-md max-w-xs md:max-w-sm flex flex-col items-center">
                   <div className="h-72 w-64 bg-[#002147]/5 rounded-2xl flex items-center justify-center border border-slate-200/40 relative group overflow-hidden">
                     <img 
-                      src="/images/about/cbnew2.webp" 
+                      src="/images/principal.jpg" 
                       alt="Dr. Sr. Sandhya Thumma"
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
