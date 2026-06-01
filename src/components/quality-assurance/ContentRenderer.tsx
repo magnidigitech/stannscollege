@@ -501,7 +501,7 @@ const NaacAccreditationViewer = () => {
                                   </div>
 
                                   <div className="flex items-center gap-3 self-end sm:self-auto">
-                                    {ready ? (
+                                    {ready && (
                                       <button
                                         onClick={() => handleView(doc, metric.number)}
                                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100 hover:border-transparent text-xs font-bold transition-all shadow-4xs shrink-0"
@@ -509,10 +509,6 @@ const NaacAccreditationViewer = () => {
                                         <Eye className="h-3.5 w-3.5 shrink-0" />
                                         VIEW
                                       </button>
-                                    ) : (
-                                      <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-slate-400 bg-slate-50 border border-slate-100 px-2.5 py-1.5 rounded-lg shrink-0">
-                                        Pending Upload
-                                      </span>
                                     )}
                                   </div>
                                 </div>
@@ -534,7 +530,7 @@ const NaacAccreditationViewer = () => {
           POPUP MODAL: NESTED SUB-PAGES VIEWER (For files list grouped by Year/Course)
           ========================================================================= */}
       {activeSubpageData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 animate-fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10 animate-fade-in">
           {/* Glassmorphic Backdrop Blur */}
           <div 
             onClick={() => setActiveSubpageData(null)}
@@ -598,7 +594,7 @@ const NaacAccreditationViewer = () => {
                               {subDoc.year || "---"}
                             </td>
                             <td className="px-5 py-3.5 text-center shrink-0">
-                              {hasUrl ? (
+                              {hasUrl && (
                                 <button
                                   onClick={() => {
                                     if (subDoc.subDocuments && subDoc.subDocuments.length > 0) {
@@ -626,10 +622,6 @@ const NaacAccreditationViewer = () => {
                                     </>
                                   )}
                                 </button>
-                              ) : (
-                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-350 bg-slate-50 border border-slate-100 px-2 py-1 rounded-md">
-                                  Empty
-                                </span>
                               )}
                             </td>
                           </tr>
@@ -648,17 +640,17 @@ const NaacAccreditationViewer = () => {
           POPUP MODAL: INLINE PDF / MEDIA VIEWER (Renders in Iframe)
           ========================================================================= */}
       {activePdfUrl && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-3 sm:p-5 md:p-8 lg:p-12 animate-fade-in">
-          {/* Glassmorphic Backdrop Blur */}
+        <div className="fixed inset-0 z-[200] flex flex-col bg-slate-950/80 backdrop-blur-md animate-fade-in">
+          {/* Backdrop Trigger Click to Close */}
           <div 
             onClick={() => setActivePdfUrl("")}
-            className="absolute inset-0 bg-[#002147]/50 backdrop-blur-md transition-all" 
+            className="absolute inset-0 pointer-events-none" 
           />
 
-          {/* Modal Container */}
-          <div className="relative bg-white w-full max-w-6xl h-[85vh] rounded-[2.5rem] border border-slate-200/50 shadow-2xl flex flex-col overflow-hidden font-sans scale-in">
+          {/* Modal Container (Full Screen Layout) */}
+          <div className="relative bg-white w-screen h-screen flex flex-col overflow-hidden font-sans rounded-none shadow-2xl z-10 animate-scale-up">
             {/* Header Control Panel */}
-            <div className="bg-[#002147] text-white px-6 py-4 flex items-center justify-between gap-6 shadow-sm">
+            <div className="bg-[#002147] text-white px-6 py-4 flex items-center justify-between gap-6 shadow-md border-b border-slate-800">
               <div className="flex flex-col gap-0.5 truncate pr-8">
                 <span className="text-[9px] uppercase font-black tracking-widest text-emerald-400">
                   Document Viewer
@@ -669,7 +661,7 @@ const NaacAccreditationViewer = () => {
               </div>
               <div className="flex items-center gap-3.5 shrink-0">
                 <a 
-                  href={activePdfUrl} 
+                  href={encodeURI(activePdfUrl)} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 text-slate-200 hover:text-white hover:bg-white/20 text-xs font-bold transition-all shadow-4xs"
@@ -690,7 +682,7 @@ const NaacAccreditationViewer = () => {
             <div className="flex-1 bg-slate-900 flex items-center justify-center relative">
               {activePdfUrl.toLowerCase().endsWith('.mp4') || activePdfUrl.toLowerCase().endsWith('.avi') ? (
                 <video 
-                  src={activePdfUrl} 
+                  src={encodeURI(activePdfUrl)} 
                   controls 
                   className="w-full max-h-full rounded-b-xl"
                   autoPlay
@@ -705,7 +697,7 @@ const NaacAccreditationViewer = () => {
                     </p>
                   </div>
                   <a 
-                    href={activePdfUrl}
+                    href={encodeURI(activePdfUrl)}
                     download
                     className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all"
                   >
@@ -715,7 +707,7 @@ const NaacAccreditationViewer = () => {
                 </div>
               ) : (
                 <iframe
-                  src={`${activePdfUrl}#toolbar=0&navpanes=0`}
+                  src={`${encodeURI(activePdfUrl)}#toolbar=0&navpanes=0`}
                   title="Document Preview"
                   className="w-full h-full border-none bg-slate-900"
                 />
