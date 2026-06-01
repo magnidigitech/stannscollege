@@ -472,3 +472,48 @@ export async function getNaacData() {
   }
 }
 
+// AQAR Reports Data Fetcher with Local JSON Fallback
+export async function getAqarData() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "aqarCriterion"] | order(id asc) {
+      id,
+      title,
+      sections[] {
+        number,
+        title,
+        metrics[] {
+          number,
+          title,
+          documents[] {
+            label,
+            documentUrl,
+            subDocuments[] {
+              name,
+              year,
+              url,
+              subDocuments[] {
+                name,
+                year,
+                url
+              }
+            }
+          }
+        }
+      }
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (aqarCriterion):", err);
+  }
+  
+  // Dynamic fallback to the crawled local backup aqar-data.json
+  try {
+    const localData = require("../components/quality-assurance/aqar-data.json");
+    return localData;
+  } catch (err) {
+    console.error("Error loading local AQAR data backup:", err);
+    return [];
+  }
+}
+
+

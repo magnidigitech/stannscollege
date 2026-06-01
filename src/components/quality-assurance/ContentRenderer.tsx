@@ -8,7 +8,7 @@ import {
   ChevronDown, ChevronRight, Eye, Search, ExternalLink, 
   X, FolderOpen, AlertCircle, FileSpreadsheet, PlayCircle, Download
 } from "lucide-react";
-import { getNaacData } from "@/lib/sanity";
+import { getNaacData, getAqarData } from "@/lib/sanity";
 
 // Interface for NAAC Data structure
 interface SubDocument {
@@ -44,8 +44,29 @@ interface Criterion {
 
 export const ContentRenderer = ({ slug }: { slug: string }) => {
   if (slug === "naac") {
-    return <NaacAccreditationViewer />;
+    return (
+      <CriterionViewer
+        type="naac"
+        tagline="NAAC Accreditation"
+        mainTitle="National Assessment & Accreditation"
+        subtitle="Browse through our detailed self-assessment portfolios, criteria checklists, student parameters, and verified documents for Cycle-I accreditation."
+        loadDataFn={getNaacData}
+      />
+    );
   }
+
+  if (slug === "aqar") {
+    return (
+      <CriterionViewer
+        type="aqar"
+        tagline="AQAR Reports"
+        mainTitle="Annual Quality Assurance Reports (AQAR) 2023-24"
+        subtitle="Browse through our annual quality assurance reports, criteria checklists, departmental parameters, and verified academic portfolios."
+        loadDataFn={getAqarData}
+      />
+    );
+  }
+
 
   // Render original static quality sections (iqac, aqar, audit, feedback, etc.)
   const data = staticQualitySections[slug];
@@ -210,9 +231,17 @@ export const ContentRenderer = ({ slug }: { slug: string }) => {
 };
 
 // =========================================================================
-// PREMIUM NAAC ACCREDITATION VIEWER
+// PREMIUM CRITERION & REPORTS EXPLORER VIEWER
 // =========================================================================
-const NaacAccreditationViewer = () => {
+interface CriterionViewerProps {
+  type: "naac" | "aqar";
+  tagline: string;
+  mainTitle: string;
+  subtitle: string;
+  loadDataFn: () => Promise<Criterion[]>;
+}
+
+const CriterionViewer = ({ type, tagline, mainTitle, subtitle, loadDataFn }: CriterionViewerProps) => {
   const [criteria, setCriteria] = useState<Criterion[]>([]);
   const [selectedCritId, setSelectedCritId] = useState<number>(1);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(["1.1", "2.1", "3.1", "4.1", "5.1", "6.1", "7.1"]));
@@ -232,14 +261,15 @@ const NaacAccreditationViewer = () => {
   useEffect(() => {
     async function loadData() {
       setLoading(true);
-      const data = await getNaacData();
+      const data = await loadDataFn();
       if (data && data.length > 0) {
         setCriteria(data);
       }
       setLoading(false);
     }
     loadData();
-  }, []);
+  }, [loadDataFn]);
+
 
   // Manage body class for modal overlays to hide page headers and lock scrolling
   useEffect(() => {
@@ -272,7 +302,7 @@ const NaacAccreditationViewer = () => {
           <div className="absolute top-0 left-0 w-full h-full border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
         </div>
         <p className="text-slate-500 font-semibold tracking-wide text-sm animate-pulse">
-          Loading NAAC Accreditation Framework...
+          Loading {tagline} Framework...
         </p>
       </div>
     );
@@ -359,13 +389,13 @@ const NaacAccreditationViewer = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 pb-8">
         <div className="flex flex-col gap-1.5">
           <span className="text-[10px] uppercase font-black tracking-widest text-[#002147]/60 flex items-center gap-1.5">
-            <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" /> NAAC Accreditation
+            <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" /> {tagline}
           </span>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-outfit font-black text-[#002147] tracking-tight">
-            National Assessment & Accreditation
+            {mainTitle}
           </h2>
           <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-2xl mt-1">
-            Browse through our detailed self-assessment portfolios, criteria checklists, student parameters, and verified documents for Cycle-I accreditation.
+            {subtitle}
           </p>
         </div>
 
@@ -382,7 +412,7 @@ const NaacAccreditationViewer = () => {
           {searchQuery && (
             <button 
               onClick={() => setSearchQuery("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
             >
               <X className="h-4 w-4" />
             </button>
@@ -390,8 +420,8 @@ const NaacAccreditationViewer = () => {
         </div>
       </div>
 
-      {/* 7 Criteria Carousel/Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
+      {/* Criteria Carousel/Tabs (up to 8 tabs for AQAR) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3">
         {criteria.map((crit) => {
           const isActive = selectedCritId === crit.id;
           return (
@@ -408,14 +438,14 @@ const NaacAccreditationViewer = () => {
               className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all duration-300 ${
                 isActive
                   ? "bg-gradient-to-b from-[#002147] to-[#0b3c75] text-white border-transparent shadow-md transform -translate-y-1"
-                  : "bg-white hover:bg-slate-50 text-slate-650 hover:text-[#002147] border-slate-200/80 hover:border-slate-300 shadow-2xs"
+                  : "bg-white hover:bg-slate-50 text-slate-655 hover:text-[#002147] border-slate-200/80 hover:border-slate-300 shadow-2xs"
               }`}
             >
               <span className="text-[10px] font-black uppercase tracking-wider opacity-85 leading-none">
-                Crit {crit.id}
+                {crit.title.toLowerCase().includes('extended') ? "Profile" : `Crit ${crit.id}`}
               </span>
               <span className="text-[11px] font-black tracking-tight mt-1 truncate w-full max-w-[80px]">
-                {crit.title.replace(/^Criterion\s+[IVX]+\s*[-–]\s*/i, '')}
+                {crit.title.replace(/^Criterion\s+[IVX]+\s*[-–]\s*/i, '').split(" - ")[0]}
               </span>
             </button>
           );
