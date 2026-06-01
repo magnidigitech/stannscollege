@@ -420,8 +420,8 @@ const CriterionViewer = ({ type, tagline, mainTitle, subtitle, loadDataFn }: Cri
         </div>
       </div>
 
-      {/* Criteria Carousel/Tabs (up to 8 tabs for AQAR) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3">
+      {/* Criteria Carousel/Tabs (up to 10 tabs for NAAC/AQAR) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2.5">
         {criteria.map((crit) => {
           const isActive = selectedCritId === crit.id;
           return (
@@ -442,7 +442,13 @@ const CriterionViewer = ({ type, tagline, mainTitle, subtitle, loadDataFn }: Cri
               }`}
             >
               <span className="text-[10px] font-black uppercase tracking-wider opacity-85 leading-none">
-                {crit.title.toLowerCase().includes('extended') ? "Profile" : `Crit ${crit.id}`}
+                {crit.title.toLowerCase().includes('extended') 
+                  ? "Profile" 
+                  : crit.title.toLowerCase().includes('dvv') 
+                    ? "DVV" 
+                    : crit.title.toLowerCase().includes('core') 
+                      ? "Core Docs" 
+                      : `Crit ${crit.id}`}
               </span>
               <span className="text-[11px] font-black tracking-tight mt-1 truncate w-full max-w-[80px]">
                 {crit.title.replace(/^Criterion\s+[IVX]+\s*[-–]\s*/i, '').split(" - ")[0]}

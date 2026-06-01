@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const srcDir = '/Users/venkatavivek/stanns/stannscollegeforwomen.org/public_html';
 const destDir = '/Users/venkatavivek/stanns/public/documents/naac';
 
-// Main pages for the 7 criteria
+// Main pages for the 7 criteria plus Extended Profile, DVV, and Self Declaration
 const mainCriteriaPages = [
   { id: 1, file: 'naac.php', title: 'Criterion I - Curricular Aspects' },
   { id: 2, file: 'naac-criterion2.php', title: 'Criterion II - Teaching-Learning and Evaluation' },
@@ -13,7 +13,10 @@ const mainCriteriaPages = [
   { id: 4, file: 'naac-criterion4.php', title: 'Criterion IV - Infrastructure and Learning Resources' },
   { id: 5, file: 'naac-criterion5.php', title: 'Criterion V - Student Support and Progression' },
   { id: 6, file: 'naac-criterion6.php', title: 'Criterion VI - Governance, Leadership and Management' },
-  { id: 7, file: 'naac-criterion7.php', title: 'Criterion VII - Institutional Values and Best Practices' }
+  { id: 7, file: 'naac-criterion7.php', title: 'Criterion VII - Institutional Values and Best Practices' },
+  { id: 8, file: 'extendedprofile.php', title: 'Extended Profile - Extended Profile' },
+  { id: 9, file: 'dvv.php', title: 'DVV Clarifications - DVV Clarifications' },
+  { id: 10, file: 'selfdeclaration.php', title: 'Core Documents - Core Documents' }
 ];
 
 const visited = new Set();
@@ -43,9 +46,19 @@ function cleanDocPath(href) {
   if (h === '#' || h === '---' || h === '') return '';
   if (h.toLowerCase().endsWith('.php')) return '';
   
+  // Handle dvv documents cleanly
+  if (h.startsWith('dvv/')) {
+    return '/' + h.replace('dvv/', 'documents/dvv/');
+  }
+  
   // If it starts with naac/, map it to /documents/naac/...
   if (h.startsWith('naac/')) {
     return '/' + h.replace('naac/', 'documents/naac/');
+  }
+  
+  // If it starts with extendedprofile/, map it to /documents/naac/extendedprofile/...
+  if (h.startsWith('extendedprofile/')) {
+    return '/documents/naac/' + h;
   }
   
   // If it's relative to root, copy it if needed
@@ -63,6 +76,7 @@ function isSubpage(href) {
          !h.includes('header.php') && 
          !h.includes('footer.php') && 
          !h.includes('naac-left.php') &&
+         !h.includes('naac-leftst.php') &&
          !h.includes('naac.php') &&
          !h.includes('naac-criterion') &&
          !h.startsWith('http') &&
@@ -73,7 +87,7 @@ const docKeywords = [
   'upload', 'provide', 'link', 'document', 'list', 'report', 
   'filled-in', 'supporting', 'copy of', 'evidence', 'brochure', 
   'calendar', 'at least 4', 'institutional data', 'feedback analysis',
-  'action taken'
+  'action taken', 'any additional information'
 ];
 
 function isDocumentRow(desc, numCells) {
@@ -185,7 +199,7 @@ function crawlSubpage(fileName, metricNum = '') {
 // Crawl a main Criterion page
 function crawlCriterion(criterion) {
   console.log(`\n========================================`);
-  console.log(`Parsing Criterion: ${criterion.title} (${criterion.file})`);
+  console.log(`Parsing NAAC SSR: ${criterion.title} (${criterion.file})`);
   console.log(`========================================`);
   
   const filePath = path.join(srcDir, criterion.file);
@@ -195,14 +209,256 @@ function crawlCriterion(criterion) {
   }
   
   const content = fs.readFileSync(filePath, 'utf8');
-  const $ = cheerio.load(content);
   
   const result = {
     id: criterion.id,
     title: criterion.title,
     sections: []
   };
-  
+
+  // -------------------------------------------------------------------------
+  // SPECIAL PARSER: Extended Profile
+  // -------------------------------------------------------------------------
+  if (criterion.file === 'extendedprofile.php') {
+    const $ = cheerio.load(content);
+    const headers = [];
+    
+    $('h4.entry-title').each((_, h4) => {
+      const text = cleanText($(h4).text());
+      const match = text.match(/(\d+\.\d+)\s*(.*)$/i);
+      if (match) {
+        headers.push({
+          number: match[1],
+          title: match[2].trim()
+        });
+      }
+    });
+    
+    $('table.table').each((tIdx, table) => {
+      const header = headers[tIdx] || { number: `EP-${tIdx + 1}`, title: `Extended Parameter` };
+      
+      const section = {
+        number: header.number,
+        title: header.title,
+        metrics: []
+      };
+      
+      const metric = {
+        number: header.number,
+        title: header.title,
+        documents: []
+      };
+      
+      section.metrics.push(metric);
+      result.sections.push(section);
+      
+      $(table).find('tr').each((_, tr) => {
+        const cells = $(tr).find('td');
+        if (cells.length === 0) return;
+        
+        const cellTexts = [];
+        cells.each((_, td) => {
+          cellTexts.push(cleanText($(td).text()));
+        });
+        
+        const desc = cellTexts[1] || '';
+        if (desc === 'DESCRIPTION' || desc === 'DESCRIPRION' || !desc) return;
+        
+        let docUrl = '';
+        $(tr).find('a').each((_, a) => {
+          const href = $(a).attr('href');
+          if (href) {
+            const cleaned = cleanDocPath(href);
+            if (cleaned) docUrl = cleaned;
+          }
+        });
+        
+        if (docUrl || cellTexts.length >= 2) {
+          metric.documents.push({
+            label: desc,
+            documentUrl: docUrl || ''
+          });
+        }
+      });
+    });
+    
+    return result;
+  }
+
+  // -------------------------------------------------------------------------
+  // SPECIAL PARSER: DVV Clarifications
+  // -------------------------------------------------------------------------
+  if (criterion.file === 'dvv.php') {
+    const $ = cheerio.load(content);
+    const headers = [];
+    
+    $('h4.entry-title').each((_, h4) => {
+      const text = cleanText($(h4).text());
+      headers.push(text);
+    });
+    
+    $('table.table').each((tIdx, table) => {
+      const headerTitle = headers[tIdx] || `DVV Section ${tIdx + 1}`;
+      
+      const section = {
+        number: `DVV-${tIdx + 1}`,
+        title: headerTitle,
+        metrics: []
+      };
+      result.sections.push(section);
+      
+      $(table).find('tr').each((_, tr) => {
+        const cells = $(tr).find('td');
+        if (cells.length === 0) return;
+        
+        const cellTexts = [];
+        cells.each((_, td) => {
+          cellTexts.push(cleanText($(td).text()));
+        });
+        
+        const firstCell = cellTexts[0] || '';
+        const desc = cellTexts[1] || '';
+        if (firstCell === 'METRIC NO.' || firstCell === 'S.NO.' || desc === 'DESCRIPTION') return;
+        
+        let docUrl = '';
+        let phpPage = '';
+        $(tr).find('a').each((_, a) => {
+          const href = $(a).attr('href');
+          if (href) {
+            if (isSubpage(href)) {
+              phpPage = href;
+            } else {
+              const cleaned = cleanDocPath(href);
+              if (cleaned) docUrl = cleaned;
+            }
+          }
+        });
+        
+        if (firstCell || desc) {
+          const metric = {
+            number: firstCell || `DVV-${tIdx + 1}.${_}`,
+            title: desc || firstCell,
+            documents: []
+          };
+          
+          if (docUrl || phpPage) {
+            const docItem = {
+              label: "Provide Link for Additional information",
+              documentUrl: docUrl || '',
+            };
+            if (phpPage) {
+              const nested = crawlSubpage(phpPage, metric.number);
+              if (nested && nested.length > 0) {
+                docItem.subDocuments = nested;
+              }
+            }
+            metric.documents.push(docItem);
+          }
+          
+          section.metrics.push(metric);
+        }
+      });
+    });
+    
+    return result;
+  }
+
+  // -------------------------------------------------------------------------
+  // SPECIAL PARSER: Self Declaration & Core Documents
+  // -------------------------------------------------------------------------
+  if (criterion.file === 'selfdeclaration.php') {
+    const $ = cheerio.load(content);
+    
+    // Core Documents Section
+    const sec1 = {
+      number: "Core",
+      title: "Core Institutional Reports",
+      metrics: [
+        {
+          number: "IIQA",
+          title: "Institutional Information for Quality Assessment (IIQA)",
+          documents: [
+            {
+              label: "Institutional Information for Quality Assessment (IIQA) PDF",
+              documentUrl: "/documents/naac/IIQA.pdf"
+            }
+          ]
+        },
+        {
+          number: "SSR",
+          title: "Self Study Report (SSR)",
+          documents: [
+            {
+              label: "Self Study Report (SSR) Cycle-I PDF",
+              documentUrl: "/documents/naac/ssr.pdf"
+            }
+          ]
+        },
+        {
+          number: "DVV-R",
+          title: "DVV Clarifications Report",
+          documents: [
+            {
+              label: "DVV Report PDF",
+              documentUrl: "/documents/dvv/DVV-REPORT.pdf"
+            }
+          ]
+        }
+      ]
+    };
+    result.sections.push(sec1);
+    
+    // Self-Declaration & Undertaking Section
+    const sec2 = {
+      number: "SD",
+      title: "Self-Declaration and Undertaking",
+      metrics: [
+        {
+          number: "SD-1",
+          title: "Self-Declaration and Undertaking Portfolios",
+          documents: []
+        }
+      ]
+    };
+    result.sections.push(sec2);
+    const metric = sec2.metrics[0];
+    
+    $('table.table').find('tr').each((_, tr) => {
+      const cells = $(tr).find('td');
+      if (cells.length === 0) return;
+      
+      const cellTexts = [];
+      cells.each((_, td) => {
+        cellTexts.push(cleanText($(td).text()));
+      });
+      
+      const desc = cellTexts[1] || '';
+      if (desc === 'DESCRIPTION' || !desc) return;
+      
+      let docUrl = '';
+      $(tr).find('a').each((_, a) => {
+        const href = $(a).attr('href');
+        if (href) {
+          const cleaned = cleanDocPath(href);
+          if (cleaned) docUrl = cleaned;
+        }
+      });
+      
+      if (docUrl || desc) {
+        metric.documents.push({
+          label: desc,
+          documentUrl: docUrl || ''
+        });
+      }
+    });
+    
+    return result;
+  }
+
+  // -------------------------------------------------------------------------
+  // STANDARD PARSER: Criterion 1-7
+  // -------------------------------------------------------------------------
+  const $ = cheerio.load(content);
   let currentSection = null;
   let currentMetric = null;
   
@@ -238,10 +494,10 @@ function crawlCriterion(criterion) {
       return;
     }
     
-    // Check if it's a Metric Header
-    const isMetricMatch = /^\d+\.\d+\.\d+/i.test(rowText);
+    // Check if it's a Metric Header (supporting both 2-part e.g. 1.1 and 3-part e.g. 2.5.1)
+    const isMetricMatch = /^\d+\.\d+(?:\.\d+)?/i.test(rowText);
     const firstCellText = cellTexts[0] || '';
-    const isFirstCellMetric = /^\d+\.\d+\.\d+/i.test(firstCellText);
+    const isFirstCellMetric = /^\d+\.\d+(?:\.\d+)?/i.test(firstCellText);
     
     if (isMetricMatch) {
       const text = cleanText(rowText);
@@ -252,7 +508,7 @@ function crawlCriterion(criterion) {
       const isDoc = isDocumentRow(desc, cells.length);
       
       if (!isDoc) {
-        const match = text.match(/^(\d+\.\d+\.\d+)\s*[:-]\s*(.*)$/i) || [null, firstCellNum, text];
+        const match = text.match(/^(\d+\.\d+(?:\.\d+)?)\s*[:-]\s*(.*)$/i) || [null, firstCellNum, text];
         currentMetric = {
           number: match[1] || firstCellNum,
           title: match[2] || text,
@@ -326,7 +582,7 @@ mainCriteriaPages.forEach(c => {
 
 // Output summary
 console.log(`\n========================================`);
-console.log(`CRAWL COMPLETED SUCCESSFULLY!`);
+console.log(`NAAC CRAWL COMPLETED SUCCESSFULLY!`);
 console.log(`========================================`);
 console.log(`Total Subpages Visited: ${subpageCount}`);
 console.log(`Visited Subpages List:`, Array.from(visited));

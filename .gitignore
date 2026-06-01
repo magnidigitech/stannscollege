@@ -27,3 +27,7 @@ public/documents/naac/
 # Exclude massive local AQAR backup files (3.9GB) to prevent Git bloat
 public/documents/aqar2324/
 
+# Exclude massive local DVV backup files to prevent Git bloat
+public/documents/dvv/
+
+

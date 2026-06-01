@@ -4493,5 +4493,1621 @@
         ]
       }
     ]
+  },
+  {
+    "id": 8,
+    "title": "Extended Profile - Extended Profile",
+    "sections": [
+      {
+        "number": "1.1",
+        "title": "Number of Students Year Wise during last Five Years",
+        "metrics": [
+          {
+            "number": "1.1",
+            "title": "Number of Students Year Wise during last Five Years",
+            "documents": [
+              {
+                "label": "Admission Approval Documents Received from the University for Assessment Period 2018-19 to 2022-23",
+                "documentUrl": "/documents/naac/extendedprofile/1.1 Admission approval  document.pdf"
+              },
+              {
+                "label": "Year Wise List of Students for the Assessment Period",
+                "documentUrl": "/documents/naac/extendedprofile/1.1 FINAL 2022-23.pdf"
+              },
+              {
+                "label": "Total List of Students Approved by the Affiliating Authority 2018-19 to 2022-23",
+                "documentUrl": "/documents/naac/extendedprofile/1.1 TOTAL LIST OF STUDENTS.pdf"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "2.1",
+        "title": "Number of teaching staff / full time teachers during the last five years (Without repeat count)",
+        "metrics": [
+          {
+            "number": "2.1",
+            "title": "Number of teaching staff / full time teachers during the last five years (Without repeat count)",
+            "documents": [
+              {
+                "label": "List of all full time teachers indicating (Without repeat count)",
+                "documentUrl": "/documents/naac/extendedprofile/2.1-LIST OF TEACHERS WITHOUT REPEAT COUNT.pdf"
+              },
+              {
+                "label": "2.1 List of Full-Time Teachers along with Departmental affiliation during the assessment period",
+                "documentUrl": "/documents/naac/extendedprofile/2.1 LIST OF FULL TIME TEACHERS ALONG WITH DEPARTMENTAL AFFILIATION.pdf"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "2.2",
+        "title": "Number of teaching staff / full time teachers year wise during the last five years",
+        "metrics": [
+          {
+            "number": "2.2",
+            "title": "Number of teaching staff / full time teachers year wise during the last five years",
+            "documents": [
+              {
+                "label": "List of all Full Time Teachers indicating the departmental affiliation during the assessment period",
+                "documentUrl": "/documents/naac/extendedprofile/2.2 LIST OF FULL TIME TEACHERS INDICATING DEPARTMENTAL AFFILIATION.pdf"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "3.1",
+        "title": "Expenditure excluding salary component year wise during the last five years (INR in lakhs)",
+        "metrics": [
+          {
+            "number": "3.1",
+            "title": "Expenditure excluding salary component year wise during the last five years (INR in lakhs)",
+            "documents": [
+              {
+                "label": "Statement showing the total expenditure excluding the salary component",
+                "documentUrl": "/documents/naac/extendedprofile/3.1-EXPENDITURE-FINAL.pdf"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "DVV Clarifications - DVV Clarifications",
+    "sections": [
+      {
+        "number": "DVV-1",
+        "title": "EXTENDED PROFILE",
+        "metrics": [
+          {
+            "number": "1.1",
+            "title": "Number of students year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Admission Approval Documents Received from the University for Assessment Period",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvvex11/1.1 Admission approval  document.pdf"
+                  },
+                  {
+                    "name": "Year Wise List of Students for the Assessment Period",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvvex11/1.1 FINAL 2018 -19.pdf"
+                  },
+                  {
+                    "name": "Total List of Students Approved by the Affiliating Authority",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvvex11/1.1 TOTAL LIST OF STUDENTS.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.1",
+            "title": "Number of teaching staff / full time teachers during the last five years (Without Repeat Count)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of all full time teachers indicating(Without repeat count)",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvvex21/2.1-LIST OF TEACHERS MERGED-FINAL.pdf"
+                  },
+                  {
+                    "name": "Year Wise List of Full-Time Teachers along with Departmental affiliation during the assessment period authenticated by the Principal",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvvex21/2.1 LIST OF FULL-TIME TEACHERS-2018-19.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.2",
+            "title": "Number of teaching staff / full time teachers during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of all Full Time Teachers indicating the departmental affiliation during the assessment period authenticated by the Principal",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvvex22/2.2  LIST OF FULL-TIME TEACHERS-2018-19.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.1",
+            "title": "Expenditure excluding salary component year wise during the last five years (INR in Lakhs)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Audited Statement of income and expenditure duly certified by the Principal and Charted Accountant in case of privately funded institutions highlighting the salary component.",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvvex31/3.1 Expenditure-salaries-2018-2019.pdf"
+                  },
+                  {
+                    "name": "Statement showing the total expenditure excluding the salary component for each of the years certified by the Principal and Charted Accountant",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvvex31/3.1 Expenditure-excluding salaries-2018-19-final.pdf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "DVV-2",
+        "title": "CRITERIA – 1",
+        "metrics": [
+          {
+            "number": "1.2.1",
+            "title": "Number of Certificate/Value added courses offered and online courses of MOOCs, SWAYAM, NPTEL etc. (where the students of the institution have enrolled and successfully completed during the last five years)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Details of Each Program with Name of the Program and Duration",
+                    "url": "/documents/dvv/dvv121/1.2.1-Details of each program.pdf"
+                  },
+                  {
+                    "name": "List of Students Enrolled with Signature of Students and Model Certificates",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv121/2/1.2.1-2018-19-enrollment.pdf"
+                  },
+                  {
+                    "name": "Curriculum and Assessment Procedures",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv121/3/1.2.1-2018-19-curriculum.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "1.2.2",
+            "title": "Percentage of students enrolled in Certificate/ Add-on/Value added programs as against the total number of students during the last five years.",
+            "documents": []
+          },
+          {
+            "number": "DVV-2.3",
+            "title": "1.2.2.1 Number of students enrolled in subject related Certificate/ Add-on/Value added programs year wise during last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Number of Courses and Students Enrolled",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv122/1.2.2-No. of courses and students.pdf"
+                  },
+                  {
+                    "name": "Year-Wise List of the Students Enrolled",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv122/2018-19-enrollment.pdf"
+                  },
+                  {
+                    "name": "Attendance Sheet of Students Participating with Signature and Model Certificates",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv122/2018-19-attendance.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "1.3.2",
+            "title": "Percentage of students undertaking project work/field work/ internships (Data for the latest completed academic year)",
+            "documents": []
+          },
+          {
+            "number": "DVV-2.5",
+            "title": "1.3.2.1 Number of students undertaking project work/field work/ internship",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Students along with the details of title, place of work, duration",
+                    "year": "2022-23",
+                    "url": "/documents/dvv/dvv132/1.3.2 List of students along with the details of title-place of work-duration.pdf"
+                  },
+                  {
+                    "name": "Internship Completion Certificate / Project Work Completion Certificate from the Organization where Internship / Project was completed",
+                    "year": "2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "III B. Sc (MPCs)",
+                        "year": "77",
+                        "url": "/documents/dvv/dvv132ic/(1)1.3.2 III B SC(MPCS).pdf"
+                      },
+                      {
+                        "name": "III B. Sc (MSCs)",
+                        "year": "78",
+                        "url": "/documents/dvv/dvv132ic/(2) 1.3.2 III B SC(MSCS).pdf"
+                      },
+                      {
+                        "name": "III B. Sc (MBC)",
+                        "year": "29",
+                        "url": "/documents/dvv/dvv132ic/(3) 1.3.2 III B SC(MBC).pdf"
+                      },
+                      {
+                        "name": "III B. Sc (BBC)",
+                        "year": "26",
+                        "url": "/documents/dvv/dvv132ic/(4) 1.3.2 III B SC(BBC).pdf"
+                      },
+                      {
+                        "name": "III B. Sc (MPC)",
+                        "year": "18",
+                        "url": "/documents/dvv/dvv132ic/(5) 1.3.2 III B SC(MPC).pdf"
+                      },
+                      {
+                        "name": "III B. Com (General)",
+                        "year": "21",
+                        "url": "/documents/dvv/dvv132ic/(6) 1.3.2 III B.COM (GENERAL).pdf"
+                      },
+                      {
+                        "name": "III B. Com (Computer Applications)",
+                        "year": "22",
+                        "url": "/documents/dvv/dvv132ic/(7) 1.3.2 III B.COM (COMPUTER APPLICATIONS).pdf"
+                      },
+                      {
+                        "name": "III BCA",
+                        "year": "29",
+                        "url": "/documents/dvv/dvv132ic/(8) 1.3.2 III BCA.pdf"
+                      },
+                      {
+                        "name": "MCA",
+                        "year": "54",
+                        "url": "/documents/dvv/dvv132ic/(9) 1.3.2 MCA.pdf"
+                      },
+                      {
+                        "name": "MBA",
+                        "year": "13",
+                        "url": "/documents/dvv/dvv132ic/(10) 1.3.2 MBA.pdf"
+                      },
+                      {
+                        "name": "II B. Sc (MPCs)",
+                        "year": "63",
+                        "url": "/documents/dvv/dvv132ic/(11) 1.3.2 II BSC(MPCS).pdf"
+                      },
+                      {
+                        "name": "II B. Sc (MSCs)",
+                        "year": "63",
+                        "url": "/documents/dvv/dvv132ic/(12) 1.3.2 II BSC(MSCS).pdf"
+                      },
+                      {
+                        "name": "II B. Sc (MBC)",
+                        "year": "28",
+                        "url": "/documents/dvv/dvv132ic/(13) 1.3.2 II BSC(MBC).pdf"
+                      },
+                      {
+                        "name": "II B. Sc (BBC)",
+                        "year": "22",
+                        "url": "/documents/dvv/dvv132ic/(14) 1.3.2 II BSC(BBC).pdf"
+                      },
+                      {
+                        "name": "II B. Sc (MPC)",
+                        "year": "21",
+                        "url": "/documents/dvv/dvv132ic/(15) 1.3.2 II BSC(MPC).pdf"
+                      },
+                      {
+                        "name": "II B. Com (General)",
+                        "year": "29",
+                        "url": "/documents/dvv/dvv132ic/(16) 1.3.2 II B.COM(GENERAL).pdf"
+                      },
+                      {
+                        "name": "II B. Com (Computer Applications)",
+                        "year": "34",
+                        "url": "/documents/dvv/dvv132ic/(17) 1.3.2 II B.COM (COMPUTER APPLICATIONS).pdf"
+                      },
+                      {
+                        "name": "II BCA",
+                        "year": "35",
+                        "url": "/documents/dvv/dvv132ic/(18) 1.3.2 II BCA.pdf"
+                      },
+                      {
+                        "name": "I B. Sc (MPCs)",
+                        "year": "44",
+                        "url": "/documents/dvv/dvv132ic/(19) 1.3.2 I BSC(MPCS).pdf"
+                      },
+                      {
+                        "name": "I B. Sc (MSCs)",
+                        "year": "34",
+                        "url": "/documents/dvv/dvv132ic/(20) 1.3.2 I BSC(MSCS).pdf"
+                      },
+                      {
+                        "name": "I B. Sc (MBC)",
+                        "year": "26",
+                        "url": "/documents/dvv/dvv132ic/(21) 1.3.2 I BSC (MBC).pdf"
+                      },
+                      {
+                        "name": "I B. Sc (BBC)",
+                        "year": "26",
+                        "url": "/documents/dvv/dvv132ic/(22) 1.3.2 I BSC (BBC).pdf"
+                      },
+                      {
+                        "name": "I B. Com (General)",
+                        "year": "31",
+                        "url": "/documents/dvv/dvv132ic/(23) 1.3.2  I B.COM (GEN).pdf"
+                      },
+                      {
+                        "name": "I B. Com (Computer Applications)",
+                        "year": "51",
+                        "url": "/documents/dvv/dvv132ic/(24) 1.3.2 I B.COM(COMPUTER APPLICATIONS).pdf"
+                      },
+                      {
+                        "name": "I BCA",
+                        "year": "43",
+                        "url": "/documents/dvv/dvv132ic/(25) 1.3.2 I BCA.pdf"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Link to report of the Field Work/ Internships / Project Work Sample Reports for the year 2022-23",
+                    "year": "2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Community Service Project Sample Report",
+                        "year": "2022-23",
+                        "url": "/documents/dvv/dvv132fw/COMMUNITY SERVICE PROJECT-1.pdf"
+                      },
+                      {
+                        "name": "Short Term Internship Sample Report",
+                        "year": "2022-23",
+                        "url": "/documents/dvv/dvv132fw/SHORT TERM INTERNSHIP.pdf"
+                      },
+                      {
+                        "name": "Long Term Internship Sample Report",
+                        "year": "2022-23",
+                        "url": "/documents/dvv/dvv132fw/long term internship-2.pdf"
+                      },
+                      {
+                        "name": "MCA Project Sample Report",
+                        "year": "2022-23",
+                        "url": "/documents/dvv/dvv132fw/MCA Project.pdf"
+                      },
+                      {
+                        "name": "MBA Project Sample Report",
+                        "year": "2022-23",
+                        "url": "/documents/dvv/dvv132fw/MBA PROJECT BOOK.pdf"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "1.4.1",
+            "title": "Institution obtains feedback on the academic performance and ambience of the institution from various stakeholders, such as Students, Teachers, Employers, Alumni etc. and action taken report on the feedback is made available on institutional website",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Sample Filled in Feedback Forms from at least Two Stakeholders",
+                    "year": "2018-19 to 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "2018-19",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/1/1.4.1 2018-19 SampleFilled in Forms.pdf"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/1/1.4.1 2019-20  SampleFilled in Forms.pdf"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/1/1.4.1 2020-21  SampleFilled in Forms.pdf"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/1/1.4.1 2021-22  SampleFilled in Forms.pdf"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/1/1.4.1 2022-23  SampleFilled in Forms.pdf"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Stakeholders’ Feedback Analysis Report",
+                    "year": "2018-19 to 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "2018-19",
+                        "year": "Feedback Analysis Report",
+                        "url": "/documents/dvv/dvv141/2/1.4.1 2018-19 Stakeholders’ Feedback Analysis Report.pdf"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Feedback Analysis Report",
+                        "url": "/documents/dvv/dvv141/2/1.4.1 2019-20  Stakeholders’ Feedback Analysis Report.pdf"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Feedback Analysis Report",
+                        "url": "/documents/dvv/dvv141/2/1.4.1 2020-21 Stakeholders’ Feedback Analysis Report.pdf"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Feedback Analysis Report",
+                        "url": "/documents/dvv/dvv141/2/1.4.1 2021-22  Stakeholders’ Feedback Analysis Report.pdf"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Feedback Analysis Report",
+                        "url": "/documents/dvv/dvv141/2/1.4.1 2022-23 Stakeholders’ Feedback Analysis Report.pdf"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Action taken Report on Feedback",
+                    "year": "2018-19 to 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "2018-19",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/3/1.4.1 Action Taken 2018-19.pdf"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/3/1.4.1 Action Taken 2019-20.pdf"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/3/1.4.1 Action Taken 2020-21.pdf"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/3/1.4.1 Action Taken 2021-22.pdf"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Sample/ Filled -in feedback forms",
+                        "url": "/documents/dvv/dvv141/3/1.4.1 Action Taken 2022-23.pdf"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Document showing communication with the affiliating University for Feedback provided for the year 2022-23",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv141/1.4.1 Document showing communication with university-2022-23.pdf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "DVV-3",
+        "title": "CRITERIA – 2",
+        "metrics": [
+          {
+            "number": "2.1.1",
+            "title": "Enrolment percentage",
+            "documents": []
+          },
+          {
+            "number": "DVV-3.2",
+            "title": "2.1.1.1 Number of seats filled year wise during last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Document related to sanction of intake from affiliating University/ Government/statutory body for first year students only",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv211/UG PG AFFILIATION ORDER 2018-19.pdf"
+                  },
+                  {
+                    "name": "Approved admission list year-wise (first year admission / lateral entry admission) program-wise from the Affiliating university for the years",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv211/2018-19 APPROVED ADMISSION LIST.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "DVV-3.3",
+            "title": "2.1.1.2. Number of sanctioned seats year wise during last five years",
+            "documents": []
+          },
+          {
+            "number": "2.1.2",
+            "title": "Percentage of seats filled against seats reserved for various categories (SC, ST, OBC, Divyangjan, etc. as per applicable reservation policy) during the last five years (Exclusive of supernumerary seats)",
+            "documents": []
+          },
+          {
+            "number": "DVV-3.5",
+            "title": "2.1.2.1. Number of actual students admitted from the reserved categories year - wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Copy of letter issued by state govt. or Central Government indicating the reserved categories to be considered as per the state rule (in English as applicable)",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv212/2.1.2 PROVIDE COPY OF THE LETTER ISSUED BY GOVERNMENT NEW.pdf"
+                  },
+                  {
+                    "name": "Number of seats year wise earmarked for the reserved categories",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv212/2.1.2 - 2018-19 -  NUMBER OF SEATS FOR THE RESERVED CATEGORIES.pdf"
+                  },
+                  {
+                    "name": "Admission extract submitted to the state OBC, SC and ST cell every year of the students (first year admission / lateral entry admission) with seal and signature of the principal",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv212/2.1.2 - 2018-19 ADMISSION EXTRACT SUBMITTED TO THE STATE OBC SC.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "DVV-3.6",
+            "title": "2.1.2.2. Number of seats earmarked for reserved category as per GOI/ State Govt rule year wise during the last five years",
+            "documents": []
+          },
+          {
+            "number": "2.2.1",
+            "title": "Student – Full time Teacher Ratio",
+            "documents": []
+          },
+          {
+            "number": "DVV-3.8",
+            "title": "(Data for the latest completed academic year)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Number of Students for the Year 2022-23",
+                    "year": "1086",
+                    "url": "/documents/dvv/dvv221/2.2.1-NUMBER OF STUDENTS FOR THE YEAR 2022-23.pdf"
+                  },
+                  {
+                    "name": "Number of Full time Teachers for the Year 2022-23",
+                    "year": "42",
+                    "url": "/documents/dvv/dvv221/2.2.1-NUMBER OF FULL TIME TEACHERS FOR THE YEAR 2022-23.pdf"
+                  },
+                  {
+                    "name": "Student – Full time Teacher Ratio",
+                    "year": "25.85 :1",
+                    "url": "/documents/dvv/dvv221/2.2.1 - STUDENT FULL TIME RATIO.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.4.1",
+            "title": "Percentage of full-time teachers against sanctioned posts during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-3.10",
+            "title": "2.4.1.1. Number of Sanctioned posts year wise during the last five years:",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Sanction letters (in English) indicating number of posts (including Management sanctioned posts) by competent authority",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv241/2.4.1 - 2018-19 SANCTIONED LETTERS INDICATING NUMBER OF POSTS.pdf"
+                  },
+                  {
+                    "name": "No. of Full time Teachers Filled in the last Five Years",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv241/2.4.1 NUMBER OF FULL TIME TEACHERS FILLED IN FIVE YEARS.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.4.2",
+            "title": "Percentage of full time teachers with NET/SET/SLET/ Ph. D. / D.M. / M.Ch. / D.N.B Superspeciality / D.Sc. / D.Litt. during the last five years (consider only highest degree for count)",
+            "documents": []
+          },
+          {
+            "number": "DVV-3.12",
+            "title": "2.4.2.1. Number of full time teachers with NET/SET/SLET/Ph. D. / D.M. / M.Ch. / D.N.B Superspeciality / D.Sc. / D.Litt. year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of faculties with highest degree should be provided as per academic session wise along with particulars of degree awarding university, subject and the year of award.",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv242/2.4.2 - 2018-19 LIST OF FACULTY WITH HIGHEST DEGREE.pdf"
+                  },
+                  {
+                    "name": "Doctorate Degree / Provisional Degree Certificate awarded by UGC recognized universities only to be considered",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv242/2.4.2 - 2018-19 - DOCTRATE DEGREE AWARNING UNIVERSITY.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.6.3",
+            "title": "Pass percentage of Students during last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-3.14",
+            "title": "2.6.3.1. Number of final year students who passed the university examination year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Result Sheet published by the affiliating university",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv263/2.6.3 - 2018-19 RESULT SHEET PUBLISHED BY AFFILIATING UNIVERSITY.pdf"
+                  },
+                  {
+                    "name": "Certified report from Head of the institution / Controller of Examination of the affiliating university indicating pass percentage of students of the final year (final semester) eligible for the degree program- wise",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv263/2.6.3 - 2018-19 CERTIFIED REPORT FROM THE CONTROLLER OF THE EXAMINATION.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "DVV-3.15",
+            "title": "2.6.3.2. Number of final year students who appeared for the university examination year-wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "DVV-4",
+        "title": "CRITERIA – 3",
+        "metrics": [
+          {
+            "number": "3.1.1",
+            "title": "Grants received from Government and non-governmental agencies for research projects / endowments in the institution during the last five years (INR in Lakhs)",
+            "documents": []
+          },
+          {
+            "number": "DVV-4.2",
+            "title": "3.1.1.1. Total Grants from Government and non-governmental agencies for research projects , endowments, Chairs in the institution during the last five years (INR in Lakhs)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of grants for research projects received during the assessment years along with the nature of the award, and the awarding agency with amount.",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv311/3.1.1 -list of Grants.pdf"
+                  },
+                  {
+                    "name": "Links to the e-copies of the sanctioned letters for the year",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv311/3.1.1 -list of E- copies.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.2.2",
+            "title": "Number of workshops/seminars/conferences including on Research Methodology, Intellectual Property Rights (IPR) and entrepreneurship conducted during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-4.4",
+            "title": "3.2.2.1. Total number of workshops/seminars/conferences including programs conducted on Research Methodology, Intellectual Property Rights (IPR) and entrepreneurship year wise during last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Brochure/Geo tagged Photograph with date and captions; title of the Workshops / Seminars conducted",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv322/3.2.2 18-19b.pdf"
+                  },
+                  {
+                    "name": "Link to the detailed report for each program",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv322/3.2.2 - 18-19l.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.3.1",
+            "title": "Number of research papers published per teacher in the Journals notified on UGC care list during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-4.6",
+            "title": "3.3.1.1. Number of research papers in the Journals notified on UGC CARE list year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Link landing to the research paper",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv331/3.3.1 -  01 Link Loading to the research paper.pdf"
+                  },
+                  {
+                    "name": "Link to the journal website",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv331/3.3.1 -  02 Link to the journal website.pdf"
+                  },
+                  {
+                    "name": "URL of the content page in case print journal",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv331/3.3.1 -  03 URL of the content page.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.3.2",
+            "title": "Number of books and chapters in edited volumes/books published and papers published in national/ international conference proceedings per teacher during last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-4.8",
+            "title": "3.3.2.1. Total number of books and chapters in edited volumes/books published and papers in national/ international conference proceedings year wise during last five years:",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Cover page, content page and first page of the publication",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv332/3.3.2 final cover page.pdf"
+                  },
+                  {
+                    "name": "Web-link of books",
+                    "year": "2018-19 to 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Dr. J. Pratapa Reddy",
+                        "year": "Inverse Rayleigh Distribution-Reliability and Quality Control Methods",
+                        "url": "/documents/dvv/dvv332/3.3.2 weblink of books-1.pdf"
+                      },
+                      {
+                        "name": "Mr. D. Simon",
+                        "year": "Research and Development in Medical Sciences",
+                        "url": "/documents/dvv/dvv332/3.3.2 weblink of books-2.pdf"
+                      },
+                      {
+                        "name": "G. Margaret Priyanka",
+                        "year": "Research and Development in Medical Sciences",
+                        "url": "/documents/dvv/dvv332/3.3.2 weblink of books-3.pdf"
+                      },
+                      {
+                        "name": "Dr. V. Vani",
+                        "year": "Online Business Strategies, Strategic Planning Process - Procurement, Logistics and Supply Chain Management, Customer Relationship Management",
+                        "url": "/documents/dvv/dvv332/3.3.2 weblink of books-4.pdf"
+                      },
+                      {
+                        "name": "Dr. V. Vani",
+                        "year": "Assessment Personality, Projective and Self Report Techniques, Building Self Confidence, Enhancing Personality Skills",
+                        "url": "/documents/dvv/dvv332/3.3.2 weblink of books-5.pdf"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.4.3",
+            "title": "Number of extension and outreach programs conducted by the institution through NSS/NCC/Red cross/YRC etc., (including the programmes such as Swachh Bharat, AIDS awareness, Gender issues etc. and/or those organised in collaboration with industry, community and NGOs) during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-4.10",
+            "title": "3.4.3.1. Number of extension and outreach Programs conducted in collaboration with industry, community, and Non- Government Organizations through NSS/ NCC/ Red Cross/ YRC etc., year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Links / Uploads of Photographs (preferably with banner)",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv343/3.4.3 - Links  Uploads of Photographs (preferably with banner).pdf"
+                  },
+                  {
+                    "name": "Link to the journal website",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv343/3.4.3 - 18-19.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.5.1",
+            "title": "Number of functional MoUs/linkages with institutions/ industries in India and abroad for internship, on-the-job training, project work, student / faculty exchange and collaborative research during the last five years.",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Copies of MoUs/ collaboration/ related documents indicating the nature of collaboration and activities",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv351/3.5.1 - Copies of MoUs-18-19.pdf"
+                  },
+                  {
+                    "name": "List of activities conducted under each MoU along with dates of starting and completion year-wise signed by both parties",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv351/3.5.1 - List of activities -18-19.pdf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "DVV-5",
+        "title": "CRITERIA – 4",
+        "metrics": [
+          {
+            "number": "4.1.2",
+            "title": "Percentage of expenditure, excluding salary for infrastructure augmentation during last five years (INR in Lakhs)",
+            "documents": []
+          },
+          {
+            "number": "DVV-5.2",
+            "title": "4.1.2.1. Expenditure for infrastructure augmentation, excluding salary during the last five years (INR in lakhs)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Consolidated fund allocation towards infrastructure augmentation facilities duly certified by Principal and CA",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv412/4.1.2 2018-19 -2022-23.pdf"
+                  },
+                  {
+                    "name": "Highlighted the relevant items in the audited income and expenditure statement",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv412/4.1.2 2020-2021.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "4.3.2",
+            "title": "Student – Computer ratio (Data for the latest completed academic year)",
+            "documents": []
+          },
+          {
+            "number": "DVV-5.4",
+            "title": "4.3.2.1. Number of computers available for students usage during the latest completed academic year:",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Bills for the purchase of Computers",
+                    "year": "2022-23",
+                    "url": "/documents/dvv/dvv432/purchase bills.pdf"
+                  },
+                  {
+                    "name": "Stock Entry of Computers allotted for Student Use",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv432/stock register.pdf"
+                  },
+                  {
+                    "name": "Student Computer Ratio",
+                    "year": "12:1",
+                    "url": "/documents/dvv/dvv432/4.3.2 Student Computer Ratio.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "4.4.1",
+            "title": "Infrastructure (physical and academic support facilities) excluding salary component during the last five years (INR in Lakhs)",
+            "documents": []
+          },
+          {
+            "number": "DVV-5.6",
+            "title": "4.4.1.1. Expenditure incurred on maintenance of infrastructure (physical facilities and academic support facilities) excluding salary component year wise during the last five years (INR in Lakhs)",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Audited income and expenditure statement highlighting the items of expenditure incurred on maintenance of physical facilities and academic support facilities, duly certified by Principal and CA",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv441/4.4.1 2020-2021.pdf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "DVV-6",
+        "title": "CRITERIA – 5",
+        "metrics": [
+          {
+            "number": "5.1.1",
+            "title": "Percentage of students benefited by scholarships and freeships provided by the Government and Non-Government agencies during last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.2",
+            "title": "5.1.1.1. Number of students benefited by scholarships and freeships provided by the Government and Non-Government agencies year wise during last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Upload sanction letter of scholarship and free-ships",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv511/5.1.1 Sanction Letters.pdf"
+                  },
+                  {
+                    "name": "Year-wise list of students in each scheme",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv511/5.1.1 Year Wise List of Students 2020-21.pdf"
+                  },
+                  {
+                    "name": "Upload policy document of the HEI for award of Non-government scholarship and free-ships",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv511/5.1.1 Policy Document of HEI.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.1.2",
+            "title": "Capacity building and skills enhancement initiatives taken by the institution include the following",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.4",
+            "title": "1. Soft skills2. Language and communication skills3. Life skills (Yoga, physical fitness, health and hygiene)4. ICT/computing Skills",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Soft copy of Circular / Brochure",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv512/5.1.2 Brochures.pdf"
+                  },
+                  {
+                    "name": "Web-link to particular Program/ Scheme / Report of the event",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv512/5.1.2 web link-2018-19.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.1.3",
+            "title": "Percentage of students benefitted by guidance for competitive examinations and career counseling offered by the Institution during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.6",
+            "title": "5.1.3.1. Number of students benefitted by guidance for competitive examinations and career counseling offered by the institution year wise during last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Soft copy of Circular / brochure / report of program with photographs with captions of such programs along with details of the resource persons",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv513/5.1.3 Soft Copy of Circular andReports 2020-21.pdf"
+                  },
+                  {
+                    "name": "Year-wise list of students attending these schemes, signed by competent authority",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv513/5.1.3 Year wise list of students-2020-21.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.1.4",
+            "title": "The institution adopts the following for redressal of student grievances including sexual harassment and ragging cases",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.8",
+            "title": "1. Implementation of guidelines of statutory/regulatory bodies 2. Organization wide awareness and undertakings on policies with zero tolerance3. Mechanisms for submission of online/offline students’ grievances 4. Timely redressal of the grievances through appropriate committees",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Proof of constitution of Internal committees / Grievances Committee formation / other committees as per UGC norms",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv514/5.1.4 Proof of Constitution of internal Committees.pdf"
+                  },
+                  {
+                    "name": "Minutes of the meetings of student grievance committee, as per metric for the year 2022-23",
+                    "year": "2022-23",
+                    "url": "/documents/dvv/dvv514/5.1.4 Minutes of Meetings of Student Grievance.pdf"
+                  },
+                  {
+                    "name": "Circular/web-link/ Committee report justifying the objective of the metric",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv514/5.1.4 Annual Reports.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.2.1",
+            "title": "Percentage of placement of outgoing students and students progressing to higher education during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.10",
+            "title": "5.2.1.1. Number of outgoing students placed and / or progressed to higher education year wise during the last five years. Number of outgoing students year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of students placed along with placement details as per template year wise",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv521/5.2.1 List of students placed.pdf"
+                  },
+                  {
+                    "name": "Supporting data for students who have joined for higher education in prescribed format for the assessment period",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv521/5.2.1 Higher Education 2020-21.pdf"
+                  },
+                  {
+                    "name": "Links/documents relating to placement cell such as brochures, tie-ups etc.,",
+                    "year": "Brochure",
+                    "url": "/documents/dvv/dvv521/5.2.1 Placement Brochure.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.2.2",
+            "title": "Percentage of students qualifying in state/national/ international level examinations during the last five years (eg: JAM/CLAT/GATE/ GMAT/ CAT/ GRE/ TOEFL/ Civil Services/State government examinations)",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.12",
+            "title": "5.2.2.1. Number of students qualifying in state/ national/ international level examinations (eg: JAM/CLAT/NET/ SLET/ GATE/ GMAT/CAT/GRE/ TOEFL/ Civil Services/ Judicial Services/Public Prosecution services/All India Bar Exams/State government examinations) year wise during last five years.",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of qualified students year- wise under each category",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv522/5.2.2 List of Srtudents Qualified.pdf"
+                  },
+                  {
+                    "name": "Qualifying Certificates of the students for the years",
+                    "year": "2021-22",
+                    "url": "/documents/dvv/dvv522/5.2.2 Qualified Certificates 2021-22 DVV.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "DVV-6.13",
+            "title": "Number of students appearing in state/ national/ international level examinations (eg: JAM / CLAT / NET / SLET / GATE / GMAT / CAT, GRE / TOFEL / Civil Services / State government examinations) year wise during last five years",
+            "documents": []
+          },
+          {
+            "number": "5.3.1",
+            "title": "Number of awards/medals for outstanding performance in sports/ cultural activities at University / state/ national / international level (award for a team event should be counted as one) during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.15",
+            "title": "5.3.1.1. Number of awards/medals for outstanding performance in sports / cultural activities at national/international level (award for a team event should be counted as one) year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "E-copies of award letters and certificates",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv531/5.3.1 e-copies and Certificates 2020-21.pdf"
+                  },
+                  {
+                    "name": "List of Students",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv531/5.3.1 List of Students.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.3.2",
+            "title": "Average number of sports and cultural programs in which students of the Institution participated during last five years (organized by the institution/other institutions)",
+            "documents": []
+          },
+          {
+            "number": "DVV-6.17",
+            "title": "5.3.2.1. Number of sports and cultural programs in which students of the Institution participated year wise during last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of events along with list of participants year wise",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv532/5.3.2 List of Events 2020-21.pdf"
+                  },
+                  {
+                    "name": "Soft copy of circular/brochure indicating such kind of activities.",
+                    "year": "2020-21",
+                    "url": "/documents/dvv/dvv532/5.3.2 Circulars 2020-21.pdf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "DVV-7",
+        "title": "CRITERIA – 6",
+        "metrics": [
+          {
+            "number": "6.2.2",
+            "title": "Implementation of e-governance in areas of operation",
+            "documents": []
+          },
+          {
+            "number": "DVV-7.2",
+            "title": "1. Administration2. Finance and Accounts 3. Student Admission and Support4. Examination",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Institutional expenditure statements for the heads of e- Governance implementation reflected in the audited statement",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv622/6.2.2 Institutional expenditure Statements for the Budget heads of e-governance implementation ERP documents.pdf"
+                  },
+                  {
+                    "name": "Annual e-Governance report approved by Governing Council",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv622/6.2.2 Annual E- governance Report approved By the management.pdf"
+                  },
+                  {
+                    "name": "Link to the ERP Document and Screen shots of user interfaces of each module reflecting the name of the HEI",
+                    "year": "2022-23",
+                    "url": "/documents/dvv/dvv622/6.2.2 Screen Shots of user Interfaces on each module_compressed.pdf"
+                  },
+                  {
+                    "name": "Policy document on e- governance for the year 2022-23",
+                    "year": "2022-23",
+                    "url": "/documents/dvv/dvv622/6.2.2 E- governance policy for the Academic year 2022-23.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "6.3.2",
+            "title": "Percentage of teachers provided with financial support to attend conferences/workshops and towards membership fee of professional bodies during the last five years",
+            "documents": []
+          },
+          {
+            "number": "DVV-7.4",
+            "title": "6.3.2.1. Number of teachers provided with financial support to attend conferences/workshops and towards membership fee of professional bodies year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Link to the policy document",
+                    "url": "/documents/dvv/dvv632/6.3.2 Policy Document On providing Financial support to teachers.pdf"
+                  },
+                  {
+                    "name": "e-copy of letter/s indicating financial assistance to teachers",
+                    "url": "/documents/dvv/dvv632/6.3.2Copy of Letters Indicating Financial assistance to Teachers.pdf"
+                  },
+                  {
+                    "name": "List of teachers receiving financial support year wise under each head signed by the principal",
+                    "url": "/documents/dvv/dvv632/6.3.2 list of faculty receivinf financial support to teachers.pdf"
+                  },
+                  {
+                    "name": "Audited statement of account highlighting the financial support for the year 2022-23",
+                    "url": "/documents/dvv/dvv632/6.3.2 Audited Statements of highligting the programs.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "6.3.3",
+            "title": "Number of non-teaching staff year wise during the last five years",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Event Brochures for FDP, MDP & Training Programs- Year wise",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv633/6.3.3 Event Brochures for FDP MDP & Training Programs- Year wise.pdf"
+                  },
+                  {
+                    "name": "Report for FDP , MDP & Training Programs- Year wise",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv633/6.3.3 Report for FDP MDP & Training Programs- Year wise.pdf"
+                  },
+                  {
+                    "name": "e-copy of the certificates of the program attended by teaching staff & Non-teaching staff",
+                    "year": "2018-19 to 2022-23",
+                    "url": "/documents/dvv/dvv633/6.3.3 e - copy of the certificates of the program attended by teaching staff & Non-teaching staff.pdf"
+                  },
+                  {
+                    "name": "List of participating Teaching staff & Non-teaching staff as per the prescribed format year wise during the last five years",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv633/6.3.3 List of participating Teaching staff & Non-teaching staff 2018-19.pdf"
+                  },
+                  {
+                    "name": "Annual reports highlighting the programs undertaken by the teaching faculties",
+                    "year": "2018-19",
+                    "url": "/documents/dvv/dvv633/6.3.3 Annual Report 2018-19.pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "6.5.2",
+            "title": "Quality assurance initiatives of the institution include:",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Proceedings of meetings of IQAC and action taken report on feedback analysis",
+                    "year": "2022-23",
+                    "url": "/documents/dvv/dvv652/6.5.2 IQAC PROCEEDING MINUTES AND ACTION TAKEN.pdf"
+                  },
+                  {
+                    "name": "Supporting document links to be provided as per the options selected for the year 2022-23",
+                    "year": "2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Link to Minute of IQAC meetings, hosted on HEI web site",
+                        "year": "2018-19",
+                        "url": "/documents/dvv/dvv652s/IQAC  Meeting Minutes 2018-19.pdf"
+                      },
+                      {
+                        "name": "NIRF Report,AAA Report and details on follow up Actions",
+                        "url": "",
+                        "subDocuments": [
+                          {
+                            "name": "Download",
+                            "url": "/documents/naac/nirf/2025/COLLEGE.pdf"
+                          },
+                          {
+                            "name": "Management",
+                            "url": "/documents/naac/nirf/2025/MANAGEMENT.pdf"
+                          },
+                          {
+                            "name": "Over All",
+                            "url": "/documents/naac/nirf/2025/OVERALL.pdf"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Quality audit Reports/Certificate as applicable and valid forthe assessment period",
+                        "url": "/documents/dvv/dvv652s/6.5.2 Quality audit Reports.pdf"
+                      },
+                      {
+                        "name": "List of Collaborative Quality Initiatives with other Institutions along with Brochures and Geo-tagged photos with caption and date",
+                        "url": "/documents/dvv/dvv652s/6.5.2 list of colloborative activities.pdf"
+                      },
+                      {
+                        "name": "Any other Quality Audit/Accreditation Recognized by State, National or International Agencies such as NAAC,NBA etc.",
+                        "url": "/documents/dvv/dvv652s/6.5.2 Any Other Quality audit reports.pdf"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "DVV-7.7",
+            "title": "1. Regular meeting of Internal Quality Assurance Cell (IQAC); quality improvement initiatives identified and implemented2. Academic and Administrative Audit (AAA) and follow-up action taken 3. Collaborative quality initiatives with other institution(s)4. Participation in NIRF and other recognized rankings5. Any other quality audit/accreditation recognized by state, national or international agencies such as NAAC, NBA etc.",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "DVV-8",
+        "title": "CRITERIA – 7",
+        "metrics": [
+          {
+            "number": "7.1.2",
+            "title": "The Institution has facilities and initiatives for",
+            "documents": []
+          },
+          {
+            "number": "DVV-8.2",
+            "title": "1.Alternate sources of energy and energy conservation measures 2. Management of the various types of degradable and non-degradable waste3. Water conservation4. Green campus initiatives5. Disabled-friendly, barrier free environment",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Link to the policy documents of the Institution",
+                    "url": "/documents/dvv/dvv712/7.1.2 Policy document.pdf"
+                  },
+                  {
+                    "name": "Geo tagged photographs and videos of the facilities with caption",
+                    "url": "/documents/dvv/dvv712/Geo-photos.pdf",
+                    "subDocuments": [
+                      {
+                        "name": "SOLID WASTE MANAGEMENT - SHORT FILM",
+                        "url": "/documents/naac/c7/c7-712/videos/VID-20240114-WA0016.mp4"
+                      },
+                      {
+                        "name": "SANKRANTI CELEBRATIONS",
+                        "url": "/documents/naac/c7/c7-712/videos/VID-20240213-WA0002.mp4"
+                      },
+                      {
+                        "name": "SANKRANTI CELEBRATIONS",
+                        "url": "/documents/naac/c7/c7-712/videos/VID-20240212-WA0010.mp4"
+                      },
+                      {
+                        "name": "SANKRANTI CELEBRATIONS",
+                        "url": "/documents/naac/c7/c7-712/videos/VID-20240212-WA0010 (2).mp4"
+                      },
+                      {
+                        "name": "RAIN WATER HARVESTING",
+                        "url": "/documents/naac/c7/c7-712/videos/VID-20240213-WA0003.mp4"
+                      },
+                      {
+                        "name": "RAIN WATER HARVESTING",
+                        "url": "/documents/naac/c7/c7-712/videos/VID-20240212-WA0008.mp4"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Bills for the purchase of equipment’s for the facilities created",
+                    "url": "/documents/dvv/dvv712/Allbills _pdf.pdf"
+                  },
+                  {
+                    "name": "Photographs of Ramps / rails/lift/wheel Chair/signage board /Toilet/ software etc. for the year 2022-23 caption",
+                    "url": "/documents/dvv/dvv712/photographs of-Ramps -lift (1).pdf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "7.1.3",
+            "title": "Quality audits on environment and energy regularly undertaken by the Institution. The institutional environment and energy initiatives are confirmed through the following",
+            "documents": []
+          },
+          {
+            "number": "DVV-8.4",
+            "title": "1. Green audit / Environment audit2. Energy audit 3. Clean and green campus initiatives 4. Beyond the campus environmental promotion activities",
+            "documents": [
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Policy document on environment and energy usage",
+                    "url": "/documents/dvv/dvv713/7.1.3 Policyonenvironment.pdf"
+                  },
+                  {
+                    "name": "Action taken reports and achievement report as clear and Green campus initiatives",
+                    "url": "/documents/dvv/dvv713/7.1.3 action taken-clean and green.pdf"
+                  },
+                  {
+                    "name": "Green Audit Report",
+                    "url": "/documents/dvv/dvv713/7.1.3 Green Audit Report.pdf"
+                  },
+                  {
+                    "name": "Certificate from the auditing agency",
+                    "url": "/documents/dvv/dvv713/certificates.pdf"
+                  },
+                  {
+                    "name": "Geo tagged Photographs",
+                    "url": "/documents/dvv/dvv713/7.1.3Geo tagged photos-1.pdf"
+                  },
+                  {
+                    "name": "Supporting document for beyond the campus environmental promotions for the year 2022-23",
+                    "url": "/documents/dvv/dvv713/7.1.3 beyond the campus environmental promotion activities.pdf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Core Documents - Core Documents",
+    "sections": [
+      {
+        "number": "Core",
+        "title": "Core Institutional Reports",
+        "metrics": [
+          {
+            "number": "IIQA",
+            "title": "Institutional Information for Quality Assessment (IIQA)",
+            "documents": [
+              {
+                "label": "Institutional Information for Quality Assessment (IIQA) PDF",
+                "documentUrl": "/documents/naac/IIQA.pdf"
+              }
+            ]
+          },
+          {
+            "number": "SSR",
+            "title": "Self Study Report (SSR)",
+            "documents": [
+              {
+                "label": "Self Study Report (SSR) Cycle-I PDF",
+                "documentUrl": "/documents/naac/ssr.pdf"
+              }
+            ]
+          },
+          {
+            "number": "DVV-R",
+            "title": "DVV Clarifications Report",
+            "documents": [
+              {
+                "label": "DVV Report PDF",
+                "documentUrl": "/documents/dvv/DVV-REPORT.pdf"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "SD",
+        "title": "Self-Declaration and Undertaking",
+        "metrics": [
+          {
+            "number": "SD-1",
+            "title": "Self-Declaration and Undertaking Portfolios",
+            "documents": [
+              {
+                "label": "DESCRIPRION",
+                "documentUrl": ""
+              },
+              {
+                "label": "SELF DECLARATION [ 11-01-2024 ]",
+                "documentUrl": "/documents/naac/sd/self-declaration-11-01-2024.pdf"
+              },
+              {
+                "label": "UNDERTAKING",
+                "documentUrl": "/documents/naac/sd/undertaking.pdf"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
