@@ -15,6 +15,7 @@
     "@prisma/client": "^5.22.0",
     "@sanity/client": "^7.22.0",
     "@supabase/supabase-js": "^2.45.0",
+    "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",

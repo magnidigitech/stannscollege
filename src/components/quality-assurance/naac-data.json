@@ -1,0 +1,4497 @@
+[
+  {
+    "id": 1,
+    "title": "Criterion I - Curricular Aspects",
+    "sections": [
+      {
+        "number": "1.1",
+        "title": "- Curriculum Planning and Implementation",
+        "metrics": [
+          {
+            "number": "1.1.1",
+            "title": "- The Institution ensures effective curriculum planning and delivery through a well-planned and documented process including Academic calendar and conduct of continuous internal Assessment",
+            "documents": [
+              {
+                "label": "Upload Additional Information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional Information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Curriculum Planning",
+                    "year": "Departmental Meeting Minutes",
+                    "url": "/documents/naac/c1/c1-111/1.1.1"
+                  },
+                  {
+                    "name": "Curriculum Implementation",
+                    "year": "Bridge Courses",
+                    "url": "/documents/naac/c1/c1-111/1.1.1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "1.2",
+        "title": "- Academic Flexibility",
+        "metrics": [
+          {
+            "number": "1.2.1",
+            "title": "- Number of Certificate/Value added courses offered and online courses of MOOCs, SWAYAM, NPTEL etc.",
+            "documents": [
+              {
+                "label": "Upload Additional Information",
+                "documentUrl": "/documents/naac/c1/c1-121/1.2.1"
+              },
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "/documents/naac/c1/c1-121/1.2.1-provide"
+              },
+              {
+                "label": "List of students and the attendance sheet for the above mentioned programs",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "STUDENT ATTENDANCE 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Tax Procedures(Add-on Course)",
+                        "year": "151",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-2023"
+                      },
+                      {
+                        "name": "Medical Coding (Certificate Course)",
+                        "year": "74",
+                        "url": "/documents/naac/c1/c1-121/2022-23/1.2.1"
+                      },
+                      {
+                        "name": "Clinical Laboratory Science(Add-on Course)",
+                        "year": "28",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "Medical Laboratory Technology(Add-on Course)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "Radio Isotopes in Nuclear Chemistry(Certificate Course)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "Material Science(Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022_23"
+                      },
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Cosmetology(Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Fashion Designing (Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Applications on Statistical Quality Control(Add-on Course)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Data Science (Online Certificate Course)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Amazon Web Services(Online Certificate Course)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Master Class on Web Development Using React JS(Online Certificate Course)",
+                        "year": "6",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "50",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Vedic Maths(Certificate Course)",
+                        "year": "180",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Computer Networks(Online Certificate Course)",
+                        "year": "8",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "C Programming(Online Certificate Course)",
+                        "year": "15",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "Web Designing(Certificate Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "E-Commerce(Certificate Course)",
+                        "year": "66",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "74",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "60",
+                        "url": "/documents/naac/c1/c1-121/2022-23/22-23"
+                      },
+                      {
+                        "name": "Managing People in an Organization (MOOCS)",
+                        "year": "4",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Operating a Business Organization (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "14",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Computer Networks (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121/2022-23/2022-23"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "STUDENT ATTENDANCE 2021-22",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Tally with GST (Add-on Course)",
+                        "year": "70",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-2022"
+                      },
+                      {
+                        "name": "Vedic Maths (Certificate Course)",
+                        "year": "90",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Medical Coding (Certificate Course)",
+                        "year": "45",
+                        "url": "/documents/naac/c1/c1-121/2021-22/1.2.1"
+                      },
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Water Resources and Treatment (Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121/2021-22/21-22water"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Statistical Tools for Research Methodology",
+                        "year": "50",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-22Rresearch"
+                      },
+                      {
+                        "name": "Web Designing (Certificate Course)",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-121/2021-22/21-22"
+                      },
+                      {
+                        "name": "Social Media Marketing (Certificate Course)",
+                        "year": "54",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Soft Skills (Value Added Course)",
+                        "year": "300",
+                        "url": "/documents/naac/c1/c1-121/2021-22/21-22"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "52",
+                        "url": "/documents/naac/c1/c1-121/2021-22/21-22"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-121/2021-22/21-22"
+                      },
+                      {
+                        "name": "Communicative English (MOOCS)",
+                        "year": "10",
+                        "url": "/documents/naac/c1/c1-121/2021-22/2021-22"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "STUDENT ATTENDANCE 2020-21",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Social Media Marketing (Certificate Course)",
+                        "year": "23",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Vedic Maths(Certificate Course)",
+                        "year": "65",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-2021"
+                      },
+                      {
+                        "name": "Soft Skills (Value Added Course)",
+                        "year": "280",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "19",
+                        "url": "/documents/naac/c1/c1-121/2020-21/20-21"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "51",
+                        "url": "/documents/naac/c1/c1-121/2020-21/20-21"
+                      },
+                      {
+                        "name": "Financial Reporting (MOOCS)",
+                        "year": "6",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Consumer Behaviour and Market Research (MOOCS)",
+                        "year": "17",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Enterprise Resource Planning (MOOCS)",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Cost and Management Accounting (MOOCS)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121/2020-21/2020-21"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "STUDENT ATTENDANCE 2019-20",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Vedic Maths (Certificate Course)",
+                        "year": "166",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Tally with GST(Add-on Course)",
+                        "year": "38",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-2020"
+                      },
+                      {
+                        "name": "Web Designing (Certificate Course)",
+                        "year": "26",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-2020"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "66",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "E-Commerce (Certificate Course)",
+                        "year": "53",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Soft Skills (Value added course)",
+                        "year": "300",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "10",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Business Communication (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS) MBA",
+                        "year": "55",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Consumer Behaviour and Market Research (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "33",
+                        "url": "/documents/naac/c1/c1-121/2019-20/19-20CONCEPT"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "STUDENT ATTENDANCE 2018-19",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Tally with GST (Add-on Course)",
+                        "year": "89",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-2019Tally"
+                      },
+                      {
+                        "name": "Vedic Mathematics (Certificate Course)",
+                        "year": "145",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Web Designing (Certificate Course)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "E-Commerce (Certificate Course)",
+                        "year": "41",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Soft Skills (Value-added Course)",
+                        "year": "294",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "42",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Business Communication (MOOCS)",
+                        "year": "31",
+                        "url": "/documents/naac/c1/c1-121/2018-19/2018-19"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": "Programme brochure/notice for Certificate/Value added programs with course modules and outcomes",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "BROCHURE/ NOTICES, COURSE OUTCOMES & MODULES 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Tax Procedures(Add-on Course)",
+                        "year": "151",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Medical Coding (Certificate Course)",
+                        "year": "74",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Clinical Laboratory Science(Add-on Course)",
+                        "year": "28",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Medical Laboratory Technology(Add-on Course)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Radio Isotopes in Nuclear Chemistry(Certificate Course)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23radio"
+                      },
+                      {
+                        "name": "Material Science(Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Cosmetology(Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Fashion Designing(Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Applications on Statistical Quality Control(Add-on Course)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Data Science (Online Certificate Course)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Amazon Web Services(Online Certificate Course)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Master Class on Web Development Using React (Online Certificate Course)",
+                        "year": "6",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "50",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Vedic Mathematics(Certificate Course))",
+                        "year": "180",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "C Programming (Online Certificate Course)",
+                        "year": "15",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Web Designing(Certificate Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "E-Commerce(Certificate Course)",
+                        "year": "66",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "74",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "60",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "14",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Managing People in an Organization (MOOCS)",
+                        "year": "4",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Operating a Business Organization (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Computer Networks (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121b/2022-23/22-23"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "BROCHURE/ NOTICES, COURSE OUTCOMES & MODULES 2021-22",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Tally with GST (Add-on Course)",
+                        "year": "70",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-2022"
+                      },
+                      {
+                        "name": "Vedic Maths (Certificate Course)",
+                        "year": "90",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Medical Coding (Certificate Course)",
+                        "year": "45",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/21-22"
+                      },
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Water Resources and Treatment (Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/21-22"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Statistical Tools for Research Methodology(Add-on Course)",
+                        "year": "50",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Web Designing (Certificate Course)",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Social Media Marketing (Certificate Course)",
+                        "year": "54",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Soft Skills (Value-added Course)",
+                        "year": "300",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "52",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/21-22"
+                      },
+                      {
+                        "name": "Communicative English (MOOCS)",
+                        "year": "10",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/21-22"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-121b/2021-22/21-22"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "BROCHURE/ NOTICES, COURSE OUTCOMES & MODULES 2020-21",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Social Media Marketing (Certificate Course)",
+                        "year": "23",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Vedic Mathematics (Certificate Course)",
+                        "year": "65",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/2020-2021"
+                      },
+                      {
+                        "name": "Soft Skills (Value-added Course)",
+                        "year": "280",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "19",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "51",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Financial Reporting (MOOCS)",
+                        "year": "6",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Enterprise Resource Planning (MOOCS)",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Consumer Behaviour and Market Research (MOOCS)",
+                        "year": "17",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      },
+                      {
+                        "name": "Cost and Management Accounting (MOOCS)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121b/2020-21/20-21"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "BROCHURE/ NOTICES, COURSE OUTCOMES & MODULES 2019-20",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Vedic Mathematics (Certificate Course)",
+                        "year": "166",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Tally with GST (Add-on Course)",
+                        "year": "38",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/2019-2020"
+                      },
+                      {
+                        "name": "Web Designing (Certificate Course)",
+                        "year": "26",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "66",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/2019-20"
+                      },
+                      {
+                        "name": "E-Commerce (Certificate Course)",
+                        "year": "53",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      },
+                      {
+                        "name": "Soft Skills (Value-added Course)",
+                        "year": "300",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/2019-20"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "10",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      },
+                      {
+                        "name": "Business Communication (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      },
+                      {
+                        "name": "Consumer Behaviour and Market Research (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "33",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20CONCEPT"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "52",
+                        "url": "/documents/naac/c1/c1-121b/2019-20/19-20"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "BROCHURE/ NOTICES, COURSE OUTCOMES & MODULES 2018-19",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Tally with GST (Add-on-Course)",
+                        "year": "89",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-2019"
+                      },
+                      {
+                        "name": "Vedic Maths(Certificate Course)",
+                        "year": "145",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Web Designing(Certificate Course)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "E-Commerce (Certificate Course)",
+                        "year": "41",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Soft Skills (Value-added Course)",
+                        "year": "294",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "42",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      },
+                      {
+                        "name": "Business Communication (MOOCS)",
+                        "year": "31",
+                        "url": "/documents/naac/c1/c1-121b/2018-19/2018-19"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": "Evidence of course completion, like course completion certificate etc.",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "COURSE COMPLETION CERTIFICATES 2022-23",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Tax Procedures(Add-on Course)",
+                        "year": "151",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-2023"
+                      },
+                      {
+                        "name": "Medical Coding (Certificate Course)",
+                        "year": "74",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23-MEDICAL"
+                      },
+                      {
+                        "name": "Clinical Laboratory Science(Add-on Course)",
+                        "year": "28",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Medical Laboratory Technology(Add-on Course)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Radio Isotopes in Nuclear Chemistry(Certificate Course)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022_23"
+                      },
+                      {
+                        "name": "Material Science(Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Cosmetology(Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Fashion Designing(Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/fashion"
+                      },
+                      {
+                        "name": "Applications on Statistical Quality Control(Add-on Course)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/stat-qc-certificates.pdf"
+                      },
+                      {
+                        "name": "Data Science (Online Certificate Course)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Amazon Web Services(Online Certificate Course)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Master Class on Web Development Using React JS(Online Certificate Course)",
+                        "year": "6",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/Master"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "50",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/Art"
+                      },
+                      {
+                        "name": "Vedic Maths(Certificate Course)",
+                        "year": "180",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Computer Networks(Online Certificate Course)",
+                        "year": "8",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-23"
+                      },
+                      {
+                        "name": "C Programming (Online Certificate Course)",
+                        "year": "15",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Web Designing(Certificate Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "E-Commerce(Certificate Course)",
+                        "year": "66",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "74",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "60",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022-23"
+                      },
+                      {
+                        "name": "Managing People in an Organization (MOOCS)",
+                        "year": "4",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/Managing"
+                      },
+                      {
+                        "name": "Operating a Business Organization (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/OBO"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "14",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/introduction"
+                      },
+                      {
+                        "name": "Computer Networks (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/22-23"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121c/2022-23/2022to2023"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "COURSE COMPLETION CERTIFICATES 2021-22",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Tally with GST (Add-on Course)",
+                        "year": "70",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/21-22"
+                      },
+                      {
+                        "name": "Vedic Maths (Certificate Course)",
+                        "year": "90",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/2021"
+                      },
+                      {
+                        "name": "Medical Coding (Certificate Course)",
+                        "year": "45",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/21-22"
+                      },
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/weed"
+                      },
+                      {
+                        "name": "Water Resources and Treatment (Certificate Course)",
+                        "year": "30",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/21-22"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/Art"
+                      },
+                      {
+                        "name": "Statistical Tools for Research Methodology(Add-on Course)",
+                        "year": "50",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/STAT-RM-CERTIFICATES-21-22.pdf"
+                      },
+                      {
+                        "name": "Web Designing (Certificate Course)",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/21-22"
+                      },
+                      {
+                        "name": "Social Media Marketing (Certificate Course)",
+                        "year": "54",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/21-22"
+                      },
+                      {
+                        "name": "Soft Skills (Value added course)",
+                        "year": "300",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/2021-2022"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "52",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/2021-22"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/2021-2022"
+                      },
+                      {
+                        "name": "Communicative English (MOOCS)",
+                        "year": "10",
+                        "url": "/documents/naac/c1/c1-121c/2021-22/communicative"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "COURSE COMPLETION CERTIFICATES 2020-21",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Social Media Marketing (Certificate Course)",
+                        "year": "23",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Vedic Maths(Certificate Course)",
+                        "year": "65",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/20-21Vedic"
+                      },
+                      {
+                        "name": "Soft Skills (Value added course)",
+                        "year": "280",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/2020-2021"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "19",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/2020-2021"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS)",
+                        "year": "51",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/2020-21"
+                      },
+                      {
+                        "name": "Financial Reporting (MOOCS)",
+                        "year": "6",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/financial"
+                      },
+                      {
+                        "name": "Consumer Behaviour and Market Research (MOOCS)",
+                        "year": "17",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/2020-21consumer"
+                      },
+                      {
+                        "name": "Enterprise Resource Planning (MOOCS)",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/ERP2020-21"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/SBM"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/Introduction"
+                      },
+                      {
+                        "name": "Cost and Management Accounting (MOOCS)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121c/2020-21/Cost"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "COURSE COMPLETION CERTIFICATES 2019-20",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Vedic Mathematics(Certificate Course)",
+                        "year": "166",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/2019"
+                      },
+                      {
+                        "name": "Web Designing(Certificate Course)",
+                        "year": "26",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/19-20"
+                      },
+                      {
+                        "name": "Art and Craft (Add-on Course)",
+                        "year": "66",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/Art"
+                      },
+                      {
+                        "name": "E-Commerce(Certificate Course)",
+                        "year": "53",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/E-commerce-certificates-19-20.pdf"
+                      },
+                      {
+                        "name": "Tally with GST(Add-on Course)",
+                        "year": "38",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/TALLY"
+                      },
+                      {
+                        "name": "Soft Skills(Value added course)",
+                        "year": "300",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/2019-2020"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "10",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/SBM"
+                      },
+                      {
+                        "name": "Business Communication (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/business"
+                      },
+                      {
+                        "name": "Introduction to Computer Science (MOOCS)",
+                        "year": "2",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/Introduction"
+                      },
+                      {
+                        "name": "Consumer Behaviour and Market Research (MOOCS)",
+                        "year": "3",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/CB"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/life"
+                      },
+                      {
+                        "name": "Concepts of C Programming (MOOCS)",
+                        "year": "33",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/2019-2020"
+                      },
+                      {
+                        "name": "Design a Data Structure (MOOCS) MCA",
+                        "year": "55",
+                        "url": "/documents/naac/c1/c1-121c/2019-20/2019-20"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "COURSE COMPLETION CERTIFICATES 2018-19",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "Weed Management (Add-on Course)",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/2018_19weed"
+                      },
+                      {
+                        "name": "Vedic Maths(Certificate Course)",
+                        "year": "135",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/2018-vedic"
+                      },
+                      {
+                        "name": "Web Designing(Certificate Course)",
+                        "year": "40",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/18-19"
+                      },
+                      {
+                        "name": "E-Commerce(Certificate Course)",
+                        "year": "41",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/bus-ecomm-certificates-18-19.pdf"
+                      },
+                      {
+                        "name": "Tally with GST (Add-on Course)",
+                        "year": "89",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/TALLY"
+                      },
+                      {
+                        "name": "Soft Skills (Value-added Course)",
+                        "year": "294",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/2018-2019"
+                      },
+                      {
+                        "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                        "year": "42",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/SBM"
+                      },
+                      {
+                        "name": "Life Skills (MOOCS)",
+                        "year": "1",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/life"
+                      },
+                      {
+                        "name": "Business Communication (MOOCS)",
+                        "year": "31",
+                        "url": "/documents/naac/c1/c1-121c/2018-19/business"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "1.2.2",
+            "title": "- Percentage of students enrolled in Certificate/ Value added courses and also completed online courses of MOOCs, SWAYAM, NPTEL etc",
+            "documents": [
+              {
+                "label": "Upload Supporting Documents",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Tax Procedures (Add-on)",
+                    "year": "151",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Medical Coding (Certificate Course)",
+                    "year": "74",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Clinical Laboratory Science (Add-on Course)",
+                    "year": "28",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Medical Laboratory Technology (Add-on Course)",
+                    "year": "22",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Radio Isotopes in Nuclear Chemistry (Certificate Course)",
+                    "year": "21",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Material Science (Add-on Course)",
+                    "year": "35",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Weed Management (Add-on Course)",
+                    "year": "35",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Cosmetology (Certificate Course)",
+                    "year": "30",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Fashion Designing (Certificate Course)",
+                    "year": "30",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Applications on Statistical Quality Control (Add-on Course)",
+                    "year": "40",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Data Science (Online Certificate Course)",
+                    "year": "22",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Amazon Web Services (Online Certificate Course)",
+                    "year": "2",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Master Class on Web Development Using React JS (Online Certificate Course)",
+                    "year": "6",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Art and Craft (Add-on Course)",
+                    "year": "50",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Vedic Maths (Certificate Course)",
+                    "year": "180",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Computer Networks (Online Certificate Course)",
+                    "year": "8",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "C Programming (Online Certificate Course)",
+                    "year": "15",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Web Designing (Certificate Course)",
+                    "year": "35",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "E-Commerce (Certificate Course)",
+                    "year": "66",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Concepts of C Programming (MOOCS)",
+                    "year": "74",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Design a Data Structure (MOOCS)",
+                    "year": "60",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Managing People in an Organization (MOOCS)",
+                    "year": "4",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.22022-23"
+                  },
+                  {
+                    "name": "Operating a Business Organization (MOOCS)",
+                    "year": "1",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Introduction to Computer Science (MOOCS)",
+                    "year": "14",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Computer Networks (MOOCS)",
+                    "year": "3",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Life Skills (MOOCS)",
+                    "year": "1",
+                    "url": "/documents/naac/c1/c1-122/2022-23/1.2.2"
+                  },
+                  {
+                    "name": "Tally with GST (Add-on Course)",
+                    "year": "70",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Vedic Maths (Certificate Course)",
+                    "year": "90",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Medical Coding (Certificate Course)",
+                    "year": "45",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Weed Management (Add-on Course)",
+                    "year": "35",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Water Resources and Treatment (Certificate Course)",
+                    "year": "30",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Art and Craft (Add-on Course)",
+                    "year": "35",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Statistical Tools for Research Methodology(Add-on Course)",
+                    "year": "50",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Web Designing (Certificate Course)",
+                    "year": "13",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Social Media Marketing (Certificate Course)",
+                    "year": "54",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Soft Skills (Value-added Course)",
+                    "year": "300",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Concepts of C Programming (MOOCS)",
+                    "year": "52",
+                    "url": "/documents/naac/c1/c1-122/2021-22/21-22"
+                  },
+                  {
+                    "name": "Design a Data Structure (MOOCS)",
+                    "year": "21",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Communicative English (MOOCS)",
+                    "year": "10",
+                    "url": "/documents/naac/c1/c1-122/2021-22/1.2.2"
+                  },
+                  {
+                    "name": "Social Media Marketing (Certificate Course)",
+                    "year": "23",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Vedic Maths (Certificate Course)",
+                    "year": "65",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Soft Skills (Value-added Course)",
+                    "year": "280",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Concepts of C Programming (MOOCS)",
+                    "year": "19",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Design a Data Structure (MOOCS)",
+                    "year": "51",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Financial Reporting (MOOCS)",
+                    "year": "6",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Consumer Behaviour and Market Research (MOOCS)",
+                    "year": "17",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Enterprise Resource Planning (MOOCS)",
+                    "year": "13",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                    "year": "1",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Introduction to Computer Science (MOOCS)",
+                    "year": "3",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Cost and Management Accounting (MOOCS)",
+                    "year": "2",
+                    "url": "/documents/naac/c1/c1-122/2020-21/1.2.2"
+                  },
+                  {
+                    "name": "Vedic Maths (Certificate Course)",
+                    "year": "166",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Web Designing (Certificate Course)",
+                    "year": "26",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Art and Craft (Add-on Course)",
+                    "year": "66",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "E-Commerce (Certificate Course)",
+                    "year": "53",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Tally with GST (Add-on Course)",
+                    "year": "38",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Soft Skills (Value-added Course)",
+                    "year": "300",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                    "year": "10",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Business Communication (MOOCS)",
+                    "year": "1",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Introduction to Computer Science (MOOCS)",
+                    "year": "2",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Consumer Behaviour and Market Research (MOOCS)",
+                    "year": "3",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Life Skills (MOOCS)",
+                    "year": "40",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Concepts of C Programming (MOOCS)",
+                    "year": "33",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Design a Data Structure (MOOCS)",
+                    "year": "55",
+                    "url": "/documents/naac/c1/c1-122/2019-20/1.2.2"
+                  },
+                  {
+                    "name": "Weed Management (Add-on Course)",
+                    "year": "35",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Vedic Maths (Certificate Course)",
+                    "year": "145",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Web Designing (Certificate Course)",
+                    "year": "40",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "E-Commerce (Certificate Course)",
+                    "year": "41",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Tally with GST (Add-on Course)",
+                    "year": "89",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Soft Skills (Value-added Course)",
+                    "year": "294",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Small Business Management and Entrepreneurship (MOOCS)",
+                    "year": "42",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Life Skills (MOOCS)",
+                    "year": "1",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  },
+                  {
+                    "name": "Business Communication (MOOCS)",
+                    "year": "31",
+                    "url": "/documents/naac/c1/c1-122/2018-19/1.2.2"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "1.3",
+        "title": "- Curriculum Enrichment",
+        "metrics": [
+          {
+            "number": "1.3.1",
+            "title": "-Institution integrates crosscutting issues relevant to Professional Ethics, Gender, Human Values, Environment and Sustainability in transacting the Curriculum",
+            "documents": [
+              {
+                "label": "Upload Additional Information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Courses with Professional Ethics, Gender, Human Values, Environment and Sustainability",
+                    "url": "/documents/naac/c1/c1-131u/1.3.1"
+                  },
+                  {
+                    "name": "Guidelines - APSCHE",
+                    "url": "/documents/naac/c1/c1-131u/1.3.1"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Syllabus Including Cross-Cutting Issues",
+                    "url": "/documents/naac/c1/c1-131/1.3.1Syllabus"
+                  },
+                  {
+                    "name": "Human Values and Professional Ethics",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "Gender Sensitization",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "Environment and Sustainability",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "Guidelines - APSCHE",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "List of Courses with Professional Ethics, Gender, Human Values, Environment and Sustainability",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "Topics in Syllabus Related to Professional Ethics, Gender, Human Values, Environment and Sustainability",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "Events Related to Professional Ethics, Gender, Human Values, Environment and Sustainability",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  },
+                  {
+                    "name": "Certificates of Quality Audits on Environment and Sustainability",
+                    "url": "/documents/naac/c1/c1-131/1.3.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "1.3.2",
+            "title": "- Percentage of students undertaking project work/field work/ internships (Data for the latest completed academic year)",
+            "documents": [
+              {
+                "label": "Upload Supporting Document",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "APSCHE Internship – Guidelines",
+                    "url": "/documents/naac/c1/c1-132/(1).1.3.2APSCHE"
+                  },
+                  {
+                    "name": "Percentage of students under taking project work",
+                    "url": "/documents/naac/c1/c1-132/(2)1.3.2"
+                  },
+                  {
+                    "name": "List of Students who undertook Projects/Internships with Place and Duration",
+                    "url": "/documents/naac/c1/c1-132/(3)1.3.2"
+                  },
+                  {
+                    "name": "Certificates of the Projects/Internships Completion",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "III B. Sc (MPCs)",
+                        "year": "77",
+                        "url": "/documents/naac/c1/c1-132-4/(1)1.3.2"
+                      },
+                      {
+                        "name": "III B. Sc (MSCs)",
+                        "year": "78",
+                        "url": "/documents/naac/c1/c1-132-4/(2)"
+                      },
+                      {
+                        "name": "III B. Sc (MBC)",
+                        "year": "29",
+                        "url": "/documents/naac/c1/c1-132-4/(3)"
+                      },
+                      {
+                        "name": "III B. Sc (BBC)",
+                        "year": "26",
+                        "url": "/documents/naac/c1/c1-132-4/(4)"
+                      },
+                      {
+                        "name": "III B. Sc (MPC)",
+                        "year": "18",
+                        "url": "/documents/naac/c1/c1-132-4/(5)"
+                      },
+                      {
+                        "name": "III B. Com (General)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-132-4/(6)"
+                      },
+                      {
+                        "name": "III B. Com (Computer Applications)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-132-4/(7)"
+                      },
+                      {
+                        "name": "III BCA",
+                        "year": "29",
+                        "url": "/documents/naac/c1/c1-132-4/(8)"
+                      },
+                      {
+                        "name": "MCA",
+                        "year": "54",
+                        "url": "/documents/naac/c1/c1-132-4/(9)"
+                      },
+                      {
+                        "name": "MBA",
+                        "year": "13",
+                        "url": "/documents/naac/c1/c1-132-4/(10)"
+                      },
+                      {
+                        "name": "II B. Sc (MPCs)",
+                        "year": "63",
+                        "url": "/documents/naac/c1/c1-132-4/(11)"
+                      },
+                      {
+                        "name": "II B. Sc (MSCs)",
+                        "year": "63",
+                        "url": "/documents/naac/c1/c1-132-4/(12)"
+                      },
+                      {
+                        "name": "II B. Sc (MBC)",
+                        "year": "28",
+                        "url": "/documents/naac/c1/c1-132-4/(13)"
+                      },
+                      {
+                        "name": "II B. Sc (BBC)",
+                        "year": "22",
+                        "url": "/documents/naac/c1/c1-132-4/(14)"
+                      },
+                      {
+                        "name": "II B. Sc (MPC)",
+                        "year": "21",
+                        "url": "/documents/naac/c1/c1-132-4/(15)"
+                      },
+                      {
+                        "name": "II B. Com (General)",
+                        "year": "29",
+                        "url": "/documents/naac/c1/c1-132-4/(16)"
+                      },
+                      {
+                        "name": "II B. Com (Computer Applications)",
+                        "year": "34",
+                        "url": "/documents/naac/c1/c1-132-4/(17)"
+                      },
+                      {
+                        "name": "II BCA",
+                        "year": "35",
+                        "url": "/documents/naac/c1/c1-132-4/(18)"
+                      },
+                      {
+                        "name": "I B. Sc (MPCs)",
+                        "year": "44",
+                        "url": "/documents/naac/c1/c1-132-4/(19)"
+                      },
+                      {
+                        "name": "I B. Sc (MSCs)",
+                        "year": "34",
+                        "url": "/documents/naac/c1/c1-132-4/(20)"
+                      },
+                      {
+                        "name": "I B. Sc (MBC)",
+                        "year": "26",
+                        "url": "/documents/naac/c1/c1-132-4/(21)"
+                      },
+                      {
+                        "name": "I B. Sc (BBC)",
+                        "year": "26",
+                        "url": "/documents/naac/c1/c1-132-4/(22)"
+                      },
+                      {
+                        "name": "I B. Com (General)",
+                        "year": "31",
+                        "url": "/documents/naac/c1/c1-132-4/(23)"
+                      },
+                      {
+                        "name": "I B. Com (Computer Applications)",
+                        "year": "51",
+                        "url": "/documents/naac/c1/c1-132-4/(24)"
+                      },
+                      {
+                        "name": "I BCA",
+                        "year": "43",
+                        "url": "/documents/naac/c1/c1-132-4/(25)"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Details Of Mentor & Mentees for the Projects/Internships",
+                    "url": "/documents/naac/c1/c1-132/(5)1.3.2"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "1.4",
+        "title": "- Feedback System",
+        "metrics": [
+          {
+            "number": "1.4.1",
+            "title": "Institution obtains feedback on the academic performance and ambience of the institution from various stakeholders, such as Students, Teachers, Employers, Alumni etc. and action taken report on the feedback is made available on institutional website",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "2022-23",
+                    "year": "Sample/Filled in Forms ,Analysis &Action Taken Report",
+                    "url": "/documents/naac/c1/c1-141provide/1.4.1"
+                  },
+                  {
+                    "name": "2021-22",
+                    "year": "Sample/Filled in Forms ,Analysis &Action Taken Report",
+                    "url": "/documents/naac/c1/c1-141provide/1.4.1"
+                  },
+                  {
+                    "name": "2020-21",
+                    "year": "Sample/Filled in Forms ,Analysis &Action Taken Report",
+                    "url": "/documents/naac/c1/c1-141provide/1.4.1"
+                  },
+                  {
+                    "name": "2019-20",
+                    "year": "Sample/Filled in Forms ,Analysis &Action Taken Report",
+                    "url": "/documents/naac/c1/c1-141provide/1.4.1"
+                  },
+                  {
+                    "name": "2018-19",
+                    "year": "Sample/Filled in Forms ,Analysis &Action Taken Report",
+                    "url": "/documents/naac/c1/c1-141provide/1.4.1"
+                  }
+                ]
+              },
+              {
+                "label": "Link of institution’s website where comprehensive feedback, its analytics and action taken report are hosted",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Feedback Policy & Mechanism",
+                    "url": "/documents/naac/feedback/Feedback"
+                  },
+                  {
+                    "name": "Sample Feedback Forms",
+                    "url": "/documents/naac/feedback/Sample"
+                  },
+                  {
+                    "name": "Feedback Analysis sent to Appropriate Bodies",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "2022-23",
+                        "year": "Feedback Analysis",
+                        "url": "/documents/naac/c1/c1-141feed/1.4.1"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Feedback Analysis",
+                        "url": "/documents/naac/c1/c1-141feed/1.4.1"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Feedback Analysis",
+                        "url": "/documents/naac/c1/c1-141feed/1.4.1"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Feedback Analysis",
+                        "url": "/documents/naac/c1/c1-141feed/1.4.1"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Feedback Analysis",
+                        "url": "/documents/naac/c1/c1-141feed/1.4.1"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Action Taken Reports",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "2022-23",
+                        "year": "Feedback Action Taken Report",
+                        "url": "/documents/naac/c1/c1-141/1.4.1"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Feedback Action Taken Report",
+                        "url": "/documents/naac/c1/c1-141/1.4.1"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Feedback Action Taken Report",
+                        "url": "/documents/naac/c1/c1-141/1.4.1"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Feedback Action Taken Report",
+                        "url": "/documents/naac/c1/c1-141/1.4.1"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Feedback Action Taken Report",
+                        "url": "/documents/naac/c1/c1-141/1.4.1"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": "Feedback analysis report submitted to appropriate bodies",
+                "documentUrl": ""
+              },
+              {
+                "label": "At least 4 filled-in feedback form from different stake holders like Students, Teachers, Employers, Alumni etc.",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "2022-23",
+                    "year": "Sample/ Filled -in feedback forms",
+                    "url": "/documents/naac/c1/c1-141f/1.4.1"
+                  },
+                  {
+                    "name": "2021-22",
+                    "year": "Sample/ Filled -in feedback forms",
+                    "url": "/documents/naac/c1/c1-141f/1.4.1"
+                  },
+                  {
+                    "name": "2020-21",
+                    "year": "Sample/ Filled -in feedback forms",
+                    "url": "/documents/naac/c1/c1-141f/1.4.1"
+                  },
+                  {
+                    "name": "2019-20",
+                    "year": "Sample/ Filled -in feedback forms",
+                    "url": "/documents/naac/c1/c1-141f/1.4.1"
+                  },
+                  {
+                    "name": "2018-19",
+                    "year": "Sample/ Filled -in feedback forms",
+                    "url": "/documents/naac/c1/c1-141f/1.4.1"
+                  }
+                ]
+              },
+              {
+                "label": "Action taken report on the feedback analysis",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Criterion II - Teaching-Learning and Evaluation",
+    "sections": [
+      {
+        "number": "2.1",
+        "title": "Student Enrollment and Profile",
+        "metrics": [
+          {
+            "number": "2.1.1",
+            "title": "2.1.1 Enrolment percentage",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Enrolment Abstract From 2018-19 To 2022-23",
+                    "url": "/documents/naac/c2/c2-211/2.1.1"
+                  },
+                  {
+                    "name": "List of Students enrolled - Year Wise",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-211/2.1.1"
+                  },
+                  {
+                    "name": "Sanction Orders from Affiliating University",
+                    "url": "/documents/naac/c2/c2-211/2.1.1"
+                  },
+                  {
+                    "name": "Online Admission Process (UG & PG) Guidelines",
+                    "url": "/documents/naac/c2/c2-211/2.1.1"
+                  },
+                  {
+                    "name": "Wide Publicity through Electronic and Print Media",
+                    "url": "/documents/naac/c2/c2-211/WIDE"
+                  },
+                  {
+                    "name": "Internal Admission Committee",
+                    "url": "/documents/naac/c2/c2-211/2.1.1"
+                  }
+                ]
+              },
+              {
+                "label": "Final admission list as published by the HEI and endorsed by the competent authority",
+                "documentUrl": ""
+              },
+              {
+                "label": "Document related to sanction of intake from affiliating University for first year’s students only.",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "2.1.2",
+            "title": "2.1.2 Percentage of seats filled against reserved categories (SC, ST, OBC etc.) as per applicable reservation policy for the first year admission during the last five years",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Reserved Category Admission abstract From 2018-19 to 2022-23",
+                    "url": "/documents/naac/c2/c2-212p/2.1.2RESERVED"
+                  },
+                  {
+                    "name": "List of Students admitted from the reserved categories year wise",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-212p/2.1.2"
+                  },
+                  {
+                    "name": "Government GO for reservation Policy",
+                    "url": "/documents/naac/c2/c2-212p/2.1.2"
+                  },
+                  {
+                    "name": "Guidelines for online Admissions (OAMDC) by APSCHE",
+                    "url": "/documents/naac/c2/c2-212p/2.1.2"
+                  }
+                ]
+              },
+              {
+                "label": "Final admission list indicating the category as published by the HEI and endorsed by the competent authority.",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Students Admitted-Year Wise",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-212/2.1.2"
+                  }
+                ]
+              },
+              {
+                "label": "Copy of communication issued by State govt. or Central Government indicating the reserved categories (SC, ST, OBC, Divyangjan etc.) to be considered as per the state rule",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "2.2",
+        "title": "Student Teacher Ratio",
+        "metrics": [
+          {
+            "number": "2.2.1",
+            "title": "2.2.1 Student – Full time Teacher Ratio ---",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "2.3",
+        "title": "Teaching- Learning Process",
+        "metrics": [
+          {
+            "number": "2.3.1",
+            "title": "2.3.1 Student centric methods, such as experiential learning, participative learning and problem solving methodologies are used for enhancing learning experiences and teachers use ICT- enabled tools including online resources for effective teaching and learning process",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "/documents/naac/c2/c2-231/2.3.1"
+              },
+              {
+                "label": "Provide Link for Additional Information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Student Centric Methods followed by the Institution",
+                    "url": "/documents/naac/c2/c2-231/2.3.1"
+                  },
+                  {
+                    "name": "Student Centric Methods",
+                    "year": "Department of Microbiology",
+                    "url": "/documents/naac/c2/c2-231/DEPARTMENT"
+                  },
+                  {
+                    "name": "ICT Methods",
+                    "url": "/documents/naac/c2/c2-231/ICT"
+                  },
+                  {
+                    "name": "Remedial Classes",
+                    "url": "/documents/naac/c2/c2-231/REMEDIAL"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "2.4",
+        "title": "Teacher Profile and Quality",
+        "metrics": [
+          {
+            "number": "2.4.1",
+            "title": "2.4.1 Percentage of full-time teachers against sanctioned posts during the last five years ---",
+            "documents": []
+          },
+          {
+            "number": "2.4.1",
+            "title": "2.4.1 Sanction letters indicating number of posts sanctioned by the competent authority ---",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Sanction letters indicating number of posts Sanctioned by the Competent Authority",
+                    "url": "/documents/naac/c2/c2-241/2.4.1"
+                  },
+                  {
+                    "name": "List of Full-Time Teachers against Sanctioned Posts",
+                    "url": "/documents/naac/c2/c2-241/2.4.1"
+                  },
+                  {
+                    "name": "Service Certificates of Full-Time Teachers",
+                    "url": "/documents/naac/c2/c2-241/2.4.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.4.2",
+            "title": "2.4.2 Percentage of full time teachers with NET/SET/SLET/ Ph. D./D.Sc. / D.Litt./L.L.D. during the last five years (consider only highest degree for count) ---",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Faculty having Ph.D./ SET along with particulars of Awarding university",
+                    "url": "/documents/naac/c2/c2-242/2.4.2"
+                  },
+                  {
+                    "name": "Copies of Ph.D. /SET Awarded by UGC recognized Universities",
+                    "url": "/documents/naac/c2/c2-242/2.4.2"
+                  },
+                  {
+                    "name": "Initiatives of Institution for promotion of Research",
+                    "url": "/documents/naac/c2/c2-242/2.4.2"
+                  }
+                ]
+              },
+              {
+                "label": "List of faculties having Ph. D. / D.Sc. / D.Litt./ L.L.D along with particulars of degree awarding university, subject and the year of award per academic year.",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "2.4.2",
+            "title": "2.4.2 Copies of Ph.D./D.Sc / D.Litt./ L.L.D awarded by UGC recognized universities ---",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "2.5",
+        "title": "Evaluation Process and Reforms",
+        "metrics": [
+          {
+            "number": "2.5.1",
+            "title": "2.5.1 Mechanism of internal/ external assessment is transparent and the grievance redressal system is time- bound and efficient ---",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Examination Policy",
+                    "year": "2018-2019 to 2022-23",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  },
+                  {
+                    "name": "University Examination Calendars",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-251/uec/2.5.1"
+                  },
+                  {
+                    "name": "College Academic Calendars",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-251/cac/2.5.1"
+                  },
+                  {
+                    "name": "Examination Grievance Report",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-251/egr/2.5.1"
+                  },
+                  {
+                    "name": "University Examination Circulars and Time Tables",
+                    "url": "/documents/naac/c2/c2-251/UNIVERSITY"
+                  },
+                  {
+                    "name": "College Examination Circulars and Time tables",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  },
+                  {
+                    "name": "External Examination Grievances Submitted and received to the University",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  },
+                  {
+                    "name": "Continuous Internal Assessment (CIA)",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  },
+                  {
+                    "name": "Internal Examination Question Papers",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  },
+                  {
+                    "name": "Semester End Examination Question Papers",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  },
+                  {
+                    "name": "External Grievance redressal system is time bound and efficient",
+                    "url": "/documents/naac/c2/c2-251/2.5.1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "2.6",
+        "title": "Student Performance and Learning Outcomes",
+        "metrics": [
+          {
+            "number": "2.6.1",
+            "title": "2.6.1 Programme Outcomes (POs) and Course Outcomes (COs) for all Programmes offered by the institution are stated and displayed on website",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Program Outcomes of all the Programs (POs)",
+                    "url": "/documents/naac/c2/c2-261/2.6.1"
+                  },
+                  {
+                    "name": "Program Specific Outcomes of all the Programs (PSOs)",
+                    "url": "/documents/naac/c2/c2-261/2.6.1"
+                  },
+                  {
+                    "name": "Course Outcomes of all the Programs (COs)",
+                    "url": "/documents/naac/c2/c2-261/2.6.1"
+                  },
+                  {
+                    "name": "Mechanism for communication of COs",
+                    "url": "/documents/naac/c2/c2-261/2.6.1"
+                  },
+                  {
+                    "name": "Creation of Awareness about COs",
+                    "url": "/documents/naac/c2/c2-261/2.6.1"
+                  },
+                  {
+                    "name": "Syllabus of a Course having COs",
+                    "url": "/documents/naac/c2/c2-261/2.6.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.6.2",
+            "title": "2.6.2 Attainment of POs and COs are evaluated",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "/documents/naac/c2/c2-262/2.6.2"
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "COs, POs and PSOs for all Programmes",
+                    "url": "/documents/naac/c2/c2-262/COs"
+                  },
+                  {
+                    "name": "CO - PO Mapping and Articulation Matrix",
+                    "url": "/documents/naac/c2/c2-262/2.6.2"
+                  },
+                  {
+                    "name": "Direct Attainment of COs",
+                    "url": "/documents/naac/c2/c2-262/2.6.2"
+                  },
+                  {
+                    "name": "Attainment Analysis of COs with POs and PSOs for UG B. Sc Statistics",
+                    "url": "/documents/naac/c2/c2-262/2.6.2"
+                  },
+                  {
+                    "name": "Attainment Analysis of COs with POs and PSOs for PG- MCA Programme",
+                    "url": "/documents/naac/c2/c2-262/2.6.2"
+                  },
+                  {
+                    "name": "Minutes of CDC and IQAC",
+                    "url": "/documents/naac/c2/c2-262/2.6.2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "2.6.3",
+            "title": "2.6.3 Pass percentage of Students during last five years",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Annual Report of Controller of Examinations Highlighting the Pass Percentage of Final Year Students",
+                    "url": "/documents/naac/c2/c2-263p/2.6.3"
+                  },
+                  {
+                    "name": "Certified Report from COE Indicating the Pass Percentage ofStudent of the Final Year for the Degree Program Wise",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-263p/2.6.3"
+                  }
+                ]
+              },
+              {
+                "label": "Certified report from Controller of Examination of the affiliating university indicating pass percentage of students of the final year (final semester) eligible for the degree program wise / year-wise.",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Certified Report from COE Indicating the Pass Percentage ofStudent of the Final Year for the Degree Program Wise",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c2/c2-263/2.6.3"
+                  }
+                ]
+              },
+              {
+                "label": "Annual report of controller of Examinations (COE) highlighting the pass percentage of final year students",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "2.7",
+        "title": "Student Satisfaction Survey",
+        "metrics": [
+          {
+            "number": "2.7.1",
+            "title": "2.7.1 Online student satisfaction survey regarding teaching learning process ---",
+            "documents": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Criterion III - Research, Innovations and Extension",
+    "sections": [
+      {
+        "number": "3.1",
+        "title": "Resource Mobilization for Research",
+        "metrics": [
+          {
+            "number": "3.1.1",
+            "title": "3.1.1 Grants received from Government and non-governmental agencies for research projects / endowments in the institution during the last five years (INR in Lakhs)",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "3.2",
+        "title": "Innovation Ecosystem",
+        "metrics": [
+          {
+            "number": "3.2.1",
+            "title": "3.2.1 Institution has created an ecosystem for innovations, Indian Knowledge System (IKS), including awareness about IPR, establishment of IPR cell, Incubation centre and other initiatives",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Policies",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Research Activities",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Research Facilities (Computer Labs)",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Research Facilities (High Speed Internet Connectivity)",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Seminars on Research Methodology",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Workshop on Entrepreneurship Development",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Ph.D Awards by Faculty",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Institutional Incubation Centre (IIC) Activates",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  },
+                  {
+                    "name": "Intellectual Property Rights Cell & Activates",
+                    "url": "/documents/naac/c3/c3-321/3.2.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.2.2",
+            "title": "3.2.2 Number of workshops/seminars/conferences including on Research Methodology, Intellectual Property Rights (IPR) and entrepreneurship",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Consolidated List of Workshops / Seminars",
+                    "url": "/documents/naac/c3/c3-322/3.2.2Consolidated"
+                  },
+                  {
+                    "name": "Details of Workshops / Seminars & Conferences",
+                    "url": "/documents/naac/c3/c3-322/3.2.2"
+                  },
+                  {
+                    "name": "Circulars / Brochures",
+                    "url": "/documents/naac/c3/c3-322/3.2.2"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "3.3",
+        "title": "Research Publications and Awards",
+        "metrics": [
+          {
+            "number": "3.3.2",
+            "title": "3.3.2 Total Number of books and chapters in edited volumes/books published and papers published in national/ international conference proceedings per teacher during last five years",
+            "documents": [
+              {
+                "label": "List of chapter/book along with the links redirecting to the source website",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Copy of cover page of books",
+                    "url": "/documents/naac/c3/c3-332/3.3.2"
+                  },
+                  {
+                    "name": "List of Books",
+                    "url": "/documents/naac/c3/c3-332/3.3.2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "3.3.2",
+            "title": "3.3.2 Cover page, content page and first page of the publication indicating ISBN number and year of publication for books/chapters ---",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "3.4",
+        "title": "Extension Activities",
+        "metrics": [
+          {
+            "number": "3.4.2",
+            "title": "3.4.2 Awards and recognitions received for extension activities from government / government recognized bodies",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "/documents/naac/c3/c3-342/3.4.2"
+              }
+            ]
+          },
+          {
+            "number": "3.4.3",
+            "title": "3.4.3 Number of extension and outreach programs conducted by the institution through organized forums including NSS/NCC with involvement of community during the last five years.",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "NSS [NATIONAL SERVICE SCHEME]",
+                    "url": "/documents/naac/c3/c3-343pl/NSS.pdf"
+                  },
+                  {
+                    "name": "NCC [NATIONAL CADET CORPS]",
+                    "url": "/documents/naac/c3/c3-343pl/NCC.pdf"
+                  },
+                  {
+                    "name": "Red Ribbon",
+                    "url": "/documents/naac/c3/c3-343pl/RRC.pdf"
+                  },
+                  {
+                    "name": "Activity of Other Wings",
+                    "url": "/documents/naac/c3/c3-343pl/Other"
+                  },
+                  {
+                    "name": "Mother Gnanamma Club",
+                    "url": "/documents/naac/c3/c3-343pl/Mother"
+                  },
+                  {
+                    "name": "Consolidated List",
+                    "url": "/documents/naac/c3/c3-343pl/3.4.3"
+                  }
+                ]
+              },
+              {
+                "label": "Photographs and any other supporting document of relevance having proper captions and dates.",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "NSS [NATIONAL SERVICE SCHEME]",
+                    "url": "/documents/naac/c3/c3-343pg/NSS.pdf"
+                  },
+                  {
+                    "name": "NCC [NATIONAL CADET CORPS]",
+                    "url": "/documents/naac/c3/c3-343pg/NCC.pdf"
+                  },
+                  {
+                    "name": "Red Ribbon",
+                    "url": "/documents/naac/c3/c3-343pg/RRC.pdf"
+                  },
+                  {
+                    "name": "Mother Gnanamma Club –Outreach Activities",
+                    "url": "/documents/naac/c3/c3-343pg/Out"
+                  },
+                  {
+                    "name": "Activities of Other Wings",
+                    "url": "/documents/naac/c3/c3-343pg/Other"
+                  }
+                ]
+              },
+              {
+                "label": "Detailed report for each extension and outreach program, with number of students participated and the details of the collaborating agency",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "NSS [NATIONAL SERVICE SCHEME]",
+                    "url": "/documents/naac/c3/c3-343d/NSS.pdf"
+                  },
+                  {
+                    "name": "NCC [NATIONAL CADET CORPS]",
+                    "url": "/documents/naac/c3/c3-343d/NCC.pdf"
+                  },
+                  {
+                    "name": "Red Ribbon",
+                    "url": "/documents/naac/c3/c3-343d/RRC.pdf"
+                  },
+                  {
+                    "name": "Activity of Other Wings",
+                    "url": "/documents/naac/c3/c3-343d/Other"
+                  },
+                  {
+                    "name": "Mother Gnanamma Club",
+                    "url": "/documents/naac/c3/c3-343d/Mother"
+                  },
+                  {
+                    "name": "Consolidation List",
+                    "url": "/documents/naac/c3/c3-343d/3.4.3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "3.5",
+        "title": "Collaboration",
+        "metrics": []
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Criterion IV - Infrastructure and Learning Resources",
+    "sections": [
+      {
+        "number": "4.1",
+        "title": "Physical Facilities",
+        "metrics": [
+          {
+            "number": "4.1.1",
+            "title": "4.1.1 The Institution has adequate infrastructure and other facilities for, teaching – learning, viz., classrooms, laboratories, computing equipment etc and ICT – enabled facilities such as smart class, LMS etc.",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "College Building / Principal/Office",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Class Rooms and Laboratories",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Library",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "NCC/NSS",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Cells / Staff Rooms",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "ICT Enabled Classes",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "LMS (Learning Management System)",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Games (indoor and outdoor)",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Cultural and Sports Activities",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Yoga center, Gymnasium, Auditorium",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Public addressing System",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "CC cameras",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Parking",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Health Centre",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Hostel Facility",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Canteen",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Fire Safety",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  },
+                  {
+                    "name": "Elevator /Ramp/Others",
+                    "url": "/documents/naac/c4/c4-411/4.1.1"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "4.1.2",
+            "title": "4.1.2 Percentage of expenditure for infrastructure development and augmentation excluding salary during the last five years",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Audited income and expenditure statement of the institution",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c4/c4-412/4.1.2"
+                  },
+                  {
+                    "name": "Facilities added",
+                    "url": "/documents/naac/c4/c4-412/4.1.2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "4.1.2",
+            "title": "4.1.2 Audited income and expenditure statement of the institution to be signed by CA",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "4.2",
+        "title": "Library as a Learning Resource",
+        "metrics": [
+          {
+            "number": "4.2.1",
+            "title": "4.2.1 Library is automated with digital facilities using Integrated Library Management System (ILMS), with e-resources and journals",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Library Policy",
+                    "url": "/documents/naac/c4/c4-421/Library"
+                  },
+                  {
+                    "name": "About the Library",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  },
+                  {
+                    "name": "Integrated Library Management System (ILMS)",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  },
+                  {
+                    "name": "Subscription to e-resources",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  },
+                  {
+                    "name": "Amount spent on Purchase of Books",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  },
+                  {
+                    "name": "Amount spent on purchase of Journals & Magazines",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  },
+                  {
+                    "name": "Per day usage of Library",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  },
+                  {
+                    "name": "Additional Data Bills of software purchased",
+                    "url": "/documents/naac/c4/c4-421/4.2.1"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "4.3",
+        "title": "IT Infrastructure",
+        "metrics": [
+          {
+            "number": "4.3.2",
+            "title": "4.3.2 Student – Computer ratio (Data for the latest completed academic year)",
+            "documents": []
+          },
+          {
+            "number": "4.3.2",
+            "title": "4.3.2 Purchased Bills/Copies highlighting the number of computers purchased",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "/documents/naac/c4/c4-432/4.3.2"
+              }
+            ]
+          },
+          {
+            "number": "4.3.2",
+            "title": "4.3.2 Extracts stock register/ highlighting the computers issued to respective departments for student’s usage.",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "4.4",
+        "title": "Maintenance of Campus Infrastructure",
+        "metrics": [
+          {
+            "number": "4.4.1",
+            "title": "4.4.1 Percentage expenditure incurred on maintenance of physical facilities and academic support facilities excluding salary component,",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Audited income and expenditure statement of the institution",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c4/c4-441/4.4.1"
+                  },
+                  {
+                    "name": "Facilities added",
+                    "url": "/documents/naac/c4/c4-441/4.4.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "4.4.1",
+            "title": "4.4.1 Audited income and expenditure statement of the institution to be signed by CA for maintenance of infrastructure",
+            "documents": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Criterion V - Student Support and Progression",
+    "sections": [
+      {
+        "number": "5.1",
+        "title": "Student Support",
+        "metrics": [
+          {
+            "number": "5.1.2",
+            "title": "5.1.2 Following capacity development and skills enhancement activities are organised for improving students’ capability1. Soft skills2. Language and communication skills3. Life skills (Yoga, physical fitness, health and hygiene)4. ICT/computing skills",
+            "documents": [
+              {
+                "label": "Report with photographs on Programmes /activities conducted to enhance soft skills, Language and communication skills, and Life skills (Yoga, physical fitness, health and hygiene, self-employment and entrepreneurial skills)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Reports with photographs of Soft Skills",
+                    "url": "/documents/naac/c5/c5-512report/ss/2018-19"
+                  },
+                  {
+                    "name": "Reports with photographs of Language and Communication Skills",
+                    "url": "/documents/naac/c5/c5-512report/lcs/2018-19"
+                  },
+                  {
+                    "name": "Reports with photographs of Life Skills",
+                    "url": "/documents/naac/c5/c5-512report/ls/2018-19"
+                  }
+                ]
+              },
+              {
+                "label": "Report with photographs on ICT/computing skills enhancement programs",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Reports with Photographs of ICT / Computing Skills",
+                    "url": "/documents/naac/c5/c5-512pg/2018-19"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Capacity Building And Skill Enhancement Activities",
+                    "url": "/documents/naac/c5/c5-512pl/5.1.2"
+                  },
+                  {
+                    "name": "Soft Skills",
+                    "url": "/documents/naac/c5/c5-512pl/ss/2018-19"
+                  },
+                  {
+                    "name": "Language and communication Skills",
+                    "url": "/documents/naac/c5/c5-512pl/lcs/2018-19"
+                  },
+                  {
+                    "name": "Life Skills",
+                    "url": "/documents/naac/c5/c5-512pl/ls/2018-19"
+                  },
+                  {
+                    "name": "ICT/Computing Skills",
+                    "url": "/documents/naac/c5/c5-512pl/ict/2018-19"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.1.3",
+            "title": "5.1.3 Percentage of students benefitted by guidance for competitive examinations and career counseling offered by the Institution during the last five years",
+            "documents": [
+              {
+                "label": "Upload supporting document",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Abstract of Activities",
+                    "url": "/documents/naac/c5/c5-513/5.1.3"
+                  },
+                  {
+                    "name": "Circulars",
+                    "url": "/documents/naac/c5/c5-513/5.1.3"
+                  },
+                  {
+                    "name": "Report of competitive examinations and career counseling Programme",
+                    "url": "/documents/naac/c5/c5-513/5.1.3"
+                  },
+                  {
+                    "name": "List of the students participated in Competitive Exams",
+                    "url": "/documents/naac/c5/c5-513/5.1.3"
+                  },
+                  {
+                    "name": "List of the students Placed and TPO Report",
+                    "url": "/documents/naac/c5/c5-513/5.1.3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.1.4",
+            "title": "5.1.4 The institution adopts the following for redressal of student grievances including sexual harassment and ragging cases1. Implementation of guidelines of statutory/regulatory bodies 2. Organization wide awareness and undertakings on policies with zero tolerance 3. Mechanisms for submission of online/offline students’ grievances 4. Timely redressal of the grievances through appropriate committees",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Implementation of Guidelines",
+                    "url": "/documents/naac/c5/c5-514/5.1.4.Implementation"
+                  },
+                  {
+                    "name": "Awareness and Undertakings",
+                    "url": "/documents/naac/c5/c5-514/5.1.4"
+                  },
+                  {
+                    "name": "Timely redressal of the grievances through appropriate committees",
+                    "url": "/documents/naac/c5/c5-514/5.1.4"
+                  },
+                  {
+                    "name": "Mechanism and Action Taken Reports",
+                    "url": "/documents/naac/c5/c5-514/5.1.4"
+                  },
+                  {
+                    "name": "Grievance Redressal Cell - Activities",
+                    "url": "/documents/naac/c5/c5-514/5.1.4"
+                  },
+                  {
+                    "name": "Anti Sexual harassment Cell - Activities",
+                    "url": "/documents/naac/c5/c5-514/5.1.4.Anti"
+                  },
+                  {
+                    "name": "Anti-Ragging Cell - Activities",
+                    "url": "/documents/naac/c5/c5-514/5.1.4.Anti"
+                  },
+                  {
+                    "name": "Women Empowerment Cell - Activities",
+                    "url": "/documents/naac/c5/c5-514/5.1.4.Women"
+                  },
+                  {
+                    "name": "Internal Complaints Committee - Activities",
+                    "url": "/documents/naac/c5/c5-514/5.1.4.Internal"
+                  },
+                  {
+                    "name": "Zero Tolerance Policy",
+                    "url": "/documents/naac/c5/c5-514/5.1.4"
+                  },
+                  {
+                    "name": "Annual Reports",
+                    "url": "/documents/naac/c5/c5-514/5.1.4"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.1.4",
+            "title": "5.1.4 Proof w.r.t Organization wide awareness and undertakings on policies with zero tolerance ---",
+            "documents": []
+          },
+          {
+            "number": "5.1.4",
+            "title": "5.1.4 Proof related to Mechanisms for submission of online/offline students’ grievances ---",
+            "documents": []
+          },
+          {
+            "number": "5.1.4",
+            "title": "5.1.4 Proof for Implementation of guidelines of statutory/regulatory bodies ---",
+            "documents": []
+          },
+          {
+            "number": "5.1.4",
+            "title": "5.1.4 Details of statutory/regulatory Committees (to be notified in institutional website also) ---",
+            "documents": [
+              {
+                "label": "Annual report of the committee motioning the activities and number of grievances redressed to prove timely redressal of the grievances",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "5.2",
+        "title": "Student Progression",
+        "metrics": [
+          {
+            "number": "5.2.1",
+            "title": "5.2.1 Percentage of placement of outgoing students and students progressing to higher education during the last five years",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Placement Brochure",
+                    "url": "/documents/naac/c5/c5-521/5.2.1"
+                  },
+                  {
+                    "name": "Tie-Ups",
+                    "url": "/documents/naac/c5/c5-521/5.2.1"
+                  },
+                  {
+                    "name": "Students List and Placement details",
+                    "url": "/documents/naac/c5/c5-521/5.2.1"
+                  },
+                  {
+                    "name": "Offer Letters",
+                    "year": "2022-2023",
+                    "url": "/documents/naac/c5/c5-521/5.2.1"
+                  },
+                  {
+                    "name": "Students List with the program and institution enrolled",
+                    "url": "/documents/naac/c5/c5-521/5.2.1"
+                  },
+                  {
+                    "name": "ID Proofs",
+                    "year": "2022-2023",
+                    "url": "/documents/naac/c5/c5-521/5.2.1"
+                  }
+                ]
+              },
+              {
+                "label": "Number and List of students placed along with placement details such as name of the company, compensation, etc and links to Placement order (the above list should be available on institutional website)",
+                "documentUrl": ""
+              },
+              {
+                "label": "List of students progressing for Higher Education, with details of program and institution that they are/have enrolled along with links to proof of continuation in higher education.(the above list should be available on institutional website)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Students List with the program and institution enrolled",
+                    "url": "/documents/naac/c5/c5-521a/5.2.1"
+                  },
+                  {
+                    "name": "ID Proofs",
+                    "year": "2022-2023",
+                    "url": "/documents/naac/c5/c5-521a/5.2.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "5.2.2",
+            "title": "5.2.2 Percentage of students qualifying in state/national/ international level examinations during the last five years",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of the students Qualified",
+                    "url": "/documents/naac/c5/c5-522/5.2.2"
+                  },
+                  {
+                    "name": "Certificates of Qualified Students",
+                    "url": "/documents/naac/c5/c5-522/5.2.2"
+                  },
+                  {
+                    "name": "ID Proofs",
+                    "url": "/documents/naac/c5/c5-522/5.2.2"
+                  }
+                ]
+              },
+              {
+                "label": "List of students qualified year wise under each category and links to Qualifying Certificates of the students taking the examination",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "5.3",
+        "title": "Student Participation and Activities",
+        "metrics": [
+          {
+            "number": "5.3.1",
+            "title": "5.3.1 Number of awards/medals for outstanding performance in sports/ cultural activities at University / state/ national / international level (award for a team event should be counted as one) during the last five years",
+            "documents": [
+              {
+                "label": "Upload supporting document",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Students",
+                    "url": "/documents/naac/c5/c5-531/5.3.1"
+                  },
+                  {
+                    "name": "List of e-copies",
+                    "url": "/documents/naac/c5/c5-531/5.3.1"
+                  },
+                  {
+                    "name": "List of Certificates",
+                    "url": "/documents/naac/c5/c5-531/5.3.1"
+                  }
+                ]
+              },
+              {
+                "label": "list and links to e-copies of award letters and certificates",
+                "documentUrl": ""
+              },
+              {
+                "label": "list and links to e-copies of award letters and certificates",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "5.3.2",
+            "title": "5.3.2 Average number of sports and cultural programs in which students of the Institution participated during last five years (organised by the institution/other institutions)",
+            "documents": [
+              {
+                "label": "Upload supporting document",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "No. of Sports and Cultural Programs",
+                    "url": "/documents/naac/c5/c5-532/5.3.2"
+                  },
+                  {
+                    "name": "List of Students",
+                    "url": "/documents/naac/c5/c5-532/5.3.2"
+                  },
+                  {
+                    "name": "Event Circulars Cultural Programs",
+                    "url": "/documents/naac/c5/c5-532/5.3.2"
+                  },
+                  {
+                    "name": "List of Certificates Cultural Programs",
+                    "url": "/documents/naac/c5/c5-532/5.3.2"
+                  },
+                  {
+                    "name": "Photos Cultural Programs",
+                    "url": "/documents/naac/c5/c5-532/5.3.2"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "5.4",
+        "title": "Alumni Engagement",
+        "metrics": [
+          {
+            "number": "5.4.1",
+            "title": "5.4.1 There is a registered Alumni Association that contributes significantly to the development of the institution through financial and/or other support services",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "/documents/naac/c5/c5-541/5.4.1"
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Registration Form",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  },
+                  {
+                    "name": "Meeting Minutes",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  },
+                  {
+                    "name": "Contribution by Alumni – Financial",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  },
+                  {
+                    "name": "Meeting Notices",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  },
+                  {
+                    "name": "Annual Reports",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  },
+                  {
+                    "name": "Bank Statements",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  },
+                  {
+                    "name": "Alumni Contribution through other support services",
+                    "url": "/documents/naac/c5/c5-541p/5.4.1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Criterion VI - Governance, Leadership and Management",
+    "sections": [
+      {
+        "number": "6.1",
+        "title": "Institutional Vision and Leadership",
+        "metrics": [
+          {
+            "number": "6.1.1",
+            "title": "6.1.1 The institutional governance and leadership are in accordance with the vision and mission of the Institution and it is visible in various institutional practices such as NEP implementation, sustained institutional growth, decentralization, participation in the institutional governance and in their short term and long term Institutional Perspective Plan.",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Vision and Mission",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "Governance & Leadership",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "Organogram",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "Short Term Long Term Institutional Perspective Plans",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "College Development Committee",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "College Development Committee Minutes",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "IQAC",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "Decentralization of Committees",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "Implementation of NEP-Out come Based Education",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "POs",
+                        "url": "/documents/naac/academic/pos.pdf"
+                      },
+                      {
+                        "name": "PSOs",
+                        "url": "/documents/naac/academic/pso.pdf"
+                      },
+                      {
+                        "name": "COs",
+                        "url": "/documents/naac/academic/cos.pdf"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Committees Duties and Responsibilities",
+                    "url": "/documents/naac/c6/c6-611/6.1.1"
+                  },
+                  {
+                    "name": "Mechanism of Feedback collection",
+                    "url": ""
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "6.2",
+        "title": "Strategy Development and Deployment",
+        "metrics": [
+          {
+            "number": "6.2.1",
+            "title": "6.2.1 The institutional perspective plan is effectively deployed and functioning of the institutional bodies is effective and efficient as visible from policies, administrative setup, appointment, service rules, and procedures, etc",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "College Organogram",
+                    "url": "/documents/naac/c6/c6-621p/6.2.1"
+                  },
+                  {
+                    "name": "Appointment and Service Rules with Procedures",
+                    "url": "/documents/naac/c6/c6-621p/6.2.1"
+                  },
+                  {
+                    "name": "Leave and vacation Rules",
+                    "url": "/documents/naac/c6/c6-621p/6.2.1"
+                  },
+                  {
+                    "name": "College Policies [goto main page]",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "IQAC Policy",
+                        "url": "/documents/naac/c6/c6-621cp/internal"
+                      },
+                      {
+                        "name": "Zero Tolerance Policy",
+                        "url": "/documents/naac/c6/c6-621cp/zero"
+                      },
+                      {
+                        "name": "Finance Policy",
+                        "url": "/documents/naac/c6/c6-621cp/finance"
+                      },
+                      {
+                        "name": "Grievance Policy",
+                        "url": "/documents/naac/c6/c6-621cp/GRIEVENCE"
+                      },
+                      {
+                        "name": "IT Policy",
+                        "url": "/documents/naac/c6/c6-621cp/1_IT_policy.pdf"
+                      },
+                      {
+                        "name": "Library Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Library"
+                      },
+                      {
+                        "name": "Examination Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Examination"
+                      },
+                      {
+                        "name": "Women Empowerment Policy",
+                        "url": "/documents/naac/c6/c6-621cp/WOMEN"
+                      },
+                      {
+                        "name": "Green Campus Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Green"
+                      },
+                      {
+                        "name": "Energy Conservation Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Energy"
+                      },
+                      {
+                        "name": "Waste Management Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Waste"
+                      },
+                      {
+                        "name": "Water Conservation Policy",
+                        "url": "/documents/naac/c6/c6-621cp/water"
+                      },
+                      {
+                        "name": "Disable Friendly Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Diasable"
+                      },
+                      {
+                        "name": "Research Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Research"
+                      },
+                      {
+                        "name": "Intellectual Property Rights Policy",
+                        "url": "/documents/naac/c6/c6-621cp/intelectual"
+                      },
+                      {
+                        "name": "Anti Ragging Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Anti-ragging"
+                      },
+                      {
+                        "name": "Anti-Sexual Harassment Policy",
+                        "url": "/documents/naac/c6/c6-621cp/Anti"
+                      },
+                      {
+                        "name": "Internal Complaints Committee Policy",
+                        "url": "/documents/naac/c6/c6-621cp/ICC"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Perspective Plans",
+                    "url": "/documents/naac/c6/c6-621p/6.2.1"
+                  },
+                  {
+                    "name": "ICT-Enabled smart Class room",
+                    "url": "/documents/naac/c6/c6-621p/6.2.1"
+                  },
+                  {
+                    "name": "Decentralization Committees",
+                    "url": "/documents/naac/c6/c6-621p/6.2.1"
+                  }
+                ]
+              },
+              {
+                "label": "Institutional perspective Plan and deployment documents on the website",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "2022-23",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "2021-22",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "2020-21",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "2019-20",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "2018-19",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Infrastructure Development",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "MOUs and Collaborations",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "FDPs",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "CCTV Cameras",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Implementation of NEP 2020",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Campus Recruitment Training Classes",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Digital Class Rooms",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Adoption of Green Practices",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Infrastructure Renovation",
+                    "url": "/documents/naac/c6/c6-621/6.2.1"
+                  },
+                  {
+                    "name": "Digital Library",
+                    "url": "/documents/naac/c6/c6-621/6.2.1Digital"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "6.2.2",
+            "title": "6.2.2 Institution implements e-governance in its operations 1. Administration2. Finance and Accounts3. Student Admission and Support4. Examination",
+            "documents": []
+          },
+          {
+            "number": "6.2.2",
+            "title": "6.2.2 Screen shots of user interfaces of each module reflecting the name of the HEI ---",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Administration and Complaint management System",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "Finance and Accounts",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "Student Admission and Support",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "Examination",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "E-Governance policy",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "Institutional expenditure statements for the budget heads of e-governance implementation ERP Document",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "Annual e-governance report approved by the Governing Council/Board of Management/Syndicate Policy document on e-governance",
+                    "url": "/documents/naac/c6/c6-622/6.2.2"
+                  },
+                  {
+                    "name": "Online Admissions by APSCHE-Guidelines",
+                    "url": "/documents/naac/c2/c2-211/2.1.1"
+                  }
+                ]
+              },
+              {
+                "label": "Institutional expenditure statements for the budget heads of e-governance implementation ERP Document",
+                "documentUrl": ""
+              },
+              {
+                "label": "Annual e-governance report approved by the Governing Council/ Board of Management/ Syndicate Policy document on e-governance",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "6.3",
+        "title": "Faculty Empowerment Strategies",
+        "metrics": [
+          {
+            "number": "6.3.1",
+            "title": "6.3.1 The institution has performance appraisal system, effective welfare measures for teaching and non-teaching staff and avenues for career development/progression",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "EPF for both Teaching and Non-teaching Staff",
+                    "url": "/documents/naac/c6/c6-631/6.3.1"
+                  },
+                  {
+                    "name": "ESI for both Teaching and Non-teaching Staff",
+                    "url": "/documents/naac/c6/c6-631/6.3.1"
+                  },
+                  {
+                    "name": "OD Leaves for Teaching Staff",
+                    "url": "/documents/naac/c6/c6-631/6.3.1"
+                  },
+                  {
+                    "name": "Provision of Medical and other leaves",
+                    "url": "/documents/naac/c6/c6-631/6.3.1"
+                  },
+                  {
+                    "name": "Loan to Employees",
+                    "url": "/documents/naac/c6/c6-631/6.3.1"
+                  },
+                  {
+                    "name": "Performance Appraisal for Teaching Staff",
+                    "url": "/documents/naac/c6/c6-631/6.3.1"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Policy document on providing financial support to teachers",
+                    "url": "/documents/naac/c6/c6-632/6.3.2"
+                  },
+                  {
+                    "name": "Copy of letters indicating financial assistance to teachers and list of teachers receiving financial support Year-wise under each head.",
+                    "url": "/documents/naac/c6/c6-632/Letters"
+                  },
+                  {
+                    "name": "Audited statement of account highlighting the financial support to teachers to attend conferences/workshops and towards membership fee for professional bodies",
+                    "url": "/documents/naac/c6/c6-632/6.3.2"
+                  },
+                  {
+                    "name": "Vouchers of Financial support to Teachers",
+                    "url": "/documents/naac/c6/c6-632/6.3.2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "number": "6.3.2",
+            "title": "6.3.2 Audited statement of account highlighting the financial support to teachers to attend conferences / workshop s and towards membership fee for professional bodies ---",
+            "documents": []
+          },
+          {
+            "number": "6.3.3",
+            "title": "6.3.3 Percentage of teaching and non-teaching staff participating in Faculty development Programmes (FDP), Management Development Programmes (MDPs) professional development /administrative training programs during the last five years",
+            "documents": []
+          },
+          {
+            "number": "6.3.3",
+            "title": "6.3.3 Refresher course/Faculty Orientation or other programmes as per UGC/AICTE stipulated periods, as participated by teachers year-wise ---",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "List of Faculty attended the Programmes",
+                    "url": "/documents/naac/c6/c6-633/6.3.3"
+                  },
+                  {
+                    "name": "Refresher Course/Faculty Orientation or other programmes as per UGC/AICTE stipulated periods, as participated by teachers’ year wise",
+                    "url": "/documents/naac/c6/c6-633/6.3.3"
+                  },
+                  {
+                    "name": "Copy of the certificates of the program attended by teachers",
+                    "url": "/documents/naac/c6/c6-633/6.3.3"
+                  },
+                  {
+                    "name": "Annual reports highlighting the programmes under taken by the teachers",
+                    "year": "2020-21",
+                    "url": "/documents/naac/c6/c6-633/6.3.3"
+                  },
+                  {
+                    "name": "Report of IQAC for Organizing FDPs",
+                    "url": "/documents/naac/c6/c6-633/6.3.3"
+                  }
+                ]
+              },
+              {
+                "label": "Copy of the certificates of the program attended by teachers",
+                "documentUrl": ""
+              },
+              {
+                "label": "Annual reports highlighting the programmes undertaken by the teachers",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "6.4",
+        "title": "Financial Management and Resource Mobilization",
+        "metrics": [
+          {
+            "number": "6.4.1",
+            "title": "6.4.1 Institution has strategies for mobilization and optimal utilization of resources and funds from various sources (government/ nongovernment organizations) and it conducts financial audits regularly (internal and external)",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Policy Document on Financial Management and Resources Mobilization",
+                    "url": "/documents/naac/c6/c6-641/6.4.1"
+                  },
+                  {
+                    "name": "Consolidated Income and Annual Expenditure Report",
+                    "url": "/documents/naac/c6/c6-641/6.4.1"
+                  },
+                  {
+                    "name": "Library Books and Journals",
+                    "url": "/documents/naac/c6/c6-641/6.4.1"
+                  },
+                  {
+                    "name": "External Audit",
+                    "url": "/documents/naac/c6/c6-641/6.4.1"
+                  },
+                  {
+                    "name": "Internal audit",
+                    "url": "/documents/naac/c6/c6-641/6.4.1"
+                  },
+                  {
+                    "name": "Corporate Social Responsibility",
+                    "url": "/documents/naac/c6/c6-641/6.4.1"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "6.5",
+        "title": "Internal Quality Assurance System",
+        "metrics": [
+          {
+            "number": "6.5.1",
+            "title": "6.5.1 Internal Quality Assurance Cell (IQAC) Activities ---",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Syllabus",
+                    "url": ""
+                  },
+                  {
+                    "name": "COs & POs",
+                    "url": ""
+                  },
+                  {
+                    "name": "Continuous Internal Assessment",
+                    "url": ""
+                  },
+                  {
+                    "name": "Result Analysis",
+                    "url": ""
+                  },
+                  {
+                    "name": "Academic Plans",
+                    "url": ""
+                  },
+                  {
+                    "name": "Teaching Dairies",
+                    "url": ""
+                  },
+                  {
+                    "name": "Lesson Plans",
+                    "url": ""
+                  },
+                  {
+                    "name": "Bridge Courses",
+                    "url": ""
+                  },
+                  {
+                    "name": "IQAC [goto main page ]",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "IQAC",
+                        "year": "2022-23",
+                        "url": "/documents/naac/c6/c6-651/iqac/6.5.1"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Student Centric Activities",
+                    "url": ""
+                  },
+                  {
+                    "name": "Extension Activities",
+                    "url": "",
+                    "subDocuments": [
+                      {
+                        "name": "2022-23",
+                        "year": "Blood Donation",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_01"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Rally on Plastic Ban",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_02"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Vana Mahotsavam",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-03-vava"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Pollution Rally",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-04-pollution"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-05"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Workshop on Health Dynamics",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_06"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "World Environment Day",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-07-world"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Free Dental Checkup",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_08"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Save Girl Child",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-09-Save"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Awareness on Plastic Ban",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_10"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Awareness Programme on Illiteracy",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_11"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Awareness Programme on water pollution",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_12"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Awareness Programme on Health & Cleanliness",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_13"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Free Health Camp",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_14"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Seminar on Cyber Security",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_15"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Free drinking water supply",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_16"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Survey on Unemployment of Youth",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_17"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Swachh Bharat",
+                        "url": "/documents/naac/c3/c3-341/3.4.1"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_19"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Visiting Old age Homes",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_20"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Rally on AIDS Awareness",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_21"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Unity Day",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_22"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Communal Harmony",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-23-Cummunal"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Tree Plantation",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-24-Tree"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Har GharTiranga",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-25-Har"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Plantation",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-26-Plantation.pdf"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Aazadika Amrith Mahotsav",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-27-Azadi"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "Rain Water Harvesting",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-28-Rain"
+                      },
+                      {
+                        "name": "2022-23",
+                        "year": "International Yoga Day",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-29-International"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-30-community"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness on “Common Hospitalized Infections”",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-31-common"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness program on Role of Nutrition in Health",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-32-Role"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-34-commumity"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Swachh Bharat Programme",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-35-swatch"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness Programme on Illiteracy",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_36"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness Programme on Free Health Camp",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_37"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Pollution Rally",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_38"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Free Drinking Water",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_39"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness on Carona",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_40"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness Programme on Anti Ragging",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-41-Anti"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Clean & Green Plantation",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_42"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Supply Sanitizer & Masks",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-43-supply"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Distribution of Masks",
+                        "url": "/documents/naac/c3/c3-341/3.4.1"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Awareness program on COVID-19",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_45"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Programme on COVID- 19 Vaccination",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_46"
+                      },
+                      {
+                        "name": "2021-22",
+                        "year": "Pollution Rally",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_47"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Awareness program on DISHA APP",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_48"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_49"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_50"
+                      },
+                      {
+                        "name": "2020-21",
+                        "year": "Medical Camp on Skin Diseases",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_52"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_53"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Reproductive Health Values of Life and Human Trafficking",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_55"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Free eye Checkup Camp",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-56-free"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_57"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "AIDS Awareness Rally",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-58-AIDS"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_59"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Awareness on Plastic Ban",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_60"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Swachh Bharat Programme",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_61"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Thalli Pala Varothsavalu",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-62-Thalli"
+                      },
+                      {
+                        "name": "2019-20",
+                        "year": "Tree Plantation",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_63"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Village Economic Development Programme",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-64-villege"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "HIV Awareness",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-65-HIV"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Community Service",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-66-community"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Natural Resources,Irrigation and Water Budget Programme",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-67-natural"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Awareness Programme on Technology In Good Governence",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-68-technology"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Awareness Program on Dengue & Swine Flue",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Awareness Programme on Illiteracy",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_70"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Kerala Flood Relief Fund",
+                        "url": "/documents/naac/c3/c3-341/3.4.1-71-kerala"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Free Dental Checkup",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_72"
+                      },
+                      {
+                        "name": "2018-19",
+                        "year": "Environment Day",
+                        "url": "/documents/naac/c3/c3-341/3.4.1_73"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "FDPs / MDPs",
+                    "url": "/documents/naac/c6/c6-633/6.3.3"
+                  },
+                  {
+                    "name": "Feedback Analysis",
+                    "url": ""
+                  }
+                ]
+              },
+              {
+                "label": "Quality audit reports/certificate as applicable and valid for the assessment period",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Quality audit Reports/Certificate as applicable and valid forthe assessment period",
+                    "url": "/documents/naac/c6/c6-652/c6-652p/6.5.2"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Link to Minute of IQAC meetings, hosted on HEI web site",
+                    "url": "/documents/naac/c6/c6-652/c6-652p/6.5.2"
+                  },
+                  {
+                    "name": "Quality audit Reports/Certificate as applicable and valid for the assessment period",
+                    "url": "/documents/naac/c6/c6-652/c6-652p/6.5.2"
+                  },
+                  {
+                    "name": "Any other Quality Audit/Accreditation Recognized by State, National or International Agencies such as NAAC, NBA etc.",
+                    "url": "/documents/naac/c6/c6-652/c6-652p/6.5.2"
+                  }
+                ]
+              },
+              {
+                "label": "NIRF report, AAA report and details on follow up actions",
+                "documentUrl": "/documents/naac/c6/c6-652/AAA"
+              },
+              {
+                "label": "Link to Minute of IQAC meetings, hosted on HEI website",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "IQAC",
+                    "year": "2022-23",
+                    "url": "/documents/naac/c6/c6-652/IQAC"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Criterion VII - Institutional Values and Best Practices",
+    "sections": [
+      {
+        "number": "7.1",
+        "title": "Institutional Values and Social Responsibilities",
+        "metrics": [
+          {
+            "number": "7.1.1",
+            "title": "7.1.1 Institution has initiated the Gender Audit and measures for the promotion of gender equity during the last five years. Describe the gender equity & sensitization in curricular and co-curricular activities, facilities for women on campus",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Gender Audit",
+                    "year": "Gender Audit Report",
+                    "url": "/documents/naac/c7/c7-711/7.1.1"
+                  },
+                  {
+                    "name": "Gender equity & sensitization in curricular and co-curricular activities",
+                    "year": "Curricular Activities",
+                    "url": "/documents/naac/c7/c7-711/7.1.1"
+                  },
+                  {
+                    "name": "Facilities Provided For Women on the Campus",
+                    "url": "/documents/naac/c7/c7-711/7.1.1"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "7.1.2",
+            "title": "7.1.2 The Institution has facilities and initiatives for1. Alternate sources of energy and energy conservation measures2. Management of the various types of degradable and non-degradable waste3. Water conservation4. Green campus initiatives5. Disabled-friendly, barrier free environment",
+            "documents": [
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Policy document on the green campus/ plastic free campus",
+                    "url": "/documents/naac/c7/c7-712/7.1.2"
+                  },
+                  {
+                    "name": "Bills for the purchase of equipments for the facilities created under this metric",
+                    "url": "/documents/naac/c7/c7-712/Allbills"
+                  },
+                  {
+                    "name": "Geo-tagged photo graphs",
+                    "url": "/documents/naac/c7/c7-712/Geo-photos.pdf"
+                  },
+                  {
+                    "name": "Circulars and report of Activities for the implementation of the initiatives document",
+                    "url": "/documents/naac/c7/c7-712/REPORT.pdf"
+                  }
+                ]
+              },
+              {
+                "label": "Policy document on the green campus/plastic free campus",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "7.1.2",
+            "title": "7.1.2 Geo-tagged photographs/videos of the facilities VIEW",
+            "documents": [
+              {
+                "label": "Circulars and report of activities for the implementation of the initiatives document",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "7.1.2",
+            "title": "7.1.2 Bills for the purchase of equipment’s for the facilities created under this metric",
+            "documents": []
+          },
+          {
+            "number": "7.1.3",
+            "title": "7.1.3 Quality audits on environment and energy regularly undertaken by the Institution. The institutional environment and energy initiatives are confirmed through the following1. Green audit / Environment audit2. Energy audit3. Clean and green campus initiatives4. Beyond the campus environmental promotion activities",
+            "documents": [
+              {
+                "label": "Report on Environmental Promotional activities conducted beyond the campus with geo tagged photographs with caption and date",
+                "documentUrl": ""
+              },
+              {
+                "label": "Provide Links for any other relevant document to support the claim (if any)",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Policy document on environment and energy usage certificate from the auditing agency",
+                    "url": "/documents/naac/c7/c7-713/7.1.3"
+                  },
+                  {
+                    "name": "Certificates of the awards received from recognized Agency",
+                    "url": "/documents/naac/c7/c7-713/certificates.pdf"
+                  },
+                  {
+                    "name": "Report on environmental promotion and sustainability activities beyond the campus",
+                    "url": "/documents/naac/c7/c7-713/7.1.3"
+                  },
+                  {
+                    "name": "Green Audit/Environmental Audit Reports",
+                    "url": "/documents/naac/c7/c7-713/7.1.3"
+                  },
+                  {
+                    "name": "Clean and green campus initiatives",
+                    "url": "/documents/naac/c7/c7-713/7.1.3"
+                  }
+                ]
+              },
+              {
+                "label": "Policy document on environment and energy usage Certificate from the auditing agency",
+                "documentUrl": ""
+              },
+              {
+                "label": "Green audit/environmental audit report from recognized bodies",
+                "documentUrl": ""
+              }
+            ]
+          },
+          {
+            "number": "7.1.3",
+            "title": "7.1.3 Certificates of the awards received from recognized agency (if any)",
+            "documents": []
+          },
+          {
+            "number": "7.1.4",
+            "title": "7.1.4 Describe the Institutional efforts/initiatives in providing an inclusive environment i.e., tolerance and harmony towards cultural, regional, linguistic, communal socioeconomic and Sensitization of students and employees to the constitutional obligations: values, rights, duties and responsibilities of citizens",
+            "documents": [
+              {
+                "label": "Upload Additional information",
+                "documentUrl": "",
+                "subDocuments": [
+                  {
+                    "name": "Institutional Efforts / Initiatives in an Inclusive Environment",
+                    "year": "Tolerance and harmony towards cultural, regional, linguistic, communal socio-economic diversity",
+                    "url": "/documents/naac/c7/c7-714p/7.1.4"
+                  },
+                  {
+                    "name": "Institutional Efforts / Initiatives in an Inclusive Environment",
+                    "year": "Sensitization of students and employees to the Constitutional obligations: values, rights, duties and responsibilities of citizens.",
+                    "url": "/documents/naac/c7/c7-714p/7.1.4"
+                  }
+                ]
+              },
+              {
+                "label": "Provide Link for Additional information",
+                "documentUrl": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": "7.2",
+        "title": "Best Practices",
+        "metrics": [
+          {
+            "number": "7.2.1",
+            "title": "7.2.1 Best practices as hosted on the Institutional website VIEW",
+            "documents": []
+          },
+          {
+            "number": "7.2.1",
+            "title": "7.2.1 Any other relevant information",
+            "documents": []
+          }
+        ]
+      },
+      {
+        "number": "7.3",
+        "title": "Institutional Distinctiveness",
+        "metrics": [
+          {
+            "number": "7.3.1",
+            "title": "7.3.1 Portray the performance of the Institution in one area distinctive to its priority and thrust",
+            "documents": []
+          },
+          {
+            "number": "7.3.1",
+            "title": "7.3.1 Appropriate web in the Institutional website VIEW",
+            "documents": []
+          },
+          {
+            "number": "7.3.1",
+            "title": "7.3.1 Any other relevant information",
+            "documents": []
+          }
+        ]
+      }
+    ]
+  }
+]

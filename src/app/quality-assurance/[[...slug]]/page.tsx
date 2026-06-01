@@ -59,7 +59,15 @@ export default function QualityAssurancePage({ params }: PageProps) {
               <span className="text-slate-350">/</span>
               <span className="hover:text-[#002147] transition-all">Quality Assurance</span>
               <span className="text-slate-350">/</span>
-              <span className="text-[#002147]">{currentSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}</span>
+              <span className="text-[#002147]">
+                {currentSlug === "naac" 
+                  ? "NAAC Accreditation" 
+                  : currentSlug === "iqac" 
+                    ? "About IQAC" 
+                    : currentSlug === "aqar" 
+                      ? "AQAR Reports" 
+                      : currentSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+              </span>
             </div>
           </div>
 

@@ -428,3 +428,47 @@ export async function getFacultySections() {
   }
 }
 
+// NAAC Accreditation Data Fetcher with Local JSON Fallback
+export async function getNaacData() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "naacCriterion"] | order(id asc) {
+      id,
+      title,
+      sections[] {
+        number,
+        title,
+        metrics[] {
+          number,
+          title,
+          documents[] {
+            label,
+            documentUrl,
+            subDocuments[] {
+              name,
+              year,
+              url,
+              subDocuments[] {
+                name,
+                year,
+                url
+              }
+            }
+          }
+        }
+      }
+    }`);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (naacCriterion):", err);
+  }
+  
+  // Dynamic fallback to the crawled local backup naac-data.json
+  try {
+    const localData = require("../components/quality-assurance/naac-data.json");
+    return localData;
+  } catch (err) {
+    console.error("Error loading local NAAC data backup:", err);
+    return [];
+  }
+}
+

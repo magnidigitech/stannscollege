@@ -20,3 +20,6 @@ Content/
 
 # Exclude local copy of the site
 stannscollegeforwomen.org/
+
+# Exclude massive local NAAC backup files (8GB) to prevent Git bloat
+public/documents/naac/
