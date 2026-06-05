@@ -306,6 +306,173 @@ export default defineConfig({
           { name: "careerOpps", title: "Career Progression Opportunities", type: "array", of: [{ type: "string" }] },
         ]
       },
+      {
+        name: "naacCriterion",
+        title: "NAAC Criteria",
+        type: "document",
+        fields: [
+          { name: "id", title: "ID", type: "number" },
+          { name: "title", title: "Title", type: "string" },
+          {
+            name: "sections",
+            title: "Sections",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "number", title: "Section Number", type: "string" },
+                  { name: "title", title: "Section Title", type: "string" },
+                  {
+                    name: "metrics",
+                    title: "Metrics",
+                    type: "array",
+                    of: [
+                      {
+                        type: "object",
+                        fields: [
+                          { name: "number", title: "Metric Number", type: "string" },
+                          { name: "title", title: "Metric Title", type: "string" },
+                          {
+                            name: "documents",
+                            title: "Documents",
+                            type: "array",
+                            of: [
+                              {
+                                type: "object",
+                                fields: [
+                                  { name: "label", title: "Document Label", type: "string" },
+                                  { name: "documentUrl", title: "Document URL", type: "string" },
+                                  {
+                                    name: "subDocuments",
+                                    title: "Sub Documents",
+                                    type: "array",
+                                    of: [
+                                      {
+                                        type: "object",
+                                        name: "subDoc",
+                                        fields: [
+                                          { name: "name", title: "Name", type: "string" },
+                                          { name: "year", title: "Year / Subtitle", type: "string" },
+                                          { name: "url", title: "URL", type: "string" },
+                                          {
+                                            name: "subDocuments",
+                                            title: "Nested Sub Documents",
+                                            type: "array",
+                                            of: [
+                                              {
+                                                type: "object",
+                                                name: "nestedSubDoc",
+                                                fields: [
+                                                  { name: "name", title: "Name", type: "string" },
+                                                  { name: "year", title: "Year / Subtitle", type: "string" },
+                                                  { name: "url", title: "URL", type: "string" }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "aqarCriterion",
+        title: "AQAR Criteria",
+        type: "document",
+        fields: [
+          { name: "id", title: "ID", type: "number" },
+          { name: "title", title: "Title", type: "string" },
+          {
+            name: "sections",
+            title: "Sections",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "number", title: "Section Number", type: "string" },
+                  { name: "title", title: "Section Title", type: "string" },
+                  {
+                    name: "metrics",
+                    title: "Metrics",
+                    type: "array",
+                    of: [
+                      {
+                        type: "object",
+                        fields: [
+                          { name: "number", title: "Metric Number", type: "string" },
+                          { name: "title", title: "Metric Title", type: "string" },
+                          {
+                            name: "documents",
+                            title: "Documents",
+                            type: "array",
+                            of: [
+                              {
+                                type: "object",
+                                fields: [
+                                  { name: "label", title: "Document Label", type: "string" },
+                                  { name: "documentUrl", title: "Document URL", type: "string" },
+                                  {
+                                    name: "subDocuments",
+                                    title: "Sub Documents",
+                                    type: "array",
+                                    of: [
+                                      {
+                                        type: "object",
+                                        name: "subDoc",
+                                        fields: [
+                                          { name: "name", title: "Name", type: "string" },
+                                          { name: "year", title: "Year / Subtitle", type: "string" },
+                                          { name: "url", title: "URL", type: "string" },
+                                          {
+                                            name: "subDocuments",
+                                            title: "Nested Sub Documents",
+                                            type: "array",
+                                            of: [
+                                              {
+                                                type: "object",
+                                                name: "nestedSubDoc",
+                                                fields: [
+                                                  { name: "name", title: "Name", type: "string" },
+                                                  { name: "year", title: "Year / Subtitle", type: "string" },
+                                                  { name: "url", title: "URL", type: "string" }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     ],
   },
 });
+
