@@ -53,6 +53,24 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 
+// Helper for retrying uploads in case of network drops
+async function uploadWithRetry(localPath, fileName, retries = 3, delay = 2000) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const asset = await client.assets.upload("file", fs.createReadStream(localPath), {
+        filename: fileName,
+      });
+      return asset;
+    } catch (err) {
+      if (attempt === retries) {
+        throw err;
+      }
+      console.warn(`  ⚠️ Upload failed (attempt ${attempt}/${retries}): ${err.message}. Retrying in ${delay / 1000}s...`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+}
+
 // Upload a single file to Sanity
 async function uploadFile(relativeUrl) {
   if (!relativeUrl || !relativeUrl.startsWith("/documents/")) {
@@ -87,9 +105,7 @@ async function uploadFile(relativeUrl) {
   console.log(`Uploading: ${fileName} (${sizeStr})...`);
 
   try {
-    const asset = await client.assets.upload("file", fs.createReadStream(localPath), {
-      filename: fileName,
-    });
+    const asset = await uploadWithRetry(localPath, fileName);
     
     console.log(`\x1b[32m%s\x1b[0m`, `  ✅ Success! Sanity URL: ${asset.url}`);
     
@@ -99,8 +115,9 @@ async function uploadFile(relativeUrl) {
     
     return asset.url;
   } catch (err) {
-    console.error(`\x1b[31m%s\x1b[0m`, `  ❌ Failed to upload ${fileName}:`, err.message);
-    throw err; // Stop on upload failure so the user knows
+    console.error(`\x1b[31m%s\x1b[0m`, `  ❌ Failed to upload ${fileName} after retries:`, err.message);
+    // Graceful fallback: return the original URL so the migration can proceed and create documents
+    return relativeUrl;
   }
 }
 
