@@ -160,6 +160,45 @@ async function main() {
     console.error(`AQAR data file not found at ${AQAR_DATA_PATH}`);
   }
 
+  // --- Publish Initial Structures Instantly ---
+  console.log("\n⚡ Instantly initializing all criteria structures in Sanity Studio...");
+  
+  if (naacData.length > 0) {
+    for (let criterion of naacData) {
+      try {
+        const docToCreate = {
+          _id: `naacCriterion-${criterion.id}`,
+          _type: "naacCriterion",
+          id: criterion.id,
+          title: criterion.title,
+          sections: criterion.sections,
+        };
+        await client.createOrReplace(docToCreate);
+      } catch (err) {
+        console.warn(`  ⚠️ Failed to publish initial structure for NAAC Criterion ${criterion.id}: ${err.message}`);
+      }
+    }
+  }
+
+  if (aqarData.length > 0) {
+    for (let criterion of aqarData) {
+      try {
+        const docToCreate = {
+          _id: `aqarCriterion-${criterion.id}`,
+          _type: "aqarCriterion",
+          id: criterion.id,
+          title: criterion.title,
+          sections: criterion.sections,
+        };
+        await client.createOrReplace(docToCreate);
+      } catch (err) {
+        console.warn(`  ⚠️ Failed to publish initial structure for AQAR Criterion ${criterion.id}: ${err.message}`);
+      }
+    }
+  }
+  
+  console.log("✅ All criteria structures initialized in Sanity Studio! You can refresh Sanity Studio to see them.\n");
+
   // --- Process NAAC Data ---
   if (naacData.length > 0) {
     console.log("\n-----------------------------------------");
