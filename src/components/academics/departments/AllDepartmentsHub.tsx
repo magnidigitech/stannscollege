@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Building, GraduationCap, ArrowRight, Sparkles, BookOpen } from "lucide-react";
+import { Building, GraduationCap, ArrowRight, Sparkles, BookOpen, Settings } from "lucide-react";
 
 const departmentsData = [
   {
@@ -109,7 +109,7 @@ export function AllDepartmentsHub() {
   return (
     <div className="flex flex-col gap-8 animate-fadeIn font-sans">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#002147] to-[#0b3d77] rounded-[2rem] p-8 md:p-10 text-white relative overflow-hidden shadow-lg">
+      <div className="bg-gradient-to-r from-[#002147] to-[#0b3d77] rounded-[2rem] p-8 md:p-10 text-white relative overflow-hidden shadow-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
         <div className="absolute right-0 bottom-0 opacity-[0.05] transform translate-x-1/6 translate-y-1/6 pointer-events-none">
           <Building className="h-72 w-72" />
         </div>
@@ -124,6 +124,13 @@ export function AllDepartmentsHub() {
             Explore our 14 distinct academic departments facilitating specialized undergraduate, postgraduate, and interdisciplinary educational pathways.
           </p>
         </div>
+        <Link 
+          href="/academics/departments/update"
+          className="relative z-10 shrink-0 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-wider px-5 py-3.5 rounded-xl shadow-md transition-all active:scale-95 border border-transparent"
+        >
+          <Settings className="h-4 w-4 shrink-0" />
+          Manage Content
+        </Link>
       </div>
 
       {/* Stats Counter */}

@@ -22,6 +22,7 @@ import { Timetables } from "@/components/academics/curriculum-academic-planning/
 import { DepartmentDetail } from "@/components/academics/departments/DepartmentDetail";
 import { AllDepartmentsHub } from "@/components/academics/departments/AllDepartmentsHub";
 import { ValueAddedLearning } from "@/components/academics/value-added-learning/ValueAddedLearning";
+import { DepartmentUpdateForm } from "@/components/academics/departments/DepartmentUpdateForm";
 
 import { PedagogyMethodologies } from "@/components/academics/teaching-learning/PedagogyMethodologies";
 import { LearningManagementSystem } from "@/components/academics/teaching-learning/LearningManagementSystem";
@@ -68,7 +69,8 @@ const navigationStructure = [
       { text: "11. Department of MCA", slug: "department-of-mca" },
       { text: "12. Department of MBA", slug: "department-of-mba" },
       { text: "13. Department of English", slug: "department-of-english" },
-      { text: "14. Oriental Languages (Tel/San/Hin)", slug: "department-of-oriental-languages-telugu-sanskrit-hindi" }
+      { text: "14. Oriental Languages (Tel/San/Hin)", slug: "department-of-oriental-languages-telugu-sanskrit-hindi" },
+      { text: "⚙️ Manage Content", slug: "update" }
     ]
   },
   {
@@ -193,6 +195,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     }
     if (catSlug === "departments") {
       if (isAllDeptsRoot) return <AllDepartmentsHub />;
+      if (itemSlug === "update") return <DepartmentUpdateForm />;
       return <DepartmentDetail itemSlug={itemSlug || ""} />;
     }
     if (catSlug === "value-added-learning") {

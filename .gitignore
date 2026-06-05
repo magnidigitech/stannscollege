@@ -30,3 +30,7 @@ public/documents/aqar2324/
 # Exclude massive local DVV backup files to prevent Git bloat
 public/documents/dvv/
 
+# Local migration caches
+scripts/sanity-upload-cache.json
+
+
