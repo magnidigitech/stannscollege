@@ -1,4 +1,5 @@
 const { createClient } = require("@sanity/client");
+const crypto = require("crypto");
 
 const PROJECT_ID = "fhjwqub5";
 const DATASET = "production";
@@ -182,9 +183,33 @@ const commerceData = {
   ],
 };
 
+function addKeysToObj(obj) {
+  if (!obj || typeof obj !== "object") return;
+  
+  if (Array.isArray(obj)) {
+    for (let item of obj) {
+      if (item && typeof item === "object") {
+        if (!item._key) {
+          item._key = crypto.randomBytes(6).toString("hex");
+        }
+        addKeysToObj(item);
+      }
+    }
+  } else {
+    for (let k in obj) {
+      if (typeof obj[k] === "object") {
+        addKeysToObj(obj[k]);
+      }
+    }
+  }
+}
+
 async function run() {
   console.log("Pushing Department of Commerce content to Sanity...");
   try {
+    // Add unique _key to array items for Sanity compliance
+    addKeysToObj(commerceData);
+
     const res = await client.createOrReplace(commerceData);
     console.log("✅ Success! Published Department of Commerce. ID:", res._id);
   } catch (err) {

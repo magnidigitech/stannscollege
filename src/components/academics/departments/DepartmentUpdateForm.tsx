@@ -114,6 +114,27 @@ export function DepartmentUpdateForm() {
     setSaving(true);
     setStatusMsg({ type: "", text: "" });
 
+    // Helper to dynamically add unique _key properties to array objects for Sanity compliance
+    const addKeysToObj = (obj: any) => {
+      if (!obj || typeof obj !== "object") return;
+      if (Array.isArray(obj)) {
+        for (let item of obj) {
+          if (item && typeof item === "object") {
+            if (!item._key) {
+              item._key = Math.random().toString(36).substring(2, 14);
+            }
+            addKeysToObj(item);
+          }
+        }
+      } else {
+        for (let k in obj) {
+          if (typeof obj[k] === "object") {
+            addKeysToObj(obj[k]);
+          }
+        }
+      }
+    };
+
     try {
       const client = createClient({
         projectId: "fhjwqub5",
@@ -147,6 +168,9 @@ export function DepartmentUpdateForm() {
         infrastructure,
         careerOpps
       };
+
+      // Ensure all array items have unique _key fields before sending to Sanity
+      addKeysToObj(documentData);
 
       await client.createOrReplace(documentData);
       setStatusMsg({ type: "success", text: `Successfully published ${name} changes to Sanity CMS!` });

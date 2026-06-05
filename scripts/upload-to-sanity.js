@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { createClient } = require("@sanity/client");
 
 // Configuration
@@ -136,6 +137,28 @@ async function processDocumentFields(doc) {
   }
 }
 
+// Recursively add unique _key properties to all array objects for Sanity compatibility
+function addKeysToObj(obj) {
+  if (!obj || typeof obj !== "object") return;
+  
+  if (Array.isArray(obj)) {
+    for (let item of obj) {
+      if (item && typeof item === "object") {
+        if (!item._key) {
+          item._key = crypto.randomBytes(6).toString("hex");
+        }
+        addKeysToObj(item);
+      }
+    }
+  } else {
+    for (let k in obj) {
+      if (typeof obj[k] === "object") {
+        addKeysToObj(obj[k]);
+      }
+    }
+  }
+}
+
 // Main process function
 async function main() {
   console.log("=========================================");
@@ -159,6 +182,10 @@ async function main() {
   } else {
     console.error(`AQAR data file not found at ${AQAR_DATA_PATH}`);
   }
+
+  // Add missing _key properties to all array objects for Sanity compliance
+  addKeysToObj(naacData);
+  addKeysToObj(aqarData);
 
   // --- Publish Initial Structures Instantly ---
   console.log("\n⚡ Instantly initializing all criteria structures in Sanity Studio...");
