@@ -752,6 +752,16 @@ export default defineConfig({
           },
           { name: "documentFile", title: "Strategic Plan PDF File", type: "file" }
         ]
+      },
+      {
+        name: "studentHandbook",
+        title: "Student Handbook",
+        type: "document",
+        fields: [
+          { name: "year", title: "Academic Year", type: "string" },
+          { name: "file", title: "Handbook PDF File", type: "file" },
+          { name: "order", title: "Sorting Order", type: "number" }
+        ]
       }
     ],
   },

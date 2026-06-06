@@ -631,4 +631,20 @@ export async function getStrategicPlan() {
   }
 }
 
+export async function getStudentHandbooks() {
+  try {
+    const query = `*[_type == "studentHandbook" && !(_id in path("drafts.**"))] | order(order asc) {
+      year,
+      "fileUrl": file.asset->url,
+      order
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (student handbooks):", err);
+    return [];
+  }
+}
+
+
 

@@ -1,20 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BookOpen, FileText, Eye, Download, ShieldAlert, CalendarDays, FolderClosed } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import { getStudentHandbooks } from "@/lib/sanity";
+
+interface HandbookData {
+  year: string;
+  fileUrl: string;
+  order: number;
+}
 
 export function StudentHandbook() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
-  const handbooks = [
-    { year: "2023-2024", filename: "handbook 2023-24.pdf" },
-    { year: "2022-2023", filename: "handbook 2022-23.pdf" },
-    { year: "2021-2022", filename: "handbook 2021-22.pdf" },
-    { year: "2020-2021", filename: "handbook 2020-21.pdf" },
-    { year: "2019-2020", filename: "handbook 2019-20.pdf" },
-    { year: "2018-2019", filename: "handbook 2018-19.pdf" }
+  
+  const staticHandbooks: HandbookData[] = [
+    { year: "2023-2024", fileUrl: "/documents/admissions/handbooks/handbook 2023-24.pdf", order: 3 },
+    { year: "2022-2023", fileUrl: "/documents/admissions/handbooks/handbook 2022-23.pdf", order: 4 },
+    { year: "2021-2022", fileUrl: "/documents/admissions/handbooks/handbook 2021-22.pdf", order: 5 },
+    { year: "2020-2021", fileUrl: "/documents/admissions/handbooks/handbook 2020-21.pdf", order: 6 },
+    { year: "2019-2020", fileUrl: "/documents/admissions/handbooks/handbook 2019-20.pdf", order: 7 },
+    { year: "2018-2019", fileUrl: "/documents/admissions/handbooks/handbook 2018-19.pdf", order: 8 }
   ];
+
+  const [handbooksList, setHandbooksList] = useState<HandbookData[]>(staticHandbooks);
+
+  useEffect(() => {
+    let active = true;
+    async function loadHandbooks() {
+      try {
+        const data = await getStudentHandbooks();
+        if (active) {
+          const validHandbooks = data.filter((h: any) => h.year && h.fileUrl);
+          if (validHandbooks.length > 0) {
+            setHandbooksList(validHandbooks);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load handbooks from Sanity:", err);
+      }
+    }
+    loadHandbooks();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <div className="flex flex-col gap-16 animate-fadeIn pb-12 font-sans">
@@ -60,7 +91,7 @@ export function StudentHandbook() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {handbooks.map((h, i) => (
+          {handbooksList.map((h, i) => (
             <div key={i} className="bg-white border-2 border-slate-100 hover:border-indigo-200 rounded-[2rem] p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-8 group relative overflow-hidden">
               {i === 0 && (
                 <span className="absolute right-0 top-0 bg-[#002147] text-white font-black uppercase text-[9px] tracking-widest px-4 py-1.5 rounded-bl-2xl z-10 shadow-sm">
@@ -83,7 +114,7 @@ export function StudentHandbook() {
               <div className="flex gap-3 border-t border-slate-100 pt-5 mt-2">
                 <button 
                   onClick={() => {
-                    setPreviewUrl(`/documents/admissions/handbooks/${h.filename}`);
+                    setPreviewUrl(h.fileUrl);
                     setPreviewTitle(`Student Handbook ${h.year}`);
                   }}
                   className="flex-1 inline-flex items-center justify-center gap-2 bg-[#002147]/5 text-[#002147] hover:bg-[#002147] hover:text-white font-black px-4 py-3 rounded-xl text-sm shadow-xs transition-all cursor-pointer border-none"
@@ -91,7 +122,7 @@ export function StudentHandbook() {
                   <Eye className="h-4 w-4" /> View
                 </button>
                 <a 
-                  href={`/documents/admissions/handbooks/${h.filename}`}
+                  href={h.fileUrl}
                   download
                   className="inline-flex items-center justify-center w-12 bg-slate-50 text-slate-600 border border-slate-200/60 hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
                 >
@@ -102,6 +133,7 @@ export function StudentHandbook() {
           ))}
         </div>
       </div>
+
 
       <FilePreviewModal
         isOpen={!!previewUrl}
