@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FileText, ShieldCheck, Download, Eye, X, BookOpen, AlertCircle, CheckCircle, GraduationCap, Scale, Users, Users2, FileSpreadsheet } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 interface DisclosureItem {
   id: string;
@@ -108,8 +109,8 @@ export default function MandatoryDisclosuresPage() {
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
       {/* Top Breadcrumb Header */}
-      <div className="bg-white border-b border-slate-200/70 py-5 px-6 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-b border-slate-200/70 py-5 px-4 sm:px-6 lg:px-12 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs w-full">
+        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
               <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
@@ -128,7 +129,7 @@ export default function MandatoryDisclosuresPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto py-12 px-6 md:px-8 lg:px-10">
+      <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
         
         {/* Banner */}
         <div className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white p-8 md:p-12 rounded-[2.5rem] shadow-xl relative overflow-hidden mb-12">
@@ -258,38 +259,12 @@ export default function MandatoryDisclosuresPage() {
       </div>
 
       {/* PDF Modal Viewer */}
-      {selectedPdf && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 select-none animate-fadeIn">
-          <div className="bg-white rounded-3xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200/80">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/60 text-indigo-600">
-                  <FileText className="h-4 w-4" />
-                </span>
-                <h3 className="font-outfit text-base font-black text-slate-800 leading-tight">
-                  Statutory Document Viewer
-                </h3>
-              </div>
-              <button
-                onClick={() => setSelectedPdf(null)}
-                className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-100 text-slate-400 hover:text-slate-600 transition-all select-none"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* Modal Body: Embedded iframe */}
-            <div className="flex-1 bg-slate-50 p-4">
-              <iframe
-                src={`${selectedPdf}#toolbar=0&navpanes=0`}
-                className="w-full h-full rounded-2xl border border-slate-200/60 shadow-sm bg-white"
-                title="Statutory Document PDF Viewer"
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      <FilePreviewModal
+        isOpen={!!selectedPdf}
+        onClose={() => setSelectedPdf(null)}
+        fileUrl={selectedPdf || ""}
+        title="Statutory Document Preview"
+      />
     </div>
   );
 }

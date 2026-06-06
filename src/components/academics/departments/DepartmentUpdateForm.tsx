@@ -6,7 +6,7 @@ import { getDepartment } from "@/lib/sanity";
 import { 
   Building, Target, GraduationCap, Briefcase, Award, Handshake, Users, BookOpen, 
   Settings, Sparkles, Loader2, Save, Key, Plus, Trash2, ChevronRight, HelpCircle, 
-  CheckCircle, AlertTriangle 
+  CheckCircle, AlertTriangle, BarChart3, Trophy
 } from "lucide-react";
 
 // List of departments with slugs
@@ -32,9 +32,7 @@ export function DepartmentUpdateForm() {
   const [writeToken, setWriteToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error" | ""; text: string }>({ type: "", text: "" });
-
-  // Form states matching Sanity department schema
+  const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error" | ""; text: string }>({ type: "", text: "" });  // Form states matching Sanity department schema
   const [established, setEstablished] = useState("");
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
@@ -45,16 +43,58 @@ export function DepartmentUpdateForm() {
   
   // Structured lists
   const [programmes, setProgrammes] = useState<Array<{ title: string; intake: string; duration: string }>>([]);
-  const [valueAddedCourses, setValueAddedCourses] = useState<Array<{ sNo: number; title: string; duration: string; agency: string }>>([]);
-  const [mous, setMous] = useState<Array<{ title: string; type: string; duration: string; purpose: string }>>([]);
+  const [valueAddedCourses, setValueAddedCourses] = useState<Array<{ 
+    sNo: number; title: string; duration: string; fromTo: string; academicYear: string; 
+    studentsEnrolled: string; certificateIssued: string; agency: string 
+  }>>([]);
+  const [mous, setMous] = useState<Array<{ 
+    sNo: number; title: string; type: string; dateOfSigning: string; duration: string; 
+    purpose: string; documentUrl: string; status: string 
+  }>>([]);
   const [bestPractices, setBestPractices] = useState<Array<{
     title: string;
     category: string;
     objectives: string[];
+    context: string;
     practice: string[];
     success: string[];
+    problems: string[];
   }>>([]);
   const [activities, setActivities] = useState<Array<{ label: string; desc: string }>>([]);
+  
+  // New structured arrays
+  const [facultyMembers, setFacultyMembers] = useState<Array<{ 
+    name: string; designation: string; qualification: string; experience: string; email: string 
+  }>>([]);
+  const [passPercentage, setPassPercentage] = useState<Array<{ 
+    year: string; programme: string; finalYearStudents: string; studentsPassed: string; percentage: string 
+  }>>([]);
+  const [mouActivities, setMouActivities] = useState<Array<{ 
+    sNo: number; organization: string; activity: string; date: string; participants: string; documentUrl: string 
+  }>>([]);
+  const [studentAchievements, setStudentAchievements] = useState<Array<{ 
+    sNo: number; date: string; name: string; activity: string; level: string; achievement: string 
+  }>>([]);
+  const [academicAchievements, setAcademicAchievements] = useState<Array<{ 
+    sNo: number; year: string; name: string; programme: string; award: string; marks: string 
+  }>>([]);
+  const [placements, setPlacements] = useState<Array<{ 
+    year: string; finalYearStudents: string; studentsPlaced: string; highestSalary: string; averageSalary: string; percentage: string 
+  }>>([]);
+  const [activitiesList, setActivitiesList] = useState<Array<{ 
+    sNo: number; date: string; title: string; type: string; resourcePerson: string; participants: string; documentUrl: string 
+  }>>([]);
+  const [activitiesSummary, setActivitiesSummary] = useState<Array<{ 
+    sNo: number; year: string; category: string; count: string; studentsBenefited: string; keyActivities: string; documentUrl: string 
+  }>>([]);
+  const [internships, setInternships] = useState<Array<{ 
+    sNo: number; year: string; name: string; duration: string; organization: string; areaOfWork: string; programme: string 
+  }>>([]);
+  const [bestPracticesImpact, setBestPracticesImpact] = useState<string[]>([]);
+  const [gallery, setGallery] = useState<Array<{ image: any; caption: string }>>([]);
+  const [otherStudentAchievements, setOtherStudentAchievements] = useState<string[]>([]);
+  const [focusOnWomenEmpowerment, setFocusOnWomenEmpowerment] = useState("");
+  const [overallApproach, setOverallApproach] = useState("");
 
   // Load existing data for selected department
   const loadDeptData = async () => {
@@ -75,6 +115,20 @@ export function DepartmentUpdateForm() {
         setMous(data.mous || []);
         setBestPractices(data.bestPractices || []);
         setActivities(data.activities || []);
+        setFacultyMembers(data.facultyMembers || []);
+        setPassPercentage(data.passPercentage || []);
+        setMouActivities(data.mouActivities || []);
+        setStudentAchievements(data.studentAchievements || []);
+        setAcademicAchievements(data.academicAchievements || []);
+        setPlacements(data.placements || []);
+        setActivitiesList(data.activitiesList || []);
+        setActivitiesSummary(data.activitiesSummary || []);
+        setInternships(data.internships || []);
+        setBestPracticesImpact(data.bestPracticesImpact || []);
+        setGallery(data.gallery || []);
+        setOtherStudentAchievements(data.otherStudentAchievements || []);
+        setFocusOnWomenEmpowerment(data.focusOnWomenEmpowerment || "");
+        setOverallApproach(data.overallApproach || "");
       }
     } catch (err) {
       console.error("Failed to load department data:", err);
@@ -87,7 +141,6 @@ export function DepartmentUpdateForm() {
   useEffect(() => {
     loadDeptData();
   }, [selectedDeptId]);
-
   // Form list item handlers
   const handleAddStringItem = (setter: React.Dispatch<React.SetStateAction<string[]>>, list: string[]) => {
     setter([...list, ""]);
@@ -166,7 +219,21 @@ export function DepartmentUpdateForm() {
         bestPractices,
         activities,
         infrastructure,
-        careerOpps
+        careerOpps,
+        facultyMembers,
+        passPercentage,
+        mouActivities,
+        studentAchievements,
+        academicAchievements,
+        placements,
+        activitiesList,
+        activitiesSummary,
+        internships,
+        bestPracticesImpact,
+        gallery,
+        otherStudentAchievements,
+        focusOnWomenEmpowerment,
+        overallApproach
       };
 
       // Ensure all array items have unique _key fields before sending to Sanity
@@ -365,9 +432,7 @@ export function DepartmentUpdateForm() {
                   )}
                 </div>
               </div>
-            </div>
-
-            {/* 3. Academic Programmes Offered */}
+            </div>            {/* 3. Academic Programmes Offered */}
             <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
               <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-3">
@@ -377,7 +442,7 @@ export function DepartmentUpdateForm() {
                 <button
                   type="button"
                   onClick={() => setProgrammes([...programmes, { title: "", intake: "", duration: "" }])}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all animate-pulse"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
                 >
                   <Plus className="h-3.5 w-3.5" /> Add Programme
                 </button>
@@ -406,7 +471,7 @@ export function DepartmentUpdateForm() {
                             next[idx].title = e.target.value;
                             setProgrammes(next);
                           }}
-                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-400"
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 focus:outline-none"
                         />
                       </div>
                       <div className="flex flex-col gap-1.5">
@@ -420,7 +485,7 @@ export function DepartmentUpdateForm() {
                             next[idx].intake = e.target.value;
                             setProgrammes(next);
                           }}
-                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-400"
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 focus:outline-none"
                         />
                       </div>
                       <div className="flex flex-col gap-1.5">
@@ -434,7 +499,7 @@ export function DepartmentUpdateForm() {
                             next[idx].duration = e.target.value;
                             setProgrammes(next);
                           }}
-                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-400"
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700 focus:outline-none"
                         />
                       </div>
                     </div>
@@ -446,16 +511,229 @@ export function DepartmentUpdateForm() {
               </div>
             </div>
 
-            {/* 4. Value-Added & Certificate Courses */}
+            {/* 4. Faculty Directory */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <Users className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">4. Faculty Directory</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFacultyMembers([...facultyMembers, { name: "", designation: "", qualification: "", experience: "", email: "" }])}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add Faculty
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {facultyMembers.map((fac, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-5 rounded-2xl border border-slate-200/60 flex flex-col gap-4 relative">
+                    <button
+                      type="button"
+                      onClick={() => setFacultyMembers(facultyMembers.filter((_, i) => i !== idx))}
+                      className="absolute right-4 top-4 text-slate-400 hover:text-red-500 transition-colors"
+                    >
+                      <Trash2 className="h-4.5 w-4.5" />
+                    </button>
+                    <h4 className="font-outfit text-xs font-black uppercase text-[#002147]">Faculty Member #{idx + 1}</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-black uppercase text-slate-400">Name</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Dr. A. Srinivas"
+                          value={fac.name}
+                          onChange={(e) => {
+                            const next = [...facultyMembers];
+                            next[idx].name = e.target.value;
+                            setFacultyMembers(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-black uppercase text-slate-400">Designation</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Assistant Professor"
+                          value={fac.designation}
+                          onChange={(e) => {
+                            const next = [...facultyMembers];
+                            next[idx].designation = e.target.value;
+                            setFacultyMembers(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-black uppercase text-slate-400">Qualifications</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. M.Com, MBA, Ph.D"
+                          value={fac.qualification}
+                          onChange={(e) => {
+                            const next = [...facultyMembers];
+                            next[idx].qualification = e.target.value;
+                            setFacultyMembers(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-black uppercase text-slate-400">Experience</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 15 Years"
+                          value={fac.experience}
+                          onChange={(e) => {
+                            const next = [...facultyMembers];
+                            next[idx].experience = e.target.value;
+                            setFacultyMembers(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-black uppercase text-slate-400">Email ID</label>
+                        <input
+                          type="email"
+                          placeholder="e.g. fac@stannscollege.org"
+                          value={fac.email}
+                          onChange={(e) => {
+                            const next = [...facultyMembers];
+                            next[idx].email = e.target.value;
+                            setFacultyMembers(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {facultyMembers.length === 0 && (
+                  <span className="text-xs text-slate-400 font-semibold italic">No faculty directory members added.</span>
+                )}
+              </div>
+            </div>
+
+            {/* 5. Outgoing Pass Percentages */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <BarChart3 className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">5. Students' Pass Percentage</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPassPercentage([...passPercentage, { year: "", programme: "", finalYearStudents: "", studentsPassed: "", percentage: "" }])}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add Result Log
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {passPercentage.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setPassPercentage(passPercentage.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Academic Year</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2025-2026"
+                          value={item.year}
+                          onChange={(e) => {
+                            const next = [...passPercentage];
+                            next[idx].year = e.target.value;
+                            setPassPercentage(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Programme</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. B.Com Honours CA"
+                          value={item.programme}
+                          onChange={(e) => {
+                            const next = [...passPercentage];
+                            next[idx].programme = e.target.value;
+                            setPassPercentage(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Final Year Students</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 78"
+                          value={item.finalYearStudents}
+                          onChange={(e) => {
+                            const next = [...passPercentage];
+                            next[idx].finalYearStudents = e.target.value;
+                            setPassPercentage(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Students Passed</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 74"
+                          value={item.studentsPassed}
+                          onChange={(e) => {
+                            const next = [...passPercentage];
+                            next[idx].studentsPassed = e.target.value;
+                            setPassPercentage(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Pass Percentage</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 94.8%"
+                          value={item.percentage}
+                          onChange={(e) => {
+                            const next = [...passPercentage];
+                            next[idx].percentage = e.target.value;
+                            setPassPercentage(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {passPercentage.length === 0 && (
+                  <span className="text-xs text-slate-400 font-semibold italic">No pass percentages logged yet.</span>
+                )}
+              </div>
+            </div>
+
+            {/* 6. Value-Added & Certificate Courses */}
             <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
               <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-3">
                   <Award className="h-5 w-5 text-[#002147]" />
-                  <h3 className="font-outfit font-black text-lg text-[#002147]">4. Value-Added & Certificate Courses</h3>
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">6. Value-Added & Certificate Courses</h3>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setValueAddedCourses([...valueAddedCourses, { sNo: valueAddedCourses.length + 1, title: "", duration: "", agency: "" }])}
+                  onClick={() => setValueAddedCourses([...valueAddedCourses, { sNo: valueAddedCourses.length + 1, title: "", duration: "", fromTo: "", academicYear: "", studentsEnrolled: "", certificateIssued: "Yes", agency: "" }])}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
                 >
                   <Plus className="h-3.5 w-3.5" /> Add Course
@@ -464,7 +742,7 @@ export function DepartmentUpdateForm() {
 
               <div className="flex flex-col gap-4">
                 {valueAddedCourses.map((c, idx) => (
-                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col sm:flex-row gap-4 items-stretch relative">
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
                     <button
                       type="button"
                       onClick={() => setValueAddedCourses(valueAddedCourses.filter((_, i) => i !== idx))}
@@ -472,8 +750,8 @@ export function DepartmentUpdateForm() {
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
-                    <div className="flex-grow grid grid-cols-1 sm:grid-cols-12 gap-3 pr-6">
-                      <div className="sm:col-span-6 flex flex-col gap-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                      <div className="sm:col-span-4 flex flex-col gap-1">
                         <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Course Title</label>
                         <input
                           type="text"
@@ -487,8 +765,8 @@ export function DepartmentUpdateForm() {
                           className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700 focus:outline-none"
                         />
                       </div>
-                      <div className="sm:col-span-3 flex flex-col gap-1">
-                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Duration</label>
+                      <div className="sm:col-span-2 flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Duration (Hours)</label>
                         <input
                           type="text"
                           placeholder="e.g. 40 Hours"
@@ -502,10 +780,24 @@ export function DepartmentUpdateForm() {
                         />
                       </div>
                       <div className="sm:col-span-3 flex flex-col gap-1">
-                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Agency</label>
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">From - To Dates</label>
                         <input
                           type="text"
-                          placeholder="Collaborating partner..."
+                          placeholder="e.g. 12-08-2025 to 31-08-2025"
+                          value={c.fromTo}
+                          onChange={(e) => {
+                            const next = [...valueAddedCourses];
+                            next[idx].fromTo = e.target.value;
+                            setValueAddedCourses(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="sm:col-span-3 flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Collaborating Agency</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Nitya Computers"
                           value={c.agency}
                           onChange={(e) => {
                             const next = [...valueAddedCourses];
@@ -513,6 +805,50 @@ export function DepartmentUpdateForm() {
                             setValueAddedCourses(next);
                           }}
                           className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Academic Year</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2025-2026"
+                          value={c.academicYear}
+                          onChange={(e) => {
+                            const next = [...valueAddedCourses];
+                            next[idx].academicYear = e.target.value;
+                            setValueAddedCourses(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">No. of Students Enrolled</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 60"
+                          value={c.studentsEnrolled}
+                          onChange={(e) => {
+                            const next = [...valueAddedCourses];
+                            next[idx].studentsEnrolled = e.target.value;
+                            setValueAddedCourses(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Certificate Issued (Yes/No)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Yes"
+                          value={c.certificateIssued}
+                          onChange={(e) => {
+                            const next = [...valueAddedCourses];
+                            next[idx].certificateIssued = e.target.value;
+                            setValueAddedCourses(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
                         />
                       </div>
                     </div>
@@ -524,16 +860,138 @@ export function DepartmentUpdateForm() {
               </div>
             </div>
 
-            {/* 5. MoUs */}
+            {/* 7. Student Internships */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <GraduationCap className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">7. Student Internships</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setInternships([...internships, { sNo: internships.length + 1, year: "", name: "", duration: "", organization: "", areaOfWork: "", programme: "" }])}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add Internship
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {internships.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setInternships(internships.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Academic Year</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2025-2026"
+                          value={item.year}
+                          onChange={(e) => {
+                            const next = [...internships];
+                            next[idx].year = e.target.value;
+                            setInternships(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Student Name</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Mary Jones"
+                          value={item.name}
+                          onChange={(e) => {
+                            const next = [...internships];
+                            next[idx].name = e.target.value;
+                            setInternships(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Duration</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 6 Weeks"
+                          value={item.duration}
+                          onChange={(e) => {
+                            const next = [...internships];
+                            next[idx].duration = e.target.value;
+                            setInternships(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Organization Name</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. HDFC Bank"
+                          value={item.organization}
+                          onChange={(e) => {
+                            const next = [...internships];
+                            next[idx].organization = e.target.value;
+                            setInternships(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Area of Work</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Finance & Auditing"
+                          value={item.areaOfWork}
+                          onChange={(e) => {
+                            const next = [...internships];
+                            next[idx].areaOfWork = e.target.value;
+                            setInternships(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Programme</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. B.Com Honours"
+                          value={item.programme}
+                          onChange={(e) => {
+                            const next = [...internships];
+                            next[idx].programme = e.target.value;
+                            setInternships(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {internships.length === 0 && (
+                  <span className="text-xs text-slate-400 font-semibold italic">No internships registered.</span>
+                )}
+              </div>
+            </div>
+
+            {/* 8. Partnerships & MoUs */}
             <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
               <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-3">
                   <Handshake className="h-5 w-5 text-[#002147]" />
-                  <h3 className="font-outfit font-black text-lg text-[#002147]">5. Partnerships & MoUs</h3>
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">8. Partnerships & MoUs</h3>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setMous([...mous, { title: "", type: "MoU", duration: "", purpose: "" }])}
+                  onClick={() => setMous([...mous, { sNo: mous.length + 1, title: "", type: "MoU", dateOfSigning: "", duration: "", purpose: "", documentUrl: "", status: "Active" }])}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
                 >
                   <Plus className="h-3.5 w-3.5" /> Add MoU
@@ -550,7 +1008,7 @@ export function DepartmentUpdateForm() {
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                       <div className="flex flex-col gap-1">
                         <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Organization Name</label>
                         <input
@@ -580,6 +1038,20 @@ export function DepartmentUpdateForm() {
                         />
                       </div>
                       <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Signing Date</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 12-08-2025"
+                          value={m.dateOfSigning}
+                          onChange={(e) => {
+                            const next = [...mous];
+                            next[idx].dateOfSigning = e.target.value;
+                            setMous(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
                         <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Duration</label>
                         <input
                           type="text"
@@ -594,15 +1066,45 @@ export function DepartmentUpdateForm() {
                         />
                       </div>
                     </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="sm:col-span-2 flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Purpose / Scope</label>
+                        <input
+                          type="text"
+                          placeholder="Detailed purpose of the collaboration..."
+                          value={m.purpose}
+                          onChange={(e) => {
+                            const next = [...mous];
+                            next[idx].purpose = e.target.value;
+                            setMous(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Status (Active/Inactive)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Active"
+                          value={m.status}
+                          onChange={(e) => {
+                            const next = [...mous];
+                            next[idx].status = e.target.value;
+                            setMous(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
                     <div className="flex flex-col gap-1">
-                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Purpose / Scope</label>
+                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Document PDF URL</label>
                       <input
                         type="text"
-                        placeholder="Detailed purpose of the collaboration..."
-                        value={m.purpose}
+                        placeholder="Link to file on Sanity or external document..."
+                        value={m.documentUrl}
                         onChange={(e) => {
                           const next = [...mous];
-                          next[idx].purpose = e.target.value;
+                          next[idx].documentUrl = e.target.value;
                           setMous(next);
                         }}
                         className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
@@ -616,16 +1118,495 @@ export function DepartmentUpdateForm() {
               </div>
             </div>
 
-            {/* 6. Best Practices */}
+            {/* 9. MoU Activity Details */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <Handshake className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">9. MoU Activities Conducted</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setMouActivities([...mouActivities, { sNo: mouActivities.length + 1, organization: "", activity: "", date: "", participants: "", documentUrl: "" }])}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add MoU Activity
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {mouActivities.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setMouActivities(mouActivities.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Partner Organization</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. ABC Chartered Accountants"
+                          value={item.organization}
+                          onChange={(e) => {
+                            const next = [...mouActivities];
+                            next[idx].organization = e.target.value;
+                            setMouActivities(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Activity Conducted</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Tally Training Seminar"
+                          value={item.activity}
+                          onChange={(e) => {
+                            const next = [...mouActivities];
+                            next[idx].activity = e.target.value;
+                            setMouActivities(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Date</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 15-09-2025"
+                          value={item.date}
+                          onChange={(e) => {
+                            const next = [...mouActivities];
+                            next[idx].date = e.target.value;
+                            setMouActivities(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Participants Count</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 80"
+                          value={item.participants}
+                          onChange={(e) => {
+                            const next = [...mouActivities];
+                            next[idx].participants = e.target.value;
+                            setMouActivities(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Activity Report PDF URL</label>
+                      <input
+                        type="text"
+                        placeholder="Link to file on Sanity or external document..."
+                        value={item.documentUrl}
+                        onChange={(e) => {
+                          const next = [...mouActivities];
+                          next[idx].documentUrl = e.target.value;
+                          setMouActivities(next);
+                        }}
+                        className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                      />
+                    </div>
+                  </div>
+                ))}
+                {mouActivities.length === 0 && (
+                  <span className="text-xs text-slate-400 font-semibold italic">No MoU activities registered.</span>
+                )}
+              </div>
+            </div>
+
+            {/* 10. Student Achievements & Laurels */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <Trophy className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">10. Co-Curricular & Academic Laurels</h3>
+                </div>
+              </div>
+
+              {/* General Achievements */}
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center border-b border-slate-100 pb-2 pt-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">Co-Curricular / Extracurricular Achievements</span>
+                  <button
+                    type="button"
+                    onClick={() => setStudentAchievements([...studentAchievements, { sNo: studentAchievements.length + 1, date: "", name: "", activity: "", level: "", achievement: "" }])}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded"
+                  >
+                    + Add Achievement
+                  </button>
+                </div>
+                {studentAchievements.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setStudentAchievements(studentAchievements.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Date</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 15-09-2025"
+                          value={item.date}
+                          onChange={(e) => {
+                            const next = [...studentAchievements];
+                            next[idx].date = e.target.value;
+                            setStudentAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Student Name</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Mary Jones"
+                          value={item.name}
+                          onChange={(e) => {
+                            const next = [...studentAchievements];
+                            next[idx].name = e.target.value;
+                            setStudentAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Activity / Competition</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Elocution Contest"
+                          value={item.activity}
+                          onChange={(e) => {
+                            const next = [...studentAchievements];
+                            next[idx].activity = e.target.value;
+                            setStudentAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Level (State/National)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. State Level"
+                          value={item.level}
+                          onChange={(e) => {
+                            const next = [...studentAchievements];
+                            next[idx].level = e.target.value;
+                            setStudentAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Achievement</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. First Prize"
+                          value={item.achievement}
+                          onChange={(e) => {
+                            const next = [...studentAchievements];
+                            next[idx].achievement = e.target.value;
+                            setStudentAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* University Ranks */}
+              <div className="flex flex-col gap-4 pt-4 border-t border-slate-100">
+                <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">Academic University Ranks & Awards</span>
+                  <button
+                    type="button"
+                    onClick={() => setAcademicAchievements([...academicAchievements, { sNo: academicAchievements.length + 1, year: "", name: "", programme: "", award: "", marks: "" }])}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded"
+                  >
+                    + Add Academic Honour
+                  </button>
+                </div>
+                {academicAchievements.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setAcademicAchievements(academicAchievements.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Academic Year</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2025-2026"
+                          value={item.year}
+                          onChange={(e) => {
+                            const next = [...academicAchievements];
+                            next[idx].year = e.target.value;
+                            setAcademicAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Student Name</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Sarah Smith"
+                          value={item.name}
+                          onChange={(e) => {
+                            const next = [...academicAchievements];
+                            next[idx].name = e.target.value;
+                            setAcademicAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Programme</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. B.Com Honours CA"
+                          value={item.programme}
+                          onChange={(e) => {
+                            const next = [...academicAchievements];
+                            next[idx].programme = e.target.value;
+                            setAcademicAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Rank / Award Details</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 1st Rank, Gold Medal"
+                          value={item.award}
+                          onChange={(e) => {
+                            const next = [...academicAchievements];
+                            next[idx].award = e.target.value;
+                            setAcademicAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Marks/CGPA</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 9.85 CGPA"
+                          value={item.marks}
+                          onChange={(e) => {
+                            const next = [...academicAchievements];
+                            next[idx].marks = e.target.value;
+                            setAcademicAchievements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Other Student Achievements */}
+              <div className="flex flex-col gap-3 pt-4 border-t border-slate-100">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">Other Student Achievements (Bullets)</span>
+                  <button
+                    type="button"
+                    onClick={() => handleAddStringItem(setOtherStudentAchievements, otherStudentAchievements)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#002147]/5 text-[#002147] hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                  >
+                    <Plus className="h-3 w-3" /> Add Achievement Bullet
+                  </button>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {otherStudentAchievements.map((item, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        placeholder={`Achievement bullet ${idx + 1}`}
+                        value={item}
+                        onChange={(e) => handleUpdateStringItem(setOtherStudentAchievements, otherStudentAchievements, idx, e.target.value)}
+                        className="flex-grow bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveStringItem(setOtherStudentAchievements, otherStudentAchievements, idx)}
+                        className="p-2 text-slate-450 hover:text-red-500 transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                  {otherStudentAchievements.length === 0 && (
+                    <span className="text-[10px] text-slate-400 font-semibold italic">No other student achievements added.</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Focus on Women Empowerment & Employability */}
+              <div className="flex flex-col gap-2 pt-4 border-t border-slate-100">
+                <label className="text-xs font-black uppercase tracking-wider text-slate-500">Focus on Women Empowerment & Employability</label>
+                <textarea
+                  rows={3}
+                  placeholder="Describe the department's focus or initiatives on women empowerment & employability..."
+                  value={focusOnWomenEmpowerment}
+                  onChange={(e) => setFocusOnWomenEmpowerment(e.target.value)}
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:border-indigo-400 transition-all leading-relaxed"
+                />
+              </div>
+            </div>
+
+            {/* 11. Placement Summaries */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <Briefcase className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">11. Year-wise Placement Summaries</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPlacements([...placements, { year: "", finalYearStudents: "", studentsPlaced: "", highestSalary: "", averageSalary: "", percentage: "" }])}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add Placement Log
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {placements.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setPlacements(placements.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-6 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Academic Year</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2025-2026"
+                          value={item.year}
+                          onChange={(e) => {
+                            const next = [...placements];
+                            next[idx].year = e.target.value;
+                            setPlacements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Final Year Students</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 150"
+                          value={item.finalYearStudents}
+                          onChange={(e) => {
+                            const next = [...placements];
+                            next[idx].finalYearStudents = e.target.value;
+                            setPlacements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Students Placed</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 120"
+                          value={item.studentsPlaced}
+                          onChange={(e) => {
+                            const next = [...placements];
+                            next[idx].studentsPlaced = e.target.value;
+                            setPlacements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Highest Salary (LPA)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 6.5"
+                          value={item.highestSalary}
+                          onChange={(e) => {
+                            const next = [...placements];
+                            next[idx].highestSalary = e.target.value;
+                            setPlacements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Average Salary (LPA)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 3.2"
+                          value={item.averageSalary}
+                          onChange={(e) => {
+                            const next = [...placements];
+                            next[idx].averageSalary = e.target.value;
+                            setPlacements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Placement %</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 80%"
+                          value={item.percentage}
+                          onChange={(e) => {
+                            const next = [...placements];
+                            next[idx].percentage = e.target.value;
+                            setPlacements(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {placements.length === 0 && (
+                  <span className="text-xs text-slate-400 font-semibold italic">No placement summaries logged yet.</span>
+                )}
+              </div>
+            </div>
+
+            {/* 12. Best Practices */}
             <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
               <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-3">
                   <Award className="h-5 w-5 text-[#002147]" />
-                  <h3 className="font-outfit font-black text-lg text-[#002147]">6. Best Practices</h3>
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">12. Best Practices</h3>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setBestPractices([...bestPractices, { title: "", category: "", objectives: [], practice: [], success: [] }])}
+                  onClick={() => setBestPractices([...bestPractices, { title: "", category: "", objectives: [], context: "", practice: [], success: [], problems: [] }])}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
                 >
                   <Plus className="h-3.5 w-3.5" /> Add Practice
@@ -649,7 +1630,7 @@ export function DepartmentUpdateForm() {
                         <label className="text-[10px] font-black uppercase text-slate-400">Practice Title</label>
                         <input
                           type="text"
-                          placeholder="e.g. 1. GST & Accounting Training"
+                          placeholder="e.g. 1. GST & Accounting Practical Training"
                           value={bp.title}
                           onChange={(e) => {
                             const next = [...bestPractices];
@@ -673,6 +1654,21 @@ export function DepartmentUpdateForm() {
                           className="bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-bold text-slate-700"
                         />
                       </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-black uppercase text-slate-400">Context Description</label>
+                      <textarea
+                        rows={3}
+                        placeholder="State the background context for this practice..."
+                        value={bp.context || ""}
+                        onChange={(e) => {
+                          const next = [...bestPractices];
+                          next[idx].context = e.target.value;
+                          setBestPractices(next);
+                        }}
+                        className="bg-white border border-slate-200 rounded-lg p-3 text-xs font-semibold text-slate-700"
+                      />
                     </div>
 
                     {/* Objectives Sub-List */}
@@ -807,15 +1803,398 @@ export function DepartmentUpdateForm() {
                       ))}
                     </div>
 
+                    {/* Problems Sub-List */}
+                    <div className="flex flex-col gap-2 pt-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] font-black uppercase text-red-800">Problems Encountered & Resources Required</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const next = [...bestPractices];
+                            next[idx].problems = [...(bp.problems || []), ""];
+                            setBestPractices(next);
+                          }}
+                          className="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 text-[10px] font-bold rounded"
+                        >
+                          + Add Problem Line
+                        </button>
+                      </div>
+                      {(bp.problems || []).map((prob, prIdx) => (
+                        <div key={prIdx} className="flex gap-2 items-center">
+                          <input
+                            type="text"
+                            placeholder={`Problem point ${prIdx + 1}`}
+                            value={prob}
+                            onChange={(e) => {
+                              const next = [...bestPractices];
+                              if (!next[idx].problems) next[idx].problems = [];
+                              next[idx].problems[prIdx] = e.target.value;
+                              setBestPractices(next);
+                            }}
+                            className="flex-grow bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-semibold text-red-950"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const next = [...bestPractices];
+                              next[idx].problems = bp.problems.filter((_, i) => i !== prIdx);
+                              setBestPractices(next);
+                            }}
+                            className="text-slate-400 hover:text-red-500"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
                   </div>
                 ))}
                 {bestPractices.length === 0 && (
                   <span className="text-xs text-slate-400 font-semibold italic">No custom best practices declared.</span>
                 )}
               </div>
+
+              {/* Best Practices Overall Impact */}
+              <div className="flex flex-col gap-3 pt-4 border-t border-slate-100">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-500">Overall Impact of Best Practices</label>
+                  <button
+                    type="button"
+                    onClick={() => handleAddStringItem(setBestPracticesImpact, bestPracticesImpact)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#002147]/5 text-[#002147] hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                  >
+                    + Add Impact Point
+                  </button>
+                </div>
+                <div className="flex flex-col gap-2.5">
+                  {bestPracticesImpact.map((item, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        placeholder="e.g. Promotes experiential learning and student-centric methodology"
+                        value={item}
+                        onChange={(e) => handleUpdateStringItem(setBestPracticesImpact, bestPracticesImpact, idx, e.target.value)}
+                        className="flex-grow bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-slate-700"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveStringItem(setBestPracticesImpact, bestPracticesImpact, idx)}
+                        className="text-slate-400 hover:text-red-500"
+                      >
+                        <Trash2 className="h-4.5 w-4.5" />
+                      </button>
+                    </div>
+                  ))}
+                  {bestPracticesImpact.length === 0 && (
+                    <span className="text-[11px] text-slate-400 font-semibold italic">No overall impact points registered.</span>
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/* 7. Facilities & Careers lists */}
+            {/* 13. Activities Logs & Summaries */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <BookOpen className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">13. Activity Logs & Strategic Pillars</h3>
+                </div>
+              </div>
+
+              {/* Activities Log List */}
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center border-b border-slate-100 pb-2 pt-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">Individual Departmental Activities Log</span>
+                  <button
+                    type="button"
+                    onClick={() => setActivitiesList([...activitiesList, { sNo: activitiesList.length + 1, date: "", title: "", type: "", resourcePerson: "", participants: "", documentUrl: "" }])}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded"
+                  >
+                    + Add Activity Log
+                  </button>
+                </div>
+                {activitiesList.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setActivitiesList(activitiesList.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Date</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 15-07-2025"
+                          value={item.date}
+                          onChange={(e) => {
+                            const next = [...activitiesList];
+                            next[idx].date = e.target.value;
+                            setActivitiesList(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Title of the Activity</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Workshop on GST filing"
+                          value={item.title}
+                          onChange={(e) => {
+                            const next = [...activitiesList];
+                            next[idx].title = e.target.value;
+                            setActivitiesList(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Type of Activity</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Workshop"
+                          value={item.type}
+                          onChange={(e) => {
+                            const next = [...activitiesList];
+                            next[idx].type = e.target.value;
+                            setActivitiesList(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Resource Person/Org</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. CA Professional"
+                          value={item.resourcePerson}
+                          onChange={(e) => {
+                            const next = [...activitiesList];
+                            next[idx].resourcePerson = e.target.value;
+                            setActivitiesList(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">No. of Participants</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 80"
+                          value={item.participants}
+                          onChange={(e) => {
+                            const next = [...activitiesList];
+                            next[idx].participants = e.target.value;
+                            setActivitiesList(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Report Document URL</label>
+                      <input
+                        type="text"
+                        placeholder="Link to file or document..."
+                        value={item.documentUrl}
+                        onChange={(e) => {
+                          const next = [...activitiesList];
+                          next[idx].documentUrl = e.target.value;
+                          setActivitiesList(next);
+                        }}
+                        className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Activities Annual Summary */}
+              <div className="flex flex-col gap-4 pt-4 border-t border-slate-100">
+                <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">Category-wise Annual Summary of Activities</span>
+                  <button
+                    type="button"
+                    onClick={() => setActivitiesSummary([...activitiesSummary, { sNo: activitiesSummary.length + 1, year: "", category: "", count: "", studentsBenefited: "", keyActivities: "", documentUrl: "" }])}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded"
+                  >
+                    + Add Annual Summary
+                  </button>
+                </div>
+                {activitiesSummary.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setActivitiesSummary(activitiesSummary.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Academic Year</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2025-2026"
+                          value={item.year}
+                          onChange={(e) => {
+                            const next = [...activitiesSummary];
+                            next[idx].year = e.target.value;
+                            setActivitiesSummary(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Category of Activity</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Academic Enrichment"
+                          value={item.category}
+                          onChange={(e) => {
+                            const next = [...activitiesSummary];
+                            next[idx].category = e.target.value;
+                            setActivitiesSummary(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Activities Conducted</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 4"
+                          value={item.count}
+                          onChange={(e) => {
+                            const next = [...activitiesSummary];
+                            next[idx].count = e.target.value;
+                            setActivitiesSummary(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">No. of Students Benefited</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 250"
+                          value={item.studentsBenefited}
+                          onChange={(e) => {
+                            const next = [...activitiesSummary];
+                            next[idx].studentsBenefited = e.target.value;
+                            setActivitiesSummary(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Key Activities Conducted</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Seminars, Guest Lectures"
+                          value={item.keyActivities}
+                          onChange={(e) => {
+                            const next = [...activitiesSummary];
+                            next[idx].keyActivities = e.target.value;
+                            setActivitiesSummary(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Report Document URL</label>
+                      <input
+                        type="text"
+                        placeholder="Link to file or document..."
+                        value={item.documentUrl}
+                        onChange={(e) => {
+                          const next = [...activitiesSummary];
+                          next[idx].documentUrl = e.target.value;
+                          setActivitiesSummary(next);
+                        }}
+                        className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Core Activity Strategic Pillars (Activities descriptions) */}
+              <div className="flex flex-col gap-3 pt-4 border-t border-slate-100">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-500">Core Strategic Activity Pillars (Original Descriptions)</label>
+                  <button
+                    type="button"
+                    onClick={() => setActivities([...activities, { label: "", desc: "" }])}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#002147]/5 text-[#002147] hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                  >
+                    + Add Pillar
+                  </button>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {activities.map((item, idx) => (
+                    <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-150 flex flex-col gap-3 relative">
+                      <button
+                        type="button"
+                        onClick={() => setActivities(activities.filter((_, i) => i !== idx))}
+                        className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Pillar Label</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Academic Enrichment"
+                            value={item.label}
+                            onChange={(e) => {
+                              const next = [...activities];
+                              next[idx].label = e.target.value;
+                              setActivities(next);
+                            }}
+                            className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                          />
+                        </div>
+                        <div className="sm:col-span-3 flex flex-col gap-1">
+                          <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Description</label>
+                          <input
+                            type="text"
+                            placeholder="State key objectives and focus fields..."
+                            value={item.desc}
+                            onChange={(e) => {
+                              const next = [...activities];
+                              next[idx].desc = e.target.value;
+                              setActivities(next);
+                            }}
+                            className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Overall Approach */}
+              <div className="flex flex-col gap-2 pt-4 border-t border-slate-100">
+                <label className="text-xs font-black uppercase tracking-wider text-slate-500">Overall Approach (Activities)</label>
+                <textarea
+                  rows={3}
+                  placeholder="Describe the department's overall approach to activities (e.g. balanced focus on academic excellence, skill development, industry exposure, and community engagement)..."
+                  value={overallApproach}
+                  onChange={(e) => setOverallApproach(e.target.value)}
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-705 focus:bg-white focus:outline-none focus:border-indigo-400 transition-all leading-relaxed"
+                />
+              </div>
+            </div>
+
+            {/* 14. Infrastructure & Progression */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               
               {/* Physical Assets list */}
@@ -823,7 +2202,7 @@ export function DepartmentUpdateForm() {
                 <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2.5">
                     <Settings className="h-4.5 w-4.5 text-[#002147]" />
-                    <h3 className="font-outfit font-black text-base text-[#002147]">7. Infrastructure Assets</h3>
+                    <h3 className="font-outfit font-black text-base text-[#002147]">14. Infrastructure Assets</h3>
                   </div>
                   <button
                     type="button"
@@ -864,7 +2243,7 @@ export function DepartmentUpdateForm() {
                 <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2.5">
                     <Briefcase className="h-4.5 w-4.5 text-[#002147]" />
-                    <h3 className="font-outfit font-black text-base text-[#002147]">8. Progression Pathways</h3>
+                    <h3 className="font-outfit font-black text-base text-[#002147]">15. Progression Pathways</h3>
                   </div>
                   <button
                     type="button"
@@ -900,6 +2279,76 @@ export function DepartmentUpdateForm() {
                 </div>
               </div>
 
+            </div>
+
+            {/* 15. Photo Gallery */}
+            <div className="bg-white border border-slate-200/85 rounded-[2.5rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-3">
+                  <Building className="h-5 w-5 text-[#002147]" />
+                  <h3 className="font-outfit font-black text-lg text-[#002147]">16. Photo Gallery</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setGallery([...gallery, { image: null, caption: "" }])}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add Photo Reference
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {gallery.map((item, idx) => (
+                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
+                    <button
+                      type="button"
+                      onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Sanity Image Asset Reference ID</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. image-e4yy23vBd7Nd-1200x800-jpg"
+                          value={item.image?.asset?._ref || ""}
+                          onChange={(e) => {
+                            const next = [...gallery];
+                            next[idx].image = {
+                              _type: "image",
+                              asset: {
+                                _type: "reference",
+                                _ref: e.target.value
+                              }
+                            };
+                            setGallery(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Image Caption</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Seminar on GST Filing by CA Professional"
+                          value={item.caption || ""}
+                          onChange={(e) => {
+                            const next = [...gallery];
+                            next[idx].caption = e.target.value;
+                            setGallery(next);
+                          }}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {gallery.length === 0 && (
+                  <span className="text-xs text-slate-400 font-semibold italic">No gallery images registered.</span>
+                )}
+              </div>
             </div>
 
             {/* Save Action Card */}

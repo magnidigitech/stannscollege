@@ -1,9 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Eye, Download, BookOpen, Image as ImageIcon } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 export function ProspectusBrochures() {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
   return (
     <div className="flex flex-col gap-16 animate-fadeIn pb-12 font-sans">
       
@@ -44,14 +47,15 @@ export function ProspectusBrochures() {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-fit pt-2 border-t border-slate-50">
-            <a 
-              href="/documents/admissions/Prospectus 2025-26.pdf"
-              target="_blank"
-              rel="noreferrer"
+            <button 
+              onClick={() => {
+                setPreviewUrl("/documents/admissions/Prospectus 2025-26.pdf");
+                setPreviewTitle("St. Ann's Comprehensive Prospectus");
+              }}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#002147] hover:bg-[#0a3c74] text-white text-[15px] md:text-base font-black rounded-[1.25rem] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
             >
               <Eye className="h-5 w-5" /> View Online
-            </a>
+            </button>
             <a 
               href="/documents/admissions/Prospectus 2025-26.pdf"
               download
@@ -86,14 +90,15 @@ export function ProspectusBrochures() {
                   className="w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
                 />
                 <div className="absolute inset-0 bg-[#002147]/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 backdrop-blur-xs">
-                  <a 
-                    href={b.img} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="h-12 w-12 bg-white text-[#002147] rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300 font-black cursor-pointer"
+                  <button 
+                    onClick={() => {
+                      setPreviewUrl(b.img);
+                      setPreviewTitle(b.title);
+                    }}
+                    className="h-12 w-12 bg-white text-[#002147] rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300 font-black cursor-pointer border-none"
                   >
                     <Eye className="h-5 w-5" />
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="flex items-center justify-between gap-4 px-2">
@@ -111,6 +116,12 @@ export function ProspectusBrochures() {
         </div>
       </div>
 
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Brochure Preview"}
+      />
     </div>
   );
 }

@@ -1,26 +1,51 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { CheckCircle, GraduationCap, BookOpen, ClipboardList } from "lucide-react";
+import { getAcademicProgrammes } from "@/lib/sanity";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+
+const fallbackIntakeData = [
+  { sNo: 1, name: "B.Com Honours - General", convenerQuota: 14, managementQuota: 6, totalIntake: 20 },
+  { sNo: 2, name: "B.Com Honours - Computer Applications", convenerQuota: 56, managementQuota: 24, totalIntake: 80 },
+  { sNo: 3, name: "BCA Honours - Computer Applications", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+  { sNo: 4, name: "B.Sc Honours - Computer Science", convenerQuota: 25, managementQuota: 10, totalIntake: 35 },
+  { sNo: 5, name: "B.Sc Honours - Artificial Intelligence", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+  { sNo: 6, name: "B.Sc Honours - Mathematics", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 7, name: "B.Sc Honours - Physics", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 8, name: "B.Sc Honours - Statistics", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 9, name: "B.Sc Honours - Microbiology", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 10, name: "B.Sc Honours - Biotechnology", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 11, name: "B.Sc Honours - Chemistry", convenerQuota: 14, managementQuota: 6, totalIntake: 20 },
+  { sNo: 12, name: "B.Sc Honours - Botany", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+];
 
 export function UndergraduateProgrammes() {
-  const intakeData = [
-    { sNo: 1, programme: "B.Com Honours - General", convener: 14, management: 6, total: 20 },
-    { sNo: 2, programme: "B.Com Honours - Computer Applications", convener: 56, management: 24, total: 80 },
-    { sNo: 3, programme: "BCA Honours - Computer Applications", convener: 42, management: 18, total: 60 },
-    { sNo: 4, programme: "B.Sc Honours - Computer Science", convener: 25, management: 10, total: 35 },
-    { sNo: 5, programme: "B.Sc Honours - Artificial Intelligence", convener: 42, management: 18, total: 60 },
-    { sNo: 6, programme: "B.Sc Honours - Mathematics", convener: 18, management: 7, total: 25 },
-    { sNo: 7, programme: "B.Sc Honours - Physics", convener: 18, management: 7, total: 25 },
-    { sNo: 8, programme: "B.Sc Honours - Statistics", convener: 18, management: 7, total: 25 },
-    { sNo: 9, programme: "B.Sc Honours - Microbiology", convener: 18, management: 7, total: 25 },
-    { sNo: 10, programme: "B.Sc Honours - Biotechnology", convener: 18, management: 7, total: 25 },
-    { sNo: 11, programme: "B.Sc Honours - Chemistry", convener: 14, management: 6, total: 20 },
-    { sNo: 12, programme: "B.Sc Honours - Botany", convener: 18, management: 7, total: 25 },
-  ];
+  const [intakeData, setIntakeData] = useState<any[]>(fallbackIntakeData);
+  const [loading, setLoading] = useState(true);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const totalConvener = intakeData.reduce((acc, item) => acc + item.convener, 0);
-  const totalManagement = intakeData.reduce((acc, item) => acc + item.management, 0);
-  const totalIntake = intakeData.reduce((acc, item) => acc + item.total, 0);
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const programmes = await getAcademicProgrammes();
+        const ugProgrammes = programmes.filter((p: any) => p.programmeType === "ug");
+        if (ugProgrammes.length > 0) {
+          setIntakeData(ugProgrammes);
+        }
+      } catch (err) {
+        console.error("Failed to load UG programmes from Sanity:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  const totalConvener = intakeData.reduce((acc, item) => acc + (item.convenerQuota || 0), 0);
+  const totalManagement = intakeData.reduce((acc, item) => acc + (item.managementQuota || 0), 0);
+  const totalIntake = intakeData.reduce((acc, item) => acc + (item.totalIntake || 0), 0);
 
   const features = [
     "Flexibility to explore multiple disciplines",
@@ -98,32 +123,72 @@ export function UndergraduateProgrammes() {
             <thead>
               <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
                 <th className="py-4 px-6 font-bold uppercase tracking-wider text-center w-16">S.No</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider">Programme</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider">UG Programme</th>
                 <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">Convener Quota</th>
                 <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">Management Quota</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center bg-[#002147]/5 text-[#002147]">Total Intake</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center bg-[#002147]/5 text-[#002147]">Total Seats/Intake</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">About Programme</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">Brochure</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {intakeData.map((item) => (
                 <tr key={item.sNo} className="hover:bg-slate-50/60 transition-colors">
-                  <td className="py-4 px-6 text-center font-bold text-slate-400">{item.sNo}</td>
-                  <td className="py-4 px-6 font-bold text-slate-700">{item.programme}</td>
-                  <td className="py-4 px-6 text-center font-semibold text-slate-600">{item.convener}</td>
-                  <td className="py-4 px-6 text-center font-semibold text-slate-600">{item.management}</td>
-                  <td className="py-4 px-6 text-center font-bold text-[#002147] bg-[#002147]/[0.02]">{item.total}</td>
+                  <td className="py-4 px-6 text-center font-medium text-slate-400">{item.sNo}</td>
+                  <td className="py-4 px-6 font-medium text-slate-700">{item.name}</td>
+                  <td className="py-4 px-6 text-center font-medium text-slate-600">{item.convenerQuota}</td>
+                  <td className="py-4 px-6 text-center font-medium text-slate-600">{item.managementQuota}</td>
+                  <td className="py-4 px-6 text-center font-semibold text-[#002147] bg-[#002147]/[0.02]">{item.totalIntake}</td>
+                  <td className="py-4 px-6 text-center font-semibold">
+                    {item.aboutDocumentUrl ? (
+                      <button
+                        onClick={() => {
+                          setPreviewUrl(item.aboutDocumentUrl);
+                          setPreviewTitle(`${item.name} - About Programme`);
+                        }}
+                        className="text-indigo-600 hover:text-indigo-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer"
+                      >
+                        View Document
+                      </button>
+                    ) : (
+                      <span className="text-slate-400">---</span>
+                    )}
+                  </td>
+                  <td className="py-4 px-6 text-center font-semibold">
+                    {item.brochureUrl ? (
+                      <button
+                        onClick={() => {
+                          setPreviewUrl(item.brochureUrl);
+                          setPreviewTitle(`${item.name} - Brochure`);
+                        }}
+                        className="text-emerald-600 hover:text-emerald-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer"
+                      >
+                        View Brochure
+                      </button>
+                    ) : (
+                      <span className="text-slate-400">---</span>
+                    )}
+                  </td>
                 </tr>
               ))}
               <tr className="bg-slate-50/50 border-t-2 border-slate-100">
                 <td colSpan={2} className="py-4 px-6 font-black text-[#002147] text-right text-sm">Grand Total</td>
                 <td className="py-4 px-6 text-center font-black text-[#002147] text-sm">{totalConvener}</td>
                 <td className="py-4 px-6 text-center font-black text-[#002147] text-sm">{totalManagement}</td>
-                <td className="py-4 px-6 text-center font-black text-white bg-[#002147] text-sm rounded-br-xl">{totalIntake}</td>
+                <td className="py-4 px-6 text-center font-black text-white bg-[#002147] text-sm">{totalIntake}</td>
+                <td colSpan={2} className="py-4 px-6 bg-slate-50/20"></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Document Preview"}
+      />
     </div>
   );
 }

@@ -57,7 +57,7 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_45%)]" />
         <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
         
-        <div className="max-w-7xl mx-auto text-center relative z-10">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full text-center relative z-10">
           <span className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-400/20 rounded-full px-4.5 py-1.5 text-xs font-black text-indigo-300 uppercase tracking-widest mb-6 backdrop-blur-md">
             <Sparkles className="h-3.5 w-3.5 animate-pulse text-indigo-300" /> Connect with St. Ann&apos;s
           </span>
@@ -71,7 +71,7 @@ export default function ContactPage() {
       </section>
 
       {/* 2. DIRECT CONTACT CHANNELS (GRID) */}
-      <section className="max-w-7xl mx-auto px-6 -mt-10 relative z-20">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full -mt-10 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           
           {/* Card 1: Postal Location */}
@@ -197,7 +197,7 @@ export default function ContactPage() {
       </section>
 
       {/* 3. SPLIT AREA: INTERACTIVE FORM + INTERACTIVE GOOGLE MAP */}
-      <section className="max-w-7xl mx-auto px-6 mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch select-none">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch select-none">
         
         {/* ENQUIRY FORM COLUMN (7 cols) */}
         <div className="lg:col-span-7 bg-white border border-slate-200/60 shadow-xl rounded-3xl p-8 md:p-10 flex flex-col justify-between">

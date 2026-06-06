@@ -380,8 +380,8 @@ export default function Navigation() {
       {/* ============================================================== */}
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
-      <div className="hidden md:flex items-center justify-start py-3.5 text-xs lg:text-[13px] font-bold text-slate-700 relative w-full">
-        <nav className="flex items-center justify-start gap-x-8 lg:gap-x-10 w-full">
+      <div className="hidden md:flex items-center justify-center py-3.5 text-xs lg:text-[13px] font-bold text-slate-700 relative w-full">
+        <nav className="flex items-center justify-center gap-x-8 lg:gap-x-10 w-full">
 
           {/* 1. Home */}
           <Link href="/" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
@@ -770,8 +770,8 @@ export default function Navigation() {
 
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
-      <div className="hidden md:flex items-center justify-start py-3.5 border-t border-slate-100 text-xs lg:text-[13px] font-bold text-slate-600 relative w-full">
-        <nav className="flex items-center justify-start gap-x-8 lg:gap-x-10 w-full">
+      <div className="hidden md:flex items-center justify-center py-3.5 border-t border-slate-100 text-xs lg:text-[13px] font-bold text-slate-600 relative w-full">
+        <nav className="flex items-center justify-center gap-x-8 lg:gap-x-10 w-full">
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}

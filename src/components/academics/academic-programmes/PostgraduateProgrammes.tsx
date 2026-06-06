@@ -1,16 +1,42 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { CheckCircle, GraduationCap, ClipboardList, Star } from "lucide-react";
+import { getAcademicProgrammes } from "@/lib/sanity";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+
+const fallbackPgIntakeData = [
+  { sNo: 1, name: "Master of Computer Applications (MCA)", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+  { sNo: 2, name: "Master of Business Administration (MBA)", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+];
 
 export function PostgraduateProgrammes() {
-  const pgIntakeData = [
-    { sNo: 1, programme: "Master of Computer Applications (MCA)", convener: 42, management: 18, total: 60 },
-    { sNo: 2, programme: "Master of Business Administration (MBA)", convener: 42, management: 18, total: 60 },
-  ];
+  const [pgIntakeData, setPgIntakeData] = useState<any[]>(fallbackPgIntakeData);
+  const [loading, setLoading] = useState(true);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const totalConvener = pgIntakeData.reduce((acc, item) => acc + item.convener, 0);
-  const totalManagement = pgIntakeData.reduce((acc, item) => acc + item.management, 0);
-  const totalIntake = pgIntakeData.reduce((acc, item) => acc + item.total, 0);
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const programmes = await getAcademicProgrammes();
+        const pgProgrammes = programmes.filter((p: any) => p.programmeType === "pg");
+        if (pgProgrammes.length > 0) {
+          const sortedPg = pgProgrammes.sort((a: any, b: any) => a.sNo - b.sNo);
+          setPgIntakeData(sortedPg);
+        }
+      } catch (err) {
+        console.error("Failed to load PG programmes from Sanity:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  const totalConvener = pgIntakeData.reduce((acc, item) => acc + (item.convenerQuota || 0), 0);
+  const totalManagement = pgIntakeData.reduce((acc, item) => acc + (item.managementQuota || 0), 0);
+  const totalIntake = pgIntakeData.reduce((acc, item) => acc + (item.totalIntake || 0), 0);
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">
@@ -59,32 +85,72 @@ export function PostgraduateProgrammes() {
             <thead>
               <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
                 <th className="py-4 px-6 font-bold uppercase tracking-wider text-center w-16">S.No</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider">Programme</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider">PG Programme</th>
                 <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">Convener Quota</th>
                 <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">Management Quota</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center bg-[#002147]/5 text-[#002147]">Total Intake</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center bg-[#002147]/5 text-[#002147]">Total Seats/Intake</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">About Programme</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">Brochure</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {pgIntakeData.map((item) => (
-                <tr key={item.sNo} className="hover:bg-slate-50/60 transition-colors">
-                  <td className="py-4 px-6 text-center font-bold text-slate-400">{item.sNo}</td>
-                  <td className="py-4 px-6 font-bold text-slate-700">{item.programme}</td>
-                  <td className="py-4 px-6 text-center font-semibold text-slate-600">{item.convener}</td>
-                  <td className="py-4 px-6 text-center font-semibold text-slate-600">{item.management}</td>
-                  <td className="py-4 px-6 text-center font-bold text-[#002147] bg-[#002147]/[0.02]">{item.total}</td>
+              {pgIntakeData.map((item, idx) => (
+                <tr key={item.sNo || idx} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-4 px-6 text-center font-medium text-slate-400">{idx + 1}</td>
+                  <td className="py-4 px-6 font-medium text-slate-700">{item.name}</td>
+                  <td className="py-4 px-6 text-center font-medium text-slate-600">{item.convenerQuota}</td>
+                  <td className="py-4 px-6 text-center font-medium text-slate-600">{item.managementQuota}</td>
+                  <td className="py-4 px-6 text-center font-semibold text-[#002147] bg-[#002147]/[0.02]">{item.totalIntake}</td>
+                  <td className="py-4 px-6 text-center font-semibold">
+                    {item.aboutDocumentUrl ? (
+                      <button
+                        onClick={() => {
+                          setPreviewUrl(item.aboutDocumentUrl);
+                          setPreviewTitle(`${item.name} - About Programme`);
+                        }}
+                        className="text-indigo-600 hover:text-indigo-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer"
+                      >
+                        View Document
+                      </button>
+                    ) : (
+                      <span className="text-slate-400">---</span>
+                    )}
+                  </td>
+                  <td className="py-4 px-6 text-center font-semibold">
+                    {item.brochureUrl ? (
+                      <button
+                        onClick={() => {
+                          setPreviewUrl(item.brochureUrl);
+                          setPreviewTitle(`${item.name} - Brochure`);
+                        }}
+                        className="text-emerald-600 hover:text-emerald-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer"
+                      >
+                        View Brochure
+                      </button>
+                    ) : (
+                      <span className="text-slate-400">---</span>
+                    )}
+                  </td>
                 </tr>
               ))}
               <tr className="bg-slate-50/50 border-t-2 border-slate-100">
                 <td colSpan={2} className="py-4 px-6 font-black text-[#002147] text-right text-sm">Grand Total</td>
                 <td className="py-4 px-6 text-center font-black text-[#002147] text-sm">{totalConvener}</td>
                 <td className="py-4 px-6 text-center font-black text-[#002147] text-sm">{totalManagement}</td>
-                <td className="py-4 px-6 text-center font-black text-white bg-[#002147] text-sm rounded-br-xl">{totalIntake}</td>
+                <td className="py-4 px-6 text-center font-black text-white bg-[#002147] text-sm">{totalIntake}</td>
+                <td colSpan={2} className="py-4 px-6 bg-slate-50/20"></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Document Preview"}
+      />
     </div>
   );
 }

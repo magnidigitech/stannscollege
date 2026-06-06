@@ -1,28 +1,69 @@
 "use client";
 
-import React from "react";
-import { CheckCircle2, FileText, Users, ClipboardCheck, MapPin, CreditCard, Compass, HelpCircle, ShieldCheck, Info, Landmark, GraduationCap } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { CheckCircle2, FileText, Users, ClipboardCheck, Landmark, GraduationCap, ShieldCheck, Eye, Download } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import { getAcademicProgrammes } from "@/lib/sanity";
+
+const fallbackUgIntake = [
+  { sNo: 1, name: "B.Com Honours - General", convenerQuota: 14, managementQuota: 6, totalIntake: 20 },
+  { sNo: 2, name: "B.Com Honours - Computer Applications", convenerQuota: 56, managementQuota: 24, totalIntake: 80 },
+  { sNo: 3, name: "BCA Honours - Computer Applications", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+  { sNo: 4, name: "B.Sc Honours - Computer Science", convenerQuota: 25, managementQuota: 10, totalIntake: 35 },
+  { sNo: 5, name: "B.Sc Honours - Artificial Intelligence", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+  { sNo: 6, name: "B.Sc Honours - Mathematics", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 7, name: "B.Sc Honours - Physics", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 8, name: "B.Sc Honours - Statistics", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 9, name: "B.Sc Honours - Microbiology", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 10, name: "B.Sc Honours - Biotechnology", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+  { sNo: 11, name: "B.Sc Honours - Chemistry", convenerQuota: 14, managementQuota: 6, totalIntake: 20 },
+  { sNo: 12, name: "B.Sc Honours - Botany", convenerQuota: 18, managementQuota: 7, totalIntake: 25 },
+];
+
+const fallbackPgIntake = [
+  { sNo: 1, name: "Master of Computer Applications (MCA)", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+  { sNo: 2, name: "Master of Business Administration (MBA)", convenerQuota: 42, managementQuota: 18, totalIntake: 60 },
+];
 
 export function AdmissionPolicyProcess() {
-  const ugIntake = [
-    { sNo: 1, title: "B.Com Honours - General", convener: 14, mgmt: 6, total: 20 },
-    { sNo: 2, title: "B.Com Honours - Computer Applications", convener: 56, mgmt: 24, total: 80 },
-    { sNo: 3, title: "BCA Honours - Computer Applications", convener: 42, mgmt: 18, total: 60 },
-    { sNo: 4, title: "B.Sc Honours - Computer Science", convener: 25, mgmt: 10, total: 35 },
-    { sNo: 5, title: "B.Sc Honours - Artificial Intelligence", convener: 42, mgmt: 18, total: 60 },
-    { sNo: 6, title: "B.Sc Honours - Mathematics", convener: 18, mgmt: 7, total: 25 },
-    { sNo: 7, title: "B.Sc Honours - Physics", convener: 18, mgmt: 7, total: 25 },
-    { sNo: 8, title: "B.Sc Honours - Statistics", convener: 18, mgmt: 7, total: 25 },
-    { sNo: 9, title: "B.Sc Honours - Microbiology", convener: 18, mgmt: 7, total: 25 },
-    { sNo: 10, title: "B.Sc Honours - Biotechnology", convener: 18, mgmt: 7, total: 25 },
-    { sNo: 11, title: "B.Sc Honours - Chemistry", convener: 14, mgmt: 6, total: 20 },
-    { sNo: 12, title: "B.Sc Honours - Botany", convener: 18, mgmt: 7, total: 25 },
-  ];
+  const [ugIntake, setUgIntake] = useState<any[]>(fallbackUgIntake);
+  const [pgIntake, setPgIntake] = useState<any[]>(fallbackPgIntake);
+  const [loading, setLoading] = useState(true);
+  
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const pgIntake = [
-    { sNo: 1, title: "Master of Computer Applications (MCA)", convener: 42, mgmt: 18, total: 60 },
-    { sNo: 2, title: "Master of Business Administration (MBA)", convener: 42, mgmt: 18, total: 60 },
-  ];
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const programmes = await getAcademicProgrammes();
+        const ugProgrammes = programmes.filter((p: any) => p.programmeType === "ug");
+        const pgProgrammes = programmes.filter((p: any) => p.programmeType === "pg");
+        
+        if (ugProgrammes.length > 0) {
+          setUgIntake(ugProgrammes);
+        }
+        
+        if (pgProgrammes.length > 0) {
+          const sortedPg = pgProgrammes.sort((a: any, b: any) => a.sNo - b.sNo);
+          setPgIntake(sortedPg);
+        }
+      } catch (err) {
+        console.error("Failed to load programmes in admissions:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  const totalUgConvener = ugIntake.reduce((acc, item) => acc + (item.convenerQuota || 0), 0);
+  const totalUgManagement = ugIntake.reduce((acc, item) => acc + (item.managementQuota || 0), 0);
+  const totalUgIntake = ugIntake.reduce((acc, item) => acc + (item.totalIntake || 0), 0);
+
+  const totalPgConvener = pgIntake.reduce((acc, item) => acc + (item.convenerQuota || 0), 0);
+  const totalPgManagement = pgIntake.reduce((acc, item) => acc + (item.managementQuota || 0), 0);
+  const totalPgIntake = pgIntake.reduce((acc, item) => acc + (item.totalIntake || 0), 0);
 
   return (
     <div className="flex flex-col gap-16 animate-fadeIn pb-12 font-sans">
@@ -83,36 +124,69 @@ export function AdmissionPolicyProcess() {
               <h4 className="font-outfit font-black text-slate-850 text-lg">UG Sanctioned Intakes (2026-2027)</h4>
               <p className="text-slate-500 text-sm font-semibold mt-0.5">Admissions through Online Admission Module (OAMDC)</p>
             </div>
-            <span className="bg-indigo-100 text-indigo-950 px-5 py-2 rounded-xl font-black text-sm uppercase tracking-wide">Total Intake: 425 Seats</span>
+            <span className="bg-indigo-100 text-indigo-950 px-5 py-2 rounded-xl font-black text-sm uppercase tracking-wide">Total Intake: {totalUgIntake} Seats</span>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-base font-sans whitespace-nowrap sm:whitespace-normal">
+            <table className="w-full text-left text-base font-sans">
               <thead>
-                <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase tracking-wider text-xs font-black">
+                <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase tracking-wider text-xs font-bold">
                   <th className="py-5 px-8 text-center w-20">S.No</th>
-                  <th className="py-5 px-8">Programme / Stream Name</th>
+                  <th className="py-5 px-8">UG Programme</th>
                   <th className="py-5 px-8 text-center bg-slate-100/50">Convener Quota</th>
                   <th className="py-5 px-8 text-center bg-amber-50/40">Management Quota</th>
-                  <th className="py-5 px-8 text-center bg-indigo-50/30 font-black text-indigo-950">Total Intake</th>
+                  <th className="py-5 px-8 text-center bg-indigo-50/30 font-bold text-indigo-950">Total Intake</th>
+                  <th className="py-5 px-8 text-center">About Programme</th>
+                  <th className="py-5 px-8 text-center">Brochure</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-bold text-slate-800 text-[15px] md:text-base">
+              <tbody className="divide-y divide-slate-100 font-sans text-slate-700 text-sm md:text-base">
                 {ugIntake.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo}</td>
-                    <td className="py-5 px-8 font-black text-[#002147] tracking-tight">{item.title}</td>
-                    <td className="py-5 px-8 text-center text-slate-600 bg-slate-50/20">{item.convener}</td>
-                    <td className="py-5 px-8 text-center text-amber-800 bg-amber-50/10">{item.mgmt}</td>
-                    <td className="py-5 px-8 text-center text-indigo-950 font-black bg-indigo-50/10 text-lg">{item.total}</td>
+                  <tr key={item.sNo || idx} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="py-5 px-8 text-center text-slate-400 font-medium">{item.sNo}</td>
+                    <td className="py-5 px-8 font-medium text-slate-800 tracking-tight">{item.name}</td>
+                    <td className="py-5 px-8 text-center text-slate-600 bg-slate-50/20 font-medium">{item.convenerQuota}</td>
+                    <td className="py-5 px-8 text-center text-amber-800 bg-amber-50/10 font-medium">{item.managementQuota}</td>
+                    <td className="py-5 px-8 text-center text-[#002147] font-semibold bg-indigo-50/10 text-base">{item.totalIntake}</td>
+                    <td className="py-5 px-8 text-center">
+                      {item.aboutDocumentUrl ? (
+                        <button
+                          onClick={() => {
+                            setPreviewUrl(item.aboutDocumentUrl);
+                            setPreviewTitle(`${item.name} - About Programme`);
+                          }}
+                          className="text-indigo-600 hover:text-indigo-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer text-sm"
+                        >
+                          View Document
+                        </button>
+                      ) : (
+                        <span className="text-slate-400">---</span>
+                      )}
+                    </td>
+                    <td className="py-5 px-8 text-center">
+                      {item.brochureUrl ? (
+                        <button
+                          onClick={() => {
+                            setPreviewUrl(item.brochureUrl);
+                            setPreviewTitle(`${item.name} - Brochure`);
+                          }}
+                          className="text-emerald-600 hover:text-emerald-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer text-sm"
+                        >
+                          View Brochure
+                        </button>
+                      ) : (
+                        <span className="text-slate-400">---</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
-                <tr className="bg-slate-900 text-white font-black border-t-2 border-slate-800">
+                <tr className="bg-slate-900 text-white font-semibold border-t-2 border-slate-800">
                   <td className="py-6 px-8"></td>
-                  <td className="py-6 px-8 text-lg font-outfit">Cumulative Seats Summary</td>
-                  <td className="py-6 px-8 text-center text-lg text-slate-300">301</td>
-                  <td className="py-6 px-8 text-center text-lg text-amber-300">124</td>
-                  <td className="py-6 px-8 text-center text-2xl text-indigo-300">425</td>
+                  <td className="py-6 px-8 text-base font-outfit">Cumulative Seats Summary</td>
+                  <td className="py-6 px-8 text-center text-base text-slate-300 font-bold">{totalUgConvener}</td>
+                  <td className="py-6 px-8 text-center text-base text-amber-300 font-bold">{totalUgManagement}</td>
+                  <td className="py-6 px-8 text-center text-lg text-indigo-300 font-bold">{totalUgIntake}</td>
+                  <td colSpan={2} className="py-6 px-8"></td>
                 </tr>
               </tbody>
             </table>
@@ -146,69 +220,104 @@ export function AdmissionPolicyProcess() {
           <div className="h-12 w-12 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
             <GraduationCap className="h-6 w-6" />
           </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">II. Postgraduate (PG) Intake & Process</h3>
+          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">II. Postgraduate (PG) Intake Breakdown</h3>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Stats */}
-          <div className="lg:col-span-3 bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-            <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-              <div className="flex flex-col">
-                <h4 className="font-outfit font-black text-slate-850 text-lg">PG Admissions through ICET</h4>
-                <p className="text-slate-500 text-sm font-semibold mt-0.5">Master Level Management & Tech Portfolios</p>
-              </div>
-              <span className="bg-emerald-100 text-emerald-950 px-4 py-1.5 rounded-full font-black text-xs uppercase tracking-wider">120 Total</span>
+        <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+          <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <h4 className="font-outfit font-black text-slate-850 text-lg">PG Sanctioned Intakes (2026-2027)</h4>
+              <p className="text-slate-500 text-sm font-semibold mt-0.5">Admissions through ICET Entrance Counselling</p>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-base font-sans">
-                <thead>
-                  <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase text-xs font-black">
-                    <th className="py-4 px-6">Course</th>
-                    <th className="py-4 px-6 text-center">Convener</th>
-                    <th className="py-4 px-6 text-center">Mgmt</th>
-                    <th className="py-4 px-6 text-center bg-indigo-50/20 font-black text-[#002147]">Total</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-bold text-slate-800 text-[15px]">
-                  {pgIntake.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="py-5 px-6 font-black text-[#002147]">{item.title}</td>
-                      <td className="py-5 px-6 text-center">{item.convener}</td>
-                      <td className="py-5 px-6 text-center text-amber-800">{item.mgmt}</td>
-                      <td className="py-5 px-6 text-center font-black bg-indigo-50/10 text-base">{item.total}</td>
-                    </tr>
-                  ))}
-                  <tr className="bg-[#002147] text-white font-black">
-                    <td className="py-5 px-6">Grand Totals</td>
-                    <td className="py-5 px-6 text-center">84</td>
-                    <td className="py-5 px-6 text-center">36</td>
-                    <td className="py-5 px-6 text-center text-lg text-amber-400">120</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <span className="bg-emerald-100 text-emerald-950 px-5 py-2 rounded-xl font-black text-sm uppercase tracking-wide">Total Intake: {totalPgIntake} Seats</span>
           </div>
 
-          {/* Timeline Box */}
-          <div className="lg:col-span-2 bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-6">
-            <h4 className="font-outfit font-black text-[#002147] text-xl flex items-center gap-3">
-              <ClipboardCheck className="h-6 w-6" /> PG Step-by-Step Flow
-            </h4>
-            <div className="flex flex-col gap-5 font-sans">
-              {[
-                "Qualify in ICET Entrance Examination",
-                "Register for State ICET Online Counselling",
-                "Attend Certificate Verification",
-                "Exercise Web Options Entry",
-                "Confirm Allotment & Report to Campus"
-              ].map((step, i) => (
-                <div key={i} className="flex gap-4 items-start font-semibold text-slate-700 text-base">
-                  <span className="h-8 w-8 bg-white text-[#002147] border border-[#002147]/10 rounded-full flex items-center justify-center font-black shadow-sm shrink-0 text-sm">{i+1}</span>
-                  <span className="leading-relaxed mt-0.5">{step}</span>
-                </div>
-              ))}
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-base font-sans">
+              <thead>
+                <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase tracking-wider text-xs font-bold">
+                  <th className="py-5 px-8 text-center w-20">S.No</th>
+                  <th className="py-5 px-8">PG Programme</th>
+                  <th className="py-5 px-8 text-center bg-slate-100/50">Convener Quota</th>
+                  <th className="py-5 px-8 text-center bg-amber-50/40">Management Quota</th>
+                  <th className="py-5 px-8 text-center bg-indigo-50/30 font-bold text-[#002147]">Total Intake</th>
+                  <th className="py-5 px-8 text-center">About Programme</th>
+                  <th className="py-5 px-8 text-center">Brochure</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 font-sans text-slate-700 text-sm md:text-base">
+                {pgIntake.map((item, idx) => (
+                  <tr key={item.sNo || idx} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="py-5 px-8 text-center text-slate-400 font-medium">{idx + 1}</td>
+                    <td className="py-5 px-8 font-medium text-slate-800 tracking-tight">{item.name}</td>
+                    <td className="py-5 px-8 text-center text-slate-600 bg-slate-50/20 font-medium">{item.convenerQuota}</td>
+                    <td className="py-5 px-8 text-center text-amber-800 bg-amber-50/10 font-medium">{item.managementQuota}</td>
+                    <td className="py-5 px-8 text-center text-[#002147] font-semibold bg-indigo-50/10 text-base">{item.totalIntake}</td>
+                    <td className="py-5 px-8 text-center">
+                      {item.aboutDocumentUrl ? (
+                        <button
+                          onClick={() => {
+                            setPreviewUrl(item.aboutDocumentUrl);
+                            setPreviewTitle(`${item.name} - About Programme`);
+                          }}
+                          className="text-indigo-600 hover:text-indigo-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer text-sm"
+                        >
+                          View Document
+                        </button>
+                      ) : (
+                        <span className="text-slate-400">---</span>
+                      )}
+                    </td>
+                    <td className="py-5 px-8 text-center">
+                      {item.brochureUrl ? (
+                        <button
+                          onClick={() => {
+                            setPreviewUrl(item.brochureUrl);
+                            setPreviewTitle(`${item.name} - Brochure`);
+                          }}
+                          className="text-emerald-600 hover:text-emerald-800 font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer text-sm"
+                        >
+                          View Brochure
+                        </button>
+                      ) : (
+                        <span className="text-slate-400">---</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="bg-[#002147] text-white font-semibold border-t-2 border-slate-850">
+                  <td className="py-6 px-8"></td>
+                  <td className="py-6 px-8 text-base font-outfit">Cumulative Seats Summary</td>
+                  <td className="py-6 px-8 text-center text-base text-slate-300 font-bold">{totalPgConvener}</td>
+                  <td className="py-6 px-8 text-center text-base text-amber-300 font-bold">{totalPgManagement}</td>
+                  <td className="py-6 px-8 text-center text-lg text-amber-400 font-bold">{totalPgIntake}</td>
+                  <td colSpan={2} className="py-6 px-8"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+        </div>
+      </div>
+
+      {/* Step by Step ICET Process */}
+      <div className="flex flex-col gap-8">
+        <h4 className="font-outfit font-black text-[#002147] text-xl flex items-center gap-2 border-l-4 border-[#002147] pl-3">
+          PG Online Admission Steps (ICET)
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {[
+            "Qualify in ICET Entrance Examination",
+            "Register for State ICET Online Counselling",
+            "Attend Certificate Verification",
+            "Exercise Web Options Entry",
+            "Confirm Allotment & Report to Campus"
+          ].map((step, i) => (
+            <div key={i} className="bg-white border border-slate-200 p-6 rounded-3xl hover:shadow-md transition-all relative overflow-hidden flex flex-col gap-3">
+              <span className="absolute right-4 top-2 opacity-[0.08] text-5xl font-black font-outfit text-[#002147]">0{i+1}</span>
+              <div className="h-8 w-8 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 rounded-full flex items-center justify-center font-black shadow-sm shrink-0 text-xs">{i+1}</div>
+              <p className="text-slate-705 text-sm font-bold leading-relaxed pr-6">{step}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -227,25 +336,33 @@ export function AdmissionPolicyProcess() {
         </div>
         
         <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t border-[#002147]/10 w-full md:w-fit">
-          <a 
-            href="/documents/admissions/UG Application Form.pdf" 
-            target="_blank" 
-            rel="noreferrer"
+          <button 
+            onClick={() => {
+              setPreviewUrl("/documents/admissions/UG Application Form.pdf");
+              setPreviewTitle("UG Application Inquiry Form");
+            }}
             className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white border border-slate-200 hover:border-indigo-300 text-[#002147] font-black rounded-[1.25rem] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-[15px] md:text-base shrink-0 cursor-pointer"
           >
             <FileText className="h-5 w-5 text-indigo-600 shrink-0" /> UG Application Inquiry
-          </a>
-          <a 
-            href="/documents/admissions/PG Application Form.pdf" 
-            target="_blank" 
-            rel="noreferrer"
+          </button>
+          <button 
+            onClick={() => {
+              setPreviewUrl("/documents/admissions/PG Application Form.pdf");
+              setPreviewTitle("PG Application Inquiry Form");
+            }}
             className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#002147] hover:bg-[#0a3c74] text-white font-black rounded-[1.25rem] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-[15px] md:text-base shrink-0 cursor-pointer"
           >
             <FileText className="h-5 w-5 text-emerald-400 shrink-0" /> PG Application Inquiry
-          </a>
+          </button>
         </div>
       </div>
 
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Application Form"}
+      />
     </div>
   );
 }

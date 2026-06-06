@@ -161,7 +161,7 @@ export default function AcademicsClientFallback() {
 
   return (
     <div className="bg-slate-50/50 min-h-screen py-16 md:py-24 select-none font-sans">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
 
         {/* Header Panel */}
         <div className="max-w-4xl text-left mb-16">

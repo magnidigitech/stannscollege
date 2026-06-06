@@ -80,8 +80,8 @@ export default function ResearchInnovationPage({ params }: PageProps) {
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
       
       {/* Top Breadcrumb Header */}
-      <div className="bg-white border-b border-slate-200/70 py-5 px-6 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-b border-slate-200/70 py-5 px-4 sm:px-6 lg:px-12 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs w-full">
+        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
               <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
@@ -102,7 +102,7 @@ export default function ResearchInnovationPage({ params }: PageProps) {
       </div>
 
       {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto py-10 px-6 md:px-8 lg:px-10">
+      <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* A. Left Sidebar Sticky Navigation */}

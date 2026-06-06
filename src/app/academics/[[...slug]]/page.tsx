@@ -227,11 +227,11 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
   return (
     <div className="bg-slate-50/40 min-h-screen py-12 select-none animate-fadeIn font-sans">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
           
           {/* Left Navigation Sidebar for Desktop */}
-          <div className="lg:col-span-4 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-[2rem] shadow-sm pr-3">
+          <div className="lg:col-span-3 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-[2rem] shadow-sm pr-3">
             <span className="inline-flex items-center gap-1.5 font-outfit text-[11px] font-black text-[#002147] uppercase tracking-widest px-2 pb-2 border-b border-slate-100">
               Academic Modules
             </span>
@@ -282,7 +282,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
           </div>
 
           {/* Main Dynamic Right Component */}
-          <div className="lg:col-span-8 mb-16 flex flex-col gap-10">
+          <div className="lg:col-span-9 mb-16 flex flex-col gap-10">
             <div className="flex flex-col gap-6">
               {renderMainContent()}
             </div>

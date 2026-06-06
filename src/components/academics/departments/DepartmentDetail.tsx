@@ -170,66 +170,95 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         </div>
       </div>
 
-      {/* 4. Faculty Profiles (SEPARATED) */}
-      <div className="flex flex-col gap-8">
-        <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-          <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-            <Users className="h-6 w-6" />
-          </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Departmental Faculty</h3>
-        </div>
-
-        <div className="bg-slate-50/70 border border-slate-200/70 rounded-[2.5rem] p-10 md:p-12 flex flex-col md:flex-row items-center gap-8 shadow-sm">
-          <div className="h-20 w-20 shrink-0 rounded-full bg-[#002147] text-white flex items-center justify-center shadow-lg">
-            <Users className="h-10 w-10" />
-          </div>
-          <div className="flex flex-col gap-3 flex-grow">
-            <h4 className="font-outfit font-black text-slate-850 text-xl">Qualified Lecturers & Academicians</h4>
-            <p className="text-slate-600 font-semibold text-base md:text-lg leading-relaxed max-w-3xl">
-              Our faculty consists of highly competent educationists guiding active academic pursuits. Detailed credentials and research listings are accessible in the central directory.
-            </p>
-            <div className="mt-3 pt-3 border-t border-slate-200/60 flex gap-4 flex-wrap">
-              <span className="inline-flex items-center bg-white border border-slate-200 text-[#002147] px-4 py-2 rounded-full text-sm font-black tracking-wide uppercase">NAAC Qualified</span>
-              <span className="inline-flex items-center bg-white border border-slate-200 text-[#002147] px-4 py-2 rounded-full text-sm font-black tracking-wide uppercase">Subject Experts</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 5. Value Added Offerings & MoUs */}
-      {( (data.valueAddedCourses && data.valueAddedCourses.length > 0) || (data.mous && data.mous.length > 0) ) && (
+      {/* 4. Faculty Profiles */}
+      {data.facultyMembers && data.facultyMembers.length > 0 && (
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
             <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <Award className="h-6 w-6" />
+              <Users className="h-6 w-6" />
             </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Highlights & Industry Collaborations</h3>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Departmental Faculty Directory</h3>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-base font-sans">
+                <thead>
+                  <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                    <th className="py-4 px-8 text-center w-20">S.No</th>
+                    <th className="py-4 px-8">Name of the Faculty</th>
+                    <th className="py-4 px-8">Designation</th>
+                    <th className="py-4 px-8">Qualifications</th>
+                    <th className="py-4 px-8 text-center">Experience</th>
+                    <th className="py-4 px-8">Email ID</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
+                  {data.facultyMembers.map((fac: any, i: number) => (
+                    <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                      <td className="py-5 px-8 text-center text-slate-400 font-black">{i + 1}</td>
+                      <td className="py-5 px-8 font-black text-[#002147] text-base">{fac.name}</td>
+                      <td className="py-5 px-8 text-slate-600">{fac.designation}</td>
+                      <td className="py-5 px-8 text-slate-650">{fac.qualification}</td>
+                      <td className="py-5 px-8 text-center text-slate-500">{fac.experience || "---"}</td>
+                      <td className="py-5 px-8 font-medium">
+                        {fac.email ? (
+                          <a href={`mailto:${fac.email}`} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+                            {fac.email}
+                          </a>
+                        ) : (
+                          "---"
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 5. Pass Percentages & Placement Summary */}
+      {((data.passPercentage && data.passPercentage.length > 0) || (data.placements && data.placements.length > 0)) && (
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
+              <BarChart3 className="h-6 w-6" />
+            </div>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Academic Results & Placements</h3>
           </div>
 
           <div className="flex flex-col gap-8">
-            {data.valueAddedCourses && data.valueAddedCourses.length > 0 && (
+            {data.passPercentage && data.passPercentage.length > 0 && (
               <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
                 <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Value-Added & Professional Offerings</span>
-                  <span className="bg-indigo-100 text-indigo-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Active Curriculum</span>
+                  <span className="font-outfit font-black text-slate-800 text-lg">Outgoing Batch Pass Percentage</span>
+                  <span className="bg-indigo-100 text-indigo-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Results Log</span>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-base font-sans">
                     <thead>
                       <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8">Course Title</th>
-                        <th className="py-4 px-8 text-center">Duration</th>
-                        <th className="py-4 px-8">Collaborating / Guiding Agency</th>
+                        <th className="py-4 px-8">Academic Year</th>
+                        <th className="py-4 px-8">Programme</th>
+                        <th className="py-4 px-8 text-center">No. of Final Year Students</th>
+                        <th className="py-4 px-8 text-center">No. of Students Passed</th>
+                        <th className="py-4 px-8 text-center">Pass Percentage</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.valueAddedCourses.map((course: any, i: number) => (
+                      {data.passPercentage.map((item: any, i: number) => (
                         <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{course.sNo || i + 1}</td>
-                          <td className="py-5 px-8 font-black text-[#002147] text-base">{course.title}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{course.duration || "---"}</td>
-                          <td className="py-5 px-8 font-bold text-teal-800">{course.agency}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.year}</td>
+                          <td className="py-5 px-8 text-slate-650">{item.programme}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.finalYearStudents || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.studentsPassed || "---"}</td>
+                          <td className="py-5 px-8 text-center">
+                            <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-sm font-black">
+                              {item.percentage || "0%"}
+                            </span>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -238,42 +267,41 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
               </div>
             )}
 
-            {data.mous && data.mous.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm flex flex-col gap-6">
-                  <div className="flex items-center gap-4 pb-4 border-b border-slate-100">
-                    <div className="h-10 w-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm border border-blue-100 shrink-0">
-                      <Handshake className="h-5 w-5" />
-                    </div>
-                    <h4 className="font-outfit font-black text-slate-850 text-lg">Institutional Partnerships / MoUs</h4>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {data.mous.map((mou: any, i: number) => (
-                      <div key={i} className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
-                        <h5 className="font-outfit font-black text-slate-900 text-base md:text-lg mb-2">{mou.title}</h5>
-                        <div className="text-sm md:text-base text-slate-600 flex flex-col gap-1 font-semibold">
-                          <span><span className="font-black text-slate-450">Type:</span> {mou.type || "MoU"}</span>
-                          <span><span className="font-black text-slate-450">Term:</span> {mou.duration}</span>
-                          <p className="mt-2 text-[#002147]"><span className="font-black text-slate-450 block mb-1">Objective:</span> {mou.purpose}</p>
-                        </div>
-                        <span className="inline-flex items-center mt-4 rounded-full bg-emerald-100 border border-emerald-200 px-3.5 py-1 text-xs font-black text-emerald-800 uppercase tracking-wider">Active</span>
-                      </div>
-                    ))}
-                  </div>
+            {data.placements && data.placements.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Year-wise Placement Summary</span>
+                  <span className="bg-[#002147]/5 text-[#002147] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Placement History</span>
                 </div>
-
-                <div className="bg-gradient-to-br from-indigo-50 to-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between gap-6">
-                  <div className="flex flex-col gap-4">
-                    <h4 className="font-outfit font-black text-slate-850 text-lg flex items-center gap-3">
-                      <BarChart3 className="h-5 w-5 text-indigo-600" /> Employability Track Records
-                    </h4>
-                    <p className="text-slate-600 text-base md:text-lg font-semibold leading-relaxed">
-                      We consistently log strong results, with highly active employment conversions across registered recruiters. Special emphasis is placed on industrial integration and dynamic skills acquisition.
-                    </p>
-                  </div>
-                  <div className="bg-white shadow-inner rounded-2xl p-5 border border-indigo-100/80 text-center font-black text-[#002147] uppercase tracking-widest text-xs md:text-sm">
-                    Active Career Guidance Cell Support
-                  </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8">Academic Year</th>
+                        <th className="py-4 px-8 text-center">Final Year Students</th>
+                        <th className="py-4 px-8 text-center">Students Placed</th>
+                        <th className="py-4 px-8 text-center">Highest Salary (LPA)</th>
+                        <th className="py-4 px-8 text-center">Average Salary (LPA)</th>
+                        <th className="py-4 px-8 text-center">Placement Percentage</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-805">
+                      {data.placements.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.year}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.finalYearStudents || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-550">{item.studentsPlaced || "---"}</td>
+                          <td className="py-5 px-8 text-center text-emerald-800 font-bold">{item.highestSalary || "---"}</td>
+                          <td className="py-5 px-8 text-center text-indigo-700 font-bold">{item.averageSalary || "---"}</td>
+                          <td className="py-5 px-8 text-center">
+                            <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-800 text-sm font-black">
+                              {item.percentage || "0%"}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}
@@ -281,14 +309,311 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         </div>
       )}
 
-      {/* 6. Best Practices */}
+      {/* 6. Value Added Offerings & Internships */}
+      {((data.valueAddedCourses && data.valueAddedCourses.length > 0) || (data.internships && data.internships.length > 0)) && (
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
+              <Award className="h-6 w-6" />
+            </div>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Courses & Internships</h3>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            {data.valueAddedCourses && data.valueAddedCourses.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Value-Added & Certificate Courses</span>
+                  <span className="bg-emerald-100 text-emerald-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Curriculum Offerings</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8">Course Title</th>
+                        <th className="py-4 px-8 text-center">Duration</th>
+                        <th className="py-4 px-8">From - To</th>
+                        <th className="py-4 px-8 text-center">Academic Year</th>
+                        <th className="py-4 px-8 text-center">Students Enrolled</th>
+                        <th className="py-4 px-8 text-center">Certificate Issued</th>
+                        <th className="py-4 px-8">Collaborating Agency</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
+                      {data.valueAddedCourses.map((course: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{course.sNo || i + 1}</td>
+                          <td className="py-5 px-8 font-black text-[#002147] text-base">{course.title}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{course.duration || "---"}</td>
+                          <td className="py-5 px-8 text-slate-500">{course.fromTo || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{course.academicYear || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{course.studentsEnrolled || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{course.certificateIssued || "---"}</td>
+                          <td className="py-5 px-8 font-bold text-teal-800">{course.agency || "---"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {data.internships && data.internships.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Student Internships & Field Work</span>
+                  <span className="bg-amber-100 text-amber-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Industrial Projects</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8 text-center">Academic Year</th>
+                        <th className="py-4 px-8">Name of the Student</th>
+                        <th className="py-4 px-8">Duration</th>
+                        <th className="py-4 px-8">Name of the Organization</th>
+                        <th className="py-4 px-8">Area of Work</th>
+                        <th className="py-4 px-8">Programme</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
+                      {data.internships.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.year}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.name}</td>
+                          <td className="py-5 px-8 text-slate-500">{item.duration || "---"}</td>
+                          <td className="py-5 px-8 font-bold text-teal-800">{item.organization}</td>
+                          <td className="py-5 px-8 text-slate-600">{item.areaOfWork || "---"}</td>
+                          <td className="py-5 px-8 text-slate-500">{item.programme || "---"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 7. MoUs & MoU Activities */}
+      {((data.mous && data.mous.length > 0) || (data.mouActivities && data.mouActivities.length > 0)) && (
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
+              <Handshake className="h-6 w-6" />
+            </div>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Partnerships & Collaborations</h3>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            {data.mous && data.mous.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {data.mous.map((mou: any, i: number) => (
+                  <div key={i} className="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between gap-6 relative overflow-hidden group hover:border-[#002147]/30 hover:shadow-md transition-all">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm border border-blue-100 shrink-0">
+                            <Handshake className="h-5 w-5" />
+                          </div>
+                          <h4 className="font-outfit font-black text-slate-900 text-lg leading-tight">{mou.title}</h4>
+                        </div>
+                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider border ${
+                          mou.status?.toLowerCase() === "active" 
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
+                            : "bg-slate-50 border-slate-200 text-slate-500"
+                        }`}>
+                          {mou.status || "Active"}
+                        </span>
+                      </div>
+                      <div className="text-sm md:text-base text-slate-600 flex flex-col gap-2 font-semibold pt-2 border-t border-slate-100">
+                        <span><span className="font-black text-slate-450 uppercase text-xs tracking-wider mr-2">Type:</span> {mou.type || "MoU"}</span>
+                        <span><span className="font-black text-slate-450 uppercase text-xs tracking-wider mr-2">Signed on:</span> {mou.dateOfSigning || "---"}</span>
+                        <span><span className="font-black text-slate-450 uppercase text-xs tracking-wider mr-2">Term:</span> {mou.duration || "---"}</span>
+                        <p className="mt-2 text-[#002147]"><span className="font-black text-slate-450 block mb-1 uppercase text-xs tracking-wider">Purpose & Scope:</span> {mou.purpose}</p>
+                      </div>
+                    </div>
+                    {mou.documentUrl && (
+                      <a href={mou.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 font-bold text-sm mt-4 hover:underline">
+                        <BookOpen className="h-4 w-4" /> View Linkage Document <ArrowRight className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {data.mouActivities && data.mouActivities.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">MoU Activities Conducted</span>
+                  <span className="bg-teal-100 text-teal-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Activity Logs</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8">Partner Organization</th>
+                        <th className="py-4 px-8">Activity Conducted</th>
+                        <th className="py-4 px-8 text-center">Date</th>
+                        <th className="py-4 px-8 text-center">No. of Participants</th>
+                        <th className="py-4 px-8">Document</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
+                      {data.mouActivities.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.organization}</td>
+                          <td className="py-5 px-8 text-slate-650">{item.activity}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.date || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.participants || "---"}</td>
+                          <td className="py-5 px-8">
+                            {item.documentUrl ? (
+                              <a href={item.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 hover:underline">
+                                <BookOpen className="h-4 w-4" /> View PDF
+                              </a>
+                            ) : (
+                              "---"
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 8. Student Achievements & Ranks */}
+      {((data.studentAchievements && data.studentAchievements.length > 0) || (data.academicAchievements && data.academicAchievements.length > 0)) && (
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
+              <Trophy className="h-6 w-6" />
+            </div>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Student Laurels & Ranks</h3>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            {data.studentAchievements && data.studentAchievements.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Co-Curricular / Extracurricular Achievements</span>
+                  <span className="bg-emerald-100 text-emerald-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Laurels Log</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8 text-center">Date</th>
+                        <th className="py-4 px-8">Student Name</th>
+                        <th className="py-4 px-8">Activity / Competition</th>
+                        <th className="py-4 px-8">Level</th>
+                        <th className="py-4 px-8">Achievement</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
+                      {data.studentAchievements.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.date || "---"}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.name}</td>
+                          <td className="py-5 px-8 text-slate-650">{item.activity}</td>
+                          <td className="py-5 px-8 text-slate-500">{item.level || "---"}</td>
+                          <td className="py-5 px-8 text-emerald-800 font-bold">{item.achievement}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {data.academicAchievements && data.academicAchievements.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Academic University Ranks & Awards</span>
+                  <span className="bg-amber-100 text-amber-955 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Academic Honors</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8 text-center">Academic Year</th>
+                        <th className="py-4 px-8">Student Name</th>
+                        <th className="py-4 px-8">Programme</th>
+                        <th className="py-4 px-8">University Rank / Award</th>
+                        <th className="py-4 px-8 text-center">Marks/Percentage/CGPA</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-850">
+                      {data.academicAchievements.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.year}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.name}</td>
+                          <td className="py-5 px-8 text-slate-650">{item.programme}</td>
+                          <td className="py-5 px-8 text-emerald-805 font-bold">{item.award}</td>
+                          <td className="py-5 px-8 text-center text-teal-800 font-black">{item.marks || "---"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Other Student Achievements */}
+            {data.otherStudentAchievements && data.otherStudentAchievements.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-6 shadow-sm">
+                <span className="font-outfit font-black text-slate-800 text-lg border-b border-slate-100 pb-3 block">
+                  Other Student Achievements
+                </span>
+                <ul className="flex flex-col gap-3.5 max-w-4xl">
+                  {data.otherStudentAchievements.map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3.5 text-slate-705 font-semibold text-base md:text-[17px] leading-relaxed">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-1 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Focus on Women Empowerment & Employability */}
+            {data.focusOnWomenEmpowerment && (
+              <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-4 shadow-sm">
+                <span className="font-outfit font-black text-[#002147] text-lg border-b border-[#002147]/20 pb-3 block">
+                  Focus on Women Empowerment & Employability
+                </span>
+                <p className="text-slate-700 font-semibold leading-relaxed text-base md:text-[17px]">
+                  {data.focusOnWomenEmpowerment}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 9. Quality Assurance & Best Practices */}
       {data.bestPractices && data.bestPractices.length > 0 && (
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
             <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
               <HeartHandshake className="h-6 w-6" />
             </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Quality Assurance & Best Practices</h3>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Quality Initiatives & Best Practices</h3>
           </div>
 
           <div className="flex flex-col gap-8">
@@ -298,68 +623,225 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur border border-white/20 px-4 py-1.5 text-xs font-black tracking-widest uppercase w-fit text-indigo-100">
                   <Sparkles className="h-3.5 w-3.5 text-amber-400" /> Continuous Quality Assessment
                 </span>
-                <h3 className="font-outfit text-xl md:text-2xl font-black mt-2 tracking-tight">Outcome-Based Education Standards</h3>
+                <h3 className="font-outfit text-xl md:text-2xl font-black mt-2 tracking-tight">Outcome-Based Education Framework</h3>
                 <p className="text-slate-300 text-base md:text-lg leading-relaxed font-semibold max-w-4xl mt-1">
-                  Implementing NAAC outcome matrices, emphasizing practical workflows and active societal consciousness. We facilitate local industrial tours, real-time projects, and continuous assessment schemas.
+                  Adopting need-based, skill-oriented, and socially relevant practices aligned with NAAC standards. Emphasis is placed on experiential learning, employability, and community engagement.
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-8">
               {data.bestPractices.map((practice: any, idx: number) => (
-                <div key={idx} className="bg-white border-2 border-slate-100 hover:border-indigo-100 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <div key={idx} className="bg-white border-2 border-slate-100 hover:border-indigo-105 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-md transition-all">
                   <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/40 flex flex-col gap-1">
                     <h4 className="font-outfit text-lg md:text-xl font-black text-[#002147]">{practice.title}</h4>
-                    <span className="text-xs uppercase tracking-widest text-indigo-600 font-black">{practice.category}</span>
+                    <span className="text-xs uppercase tracking-widest text-indigo-650 font-black">{practice.category}</span>
                   </div>
                   <div className="flex flex-col divide-y divide-slate-100 font-sans">
+                    
+                    {/* Context Description */}
+                    {practice.context && (
+                      <div className="p-8 md:p-10 bg-indigo-50/10">
+                        <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-3 border-l-4 border-indigo-400 pl-3">Context</span>
+                        <p className="text-slate-700 font-medium leading-relaxed text-base md:text-[17px]">
+                          {practice.context}
+                        </p>
+                      </div>
+                    )}
+
                     {/* Objectives */}
-                    <div className="p-8 md:p-10">
-                      <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-4 border-l-4 border-[#002147] pl-3">Objectives</span>
-                      <ul className="flex flex-col gap-3.5 max-w-4xl">
-                        {(practice.objectives || []).map((o: string, i: number) => (
-                          <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
-                            <span className="h-2.5 w-2.5 rounded-full bg-[#002147] mt-2 shrink-0"></span>
-                            <span>{o}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {practice.objectives && practice.objectives.length > 0 && (
+                      <div className="p-8 md:p-10">
+                        <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-4 border-l-4 border-[#002147] pl-3">Objectives</span>
+                        <ul className="flex flex-col gap-3.5 max-w-4xl">
+                          {practice.objectives.map((o: string, i: number) => (
+                            <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
+                              <span className="h-2.5 w-2.5 rounded-full bg-[#002147] mt-2 shrink-0"></span>
+                              <span>{o}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
                     {/* The Practice */}
-                    <div className="p-8 md:p-10 bg-slate-50/30">
-                      <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-4 border-l-4 border-[#002147] pl-3">The Practice</span>
-                      <ul className="flex flex-col gap-3.5 max-w-4xl">
-                        {(practice.practice || []).map((p: string, i: number) => (
-                          <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
-                            <span className="h-2.5 w-2.5 rounded-full bg-[#002147] mt-2 shrink-0"></span>
-                            <span>{p}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    {/* Success */}
-                    <div className="p-8 md:p-10 bg-emerald-50/40">
-                      <span className="text-xs font-black uppercase tracking-widest text-emerald-800 flex items-center gap-2 mb-4 border-l-4 border-emerald-600 pl-3">
-                        <Award className="h-5 w-5 text-emerald-600" /> Evidence of Success
-                      </span>
-                      <ul className="flex flex-col gap-3.5 max-w-4xl text-emerald-950 font-bold text-base md:text-[18px] leading-relaxed">
-                        {(practice.success || []).map((s: string, i: number) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <span className="h-2.5 w-2.5 rounded-full bg-emerald-600 mt-2 shrink-0"></span>
-                            <span>{s}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {practice.practice && practice.practice.length > 0 && (
+                      <div className="p-8 md:p-10 bg-slate-50/30">
+                        <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-4 border-l-4 border-[#002147] pl-3">The Practice</span>
+                        <ul className="flex flex-col gap-3.5 max-w-4xl">
+                          {practice.practice.map((p: string, i: number) => (
+                            <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
+                              <span className="h-2.5 w-2.5 rounded-full bg-[#002147] mt-2 shrink-0"></span>
+                              <span>{p}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Evidence of Success */}
+                    {practice.success && practice.success.length > 0 && (
+                      <div className="p-8 md:p-10 bg-emerald-50/40">
+                        <span className="text-xs font-black uppercase tracking-widest text-emerald-800 flex items-center gap-2 mb-4 border-l-4 border-emerald-600 pl-3">
+                          <Award className="h-5 w-5 text-emerald-600" /> Evidence of Success
+                        </span>
+                        <ul className="flex flex-col gap-3.5 max-w-4xl text-emerald-950 font-bold text-base md:text-[18px] leading-relaxed">
+                          {practice.success.map((s: string, i: number) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span className="h-2.5 w-2.5 rounded-full bg-emerald-600 mt-2 shrink-0"></span>
+                              <span>{s}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Problems Encountered */}
+                    {practice.problems && practice.problems.length > 0 && (
+                      <div className="p-8 md:p-10 bg-red-50/30">
+                        <span className="text-xs font-black uppercase tracking-widest text-red-955/80 flex items-center gap-2 mb-4 border-l-4 border-red-400 pl-3">
+                          Problems Encountered & Resources Required
+                        </span>
+                        <ul className="flex flex-col gap-3.5 max-w-4xl">
+                          {practice.problems.map((prob: string, i: number) => (
+                            <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
+                              <span className="h-2.5 w-2.5 rounded-full bg-red-400 mt-2 shrink-0"></span>
+                              <span>{prob}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* Overall Impact of Best Practices */}
+            {data.bestPracticesImpact && data.bestPracticesImpact.length > 0 && (
+              <div className="bg-slate-50 border border-slate-200 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-6 shadow-sm mt-4">
+                <h4 className="font-outfit font-black text-[#002147] text-lg border-b border-slate-200 pb-3">
+                  Overall Impact of Best Practices
+                </h4>
+                <ul className="flex flex-col gap-3.5 max-w-4xl">
+                  {data.bestPracticesImpact.map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3.5 text-slate-700 font-semibold text-base md:text-[17px] leading-relaxed">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-1 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* 7. Activities */}
+      {/* 10. Departmental Activities Logs */}
+      {((data.activitiesList && data.activitiesList.length > 0) || (data.activitiesSummary && data.activitiesSummary.length > 0)) && (
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
+              <BookOpen className="h-6 w-6" />
+            </div>
+            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Activities log & Summaries</h3>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            {data.activitiesList && data.activitiesList.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Departmental Activities Log</span>
+                  <span className="bg-[#002147]/5 text-[#002147] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Events Ledger</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8 text-center">Date</th>
+                        <th className="py-4 px-8">Title of the Activity</th>
+                        <th className="py-4 px-8">Type of Activity</th>
+                        <th className="py-4 px-8">Resource Persons / Organization</th>
+                        <th className="py-4 px-8 text-center">No. of Participants</th>
+                        <th className="py-4 px-8">Document</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
+                      {data.activitiesList.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.date || "---"}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.title}</td>
+                          <td className="py-5 px-8 text-slate-650">{item.type}</td>
+                          <td className="py-5 px-8 text-slate-700">{item.resourcePerson || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.participants || "---"}</td>
+                          <td className="py-5 px-8">
+                            {item.documentUrl ? (
+                              <a href={item.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-650 hover:text-indigo-805 hover:underline">
+                                <BookOpen className="h-4 w-4" /> View PDF
+                              </a>
+                            ) : (
+                              "---"
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {data.activitiesSummary && data.activitiesSummary.length > 0 && (
+              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <span className="font-outfit font-black text-slate-800 text-lg">Category-wise Annual Summary of Activities</span>
+                  <span className="bg-indigo-100 text-indigo-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Annual Summary</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-base font-sans">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
+                        <th className="py-4 px-8 text-center w-20">S.No</th>
+                        <th className="py-4 px-8 text-center">Academic Year</th>
+                        <th className="py-4 px-8">Category of Activity</th>
+                        <th className="py-4 px-8 text-center">No. of Activities Conducted</th>
+                        <th className="py-4 px-8 text-center">No. of Students Benefited</th>
+                        <th className="py-4 px-8">Key Activities Conducted</th>
+                        <th className="py-4 px-8">Document</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-850">
+                      {data.activitiesSummary.map((item: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.year}</td>
+                          <td className="py-5 px-8 font-black text-[#002147]">{item.category}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.count || "---"}</td>
+                          <td className="py-5 px-8 text-center text-slate-500">{item.studentsBenefited || "---"}</td>
+                          <td className="py-5 px-8 text-slate-600">{item.keyActivities || "---"}</td>
+                          <td className="py-5 px-8">
+                            {item.documentUrl ? (
+                              <a href={item.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-650 hover:text-indigo-805 hover:underline">
+                                <BookOpen className="h-4 w-4" /> View PDF
+                              </a>
+                            ) : (
+                              "---"
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 11. Activities Category Pillars */}
       {data.activities && data.activities.length > 0 && (
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
@@ -375,15 +857,27 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
               {data.activities.map((cat: any, i: number) => (
                 <div key={i} className="bg-slate-50/80 border border-slate-200/70 p-6 md:p-8 rounded-3xl flex flex-col gap-3 hover:bg-white hover:shadow-md transition-all">
                   <h4 className="font-outfit font-black text-slate-900 text-base md:text-lg">{cat.label}</h4>
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed font-semibold">{cat.desc}</p>
+                  <p className="text-slate-655 text-sm md:text-base leading-relaxed font-semibold">{cat.desc}</p>
                 </div>
               ))}
             </div>
+
+            {/* Overall Approach */}
+            {data.overallApproach && (
+              <div className="mt-8 pt-6 border-t border-slate-100">
+                <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-3 pl-1">
+                  Overall Approach
+                </span>
+                <p className="text-slate-700 font-semibold leading-relaxed text-base md:text-[17px]">
+                  {data.overallApproach}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* 8. Facilities & Careers */}
+      {/* 12. Facilities & Careers */}
       <div className="flex flex-col gap-8">
         <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
           <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
@@ -395,7 +889,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Assets */}
           <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-6">
-            <h4 className="font-outfit font-black text-slate-800 text-xl flex items-center gap-3">
+            <h4 className="font-outfit font-black text-slate-805 text-xl flex items-center gap-3">
               <Settings className="h-5 w-5 text-[#002147]" /> Physical Infrastructure
             </h4>
             <div className="grid grid-cols-1 gap-3">
@@ -410,7 +904,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
 
           {/* Progression */}
           <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-6">
-            <h4 className="font-outfit font-black text-slate-800 text-xl flex items-center gap-3">
+            <h4 className="font-outfit font-black text-slate-805 text-xl flex items-center gap-3">
               <Briefcase className="h-5 w-5 text-[#002147]" /> Career Pathways
             </h4>
             <div className="grid grid-cols-1 gap-3">
@@ -425,26 +919,70 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         </div>
       </div>
 
-      {/* Photo Gallery Banner */}
-      <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col gap-6">
-        <div className="flex items-center gap-4 mb-2">
-          <div className="h-12 w-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-md border border-[#002147]/20">
-            <ImageIcon className="h-6 w-6" />
-          </div>
-          <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments & Galleries</h4>
-        </div>
-        <p className="text-slate-700 text-base md:text-lg font-semibold leading-relaxed max-w-3xl">
-          Check memorable highlights of academic summits, co-curricular programs, extension meets and industry visits organized by {data.name}.
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 font-outfit mt-2">
-          {["Academics", "Skill Labs", "Student Meets", "Outreach"].map((gallery, i) => (
-            <div key={i} className="aspect-[4/3] bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col items-center justify-center p-6 text-center gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group">
-              <ImageIcon className="h-8 w-8 text-slate-300 group-hover:text-[#002147] transition-colors" />
-              <span className="font-bold text-slate-850 text-xs md:text-sm uppercase tracking-wider leading-tight">{gallery}</span>
+      {/* 13. Photo Gallery */}
+      {data.gallery && data.gallery.length > 0 ? (
+        <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col gap-8">
+          <div className="flex items-center gap-4 mb-2">
+            <div className="h-12 w-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-md border border-[#002147]/20">
+              <ImageIcon className="h-6 w-6" />
             </div>
-          ))}
+            <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments & Galleries</h4>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {data.gallery.map((item: any, i: number) => {
+              const ref = item.image?.asset?._ref;
+              let url = "";
+              if (ref) {
+                const parts = ref.split("-");
+                if (parts.length >= 4) {
+                  const id = parts[1];
+                  const dimensions = parts[2];
+                  const extension = parts[3];
+                  url = `https://cdn.sanity.io/images/fhjwqub5/production/${id}-${dimensions}.${extension}`;
+                }
+              }
+              return (
+                <div key={i} className="flex flex-col gap-3 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm group hover:shadow-md transition-all">
+                  <div className="aspect-[4/3] w-full bg-slate-100 rounded-xl overflow-hidden relative">
+                    {url ? (
+                      <img src={url} alt={item.caption || "Gallery Image"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-350">
+                        <ImageIcon className="h-10 w-10" />
+                      </div>
+                    )}
+                  </div>
+                  {item.caption && (
+                    <span className="font-bold text-slate-700 text-xs md:text-sm leading-snug px-1">
+                      {item.caption}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col gap-6">
+          <div className="flex items-center gap-4 mb-2">
+            <div className="h-12 w-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-md border border-[#002147]/20">
+              <ImageIcon className="h-6 w-6" />
+            </div>
+            <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments & Galleries</h4>
+          </div>
+          <p className="text-slate-700 text-base md:text-lg font-semibold leading-relaxed max-w-3xl">
+            Check memorable highlights of academic summits, co-curricular programs, extension meets and industry visits organized by the department.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 font-outfit mt-2">
+            {["Academics", "Skill Labs", "Student Meets", "Outreach"].map((gallery, i) => (
+              <div key={i} className="aspect-[4/3] bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col items-center justify-center p-6 text-center gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group">
+                <ImageIcon className="h-8 w-8 text-slate-300 group-hover:text-[#002147] transition-colors" />
+                <span className="font-bold text-slate-850 text-xs md:text-sm uppercase tracking-wider leading-tight">{gallery}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
     </div>
   );

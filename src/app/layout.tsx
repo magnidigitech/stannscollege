@@ -33,7 +33,7 @@ export default function RootLayout({
 
         {/* Strip line at the very top for announcements */}
         <div className="w-full bg-slate-950 border-b border-slate-900 overflow-hidden select-none">
-          <div className="mx-auto max-w-7xl px-6 h-10 flex items-center justify-between text-xs font-semibold text-slate-300">
+          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full h-10 flex items-center justify-between text-xs font-semibold text-slate-300">
             <div className="flex items-center gap-2">
               <span className="flex items-center gap-1.5 rounded bg-[#002147] border border-[#003875] px-2 py-0.5 text-white font-bold tracking-wider uppercase animate-pulse select-none">
                 <Bell className="h-3 w-3" /> Announcement
@@ -49,17 +49,17 @@ export default function RootLayout({
           </div>
         </div>
 
-        {/* Top bar with College Logo on left, Accreditations on right */}
+        {/* Top bar with College Logo, Accreditations & Apply Now in a single centered row */}
         <div className="w-full bg-white border-b border-slate-100 select-none">
-          <div className="mx-auto max-w-7xl px-6 h-28 flex items-center justify-between">
-            <div className="flex items-center gap-6 md:gap-8">
-              <Link href="/" className="flex items-center gap-4 group">
+          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full py-6 flex flex-col items-center justify-center gap-6">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8 flex-wrap">
+              <Link href="/" className="flex flex-col md:flex-row items-center gap-4 group">
                 <img
                   src="/images/collegelogo.png"
                   alt="College Logo"
                   className="h-16 w-auto object-contain select-none hover:scale-105 transition-all duration-300"
                 />
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center md:items-start">
                   <span className="font-outfit text-lg md:text-2xl font-black text-[#002147] tracking-tight leading-tight select-none uppercase">
                     St. Ann&apos;s College for Women
                   </span>
@@ -69,7 +69,22 @@ export default function RootLayout({
                 </div>
               </Link>
 
-              {/* Apply Now button beautifully placed next to Logo text */}
+              {/* Accreditations and Anniversary Icons in the same row on desktop */}
+              <div className="flex items-center justify-center gap-4">
+                <img
+                  src="/images/30 Years Icon.png"
+                  alt="30 Years Excellence"
+                  className="h-14 w-auto object-contain select-none"
+                />
+                <div className="h-8 w-px bg-slate-200" />
+                <img
+                  src="/images/naac logo.png"
+                  alt="NAAC Logo"
+                  className="h-14 w-auto object-contain select-none"
+                />
+              </div>
+
+              {/* Apply Now button beautifully placed in the same row */}
               <Link
                 href="/admissions/policy-process"
                 className="hidden lg:flex items-center gap-2 rounded-full bg-[#002147] hover:bg-emerald-600 px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-emerald-500/20 transition-all active:scale-95 duration-350 hover:-translate-y-0.5 group/btn select-none shrink-0"
@@ -78,27 +93,12 @@ export default function RootLayout({
                 <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
               </Link>
             </div>
-
-            {/* Accreditations and Anniversary Icons on the right */}
-            <div className="hidden md:flex items-center gap-6">
-              <img
-                src="/images/30 Years Icon.png"
-                alt="30 Years Excellence"
-                className="h-16 w-auto object-contain select-none"
-              />
-              <div className="h-10 w-px bg-slate-200" />
-              <img
-                src="/images/naac logo.png"
-                alt="NAAC Logo"
-                className="h-16 w-auto object-contain select-none"
-              />
-            </div>
           </div>
         </div>
 
         {/* Sticky Header below top bar for navigation (dynamic height to support dual row) */}
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/50 shadow-sm select-none">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 relative">
+          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative">
             <Navigation />
           </div>
         </header>
@@ -108,7 +108,7 @@ export default function RootLayout({
         </main>
 
         <footer className="bg-slate-950 text-slate-400 py-16 border-t border-slate-900 selection:bg-indigo-500/20 selection:text-indigo-200">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
               <div className="md:col-span-2">
                 <Link href="/" className="flex items-center gap-3.5 group select-none">

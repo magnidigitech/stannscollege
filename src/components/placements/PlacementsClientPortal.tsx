@@ -407,7 +407,7 @@ export default function PlacementsClientPortal({
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-900/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 lg:py-24 w-full">
           <div className="flex items-center gap-3 text-emerald-300/80 font-medium text-sm tracking-widest uppercase mb-6 animate-fadeIn">
             <span className="w-8 h-[2px] bg-emerald-400/50 rounded-full"></span>
             St. Ann's College
@@ -422,7 +422,7 @@ export default function PlacementsClientPortal({
       </div>
 
       {/* Main Content Hub */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-12 lg:py-16 w-full">
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Mobile Tab Selector */}
           <div className="lg:hidden relative z-40">
@@ -507,7 +507,7 @@ export default function PlacementsClientPortal({
           </div>
 
           {/* Dynamic Content Pane */}
-          <div className="flex-1 max-w-4xl min-w-0">
+          <div className="flex-1 min-w-0">
             <div className="bg-white rounded-[32px] md:p-12 p-6 shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-200/60 relative overflow-hidden">
               {/* Premium Background Monogram */}
               <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-50/50 rounded-full blur-[80px] pointer-events-none"></div>

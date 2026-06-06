@@ -190,11 +190,11 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
 
     return (
       <div className="bg-slate-50/40 min-h-screen py-12 select-none animate-fadeIn">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
             {/* Desktop Sidebar with All Pages */}
-            <div className="lg:col-span-4 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 pr-2">
+            <div className="lg:col-span-3 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 pr-2">
               <span className="inline-flex items-center gap-1.5 font-outfit text-xs font-black text-[#002147] uppercase tracking-wider px-2">
                 About Navigation
               </span>
@@ -229,7 +229,7 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
             </div>
 
             {/* Individual Section Content */}
-            <div className="lg:col-span-8 mb-16 flex flex-col justify-between">
+            <div className="lg:col-span-9 mb-16 flex flex-col justify-between">
               <div>
                 <div>
                   {catSlug === "the-institution" && (

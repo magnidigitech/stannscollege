@@ -13,7 +13,8 @@
             "documents": [
               {
                 "label": "- Upload relevant supporting document",
-                "documentUrl": "/documents/aqar2324/c1/111/1.1.1-Upload supporting documents.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/1cb3cc1dc615fb5a5b5551a1b975b80ecfe22afa.pdf",
+                "_key": "dd959e212d91"
               },
               {
                 "label": "- Link for Additional information",
@@ -22,28 +23,35 @@
                   {
                     "name": "Item",
                     "year": "File Description",
-                    "url": "/documents/aqar2324/c6/611/6.1.1-ProvideLink.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/da99618d63f3360dee54185ba4d8c325daf8b253.pdf",
+                    "_key": "12d8c5a97587"
                   },
                   {
                     "name": "Curriculum Implementation",
                     "year": "Central Timetables",
-                    "url": "/documents/aqar2324/c1/111/111/1.1.1-Curriculum Implemtation-Final.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/1cb3cc1dc615fb5a5b5551a1b975b80ecfe22afa.pdf",
+                    "_key": "a8bee7eebc5f"
                   }
-                ]
+                ],
+                "_key": "f2a6ce26beb0"
               }
-            ]
+            ],
+            "_key": "1fec507f8c1b"
           },
           {
             "number": "1.1.2",
             "title": "-The institution adheres to the academic calendar including for the conduct of Continuous Internal Evaluation (CIE)",
-            "documents": []
+            "documents": [],
+            "_key": "0ec234ca6448"
           },
           {
             "number": "1.1.3",
             "title": "-Teachers of the Institution participate in following activities related to curriculum development and assessment of the affiliating University and/are represented on the following academic bodies during the year",
-            "documents": []
+            "documents": [],
+            "_key": "a2417d0cf3ae"
           }
-        ]
+        ],
+        "_key": "633092a97b83"
       },
       {
         "number": "Section",
@@ -52,7 +60,8 @@
           {
             "number": "1.2.1",
             "title": "-Number of Programmes in which Choice Based Credit System (CBCS)/ elective course system has been implemented Number of Programmes in which CBCS/ Elective course system implemented. File Description (Upload)",
-            "documents": []
+            "documents": [],
+            "_key": "6917ea758808"
           },
           {
             "number": "1.2.2",
@@ -60,22 +69,27 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c1/122/1.2.2 Any additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e9a6d299efe92ac668bfda200af627dcbe713b79.pdf",
+                "_key": "4cac525e8a44"
               },
               {
                 "label": "- Brochure or any other document relating to Add on /Certificate programs",
-                "documentUrl": "/documents/aqar2324/c1/122/1.2.2 Brochure or any other documents.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/58d946f5db1b90e89381da711f7a17e746b74585.pdf",
+                "_key": "c437b706507e"
               },
               {
                 "label": "- List of Add on /Certificate programs (Data Template )",
-                "documentUrl": "/documents/aqar2324/c1/122/1.2.2 - List of Add on Certificate programs (Data Template).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/948da31800722bce8b5504416d8ff1bc506d02a2.pdf",
+                "_key": "72aace64ae05"
               }
-            ]
+            ],
+            "_key": "c795ebff305c"
           },
           {
             "number": "1.2.3",
             "title": "- Number of students enrolled in Certificate/ Add-on programs as against the total number of students during the year",
-            "documents": []
+            "documents": [],
+            "_key": "6842038762f4"
           },
           {
             "number": "1.2.3.1.",
@@ -83,15 +97,19 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c1/123/1.2.3 Any additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e9a6d299efe92ac668bfda200af627dcbe713b79.pdf",
+                "_key": "a5865545ff45"
               },
               {
                 "label": "- Details of the students enrolled in Subjects related to certificate/Add-on programs",
-                "documentUrl": "/documents/aqar2324/c1/123/1.2.3 Details of students.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/957eb309455bae2a906ec250dfb23142d0634f7b.pdf",
+                "_key": "b7e6e9756e60"
               }
-            ]
+            ],
+            "_key": "0eb71660c806"
           }
-        ]
+        ],
+        "_key": "78618145dc0c"
       },
       {
         "number": "Section",
@@ -103,23 +121,28 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c1/131/1.3.1-ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/586c9c76f6ed46f7a8fe5669e81084e6f69dc50a.pdf",
+                "_key": "1152fb5beb90"
               },
               {
                 "label": "- Upload the list and description of courses which address the Professional Ethics, Gender, Human Values, Environment and Sustainability into the Curriculum.",
-                "documentUrl": "/documents/aqar2324/c1/131/1.3.1-Upload the list.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/8d11073de426e322bcfb3dcb284ad637757a0058.pdf",
+                "_key": "0ad7eba2a04d"
               }
-            ]
+            ],
+            "_key": "af1e8adc0215"
           },
           {
             "number": "1.3.2",
             "title": "-Number of courses that include experiential learning through project work/field work/internship during the year 1. Number of courses that include experiential learning through project work/field work/internship during the year",
-            "documents": []
+            "documents": [],
+            "_key": "d41289ca1adc"
           },
           {
             "number": "1.3.3",
             "title": "-Number of students undertaking project work/field work/ internships",
-            "documents": []
+            "documents": [],
+            "_key": "dcfb7a8d4625"
           },
           {
             "number": "1.3.3.1.",
@@ -127,7 +150,8 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c1/133/1.3.3 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/07ffac71287130c6cccfde78b083c420bad69be0.pdf",
+                "_key": "6df90593460b"
               },
               {
                 "label": "- List of programmes and number of students undertaking project work/field work/ /internships (DataTemplate)",
@@ -136,158 +160,191 @@
                   {
                     "name": "III B. Sc (MPCs)",
                     "year": "77",
-                    "url": "/documents/aqar2324/c1/133/cer/(1)1.3.2 III B SC(MPCS).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/badcde21cd12cbbce805ec879440c80bc3b39bcd.pdf",
+                    "_key": "4fbfb187d1ba"
                   },
                   {
                     "name": "III B. Sc (MSCs)",
                     "year": "78",
-                    "url": "/documents/aqar2324/c1/133/cer/(2) 1.3.2 III B SC(MSCS).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/2c56aafa44e9c1fe6c175a5cfde735be61a65459.pdf",
+                    "_key": "b41212d87d4c"
                   },
                   {
                     "name": "III B. Sc (MBC)",
                     "year": "29",
-                    "url": "/documents/aqar2324/c1/133/cer/(3) 1.3.2 III B SC(MBC).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/ecd90ad4d7899e287d5f6f713c418d27132c1198.pdf",
+                    "_key": "37457ba435ca"
                   },
                   {
                     "name": "III B. Sc (BBC)",
                     "year": "26",
-                    "url": "/documents/aqar2324/c1/133/cer/(4) 1.3.2 III B SC(BBC).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/e81175677dab128401398767f40013189b6a7941.pdf",
+                    "_key": "f50b65a8f9cc"
                   },
                   {
                     "name": "III B. Sc (MPC)",
                     "year": "18",
-                    "url": "/documents/aqar2324/c1/133/cer/(5) 1.3.2 III B SC(MPC).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/dc147c15bb36b8c38e5b0cde82e7078d80c5aeef.pdf",
+                    "_key": "b5ed3580e985"
                   },
                   {
                     "name": "III B. Com (General)",
                     "year": "21",
-                    "url": "/documents/aqar2324/c1/133/cer/(6) 1.3.2 III B.COM (GENERAL).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/3280acb5fb8348cc66659330ab2612dd0f5cf0a5.pdf",
+                    "_key": "98ab6607c3ef"
                   },
                   {
                     "name": "III B. Com (Computer Applications)",
                     "year": "22",
-                    "url": "/documents/aqar2324/c1/133/cer/(7) 1.3.2 III B.COM (COMPUTER APPLICATIONS).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/db67ee525da8454fdddf98e80726e11e5a4c286d.pdf",
+                    "_key": "3380bfc81cd5"
                   },
                   {
                     "name": "III BCA",
                     "year": "29",
-                    "url": "/documents/aqar2324/c1/133/cer/(8) 1.3.2 III BCA.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/964614a0d28f12279ec1086cf3a85f8cb410059c.pdf",
+                    "_key": "514db8c9c8fb"
                   },
                   {
                     "name": "MCA",
                     "year": "54",
-                    "url": "/documents/aqar2324/c1/133/cer/(9) 1.3.2 MCA.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/24ece31c81ed523fe2bd3cc824e0937430c62703.pdf",
+                    "_key": "203c4af69a7b"
                   },
                   {
                     "name": "MBA",
                     "year": "13",
-                    "url": "/documents/aqar2324/c1/133/cer/(10) 1.3.2 MBA.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/bcfb5355f8ea80feafc3efc6868db5b37ce8f617.pdf",
+                    "_key": "c18cfd1c4cff"
                   },
                   {
                     "name": "IIB. Sc (MPCs)",
                     "year": "44",
-                    "url": "/documents/aqar2324/c1/133/cer/(11)1.3.2 II MPCS SHORT TERM.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/9949a1a137ff9a1eb5ec5cde8d5e762dfe9386f0.pdf",
+                    "_key": "fb177739267f"
                   },
                   {
                     "name": "IIB. Sc (MSCs)",
                     "year": "32",
-                    "url": "/documents/aqar2324/c1/133/cer/(12)1.3.2 II MSCS SHORT TERM.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/cc1dc36e3ba743ab904406754b3d7916d391ab30.pdf",
+                    "_key": "02c7175dbc96"
                   },
                   {
                     "name": "IIB. Sc (MBC)",
                     "year": "25",
-                    "url": "/documents/aqar2324/c1/133/cer/(13)1.3.2 II MB  2023-24 SHORT TERM.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/a2fff16e70b4fcf22ae0528f038a97e8e9a8381c.pdf",
+                    "_key": "0310de34bd7a"
                   },
                   {
                     "name": "IIB. Sc (BBC)",
                     "year": "27",
-                    "url": "/documents/aqar2324/c1/133/cer/(14)1.3.2 II BT 2023-24 SHORT TERM.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/10e17da0484ca14592be320deb4a5ee4bfcd7faa.pdf",
+                    "_key": "1dfe24e71cb7"
                   },
                   {
                     "name": "IIB. Com (General)",
                     "year": "32",
-                    "url": "/documents/aqar2324/c1/133/cer/(15)II BCOM (GEN)STScaned Books.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/0ee46f230d4c3ad5e6822d4666dd6b00d4c48f1a.pdf",
+                    "_key": "b86d111649dd"
                   },
                   {
                     "name": "IIB. Com (Computer Applications)",
                     "year": "50",
-                    "url": "/documents/aqar2324/c1/133/cer/(16)II Bcom (CA) ST Scaned Books.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/6b64de3cf58d38106ae573802587b18ba93022e5.pdf",
+                    "_key": "9755b27d0fd9"
                   },
                   {
                     "name": "II BCA",
                     "year": "44",
-                    "url": "/documents/aqar2324/c1/133/cer/(17)II BCA Short Term Internships-2024-5( Four Pages).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/d4e6ea67bee20672a70ada27c13aea1949701cd8.pdf",
+                    "_key": "cc7a0a9af689"
                   },
                   {
                     "name": "I B. Sc HonoursPhy",
                     "year": "02",
-                    "url": "/documents/aqar2324/c1/133/cer/(18) 1.3.2 I BSC-PHYSICS-CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/78caf0c8dbac3034f66a87f81252fea4e29e72e8.pdf",
+                    "_key": "897593bb840b"
                   },
                   {
                     "name": "I B. Sc Honours Stat",
                     "year": "04",
-                    "url": "/documents/aqar2324/c1/133/cer/(19)1.3.2 I BSC-STAT-CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/5080db0b6470eaba3ada063948425ac2bfcba317.pdf",
+                    "_key": "1701cc81c728"
                   },
                   {
                     "name": "I B. Sc Honours Mathematics",
                     "year": "03",
-                    "url": "/documents/aqar2324/c1/133/cer/(20)1.3.2 I BSC-MATHS-CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/f7eba576a9d717c7211e0e180b06d31e0859088d.pdf",
+                    "_key": "d9c7c04fd126"
                   },
                   {
                     "name": "I B.Sc -Honours Computer Science",
                     "year": "57",
-                    "url": "/documents/aqar2324/c1/133/cer/(21)1.3.2 I BSC COMPUTERS HONOURS.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/6c48e87d257cb2ef13cb69268574edfb25b2e66c.pdf",
+                    "_key": "af9511653545"
                   },
                   {
                     "name": "I B.Sc Honours Biotechnology",
                     "year": "20",
-                    "url": "/documents/aqar2324/c1/133/cer/(22) BIO TECHNALOGY(CSP).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/5af804c85c7fc7d576bc0aa12d533ae33172cf46.pdf",
+                    "_key": "792c5299df1e"
                   },
                   {
                     "name": "I B.Sc Honours Microbiology",
                     "year": "19",
-                    "url": "/documents/aqar2324/c1/133/cer/(23) 1.3.2 I MICROBIOLOGY- CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/39afdc40dbbc057ed843100bbcaff02cfde0ea7d.pdf",
+                    "_key": "6e0fc69dfde0"
                   },
                   {
                     "name": "I B.Sc Honours Botany",
                     "year": "10",
-                    "url": "/documents/aqar2324/c1/133/cer/(24)1.3.2  BOTANY CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/1323d5524fed41b6e95f89fad9ee2430eafb69ae.pdf",
+                    "_key": "11f543482e83"
                   },
                   {
                     "name": "I B.Sc Honours AI",
                     "year": "04",
-                    "url": "/documents/aqar2324/c1/133/cer/(25)1.3.2 I BSC-A.I.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/53ddeb48c1931d2bde6ee89534ad4ae76d10f115.pdf",
+                    "_key": "4d2438372041"
                   },
                   {
                     "name": "I B.Sc Honours Chemistry",
                     "year": "05",
-                    "url": "/documents/aqar2324/c1/133/cer/(26) 1.3.2 BSC CHEMISTRY.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/5af804c85c7fc7d576bc0aa12d533ae33172cf46.pdf",
+                    "_key": "0429e691fc40"
                   },
                   {
                     "name": "I BBA Honour",
                     "year": "10",
-                    "url": "/documents/aqar2324/c1/133/cer/(27)1.3.2 I  BBA CSP 23-24 3 PAGES.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/92a868c1776df20eb2b4525e8f52e63ce29e297c.pdf",
+                    "_key": "df6be2d4d5ae"
                   },
                   {
                     "name": "I BCA Honours",
                     "year": "69",
-                    "url": "/documents/aqar2324/c1/133/cer/(28)I BCA CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/197bc689bdf12a424176a10bfe5c4437583c35c5.pdf",
+                    "_key": "a5d00d2cb7e1"
                   },
                   {
                     "name": "I B.Com Honours - C.A",
                     "year": "43",
-                    "url": "/documents/aqar2324/c1/133/cer/(29) I B.Com CSP (CA).pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/e9a3bc6a4ec79022e1d3b6fcc29ff22fc544d800.pdf",
+                    "_key": "d692ffe5df61"
                   },
                   {
                     "name": "I B.Com Honours - Gen",
                     "year": "13",
-                    "url": "/documents/aqar2324/c1/133/cer/(30) I B.COM (GEN) CSP.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/2f26958533409b150fab28d022729bf42a067bbb.pdf",
+                    "_key": "e9f7ba23a0f0"
                   }
-                ]
+                ],
+                "_key": "9c223c4ed5ee"
               }
-            ]
+            ],
+            "_key": "cdde74dd435f"
           }
-        ]
+        ],
+        "_key": "5f8cfa513354"
       },
       {
         "number": "Section",
@@ -299,13 +356,16 @@
             "documents": [
               {
                 "label": "- Action taken report of the Institution on feedback report as stated inthe minutes of the Governing Council, Syndicate, Board of Management (Upload)",
-                "documentUrl": "/documents/aqar2324/c1/141/1.4.1 Action Taken Report.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/744ee7c869f1c8bce746136be80504f2bcdb4d12.pdf",
+                "_key": "57ead450e7d5"
               },
               {
                 "label": "- Any additional information (Upload)",
-                "documentUrl": "/documents/aqar2324/c1/141/1.4.1 Any additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/55e541bf4c0072ec22f795dfc91e127187f49422.pdf",
+                "_key": "be817224b001"
               }
-            ]
+            ],
+            "_key": "178311ef12bc"
           },
           {
             "number": "1.4.2",
@@ -313,13 +373,17 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c1/142/1.4.2 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/75a75065c8cea229c64205dc1a672016a12aa234.pdf",
+                "_key": "2b429a709268"
               }
-            ]
+            ],
+            "_key": "79f83de96efe"
           }
-        ]
+        ],
+        "_key": "50573a0d7122"
       }
-    ]
+    ],
+    "_key": "6a22ce57d57b"
   },
   {
     "id": 2,
@@ -335,18 +399,22 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/211/2.1.1 UPLOAD ADDTIONAL INFORAMTION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/4ad7afbc161b5bcc236d7ca29ca4ace49758ff6f.pdf",
+                "_key": "fe2a39930152"
               },
               {
                 "label": "- Institutional data in prescribed format",
-                "documentUrl": "/documents/aqar2324/c2/211/2.1.1 INSTITUTIONAL DATA TEMPLATE.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2d51ff4ff48dff5d0724d407677d747502896489.pdf",
+                "_key": "6124d54c6b9d"
               }
-            ]
+            ],
+            "_key": "2dc3e5ff6de8"
           },
           {
             "number": "2.1.2",
             "title": "-Number of seats filled against seats reserved for various categories (SC, ST, OBC, Divyangjan, etc. as per applicable reservation policy during the year (exclusive of supernumerary seats)",
-            "documents": []
+            "documents": [],
+            "_key": "45a95a98a55e"
           },
           {
             "number": "2.1.2.1.",
@@ -354,15 +422,19 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/212/2.1.2 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ef7f63b3bba5d9b18d06a5e4537bb122abdc5e30.pdf",
+                "_key": "b23d5ccdac6d"
               },
               {
                 "label": "- Number of seats filled against seats reserved (Data Template)",
-                "documentUrl": "/documents/aqar2324/c2/212/2.1.1 INSTITUTIONAL DATA TEMPLATE.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7891bef8a822b218ae8552dd2e87de8f75fe6788.pdf",
+                "_key": "e3b58767d514"
               }
-            ]
+            ],
+            "_key": "7081ef7c32b4"
           }
-        ]
+        ],
+        "_key": "a37420e0a850"
       },
       {
         "number": "Section",
@@ -371,7 +443,8 @@
           {
             "number": "2.2.1",
             "title": "-he institution assesses the learning levels of the students and organizes special Programmes for advanced learners and slow learners Write description in maximum of 200 words",
-            "documents": []
+            "documents": [],
+            "_key": "ea0d607dafbe"
           },
           {
             "number": "2.2.2",
@@ -379,11 +452,14 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/222/2.2.2 UPLOAD ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/22d7ad280510587f7ba979d64ce1d3b75d3041d8.pdf",
+                "_key": "6ea36b455033"
               }
-            ]
+            ],
+            "_key": "d2f58a09f8aa"
           }
-        ]
+        ],
+        "_key": "cab4850b4090"
       },
       {
         "number": "Section",
@@ -395,13 +471,16 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/231/2.3.1 LINK FOR ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/cd74ae862fc9651430bfaf525d4ae79c961b419f.pdf",
+                "_key": "1280b8a37428"
               },
               {
                 "label": "- Link for additional information",
-                "documentUrl": "/documents/aqar2324/c2/231/2.3.1 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3d86c517f78d202f6d30135409852b806cd147c8.pdf",
+                "_key": "846ea41f78c1"
               }
-            ]
+            ],
+            "_key": "5302c240cdc3"
           },
           {
             "number": "2.3.2",
@@ -409,18 +488,22 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/232/2.3.2 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/cd74ae862fc9651430bfaf525d4ae79c961b419f.pdf",
+                "_key": "17b1b0fc3d5f"
               },
               {
                 "label": "- Provide link for webpage describing the ICT enabled tools for effective teaching-learning process.",
-                "documentUrl": "/documents/aqar2324/c2/232/2.3.2 Provide Link for ICT METHODS.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7493cb7cbf9f7d5586ff09a624dbd043367eccec.pdf",
+                "_key": "202deb1674de"
               }
-            ]
+            ],
+            "_key": "34ead2cd6abc"
           },
           {
             "number": "2.3.3",
             "title": "- Ratio of mentor to students for academic and other related issues(Data for the latest completed academic year )",
-            "documents": []
+            "documents": [],
+            "_key": "01c9e496414a"
           },
           {
             "number": "2.3.3.1",
@@ -428,19 +511,24 @@
             "documents": [
               {
                 "label": "- Upload,number of students enrolled and full time teachers on roll",
-                "documentUrl": "/documents/aqar2324/c2/233/2.3.3 upload number of students.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/9f4b3a4ad51649f59b44279e9b00b429b271e5b6.pdf",
+                "_key": "bf498f6ac355"
               },
               {
                 "label": "- Circulars pertaining to assigning mentors to mentees",
-                "documentUrl": "/documents/aqar2324/c2/233/2.3.3 Circulars pertaining to MENTOR MENTEE.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/5603c466df80dfd62346c1936eaf0a3af98f738d.pdf",
+                "_key": "8706a5d19921"
               },
               {
                 "label": "- mentor / mentee ratio",
-                "documentUrl": "/documents/aqar2324/c2/233/2.3.3 Mentor Mentee Ratio.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2331737ff5652f5e17659e967c8a996887ec27c4.pdf",
+                "_key": "ba9c1ee4b8cf"
               }
-            ]
+            ],
+            "_key": "8cd8550f7185"
           }
-        ]
+        ],
+        "_key": "dd330a317ddf"
       },
       {
         "number": "Section",
@@ -452,17 +540,21 @@
             "documents": [
               {
                 "label": "- full time teachers and sanctioned posts for year (Data Template)",
-                "documentUrl": "/documents/aqar2324/c2/241/2.4.1 FULL TIME TEACHERS AND SANCTIONED POSTS.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/6cc76ce8bb12e9759862c6fc8bdc1213949a1163.pdf",
+                "_key": "05ec3e773907"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/241/2.4.1 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/68f94b344dcf75a887988a47d184d43332ecf52e.pdf",
+                "_key": "0caf7fa50166"
               },
               {
                 "label": "- List of the faculty members authenticated by the Head of HEI",
-                "documentUrl": "/documents/aqar2324/c2/241/2.4.1 List of faculty members.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b8a17976178b1379bf8b62c4d1529450f16fedf4.pdf",
+                "_key": "1abd6e7a11a2"
               }
-            ]
+            ],
+            "_key": "f7f13c430415"
           },
           {
             "number": "2.4.2",
@@ -470,9 +562,11 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/242/2.4.2 ANY ADIITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ebee3717b81405fc5f8855fd1b5ad28a22eac271.pdf",
+                "_key": "a51fba836374"
               }
-            ]
+            ],
+            "_key": "729e2a309221"
           },
           {
             "number": "2.4.3",
@@ -480,11 +574,14 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/243/2.4.3 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/08e6b0c672cb2a1cdd4cdb766ea2d2db3395b7d6.pdf",
+                "_key": "92605540cd3e"
               }
-            ]
+            ],
+            "_key": "fbe417886a7f"
           }
-        ]
+        ],
+        "_key": "7daee3db627a"
       },
       {
         "number": "Section",
@@ -496,13 +593,16 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/251/2.5.1 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b4dd45481e2d9fb69e76aaea659bf51555bc1a8e.pdf",
+                "_key": "40fb14fe3ca8"
               },
               {
                 "label": "- Link for additional information",
-                "documentUrl": "/documents/aqar2324/c2/251/2.5.1 Link for additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/41b91c46c6ff4e6cc16d5967dd087a539d9d94f5.pdf",
+                "_key": "5151c126d624"
               }
-            ]
+            ],
+            "_key": "774f569038ba"
           },
           {
             "number": "2.5.2",
@@ -510,15 +610,19 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c2/252/2.5.2 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b4dd45481e2d9fb69e76aaea659bf51555bc1a8e.pdf",
+                "_key": "0bb99047ff51"
               },
               {
                 "label": "- Link for additional information",
-                "documentUrl": "/documents/aqar2324/c2/252/2.5.2 Link for additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/41b91c46c6ff4e6cc16d5967dd087a539d9d94f5.pdf",
+                "_key": "fac114fe9bd9"
               }
-            ]
+            ],
+            "_key": "7faf97802f3b"
           }
-        ]
+        ],
+        "_key": "4285fda97d43"
       },
       {
         "number": "Section",
@@ -530,17 +634,21 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c2/261/2.6.1 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/573c4f4861654394f7d82aadd7ec68403a34ef1d.pdf",
+                "_key": "2797c62c51c8"
               },
               {
                 "label": "- Past link for Additional information",
-                "documentUrl": "/documents/aqar2324/c2/261/2.6.1 Paste link for additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/189dd6164787c15897c2e5c32422ba13987350ca.pdf",
+                "_key": "3816b845edec"
               },
               {
                 "label": "- Upload COs for all courses (exemplars from Glossary)",
-                "documentUrl": "/documents/aqar2324/c2/261/2.6.1 UPLOAD COs FOR ALL COURSES.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/77ce94daa2feaa2322ea5f589e714e86ac8698e3.pdf",
+                "_key": "ec1ff08cf1f3"
               }
-            ]
+            ],
+            "_key": "0870f43b7be7"
           },
           {
             "number": "2.6.2",
@@ -548,23 +656,28 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c2/262/2.6.2 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/4f8c7a5084a9775454376a6234ed9e87c5a3bc97.pdf",
+                "_key": "da0685cb4e0e"
               },
               {
                 "label": "- Paste link for Additional information",
-                "documentUrl": "/documents/aqar2324/c2/262/2.6.2 PROVIDE LINK FOR ADDTIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/17050d78273455224e0eacd2faba8f6a89519a47.pdf",
+                "_key": "c0cba61552e1"
               }
-            ]
+            ],
+            "_key": "f4a19612119a"
           },
           {
             "number": "2.6.3",
             "title": "- Pass percentage of Students during the year",
-            "documents": []
+            "documents": [],
+            "_key": "32f8252a2591"
           },
           {
             "number": "2.6.3.1.",
             "title": "2.6.3.1. Total number of final year students who passed the university examination during the year VIEW",
-            "documents": []
+            "documents": [],
+            "_key": "3c8e79d5f14e"
           },
           {
             "number": "2.6.3.2.",
@@ -572,15 +685,19 @@
             "documents": [
               {
                 "label": "- Upload list of Programmes and number of students passed and appeared in the final year examination (DataTemplate)",
-                "documentUrl": "/documents/aqar2324/c2/263/2.6.3 PROVIDE LINK ON ANNUAL REPORT.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/9ac5ce656c30cb712cb25ef4ac59e8a9286760df.pdf",
+                "_key": "e6e79120f5ff"
               },
               {
                 "label": "- Upload any additional information Paste link for the annual report",
-                "documentUrl": "/documents/aqar2324/c2/263/2.6.3 UPLOAD ADDTIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/1397c50fcd2e70d55496dab3cbc84903cd38b61a.pdf",
+                "_key": "02e4b0643cba"
               }
-            ]
+            ],
+            "_key": "b693dfd41e4d"
           }
-        ]
+        ],
+        "_key": "97d7a7e220a5"
       },
       {
         "number": "Section",
@@ -589,11 +706,14 @@
           {
             "number": "2.7.1",
             "title": "- Student Satisfaction Survey (SSS) on overall institutional performance (Institution may design its own questionnaire) (results and details need to be provided as a weblink) VIEW",
-            "documents": []
+            "documents": [],
+            "_key": "60a1a1a7e55f"
           }
-        ]
+        ],
+        "_key": "b823c7797a0d"
       }
-    ]
+    ],
+    "_key": "52ff4263eb09"
   },
   {
     "id": 3,
@@ -609,13 +729,16 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/311/3.1.1 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/82844803f7b73debc984c24849c6910e007a92f5.pdf",
+                "_key": "f0c0cc854d5f"
               },
               {
                 "label": "- List of endowments / projects with details of grants",
-                "documentUrl": "/documents/aqar2324/c3/311/3.1.1 - LIST OF ENDOWMENTS-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7d0f14d01e9c2460e163ffd9e26a3e93fff83bd2.pdf",
+                "_key": "731ab0b5c249"
               }
-            ]
+            ],
+            "_key": "aa7848f77d8d"
           },
           {
             "number": "3.1.2",
@@ -623,13 +746,16 @@
             "documents": [
               {
                 "label": "- List of research projects and funding details (DataTemplate)",
-                "documentUrl": "/documents/aqar2324/c3/312/3.1.2 - LIST OF RESEARCH PROJECTS-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/cc548f824d6ba5760830d1ea2374bc2e48586a12.pdf",
+                "_key": "a7cd680367e3"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/312/3.1.2-ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/fc3844c666a844732bc9f6ed05340a9cd9d25296.pdf",
+                "_key": "ea03e59dbcc9"
               }
-            ]
+            ],
+            "_key": "454cc7ca1e2c"
           },
           {
             "number": "3.1.3",
@@ -637,19 +763,24 @@
             "documents": [
               {
                 "label": "- Report of the event",
-                "documentUrl": "/documents/aqar2324/c3/313/3.1.3 Report of the event.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3415bb4ba59e5b1724adaa4066ad16e26a080e8d.pdf",
+                "_key": "9914939b251f"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/313/3.1.3 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3415bb4ba59e5b1724adaa4066ad16e26a080e8d.pdf",
+                "_key": "e2ae5fb9ca30"
               },
               {
                 "label": "- List of workshops/seminars during last 5 years (DataTemplate)",
-                "documentUrl": "/documents/aqar2324/c3/313/3.1.3-List of workshops and seminars-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/f21f54dbc5bd4b8a40294990a386b6a99ab4ba1e.pdf",
+                "_key": "fbeaace75f5a"
               }
-            ]
+            ],
+            "_key": "71e3aad000ce"
           }
-        ]
+        ],
+        "_key": "6421fdb8c2aa"
       },
       {
         "number": "Section",
@@ -661,13 +792,16 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/321/3.2.1 ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/bfcbeff603b325b7ec114a48f75d7ee630b1dc4d.pdf",
+                "_key": "17670a203deb"
               },
               {
                 "label": "- List of research papers by title, author, department, name and year of publication (Data Template)",
-                "documentUrl": "/documents/aqar2324/c3/321/3.2.1 -List of research papers- Data Tempalte.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/d50d1d48d91aa1c50fa96a615323c5785efebdcf.pdf",
+                "_key": "2a5855ec33c9"
               }
-            ]
+            ],
+            "_key": "26bde1b91e42"
           },
           {
             "number": "3.2.2",
@@ -675,15 +809,19 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/322/3.2.2  ANY ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/cb2a408b61238e03a0b4b2aa7dfa68f8e34b5941.pdf",
+                "_key": "5f689a52be14"
               },
               {
                 "label": "- List books and chapters edited volumes/ books published (Data Template)",
-                "documentUrl": "/documents/aqar2324/c3/322/3.2.2 - List of books-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/a9e4597919b58a70945e4343abbe3c8c0c47467a.pdf",
+                "_key": "0f0637bb2a85"
               }
-            ]
+            ],
+            "_key": "37f85c37aa92"
           }
-        ]
+        ],
+        "_key": "1698e847109f"
       },
       {
         "number": "Section",
@@ -692,7 +830,8 @@
           {
             "number": "3.3.1",
             "title": "- Extension activities are carried out in the neighborhood community, sensitizing students to social issues, for their holistic development, and impact thereof during the year",
-            "documents": []
+            "documents": [],
+            "_key": "ab5bf2ba4f33"
           },
           {
             "number": "3.3.2",
@@ -700,17 +839,21 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/332/3.3.2 ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/817b8cdf42c7ade56d90751cabd12aeeab4046d3.pdf",
+                "_key": "4365280413b8"
               },
               {
                 "label": "- Number of awards for extension activities during the year(Data Template)",
-                "documentUrl": "/documents/aqar2324/c3/332/3.3.2 - Number of awards-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/bc366441c7095ff7ee032d4dff510b628444b68c.pdf",
+                "_key": "0bfbd9586c8b"
               },
               {
                 "label": "- e-copy of the award letters",
-                "documentUrl": "/documents/aqar2324/c3/332/3.3.2 e-copies of the award letters.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/1fa48c47283999753a1ed3e997915c422b8c3796.pdf",
+                "_key": "bafec92e183b"
               }
-            ]
+            ],
+            "_key": "2d8441cf4685"
           },
           {
             "number": "3.3.3",
@@ -718,17 +861,21 @@
             "documents": [
               {
                 "label": "- Reports of the event organized",
-                "documentUrl": "/documents/aqar2324/c3/333/3.3.3- Report of the event.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/6f28bdd15fffc38a137ed84bcdc53913d4c02224.pdf",
+                "_key": "e0539aebb763"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/333/3.3.3 additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3f6f9d5da210f91881ba9469849039969ef420a0.pdf",
+                "_key": "21f1d06bf92f"
               },
               {
                 "label": "- Number of extension and outreach Programmes conducted with industry, community etc for the last year (Data Template)",
-                "documentUrl": "/documents/aqar2324/c3/333/3.3.3-Number of extensions-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/f5043b0069db3f71b687b4833cd12a008d6553e8.pdf",
+                "_key": "5a1cbbfe33dc"
               }
-            ]
+            ],
+            "_key": "550df83c3dc5"
           },
           {
             "number": "3.3.4",
@@ -736,19 +883,24 @@
             "documents": [
               {
                 "label": "- Report of the event",
-                "documentUrl": "/documents/aqar2324/c3/334/3.3.4 - Report of the event.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3eec7e85794f00bc706011f02c33ee906ec6dd72.pdf",
+                "_key": "4c1315e550a3"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/334/3.3.4 - Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/4f6127723d1c9acda3f9a604ec4870b79462594e.pdf",
+                "_key": "b5688dc0bb41"
               },
               {
                 "label": "- Number of students participating in extension activities with Govt. or NGO etc (Data Template)",
-                "documentUrl": "/documents/aqar2324/c3/334/3.3.4-Number of students-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/fcb395bfc337ab00f616f4fe03536259a5a81684.pdf",
+                "_key": "fb7f2ef4ef5a"
               }
-            ]
+            ],
+            "_key": "519f9b89d3c7"
           }
-        ]
+        ],
+        "_key": "77fa6cc875a9"
       },
       {
         "number": "Section",
@@ -760,17 +912,21 @@
             "documents": [
               {
                 "label": "- Number of linkages for faculty exchange, student exchange, internship, field trip, on-the- job training, research etc during the year",
-                "documentUrl": "/documents/aqar2324/c3/341/3.4.1- Details of Linkages-DATA TEMPLATE.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/14a9c088c5b09f89b0f6c499c782f79504802c7e.pdf",
+                "_key": "7309ef2bb5b9"
               },
               {
                 "label": "- e-copies of linkage related Document",
-                "documentUrl": "/documents/aqar2324/c3/341/3.4.1- e- copies of linkage related document.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/01e36b2cb057817acb02669a5798dd052a513ba9.pdf",
+                "_key": "a33a443d2a76"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c3/341/3.4.1- Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/53b376500e5e0cea3e4dd1bc76a19349426c6ffe.pdf",
+                "_key": "54dd007478e3"
               }
-            ]
+            ],
+            "_key": "98b9f3916f2b"
           },
           {
             "number": "3.4.2",
@@ -778,17 +934,22 @@
             "documents": [
               {
                 "label": "- Number of functional MoUs with Institutions of national, international importance, other universities, industries, corporate houses etc. during the year",
-                "documentUrl": "/documents/aqar2324/c3/342/3.4.2- Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/79fb15aac05b61cc26468a807fdd14edc33e9645.pdf",
+                "_key": "c1d58fd37848"
               },
               {
                 "label": "- Details of functional MoUs with institutions of national, international importance, other universities etc during the year",
-                "documentUrl": "/documents/aqar2324/c3/342/3.4.2 - Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0ff3db0a531965142f4f134527363fe0b15523d9.pdf",
+                "_key": "40ef2a07cd59"
               }
-            ]
+            ],
+            "_key": "c3bfcb6288a6"
           }
-        ]
+        ],
+        "_key": "0f8f1d14d222"
       }
-    ]
+    ],
+    "_key": "8c8fa62fdf18"
   },
   {
     "id": 4,
@@ -804,13 +965,16 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c4/411/4.1.1 UPLOAD ADDITIONAL  INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0b857ff356f30db013822528bc0d074b0ceea259.pdf",
+                "_key": "d44386f1dfa3"
               },
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c4/411/4.1.1  PROVIDE LINK FOR ADDITIONAL  INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0b857ff356f30db013822528bc0d074b0ceea259.pdf",
+                "_key": "41fb0871d3c4"
               }
-            ]
+            ],
+            "_key": "3dd582f270e5"
           },
           {
             "number": "4.1.2",
@@ -818,30 +982,37 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c4/412/4.1.2 UPLOAD ADDITIONAL  INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0b857ff356f30db013822528bc0d074b0ceea259.pdf",
+                "_key": "ba016d78e657"
               },
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c4/412/4.1.2  PROVIDE LINK FOR ADDITIONAL  INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0b857ff356f30db013822528bc0d074b0ceea259.pdf",
+                "_key": "3ba589f5f7e3"
               }
-            ]
+            ],
+            "_key": "bf9b9baf9f17"
           },
           {
             "number": "4.1.3",
             "title": "- Number of classrooms and seminar halls with ICT- enabled facilities such as smart class, LMS, etc.",
-            "documents": []
+            "documents": [],
+            "_key": "a0d65b8ae7cc"
           },
           {
             "number": "4.1.3.1",
             "title": "4.1.3.1 : Number of classrooms and seminar halls with ICT facilities VIEW",
-            "documents": []
+            "documents": [],
+            "_key": "ff769f8e434f"
           },
           {
             "number": "4.1.4",
             "title": "- Expenditure, excluding salary for infrastructure augmentation during the year(INR in Lakhs)",
-            "documents": []
+            "documents": [],
+            "_key": "8c3087ed8998"
           }
-        ]
+        ],
+        "_key": "7aae411538f3"
       },
       {
         "number": "Section",
@@ -853,18 +1024,22 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c4/421/4.2.1 UPLOAD ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c78fd0c02a608115258e0dedd1465450fbb2e980.pdf",
+                "_key": "587a84757b80"
               },
               {
                 "label": "- Paste link for Additional Information",
-                "documentUrl": "/documents/aqar2324/c4/421/4.2.1 PROVIDE LINK FOR ADDITONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c78fd0c02a608115258e0dedd1465450fbb2e980.pdf",
+                "_key": "ea5d8c50372c"
               }
-            ]
+            ],
+            "_key": "b349d018fb89"
           },
           {
             "number": "4.2.2",
             "title": "- The institution has subscription for the following e-resources",
-            "documents": []
+            "documents": [],
+            "_key": "e1e810db8132"
           },
           {
             "number": "4.2.3",
@@ -872,21 +1047,26 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c4/423/4.2.3_ADDITIONAL INFORMATION.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/332c6ed01bf5c7579e70deaae9b8fa4961896f54.pdf",
+                "_key": "128a9dd07b56"
               }
-            ]
+            ],
+            "_key": "fe38cfe2975e"
           },
           {
             "number": "4.2.4",
             "title": "- umber per day usage of library by teachers and students ( foot falls and login data for online access)(Data for the latest completed academic year)",
-            "documents": []
+            "documents": [],
+            "_key": "03862bab30e2"
           },
           {
             "number": "4.2.4.1",
             "title": "4.2.4.1 Number of teachers and students using library per day over last one year VIEW",
-            "documents": []
+            "documents": [],
+            "_key": "5526af07d68c"
           }
-        ]
+        ],
+        "_key": "9090a1f1f210"
       },
       {
         "number": "Section",
@@ -898,13 +1078,16 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c4/431/4.3.1 Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/dd6a7413050f23db2a5647e8e967d713b4bbeb10.pdf",
+                "_key": "29d3a1d26e77"
               },
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c4/431/4.3.1 Provide Link for Additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/f4f5fd4eab4840ec6c79cfa3f3dc86d94959a699.pdf",
+                "_key": "234edfd59b83"
               }
-            ]
+            ],
+            "_key": "a6fd252037eb"
           },
           {
             "number": "4.3.2",
@@ -912,20 +1095,25 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c4/432/4.3.2 Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/715c4f7c91e0b79ab677ae099a84bd239680974d.pdf",
+                "_key": "bc2526520368"
               },
               {
                 "label": "- Student – computer ratio",
-                "documentUrl": "/documents/aqar2324/c4/432/4.3.2 Student-Computer Ratio.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2dfe5fab77347e5a83801e54ae7f39122906dd77.pdf",
+                "_key": "dcb9dce59c35"
               }
-            ]
+            ],
+            "_key": "05fe12a233e0"
           },
           {
             "number": "4.3.3",
             "title": "- Bandwidth of internet connection in the Institution",
-            "documents": []
+            "documents": [],
+            "_key": "321fcbbee835"
           }
-        ]
+        ],
+        "_key": "16cde39dcad8"
       },
       {
         "number": "Section",
@@ -937,22 +1125,28 @@
             "documents": [
               {
                 "label": "- Upload any additional information & Audited statements of accounts.",
-                "documentUrl": "/documents/aqar2324/c4/441/4.4.1_ Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/fd834c1c5148ce694be66b7487af7d4d86ed1fe3.pdf",
+                "_key": "48b989e72196"
               },
               {
                 "label": "- Details about assigned budget and expenditure on physical facilities and academic support facilities (DataTemplates)",
-                "documentUrl": "/documents/aqar2324/c4/441/4.4.1_DETAILS ABOUT ASSIGNED-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7980ff9a78d59dad3d95fe79790d60686c7d2b48.pdf",
+                "_key": "abaac8a91b37"
               }
-            ]
+            ],
+            "_key": "f9232582af5c"
           },
           {
             "number": "4.4.2",
             "title": "- There are established systems and procedures for maintaining and utilizing physical, academic and support facilities - laboratory, library, sports complex, computers, classrooms etc.",
-            "documents": []
+            "documents": [],
+            "_key": "60cef77d9d7b"
           }
-        ]
+        ],
+        "_key": "a564021946ca"
       }
-    ]
+    ],
+    "_key": "35845bba9a7f"
   },
   {
     "id": 5,
@@ -968,17 +1162,21 @@
             "documents": [
               {
                 "label": "- Upload self attested letter with the list of students sanctioned scholarship",
-                "documentUrl": "/documents/aqar2324/c5/511/5.1.1 Self-attested list od students.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/4f05389c30d0c981e04d2349734a24c3a3b36da6.pdf",
+                "_key": "0fe7eda09477"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c5/511/5.1.1 Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/146cbdaaf30aa59dbba4acfce649f36d8110705e.pdf",
+                "_key": "cbdb65075207"
               },
               {
                 "label": "- Number of students benefited by scholarships and freeships provided by the Government during the year (Data Template)",
-                "documentUrl": "/documents/aqar2324/c5/511/5.1.1 Number of Students benifitted-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/025bb1a5f2cb598559d0edfab99d51dae1475795.pdf",
+                "_key": "f3ff90f17c14"
               }
-            ]
+            ],
+            "_key": "4d6b27be7203"
           },
           {
             "number": "5.1.2",
@@ -986,13 +1184,16 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c5/512/5.1.2 Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/15844726d95964aa3340df5dab813fccaeb9830c.pdf",
+                "_key": "7ed9893f8c6f"
               },
               {
                 "label": "- Number of students benefited by scholarships and freeships institution / non- government bodies, industries, individuals, philanthropists during the year (Date Template)",
-                "documentUrl": "/documents/aqar2324/c5/512/5.1.2 Number of students benifitted-non-govt-Data Template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b3c5c1171eaa19374158597ff288f78ba246a62b.pdf",
+                "_key": "06c0be3a8b26"
               }
-            ]
+            ],
+            "_key": "5ff26b792853"
           },
           {
             "number": "5.1.3",
@@ -1000,29 +1201,36 @@
             "documents": [
               {
                 "label": "Soft skills",
-                "documentUrl": "/documents/aqar2324/c5/513/1 Soft Skills.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7763e7fa0c42105dbf0c3fde762957cef996acbf.pdf",
+                "_key": "76babe600830"
               },
               {
                 "label": "Language and communication skills",
-                "documentUrl": "/documents/aqar2324/c5/513/2. LANGUAGE & COMMUNICATION SKILLS.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/a750e83c395cd46e1ae2862031f9f02380fdc13c.pdf",
+                "_key": "82bc8b536ae4"
               },
               {
                 "label": "Life skills (Yoga, physical fitness, health and hygiene)",
-                "documentUrl": "/documents/aqar2324/c5/513/3. Life Skills.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/eb2cc235c07f733f25ae6843c38894bfdfd2a96e.pdf",
+                "_key": "f6a0a1f04cc2"
               },
               {
                 "label": "ICT/computing skills",
-                "documentUrl": "/documents/aqar2324/c5/513/4. ICT Computing Skills.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3584ba74ae1ea8994310c9ec35dedc763aa6f612.pdf",
+                "_key": "9c5b86fd0d7a"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c5/513/5.1.3 Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/70e0308d3fe5aa18afa7a8ce8d1932726d42b1b3.pdf",
+                "_key": "5af340acd84f"
               },
               {
                 "label": "- Details of capability building and skills enhancement initiatives (Data Template)",
-                "documentUrl": "/documents/aqar2324/c5/513/5.1.3 Details of capability building.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/51cc498948b3cfe0efb65e20ff697743da444aa7.pdf",
+                "_key": "f5e0d576a7c9"
               }
-            ]
+            ],
+            "_key": "2820970a2d92"
           },
           {
             "number": "5.1.4",
@@ -1030,13 +1238,16 @@
             "documents": [
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c5/514/5.1.4 Any additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ccb7f605c3795fc7bdd53020d9fd06a84002eb73.pdf",
+                "_key": "1cbc77e0973d"
               },
               {
                 "label": "- Number of students benefited by guidance for competitive examinations and career counseling during the year (Data Template)",
-                "documentUrl": "/documents/aqar2324/c5/514/5.1.4 Number of students benifitted.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/22e5052bc805b1208d37fb4e847542a4fea72ece.pdf",
+                "_key": "65ade6a4cdc0"
               }
-            ]
+            ],
+            "_key": "e85c77d087de"
           },
           {
             "number": "5.1.5",
@@ -1044,19 +1255,24 @@
             "documents": [
               {
                 "label": "- Minutes of the meetings of student redressal committee, prevention of sexual harassment committee and Anti Ragging committee",
-                "documentUrl": "/documents/aqar2324/c5/515/5.1.5 Meeting Minutes of ASh-AR-GR.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/d42deb3d0d8941af175a5814d9721e69d861446f.pdf",
+                "_key": "bacbd54c4c67"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c5/515/5.1.5 Upload any additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/f0e91e464adc7a298eacd3471340e3c394a3af81.pdf",
+                "_key": "1ae44dbf100e"
               },
               {
                 "label": "- Details of student grievances including sexual harassment and ragging cases",
-                "documentUrl": "/documents/aqar2324/c5/515/5.1.5 Student grievances.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c4d4fc2ce380810289f6ca2e1b46a0e3e15ec5ec.pdf",
+                "_key": "bff35e48cad1"
               }
-            ]
+            ],
+            "_key": "c2ba2c7963d2"
           }
-        ]
+        ],
+        "_key": "2e76f3c6ac3d"
       },
       {
         "number": "Section",
@@ -1065,7 +1281,8 @@
           {
             "number": "5.2.1",
             "title": "- Number of placement of outgoing students during the year",
-            "documents": []
+            "documents": [],
+            "_key": "77d757bb5e40"
           },
           {
             "number": "5.2.1.1",
@@ -1073,22 +1290,27 @@
             "documents": [
               {
                 "label": "- Self-attested list of students placed",
-                "documentUrl": "/documents/aqar2324/c5/521/5.2.1 Self-attested List of Students Placed.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/bb2609382b070a3e4a63478f7f11250f56170bea.pdf",
+                "_key": "e02c4ce6f662"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c5/521/5.2.1 Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e2c78c8113b53ed7650fd417aa704ccbb4614e6a.pdf",
+                "_key": "7b1604dae964"
               },
               {
                 "label": "- Details of student placement during the year (Data Template)",
-                "documentUrl": "/documents/aqar2324/c5/521/5.2.1 Details of Students Placements.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0e133442a9d9fc4ed179f762933509aac19d420c.pdf",
+                "_key": "4b719c22ebab"
               }
-            ]
+            ],
+            "_key": "013e6eb92d58"
           },
           {
             "number": "5.2.2",
             "title": "- Number of students progressing to higher education during the year",
-            "documents": []
+            "documents": [],
+            "_key": "b8d7a1c1c2c9"
           },
           {
             "number": "5.2.2.1",
@@ -1096,27 +1318,33 @@
             "documents": [
               {
                 "label": "- Upload supporting data for student/alumni",
-                "documentUrl": "/documents/aqar2324/c5/522/5.2.2 Upload Students Data-Alumni.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/d75af646af38c38100208cd3bcfd034d44b2436d.pdf",
+                "_key": "f22d5f4c66a5"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c5/522/5.2.2 Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/25a73bb0d132fc2bba63693ef78fd90f6a0b3889.pdf",
+                "_key": "2b230c3dc28d"
               },
               {
                 "label": "- Details of student progression to higher education",
-                "documentUrl": "/documents/aqar2324/c5/522/5.2.2 Details of Student Progession to Higher Education.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/25a73bb0d132fc2bba63693ef78fd90f6a0b3889.pdf",
+                "_key": "cf9d3b006a63"
               }
-            ]
+            ],
+            "_key": "06130e347eb1"
           },
           {
             "number": "5.2.3",
             "title": "- Number of students qualifying in state/national/ international level examinations during the year (eg: JAM/CLAT/GATE/ GMAT/CAT/GRE/ TOEFL/ Civil Services/State government examinations)",
-            "documents": []
+            "documents": [],
+            "_key": "35c1d5e45796"
           },
           {
             "number": "5.2.3.1",
             "title": "5.2.3.1 Number of students qualifying in state/ national/ international level examinations (eg: JAM/CLAT/NET/ SLET/ GATE/ GMAT/CAT/GRE/ TOEFL/ Civil Services/ State government examinations) during the year VIEW",
-            "documents": []
+            "documents": [],
+            "_key": "123704fddb3c"
           },
           {
             "number": "5.2.3.2",
@@ -1124,15 +1352,19 @@
             "documents": [
               {
                 "label": "- Upload supporting data for the same",
-                "documentUrl": "/documents/aqar2324/c5/523/5.2.3 Upload supporting data.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c2e97955ee88dcd45879baa6fd436e10411a39e2.pdf",
+                "_key": "7ed6eacd248a"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c5/523/5.2.3 Any additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c2e97955ee88dcd45879baa6fd436e10411a39e2.pdf",
+                "_key": "724d8f2db5b3"
               }
-            ]
+            ],
+            "_key": "65bf274aca28"
           }
-        ]
+        ],
+        "_key": "e352aa497d65"
       },
       {
         "number": "Section",
@@ -1144,17 +1376,21 @@
             "documents": [
               {
                 "label": "- e-copies of award letters and certificates",
-                "documentUrl": "/documents/aqar2324/c5/531/5.3.1 e-copies of Awards & Certificates.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/6531a8309f64a161dab42e26224c6fb1c9fa9fee.pdf",
+                "_key": "76b8e40192dc"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c5/531/5.3.1 Any Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/1a7126ecb3fd78509dcb3c473db941e4c8bf7767.pdf",
+                "_key": "08a47c8d1d15"
               },
               {
                 "label": "- Number of awards/medals for outstanding performance in sports/cultural activities at university/state/national/international level (During the year)(Data Template)",
-                "documentUrl": "/documents/aqar2324/c5/531/5.3.1 Number of awards-data template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2ea62bf4ca4d1bfd91ff7e29892d8b4c60c21a55.pdf",
+                "_key": "410c0de32cd2"
               }
-            ]
+            ],
+            "_key": "db26796a341f"
           },
           {
             "number": "5.3.2",
@@ -1162,13 +1398,16 @@
             "documents": [
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c5/532/5.3.2 Report.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/23420e50e6d38ace4a25ead616abf9248894593d.pdf",
+                "_key": "9cdd57fc036e"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c5/532/5.3.2 Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/23420e50e6d38ace4a25ead616abf9248894593d.pdf",
+                "_key": "b2a6f173b992"
               }
-            ]
+            ],
+            "_key": "9d3d081a5eda"
           },
           {
             "number": "5.3.3",
@@ -1176,19 +1415,24 @@
             "documents": [
               {
                 "label": "- Report of the event",
-                "documentUrl": "/documents/aqar2324/c5/533/5.3.3 Report of the event.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/8dfb32f870985659fa4fe3c61248f5b0eab7416e.pdf",
+                "_key": "1328ec658a84"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c5/533/5.3.3 additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/62b79f152b156df13b8c68965a15a7961b86a255.pdf",
+                "_key": "ef1061bd3a92"
               },
               {
                 "label": "- Number of sports and cultural events/competitions in which students of the Institution participated during the year (organized by the institution/other institutions (DataTemplate)",
-                "documentUrl": "/documents/aqar2324/c5/533/5.3.3 Number of Sports and Cultural events-data template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/66f07f5a25b3826a5372e9180f0be86147ba4cf3.pdf",
+                "_key": "c35b62be028c"
               }
-            ]
+            ],
+            "_key": "ef597926a4c2"
           }
-        ]
+        ],
+        "_key": "8395e8e5f16b"
       },
       {
         "number": "Section",
@@ -1204,23 +1448,29 @@
                 "subDocuments": [
                   {
                     "name": "Registration Form",
-                    "url": "/documents/aqar2324/c5/541/add/5.4.1 Registration Form.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/606270a2ced6c7e3ca18d49b56fc3b55c442a0db.pdf",
+                    "_key": "2fc71e248408"
                   },
                   {
                     "name": "Report of Alumni",
-                    "url": "/documents/aqar2324/c5/541/add/5.4.1 Report.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/f54d17472b1d5c4f9159216d3ed7f557ed82fd43.pdf",
+                    "_key": "c5ee8031861d"
                   },
                   {
                     "name": "Cash Receipts",
-                    "url": "/documents/aqar2324/c5/541/add/5.4.1 Cash Receipts.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/19e2323dd888844a8e825ba629fb314fc48b5f58.pdf",
+                    "_key": "9b82902f0989"
                   },
                   {
                     "name": "Alumni Contribution Statement",
-                    "url": "/documents/aqar2324/c5/541/add/5.4.1 Alumni Contribution Statement.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/983c6da3e8d483dbf2c085357da2d981b9fac1e0.pdf",
+                    "_key": "6b28dec7cf47"
                   }
-                ]
+                ],
+                "_key": "b3d41a20857f"
               }
-            ]
+            ],
+            "_key": "02e71e4688c1"
           },
           {
             "number": "5.4.2",
@@ -1232,23 +1482,30 @@
                 "subDocuments": [
                   {
                     "name": "Registration Form",
-                    "url": "/documents/aqar2324/c5/542/add/5.4.2 Registration Form.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/4b8681955b5220e74bc6c0a20a5478d13250b625.pdf",
+                    "_key": "6909c68b6256"
                   },
                   {
                     "name": "Cash Receipts",
-                    "url": "/documents/aqar2324/c5/542/add/5.4.2 Cash Receipts.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/70101fada11c2f56b0690f166365494d21d85a77.pdf",
+                    "_key": "8931dbd2a2f4"
                   },
                   {
                     "name": "Alumni Contribution Statement",
-                    "url": "/documents/aqar2324/c5/542/add/5.4.2 Alumni Contribution Statement.pdf"
+                    "url": "https://cdn.sanity.io/files/fhjwqub5/production/a1f303ce6394b67cae20f806c1ab2dd47aa22076.pdf",
+                    "_key": "f65dc83775b4"
                   }
-                ]
+                ],
+                "_key": "7079494f674a"
               }
-            ]
+            ],
+            "_key": "67baf5948f01"
           }
-        ]
+        ],
+        "_key": "a372db8b6e2c"
       }
-    ]
+    ],
+    "_key": "5810be952b90"
   },
   {
     "id": 6,
@@ -1264,20 +1521,25 @@
             "documents": [
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c6/611/6.1.1-ProvideLink.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/da99618d63f3360dee54185ba4d8c325daf8b253.pdf",
+                "_key": "3bbc25bb4bd9"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/611/6.1.1-Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/da99618d63f3360dee54185ba4d8c325daf8b253.pdf",
+                "_key": "3421d1a41f18"
               }
-            ]
+            ],
+            "_key": "4c7e79579613"
           },
           {
             "number": "6.1.2",
             "title": "- The effective leadership is visible in various institutional practices such as decentralization and participative management.",
-            "documents": []
+            "documents": [],
+            "_key": "a555c2843e81"
           }
-        ]
+        ],
+        "_key": "b42215bd23c9"
       },
       {
         "number": "Section",
@@ -1289,17 +1551,21 @@
             "documents": [
               {
                 "label": "- Strategic Plan and deployment documents on the website",
-                "documentUrl": "/documents/aqar2324/c6/621/6.2.1 Strategic plan and deployment documents on the website.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/46e0062d876ffbe01a19efb0a654e575b8f42e81.pdf",
+                "_key": "2b622d5a190e"
               },
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c6/621/6.2.1 ProvideLink.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0acb9f3c39b79012f484aad995605697aa368fdd.pdf",
+                "_key": "7852c7e8d29a"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/621/6.2.1 UploadAddlInfo.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/23281157ee7be3a610a4fa35f4e4c61ee79fd7e8.pdf",
+                "_key": "ac607db69236"
               }
-            ]
+            ],
+            "_key": "43443543de17"
           },
           {
             "number": "6.2.2",
@@ -1307,13 +1573,16 @@
             "documents": [
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c6/622/6.2.2 provide link.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/68bdfd03f13f122c15b9a15df816ee1a13247e93.pdf",
+                "_key": "8f443de8f00a"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/622/6.2.2 Additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/381a804c55260b7a76313c360a6631f1bf0d6cb7.pdf",
+                "_key": "be9a14eac7c4"
               }
-            ]
+            ],
+            "_key": "53f8dae0919c"
           },
           {
             "number": "6.2.3",
@@ -1321,19 +1590,24 @@
             "documents": [
               {
                 "label": "- ERP (Enterprise Resource Planning) Document",
-                "documentUrl": "/documents/aqar2324/c6/623/6.2.2 ERP Document 2023-24.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/5526f1b8b2ba1b96123dc641d4266812186fff28.pdf",
+                "_key": "295fe2246ad6"
               },
               {
                 "label": "- Screen shots of user interfaces",
-                "documentUrl": "/documents/aqar2324/c6/623/6.2.2 Screen Shots of user Interfaces on each module_compressed.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/28ae602bcd9fd9cf0937feb5d2bdeb3a005550fa.pdf",
+                "_key": "315053820635"
               },
               {
                 "label": "- Any additional information",
-                "documentUrl": "/documents/aqar2324/c6/623/6.2.3 Any Additional Information 2023-24.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/381a804c55260b7a76313c360a6631f1bf0d6cb7.pdf",
+                "_key": "da71f901876b"
               }
-            ]
+            ],
+            "_key": "5f7127373227"
           }
-        ]
+        ],
+        "_key": "efdf37d369a4"
       },
       {
         "number": "Section",
@@ -1345,13 +1619,16 @@
             "documents": [
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c6/631/6.3.1 Provide Link 2023-24.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/69d723020e887ba8a15e8709ff6ad0ee767fcca7.pdf",
+                "_key": "4a451454d46c"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/631/6.3.1 Upload Additional Information 2023-24.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/69d723020e887ba8a15e8709ff6ad0ee767fcca7.pdf",
+                "_key": "33d773e4e053"
               }
-            ]
+            ],
+            "_key": "9513eb0b5f7a"
           },
           {
             "number": "6.3.2",
@@ -1359,18 +1636,22 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/632/6.3.2 Upload any Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/85a4edec7e9a0e194fccd99ee063b0d7e406c5a5.pdf",
+                "_key": "81ad330f3ecf"
               },
               {
                 "label": "- Details of teachers provided with financial support to attend conference, workshops etc during the year (DataTemplate)",
-                "documentUrl": "/documents/aqar2324/c6/632/6.3.2 Details of teachers-data template.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/6c22519b162e5c98e63df3fc569e6136e405c98d.pdf",
+                "_key": "8682d4bca30f"
               }
-            ]
+            ],
+            "_key": "10635b90981a"
           },
           {
             "number": "6.3.3",
             "title": "- Number of professional development /administrative training programs organized by the institution for teaching and non-teaching staff during the year",
-            "documents": []
+            "documents": [],
+            "_key": "bb5d4b010133"
           },
           {
             "number": "6.3.4",
@@ -1378,20 +1659,25 @@
             "documents": [
               {
                 "label": "- IQAC report summary",
-                "documentUrl": "/documents/aqar2324/c6/634/6.3.4 Report of IQAC.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/5f94ad5e88abc61e37453dfb5989f068cf12090f.pdf",
+                "_key": "f2ea6f8e97a4"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/634/6.3.4 Upload Any Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/d66c72d4dab3d2d7ed93e0f633fcca5f04fc868b.pdf",
+                "_key": "fce2b6a92233"
               }
-            ]
+            ],
+            "_key": "61894252f589"
           },
           {
             "number": "6.3.5",
             "title": "- Institutions Performance Appraisal System for teaching and non- teaching staff",
-            "documents": []
+            "documents": [],
+            "_key": "7aa732353e53"
           }
-        ]
+        ],
+        "_key": "f8dbc27c1e28"
       },
       {
         "number": "Section",
@@ -1403,25 +1689,31 @@
             "documents": [
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c6/641/6.4.1 provide link for additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/15b98bdea76f893dfffaf490ee9b5b9884375757.pdf",
+                "_key": "d6fa37cb5b53"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/641/6.4.1 Upload Additional Inforamtion.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/15b98bdea76f893dfffaf490ee9b5b9884375757.pdf",
+                "_key": "606478bfb0b4"
               }
-            ]
+            ],
+            "_key": "561ff248ff90"
           },
           {
             "number": "6.4.2",
             "title": "- Funds / Grants received from non-government bodies,individuals, philanthropers during the year (not covered in Criterion III)",
-            "documents": []
+            "documents": [],
+            "_key": "4a00b8036f9f"
           },
           {
             "number": "6.4.3",
             "title": "- Funds / Institutional strategies for mobilization of funds and the optimal utilization of resources",
-            "documents": []
+            "documents": [],
+            "_key": "72cb41656ee1"
           }
-        ]
+        ],
+        "_key": "efd54a20dc70"
       },
       {
         "number": "Section",
@@ -1433,18 +1725,22 @@
             "documents": [
               {
                 "label": "- Paste link for additional information",
-                "documentUrl": "/documents/aqar2324/c6/651/6.5.1 Paste Link for Additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/369609bbf0b0fc2805053a8d7c3b1144e5d5d1a4.pdf",
+                "_key": "850faed9a47d"
               },
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/651/6.5.1 Upload additional information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/369609bbf0b0fc2805053a8d7c3b1144e5d5d1a4.pdf",
+                "_key": "b85a12469afd"
               }
-            ]
+            ],
+            "_key": "2818a32a0d23"
           },
           {
             "number": "6.5.2",
             "title": "- The institution reviews its teaching learning process, structures & methodologies of operations and learning outcomes at periodic intervals through IQAC set up as per norms and recorded the incremental improvement in various activities",
-            "documents": []
+            "documents": [],
+            "_key": "950edd90e4a8"
           },
           {
             "number": "6.5.3",
@@ -1452,13 +1748,17 @@
             "documents": [
               {
                 "label": "- Upload any additional information",
-                "documentUrl": "/documents/aqar2324/c6/653/6.5.3 Upload Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/bd0afb3dda266cce5f9756df6474476a8212a231.pdf",
+                "_key": "e356b35cd8a1"
               }
-            ]
+            ],
+            "_key": "fee4b6b4debe"
           }
-        ]
+        ],
+        "_key": "398e669806d3"
       }
-    ]
+    ],
+    "_key": "647eda089038"
   },
   {
     "id": 7,
@@ -1474,13 +1774,16 @@
             "documents": [
               {
                 "label": "- Annual gender sensitization action plan",
-                "documentUrl": "/documents/aqar2324/c7/711/7.1.1 Annual Gender Sensitization action plan.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/58311bf37704eb963d05617f18c74e5a9a645f00.pdf",
+                "_key": "8a871beab53a"
               },
               {
                 "label": "- Specific facilities provided for women in terms of: a. Safety and security b. Counseling c. Common Rooms d. Day care center for young children e. Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/711/7.1.1 SPECIFIC FACILITIES PROVDED FOR WOMEN.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/57a7ec069b19a958b9a94d23d7b85e5da796ab06.pdf",
+                "_key": "6f9923b65963"
               }
-            ]
+            ],
+            "_key": "b58f71a9ec16"
           },
           {
             "number": "7.1.2",
@@ -1488,13 +1791,16 @@
             "documents": [
               {
                 "label": "- Geo tagged Photographs",
-                "documentUrl": "/documents/aqar2324/c7/712/7.1.2 GEO TAGGED PHOTOGRAPHS.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/70a32f3fb68c4feb7f5fc67c32a7864391e3cbdc.pdf",
+                "_key": "5d813f503cad"
               },
               {
                 "label": "- Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/712/Any other relevant information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/32aedab4da9d7618d35a2bddcb001679748131a5.pdf",
+                "_key": "0c43d9c3dfea"
               }
-            ]
+            ],
+            "_key": "4aa85b5ffcf1"
           },
           {
             "number": "7.1.3",
@@ -1502,13 +1808,16 @@
             "documents": [
               {
                 "label": "- Geo tagged photographs of the facilities",
-                "documentUrl": "/documents/aqar2324/c7/713/7.1.3 Geo tagged photographs.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/56e952e32f455a5267e120f431b95122defe755c.pdf",
+                "_key": "cf074e1ce2fd"
               },
               {
                 "label": "- Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/713/7.1.3 Any other relevant information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b2186ba5c9fc55cad9bdf85512a1ce9290ce63b1.pdf",
+                "_key": "f04a326648c5"
               }
-            ]
+            ],
+            "_key": "d9528945ec01"
           },
           {
             "number": "7.1.4",
@@ -1516,18 +1825,22 @@
             "documents": [
               {
                 "label": "- Geotagged photographs / videos of the facilities",
-                "documentUrl": "/documents/aqar2324/c7/714/7.1.4 Geo tagged photographs.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e2ac55c95fde7c66efd7fa2573380de7c4192ca1.pdf",
+                "_key": "47517a8b09f2"
               },
               {
                 "label": "- Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/714/7.1.4 Any other relevant document.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/4dfd37cfe1e1b553a3bffc7aeff1166c66646029.pdf",
+                "_key": "913ca10721d8"
               }
-            ]
+            ],
+            "_key": "c4d0a1ec8d93"
           },
           {
             "number": "7.1.5",
             "title": "- Green campus initiatives include",
-            "documents": []
+            "documents": [],
+            "_key": "bb79df59a139"
           },
           {
             "number": "7.1.5.1",
@@ -1535,18 +1848,22 @@
             "documents": [
               {
                 "label": "- Geo tagged photos / videos of the facilities",
-                "documentUrl": "/documents/aqar2324/c7/715/7.1.5 Geo-photos.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/38e08a86258e3e4ebc8baf90ec7571de4a4413b9.pdf",
+                "_key": "5516318094bc"
               },
               {
                 "label": "- Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/715/7.1.5 Any other relevant information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/9e5731d5f3ff555824c3bda81a9df15f641f500e.pdf",
+                "_key": "9fd60fb8a008"
               }
-            ]
+            ],
+            "_key": "bdfb4c5afef1"
           },
           {
             "number": "7.1.6",
             "title": "- Quality audits on environment and energy are regularly undertaken by the institution",
-            "documents": []
+            "documents": [],
+            "_key": "670e4576257f"
           },
           {
             "number": "7.1.6.1",
@@ -1554,21 +1871,26 @@
             "documents": [
               {
                 "label": "- Reports on environment and energy audits submitted by the auditing agency",
-                "documentUrl": "/documents/aqar2324/c7/716/7.1.6 Report on Green audit environment audit.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ae10eed56666051c339d02027d7747efc10c45f0.pdf",
+                "_key": "7c6ac9ce328f"
               },
               {
                 "label": "- Certification by the auditing agency",
-                "documentUrl": "/documents/aqar2324/c7/716/7.1.6 Certificates by the auditing agency_removed.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/bd5aa8d2d17ccb127b7ab76440a389e7e67d2d81.pdf",
+                "_key": "11db70350638"
               },
               {
                 "label": "- Certificates of the awards received",
-                "documentUrl": "/documents/aqar2324/c7/716/7.1.6 Certificates of the awards received.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/3e1a57916e7a56c2d2fe74948fcb187d594e7e71.pdf",
+                "_key": "0678744768d0"
               },
               {
                 "label": "- Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/716/7.1.6 Any other relevant information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c177ebfc58c6efe06ff061e70bbb4897b5338fdd.pdf",
+                "_key": "0072e5cac73b"
               }
-            ]
+            ],
+            "_key": "0b61135cacd3"
           },
           {
             "number": "7.1.7",
@@ -1576,13 +1898,16 @@
             "documents": [
               {
                 "label": "- Geo tagged photographs / videos of the facilities",
-                "documentUrl": "/documents/aqar2324/c7/717/7.1.7 Geo tagged photographs.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7ee4999610aad8bf321c923f973d5df5e53a9bd9.pdf",
+                "_key": "26ba205158b3"
               },
               {
                 "label": "- Policy documents and information brochures on the support to be provided",
-                "documentUrl": "/documents/aqar2324/c7/717/7.1.7 policy document.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/af0843a307f131bd7cc626218aab6d11e8c18f77.pdf",
+                "_key": "7b92393a43b5"
               }
-            ]
+            ],
+            "_key": "ea15a12aa5e6"
           },
           {
             "number": "7.1.8",
@@ -1590,9 +1915,11 @@
             "documents": [
               {
                 "label": "- Supporting documents on the information provided (as reflected in the administrative and academic activities of the Institution)",
-                "documentUrl": "/documents/aqar2324/c7/718/7.1.8 tolerance and harmony.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/fed6344a3936fcb905929ef4cd5f422148ab89d7.pdf",
+                "_key": "9489ac346b6c"
               }
-            ]
+            ],
+            "_key": "051d95401378"
           },
           {
             "number": "7.1.9",
@@ -1600,14 +1927,17 @@
             "documents": [
               {
                 "label": "- Details of activities that inculcate values; necessary to render students into responsible citizens",
-                "documentUrl": "/documents/aqar2324/c7/719/Constitutional obligations-final.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/8010cb234dc857d2595e09595b597e754d937f64.pdf",
+                "_key": "e2ee58dbca4e"
               }
-            ]
+            ],
+            "_key": "48a54d43113d"
           },
           {
             "number": "7.1.10",
             "title": "- The Institution has a prescribed code of conduct for students, teachers, administrators and other staff and conducts periodic programmes in this regard.",
-            "documents": []
+            "documents": [],
+            "_key": "5f9c6d171a41"
           },
           {
             "number": "7.1.11",
@@ -1615,19 +1945,24 @@
             "documents": [
               {
                 "label": "- Annual report of the celebrations and commemorative events for the last (During the year)",
-                "documentUrl": "/documents/aqar2324/c7/7111/7.1.11 Annual report of the celebrations.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/cad1e7815e22e05111bada285cebb89c020fbbd7.pdf",
+                "_key": "47d64e2a927d"
               },
               {
                 "label": "- Geo tagged photographs of some of the events",
-                "documentUrl": "/documents/aqar2324/c7/7111/7.1.11 Geo-tagged photos.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/daceef0127a65a6a9d8e57aa2e3418692517e32a.pdf",
+                "_key": "e2de0873f390"
               },
               {
                 "label": "- Any other relevant information",
-                "documentUrl": "/documents/aqar2324/c7/7111/7.1.11 Any other information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/daceef0127a65a6a9d8e57aa2e3418692517e32a.pdf",
+                "_key": "9d1cddc9cf98"
               }
-            ]
+            ],
+            "_key": "0a75866a1e17"
           }
-        ]
+        ],
+        "_key": "c3f51d99ebb6"
       },
       {
         "number": "Section",
@@ -1636,11 +1971,14 @@
           {
             "number": "7.2.1",
             "title": "- Describe two best practices successfully implemented by the Institution as per NAAC format provided in the Manual.",
-            "documents": []
+            "documents": [],
+            "_key": "b30bb9334258"
           }
-        ]
+        ],
+        "_key": "555560c97d9a"
       }
-    ]
+    ],
+    "_key": "8dd34fa87d41"
   },
   {
     "id": 8,
@@ -1656,15 +1994,19 @@
             "documents": [
               {
                 "label": "Link for Additional information",
-                "documentUrl": "/documents/aqar2324/ep/11/1.1 Link for additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/5d5ce4f350843ef0b50fa71dc122a97f42f0f3fe.pdf",
+                "_key": "d15ea551ccf7"
               },
               {
                 "label": "Institutional data in prescribed format(DataTemplate)",
-                "documentUrl": "/documents/aqar2324/ep/11/1.1 Institutional data in prescribed format(DataTemplate).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/aabf3328632a34798f4974f5041dff7cf1cec1de.pdf",
+                "_key": "9bfffbc351d4"
               }
-            ]
+            ],
+            "_key": "591c828adb89"
           }
-        ]
+        ],
+        "_key": "6e6951cd8d2e"
       },
       {
         "number": "2.1",
@@ -1676,15 +2018,19 @@
             "documents": [
               {
                 "label": "Link for Additional information",
-                "documentUrl": "/documents/aqar2324/ep/21/2.1 Link for Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e572dd80cc55cd37cd7a85ef8028da27d95fd0bd.pdf",
+                "_key": "932fee1b216d"
               },
               {
                 "label": "Institutional data in prescribed format(DataTemplate)",
-                "documentUrl": "/documents/aqar2324/ep/21/2.1 Institutional data in prescribed format(DataTemplate).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/6b1f9ff509fc9c42bfd00b8223b6fbd1cb16eced.pdf",
+                "_key": "3162eb6f4722"
               }
-            ]
+            ],
+            "_key": "8c262acfdd05"
           }
-        ]
+        ],
+        "_key": "a5794f1aa4c4"
       },
       {
         "number": "Section",
@@ -1696,15 +2042,19 @@
             "documents": [
               {
                 "label": "Link for Additional information",
-                "documentUrl": "/documents/aqar2324/ep/22/2.1.2 Link for Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ef7f63b3bba5d9b18d06a5e4537bb122abdc5e30.pdf",
+                "_key": "c472f612a448"
               },
               {
                 "label": "Institutional data in prescribed format(DataTemplate)",
-                "documentUrl": "/documents/aqar2324/ep/22/2.2 Institutional data in prescribed format(DataTemplate).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c916e2580071826406e8c3d55c65df4fc89df4ec.pdf",
+                "_key": "a7c808137639"
               }
-            ]
+            ],
+            "_key": "3b8e10696a1a"
           }
-        ]
+        ],
+        "_key": "7712216b9c1e"
       },
       {
         "number": "2.3",
@@ -1716,15 +2066,19 @@
             "documents": [
               {
                 "label": "Link for Additional information",
-                "documentUrl": "/documents/aqar2324/ep/23/2.3 Link for Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/695ec63ba9b2ed34b27db91b3a3587995291b9f5.pdf",
+                "_key": "945f9b32e53e"
               },
               {
                 "label": "Institutional data in prescribed format(DataTemplate)",
-                "documentUrl": "/documents/aqar2324/ep/23/2.3 Institutional data in prescribed format(DataTemplate).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/43d6beafbc530aaee4af47f996cc6f5c30b8aac5.pdf",
+                "_key": "cfa700f0a327"
               }
-            ]
+            ],
+            "_key": "fbd2b23b8430"
           }
-        ]
+        ],
+        "_key": "60530fdce0e2"
       },
       {
         "number": "Section",
@@ -1736,15 +2090,19 @@
             "documents": [
               {
                 "label": "Link for Additional information",
-                "documentUrl": "/documents/aqar2324/ep/31/3.1 & 2.4.1 Link for Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c46fbf46d0ce23a8e2af19043d4c9a086e342134.pdf",
+                "_key": "f508b92fcbb8"
               },
               {
                 "label": "Institutional data in prescribed format(DataTemplate)",
-                "documentUrl": "/documents/aqar2324/ep/31/3.1 Institutional data in prescribed format(DataTemplate).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/dcec46830a39384d0a725321b61ef2039428b775.pdf",
+                "_key": "77f89007155f"
               }
-            ]
+            ],
+            "_key": "bcb763009d07"
           }
-        ]
+        ],
+        "_key": "eb8563ec46a7"
       },
       {
         "number": "3.2",
@@ -1756,26 +2114,33 @@
             "documents": [
               {
                 "label": "Link for Additional information",
-                "documentUrl": "/documents/aqar2324/ep/32/3.2 Link for Additional Information.pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/de636c03b900e0bc1caa8513c29fa28ce9bce24d.pdf",
+                "_key": "045f365f3e6d"
               },
               {
                 "label": "Institutional data in prescribed format(DataTemplate)",
-                "documentUrl": "/documents/aqar2324/ep/32/3.2 Institutional data in prescribed format(DataTemplate).pdf"
+                "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/78743c91970bc55143864c5970d9181d1625860e.pdf",
+                "_key": "ccde50b5bcc3"
               }
-            ]
+            ],
+            "_key": "ea137d63ac84"
           }
-        ]
+        ],
+        "_key": "1d8e815df106"
       },
       {
         "number": "Section",
         "title": "4.1 Total number of Class rooms and Seminar halls",
-        "metrics": []
+        "metrics": [],
+        "_key": "32fb1117c0ac"
       },
       {
         "number": "Section",
         "title": "4.2 Total expenditure excluding salary during the year (INR in lakhs)",
-        "metrics": []
+        "metrics": [],
+        "_key": "a95f91e0452e"
       }
-    ]
+    ],
+    "_key": "f245ac844a31"
   }
 ]

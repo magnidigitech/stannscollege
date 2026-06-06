@@ -184,7 +184,7 @@ export default function HomePage() {
 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 z-20 flex items-center">
-                  <div className="mx-auto max-w-7xl px-6 w-full text-left">
+                  <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full text-left">
                     <div className="max-w-2xl md:max-w-3xl flex flex-col items-start gap-4">
                       {/* Animated Badge */}
                       <span
@@ -276,7 +276,7 @@ export default function HomePage() {
           2. ACCREDITATIONS & MANDATES FAST STRIP
           ---------------------------------------------------- */}
       <section className="w-full bg-[#002147] py-6 border-b border-[#001733] select-none text-white">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-200 shadow-inner">
@@ -318,7 +318,7 @@ export default function HomePage() {
           3. KEY INSTITUTIONAL STATISTICS (Dash style)
           ---------------------------------------------------- */}
       <section className="py-12 select-none">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Stat 1 */}
             <div className="bg-white border border-slate-200/60 p-6 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-slate-100/50 hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 group">
@@ -399,7 +399,7 @@ export default function HomePage() {
           4. PRINCIPAL'S WELCOME & EMBLEM SPOTLIGHT
           ---------------------------------------------------- */}
       <section className="py-12 bg-white border-y border-slate-200/50 select-none">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left: Professional Principal Frame */}
@@ -471,7 +471,7 @@ export default function HomePage() {
           5. INTERACTIVE WHY CHOOSE ST. ANN'S SECTION
           ---------------------------------------------------- */}
       <section className="py-16 select-none bg-slate-50/20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="text-center max-w-2xl mx-auto flex flex-col items-center gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
               <Sparkles className="h-3.5 w-3.5 text-indigo-500 animate-pulse" /> Institution Pillars
@@ -584,7 +584,7 @@ export default function HomePage() {
           6. ACADEMIC PROGRAMS NAVIGATION
           ---------------------------------------------------- */}
       <section className="py-12 bg-white border-y border-slate-200/50 select-none">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
               <BookOpen className="h-3.5 w-3.5 text-indigo-500" /> Academic Tracks
@@ -685,7 +685,7 @@ export default function HomePage() {
           7. PLACEMENTS SPOTLIGHT & CORPORATE TRUST
           ---------------------------------------------------- */}
       <section className="py-16 select-none bg-slate-50/20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             {/* Left Column - Placement Info */}
@@ -764,7 +764,7 @@ export default function HomePage() {
           8. STUDENT LAURELS & ACHIEVERS SPOTLIGHT
           ---------------------------------------------------- */}
       <section className="py-16 bg-white border-t border-slate-200/50 select-none">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
               <Award className="h-3.5 w-3.5 text-indigo-500" /> Student laurels
@@ -857,7 +857,7 @@ export default function HomePage() {
           9. BOTTOM DETAILED MAP / CONTACT FAST ACTION
           ---------------------------------------------------- */}
       <section className="py-12 bg-slate-900 text-white select-none">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <div className="flex items-start gap-4">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">

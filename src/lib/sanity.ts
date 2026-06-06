@@ -259,12 +259,26 @@ export async function getDepartment(slug: string) {
       vision,
       mission,
       programmes,
+      facultyMembers,
+      passPercentage,
       valueAddedCourses,
       mous,
+      mouActivities,
+      studentAchievements,
+      academicAchievements,
+      placements,
       bestPractices,
+      activitiesList,
+      activitiesSummary,
+      internships,
       activities,
       infrastructure,
-      careerOpps
+      careerOpps,
+      bestPracticesImpact,
+      gallery,
+      otherStudentAchievements,
+      focusOnWomenEmpowerment,
+      overallApproach
     }`;
     const data = await sanityClient.fetch(query, { slug });
     if (data && data.name) return data;
@@ -342,7 +356,33 @@ export async function getDepartment(slug: string) {
         "Banking & Finance",
         "Entrepreneurship",
         "Higher Education (M.Com, MBA, CA, etc.)"
-      ]
+      ],
+      facultyMembers: [
+        { name: "Mrs. M. Prameela", designation: "Head of the Department & Assistant Professor", qualification: "M.Com, MBA, (Ph.D)", experience: "18 Years", email: "commerce.hod@stannscollege.org" },
+        { name: "Dr. K. Srilatha", designation: "Assistant Professor", qualification: "M.Com, Ph.D", experience: "12 Years", email: "srilatha.k@stannscollege.org" }
+      ],
+      passPercentage: [
+        { year: "2025-2026", programme: "B.Com Honours General", finalYearStudents: "20", studentsPassed: "20", percentage: "100%" },
+        { year: "2025-2026", programme: "B.Com Honours CA", finalYearStudents: "78", studentsPassed: "74", percentage: "94.8%" },
+        { year: "2024-2025", programme: "B.Com Honours CA", finalYearStudents: "80", studentsPassed: "76", percentage: "95%" }
+      ],
+      placements: [
+        { year: "2024-2025", finalYearStudents: "85", studentsPlaced: "68", highestSalary: "6.5 LPA", averageSalary: "3.2 LPA", percentage: "80%" },
+        { year: "2023-2024", finalYearStudents: "78", studentsPlaced: "60", highestSalary: "5.8 LPA", averageSalary: "3.0 LPA", percentage: "77%" }
+      ],
+      bestPracticesImpact: [
+        "Promotes experiential and student-centric learning",
+        "Enhances employability and entrepreneurial readiness",
+        "Strengthens practical knowledge in commerce disciplines",
+        "Encourages community engagement and social responsibility",
+        "Aligns with NAAC quality indicators and outcome-based education"
+      ],
+      otherStudentAchievements: [
+        "Winners of District-level Business Plan Competition 2025",
+        "Active student representation in State-level Young Entrepreneurs Summit"
+      ],
+      focusOnWomenEmpowerment: "The Department of Commerce actively prioritizes women empowerment and employability by integrating professional training, entrepreneurship initiatives, and career guidance tailored to women's leadership in business and finance.",
+      overallApproach: "Through these year-round activities, the Department of Commerce ensures a balanced focus on academic excellence, skill development, industry exposure, and community engagement, aligning with NAAC quality benchmarks and outcome-based education."
     };
   }
 
@@ -431,7 +471,7 @@ export async function getFacultySections() {
 // NAAC Accreditation Data Fetcher with Local JSON Fallback
 export async function getNaacData() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "naacCriterion"] | order(id asc) {
+    const data = await sanityClient.fetch(`*[_type == "naacCriterion" && !(_id in path("drafts.**"))] | order(id asc) {
       id,
       title,
       sections[] {
@@ -475,7 +515,7 @@ export async function getNaacData() {
 // AQAR Reports Data Fetcher with Local JSON Fallback
 export async function getAqarData() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "aqarCriterion"] | order(id asc) {
+    const data = await sanityClient.fetch(`*[_type == "aqarCriterion" && !(_id in path("drafts.**"))] | order(id asc) {
       id,
       title,
       sections[] {
@@ -513,6 +553,81 @@ export async function getAqarData() {
   } catch (err) {
     console.error("Error loading local AQAR data backup:", err);
     return [];
+  }
+}
+
+export async function getAcademicProgrammes() {
+  try {
+    const query = `*[_type == "academicProgramme" && !(_id in path("drafts.**"))] | order(sNo asc) {
+      sNo,
+      programmeType,
+      name,
+      convenerQuota,
+      managementQuota,
+      totalIntake,
+      "aboutDocumentUrl": aboutDocument.asset->url,
+      "brochureUrl": brochure.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (academic programmes):", err);
+    return [];
+  }
+}
+
+export async function getCommittees() {
+  try {
+    const query = `*[_type == "committee" && !(_id in path("drafts.**"))] | order(sNo asc) {
+      sNo,
+      name,
+      "constitutionOrderUrl": constitutionOrder.asset->url,
+      "activitiesReportsUrl": activitiesReports.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (committees):", err);
+    return [];
+  }
+}
+
+export async function getCommitteeYearwiseLists() {
+  try {
+    const query = `*[_type == "committeeYearwiseList" && !(_id in path("drafts.**"))] | order(order asc) {
+      academicYear,
+      "fileUrl": file.asset->url,
+      order
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (committee year-wise lists):", err);
+    return [];
+  }
+}
+
+export async function getStrategicPlan() {
+  try {
+    const query = `*[_type == "strategicPlan" && !(_id in path("drafts.**"))][0]{
+      title,
+      executiveSummary,
+      pillars[] {
+        title,
+        description
+      },
+      phases[] {
+        title,
+        description
+      },
+      targets,
+      "documentUrl": documentFile.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || null;
+  } catch (err) {
+    console.error("Sanity fetch error (strategic plan):", err);
+    return null;
   }
 }
 

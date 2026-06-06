@@ -77,10 +77,10 @@ export default function AdmissionsPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      
+
       {/* Top Breadcrumb Header */}
       <div className="bg-white border-b border-slate-200/70 py-5 px-6 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
               <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
@@ -102,20 +102,17 @@ export default function AdmissionsPage({ params }: PageProps) {
       </div>
 
       {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto py-10 px-6 md:px-8 lg:px-10">
+      <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
+
           {/* A. Left Sidebar Sticky Navigation */}
           <aside className="lg:col-span-3 xl:col-span-3">
             <div className="sticky top-28 flex flex-col gap-8">
-              
+
               {/* Navigation Box */}
               <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
                 <div className="flex flex-col gap-1 border-b border-slate-100 pb-5 mb-6">
-                  <span className="text-[10px] uppercase font-black tracking-widest text-[#002147]/60 flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-amber-400 shrink-0" /> Academic Intake
-                  </span>
-                  <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">III. Admissions</h3>
+                  <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Admissions</h3>
                 </div>
 
                 <nav className="flex flex-col gap-8">
@@ -128,21 +125,19 @@ export default function AdmissionsPage({ params }: PageProps) {
                         {group.items.map((item, i) => {
                           const fullHref = `/admissions/${item.slug}`;
                           const isActive = currentSlug === item.slug;
-                          
+
                           return (
                             <li key={i}>
                               <Link
                                 href={fullHref}
-                                className={`group w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border ${
-                                  isActive
-                                    ? "bg-[#002147] text-white border-transparent font-bold shadow-md translate-x-1"
-                                    : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
-                                }`}
+                                className={`group w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border ${isActive
+                                  ? "bg-[#002147] text-white border-transparent font-bold shadow-md translate-x-1"
+                                  : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
+                                  }`}
                               >
                                 <span className="truncate">{item.text}</span>
-                                <ArrowRight className={`h-3.5 w-3.5 shrink-0 transform transition-all ${
-                                  isActive ? "opacity-100 translate-x-0" : "opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
-                                }`} />
+                                <ArrowRight className={`h-3.5 w-3.5 shrink-0 transform transition-all ${isActive ? "opacity-100 translate-x-0" : "opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
+                                  }`} />
                               </Link>
                             </li>
                           );

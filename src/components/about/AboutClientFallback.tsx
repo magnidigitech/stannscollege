@@ -143,7 +143,7 @@ export default function AboutClientFallback({
 
   return (
     <div className="bg-slate-50/50 min-h-screen py-16 md:py-20 select-none font-sans">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
         {/* Banner Section */}
         <div className="max-w-4xl text-left mb-16">
           <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100/80 px-4 py-1.5 text-xs font-bold text-indigo-700 uppercase tracking-wider shadow-sm select-none">

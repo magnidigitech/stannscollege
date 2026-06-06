@@ -1,9 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { BookOpen, FileText, Eye, Download, ShieldAlert, CalendarDays, FolderClosed } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 export function StudentHandbook() {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
   const handbooks = [
     { year: "2023-2024", filename: "handbook 2023-24.pdf" },
     { year: "2022-2023", filename: "handbook 2022-23.pdf" },
@@ -78,14 +81,15 @@ export function StudentHandbook() {
               </div>
 
               <div className="flex gap-3 border-t border-slate-100 pt-5 mt-2">
-                <a 
-                  href={`/documents/admissions/handbooks/${h.filename}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-[#002147]/5 text-[#002147] hover:bg-[#002147] hover:text-white font-black px-4 py-3 rounded-xl text-sm shadow-xs transition-all cursor-pointer"
+                <button 
+                  onClick={() => {
+                    setPreviewUrl(`/documents/admissions/handbooks/${h.filename}`);
+                    setPreviewTitle(`Student Handbook ${h.year}`);
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-[#002147]/5 text-[#002147] hover:bg-[#002147] hover:text-white font-black px-4 py-3 rounded-xl text-sm shadow-xs transition-all cursor-pointer border-none"
                 >
                   <Eye className="h-4 w-4" /> View
-                </a>
+                </button>
                 <a 
                   href={`/documents/admissions/handbooks/${h.filename}`}
                   download
@@ -99,6 +103,12 @@ export function StudentHandbook() {
         </div>
       </div>
 
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Handbook Preview"}
+      />
     </div>
   );
 }

@@ -489,7 +489,7 @@ export default function InfrastructureClientPortal({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 font-sans min-h-screen bg-[#fafcfb]/50">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-16 font-sans min-h-screen bg-[#fafcfb]/50 w-full">
 
       {/* Modern Elite Emerald Header Banner */}
       <div className="bg-gradient-to-br from-[#004225] to-[#0b5f36] rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden shadow-2xl mb-12 select-none animate-fadeIn">

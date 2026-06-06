@@ -8,9 +8,13 @@ import { Iqac } from "./governance-administration/Iqac";
 import { StatutoryCommittees } from "./governance-administration/StatutoryCommittees";
 import { InstitutionalPolicies } from "./governance-administration/InstitutionalPolicies";
 import { CodeOfConduct } from "./governance-administration/CodeOfConduct";
+import { StrategicDevelopmentPlan } from "./governance-administration/StrategicDevelopmentPlan";
 import { ShieldCheck, Sparkles, UserCheck } from "lucide-react";
 
 export function GovernanceAdministration({ itemSlug }: { itemSlug: string }) {
+  if (itemSlug === "strategic-development-plan") {
+    return <StrategicDevelopmentPlan />;
+  }
   const [activeTab, setActiveTab] = useState<"functionaries" | "iqac">("functionaries");
 
   if (itemSlug === "governing-body") {
