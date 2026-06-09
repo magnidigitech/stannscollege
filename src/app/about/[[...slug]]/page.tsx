@@ -1,6 +1,6 @@
 import { Sparkles, Award, Users, CheckCircle, GraduationCap, ArrowRight, ShieldCheck, Mail, Phone, Calendar } from "lucide-react";
 import Link from "next/link";
-import { getFaculty, getAffiliations, getApscheOrders, getAnuAffiliations, getAicteApprovals, getNirfReports, getNaacCertificates, getAisheCertifications } from "@/lib/sanity";
+import { getFaculty, getAffiliations, getApscheOrders, getAnuAffiliations, getAicteApprovals, getNirfReports, getNaacCertificates, getAisheCertifications, getCommittees, getCommitteeYearwiseLists } from "@/lib/sanity";
 
 // Modularized individual page components for Category I
 import { BasicInstitutionalInfo } from "@/components/about/the-institution/BasicInstitutionalInfo";
@@ -141,6 +141,8 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
   const nirfReportsList = await getNirfReports();
   const naacCertificatesList = await getNaacCertificates();
   const aisheCertificationsList = await getAisheCertifications();
+  const committeesList = await getCommittees();
+  const committeeYearwiseLists = await getCommitteeYearwiseLists();
 
   // Dynamic 2-column Grid Layout for Sections to maximize right-hand empty space
   // Dynamic Grid Layout for Sections with Sidebar
@@ -256,7 +258,13 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
                       {itemSlug !== "apsche-orders" && itemSlug !== "anu-affiliation-orders-ug-pg" && itemSlug !== "aicte-approvals" && itemSlug !== "ugc-2f" && itemSlug !== "nirf" && itemSlug !== "naac-certificates" && itemSlug !== "naac-certficates" && itemSlug !== "naac-accreditation" && itemSlug !== "aishe-mhrd" && itemSlug !== "aishe-certificates" && <StatutoryAffiliations itemSlug={itemSlug} />}
                     </>
                   )}
-                  {catSlug === "governance-administration" && <GovernanceAdministration itemSlug={itemSlug} />}
+                  {catSlug === "governance-administration" && (
+                    <GovernanceAdministration
+                      itemSlug={itemSlug}
+                      committeesList={committeesList}
+                      committeeYearwiseLists={committeeYearwiseLists}
+                    />
+                  )}
                 </div>
               </div>
             </div>

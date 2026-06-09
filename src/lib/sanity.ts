@@ -582,7 +582,10 @@ export async function getCommittees() {
       sNo,
       name,
       "constitutionOrderUrl": constitutionOrder.asset->url,
-      "activitiesReportsUrl": activitiesReports.asset->url
+      activitiesReports[] {
+        title,
+        "fileUrl": asset->url
+      }
     }`;
     const data = await sanityClient.fetch(query);
     return data || [];
@@ -642,6 +645,21 @@ export async function getStudentHandbooks() {
     return data || [];
   } catch (err) {
     console.error("Sanity fetch error (student handbooks):", err);
+    return [];
+  }
+}
+
+export async function getPlacementSections() {
+  try {
+    const query = `*[_type == "placementSection" && !(_id in path("drafts.**"))] {
+      id,
+      title,
+      content
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (placementSection):", err);
     return [];
   }
 }

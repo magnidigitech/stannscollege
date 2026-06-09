@@ -696,7 +696,19 @@ export default defineConfig({
           { name: "sNo", title: "S.No", type: "number" },
           { name: "name", title: "Committee Name", type: "string" },
           { name: "constitutionOrder", title: "Constitution Order (PDF)", type: "file" },
-          { name: "activitiesReports", title: "Activities / Reports (PDF)", type: "file" }
+          {
+            name: "activitiesReports",
+            title: "Activities / Reports (PDFs)",
+            type: "array",
+            of: [
+              {
+                type: "file",
+                fields: [
+                  { name: "title", title: "Report Title / Year", type: "string" }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -761,6 +773,62 @@ export default defineConfig({
           { name: "year", title: "Academic Year", type: "string" },
           { name: "file", title: "Handbook PDF File", type: "file" },
           { name: "order", title: "Sorting Order", type: "number" }
+        ]
+      },
+      {
+        name: "placementSection",
+        title: "Placement Section",
+        type: "document",
+        fields: [
+          {
+            name: "id",
+            title: "Section ID",
+            type: "string",
+            options: {
+              list: [
+                // Group 1: Training & Placements
+                { title: "I-1. About Training & Placement Cell", value: "about-cell" },
+                { title: "I-2. Annual Reports", value: "annual-reports" },
+                { title: "I-3. Placement Statistics", value: "placement-statistics" },
+                { title: "I-4. Campus Recruitment Drives", value: "recruitment-drives" },
+                { title: "I-5. Skill Development Initiatives", value: "skill-development" },
+                { title: "I-6. Soft Skills & Personality Development", value: "soft-skills" },
+                { title: "I-7. Internships & Industry Exposure", value: "internships-exposure" },
+                { title: "I-8. Competitive Exam Coaching", value: "competitive-coaching" },
+                { title: "I-9. Career Guidance & Counselling", value: "career-guidance" },
+                { title: "I-10. Entrepreneurship Development", value: "entrepreneurship" },
+                { title: "I-11. Industry Linkages / Placement Partnerships", value: "placement-partnerships" },
+                { title: "I-12. Capacity Building & Skill Enhancement", value: "capacity-building" },
+                { title: "I-13. Alumni Career Support", value: "alumni-support" },
+                { title: "I-14. Training Calendar / Activity Gallery", value: "training-calendar" },
+                
+                // Group 2: Industry Linkages & Employability
+                { title: "II-1. Industry Partnerships", value: "industry-partnerships" },
+                { title: "II-2. Internships & Apprenticeships", value: "internships-apprenticeships" },
+                { title: "II-3. MoUs / Agreements", value: "mous-agreements" },
+                { title: "II-4. MoU Activities", value: "mou-activities" },
+                { title: "II-5. CSR Initiatives", value: "csr-initiatives" },
+                { title: "II-6. Placement Partnerships", value: "industry-placement-partnerships" },
+                { title: "II-7. Professional Certification Programmes", value: "certifications" },
+                { title: "II-8. Industry Expert Lectures", value: "expert-lectures" },
+                { title: "II-9. Industrial Visits", value: "industrial-visits" },
+                { title: "II-10. Skill-Based Training Programmes", value: "skill-training" },
+                { title: "II-11. Employability Enhancement Activities", value: "employability-activities" },
+                
+                // Group 3: Internationalization & Global Outreach
+                { title: "III-1. International Collaborations", value: "international-collaborations" },
+                { title: "III-2. Internationalization Policy", value: "internationalization-policy" },
+                { title: "III-3. International Accreditations & Memberships", value: "accreditations-memberships" },
+                { title: "III-4. Global Alumni & Outreach Engagement", value: "global-alumni" },
+                { title: "III-5. Global Research Collaborations", value: "global-research" },
+                { title: "III-6. Student Exchange / Faculty Exchange", value: "student-faculty-exchange" },
+                { title: "III-7. International Webinars & Conferences", value: "webinars-conferences" },
+                { title: "III-8. Cross-Cultural Learning Activities", value: "cross-cultural-learning" }
+              ]
+            }
+          },
+          { name: "title", title: "Title", type: "string" },
+          { name: "content", title: "Content Markdown Text", type: "text" }
         ]
       }
     ],

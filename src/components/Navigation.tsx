@@ -228,21 +228,29 @@ export default function Navigation() {
       title: "I. Placements",
       icon: Briefcase,
       items: [
-        { text: "Training & Placements", slug: "training-placements" }
+        { text: "Training & Placement Cell", slug: "about-cell" },
+        { text: "Placement Statistics", slug: "placement-statistics" },
+        { text: "Annual Reports", slug: "annual-reports" },
+        { text: "Campus Recruitment Drives", slug: "recruitment-drives" }
       ]
     },
     {
       title: "II. Industry",
       icon: Handshake,
       items: [
-        { text: "Industry Linkages & Employability", slug: "industry-linkages" }
+        { text: "Industry Partnerships", slug: "industry-partnerships" },
+        { text: "MoUs / Agreements", slug: "mous-agreements" },
+        { text: "MoU Activities", slug: "mou-activities" },
+        { text: "Placement Partnerships", slug: "industry-placement-partnerships" }
       ]
     },
     {
       title: "III. Global",
       icon: Globe2,
       items: [
-        { text: "Internationalization & Global Outreach", slug: "internationalization" }
+        { text: "International Collaborations", slug: "international-collaborations" },
+        { text: "Internationalization Policy", slug: "internationalization-policy" },
+        { text: "Accreditations & Memberships", slug: "accreditations-memberships" }
       ]
     }
   ];

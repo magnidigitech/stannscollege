@@ -11,7 +11,15 @@ import { CodeOfConduct } from "./governance-administration/CodeOfConduct";
 import { StrategicDevelopmentPlan } from "./governance-administration/StrategicDevelopmentPlan";
 import { ShieldCheck, Sparkles, UserCheck } from "lucide-react";
 
-export function GovernanceAdministration({ itemSlug }: { itemSlug: string }) {
+export function GovernanceAdministration({
+  itemSlug,
+  committeesList = [],
+  committeeYearwiseLists = []
+}: {
+  itemSlug: string;
+  committeesList?: any[];
+  committeeYearwiseLists?: any[];
+}) {
   if (itemSlug === "strategic-development-plan") {
     return <StrategicDevelopmentPlan />;
   }
@@ -59,7 +67,12 @@ export function GovernanceAdministration({ itemSlug }: { itemSlug: string }) {
   }
 
   if (itemSlug === "statutory-non-statutory-committees") {
-    return <StatutoryCommittees />;
+    return (
+      <StatutoryCommittees
+        initialCommittees={committeesList}
+        initialYearwiseLists={committeeYearwiseLists}
+      />
+    );
   }
 
   if (itemSlug === "institutional-policies") {

@@ -5,20 +5,20 @@ import { BarChart3, FileText, Eye, TrendingUp, ShieldCheck, ArrowUpRight, PieCha
 
 export function AdmissionStatistics() {
   const ugStats = [
-    { year: "2025–2026", apps: "450+", admitted: 405, sanctioned: 425, pct: "95.2%" },
-    { year: "2024–2025", apps: "435+", admitted: 398, sanctioned: 425, pct: "93.6%" },
-    { year: "2023–2024", apps: "420+", admitted: 390, sanctioned: 425, pct: "91.7%" },
+    { year: "2025–2026", apps: "298+", admitted: 254, sanctioned: 425, pct: "59.76%" },
+    { year: "2024–2025", apps: "312+", admitted: 274, sanctioned: 425, pct: "64.47%" },
+    { year: "2023–2024", apps: "320+", admitted: 285, sanctioned: 460, pct: "61.95%" },
   ];
 
   const pgStats = [
-    { year: "2025–2026", apps: "150+", admitted: 116, sanctioned: 120, pct: "96.6%" },
-    { year: "2024–2025", apps: "145+", admitted: 112, sanctioned: 120, pct: "93.3%" },
-    { year: "2023–2024", apps: "130+", admitted: 108, sanctioned: 120, pct: "90.0%" },
+    { year: "2025–2026", apps: "65+", admitted: 56, sanctioned: 120, pct: "46.67%" },
+    { year: "2024–2025", apps: "72+", admitted: 60, sanctioned: 120, pct: "50.0%" },
+    { year: "2023–2024", apps: "70+", admitted: 64, sanctioned: 120, pct: "53.33%" },
   ];
 
   return (
     <div className="flex flex-col gap-16 animate-fadeIn pb-12 font-sans">
-      
+
       {/* Header Banner */}
       <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] rounded-[2.5rem] p-10 md:p-14 text-white relative overflow-hidden shadow-lg">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
@@ -36,34 +36,13 @@ export function AdmissionStatistics() {
           </p>
         </div>
       </div>
-
-      {/* Overview Mini Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          { label: "Avg Intake Fill Rate", val: "93.4%", sub: "Cumulative Admissions", c: "text-[#002147] bg-[#002147]/5" },
-          { label: "Annual Inquiries Received", val: "580+", sub: "UG & PG Inquiries", c: "text-indigo-600 bg-indigo-50" },
-          { label: "Growth Projection", val: "+4.5%", sub: "Year on Year Trend", c: "text-emerald-700 bg-emerald-50" }
-        ].map((v, idx) => (
-          <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-8 flex flex-col gap-3 shadow-sm hover:shadow-md transition-all">
-            <span className="text-xs font-black uppercase tracking-widest text-slate-400">{v.label}</span>
-            <div className="flex items-baseline justify-between gap-2">
-              <h4 className={`font-outfit text-3xl md:text-4xl font-black ${v.c.split(" ")[0]}`}>{v.val}</h4>
-              <div className={`h-10 w-10 rounded-xl ${v.c.split(" ")[1]} flex items-center justify-center text-[#002147]`}>
-                {idx === 0 ? <PieChart className="h-5 w-5" /> : idx === 1 ? <TrendingUp className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
-              </div>
-            </div>
-            <p className="text-slate-500 font-semibold text-sm">{v.sub}</p>
-          </div>
-        ))}
-      </div>
-
       {/* 1. Undergraduate Admissions Table */}
       <div className="flex flex-col gap-8 pt-2">
         <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
           <div className="h-12 w-12 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
             <TrendingUp className="h-6 w-6" />
           </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">I. UG Admissions Trend Tracker</h3>
+          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">I. UG Admissions</h3>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
@@ -104,7 +83,7 @@ export function AdmissionStatistics() {
           <div className="h-12 w-12 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
             <BarChart3 className="h-6 w-6" />
           </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">II. PG Admissions Trend Tracker</h3>
+          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">II. PG Admissions</h3>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">

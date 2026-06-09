@@ -1,5 +1,6 @@
 import PlacementsClientPortal from "@/components/placements/PlacementsClientPortal";
 import { Metadata } from "next";
+import { getPlacementSections } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Placements & Industry Linkages | St. Ann's College for Women",
@@ -12,17 +13,57 @@ export const metadata: Metadata = {
 };
 
 export function generateStaticParams() {
-  const tabs = [
-    { slug: ["overview"] },
-    { slug: ["training-placements"] },
-    { slug: ["industry-linkages"] },
-    { slug: ["internationalization"] },
+  const slugs = [
+    // Group 1
+    "about-cell",
+    "annual-reports",
+    "placement-statistics",
+    "recruitment-drives",
+    "skill-development",
+    "soft-skills",
+    "internships-exposure",
+    "competitive-coaching",
+    "career-guidance",
+    "entrepreneurship",
+    "placement-partnerships",
+    "capacity-building",
+    "alumni-support",
+    "training-calendar",
+
+    // Group 2
+    "industry-partnerships",
+    "internships-apprenticeships",
+    "mous-agreements",
+    "mou-activities",
+    "csr-initiatives",
+    "industry-placement-partnerships",
+    "certifications",
+    "expert-lectures",
+    "industrial-visits",
+    "skill-training",
+    "employability-activities",
+
+    // Group 3
+    "international-collaborations",
+    "internationalization-policy",
+    "accreditations-memberships",
+    "global-alumni",
+    "global-research",
+    "student-faculty-exchange",
+    "webinars-conferences",
+    "cross-cultural-learning"
   ];
-  return tabs;
+  return slugs.map(slug => ({ slug: [slug] }));
 }
 
 export default async function PlacementsPage({ params }: { params: Promise<{ slug?: string[] }> }) {
   const resolvedParams = await params;
-  const activeSlug = resolvedParams.slug?.[0] || "training-placements";
-  return <PlacementsClientPortal activeSlug={activeSlug} />;
+  const activeSlug = resolvedParams.slug?.[0] || "about-cell";
+  const placementSections = await getPlacementSections();
+  return (
+    <PlacementsClientPortal
+      activeSlug={activeSlug}
+      initialSections={placementSections}
+    />
+  );
 }

@@ -1,15 +1,19 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, Eye, FileText, Shield, Award, Calendar, Layers, BookOpen } from "lucide-react";
+import { Search, Eye, FileText, Shield, Calendar, Layers, X } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
-import { getCommittees, getCommitteeYearwiseLists } from "@/lib/sanity";
+
+interface ActivityReport {
+  title?: string;
+  fileUrl: string;
+}
 
 interface Committee {
   sNo: number;
   name: string;
   constitutionOrderUrl?: string | null;
-  activitiesReportsUrl?: string | null;
+  activitiesReports?: ActivityReport[] | null;
 }
 
 interface YearwiseList {
@@ -19,48 +23,48 @@ interface YearwiseList {
 }
 
 const defaultCommittees: Committee[] = [
-  { sNo: 1, name: "Admissions Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 2, name: "Alumni Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 3, name: "Anti-Drug Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 4, name: "Anti-Ragging Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 5, name: "Attendance Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 6, name: "Awards & Medals Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 7, name: "College Development Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 8, name: "College Publications & Promotions Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 9, name: "Cultural & Co-Curricular Activities Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 10, name: "Discipline Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 11, name: "Eco Club", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 12, name: "Entrepreneurship Development / Innovation & Start-Up Centre", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 13, name: "EOC (Equal Opportunity Cell) & SC/ST/OBC/Minority Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: null },
-  { sNo: 14, name: "Examinations Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 15, name: "Finance & Scholarships Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 16, name: "Grievance Redressal Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 17, name: "Institutional Innovation Council / Institution-Industry Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: null },
-  { sNo: 18, name: "Intellectual Property Rights (IPR)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 19, name: "Internal Compliance Committee (ICC) / Anti Sexual Harassment Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: null },
-  { sNo: 20, name: "Internships & Competitive Examinations Coaching Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: null },
-  { sNo: 21, name: "IQAC (Institutional Quality Assurance Cell)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 22, name: "Library Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 23, name: "Literary Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 24, name: "Mentor & Mentee Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 25, name: "Mother Gnanamma Outreach Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 26, name: "NCC Unit", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 27, name: "NSS Unit", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 28, name: "Parents Association Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 29, name: "Press & Media Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 30, name: "Quantum Innovation Centre (QIC)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 31, name: "Red Ribbon Club", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 32, name: "Research & Development Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 33, name: "RTI (Right to Information)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 34, name: "Seminars Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 35, name: "Sports & Games Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 36, name: "Students Counselling Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 37, name: "Timetables Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 38, name: "Tours & Travels Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 39, name: "Training & Placement Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 40, name: "Universal Human Values (UHV) Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 41, name: "Women Empowerment Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" },
-  { sNo: 42, name: "Qunatumn Innovation Centre (QIC)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReportsUrl: "/documents/committees/college-committees-2025-2026.pdf" }
+  { sNo: 1, name: "Admissions Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 2, name: "Alumni Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 3, name: "Anti-Drug Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 4, name: "Anti-Ragging Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 5, name: "Attendance Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 6, name: "Awards & Medals Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 7, name: "College Development Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 8, name: "College Publications & Promotions Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 9, name: "Cultural & Co-Curricular Activities Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 10, name: "Discipline Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 11, name: "Eco Club", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 12, name: "Entrepreneurship Development / Innovation & Start-Up Centre", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 13, name: "EOC (Equal Opportunity Cell) & SC/ST/OBC/Minority Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: null },
+  { sNo: 14, name: "Examinations Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 15, name: "Finance & Scholarships Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 16, name: "Grievance Redressal Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 17, name: "Institutional Innovation Council / Institution-Industry Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: null },
+  { sNo: 18, name: "Intellectual Property Rights (IPR)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 19, name: "Internal Compliance Committee (ICC) / Anti Sexual Harassment Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: null },
+  { sNo: 20, name: "Internships & Competitive Examinations Coaching Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: null },
+  { sNo: 21, name: "IQAC (Institutional Quality Assurance Cell)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 22, name: "Library Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 23, name: "Literary Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 24, name: "Mentor & Mentee Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 25, name: "Mother Gnanamma Outreach Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 26, name: "NCC Unit", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 27, name: "NSS Unit", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 28, name: "Parents Association Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 29, name: "Press & Media Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 30, name: "Quantum Innovation Centre (QIC)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 31, name: "Red Ribbon Club", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 32, name: "Research & Development Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 33, name: "RTI (Right to Information)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 34, name: "Seminars Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 35, name: "Sports & Games Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 36, name: "Students Counselling Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 37, name: "Timetables Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 38, name: "Tours & Travels Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 39, name: "Training & Placement Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 40, name: "Universal Human Values (UHV) Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 41, name: "Women Empowerment Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
+  { sNo: 42, name: "Qunatumn Innovation Centre (QIC)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] }
 ];
 
 const defaultYearwiseLists: YearwiseList[] = [
@@ -70,7 +74,13 @@ const defaultYearwiseLists: YearwiseList[] = [
   { academicYear: "2022–2023 Committee List", fileUrl: "/documents/committees/college-committees-2024-2025.pdf", order: 4 }
 ];
 
-export function StatutoryCommittees() {
+export function StatutoryCommittees({
+  initialCommittees = [],
+  initialYearwiseLists = []
+}: {
+  initialCommittees?: Committee[];
+  initialYearwiseLists?: YearwiseList[];
+}) {
   const [committees, setCommittees] = useState<Committee[]>([]);
   const [yearwiseLists, setYearwiseLists] = useState<YearwiseList[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,43 +90,31 @@ export function StatutoryCommittees() {
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [selectedFileTitle, setSelectedFileTitle] = useState("");
 
+  // Multiple Reports Selection Modal State
+  const [selectedReportsList, setSelectedReportsList] = useState<ActivityReport[] | null>(null);
+  const [selectedReportsTitle, setSelectedReportsTitle] = useState("");
+
   useEffect(() => {
-    async function loadCommittees() {
-      try {
-        const [fetchedCommittees, fetchedYearwise] = await Promise.all([
-          getCommittees(),
-          getCommitteeYearwiseLists()
-        ]);
-
-        if (fetchedCommittees && fetchedCommittees.length > 0) {
-          // Map fetched schema to match internal Interface
-          const formatted = fetchedCommittees.map((c: any) => ({
-            sNo: c.sNo,
-            name: c.name,
-            constitutionOrderUrl: c.constitutionOrderUrl,
-            activitiesReportsUrl: c.activitiesReportsUrl
-          }));
-          setCommittees(formatted);
-        } else {
-          setCommittees(defaultCommittees);
-        }
-
-        if (fetchedYearwise && fetchedYearwise.length > 0) {
-          setYearwiseLists(fetchedYearwise);
-        } else {
-          setYearwiseLists(defaultYearwiseLists);
-        }
-      } catch (err) {
-        console.error("Error loading committees from Sanity:", err);
-        setCommittees(defaultCommittees);
-        setYearwiseLists(defaultYearwiseLists);
-      } finally {
-        setLoading(false);
-      }
+    if (initialCommittees && initialCommittees.length > 0) {
+      // Map to match interface
+      const formatted = initialCommittees.map((c: any) => ({
+        sNo: c.sNo,
+        name: c.name,
+        constitutionOrderUrl: c.constitutionOrderUrl,
+        activitiesReports: c.activitiesReports
+      }));
+      setCommittees(formatted);
+    } else {
+      setCommittees(defaultCommittees);
     }
 
-    loadCommittees();
-  }, []);
+    if (initialYearwiseLists && initialYearwiseLists.length > 0) {
+      setYearwiseLists(initialYearwiseLists);
+    } else {
+      setYearwiseLists(defaultYearwiseLists);
+    }
+    setLoading(false);
+  }, [initialCommittees, initialYearwiseLists]);
 
   const filteredCommittees = committees.filter((c) =>
     c.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -125,6 +123,18 @@ export function StatutoryCommittees() {
   const handleOpenPdf = (url: string, title: string) => {
     setSelectedFileUrl(url);
     setSelectedFileTitle(title);
+  };
+
+  const handleViewReports = (row: Committee) => {
+    const reports = row.activitiesReports || [];
+    if (reports.length === 1) {
+      // Single report: Open directly in PDF viewer
+      handleOpenPdf(reports[0].fileUrl, `${row.name} - Activities & Reports`);
+    } else if (reports.length > 1) {
+      // Multiple reports: Open selection popup modal
+      setSelectedReportsList(reports);
+      setSelectedReportsTitle(`${row.name} - Activities & Reports`);
+    }
   };
 
   return (
@@ -217,9 +227,9 @@ export function StatutoryCommittees() {
                         )}
                       </td>
                       <td className="py-5 px-8 text-center">
-                        {row.activitiesReportsUrl ? (
+                        {row.activitiesReports && row.activitiesReports.length > 0 ? (
                           <button
-                            onClick={() => handleOpenPdf(row.activitiesReportsUrl!, `${row.name} - Activities & Reports`)}
+                            onClick={() => handleViewReports(row)}
                             className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-100/60 px-3.5 py-2 text-[11px] font-black text-emerald-700 transition-all select-none hover:scale-[1.03]"
                           >
                             <Eye className="h-3.5 w-3.5 shrink-0" /> View Reports
@@ -283,7 +293,67 @@ export function StatutoryCommittees() {
         </div>
       </div>
 
-      {/* 5. Flipbook Modal Reader */}
+      {/* 5. Selection Modal for Multiple Reports */}
+      {selectedReportsList && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn">
+          {/* Click overlay to close */}
+          <div className="absolute inset-0" onClick={() => setSelectedReportsList(null)}></div>
+          
+          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 md:p-8 flex flex-col gap-6 animate-scaleUp z-10">
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedReportsList(null)}
+              className="absolute top-4 right-4 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 transition-all active:scale-95 duration-200"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Header */}
+            <div className="flex flex-col gap-2 pr-8 select-none">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 border border-emerald-200 px-3 py-1 text-[10px] font-black text-emerald-700 tracking-wider uppercase w-fit">
+                <Layers className="h-3.5 w-3.5" /> Multiple Reports Available
+              </span>
+              <h3 className="font-outfit text-lg md:text-xl font-black text-slate-800 leading-tight">
+                {selectedReportsTitle}
+              </h3>
+              <p className="text-slate-400 text-xs font-semibold leading-relaxed">
+                This committee has multiple activity reports filed. Select one below to open it in the interactive reader.
+              </p>
+            </div>
+
+            {/* List */}
+            <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-1">
+              {selectedReportsList.map((report, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between gap-4 p-4 bg-slate-50 hover:bg-slate-100/85 border border-slate-150 rounded-2xl transition-all duration-150 group"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-sm">
+                      <FileText className="h-5 w-5" />
+                    </span>
+                    <span className="font-sans font-bold text-xs md:text-sm text-slate-700 group-hover:text-slate-900 transition-colors leading-snug">
+                      {report.title || `Report #${idx + 1}`}
+                    </span>
+                  </div>
+                  
+                  <button
+                    onClick={() => {
+                      handleOpenPdf(report.fileUrl, `${selectedReportsTitle} - ${report.title || `Report #${idx + 1}`}`);
+                      setSelectedReportsList(null); // Close the popup
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-[#002147] hover:bg-[#002b5c] text-white text-xs font-bold py-2.5 px-4 shadow-sm transition-all select-none hover:scale-[1.02]"
+                  >
+                    <Eye className="h-4 w-4" /> View
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 6. Flipbook Modal Reader */}
       <FilePreviewModal
         isOpen={!!selectedFileUrl}
         onClose={() => {
