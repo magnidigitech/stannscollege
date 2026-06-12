@@ -664,5 +664,152 @@ export async function getPlacementSections() {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// FACULTY PROFILE FUNCTIONS
+// ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Returns minimal data for all published faculty profiles.
+ * Used to build the name → slug mapping for "View Profile" links in the roster.
+ */
+export async function getAllFacultyProfiles() {
+  try {
+    const query = `*[_type == "facultyProfile" && showOnWebsite == true && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      facultyName,
+      "slug": slug.current,
+      designation,
+      department,
+      "profilePhotoUrl": profilePhoto.asset->url,
+      featuredFaculty,
+      displayOrder
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (getAllFacultyProfiles):", err);
+    return [];
+  }
+}
 
+/**
+ * Returns the full profile for a single faculty member by slug.
+ * Used by the individual profile page /faculty/profile/[slug].
+ */
+export async function getFacultyProfile(slug: string) {
+  try {
+    const query = `*[_type == "facultyProfile" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
+      facultyName,
+      "slug": slug.current,
+      "profilePhotoUrl": profilePhoto.asset->url,
+      designation,
+      department,
+      facultyId,
+      gender,
+      dateOfBirth,
+      dateOfJoining,
+      employmentType,
+      officialEmail,
+      contactNumber,
+      officeLocation,
+      facultyStatus,
+      highestQualification,
+      qualifications,
+      totalExperience,
+      teachingExperience,
+      industryExperience,
+      professionalExperience,
+      shortBio,
+      careerObjective,
+      teachingPhilosophy,
+      areaOfExpertise,
+      languagesKnown,
+      subjectsHandled,
+      researchAreas,
+      researchInterests,
+      ongoingProjects,
+      completedProjects,
+      publications[] {
+        publicationTitle,
+        journalName,
+        publicationType,
+        authors,
+        year,
+        volumeIssuePages,
+        doiLink,
+        indexing,
+        "publicationPdfUrl": publicationPdf.asset->url
+      },
+      booksPublished,
+      patents,
+      conferencesAttended[] {
+        eventTitle,
+        organizedBy,
+        location,
+        fromDate,
+        toDate,
+        "certificateUrl": certificate.asset->url
+      },
+      seminarsAttended[] {
+        eventTitle,
+        organizedBy,
+        location,
+        fromDate,
+        toDate,
+        "certificateUrl": certificate.asset->url
+      },
+      fdpsAttended[] {
+        eventTitle,
+        organizedBy,
+        location,
+        fromDate,
+        toDate,
+        "certificateUrl": certificate.asset->url
+      },
+      workshopsAttended[] {
+        eventTitle,
+        organizedBy,
+        location,
+        fromDate,
+        toDate,
+        "certificateUrl": certificate.asset->url
+      },
+      awards[] {
+        awardTitle,
+        awardedBy,
+        awardYear,
+        description,
+        "certificateUrl": certificate.asset->url
+      },
+      currentAdministrativeRole,
+      departmentResponsibilities,
+      committeeMemberships,
+      projectsGuided,
+      researchScholars,
+      professionalMemberships,
+      linkedinUrl,
+      googleScholarUrl,
+      orcidId,
+      scopusId,
+      researchGateUrl,
+      personalWebsite,
+      "cvPdfUrl": cvPdf.asset->url,
+      "facultyProfilePdfUrl": facultyProfilePdf.asset->url,
+      certificates[] {
+        description,
+        "fileUrl": asset->url
+      },
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      imageAltText,
+      displayOrder,
+      featuredFaculty,
+      showOnWebsite
+    }`;
+    const data = await sanityClient.fetch(query, { slug });
+    return data || null;
+  } catch (err) {
+    console.error("Sanity fetch error (getFacultyProfile):", err);
+    return null;
+  }
+}

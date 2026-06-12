@@ -830,7 +830,447 @@ export default defineConfig({
           { name: "title", title: "Title", type: "string" },
           { name: "content", title: "Content Markdown Text", type: "text" }
         ]
-      }
+      },
+      // ─────────────────────────────────────────────────────────────────
+      // FACULTY PROFILE (Full CMS — 17 sections)
+      // ─────────────────────────────────────────────────────────────────
+      {
+        name: "facultyProfile",
+        title: "Faculty Profiles",
+        type: "document",
+        groups: [
+          { name: "basic",       title: "1. Basic Profile" },
+          { name: "academic",    title: "2. Academic Qualifications" },
+          { name: "experience",  title: "3. Professional Experience" },
+          { name: "summary",     title: "4. Profile Summary" },
+          { name: "teaching",    title: "5. Teaching Details" },
+          { name: "research",    title: "6. Research Details" },
+          { name: "publications",title: "7. Publications" },
+          { name: "books",       title: "8. Books, Patents & Copyrights" },
+          { name: "events",      title: "9. Conferences, FDPs & Workshops" },
+          { name: "awards",      title: "10. Awards & Achievements" },
+          { name: "roles",       title: "11. Roles & Responsibilities" },
+          { name: "guidance",    title: "12. Student Guidance" },
+          { name: "memberships", title: "13. Professional Memberships" },
+          { name: "online",      title: "14. Online Profile Links" },
+          { name: "documents",   title: "15. Documents & Files" },
+          { name: "seo",         title: "16. SEO Fields" },
+          { name: "admin",       title: "17. Admin Control" },
+        ],
+        fields: [
+          // ── 1. BASIC PROFILE ──────────────────────────────────────────
+          { name: "facultyName",      title: "Faculty Name",               type: "string",  group: "basic" },
+          { name: "slug",             title: "URL Slug",                   type: "slug",    group: "basic", options: { source: "facultyName", maxLength: 96 } },
+          { name: "profilePhoto",     title: "Profile Photo",              type: "image",   group: "basic", options: { hotspot: true } },
+          { name: "designation",      title: "Designation",                type: "string",  group: "basic" },
+          {
+            name: "department", title: "Department", type: "string", group: "basic",
+            options: { list: [
+              "Commerce", "Computer Applications", "Mathematics", "Physics",
+              "Chemistry", "Zoology", "Botany", "English", "Telugu",
+              "Hindi", "Economics", "Psychology", "History", "Political Science",
+              "Physical Education", "Library", "Administration", "MCA", "MBA", "Other"
+            ]}
+          },
+          { name: "facultyId",        title: "Faculty ID",                 type: "string",  group: "basic" },
+          {
+            name: "gender", title: "Gender", type: "string", group: "basic",
+            options: { list: ["Female", "Male", "Other"], layout: "radio" }
+          },
+          { name: "dateOfBirth",      title: "Date of Birth",              type: "date",    group: "basic" },
+          { name: "dateOfJoining",    title: "Date of Joining",            type: "date",    group: "basic" },
+          {
+            name: "employmentType", title: "Employment Type", type: "string", group: "basic",
+            options: { list: ["Regular", "Contract", "Visiting", "Adjunct", "Part-Time"], layout: "radio" }
+          },
+          { name: "officialEmail",    title: "Official Email",             type: "string",  group: "basic" },
+          { name: "contactNumber",    title: "Contact Number",             type: "string",  group: "basic" },
+          { name: "officeLocation",   title: "Office / Cabin Location",    type: "string",  group: "basic" },
+          {
+            name: "facultyStatus", title: "Faculty Status", type: "string", group: "basic",
+            options: { list: [{ title: "Active", value: "active" }, { title: "Inactive", value: "inactive" }], layout: "radio" }
+          },
+
+          // ── 2. ACADEMIC QUALIFICATIONS ────────────────────────────────
+          { name: "highestQualification", title: "Highest Qualification", type: "string", group: "academic" },
+          {
+            name: "qualifications", title: "Qualification Details", type: "array", group: "academic",
+            of: [{
+              type: "object",
+              name: "qualificationEntry",
+              title: "Qualification",
+              fields: [
+                { name: "degreeName",      title: "Degree Name",             type: "string" },
+                { name: "specialization",  title: "Specialization",          type: "string" },
+                { name: "university",      title: "University / Institution", type: "string" },
+                { name: "yearOfPassing",   title: "Year of Passing",         type: "string" },
+                { name: "gradePercentage", title: "Grade / Percentage",      type: "string" },
+              ]
+            }]
+          },
+
+          // ── 3. PROFESSIONAL EXPERIENCE ────────────────────────────────
+          { name: "totalExperience",    title: "Total Experience (Years)",    type: "string", group: "experience" },
+          { name: "teachingExperience", title: "Teaching Experience (Years)", type: "string", group: "experience" },
+          { name: "industryExperience", title: "Industry Experience (Years)", type: "string", group: "experience" },
+          {
+            name: "professionalExperience", title: "Previous Experience Details", type: "array", group: "experience",
+            of: [{
+              type: "object",
+              name: "experienceEntry",
+              title: "Experience",
+              fields: [
+                { name: "organization",  title: "Organization Name",         type: "string" },
+                { name: "designation",   title: "Designation / Role",        type: "string" },
+                { name: "fromDate",      title: "From Date",                 type: "string" },
+                { name: "toDate",        title: "To Date (or 'Present')",    type: "string" },
+                { name: "description",   title: "Experience Description",    type: "text" },
+              ]
+            }]
+          },
+
+          // ── 4. PROFILE SUMMARY ────────────────────────────────────────
+          { name: "shortBio",           title: "Short Bio",           type: "text",   group: "summary" },
+          { name: "careerObjective",    title: "Career Objective",    type: "text",   group: "summary" },
+          { name: "teachingPhilosophy", title: "Teaching Philosophy", type: "text",   group: "summary" },
+          {
+            name: "areaOfExpertise", title: "Area of Expertise (Tags)", type: "array", group: "summary",
+            of: [{ type: "string" }], options: { layout: "tags" }
+          },
+          {
+            name: "languagesKnown", title: "Languages Known (Tags)", type: "array", group: "summary",
+            of: [{ type: "string" }], options: { layout: "tags" }
+          },
+
+          // ── 5. TEACHING DETAILS ───────────────────────────────────────
+          {
+            name: "subjectsHandled", title: "Subjects Handled", type: "array", group: "teaching",
+            of: [{
+              type: "object",
+              name: "subjectEntry",
+              title: "Subject",
+              fields: [
+                { name: "subjectName",     title: "Subject Name",        type: "string" },
+                { name: "courseProgram",   title: "Course / Program",    type: "string" },
+                { name: "semesterYear",    title: "Semester / Year",     type: "string" },
+                { name: "academicYear",    title: "Academic Year",       type: "string" },
+                { name: "materialsLink",   title: "Course Materials Link (URL)", type: "url" },
+              ]
+            }]
+          },
+
+          // ── 6. RESEARCH DETAILS ───────────────────────────────────────
+          {
+            name: "researchAreas", title: "Research Areas (Tags)", type: "array", group: "research",
+            of: [{ type: "string" }], options: { layout: "tags" }
+          },
+          { name: "researchInterests", title: "Research Interests", type: "text", group: "research" },
+          {
+            name: "ongoingProjects", title: "Ongoing Research Projects", type: "array", group: "research",
+            of: [{
+              type: "object",
+              name: "ongoingProject",
+              title: "Ongoing Project",
+              fields: [
+                { name: "projectTitle",   title: "Project Title",    type: "string" },
+                { name: "fundingAgency",  title: "Funding Agency",   type: "string" },
+                { name: "amountReceived", title: "Amount Received",  type: "string" },
+                { name: "duration",       title: "Duration",         type: "string" },
+                { name: "role",           title: "Role (PI/Co-PI)",  type: "string" },
+                {
+                  name: "projectStatus", title: "Project Status", type: "string",
+                  options: { list: ["Ongoing", "Completed", "Submitted", "Sanctioned"] }
+                },
+              ]
+            }]
+          },
+          {
+            name: "completedProjects", title: "Completed Research Projects", type: "array", group: "research",
+            of: [{
+              type: "object",
+              name: "completedProject",
+              title: "Completed Project",
+              fields: [
+                { name: "projectTitle",   title: "Project Title",    type: "string" },
+                { name: "fundingAgency",  title: "Funding Agency",   type: "string" },
+                { name: "amountReceived", title: "Amount Received",  type: "string" },
+                { name: "duration",       title: "Duration",         type: "string" },
+                { name: "role",           title: "Role (PI/Co-PI)",  type: "string" },
+                {
+                  name: "projectStatus", title: "Project Status", type: "string",
+                  options: { list: ["Ongoing", "Completed", "Submitted", "Sanctioned"] }
+                },
+              ]
+            }]
+          },
+
+          // ── 7. PUBLICATIONS ───────────────────────────────────────────
+          {
+            name: "publications", title: "Publications", type: "array", group: "publications",
+            of: [{
+              type: "object",
+              name: "publicationEntry",
+              title: "Publication",
+              fields: [
+                { name: "publicationTitle",  title: "Publication Title",       type: "string" },
+                { name: "journalName",       title: "Journal / Conference Name",type: "string" },
+                {
+                  name: "publicationType", title: "Publication Type", type: "string",
+                  options: { list: ["Journal", "Conference", "Book", "Book Chapter", "Patent", "Article"] }
+                },
+                { name: "authors",           title: "Authors",                 type: "string" },
+                { name: "year",              title: "Year",                    type: "string" },
+                { name: "volumeIssuePages",  title: "Volume / Issue / Pages",  type: "string" },
+                { name: "doiLink",           title: "DOI Link (URL)",          type: "url" },
+                {
+                  name: "indexing", title: "Indexing", type: "string",
+                  options: { list: ["SCOPUS", "Web of Science", "UGC-CARE", "PubMed", "IEEE", "Springer", "Elsevier", "Other"] }
+                },
+                { name: "publicationPdf",    title: "Publication PDF",         type: "file" },
+              ]
+            }]
+          },
+
+          // ── 8. BOOKS, PATENTS & COPYRIGHTS ────────────────────────────
+          {
+            name: "booksPublished", title: "Books Published", type: "array", group: "books",
+            of: [{
+              type: "object",
+              name: "bookEntry",
+              title: "Book",
+              fields: [
+                { name: "bookTitle",     title: "Book Title",     type: "string" },
+                { name: "publisherName", title: "Publisher Name", type: "string" },
+                { name: "isbnNumber",    title: "ISBN Number",    type: "string" },
+                { name: "publishedYear", title: "Published Year", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "patents", title: "Patent Details", type: "array", group: "books",
+            of: [{
+              type: "object",
+              name: "patentEntry",
+              title: "Patent",
+              fields: [
+                { name: "patentTitle",  title: "Patent Title",  type: "string" },
+                { name: "patentNumber", title: "Patent Number", type: "string" },
+                {
+                  name: "patentStatus", title: "Patent Status", type: "string",
+                  options: { list: ["Filed", "Published", "Granted", "Abandoned"] }
+                },
+                { name: "filedDate", title: "Filed / Published Date", type: "string" },
+              ]
+            }]
+          },
+
+          // ── 9. CONFERENCES, SEMINARS, FDPs & WORKSHOPS ────────────────
+          {
+            name: "conferencesAttended", title: "Conferences Attended", type: "array", group: "events",
+            of: [{
+              type: "object",
+              name: "conferenceEntry",
+              title: "Conference",
+              fields: [
+                { name: "eventTitle",   title: "Event Title / Paper Title", type: "string" },
+                { name: "organizedBy",  title: "Organized By",              type: "string" },
+                { name: "location",     title: "Location",                  type: "string" },
+                { name: "fromDate",     title: "From Date",                 type: "string" },
+                { name: "toDate",       title: "To Date",                   type: "string" },
+                { name: "certificate",  title: "Certificate Upload",        type: "file" },
+              ]
+            }]
+          },
+          {
+            name: "seminarsAttended", title: "Seminars Attended", type: "array", group: "events",
+            of: [{
+              type: "object",
+              name: "seminarEntry",
+              title: "Seminar",
+              fields: [
+                { name: "eventTitle",  title: "Seminar Title", type: "string" },
+                { name: "organizedBy", title: "Organized By",  type: "string" },
+                { name: "location",    title: "Location",      type: "string" },
+                { name: "fromDate",    title: "From Date",     type: "string" },
+                { name: "toDate",      title: "To Date",       type: "string" },
+                { name: "certificate", title: "Certificate",   type: "file" },
+              ]
+            }]
+          },
+          {
+            name: "fdpsAttended", title: "FDPs Attended", type: "array", group: "events",
+            of: [{
+              type: "object",
+              name: "fdpEntry",
+              title: "FDP",
+              fields: [
+                { name: "eventTitle",  title: "FDP Title",     type: "string" },
+                { name: "organizedBy", title: "Organized By",  type: "string" },
+                { name: "location",    title: "Location",      type: "string" },
+                { name: "fromDate",    title: "From Date",     type: "string" },
+                { name: "toDate",      title: "To Date",       type: "string" },
+                { name: "certificate", title: "Certificate",   type: "file" },
+              ]
+            }]
+          },
+          {
+            name: "workshopsAttended", title: "Workshops Attended", type: "array", group: "events",
+            of: [{
+              type: "object",
+              name: "workshopEntry",
+              title: "Workshop",
+              fields: [
+                { name: "eventTitle",  title: "Workshop Title", type: "string" },
+                { name: "organizedBy", title: "Organized By",   type: "string" },
+                { name: "location",    title: "Location",       type: "string" },
+                { name: "fromDate",    title: "From Date",      type: "string" },
+                { name: "toDate",      title: "To Date",        type: "string" },
+                { name: "certificate", title: "Certificate",    type: "file" },
+              ]
+            }]
+          },
+
+          // ── 10. AWARDS & ACHIEVEMENTS ─────────────────────────────────
+          {
+            name: "awards", title: "Awards & Achievements", type: "array", group: "awards",
+            of: [{
+              type: "object",
+              name: "awardEntry",
+              title: "Award",
+              fields: [
+                { name: "awardTitle",   title: "Award Title",             type: "string" },
+                { name: "awardedBy",    title: "Awarded By",              type: "string" },
+                { name: "awardYear",    title: "Year",                    type: "string" },
+                { name: "description",  title: "Description",             type: "text" },
+                { name: "certificate",  title: "Award Certificate / Image", type: "image", options: { hotspot: true } },
+              ]
+            }]
+          },
+
+          // ── 11. ROLES & RESPONSIBILITIES ──────────────────────────────
+          { name: "currentAdministrativeRole", title: "Current Administrative Role", type: "string", group: "roles" },
+          {
+            name: "departmentResponsibilities", title: "Department Responsibilities", type: "array", group: "roles",
+            of: [{
+              type: "object",
+              name: "responsibilityEntry",
+              title: "Responsibility",
+              fields: [
+                { name: "roleName",     title: "Role Name",               type: "string" },
+                { name: "academicYear", title: "Academic Year",           type: "string" },
+                { name: "description",  title: "Responsibility Description", type: "text" },
+              ]
+            }]
+          },
+          {
+            name: "committeeMemberships", title: "Committee Memberships", type: "array", group: "roles",
+            of: [{
+              type: "object",
+              name: "committeeEntry",
+              title: "Committee",
+              fields: [
+                { name: "committeeName", title: "Committee Name",         type: "string" },
+                { name: "academicYear",  title: "Academic Year",          type: "string" },
+                { name: "description",   title: "Responsibility Description", type: "text" },
+              ]
+            }]
+          },
+
+          // ── 12. STUDENT GUIDANCE ──────────────────────────────────────
+          {
+            name: "projectsGuided", title: "Projects Guided", type: "array", group: "guidance",
+            of: [{
+              type: "object",
+              name: "projectGuidedEntry",
+              title: "Project Guided",
+              fields: [
+                { name: "studentName",  title: "Student Name",     type: "string" },
+                { name: "projectTitle", title: "Project Title",    type: "string" },
+                { name: "course",       title: "Programme / Course",type: "string" },
+                { name: "academicYear", title: "Academic Year",    type: "string" },
+                {
+                  name: "projectStatus", title: "Project Status", type: "string",
+                  options: { list: ["Ongoing", "Completed", "Submitted"] }
+                },
+              ]
+            }]
+          },
+          {
+            name: "researchScholars", title: "Research Scholars Guided", type: "array", group: "guidance",
+            of: [{
+              type: "object",
+              name: "scholarEntry",
+              title: "Research Scholar",
+              fields: [
+                { name: "scholarName",    title: "Scholar Name",    type: "string" },
+                { name: "researchTopic",  title: "Research Topic",  type: "string" },
+                {
+                  name: "guidanceStatus", title: "Guidance Status", type: "string",
+                  options: { list: ["Ongoing", "Submitted", "Awarded"] }
+                },
+              ]
+            }]
+          },
+
+          // ── 13. PROFESSIONAL MEMBERSHIPS ──────────────────────────────
+          {
+            name: "professionalMemberships", title: "Professional Memberships", type: "array", group: "memberships",
+            of: [{
+              type: "object",
+              name: "membershipEntry",
+              title: "Membership",
+              fields: [
+                { name: "organization",    title: "Organization Name", type: "string" },
+                { name: "membershipId",    title: "Membership ID",     type: "string" },
+                { name: "membershipType",  title: "Membership Type",   type: "string" },
+                { name: "validity",        title: "Validity / Expiry", type: "string" },
+              ]
+            }]
+          },
+
+          // ── 14. ONLINE PROFILE LINKS ──────────────────────────────────
+          { name: "linkedinUrl",       title: "LinkedIn Profile URL",       type: "url",    group: "online" },
+          { name: "googleScholarUrl",  title: "Google Scholar Profile URL", type: "url",    group: "online" },
+          { name: "orcidId",           title: "ORCID ID / URL",             type: "string", group: "online" },
+          { name: "scopusId",          title: "Scopus ID / URL",            type: "string", group: "online" },
+          { name: "researchGateUrl",   title: "ResearchGate Profile URL",   type: "url",    group: "online" },
+          { name: "personalWebsite",   title: "Personal Website URL",       type: "url",    group: "online" },
+
+          // ── 15. DOCUMENTS ─────────────────────────────────────────────
+          { name: "cvPdf",             title: "CV / Resume PDF",            type: "file",   group: "documents" },
+          { name: "facultyProfilePdf", title: "Faculty Profile PDF",        type: "file",   group: "documents" },
+          {
+            name: "certificates", title: "Certificates (Multiple)", type: "array", group: "documents",
+            of: [{
+              type: "file",
+              fields: [{ name: "description", title: "Certificate Description", type: "string" }]
+            }]
+          },
+
+          // ── 16. SEO FIELDS ────────────────────────────────────────────
+          { name: "metaTitle",       title: "Meta Title",       type: "string", group: "seo" },
+          { name: "metaDescription", title: "Meta Description", type: "text",   group: "seo" },
+          {
+            name: "metaKeywords", title: "Meta Keywords (Tags)", type: "array", group: "seo",
+            of: [{ type: "string" }], options: { layout: "tags" }
+          },
+          { name: "imageAltText", title: "Profile Photo Alt Text", type: "string", group: "seo" },
+
+          // ── 17. ADMIN CONTROL ─────────────────────────────────────────
+          { name: "displayOrder",    title: "Display Order (lower = first)", type: "number",  group: "admin" },
+          { name: "featuredFaculty", title: "Featured Faculty?",             type: "boolean", group: "admin" },
+          { name: "showOnWebsite",   title: "Show on Website?",              type: "boolean", group: "admin" },
+          { name: "passwordHash",    title: "Password Hash (System — Do Not Edit)", type: "string", group: "admin" },
+        ],
+
+        preview: {
+          select: {
+            title: "facultyName",
+            subtitle: "designation",
+            media: "profilePhoto",
+          }
+        }
+      },
     ],
   },
 });

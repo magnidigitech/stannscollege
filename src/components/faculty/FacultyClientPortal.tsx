@@ -43,12 +43,14 @@ interface FacultyClientPortalProps {
   initialMembers: any[];
   initialSections: any[];
   activeSlug: string;
+  profileSlugMap?: Record<string, string>;
 }
 
 export default function FacultyClientPortal({ 
   initialMembers = [], 
   initialSections = [], 
-  activeSlug = "teaching-staff" 
+  activeSlug = "teaching-staff",
+  profileSlugMap = {}
 }: FacultyClientPortalProps) {
   
   const router = useRouter();
@@ -731,6 +733,17 @@ export default function FacultyClientPortal({
                               {m.staffType === "contingent" && (
                                 <span className="inline-block w-fit mt-1 px-2 py-0.5 rounded text-[8px] font-black uppercase bg-amber-50 border border-amber-100 text-amber-800">Contingent</span>
                               )}
+                              {(() => {
+                                const profileSlug = profileSlugMap[m.name?.trim().toLowerCase()];
+                                return profileSlug ? (
+                                  <Link
+                                    href={`/faculty/profile/${profileSlug}`}
+                                    className="flex items-center gap-1 text-[9px] font-black text-emerald-600 mt-1 hover:underline uppercase tracking-wide"
+                                  >
+                                    <ArrowRight className="h-2.5 w-2.5" /> View Profile
+                                  </Link>
+                                ) : null;
+                              })()}
                               {(m as any).profilePdfUrl && (
                                 <a 
                                   href={(m as any).profilePdfUrl} 

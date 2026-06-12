@@ -1,5 +1,5 @@
 import React from "react";
-import { getFacultyMembers, getFacultySections } from "@/lib/sanity";
+import { getFacultyMembers, getFacultySections, getAllFacultyProfiles } from "@/lib/sanity";
 import FacultyClientPortal from "@/components/faculty/FacultyClientPortal";
 import { Metadata } from "next";
 
@@ -21,6 +21,15 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
   // Fetch dynamic data from Sanity Server-Side
   const members = await getFacultyMembers();
   const sections = await getFacultySections();
+  const allProfiles = await getAllFacultyProfiles();
+
+  // Build a name → slug map for "View Profile" links in roster
+  const profileSlugMap: Record<string, string> = {};
+  (allProfiles || []).forEach((profile: { facultyName: string; slug: string }) => {
+    if (profile.facultyName && profile.slug) {
+      profileSlugMap[profile.facultyName.trim().toLowerCase()] = profile.slug;
+    }
+  });
 
   // Current selected slug parameter (if any)
   const activeSlug = resolvedParams?.slug?.[0] || "teaching-staff";
@@ -30,7 +39,8 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
       <FacultyClientPortal 
         initialMembers={members || []} 
         initialSections={sections || []} 
-        activeSlug={activeSlug} 
+        activeSlug={activeSlug}
+        profileSlugMap={profileSlugMap}
       />
     </div>
   );
