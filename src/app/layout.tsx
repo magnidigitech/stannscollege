@@ -33,7 +33,7 @@ export default function RootLayout({
 
 
         {/* Strip line at the very top for announcements */}
-        <div className="w-full bg-slate-950 border-b border-slate-900 overflow-hidden select-none">
+        <div id="top-announcement-bar" className="w-full bg-slate-950 border-b border-slate-900 overflow-hidden select-none">
           <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full h-10 flex items-center justify-between text-xs font-semibold text-slate-300">
             <div className="flex items-center gap-2">
               <span className="flex items-center gap-1.5 rounded bg-[#002147] border border-[#003875] px-2 py-0.5 text-white font-bold tracking-wider uppercase animate-pulse select-none">
@@ -51,7 +51,7 @@ export default function RootLayout({
         </div>
 
         {/* Top bar with College Logo, Accreditations & Apply Now in a single centered row */}
-        <div className="w-full bg-white border-b border-slate-100 select-none">
+        <div id="top-logo-bar" className="w-full bg-white border-b border-slate-100 select-none">
           <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full py-6 flex flex-col items-center justify-center gap-6">
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8 flex-wrap">
               <Link href="/" className="flex flex-col md:flex-row items-center gap-4 group">
@@ -98,7 +98,7 @@ export default function RootLayout({
         </div>
 
         {/* Sticky Header below top bar for navigation (dynamic height to support dual row) */}
-        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/50 shadow-sm select-none">
+        <header id="main-header" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/50 shadow-sm select-none">
           <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative">
             <Navigation />
           </div>
@@ -108,7 +108,7 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="bg-slate-950 text-slate-400 py-16 border-t border-slate-900 selection:bg-indigo-500/20 selection:text-indigo-200">
+        <footer id="main-footer" className="bg-slate-950 text-slate-400 py-16 border-t border-slate-900 selection:bg-indigo-500/20 selection:text-indigo-200">
           <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
               <div className="md:col-span-2">

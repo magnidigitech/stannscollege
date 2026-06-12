@@ -27,9 +27,21 @@ const DEPARTMENTS = [
   { id: "department-of-oriental-languages-telugu-sanskrit-hindi", name: "Oriental Languages" }
 ];
 
+function getSanityImageUrl(ref: string) {
+  if (!ref) return "";
+  const parts = ref.split("-");
+  if (parts.length < 4) return "";
+  const assetId = parts[1];
+  const dimensions = parts[2];
+  const extension = parts[3];
+  return `https://cdn.sanity.io/images/fhjwqub5/production/${assetId}-${dimensions}.${extension}`;
+}
+
 export function DepartmentUpdateForm() {
+  const [step, setStep] = useState<"login" | "editor">("login");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [selectedDeptId, setSelectedDeptId] = useState(DEPARTMENTS[0].id);
-  const [writeToken, setWriteToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error" | ""; text: string }>({ type: "", text: "" });  // Form states matching Sanity department schema
@@ -91,7 +103,7 @@ export function DepartmentUpdateForm() {
     sNo: number; year: string; name: string; duration: string; organization: string; areaOfWork: string; programme: string 
   }>>([]);
   const [bestPracticesImpact, setBestPracticesImpact] = useState<string[]>([]);
-  const [gallery, setGallery] = useState<Array<{ image: any; caption: string }>>([]);
+  const [gallery, setGallery] = useState<Array<{ image?: any; file?: File | null; caption: string }>>([]);
   const [otherStudentAchievements, setOtherStudentAchievements] = useState<string[]>([]);
   const [focusOnWomenEmpowerment, setFocusOnWomenEmpowerment] = useState("");
   const [overallApproach, setOverallApproach] = useState("");
@@ -125,7 +137,11 @@ export function DepartmentUpdateForm() {
         setActivitiesSummary(data.activitiesSummary || []);
         setInternships(data.internships || []);
         setBestPracticesImpact(data.bestPracticesImpact || []);
-        setGallery(data.gallery || []);
+        const mappedGallery = (data.gallery || []).map((g: any) => ({
+          ...g,
+          file: null
+        }));
+        setGallery(mappedGallery);
         setOtherStudentAchievements(data.otherStudentAchievements || []);
         setFocusOnWomenEmpowerment(data.focusOnWomenEmpowerment || "");
         setOverallApproach(data.overallApproach || "");
@@ -139,8 +155,10 @@ export function DepartmentUpdateForm() {
   };
 
   useEffect(() => {
-    loadDeptData();
-  }, [selectedDeptId]);
+    if (step === "editor") {
+      loadDeptData();
+    }
+  }, [selectedDeptId, step]);
   // Form list item handlers
   const handleAddStringItem = (setter: React.Dispatch<React.SetStateAction<string[]>>, list: string[]) => {
     setter([...list, ""]);
@@ -156,102 +174,194 @@ export function DepartmentUpdateForm() {
     setter(list.filter((_, i) => i !== index));
   };
 
-  // Publish changes to Sanity
+  // Publish changes to Sanity via secure API endpoint
   const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!writeToken.trim()) {
-      setStatusMsg({ type: "error", text: "Please provide a valid Sanity Write Token to authorize the transaction." });
-      return;
-    }
-
     setSaving(true);
     setStatusMsg({ type: "", text: "" });
 
-    // Helper to dynamically add unique _key properties to array objects for Sanity compliance
-    const addKeysToObj = (obj: any) => {
-      if (!obj || typeof obj !== "object") return;
-      if (Array.isArray(obj)) {
-        for (let item of obj) {
-          if (item && typeof item === "object") {
-            if (!item._key) {
-              item._key = Math.random().toString(36).substring(2, 14);
-            }
-            addKeysToObj(item);
-          }
-        }
-      } else {
-        for (let k in obj) {
-          if (typeof obj[k] === "object") {
-            addKeysToObj(obj[k]);
-          }
-        }
+    const fd = new window.FormData();
+    fd.append("password", password);
+    fd.append("selectedDeptId", selectedDeptId);
+
+    const galleryPayload = gallery.map((item, idx) => {
+      if (item.file) {
+        fd.append(`galleryImage_${idx}`, item.file);
       }
+      return {
+        image: item.image,
+        caption: item.caption
+      };
+    });
+
+    const selectedDept = DEPARTMENTS.find(d => d.id === selectedDeptId);
+    const name = selectedDept ? selectedDept.name : "Department Profile";
+
+    const documentData = {
+      _id: `department-${selectedDeptId}`,
+      _type: "department",
+      name: name,
+      slug: {
+        _type: "slug",
+        current: selectedDeptId
+      },
+      established,
+      tagline,
+      description,
+      vision,
+      mission,
+      programmes,
+      valueAddedCourses,
+      mous,
+      bestPractices,
+      activities,
+      infrastructure,
+      careerOpps,
+      facultyMembers,
+      passPercentage,
+      mouActivities,
+      studentAchievements,
+      academicAchievements,
+      placements,
+      activitiesList,
+      activitiesSummary,
+      internships,
+      bestPracticesImpact,
+      gallery: galleryPayload,
+      otherStudentAchievements,
+      focusOnWomenEmpowerment,
+      overallApproach
     };
 
+    fd.append("departmentData", JSON.stringify(documentData));
+
     try {
-      const client = createClient({
-        projectId: "fhjwqub5",
-        dataset: "production",
-        apiVersion: "2024-03-01",
-        token: writeToken.trim(),
-        useCdn: false,
+      const res = await fetch("/api/department-update", {
+        method: "POST",
+        body: fd
       });
-
-      const selectedDept = DEPARTMENTS.find(d => d.id === selectedDeptId);
-      const name = selectedDept ? selectedDept.name : "Department Profile";
-
-      const documentData = {
-        _id: `department-${selectedDeptId}`,
-        _type: "department",
-        name: name,
-        slug: {
-          _type: "slug",
-          current: selectedDeptId
-        },
-        established,
-        tagline,
-        description,
-        vision,
-        mission,
-        programmes,
-        valueAddedCourses,
-        mous,
-        bestPractices,
-        activities,
-        infrastructure,
-        careerOpps,
-        facultyMembers,
-        passPercentage,
-        mouActivities,
-        studentAchievements,
-        academicAchievements,
-        placements,
-        activitiesList,
-        activitiesSummary,
-        internships,
-        bestPracticesImpact,
-        gallery,
-        otherStudentAchievements,
-        focusOnWomenEmpowerment,
-        overallApproach
-      };
-
-      // Ensure all array items have unique _key fields before sending to Sanity
-      addKeysToObj(documentData);
-
-      await client.createOrReplace(documentData);
-      setStatusMsg({ type: "success", text: `Successfully published ${name} changes to Sanity CMS!` });
+      const data = await res.json();
+      if (data.success) {
+        setStatusMsg({ type: "success", text: data.message });
+        await loadDeptData();
+      } else {
+        setStatusMsg({ type: "error", text: data.error || "Save failed." });
+      }
     } catch (err: any) {
-      console.error("Sanity publish error:", err);
-      setStatusMsg({ type: "error", text: `Failed to publish to Sanity: ${err.message}` });
+      console.error("Publish error:", err);
+      setStatusMsg({ type: "error", text: "Network error. Please try again." });
     } finally {
       setSaving(false);
     }
   };
 
+  if (step === "login") {
+    const handleLogin = (e: React.FormEvent) => {
+      e.preventDefault();
+      if (password === "Stannsf@2026") {
+        setStep("editor");
+        setStatusMsg({ type: "", text: "" });
+      } else {
+        setStatusMsg({ type: "error", text: "Incorrect password. Access denied." });
+      }
+    };
+
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-150 animate-fadeIn">
+          <div className="bg-gradient-to-r from-[#002147] to-[#0a4d96] px-8 py-7 text-white">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-12 w-12 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center">
+                <Building className="h-6 w-6 text-blue-200" />
+              </div>
+              <div>
+                <div className="font-outfit font-black text-xl">Department Portal</div>
+                <div className="text-blue-200 font-semibold text-xs mt-0.5">St. Ann's College for Women</div>
+              </div>
+            </div>
+            <p className="text-blue-200/80 text-xs font-semibold leading-relaxed">
+              Select your department and enter the portal password to customize content.
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} className="px-8 py-7 flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-black uppercase tracking-wider text-slate-500">Target Department</label>
+              <select
+                value={selectedDeptId}
+                onChange={(e) => setSelectedDeptId(e.target.value)}
+                className="w-full bg-slate-50 border-2 border-slate-100 focus:border-indigo-400 rounded-xl px-4 py-2.5 text-xs md:text-sm font-bold text-slate-700 focus:bg-white focus:outline-none transition-all cursor-pointer"
+              >
+                {DEPARTMENTS.map(d => (
+                  <option key={d.id} value={d.id}>{d.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-black uppercase tracking-wider text-slate-500">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter portal password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-slate-50 border-2 border-slate-100 focus:border-indigo-400 rounded-xl px-4 py-2.5 pl-4 pr-12 text-xs md:text-sm font-bold text-slate-700 focus:bg-white focus:outline-none transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-black text-slate-400 hover:text-indigo-650 transition-colors focus:outline-none"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            {statusMsg.text && statusMsg.type === "error" && (
+              <div className="p-3 bg-red-50 border-2 border-red-100 rounded-2xl text-red-950 text-xs font-bold flex items-center gap-2">
+                <span>⚠️ {statusMsg.text}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#002147] to-[#0a4d96] hover:from-[#003070] hover:to-[#0c5cb0] text-white font-black py-3.5 rounded-2xl text-xs md:text-sm transition-all shadow-lg hover:shadow-xl active:scale-[0.98] uppercase tracking-wider"
+            >
+              Access Portal
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-10 font-sans">
       
+      {/* Sticky top nav for editor */}
+      <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm px-6 py-3.5 flex items-center justify-between gap-4 rounded-3xl">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="h-8 w-8 rounded-lg bg-[#002147] flex items-center justify-center shrink-0">
+            <Building className="h-4 w-4 text-white" />
+          </div>
+          <div className="min-w-0">
+            <div className="font-black text-[#002147] text-xs md:text-sm truncate">
+              {DEPARTMENTS.find(d => d.id === selectedDeptId)?.name || "Department Details"}
+            </div>
+            <div className="text-[10px] font-semibold text-slate-400">
+              Editing Portal
+            </div>
+          </div>
+        </div>
+        <button 
+          onClick={() => { setStep("login"); setPassword(""); setStatusMsg({ type: "", text: "" }); }}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-600 font-black text-xs transition-colors shrink-0"
+        >
+          Logout
+        </button>
+      </div>
+
       {/* 1. Header Banner */}
       <div className="bg-gradient-to-r from-[#002147] to-[#0a3d75] rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-lg">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
@@ -295,42 +405,20 @@ export function DepartmentUpdateForm() {
       <form onSubmit={handlePublish} className="flex flex-col gap-10">
         
         {/* Setup Configuration Panel */}
-        <div className="bg-white border border-slate-200/80 rounded-[2rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
+        <div className="bg-white border border-slate-200/85 rounded-[2rem] p-6 md:p-8 shadow-xs flex flex-col gap-6">
           <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
             <Key className="h-5 w-5 text-[#002147]" />
-            <h3 className="font-outfit font-black text-lg text-[#002147]">1. Select Department & Authorize</h3>
+            <h3 className="font-outfit font-black text-lg text-[#002147]">1. Selected Department</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             <div className="flex flex-col gap-2">
               <label className="text-xs font-black uppercase tracking-wider text-slate-500">Target Department</label>
-              <select
-                value={selectedDeptId}
-                onChange={(e) => setSelectedDeptId(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs md:text-sm font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-indigo-400 transition-all"
-              >
-                {DEPARTMENTS.map(d => (
-                  <option key={d.id} value={d.id}>{d.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                Sanity Write Token
-                <span className="group relative cursor-pointer text-slate-400 hover:text-slate-600">
-                  <HelpCircle className="h-3.5 w-3.5" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-900 text-white text-[10px] leading-relaxed p-3 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity shadow-lg z-50 font-medium font-sans">
-                    Obtain this by logging into sanity.io/manage, going to the project API tab, and creating an API token with 'Editor' permissions.
-                  </span>
-                </span>
-              </label>
               <input
-                type="password"
-                placeholder="Pasted token will be stored in-memory during edit session..."
-                value={writeToken}
-                onChange={(e) => setWriteToken(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs md:text-sm font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-indigo-400 transition-all"
+                type="text"
+                readOnly
+                value={DEPARTMENTS.find(d => d.id === selectedDeptId)?.name || ""}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs md:text-sm font-bold text-slate-500 focus:outline-none"
               />
             </div>
           </div>
@@ -2290,7 +2378,7 @@ export function DepartmentUpdateForm() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setGallery([...gallery, { image: null, caption: "" }])}
+                  onClick={() => setGallery([...gallery, { image: undefined, file: null, caption: "" }])}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#002147]/5 text-[#002147] border border-[#002147]/10 hover:bg-[#002147] hover:text-white rounded-lg text-xs font-bold transition-all"
                 >
                   <Plus className="h-3.5 w-3.5" /> Add Photo Reference
@@ -2298,53 +2386,72 @@ export function DepartmentUpdateForm() {
               </div>
 
               <div className="flex flex-col gap-4">
-                {gallery.map((item, idx) => (
-                  <div key={idx} className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3 relative">
-                    <button
-                      type="button"
-                      onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
-                      className="absolute right-3 top-3 text-slate-400 hover:text-red-500"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="flex flex-col gap-1">
-                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Sanity Image Asset Reference ID</label>
-                        <input
-                          type="text"
-                          placeholder="e.g. image-e4yy23vBd7Nd-1200x800-jpg"
-                          value={item.image?.asset?._ref || ""}
-                          onChange={(e) => {
-                            const next = [...gallery];
-                            next[idx].image = {
-                              _type: "image",
-                              asset: {
-                                _type: "reference",
-                                _ref: e.target.value
-                              }
-                            };
-                            setGallery(next);
-                          }}
-                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
-                        />
+                {gallery.map((item, idx) => {
+                  const previewUrl = item.file 
+                    ? URL.createObjectURL(item.file) 
+                    : (item.image?.asset?._ref ? getSanityImageUrl(item.image.asset._ref) : "");
+
+                  return (
+                    <div key={idx} className="bg-slate-50/50 p-5 rounded-2xl border border-slate-200/60 flex flex-col md:flex-row gap-5 items-start md:items-center relative">
+                      <button
+                        type="button"
+                        onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                        className="absolute right-4 top-4 text-slate-400 hover:text-red-500 transition-colors"
+                      >
+                        <Trash2 className="h-4.5 w-4.5" />
+                      </button>
+
+                      {/* Image Preview / Upload Area */}
+                      <div className="shrink-0 mx-auto md:mx-0">
+                        {previewUrl ? (
+                          <img
+                            src={previewUrl}
+                            alt={item.caption || "Gallery Preview"}
+                            className="h-24 w-24 md:h-28 md:w-28 rounded-2xl object-cover border-2 border-indigo-150 shadow-sm"
+                          />
+                        ) : (
+                          <div className="h-24 w-24 md:h-28 md:w-28 rounded-2xl bg-indigo-50 border-2 border-dashed border-indigo-200 flex flex-col items-center justify-center text-indigo-400">
+                            <span className="text-[10px] font-bold uppercase tracking-wider">No Image</span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <label className="text-[9px] font-black uppercase tracking-wider text-slate-400">Image Caption</label>
-                        <input
-                          type="text"
-                          placeholder="e.g. Seminar on GST Filing by CA Professional"
-                          value={item.caption || ""}
-                          onChange={(e) => {
-                            const next = [...gallery];
-                            next[idx].caption = e.target.value;
-                            setGallery(next);
-                          }}
-                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700"
-                        />
+
+                      <div className="flex-1 w-full grid grid-cols-1 gap-4">
+                        {/* File Input */}
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Select Image File</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const f = e.target.files?.[0] || null;
+                              const next = [...gallery];
+                              next[idx].file = f;
+                              setGallery(next);
+                            }}
+                            className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-indigo-50 file:text-indigo-700 file:cursor-pointer hover:file:bg-indigo-100 transition-colors bg-white border border-slate-200 rounded-xl p-2 focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Caption Input */}
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Image Caption</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Seminar on GST Filing by CA Professional"
+                            value={item.caption || ""}
+                            onChange={(e) => {
+                              const next = [...gallery];
+                              next[idx].caption = e.target.value;
+                              setGallery(next);
+                            }}
+                            className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-400 transition-all"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 {gallery.length === 0 && (
                   <span className="text-xs text-slate-400 font-semibold italic">No gallery images registered.</span>
                 )}

@@ -24,3 +24,10 @@
   --ring: 224 71.4% 4.1%;
   --radius: 0.75rem;
 }
+
+.no-layout #top-announcement-bar,
+.no-layout #top-logo-bar,
+.no-layout #main-header,
+.no-layout #main-footer {
+  display: none !important;
+}

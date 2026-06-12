@@ -394,6 +394,13 @@ function LoginScreen({ onSuccess }: { onSuccess: (phone: string, password: strin
 
 // ─── MAIN EDITOR ──────────────────────────────────────────────────────────────
 export default function FacultyUpdatePage() {
+  React.useEffect(() => {
+    document.documentElement.classList.add("no-layout");
+    return () => {
+      document.documentElement.classList.remove("no-layout");
+    };
+  }, []);
+
   const [step, setStep] = useState<Step>("login");
   const [phone, setPhone] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");

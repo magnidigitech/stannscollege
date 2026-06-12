@@ -857,7 +857,6 @@ export default function FacultyProfilePage({ profile: p }: FacultyProfilePagePro
 
   const identityBadges = [
     { icon: Mail, label: "Email", value: p.officialEmail },
-    { icon: Phone, label: "Phone", value: p.contactNumber },
     { icon: MapPin, label: "Office", value: p.officeLocation },
     { icon: Calendar, label: "Joined", value: p.dateOfJoining },
     { icon: Briefcase, label: "Employment", value: p.employmentType },
