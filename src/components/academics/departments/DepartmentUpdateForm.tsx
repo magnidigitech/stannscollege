@@ -107,6 +107,133 @@ export function DepartmentUpdateForm() {
   const [otherStudentAchievements, setOtherStudentAchievements] = useState<string[]>([]);
   const [focusOnWomenEmpowerment, setFocusOnWomenEmpowerment] = useState("");
   const [overallApproach, setOverallApproach] = useState("");
+  const [lastSaved, setLastSaved] = useState("");
+  const [autoSaving, setAutoSaving] = useState(false);
+
+  // Refs and intervals for secure autosave without state staleness
+  const stateRef = React.useRef({
+    password, selectedDeptId, established, tagline, description, vision, mission, programmes,
+    valueAddedCourses, mous, bestPractices, activities, facultyMembers, passPercentage, mouActivities,
+    studentAchievements, academicAchievements, placements, activitiesList, activitiesSummary, internships,
+    bestPracticesImpact, gallery, otherStudentAchievements, focusOnWomenEmpowerment, overallApproach,
+    saving: false, autoSaving
+  });
+
+  React.useEffect(() => {
+    stateRef.current = {
+      password, selectedDeptId, established, tagline, description, vision, mission, programmes,
+      valueAddedCourses, mous, bestPractices, activities, facultyMembers, passPercentage, mouActivities,
+      studentAchievements, academicAchievements, placements, activitiesList, activitiesSummary, internships,
+      bestPracticesImpact, gallery, otherStudentAchievements, focusOnWomenEmpowerment, overallApproach,
+      saving: false, autoSaving
+    };
+  });
+
+  // Warn before closing tab
+  React.useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (step === "editor") {
+        e.preventDefault();
+        e.returnValue = "Make sure you save the content before closing the tab.";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [step]);
+
+  // Autosave loop every 1 minute
+  React.useEffect(() => {
+    if (step !== "editor") return;
+
+    const runAutoSave = async () => {
+      const current = stateRef.current;
+      if (current.saving || current.autoSaving) return;
+
+      setAutoSaving(true);
+      const fd = new window.FormData();
+      fd.append("password", current.password);
+      fd.append("selectedDeptId", current.selectedDeptId);
+
+      const galleryPayload = current.gallery.map((item, idx) => {
+        if (item.file) {
+          fd.append(`galleryImage_${idx}`, item.file);
+        }
+        return {
+          image: item.image,
+          caption: item.caption
+        };
+      });
+
+      const selectedDept = DEPARTMENTS.find(d => d.id === current.selectedDeptId);
+      const name = selectedDept ? selectedDept.name : "Department Profile";
+
+      const documentData = {
+        _id: `department-${current.selectedDeptId}`,
+        _type: "department",
+        name: name,
+        slug: {
+          _type: "slug",
+          current: current.selectedDeptId
+        },
+        established: current.established,
+        tagline: current.tagline,
+        description: current.description,
+        vision: current.vision,
+        mission: current.mission,
+        programmes: current.programmes,
+        valueAddedCourses: current.valueAddedCourses,
+        mous: current.mous,
+        bestPractices: current.bestPractices,
+        activities: current.activities,
+        infrastructure: current.infrastructure,
+        careerOpps: current.careerOpps,
+        facultyMembers: current.facultyMembers,
+        passPercentage: current.passPercentage,
+        mouActivities: current.mouActivities,
+        studentAchievements: current.studentAchievements,
+        academicAchievements: current.academicAchievements,
+        placements: current.placements,
+        activitiesList: current.activitiesList,
+        activitiesSummary: current.activitiesSummary,
+        internships: current.internships,
+        bestPracticesImpact: current.bestPracticesImpact,
+        gallery: galleryPayload,
+        otherStudentAchievements: current.otherStudentAchievements,
+        focusOnWomenEmpowerment: current.focusOnWomenEmpowerment,
+        overallApproach: current.overallApproach
+      };
+
+      fd.append("departmentData", JSON.stringify(documentData));
+
+      try {
+        const res = await fetch("/api/department-update", {
+          method: "POST",
+          body: fd
+        });
+        const data = await res.json();
+        if (data.success) {
+          const istTime = new Date().toLocaleTimeString("en-US", {
+            timeZone: "Asia/Kolkata",
+            hour12: true,
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit"
+          }) + " IST";
+          setLastSaved(istTime);
+        }
+      } catch (err) {
+        console.error("Department autosave failed:", err);
+      } finally {
+        setAutoSaving(false);
+      }
+    };
+
+    const interval = setInterval(runAutoSave, 60000);
+    return () => clearInterval(interval);
+  }, [step]);
 
   // Load existing data for selected department
   const loadDeptData = async () => {
@@ -243,6 +370,14 @@ export function DepartmentUpdateForm() {
       const data = await res.json();
       if (data.success) {
         setStatusMsg({ type: "success", text: data.message });
+        const istTime = new Date().toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour12: true,
+          hour: "numeric",
+          minute: "2-digit",
+          second: "2-digit"
+        }) + " IST";
+        setLastSaved(istTime);
         await loadDeptData();
       } else {
         setStatusMsg({ type: "error", text: data.error || "Save failed." });
@@ -2459,16 +2594,26 @@ export function DepartmentUpdateForm() {
             </div>
 
             {/* Save Action Card */}
-            <div className="bg-slate-900 border border-slate-800 rounded-[2rem] p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-white shadow-lg">
+            <div className="sticky bottom-4 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-800 rounded-[2rem] p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-white shadow-2xl transition-all">
               <div className="flex flex-col gap-1.5 text-center sm:text-left">
-                <h4 className="font-outfit font-black text-lg">Commit to Sanity Studio</h4>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-center sm:justify-start">
+                  <h4 className="font-outfit font-black text-lg">Commit to Sanity Studio</h4>
+                  {lastSaved && (
+                    <span className="text-[10px] font-black text-emerald-400 bg-emerald-950/50 border border-emerald-800/80 px-2.5 py-0.5 rounded-full w-fit mx-auto sm:mx-0">
+                      {autoSaving ? "Saving..." : `Last Saved: ${lastSaved}`}
+                    </span>
+                  )}
+                </div>
                 <p className="text-slate-400 text-xs font-medium leading-relaxed">
                   This transaction will update the records in your Sanity dataset. Next.js fetches will refresh dynamically.
+                </p>
+                <p className="text-rose-400 font-bold text-[10px] uppercase tracking-wider animate-pulse flex items-center gap-1 justify-center sm:justify-start">
+                  ⚠️ Make sure you save the content before closing the tab.
                 </p>
               </div>
               <button
                 type="submit"
-                disabled={saving}
+                disabled={saving || autoSaving}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black transition-all shadow-md active:scale-95 disabled:opacity-50 text-xs md:text-sm shrink-0 uppercase tracking-wider"
               >
                 {saving ? (

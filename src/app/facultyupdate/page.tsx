@@ -406,6 +406,8 @@ export default function FacultyUpdatePage() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [isNew, setIsNew] = useState(false);
   const [form, setForm] = useState<FormData>(EMPTY_FORM);
+  const [lastSaved, setLastSaved] = useState<string>("");
+  const [autoSaving, setAutoSaving] = useState<boolean>(false);
 
   // File states
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -414,6 +416,78 @@ export default function FacultyUpdatePage() {
   const [existingPhotoUrl, setExistingPhotoUrl] = useState("");
   const [existingCvUrl, setExistingCvUrl] = useState("");
   const [existingProfilePdfUrl, setExistingProfilePdfUrl] = useState("");
+
+  // Refs and intervals for secure autosave without state staleness
+  const stateRef = React.useRef({ form, phone, currentPassword, isNew, photoFile, cvFile, profilePdfFile, submitting: false, autoSaving });
+  
+  React.useEffect(() => {
+    stateRef.current = { form, phone, currentPassword, isNew, photoFile, cvFile, profilePdfFile, submitting: false, autoSaving };
+  });
+
+  // Warn before closing tab
+  React.useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (step === "editor") {
+        e.preventDefault();
+        e.returnValue = "Make sure you save the content before closing the tab.";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [step]);
+
+  // Autosave loop every 1 minute
+  React.useEffect(() => {
+    if (step !== "editor") return;
+
+    const runAutoSave = async () => {
+      const current = stateRef.current;
+      if (current.submitting || current.autoSaving) return;
+      if (!current.form.facultyName.trim()) return;
+
+      setAutoSaving(true);
+      const fd = new window.FormData();
+      fd.append("phone", current.phone);
+      fd.append("password", current.currentPassword);
+      if (current.photoFile) fd.append("profilePhoto", current.photoFile);
+      if (current.cvFile) fd.append("cvPdf", current.cvFile);
+      if (current.profilePdfFile) fd.append("facultyProfilePdf", current.profilePdfFile);
+
+      const payload = {
+        ...current.form,
+        areaOfExpertise: current.form.areaOfExpertise.split(",").map(s => s.trim()).filter(Boolean),
+        languagesKnown: current.form.languagesKnown.split(",").map(s => s.trim()).filter(Boolean),
+        researchAreas: current.form.researchAreas.split(",").map(s => s.trim()).filter(Boolean),
+        metaKeywords: current.form.metaKeywords.split(",").map(s => s.trim()).filter(Boolean),
+      };
+      fd.append("profileData", JSON.stringify(payload));
+
+      try {
+        const res = await fetch("/api/faculty-update", { method: "POST", body: fd });
+        const data = await res.json();
+        if (data.success) {
+          const istTime = new Date().toLocaleTimeString("en-US", {
+            timeZone: "Asia/Kolkata",
+            hour12: true,
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit"
+          }) + " IST";
+          setLastSaved(istTime);
+        }
+      } catch (err) {
+        console.error("Autosave failed:", err);
+      } finally {
+        setAutoSaving(false);
+      }
+    };
+
+    const interval = setInterval(runAutoSave, 60000);
+    return () => clearInterval(interval);
+  }, [step]);
 
   // Password change
   const [newPassword, setNewPassword] = useState("");
@@ -484,6 +558,14 @@ export default function FacultyUpdatePage() {
       const data = await res.json();
       if (data.success) {
         setResult({ success: true, message: `Profile ${data.action} successfully!`, url: data.profileUrl });
+        const istTime = new Date().toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour12: true,
+          hour: "numeric",
+          minute: "2-digit",
+          second: "2-digit"
+        }) + " IST";
+        setLastSaved(istTime);
         if (newPassword.trim()) {
           setCurrentPassword(newPassword.trim());
           setNewPassword("");
@@ -845,18 +927,28 @@ export default function FacultyUpdatePage() {
         </div>
 
         {/* Submit bar */}
-        <div className="mt-6 bg-white border-2 border-slate-100 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+        <div className="sticky bottom-4 z-40 bg-white/95 backdrop-blur-md border-2 border-slate-200/80 rounded-3xl p-5 shadow-2xl flex flex-col sm:flex-row items-center gap-4 transition-all">
           <div className="flex-1">
-            <div className="font-black text-[#002147] text-base">
-              {isNew ? "Create New Profile" : "Save & Update Profile"}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <span className="font-outfit font-black text-base text-[#002147]">
+                {isNew ? "Create New Profile" : "Save & Update Profile"}
+              </span>
+              {lastSaved && (
+                <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 border border-emerald-150 px-2.5 py-0.5 rounded-full w-fit">
+                  {autoSaving ? "Saving..." : `Last Saved: ${lastSaved}`}
+                </span>
+              )}
             </div>
             <p className="text-slate-400 font-semibold text-xs mt-0.5">
               {isNew
                 ? "This will create a new faculty profile in Sanity. Remember to check 'Show on Website' to publish it."
-                : "Updates your existing profile. Changes are live immediately after saving."}
+                : "Updates your existing profile. Changes are live immediately."}
+            </p>
+            <p className="text-rose-500 font-bold text-[10px] uppercase tracking-wider mt-1.5 animate-pulse flex items-center gap-1">
+              ⚠️ Make sure you save the content before closing the tab.
             </p>
           </div>
-          <button onClick={handleSubmit} disabled={submitting}
+          <button onClick={handleSubmit} disabled={submitting || autoSaving}
             className="shrink-0 flex items-center gap-3 bg-gradient-to-r from-[#002147] to-[#083b75] hover:from-[#003070] hover:to-[#0a4d96] disabled:opacity-60 disabled:cursor-not-allowed text-white font-black px-8 py-4 rounded-2xl text-sm transition-all shadow-lg hover:shadow-xl active:scale-[0.98]">
             {submitting
               ? <><div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Saving…</>
