@@ -813,3 +813,24 @@ export async function getFacultyProfile(slug: string) {
     return null;
   }
 }
+
+/**
+ * Returns all faculty PDF documents (e.g. FDP and Seminars PDFs) sorted by displayOrder.
+ */
+export async function getFacultyPdfDocuments() {
+  try {
+    const query = `*[_type == "facultyPdfDocument" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      category,
+      "pdfUrl": pdfFile.asset->url,
+      displayOrder
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (getFacultyPdfDocuments):", err);
+    return [];
+  }
+}
+

@@ -101,6 +101,27 @@ export default defineConfig({
         ],
       },
       {
+        name: "facultyPdfDocument",
+        title: "Faculty PDF Document (FDP & Seminars)",
+        type: "document",
+        fields: [
+          { name: "title", title: "Document Title", type: "string" },
+          {
+            name: "category",
+            title: "Category",
+            type: "string",
+            options: {
+              list: [
+                { title: "Faculty Professional Development (FDP)", value: "professional-development" },
+                { title: "Seminars & Conferences", value: "seminars-conferences" },
+              ],
+            },
+          },
+          { name: "pdfFile", title: "PDF File", type: "file" },
+          { name: "displayOrder", title: "Display Order", type: "number" },
+        ],
+      },
+      {
         name: "event",
         title: "Events",
         type: "document",

@@ -32,7 +32,8 @@ const tabs = [
   { text: "List of Non-Teaching Staff", slug: "non-teaching-staff", icon: Network, type: "roster", filter: "non-teaching" },
   { text: "Visiting / Adjunct Professors", slug: "visiting-professors", icon: GraduationCap, type: "section", secKey: "visiting" },
   { text: "Recruitment Policy & Process", slug: "recruitment-policy", icon: ShieldCheck, type: "section", secKey: "recruitment" },
-  { text: "Professional Development", slug: "professional-development", icon: Activity, type: "section", secKey: "professional-dev" },
+  { text: "Professional Development", slug: "professional-development", icon: Activity, type: "pdf-list", category: "professional-development" },
+  { text: "Seminars & Conferences", slug: "seminars-conferences", icon: BookOpen, type: "pdf-list", category: "seminars-conferences" },
   { text: "Faculty Achievements", slug: "faculty-achievements", icon: Award, type: "section", secKey: "achievements" },
   { text: "Faculty Exchange & Sabbaticals", slug: "faculty-exchange", icon: Lightbulb, type: "section", secKey: "exchange" },
   { text: "Consultancy Assignments", slug: "consultancy-assignments", icon: BookOpen, type: "section", secKey: "consultancy" },
@@ -44,13 +45,15 @@ interface FacultyClientPortalProps {
   initialSections: any[];
   activeSlug: string;
   profileSlugMap?: Record<string, string>;
+  initialPdfDocuments?: any[];
 }
 
 export default function FacultyClientPortal({ 
   initialMembers = [], 
   initialSections = [], 
   activeSlug = "teaching-staff",
-  profileSlugMap = {}
+  profileSlugMap = {},
+  initialPdfDocuments = []
 }: FacultyClientPortalProps) {
   
   const router = useRouter();
@@ -940,6 +943,70 @@ export default function FacultyClientPortal({
 
                 </div>
 
+              </div>
+            );
+          })()}
+
+          {/* RENDER VIEW 4: FACULTY PDF DOCUMENTS GALLERY VIEW */}
+          {activeTab.type === "pdf-list" && (() => {
+            const filteredPdfs = initialPdfDocuments.filter(doc => doc.category === (activeTab as any).category);
+            
+            return (
+              <div className="flex flex-col gap-8 animate-fadeIn">
+                <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-8 md:p-12 shadow-sm">
+                  
+                  {/* Header Indicator */}
+                  <div className="flex items-center gap-2 mb-8">
+                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">Official Uploads & PDF Documents</span>
+                  </div>
+
+                  {filteredPdfs.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      {filteredPdfs.map((doc, idx) => (
+                        <div key={doc._id || idx} className="bg-slate-50 border border-slate-200/60 rounded-3xl p-6 flex flex-col justify-between hover:shadow-md hover:border-indigo-200 transition-all group">
+                          <div className="flex items-start gap-4">
+                            <div className="h-12 w-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                              <FileText className="h-6 w-6" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-outfit font-black text-slate-800 text-base leading-snug group-hover:text-indigo-950 transition-colors">
+                                {doc.title || "Untitled Document"}
+                              </h4>
+                              <span className="inline-block mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider bg-white border border-slate-200 text-slate-500">
+                                {doc.category === "professional-development" ? "Professional Dev" : "Seminars & Conf"}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="mt-6 pt-4 border-t border-slate-200/60 flex items-center justify-between">
+                            <span className="text-[10px] text-slate-400 font-semibold">Document #{idx + 1}</span>
+                            {doc.pdfUrl ? (
+                              <a
+                                href={doc.pdfUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 rounded-xl bg-[#002147] hover:bg-indigo-600 px-4 py-2 text-xs font-bold text-white transition-all shadow active:scale-95"
+                              >
+                                <FileDown className="h-3.5 w-3.5" />
+                                Download PDF
+                              </a>
+                            ) : (
+                              <span className="text-xs text-rose-500 font-bold">No file uploaded</span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-16">
+                      <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                      <p className="text-slate-500 font-bold text-sm">No PDF documents uploaded yet under this category.</p>
+                      <p className="text-slate-400 text-xs mt-1">Updates will be published soon by the administrator.</p>
+                    </div>
+                  )}
+
+                </div>
               </div>
             );
           })()}

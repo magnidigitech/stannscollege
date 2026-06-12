@@ -216,6 +216,7 @@ export default function Navigation() {
       icon: Lightbulb,
       items: [
         { text: "Professional Development", slug: "professional-development" },
+        { text: "Seminars & Conferences", slug: "seminars-conferences" },
         { text: "Faculty Achievements", slug: "faculty-achievements" },
         { text: "Faculty Exchange & Sabbaticals", slug: "faculty-exchange" },
         { text: "Consultancy Assignments", slug: "consultancy-assignments" },

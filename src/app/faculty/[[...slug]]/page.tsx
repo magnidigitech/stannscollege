@@ -1,5 +1,5 @@
 import React from "react";
-import { getFacultyMembers, getFacultySections, getAllFacultyProfiles } from "@/lib/sanity";
+import { getFacultyMembers, getFacultySections, getAllFacultyProfiles, getFacultyPdfDocuments } from "@/lib/sanity";
 import FacultyClientPortal from "@/components/faculty/FacultyClientPortal";
 import { Metadata } from "next";
 
@@ -22,6 +22,7 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
   const members = await getFacultyMembers();
   const sections = await getFacultySections();
   const allProfiles = await getAllFacultyProfiles();
+  const pdfDocuments = await getFacultyPdfDocuments();
 
   // Build a name → slug map for "View Profile" links in roster
   const profileSlugMap: Record<string, string> = {};
@@ -41,6 +42,7 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
         initialSections={sections || []} 
         activeSlug={activeSlug}
         profileSlugMap={profileSlugMap}
+        initialPdfDocuments={pdfDocuments || []}
       />
     </div>
   );
