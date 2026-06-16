@@ -47,8 +47,8 @@ const slides = [
     desc: "Proudly graded A+ by NAAC in Guntur. Discover our meticulously structured undergraduate & postgraduate curricula.",
     cta1: "Academic Programmes",
     link1: "/academics/academic-programmes/undergraduate-programmes",
-    cta2: "View Departments",
-    link2: "/academics/departments",
+    cta2: "NAAC Peer Team Visit",
+    link2: "/naac-peer-team",
   },
   {
     id: 3,
@@ -293,10 +293,12 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-4 w-full lg:w-auto text-center lg:text-left">
-              <div className="flex flex-col border-l-2 border-indigo-500/30 pl-4">
-                <span className="font-outfit text-sm font-black text-white leading-none">NAAC A+</span>
+              <Link href="/naac-peer-team" className="flex flex-col border-l-2 border-indigo-500/30 pl-4 group hover:bg-white/5 transition-all p-1.5 rounded-xl cursor-pointer">
+                <span className="font-outfit text-sm font-black text-white leading-none group-hover:text-indigo-300 transition-colors flex items-center gap-1">
+                  NAAC A+ <ExternalLink className="h-3 w-3 inline text-indigo-400 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                </span>
                 <span className="font-sans text-[11px] text-slate-400 font-semibold mt-1">First Cycle Grade</span>
-              </div>
+              </Link>
               <div className="flex flex-col border-l-2 border-indigo-500/30 pl-4">
                 <span className="font-outfit text-sm font-black text-white leading-none">AICTE APPROVED</span>
                 <span className="font-sans text-[11px] text-slate-400 font-semibold mt-1">Professional PG</span>
@@ -870,6 +872,12 @@ export default function HomePage() {
                 <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
                   We are highly committed to NAAC guidelines & compliance regulations for higher educational institutions.
                 </p>
+                <Link
+                  href="/naac-peer-team"
+                  className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2"
+                >
+                  NAAC Peer Team Visit <ArrowRight className="h-3 w-3" />
+                </Link>
               </div>
             </div>
 

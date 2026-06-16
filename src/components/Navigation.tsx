@@ -281,6 +281,7 @@ export default function Navigation() {
         "AISHE Certificates",
         "NAAC Accreditation",
         "NIRF",
+        "NAAC Peer Team",
       ],
     },
     {
@@ -430,7 +431,9 @@ export default function Navigation() {
                         const itemSlug = toSlug(item);
                         const href = itemSlug === "strategic-development-plan"
                           ? "/strategic-plans-and-future-directions"
-                          : `/about/${catSlug}/${itemSlug}`;
+                          : itemSlug === "naac-peer-team"
+                            ? "/naac-peer-team"
+                            : `/about/${catSlug}/${itemSlug}`;
                         return (
                           <Link
                             key={idx}
@@ -918,7 +921,9 @@ export default function Navigation() {
                           const itemSlug = toSlug(item);
                           const href = itemSlug === "strategic-development-plan"
                             ? "/strategic-plans-and-future-directions"
-                            : `/about/${toSlug(cat.title)}/${itemSlug}`;
+                            : itemSlug === "naac-peer-team"
+                              ? "/naac-peer-team"
+                              : `/about/${toSlug(cat.title)}/${itemSlug}`;
                           return (
                             <Link
                               key={idx}

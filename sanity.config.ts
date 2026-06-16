@@ -224,6 +224,68 @@ export default defineConfig({
         ],
       },
       {
+        name: "naacPeerTeam",
+        title: "NAAC Peer Team Visit",
+        type: "document",
+        fields: [
+          { name: "title", title: "Page Title", type: "string" },
+          { name: "description", title: "Description", type: "text" },
+          { name: "certificatePdf", title: "NAAC Certificate (PDF)", type: "file" },
+          { name: "certificateImage", title: "NAAC Certificate Image (for rendering)", type: "image", options: { hotspot: true } },
+          {
+            name: "gallery",
+            title: "Gallery Images",
+            type: "array",
+            of: [
+              {
+                type: "image",
+                options: { hotspot: true },
+                fields: [
+                  { name: "caption", title: "Caption", type: "string" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "videos",
+            title: "Peer Team Videos",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "title", title: "Video Title", type: "string" },
+                  { name: "videoFile", title: "Video File", type: "file" },
+                  { name: "videoUrl", title: "Alternative Video URL", type: "string" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "studentSupportImages",
+        title: "Student Support Images",
+        type: "document",
+        fields: [
+          { name: "category", title: "Category Slug", type: "string" },
+          {
+            name: "images",
+            title: "Gallery Images",
+            type: "array",
+            of: [
+              {
+                type: "image",
+                options: { hotspot: true },
+                fields: [
+                  { name: "caption", title: "Caption", type: "string" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         name: "aisheCertification",
         title: "AISHE Certifications",
         type: "document",

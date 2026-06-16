@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import StudentSupportClientPortal from "@/components/student-support/StudentSupportClientPortal";
+import { getStudentSupportImages } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Student Support Services | St. Ann's College for Women",
@@ -20,12 +21,18 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
   // Current selected slug parameter (if any), defaulting to "mentor-mentee"
   const activeSlug = resolvedParams?.slug?.[0] || "mentor-mentee";
 
+  // Fetch images dynamically from Sanity
+  const sanityData = await getStudentSupportImages(activeSlug);
+  const galleryImages = sanityData?.images || [];
+
   return (
     <div className="bg-slate-50/50 min-h-screen animate-fadeIn select-none">
       <StudentSupportClientPortal 
         activeSlug={activeSlug} 
+        galleryImages={galleryImages}
         initialSections={[]} 
       />
     </div>
   );
 }
+

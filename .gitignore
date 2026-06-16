@@ -39,4 +39,16 @@ Stategic Plans PDF/
 # Scratch script directory
 scratch/
 
+# Raw local data folders
+6.Student Support/
+7.Placements & Industry Linkages/
+Committees Documents/
+Faculty Professional Development/
+I. Academic Programmes/
+
+# Root level reference assets
+/*.pdf
+/build
+/note.txt
+*.crdownload
 

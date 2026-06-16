@@ -834,3 +834,45 @@ export async function getFacultyPdfDocuments() {
   }
 }
 
+export async function getNaacPeerTeam() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "naacPeerTeam" && !(_id in path("drafts.**"))][0] {
+      title,
+      description,
+      "certificatePdfUrl": certificatePdf.asset->url,
+      "certificateImageUrl": certificateImage.asset->url,
+      gallery[] {
+        "url": asset->url,
+        caption
+      },
+      videos[] {
+        title,
+        "videoFileUrl": videoFile.asset->url,
+        videoUrl
+      }
+    }`);
+    return data || null;
+  } catch (err) {
+    console.error("Sanity fetch error (getNaacPeerTeam):", err);
+    return null;
+  }
+}
+
+export async function getStudentSupportImages(category: string) {
+  try {
+    const query = `*[_type == "studentSupportImages" && category == $category && !(_id in path("drafts.**"))][0] {
+      category,
+      images[] {
+        "url": asset->url,
+        caption
+      }
+    }`;
+    const data = await sanityClient.fetch(query, { category });
+    return data || null;
+  } catch (err) {
+    console.error(`Sanity fetch error (getStudentSupportImages) for ${category}:`, err);
+    return null;
+  }
+}
+
+

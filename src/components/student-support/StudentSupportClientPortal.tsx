@@ -20,7 +20,9 @@ import {
   Sprout,
   Flame,
   Heart,
-  Flag
+  Flag,
+  X,
+  ChevronLeft
 } from "lucide-react";
 import { staticSupportSections } from "./staticData";
 
@@ -54,11 +56,13 @@ const tabs = [
 interface StudentSupportClientPortalProps {
   initialSections?: any[];
   activeSlug: string;
+  galleryImages?: Array<{ url: string; caption?: string }>;
 }
 
 export default function StudentSupportClientPortal({ 
   initialSections = [], 
-  activeSlug = "mentor-mentee" 
+  activeSlug = "mentor-mentee",
+  galleryImages = []
 }: StudentSupportClientPortalProps) {
   
   const router = useRouter();
@@ -68,10 +72,16 @@ export default function StudentSupportClientPortal({
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Reset search queries when jumping slugs
+  // Gallery states
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Reset search queries and gallery pagination when jumping slugs
   useEffect(() => {
     setSearchQuery("");
     setMobileMenuOpen(false);
+    setVisibleCount(12);
+    setLightboxIndex(null);
   }, [activeSlug]);
 
   // Retrieve Section details with preloaded fallbacks
@@ -182,15 +192,26 @@ export default function StudentSupportClientPortal({
     while (i < rawChunks.length) {
       const chunk = rawChunks[i];
 
-      // Skip placeholder markers
-      if (chunk.includes("[Embedded Image Removed]") || chunk.includes("[Refer to Detailed")) {
+      // Skip placeholder markers, gallery headers, and year range subheadings
+      const cleanChunk = chunk.replace(/[*_\s#\-\/\u2013\u2014]+/g, '').trim().toLowerCase();
+      const isGalleryHeader = 
+        cleanChunk === "gallery" || 
+        cleanChunk === "photogallery" || 
+        cleanChunk === "photogalley" || 
+        cleanChunk === "photogalleryviewpdf" ||
+        cleanChunk === "viewphotogallery" ||
+        cleanChunk === "viewgallery";
+        
+      const isYearRange = /^\d+$/.test(cleanChunk) && cleanChunk.length >= 8 && cleanChunk.length <= 12;
+
+      if (isGalleryHeader || isYearRange || chunk.includes("[Embedded Image Removed]") || chunk.includes("[Refer to Detailed")) {
         i++;
         continue;
       }
 
       // HEURISTIC: TABLE COMPOSITION SCANNER (Committee & Achievement Tables)
       const clean = (s: string) => (s || "").replace(/[*_]+/g, '').trim();
-      const norm = (s: string) => (s || "").replace(/[*_\s\.]+/g, '').toLowerCase();
+      const norm = (s: string) => (s || "").replace(/[*_\s\.\/]+/g, '').toLowerCase();
 
       const n0 = norm(chunk);
       const n1 = norm(rawChunks[i+1] || "");
@@ -208,7 +229,7 @@ export default function StudentSupportClientPortal({
       const isCommitteeTableStart = 
         (isSNo && n1 === "name" && n2 === "designation") ||
         (isSNo && n1.includes("nameofthemember")) ||
-        (n0 === "name" && n1 === "designation" && n2.includes("departmentrole")) ||
+        (n0 === "name" && n1 === "designation" && (n2.includes("departmentrole") || n2.includes("department"))) ||
         (n0 === "academicyear" && n1 === "programme" && n2.includes("nameofthestudent"));
 
       // Smart 3-Column detection
@@ -695,6 +716,115 @@ export default function StudentSupportClientPortal({
           <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 shadow-xs select-text selection:bg-indigo-100 selection:text-indigo-950">
             {renderContentBody(currentSection.content)}
           </div>
+
+          {/* Beautiful Image Gallery Section */}
+          {galleryImages && galleryImages.length > 0 && (
+            <div className="mt-12 bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 shadow-xs animate-fadeIn">
+              <h3 className="font-outfit text-2xl md:text-3xl font-black text-[#002147] tracking-tight mb-8 flex items-center gap-3">
+                <span className="h-8 w-2 rounded-full bg-gradient-to-b from-[#002147] to-indigo-600 shrink-0"></span>
+                Event & Activity Gallery
+              </h3>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {galleryImages.slice(0, visibleCount).map((img, idx) => (
+                  <div 
+                    key={idx}
+                    onClick={() => setLightboxIndex(idx)}
+                    className="group relative h-48 sm:h-56 bg-slate-100 rounded-3xl overflow-hidden border border-slate-200/40 shadow-sm hover:shadow-xl hover:border-indigo-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                  >
+                    <img 
+                      src={img.url ? `${img.url}?w=600&q=70&fit=max&auto=format` : ""} 
+                      alt={img.caption || `${currentSection.title} - Photo ${idx + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <p className="text-white text-xs font-semibold line-clamp-2 leading-snug">
+                        {img.caption || `View full image`}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {visibleCount < galleryImages.length && (
+                <div className="flex justify-center mt-10">
+                  <button
+                    onClick={() => setVisibleCount((prev) => prev + 12)}
+                    className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 text-sm font-bold text-white shadow-xl shadow-indigo-900/10 hover:from-indigo-500 hover:to-indigo-600 active:scale-95 transition-all duration-300"
+                  >
+                    Load More Photos ({visibleCount} of {galleryImages.length})
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Premium Gallery Lightbox Modal */}
+          {lightboxIndex !== null && galleryImages[lightboxIndex] && (
+            <div 
+              className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-4 md:p-8 select-none animate-fadeIn"
+              onClick={() => setLightboxIndex(null)}
+            >
+              {/* Close button */}
+              <button 
+                onClick={() => setLightboxIndex(null)}
+                className="absolute top-6 right-6 h-12 w-12 rounded-full bg-white/10 border border-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-95 z-[101]"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Main Viewer Row */}
+              <div className="w-full max-w-5xl h-[70vh] flex items-center justify-between gap-4 relative">
+                {/* Left Nav */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev! - 1));
+                  }}
+                  className="h-12 w-12 rounded-full bg-white/10 border border-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-95 shrink-0"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+
+                {/* Image Frame */}
+                <div 
+                  className="flex-1 h-full relative flex items-center justify-center"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img 
+                    src={galleryImages[lightboxIndex].url ? `${galleryImages[lightboxIndex].url}?w=1600&q=80&fit=max&auto=format` : ""}
+                    alt={galleryImages[lightboxIndex].caption || "Lightbox View"}
+                    className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl select-text"
+                  />
+                </div>
+
+                {/* Right Nav */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev! + 1));
+                  }}
+                  className="h-12 w-12 rounded-full bg-white/10 border border-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-95 shrink-0"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Metadata Footer */}
+              <div 
+                className="mt-6 text-center max-w-2xl px-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p className="text-white font-outfit text-base md:text-lg font-bold leading-relaxed select-text">
+                  {galleryImages[lightboxIndex].caption || "Student Support Activity Image"}
+                </p>
+                <span className="inline-block mt-2 text-xs font-semibold text-slate-400">
+                  Image {lightboxIndex + 1} of {galleryImages.length}
+                </span>
+              </div>
+            </div>
+          )}
 
         </div>
       </div>
