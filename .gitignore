@@ -33,4 +33,10 @@ public/documents/dvv/
 # Local migration caches
 scripts/sanity-upload-cache.json
 
+# Raw PDF and docx asset sources
+Stategic Plans PDF/
+
+# Scratch script directory
+scratch/
+
 

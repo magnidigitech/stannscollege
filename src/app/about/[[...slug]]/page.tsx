@@ -209,10 +209,13 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
                     <div className="flex flex-col gap-1.5">
                       {cat.items.map((item) => {
                         const isActive = catSlug === cat.catSlug && itemSlug === item.slug;
+                        const href = item.slug === "strategic-development-plan"
+                          ? "/strategic-plans-and-future-directions"
+                          : `/about/${cat.catSlug}/${item.slug}`;
                         return (
                           <Link
                             key={item.slug}
-                            href={`/about/${cat.catSlug}/${item.slug}`}
+                            href={href}
                             className={`font-sans text-xs md:text-sm p-3 rounded-xl transition-all border border-transparent flex items-center justify-between select-none ${
                               isActive
                                 ? 'bg-[#002147]/10 border-[#002147]/30 text-[#002147] font-bold shadow-sm'

@@ -749,41 +749,26 @@ export default defineConfig({
         fields: [
           { name: "title", title: "Page Title", type: "string" },
           { name: "executiveSummary", title: "Executive Summary", type: "text" },
+          { name: "googleFormUrl", title: "General Feedback Google Form Link", type: "url" },
+          { name: "studentFeedbackFormUrl", title: "Student Feedback Google Form Link", type: "url" },
+          { name: "facultyFeedbackFormUrl", title: "Faculty Engagement Google Form Link", type: "url" },
+          { name: "parentFeedbackFormUrl", title: "Parent & Community Google Form Link", type: "url" },
+          { name: "alumniFeedbackFormUrl", title: "Alumni Engagement Google Form Link", type: "url" },
           {
-            name: "pillars",
-            title: "Core Strategic Pillars",
+            name: "documents",
+            title: "Strategic Plan Documents",
             type: "array",
             of: [
               {
                 type: "object",
                 fields: [
-                  { name: "title", title: "Pillar Title", type: "string" },
-                  { name: "description", title: "Pillar Description", type: "text" }
+                  { name: "title", title: "Document Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" },
+                  { name: "googleFormUrl", title: "Google Form Link", type: "url" }
                 ]
               }
             ]
-          },
-          {
-            name: "phases",
-            title: "Roadmap Phases",
-            type: "array",
-            of: [
-              {
-                type: "object",
-                fields: [
-                  { name: "title", title: "Phase Title", type: "string" },
-                  { name: "description", title: "Phase Description", type: "text" }
-                ]
-              }
-            ]
-          },
-          {
-            name: "targets",
-            title: "Key Performance Tracking Targets",
-            type: "array",
-            of: [{ type: "string" }]
-          },
-          { name: "documentFile", title: "Strategic Plan PDF File", type: "file" }
+          }
         ]
       },
       {

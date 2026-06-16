@@ -615,16 +615,16 @@ export async function getStrategicPlan() {
     const query = `*[_type == "strategicPlan" && !(_id in path("drafts.**"))][0]{
       title,
       executiveSummary,
-      pillars[] {
+      googleFormUrl,
+      studentFeedbackFormUrl,
+      facultyFeedbackFormUrl,
+      parentFeedbackFormUrl,
+      alumniFeedbackFormUrl,
+      documents[] {
         title,
-        description
-      },
-      phases[] {
-        title,
-        description
-      },
-      targets,
-      "documentUrl": documentFile.asset->url
+        "fileUrl": file.asset->url,
+        googleFormUrl
+      }
     }`;
     const data = await sanityClient.fetch(query);
     return data || null;

@@ -428,10 +428,13 @@ export default function Navigation() {
                       {cat.items.map((item, idx) => {
                         const catSlug = toSlug(cat.title);
                         const itemSlug = toSlug(item);
+                        const href = itemSlug === "strategic-development-plan"
+                          ? "/strategic-plans-and-future-directions"
+                          : `/about/${catSlug}/${itemSlug}`;
                         return (
                           <Link
                             key={idx}
-                            href={`/about/${catSlug}/${itemSlug}`}
+                            href={href}
                             onClick={() => setActiveMenu(null)}
                             className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
                           >
@@ -841,7 +844,7 @@ export default function Navigation() {
             Mandatory Disclosures & Compliance
           </Link>
 
-          <Link href="/about/governance-administration/strategic-development-plan" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+          <Link href="/strategic-plans-and-future-directions" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
             Strategic Plans & Future Directions
           </Link>
 
@@ -911,16 +914,22 @@ export default function Navigation() {
                     {aboutCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-2">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider border-b border-slate-50 pb-1">{cat.title}</span>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={`/about/${toSlug(cat.title)}/${toSlug(item)}`}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-1"
-                          >
-                            • {item}
-                          </Link>
-                        ))}
+                        {cat.items.map((item, idx) => {
+                          const itemSlug = toSlug(item);
+                          const href = itemSlug === "strategic-development-plan"
+                            ? "/strategic-plans-and-future-directions"
+                            : `/about/${toSlug(cat.title)}/${itemSlug}`;
+                          return (
+                            <Link
+                              key={idx}
+                              href={href}
+                              onClick={() => setMobileOpen(false)}
+                              className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-1"
+                            >
+                              • {item}
+                            </Link>
+                          );
+                        })}
                       </div>
                     ))}
                   </div>
@@ -1116,7 +1125,7 @@ export default function Navigation() {
               </Link>
 
               {/* 13. Strategic Plans */}
-              <Link href="/about/governance-administration/strategic-development-plan" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
+              <Link href="/strategic-plans-and-future-directions" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
                 <span>13. Strategic Plans</span>
               </Link>
 
