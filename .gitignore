@@ -52,3 +52,8 @@ I. Academic Programmes/
 /note.txt
 *.crdownload
 
+# Large photo folders and archives
+Photos 2/
+*.zip
+
+

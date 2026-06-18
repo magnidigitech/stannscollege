@@ -286,6 +286,112 @@ export default defineConfig({
         ]
       },
       {
+        name: "alumniGallery",
+        title: "Alumni Gallery",
+        type: "document",
+        fields: [
+          { name: "folderName", title: "Folder Name", type: "string" },
+          { name: "slug", title: "Slug", type: "slug", options: { source: "folderName", maxLength: 96 } },
+          { name: "order", title: "Display Order", type: "number" },
+          {
+            name: "images",
+            title: "Gallery Images",
+            type: "array",
+            of: [
+              {
+                type: "image",
+                options: { hotspot: true },
+                fields: [
+                  { name: "caption", title: "Caption", type: "string" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "researchPublications",
+        title: "Research Publications Page",
+        type: "document",
+        fields: [
+          { name: "title", title: "Section Title", type: "string" },
+          { name: "description", title: "Description", type: "text" },
+          {
+            name: "documents",
+            title: "Publication Documents",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "title", title: "Document Title", type: "string" },
+                  {
+                    name: "category",
+                    title: "Category",
+                    type: "string",
+                    options: {
+                      list: [
+                        { title: "Faculty Publications", value: "faculty" },
+                        { title: "Student Publications", value: "student" },
+                        { title: "Paper Presentations", value: "presentations" },
+                      ],
+                    },
+                  },
+                  { name: "file", title: "PDF File", type: "file" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "researchSection",
+        title: "Research & Innovation Sections",
+        type: "document",
+        fields: [
+          { name: "title", title: "Section Title", type: "string" },
+          {
+            name: "sectionSlug",
+            title: "Section Slug",
+            type: "string",
+            options: {
+              list: [
+                { title: "Research Development Cell", value: "research-development-cell" },
+                { title: "Research Infrastructure", value: "research-infrastructure" },
+                { title: "Supervisors & Scholars", value: "research-supervisors-scholars" },
+                { title: "Centres of Excellence", value: "centres-of-excellence" },
+                { title: "Patents & Innovations", value: "patents-innovations" },
+                { title: "Funded Projects", value: "funded-projects" },
+                { title: "Intellectual Property Cell", value: "ipr-cell" },
+                { title: "Institution Innovation Cell", value: "institution-innovation-cell" },
+                { title: "Entrepreneurship Development", value: "entrepreneurship-development" },
+              ],
+            },
+          },
+          { name: "description", title: "Intro Description", type: "text" },
+          {
+            name: "content",
+            title: "Page Content (Markdown / Text)",
+            type: "text",
+            description: "Use standard markdown headings, lists, tables, etc.",
+          },
+          {
+            name: "documents",
+            title: "Related Documents / PDFs",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "title", title: "Document Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
         name: "aisheCertification",
         title: "AISHE Certifications",
         type: "document",

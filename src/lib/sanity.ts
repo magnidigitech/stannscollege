@@ -875,4 +875,64 @@ export async function getStudentSupportImages(category: string) {
   }
 }
 
+export async function getAlumniGallery() {
+  try {
+    const query = `*[_type == "alumniGallery" && !(_id in path("drafts.**"))] | order(order asc) {
+      _id,
+      folderName,
+      "slug": slug.current,
+      order,
+      images[] {
+        "url": asset->url,
+        caption
+      }
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (getAlumniGallery):", err);
+    return [];
+  }
+}
+
+export async function getResearchPublications() {
+  try {
+    const query = `*[_type == "researchPublications" && !(_id in path("drafts.**"))][0] {
+      title,
+      description,
+      documents[] {
+        title,
+        category,
+        "fileUrl": file.asset->url
+      }
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || null;
+  } catch (err) {
+    console.error("Sanity fetch error (getResearchPublications):", err);
+    return null;
+  }
+}
+
+export async function getResearchSection(slug: string) {
+  try {
+    const query = `*[_type == "researchSection" && sectionSlug == $slug && !(_id in path("drafts.**"))][0] {
+      title,
+      sectionSlug,
+      description,
+      content,
+      documents[] {
+        title,
+        "fileUrl": file.asset->url
+      }
+    }`;
+    const data = await sanityClient.fetch(query, { slug });
+    return data || null;
+  } catch (err) {
+    console.error(`Sanity fetch error (getResearchSection) for ${slug}:`, err);
+    return null;
+  }
+}
+
+
 
