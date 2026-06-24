@@ -49,7 +49,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      
+
       {/* Top Breadcrumb Header */}
       <div className="bg-white border-b border-slate-200/70 py-5 px-4 sm:px-6 lg:px-12 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs w-full">
         <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -60,12 +60,12 @@ export default function QualityAssurancePage({ params }: PageProps) {
               <span className="hover:text-[#002147] transition-all">Quality Assurance</span>
               <span className="text-slate-350">/</span>
               <span className="text-[#002147]">
-                {currentSlug === "naac" 
-                  ? "NAAC Accreditation" 
-                  : currentSlug === "iqac" 
-                    ? "About IQAC" 
-                    : currentSlug === "aqar" 
-                      ? "AQAR Reports" 
+                {currentSlug === "naac"
+                  ? "NAAC Accreditation"
+                  : currentSlug === "iqac"
+                    ? "About IQAC"
+                    : currentSlug === "aqar"
+                      ? "AQAR Reports"
                       : currentSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
               </span>
             </div>
@@ -83,21 +83,18 @@ export default function QualityAssurancePage({ params }: PageProps) {
       {/* Main Content Container */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
+
           {/* A. Left Sidebar Sticky Navigation */}
           <aside className="lg:col-span-3 xl:col-span-3">
-            <div className="sticky top-28 flex flex-col gap-8">
-              
+            <div className="sticky top-28 flex flex-col gap-8 max-h-[calc(100vh-9rem)] overflow-y-auto pr-2">
+
               {/* Navigation Box */}
               <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
                 <div className="flex flex-col gap-1 border-b border-slate-100 pb-5 mb-6">
-                  <span className="text-[10px] uppercase font-black tracking-widest text-[#002147]/60 flex items-center gap-1.5">
-                    <BookOpen className="h-3.5 w-3.5 text-emerald-500 shrink-0" /> Quality & Accreditation
-                  </span>
-                  <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">X. Quality</h3>
+                  <h3 className="font-outfit text-xl md:text-xl font-black text-[#002147] tracking-tight">IQAC<br />Quality Assurance & Accredation</h3>
                 </div>
 
-                <nav className="flex flex-col gap-8">
+                <nav className="flex flex-col gap-8 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
                   {navigationStructure.map((group, idx) => (
                     <div key={idx} className="flex flex-col gap-3">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400/90 border-l-2 border-slate-200 pl-2.5 leading-none">
@@ -107,24 +104,22 @@ export default function QualityAssurancePage({ params }: PageProps) {
                         {group.items.map((item, i) => {
                           const fullHref = `/quality-assurance/${item.slug}`;
                           const isActive = currentSlug === item.slug;
-                          
+
                           return (
                             <li key={i}>
                               <Link
                                 href={fullHref}
-                                className={`group w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border ${
-                                  isActive
-                                    ? "bg-[#002147] text-white border-transparent font-bold shadow-md translate-x-1"
-                                    : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
-                                }`}
+                                className={`group w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border ${isActive
+                                  ? "bg-[#002147] text-white border-transparent font-bold shadow-md translate-x-1"
+                                  : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
+                                  }`}
                               >
                                 <div className="flex items-center gap-2.5 truncate">
                                   <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-emerald-400" : "text-slate-400 group-hover:text-emerald-500"}`} />
                                   <span className="truncate">{item.text}</span>
                                 </div>
-                                <ArrowRight className={`h-3.5 w-3.5 shrink-0 transform transition-all ${
-                                  isActive ? "opacity-100 translate-x-0" : "opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
-                                }`} />
+                                <ArrowRight className={`h-3.5 w-3.5 shrink-0 transform transition-all ${isActive ? "opacity-100 translate-x-0" : "opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
+                                  }`} />
                               </Link>
                             </li>
                           );
@@ -165,7 +160,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
               <ContentRenderer slug={currentSlug} />
             </div>
           </main>
-          
+
         </div>
       </div>
     </div>

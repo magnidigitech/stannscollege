@@ -57,12 +57,16 @@ interface StudentSupportClientPortalProps {
   initialSections?: any[];
   activeSlug: string;
   galleryImages?: Array<{ url: string; caption?: string }>;
+  sanityFiles?: Array<{ title: string; academicYear: string; fileUrl: string }>;
+  rankHolders?: any[];
 }
 
 export default function StudentSupportClientPortal({ 
   initialSections = [], 
   activeSlug = "mentor-mentee",
-  galleryImages = []
+  galleryImages = [],
+  sanityFiles = [],
+  rankHolders = []
 }: StudentSupportClientPortalProps) {
   
   const router = useRouter();
@@ -101,19 +105,31 @@ export default function StudentSupportClientPortal({
     
     // Append PDF associations explicitly to corresponding sections for Native PDF view overlays!
     let files: any[] = [];
+
+    // 1. Add sanity dynamic uploads at the top
+    if (sanityFiles && sanityFiles.length > 0) {
+      sanityFiles.forEach((f: any) => {
+        files.push({
+          name: `${f.title} (${f.academicYear})`,
+          url: f.fileUrl
+        });
+      });
+    }
+
+    // 2. Add static fallbacks
     if (slug === "anti-ragging") {
-      files = [{ name: "Download Comprehensive Anti-Ragging Policy (PDF)", url: "/documents/policies/student-support/anti-ragging-policy.pdf" }];
+      files.push({ name: "Download Comprehensive Anti-Ragging Policy (PDF)", url: "/documents/policies/student-support/anti-ragging-policy.pdf" });
     } else if (slug === "grievance-redressal") {
-      files = [{ name: "Download Grievance Redressal Mechanism Policy (PDF)", url: "/documents/policies/student-support/grievance-redressal-policy.pdf" }];
+      files.push({ name: "Download Grievance Redressal Mechanism Policy (PDF)", url: "/documents/policies/student-support/grievance-redressal-policy.pdf" });
     } else if (slug === "internal-complaints") {
-      files = [{ name: "Download Internal Complaints Committee (ICC) POSH Policy (PDF)", url: "/documents/policies/student-support/icc-policy.pdf" }];
+      files.push({ name: "Download Internal Complaints Committee (ICC) POSH Policy (PDF)", url: "/documents/policies/student-support/icc-policy.pdf" });
     } else if (slug === "women-empowerment") {
-      files = [{ name: "Download Women Empowerment Cell Policy 2026 (PDF)", url: "/documents/policies/student-support/women-empowerment-cell-policy-2026.pdf" }];
+      files.push({ name: "Download Women Empowerment Cell Policy 2026 (PDF)", url: "/documents/policies/student-support/women-empowerment-cell-policy-2026.pdf" });
     } else if (slug === "academic-achievements") {
-      files = [
+      files.push(
         { name: "Download Outgoing Batch Academic Toppers (PDF)", url: "/documents/policies/student-support/outgoing-batch-academic-toppers-2025.pdf" },
         { name: "Download Competitive Exams Achievement Statistics (PDF)", url: "/documents/policies/student-support/competitive-examination-achievements.pdf" }
-      ];
+      );
     }
 
     return {
@@ -124,7 +140,7 @@ export default function StudentSupportClientPortal({
     };
   };
 
-  const currentSection = useMemo(() => getSectionContent(activeSlug), [activeSlug, initialSections]);
+  const currentSection = useMemo(() => getSectionContent(activeSlug), [activeSlug, initialSections, sanityFiles]);
 
   // Helper: Enhanced Robust Regex Tokenizer to hydrate BOTH links and bold markdown wrappers!
   const renderRichString = (str: string) => {
@@ -301,12 +317,21 @@ export default function StudentSupportClientPortal({
           lookAhead++;
         }
 
-        const rows: string[][] = [];
-        for (let r = 0; r < rowItems.length; r += 4) {
-          const rowSlice = rowItems.slice(r, r + 4);
-          if (rowSlice.length > 0) {
-            while (rowSlice.length < 4) rowSlice.push("—");
-            rows.push(rowSlice);
+        let rows: string[][] = [];
+        if (activeSlug === "academic-achievements" && rankHolders && rankHolders.length > 0) {
+          rows = rankHolders.map((r: any) => [
+            r.academicYear || "—",
+            r.programme || "—",
+            r.studentName || "—",
+            r.achievement || "—"
+          ]);
+        } else {
+          for (let r = 0; r < rowItems.length; r += 4) {
+            const rowSlice = rowItems.slice(r, r + 4);
+            if (rowSlice.length > 0) {
+              while (rowSlice.length < 4) rowSlice.push("—");
+              rows.push(rowSlice);
+            }
           }
         }
 
@@ -432,6 +457,18 @@ export default function StudentSupportClientPortal({
         const cleanTitle = stripEmojis(p.replace(/__/g, '').trim())
           .replace(/^(?:(?:\d+(?:\.\d+)*|[IVXLCDM]+|[a-zA-Z])[\.\)]\s+)+/i, '')
           .trim();
+        
+        const cleanTitleLower = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const activeTabLower = activeTab.text.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const sectionTitleLower = (currentSection.title || "").toLowerCase().replace(/[^a-z0-9]/g, '');
+        
+        if (cleanTitleLower === activeTabLower || 
+            cleanTitleLower === sectionTitleLower || 
+            cleanTitleLower.includes(activeTabLower) || 
+            activeTabLower.includes(cleanTitleLower) ||
+            (sectionTitleLower && (cleanTitleLower.includes(sectionTitleLower) || sectionTitleLower.includes(cleanTitleLower)))) {
+          return null;
+        }
         
         // Check if Roman numerals or Chapters for larger breakout boxes
         const isBigTitle = /^[IVX\d]+\./.test(p.replace(/__/g, '').trim()) || cleanTitle.toUpperCase() === cleanTitle;
@@ -561,21 +598,18 @@ export default function StudentSupportClientPortal({
   }, []);
 
   return (
-    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-16 font-sans w-full">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pt-4 md:pt-6 pb-8 md:pb-16 font-sans w-full">
       
       {/* Beautiful Main Prestigous Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#053d79] rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden shadow-xl mb-12 select-none">
+      <div className="bg-gradient-to-br from-[#002147] to-[#053d79] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-xl mb-8 select-none">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-          <Users className="h-[500px] w-[500px]" />
+          <Users className="h-[300px] w-[300px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-4 animate-fadeIn">
-          <span className="inline-flex items-center gap-2 font-black text-xs md:text-sm uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-5 py-2 rounded-full w-fit text-blue-100">
-            <Sparkles className="h-4 w-4 animate-pulse text-yellow-300" /> Academic Ecosystem & Support
-          </span>
-          <h1 className="font-outfit text-4xl md:text-6xl font-black tracking-tight leading-none">
+        <div className="relative z-10 flex flex-col gap-2 animate-fadeIn">
+          <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
             Student Support Services
           </h1>
-          <p className="text-blue-100/80 font-semibold text-base md:text-xl mt-2 max-w-3xl leading-relaxed">
+          <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
             Enabling transformative growth through specialized guidance committees, counseling frameworks, merit recognition pathways, and dynamic extension camps.
           </p>
         </div>
@@ -662,24 +696,7 @@ export default function StudentSupportClientPortal({
         {/* Active Viewing Pane */}
         <div className="md:col-span-3 flex flex-col gap-8 animate-fadeIn">
           
-          {/* Header Bar for Content Panel */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b-2 border-slate-100 pb-6">
-            <div className="flex items-center gap-4">
-              <div className="h-14 w-14 shrink-0 bg-[#002147]/5 border border-[#002147]/10 rounded-2xl text-[#002147] flex items-center justify-center shadow-xs">
-                <activeTab.icon className="h-6 w-6" />
-              </div>
-              <div>
-                <h2 className="font-outfit text-2xl md:text-3xl font-black text-[#002147] tracking-tight leading-none capitalize">
-                  {currentSection.title || activeTab.text}
-                </h2>
-                <p className="text-slate-400 font-bold text-[10px] md:text-xs mt-1.5 uppercase tracking-widest flex items-center gap-1">
-                  <span>{activeTab.group}</span>
-                  <ChevronRight className="h-3 w-3 text-slate-300" />
-                  <span className="text-slate-600 font-black">Current Segment</span>
-                </p>
-              </div>
-            </div>
-          </div>
+
 
           {/* Embed & Policy Files Section (Display at the top if policies exist!) */}
           {currentSection.files && currentSection.files.length > 0 && (
@@ -689,8 +706,12 @@ export default function StudentSupportClientPortal({
                   <FileDown className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="font-outfit font-black text-sm md:text-base text-slate-800">Institutional Policy Framework</h4>
-                  <p className="text-slate-500 text-[11px] font-semibold">Mandatory official documentations associated with this segment.</p>
+                  <h4 className="font-outfit font-black text-sm md:text-base text-slate-800">
+                    {activeSlug === "academic-achievements" ? "Academic Achievements Reports & PDFs" : "Institutional Policy Framework"}
+                  </h4>
+                  <p className="text-slate-500 text-[11px] font-semibold">
+                    {activeSlug === "academic-achievements" ? "Academic year-wise toppers and statistical records." : "Mandatory official documentations associated with this segment."}
+                  </p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -714,6 +735,14 @@ export default function StudentSupportClientPortal({
 
           {/* Beautiful Main Text Layout Canvas Container */}
           <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 shadow-xs select-text selection:bg-indigo-100 selection:text-indigo-950">
+            <div className="flex items-center gap-4 border-b border-slate-100 pb-6 mb-8">
+              <div className="h-12 w-12 shrink-0 bg-[#002147]/5 border border-[#002147]/10 rounded-xl text-[#002147] flex items-center justify-center shadow-xs">
+                <activeTab.icon className="h-5 w-5" />
+              </div>
+              <h2 className="font-outfit text-2xl md:text-3xl font-black text-[#002147] tracking-tight leading-none capitalize">
+                {currentSection.title || activeTab.text}
+              </h2>
+            </div>
             {renderContentBody(currentSection.content)}
           </div>
 

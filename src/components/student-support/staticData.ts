@@ -11,66 +11,2234 @@ export interface SupportSection {
 export const staticSupportSections: Record<string, SupportSection> = {
   "mentor-mentee": {
     title: "Mentor–Mentee System",
-    content: "__Mentor–Mentee System__\n\nThe institution has implemented a structured and student-centric Mentor–Mentee System to ensure holistic development, continuous academic support, and personal guidance for every student.\n\nAt the beginning of the first year, each faculty member is assigned as a mentor to a small group of approximately 20–30 students (mentees). The same mentor continues to guide the students throughout their programme, ensuring consistency, trust, and effective monitoring.  \nThe institution maintains an average mentor–mentee ratio of 1:20–30, enabling individual attention and personalized support.\n\n__Objectives__\n\n- To monitor students’ academic performance, attendance, and overall progress\n- To provide personal, emotional, and academic guidance\n- To identify students’ strengths, weaknesses, and learning needs\n- To guide students in goal setting, career planning, and skill development\n- To encourage participation in academic, cultural, and co-curricular activities\n- To create a supportive, disciplined, and student-friendly learning environment\n\n__ Key Functions__\n\n- Conduct regular mentor–mentee meetings for continuous interaction\n- Provide individual counseling for academic and personal concerns\n- Track student attendance, internal performance, and progression\n- Maintain student profiles and mentoring records\n- Offer timely guidance and communicate with parents/guardians when necessary\n\n__ Activities of the Mentor__\n\nMentors actively engage in the following activities:\n\n- Organize __orientation sessions__ for mentees at the beginning of the academic year\n- Conduct __regular one-to-one and group mentoring sessions__\n- Review __academic performance, attendance, and internal assessments__\n- Identify __slow learners and advanced learners__ and provide suitable guidance\n- Provide __remedial support__ and enrichment activities\n- Guide students in __career planning, higher education, and skill development__\n- Encourage participation in __seminars, workshops, competitions, and co-curricular activities__\n- Address __personal, emotional, and stress-related issues__ through counseling\n- Maintain __Mentor Diaries / Registers__ and update student progress regularly\n- Coordinate with __parents/guardians__ when required\n- Refer students to institutional support services such as __placement, counseling, and skill development cells__\n- Promote discipline, values, and professional ethics\n\n__Mentor–Mentee Committee__\n\nThe system is implemented and monitored by a dedicated committee:\n\n- __Chairperson:__ Dr. Sr. Sandhya Thumma, Principal, Department of MBA\n- __IQAC Coordinator:__ Mrs. R. Sharon Rose, Department of Commerce\n- __Convener:__ Mrs. M. Anjana Devi, Department of Commerce\n- __Members:__ All Faculty Mentors\n\n__ Documentation & Records__\n\n- Mentor–Mentee Registers / Digital Records\n- Student profiles with academic and personal details\n- Records of mentoring sessions and follow-up actions\n- Attendance and performance tracking sheets\n- Periodic reports submitted to IQA\n\n__ Monitoring & Review__\n\n- The system is periodically reviewed by the __IQAC__\n- Student feedback is collected to improve effectiveness\n- Mentors submit regular reports on student progress\n- Necessary corrective measures and support mechanisms are implemented\n\n__ Outcome__\n\n- Improved student attendance and academic performance\n- Early identification and support for slow learners\n- Increased participation in academic and co-curricular activities\n- Enhanced confidence, discipline, and communication skills\n- Strengthened teacher–student relationship\n- Reduced dropout rates and improved progression to higher education\n- [Embedded Image Removed]\n\n__Gallery __\n\n"
+    content: `__Mentor–Mentee System__
+
+The institution has implemented a structured and student-centric Mentor–Mentee System to ensure holistic development, continuous academic support, and personal guidance for every student.
+
+At the beginning of the first year, each faculty member is assigned as a mentor to a small group of approximately 20–30 students (mentees). The same mentor continues to guide the students throughout their programme, ensuring consistency, trust, and effective monitoring.  
+The institution maintains an average mentor–mentee ratio of 1:20–30, enabling individual attention and personalized support.
+
+__Objectives__
+
+- To monitor students’ academic performance, attendance, and overall progress
+- To provide personal, emotional, and academic guidance
+- To identify students’ strengths, weaknesses, and learning needs
+- To guide students in goal setting, career planning, and skill development
+- To encourage participation in academic, cultural, and co-curricular activities
+- To create a supportive, disciplined, and student-friendly learning environment
+
+__ Key Functions__
+
+- Conduct regular mentor–mentee meetings for continuous interaction
+- Provide individual counseling for academic and personal concerns
+- Track student attendance, internal performance, and progression
+- Maintain student profiles and mentoring records
+- Offer timely guidance and communicate with parents/guardians when necessary
+
+__ Activities of the Mentor__
+
+Mentors actively engage in the following activities:
+
+- Organize __orientation sessions__ for mentees at the beginning of the academic year
+- Conduct __regular one-to-one and group mentoring sessions__
+- Review __academic performance, attendance, and internal assessments__
+- Identify __slow learners and advanced learners__ and provide suitable guidance
+- Provide __remedial support__ and enrichment activities
+- Guide students in __career planning, higher education, and skill development__
+- Encourage participation in __seminars, workshops, competitions, and co-curricular activities__
+- Address __personal, emotional, and stress-related issues__ through counseling
+- Maintain __Mentor Diaries / Registers__ and update student progress regularly
+- Coordinate with __parents/guardians__ when required
+- Refer students to institutional support services such as __placement, counseling, and skill development cells__
+- Promote discipline, values, and professional ethics
+
+__Mentor–Mentee Committee__
+
+The system is implemented and monitored by a dedicated committee:
+
+- __Chairperson:__ Dr. Sr. Sandhya Thumma, Principal, Department of MBA
+- __IQAC Coordinator:__ Mrs. R. Sharon Rose, Department of Commerce
+- __Convener:__ Mrs. M. Anjana Devi, Department of Commerce
+- __Members:__ All Faculty Mentors
+
+__ Documentation & Records__
+
+- Mentor–Mentee Registers / Digital Records
+- Student profiles with academic and personal details
+- Records of mentoring sessions and follow-up actions
+- Attendance and performance tracking sheets
+- Periodic reports submitted to IQA
+
+__ Monitoring & Review__
+
+- The system is periodically reviewed by the __IQAC__
+- Student feedback is collected to improve effectiveness
+- Mentors submit regular reports on student progress
+- Necessary corrective measures and support mechanisms are implemented
+
+__ Outcome__
+
+- Improved student attendance and academic performance
+- Early identification and support for slow learners
+- Increased participation in academic and co-curricular activities
+- Enhanced confidence, discipline, and communication skills
+- Strengthened teacher–student relationship
+- Reduced dropout rates and improved progression to higher education
+
+__Gallery __
+
+`
   },
   "student-counselling": {
     title: "Student Counselling Committee",
-    content: "__Student Counselling Committee__\n\n__Objective__\n\nSt. Ann’s College for Women is committed to promoting the mental, emotional, and academic well-being of students. The Student Counselling Committee provides a safe, inclusive, and confidential support system to help students address personal, academic, and psychological concerns, in alignment with the guidelines of the University Grants Commission and NAAC best practices.\n\n__Scope of Counselling Services__\n\nThe Committee extends support in the following areas:\n\n- __Academic Counselling__ – Study skills, time management, academic improvement, and examination stress\n- __Personal Counselling__ – Emotional well-being, self-confidence, and personal challenges\n- __Career Guidance__ – Higher education, career planning, and goal setting\n- __Behavioural Counselling__ – Adjustment issues, peer pressure, and interpersonal relationships\n- __Health & Wellness__ – Stress management, mental health awareness, and positive lifestyle practices\n\n__Roles & Responsibilities__\n\nThe Student Counselling Committee undertakes the following duties:\n\n- Provide psychological, emotional, and academic counselling to students\n- Identify students experiencing stress, anxiety, or personal difficulties through mentoring and interaction\n- Offer guidance for academic improvement and career planning\n- Conduct regular counselling sessions, workshops, and awareness programmes\n- Promote mental health, well-being, and positive thinking among students\n- Address issues such as peer pressure, examination stress, and adjustment challenges\n- Ensure confidentiality, empathy, and a supportive environment\n- Encourage healthy relationships, communication skills, and life skills development\n- Collaborate with mentors, faculty, parents, and professionals when required\n- Maintain systematic records and reports of counselling activities and follow-ups\n\n__Key Activities__\n\n- Orientation programmes on mental health and student well-being\n- Workshops on stress management, emotional intelligence, and life skills\n- Individual and group counselling sessions\n- Awareness campaigns on mental health and wellness\n- Referral support to trained psychologists in critical cases\n\n__Outcomes__\n\nThe Counselling Committee aims to:\n\n- Enhance students’ emotional stability and resilience\n- Improve academic performance and concentration\n- Foster a positive, inclusive, and supportive campus environment\n- Reduce stress, anxiety, and student grievances\n- Support overall personality development and holistic growth\n\n__Confidentiality & Ethics__\n\nAll counselling services are conducted with strict confidentiality and professional ethics, ensuring a non-judgmental and safe space for students.\n\n__Composition of the Committee__\n\n__Name__\n\n__Designation__\n\n__Department / Role__\n\n__Position__\n\nDr. Sr. Sandhya Thumma\n\nPrincipal\n\nMBA\n\nChairperson\n\nMrs. R. Sharon Rose\n\nFaculty\n\nCommerce\n\nIQAC Coordinator\n\nMrs. B. Joyce N. J. Kumari\n\nFaculty\n\nChemistry\n\nConvener\n\nMrs. J. Prameela Rani\n\nFaculty\n\nCommerce\n\nMember\n\nMrs. D. Swarna Charani Rai\n\nFaculty\n\nComputer Science\n\nMember\n\nMrs. M. Usha Rani\n\nFaculty\n\nComputer Science\n\nMember\n\nMrs. G. Saroja\n\nFaculty\n\nCommerce\n\nMember\n\nSr. G. Margaret Priyanka\n\nAdministrator\n\nBiotechnology\n\nMember\n\nDr. Sr. Fatima Rani\n\nTrained Psychologist\n\n—\n\nMember\n\n__Reporting & Documentation__\n\nThe Committee ensures proper documentation and accountability through:\n\n- Counselling Session Records /Register (confidential)\n- Student Case Files and Follow-up Reports\n- Workshop and Programme Reports\n- Minutes of Meetings and Action Taken Reports\n- Annual Report on Student Counselling Activities\n\n__Institutional Commitment__\n\nSt. Ann’s College for Women ensures that every student receives timely guidance, emotional support, and professional counselling, empowering them to become confident, resilient, and responsible individuals.\n\n__Gallery__\n\n"
+    content: `__Student Counselling Committee__
+
+__Objective__
+
+St. Ann’s College for Women is committed to promoting the mental, emotional, and academic well-being of students. The Student Counselling Committee provides a safe, inclusive, and confidential support system to help students address personal, academic, and psychological concerns, in alignment with the guidelines of the University Grants Commission and NAAC best practices.
+
+__Scope of Counselling Services__
+
+The Committee extends support in the following areas:
+
+- __Academic Counselling__ – Study skills, time management, academic improvement, and examination stress
+- __Personal Counselling__ – Emotional well-being, self-confidence, and personal challenges
+- __Career Guidance__ – Higher education, career planning, and goal setting
+- __Behavioural Counselling__ – Adjustment issues, peer pressure, and interpersonal relationships
+- __Health & Wellness__ – Stress management, mental health awareness, and positive lifestyle practices
+
+__Roles & Responsibilities__
+
+The Student Counselling Committee undertakes the following duties:
+
+- Provide psychological, emotional, and academic counselling to students
+- Identify students experiencing stress, anxiety, or personal difficulties through mentoring and interaction
+- Offer guidance for academic improvement and career planning
+- Conduct regular counselling sessions, workshops, and awareness programmes
+- Promote mental health, well-being, and positive thinking among students
+- Address issues such as peer pressure, examination stress, and adjustment challenges
+- Ensure confidentiality, empathy, and a supportive environment
+- Encourage healthy relationships, communication skills, and life skills development
+- Collaborate with mentors, faculty, parents, and professionals when required
+- Maintain systematic records and reports of counselling activities and follow-ups
+
+__Key Activities__
+
+- Orientation programmes on mental health and student well-being
+- Workshops on stress management, emotional intelligence, and life skills
+- Individual and group counselling sessions
+- Awareness campaigns on mental health and wellness
+- Referral support to trained psychologists in critical cases
+
+__Outcomes__
+
+The Counselling Committee aims to:
+
+- Enhance students’ emotional stability and resilience
+- Improve academic performance and concentration
+- Foster a positive, inclusive, and supportive campus environment
+- Reduce stress, anxiety, and student grievances
+- Support overall personality development and holistic growth
+
+__Confidentiality & Ethics__
+
+All counselling services are conducted with strict confidentiality and professional ethics, ensuring a non-judgmental and safe space for students.
+
+__Composition of the Committee__
+
+__Name__
+
+__Designation__
+
+__Department / Role__
+
+__Position__
+
+Dr. Sr. Sandhya Thumma
+
+Principal
+
+MBA
+
+Chairperson
+
+Mrs. R. Sharon Rose
+
+Faculty
+
+Commerce
+
+IQAC Coordinator
+
+Mrs. B. Joyce N. J. Kumari
+
+Faculty
+
+Chemistry
+
+Convener
+
+Mrs. J. Prameela Rani
+
+Faculty
+
+Commerce
+
+Member
+
+Mrs. D. Swarna Charani Rai
+
+Faculty
+
+Computer Science
+
+Member
+
+Mrs. M. Usha Rani
+
+Faculty
+
+Computer Science
+
+Member
+
+Mrs. G. Saroja
+
+Faculty
+
+Commerce
+
+Member
+
+Sr. G. Margaret Priyanka
+
+Administrator
+
+Biotechnology
+
+Member
+
+Dr. Sr. Fatima Rani
+
+Trained Psychologist
+
+—
+
+Member
+
+__Reporting & Documentation__
+
+The Committee ensures proper documentation and accountability through:
+
+- Counselling Session Records /Register (confidential)
+- Student Case Files and Follow-up Reports
+- Workshop and Programme Reports
+- Minutes of Meetings and Action Taken Reports
+- Annual Report on Student Counselling Activities
+
+__Institutional Commitment__
+
+St. Ann’s College for Women ensures that every student receives timely guidance, emotional support, and professional counselling, empowering them to become confident, resilient, and responsible individuals.
+
+__Gallery__
+
+`
   },
   "grievance-redressal": {
     title: "Grievance Redressal Committee / Cell",
-    content: "__Grievance Redressal Committee / Cell__\n\n__Introduction__\n\nIn accordance with the guidelines of the University Grants Commission and the quality standards promoted by National Assessment and Accreditation Council, St. Ann’s College for Women has constituted a Grievance Redressal Committee / Cell to ensure a fair, transparent, and student-friendly mechanism for addressing grievances of students and staff.\n\nThe Committee is committed to promoting a safe, respectful, inclusive, and harmonious academic environment by resolving grievances promptly and impartially.\n\n__Objectives of the Grievance Redressal Committee__\n\nThe Grievance Redressal Committee aims to:\n\n- Create awareness among students and staff regarding grievance redressal procedures.\n- Prevent harassment, discrimination, and unfair practices within the institution.\n- Provide a supportive platform for students and staff to express grievances freely and safely.\n- Receive and register complaints in a confidential manner.\n- Examine and investigate grievances fairly, transparently, and impartially.\n- Take appropriate remedial measures for prompt resolution of issues.\n- Counsel students and staff to resolve issues amicably wherever possible.\n- Maintain proper records and reports of grievances received and actions taken.\n- Promote discipline, mutual respect, and ethical practices on the campus.\n\n__Functions of the Committee__\n\nThe Committee shall:\n\n- Address academic, administrative, personal, and campus-related grievances.\n- Ensure that complaints are handled with sensitivity and confidentiality.\n- Recommend suitable corrective and preventive measures to the institution.\n- Encourage a healthy and grievance-free campus environment.\n- Submit periodic reports to the college administration and IQAC for quality improvement.\n\n__Grievance Redressal Procedure__\n\n1. Students or staff may submit grievances in writing to the Committee.\n2. Complaints may also be submitted through the designated grievance mechanism provided by the institution.\n3. The Committee shall review the complaint and conduct necessary enquiry.\n4. Both parties involved shall be given an opportunity to present their views.\n5. The Committee shall recommend suitable action for redressal within a reasonable time.\n6. Confidentiality and fairness shall be maintained throughout the process.\n\n__Composition of the Grievance Redressal Committee__\n\nS. No.\n\nName\n\nDesignation\n\nRole\n\n1\n\nDr. Sr. Sandhya Thumma\n\nPrincipal, Dept. of MBA\n\nChairperson\n\n2\n\nMrs. R. Sharon Rose\n\nVice Principal, Dept. of Commerce\n\nIQAC Coordinator\n\n3\n\nMrs. K. Vidhyadhari\n\nDepartment of Botany\n\nConvener (UG)\n\n4\n\nDr. G. Radhika\n\nDepartment of MBA\n\nCo-Convener (PG)\n\n5\n\nMrs. M. Usha Rani\n\nDept. of Computer Science\n\nMember\n\n6\n\nMrs. G. Saroja\n\nDept. of Commerce\n\nMember\n\n7\n\nMiss P. Anitha\n\nDept. of Computer Science\n\nMember\n\n8\n\nStudent Representative (UG)\n\n—\n\nMember\n\n9\n\nStudent Representative (PG)\n\n—\n\nMember\n\n__Activities of the Grievance Redressal Committee__\n\nThe Grievance Redressal Committee regularly undertakes the following activities to ensure a safe, supportive, and student-friendly campus environment:\n\n- Organizing orientation programmes to create awareness about grievance redressal mechanisms and student rights.\n- Conducting awareness sessions on discipline, ethical behaviour, gender sensitivity, and institutional values.\n- Providing counselling and guidance to students facing academic, personal, emotional, or social difficulties.\n- Addressing grievances related to academics, examinations, attendance, infrastructure, administration, and student services.\n- Encouraging students to express concerns without fear through a confidential and transparent grievance system.\n- Coordinating with Anti-Ragging Cell, Women Empowerment Cell, Internal Complaints Committee (ICC), Mentoring System, and Student Counselling Committee for holistic student support.\n- Conducting meetings periodically to review grievances received and monitor corrective actions.\n- Promoting harmonious relationships among students, faculty, and staff through mediation and counselling.\n- Maintaining grievance records, resolutions, meeting minutes, and action-taken reports for institutional documentation and NAAC compliance.\n- Suggesting preventive and corrective measures to the management for improving student welfare and campus environment.\n- Supporting the institution in maintaining an atmosphere of equality, dignity, safety, and mutual respect for women students.\n- Encouraging a culture of open communication, emotional well-being, and inclusive education within the campus.\n\n__Annual / Regular Activities Conducted__\n\nThe Committee may organize:\n\n- Awareness Programmes on Student Rights and Responsibilities\n- Orientation on Grievance Redressal Mechanism\n- Counselling Sessions for Students\n- Interactive Meetings with Student Representatives\n- Programmes on Stress Management and Emotional Well-being\n- Workshops on Gender Sensitization and Women Safety\n- Sessions on Cyber Safety and Responsible Use of Social Media\n- Value Education and Personality Development Programmes\n- Feedback Collection and Student Support Initiatives\n\n__Expected Outcomes__\n\nThrough the effective functioning of the Grievance Redressal Committee, the institution aims to:\n\n- Ensure timely and fair resolution of grievances.\n- Promote a peaceful and student-friendly campus environment.\n- Enhance student confidence and emotional well-being.\n- Strengthen transparency, accountability, and institutional trust.\n- Encourage mutual respect, discipline, and ethical conduct.\n- Support holistic development and welfare of women students.\n\n__Commitment of the Institution__\n\nSt. Ann’s College for Women is committed to maintaining a campus atmosphere based on dignity, equality, discipline, and mutual respect. The Grievance Redressal Committee functions as an important support system to safeguard the interests and well-being of students and staff and to strengthen institutional transparency and accountability.\n\n__Gallery __\n\n"
+    content: `__Grievance Redressal Committee / Cell__
+
+__Introduction__
+
+In accordance with the guidelines of the University Grants Commission and the quality standards promoted by National Assessment and Accreditation Council, St. Ann’s College for Women has constituted a Grievance Redressal Committee / Cell to ensure a fair, transparent, and student-friendly mechanism for addressing grievances of students and staff.
+
+The Committee is committed to promoting a safe, respectful, inclusive, and harmonious academic environment by resolving grievances promptly and impartially.
+
+__Objectives of the Grievance Redressal Committee__
+
+The Grievance Redressal Committee aims to:
+
+- Create awareness among students and staff regarding grievance redressal procedures.
+- Prevent harassment, discrimination, and unfair practices within the institution.
+- Provide a supportive platform for students and staff to express grievances freely and safely.
+- Receive and register complaints in a confidential manner.
+- Examine and investigate grievances fairly, transparently, and impartially.
+- Take appropriate remedial measures for prompt resolution of issues.
+- Counsel students and staff to resolve issues amicably wherever possible.
+- Maintain proper records and reports of grievances received and actions taken.
+- Promote discipline, mutual respect, and ethical practices on the campus.
+
+__Functions of the Committee__
+
+The Committee shall:
+
+- Address academic, administrative, personal, and campus-related grievances.
+- Ensure that complaints are handled with sensitivity and confidentiality.
+- Recommend suitable corrective and preventive measures to the institution.
+- Encourage a healthy and grievance-free campus environment.
+- Submit periodic reports to the college administration and IQAC for quality improvement.
+
+__Grievance Redressal Procedure__
+
+1. Students or staff may submit grievances in writing to the Committee.
+2. Complaints may also be submitted through the designated grievance mechanism provided by the institution.
+3. The Committee shall review the complaint and conduct necessary enquiry.
+4. Both parties involved shall be given an opportunity to present their views.
+5. The Committee shall recommend suitable action for redressal within a reasonable time.
+6. Confidentiality and fairness shall be maintained throughout the process.
+
+__Composition of the Grievance Redressal Committee__
+
+S. No.
+
+Name
+
+Designation
+
+Role
+
+1
+
+Dr. Sr. Sandhya Thumma
+
+Principal, Dept. of MBA
+
+Chairperson
+
+2
+
+Mrs. R. Sharon Rose
+
+Vice Principal, Dept. of Commerce
+
+IQAC Coordinator
+
+3
+
+Mrs. K. Vidhyadhari
+
+Department of Botany
+
+Convener (UG)
+
+4
+
+Dr. G. Radhika
+
+Department of MBA
+
+Co-Convener (PG)
+
+5
+
+Mrs. M. Usha Rani
+
+Dept. of Computer Science
+
+Member
+
+6
+
+Mrs. G. Saroja
+
+Dept. of Commerce
+
+Member
+
+7
+
+Miss P. Anitha
+
+Dept. of Computer Science
+
+Member
+
+8
+
+Student Representative (UG)
+
+—
+
+Member
+
+9
+
+Student Representative (PG)
+
+—
+
+Member
+
+__Activities of the Grievance Redressal Committee__
+
+The Grievance Redressal Committee regularly undertakes the following activities to ensure a safe, supportive, and student-friendly campus environment:
+
+- Organizing orientation programmes to create awareness about grievance redressal mechanisms and student rights.
+- Conducting awareness sessions on discipline, ethical behaviour, gender sensitivity, and institutional values.
+- Providing counselling and guidance to students facing academic, personal, emotional, or social difficulties.
+- Addressing grievances related to academics, examinations, attendance, infrastructure, administration, and student services.
+- Encouraging students to express concerns without fear through a confidential and transparent grievance system.
+- Coordinating with Anti-Ragging Cell, Women Empowerment Cell, Internal Complaints Committee (ICC), Mentoring System, and Student Counselling Committee for holistic student support.
+- Conducting meetings periodically to review grievances received and monitor corrective actions.
+- Promoting harmonious relationships among students, faculty, and staff through mediation and counselling.
+- Maintaining grievance records, resolutions, meeting minutes, and action-taken reports for institutional documentation and NAAC compliance.
+- Suggesting preventive and corrective measures to the management for improving student welfare and campus environment.
+- Supporting the institution in maintaining an atmosphere of equality, dignity, safety, and mutual respect for women students.
+- Encouraging a culture of open communication, emotional well-being, and inclusive education within the campus.
+
+__Annual / Regular Activities Conducted__
+
+The Committee may organize:
+
+- Awareness Programmes on Student Rights and Responsibilities
+- Orientation on Grievance Redressal Mechanism
+- Counselling Sessions for Students
+- Interactive Meetings with Student Representatives
+- Programmes on Stress Management and Emotional Well-being
+- Workshops on Gender Sensitization and Women Safety
+- Sessions on Cyber Safety and Responsible Use of Social Media
+- Value Education and Personality Development Programmes
+- Feedback Collection and Student Support Initiatives
+
+__Expected Outcomes__
+
+Through the effective functioning of the Grievance Redressal Committee, the institution aims to:
+
+- Ensure timely and fair resolution of grievances.
+- Promote a peaceful and student-friendly campus environment.
+- Enhance student confidence and emotional well-being.
+- Strengthen transparency, accountability, and institutional trust.
+- Encourage mutual respect, discipline, and ethical conduct.
+- Support holistic development and welfare of women students.
+
+__Commitment of the Institution__
+
+St. Ann’s College for Women is committed to maintaining a campus atmosphere based on dignity, equality, discipline, and mutual respect. The Grievance Redressal Committee functions as an important support system to safeguard the interests and well-being of students and staff and to strengthen institutional transparency and accountability.
+
+__Gallery __
+
+`
   },
   "internal-complaints": {
     title: "Internal Complaints Committee (ICC) / Anti-Sexual Harassment Committee",
-    content: "__Internal Complaints Committee (ICC) / Anti-Sexual Harassment Committee__\n\nThe Internal Complaints Committee (ICC) of St. Ann’s College for Women, Gorantla, Guntur is constituted in accordance with the *University Grants Commission (Prevention, Prohibition and Redressal of Sexual Harassment of Women Employees and Students in Higher Educational Institutions) Regulations, 2015* and the *Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 (POSH Act)* to ensure a safe, secure, respectful, and gender-sensitive campus environment for all students and staff members.\n\nThe Committee functions as a preventive, protective, and redressal mechanism to address issues related to sexual harassment, gender discrimination, intimidation, exploitation, and misconduct within the campus.\n\n__Aim__\n\nTo prevent sexual harassment and ensure a safe, secure, inclusive, and supportive educational environment for women students and staff members on the campus.\n\n__Objectives of the Committee__\n\nThe Internal Complaints Committee aims to:\n\n- Conduct awareness and educational programmes on prevention of sexual harassment.\n- Formulate guidelines and institutional norms against sexual harassment.\n- Promote gender equality, dignity, mutual respect, and women empowerment.\n- Take preventive measures against sexual harassment and gender discrimination.\n- Address and redress complaints related to sexual harassment and harassment issues.\n- Organize counselling, awareness sessions, and expert talks on women-related issues.\n- Ensure a respectful, safe, inclusive, and gender-sensitive campus atmosphere.\n- Prevent any act of harassment, intimidation, abuse, or discrimination on campus.\n\n__Roles and Responsibilities of the ICC__\n\nThe Internal Complaints Committee shall:\n\n- Provide an educational environment free from sexual harassment.\n- Create awareness among students and staff regarding prevention of sexual harassment.\n- Inform students and staff about their rights and responsibilities.\n- Receive and address oral or written complaints regarding sexual harassment.\n- Conduct fair, impartial, confidential, and time-bound enquiries.\n- Recommend appropriate disciplinary and corrective action wherever necessary.\n- Organize gender sensitization programmes, workshops, seminars, and awareness campaigns.\n- Display posters, helpline numbers, and awareness materials in prominent areas of the campus.\n- Provide counselling and emotional support to affected individuals.\n- Maintain records of complaints and actions taken while ensuring confidentiality.\n- Coordinate with the Grievance Redressal Cell, Women Empowerment Cell, Counselling Committee, and Anti-Ragging Committee for student welfare initiatives.\n\n__Composition of the Internal Complaints Committee (ICC)__\n\n__S. No.__\n\n__Name of the Member__\n\n__Designation / Department__\n\n__Role__\n\n1\n\nDr. Sr. Sandhya Thumma\n\nPrincipal, Dept. of MBA\n\nChairperson\n\n2\n\nMrs. R. Sharon Rose\n\nVice Principal, Dept. of Commerce\n\nIQAC Coordinator\n\n3\n\nMrs. Anitha Bhanu\n\nDept. of Chemistry\n\nPresiding Officer\n\n4\n\nMrs. M. Usha Rani\n\nDept. of Computer Science\n\nCo-Convener (PG)\n\n5\n\nDr. G. Radhika\n\nDepartment of MBA\n\nMember\n\n6\n\nMrs. I. Adilakshmi\n\nDepartment of Sanskrit\n\nMember\n\n7\n\nMrs. B. Usha Rani\n\nDept. of Computer Science\n\nMember\n\n8\n\nMrs. M. Anjana Devi\n\nDept. of Commerce\n\nMember\n\n9\n\nMrs. G. Sailaja\n\nDept. of Library Sciences\n\nMember\n\n10\n\nMrs. V. Ratna Kumari\n\nOffice\n\nMember\n\n11\n\nMrs. D. Chitty\n\nNon-Teaching Staff\n\nMember\n\n12\n\nStudent Representative (UG)\n\nUndergraduate Student Representative\n\nMember\n\n13\n\nStudent Representative (PG)\n\nPostgraduate Student Representative\n\nMember\n\n__Complaint Redressal Procedure__\n\n- Any student or staff member may submit a written complaint to the ICC regarding sexual harassment or related issues.\n- On receipt of a complaint, the ICC shall conduct a preliminary enquiry by collecting documentary evidence and recording statements of concerned individuals and witnesses.\n- The enquiry shall be conducted in a fair, impartial, confidential, and sensitive manner.\n- The inquiry process shall normally be completed within 90 days from the date of complaint.\n- The ICC shall submit its findings and recommendations to the Principal within 10 days from the completion of the inquiry.\n- Appropriate disciplinary action shall be taken against the respondent if found guilty.\n- In case the complaint is not related to sexual harassment, the matter may be referred to the Grievance Redressal Cell or appropriate authority.\n- The identity of the complainant and all enquiry proceedings shall remain strictly confidential.\n\n__Definition of Sexual Harassment__\n\nSexual harassment includes any unwelcome act or behaviour, whether direct or indirect, such as:\n\n- Physical contact and advances\n- Demand or request for sexual favours\n- Sexually coloured remarks or jokes\n- Showing pornography or inappropriate content\n- Unwelcome verbal, non-verbal, or physical conduct of a sexual nature\n- Online harassment, cyber stalking, or offensive communication\n- Intimidation, humiliation, or hostile behaviour\n\nThe following situations also constitute sexual harassment:\n\n- Implied or explicit promise of preferential treatment\n- Implied or explicit threat of detrimental treatment\n- Interference with academic or work performance\n- Creation of intimidating or offensive environment\n- Humiliating treatment affecting dignity, health, or safety\n\n__Actions Against Misconduct__\n\nDepending upon the nature and severity of the offence, the following actions may be taken against the accused if found guilty:\n\n- Warning\n- Written Apology\n- Bond of Good Behaviour\n- Adverse Remark in Institutional Record\n- Withholding of Promotion or Benefits\n- Suspension\n- Debarring from Academic Activities\n- Any other disciplinary action as per institutional and statutory regulations\n\n__Activities of the Internal Complaints Committee (ICC)__\n\nThe ICC regularly organizes and conducts:\n\n- Gender Sensitization Programmes\n- POSH Act Awareness Sessions\n- Self-Defence Training Programmes\n- Women Empowerment Activities\n- Cyber Safety and Digital Ethics Workshops\n- Counselling and Wellness Support Programmes\n- Parent Awareness Meetings\n- Legal Awareness Sessions\n- Orientation Programmes for Students and Staff\n- Awareness Campaigns on Gender Equality and Respectful Behaviour\n- Poster Campaigns and Display of Safety Guidelines\n- Community Outreach Programmes through NSS and Extension Activities\n\n__Best Practices__\n\nFor effective institutional quality assurance and NAAC documentation, the Committee also focuses on:\n\n- Preparation of Annual Action Plan and Activity Calendar\n- Maintenance of Complaint Register and Confidential Records\n- Documentation of Workshops, Seminars, and Awareness Programmes\n- Collection of Feedback from Students and Staff\n- Submission of Annual Reports to IQAC and Administration\n- Promotion of Gender Equity and Inclusive Campus Practices\n- Student Welfare, Mental Health, and Emotional Support Initiatives\n- Collaboration with External Agencies for Awareness and Training Programmes\n\nThese initiatives strengthen institutional values, women empowerment, student support systems, and NAAC quality parameters related to governance and student welfare.\n\n__Women Safety Helplines__\n\n__Service__\n\n__Helpline Number__\n\nWomen Helpline\n\n181\n\nWomen Safety Helpline\n\n1091\n\nPolice Emergency\n\n100 / 112\n\nCyber Crime Helpline\n\n1930\n\n__Important Links__\n\n__POSH Act 2013__\n\n[https://legislative.gov.in/sites/default/files/A2013-14.pdf](https://legislative.gov.in/sites/default/files/A2013-14.pdf)\n\n__UGC Regulations on Sexual Harassment Prevention__\n\n[https://www.ugc.gov.in/pdfnews/7203626_UGC_regulations-harassment.pdf](https://www.ugc.gov.in/pdfnews/7203626_UGC_regulations-harassment.pdf)\n\n__National Commission for Women__\n\n[https://ncw.nic.in](https://ncw.nic.in/)\n\n__Cyber Crime Reporting Portal__\n\n[https://cybercrime.gov.in](https://cybercrime.gov.in/)\n\n__Useful Documents__\n\n- UGC / MHRD Notifications on Prevention of Sexual Harassment\n- POSH Act Guidelines and Handbook\n- ICC Policy Document\n- Student Safety and Women Empowerment Handbook\n- Sexual Harassment Complaint Procedures and Awareness Materials\n\n__Gallery __\n\n__View ICC Policy (PDF)__\n\n"
+    content: `__Internal Complaints Committee (ICC) / Anti-Sexual Harassment Committee__
+
+The Internal Complaints Committee (ICC) of St. Ann’s College for Women, Gorantla, Guntur is constituted in accordance with the *University Grants Commission (Prevention, Prohibition and Redressal of Sexual Harassment of Women Employees and Students in Higher Educational Institutions) Regulations, 2015* and the *Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 (POSH Act)* to ensure a safe, secure, respectful, and gender-sensitive campus environment for all students and staff members.
+
+The Committee functions as a preventive, protective, and redressal mechanism to address issues related to sexual harassment, gender discrimination, intimidation, exploitation, and misconduct within the campus.
+
+__Aim__
+
+To prevent sexual harassment and ensure a safe, secure, inclusive, and supportive educational environment for women students and staff members on the campus.
+
+__Objectives of the Committee__
+
+The Internal Complaints Committee aims to:
+
+- Conduct awareness and educational programmes on prevention of sexual harassment.
+- Formulate guidelines and institutional norms against sexual harassment.
+- Promote gender equality, dignity, mutual respect, and women empowerment.
+- Take preventive measures against sexual harassment and gender discrimination.
+- Address and redress complaints related to sexual harassment and harassment issues.
+- Organize counselling, awareness sessions, and expert talks on women-related issues.
+- Ensure a respectful, safe, inclusive, and gender-sensitive campus atmosphere.
+- Prevent any act of harassment, intimidation, abuse, or discrimination on campus.
+
+__Roles and Responsibilities of the ICC__
+
+The Internal Complaints Committee shall:
+
+- Provide an educational environment free from sexual harassment.
+- Create awareness among students and staff regarding prevention of sexual harassment.
+- Inform students and staff about their rights and responsibilities.
+- Receive and address oral or written complaints regarding sexual harassment.
+- Conduct fair, impartial, confidential, and time-bound enquiries.
+- Recommend appropriate disciplinary and corrective action wherever necessary.
+- Organize gender sensitization programmes, workshops, seminars, and awareness campaigns.
+- Display posters, helpline numbers, and awareness materials in prominent areas of the campus.
+- Provide counselling and emotional support to affected individuals.
+- Maintain records of complaints and actions taken while ensuring confidentiality.
+- Coordinate with the Grievance Redressal Cell, Women Empowerment Cell, Counselling Committee, and Anti-Ragging Committee for student welfare initiatives.
+
+__Composition of the Internal Complaints Committee (ICC)__
+
+__S. No.__
+
+__Name of the Member__
+
+__Designation / Department__
+
+__Role__
+
+1
+
+Dr. Sr. Sandhya Thumma
+
+Principal, Dept. of MBA
+
+Chairperson
+
+2
+
+Mrs. R. Sharon Rose
+
+Vice Principal, Dept. of Commerce
+
+IQAC Coordinator
+
+3
+
+Mrs. Anitha Bhanu
+
+Dept. of Chemistry
+
+Presiding Officer
+
+4
+
+Mrs. M. Usha Rani
+
+Dept. of Computer Science
+
+Co-Convener (PG)
+
+5
+
+Dr. G. Radhika
+
+Department of MBA
+
+Member
+
+6
+
+Mrs. I. Adilakshmi
+
+Department of Sanskrit
+
+Member
+
+7
+
+Mrs. B. Usha Rani
+
+Dept. of Computer Science
+
+Member
+
+8
+
+Mrs. M. Anjana Devi
+
+Dept. of Commerce
+
+Member
+
+9
+
+Mrs. G. Sailaja
+
+Dept. of Library Sciences
+
+Member
+
+10
+
+Mrs. V. Ratna Kumari
+
+Office
+
+Member
+
+11
+
+Mrs. D. Chitty
+
+Non-Teaching Staff
+
+Member
+
+12
+
+Student Representative (UG)
+
+Undergraduate Student Representative
+
+Member
+
+13
+
+Student Representative (PG)
+
+Postgraduate Student Representative
+
+Member
+
+__Complaint Redressal Procedure__
+
+- Any student or staff member may submit a written complaint to the ICC regarding sexual harassment or related issues.
+- On receipt of a complaint, the ICC shall conduct a preliminary enquiry by collecting documentary evidence and recording statements of concerned individuals and witnesses.
+- The enquiry shall be conducted in a fair, impartial, confidential, and sensitive manner.
+- The inquiry process shall normally be completed within 90 days from the date of complaint.
+- The ICC shall submit its findings and recommendations to the Principal within 10 days from the completion of the inquiry.
+- Appropriate disciplinary action shall be taken against the respondent if found guilty.
+- In case the complaint is not related to sexual harassment, the matter may be referred to the Grievance Redressal Cell or appropriate authority.
+- The identity of the complainant and all enquiry proceedings shall remain strictly confidential.
+
+__Definition of Sexual Harassment__
+
+Sexual harassment includes any unwelcome act or behaviour, whether direct or indirect, such as:
+
+- Physical contact and advances
+- Demand or request for sexual favours
+- Sexually coloured remarks or jokes
+- Showing pornography or inappropriate content
+- Unwelcome verbal, non-verbal, or physical conduct of a sexual nature
+- Online harassment, cyber stalking, or offensive communication
+- Intimidation, humiliation, or hostile behaviour
+
+The following situations also constitute sexual harassment:
+
+- Implied or explicit promise of preferential treatment
+- Implied or explicit threat of detrimental treatment
+- Interference with academic or work performance
+- Creation of intimidating or offensive environment
+- Humiliating treatment affecting dignity, health, or safety
+
+__Actions Against Misconduct__
+
+Depending upon the nature and severity of the offence, the following actions may be taken against the accused if found guilty:
+
+- Warning
+- Written Apology
+- Bond of Good Behaviour
+- Adverse Remark in Institutional Record
+- Withholding of Promotion or Benefits
+- Suspension
+- Debarring from Academic Activities
+- Any other disciplinary action as per institutional and statutory regulations
+
+__Activities of the Internal Complaints Committee (ICC)__
+
+The ICC regularly organizes and conducts:
+
+- Gender Sensitization Programmes
+- POSH Act Awareness Sessions
+- Self-Defence Training Programmes
+- Women Empowerment Activities
+- Cyber Safety and Digital Ethics Workshops
+- Counselling and Wellness Support Programmes
+- Parent Awareness Meetings
+- Legal Awareness Sessions
+- Orientation Programmes for Students and Staff
+- Awareness Campaigns on Gender Equality and Respectful Behaviour
+- Poster Campaigns and Display of Safety Guidelines
+- Community Outreach Programmes through NSS and Extension Activities
+
+__Best Practices__
+
+For effective institutional quality assurance and NAAC documentation, the Committee also focuses on:
+
+- Preparation of Annual Action Plan and Activity Calendar
+- Maintenance of Complaint Register and Confidential Records
+- Documentation of Workshops, Seminars, and Awareness Programmes
+- Collection of Feedback from Students and Staff
+- Submission of Annual Reports to IQAC and Administration
+- Promotion of Gender Equity and Inclusive Campus Practices
+- Student Welfare, Mental Health, and Emotional Support Initiatives
+- Collaboration with External Agencies for Awareness and Training Programmes
+
+These initiatives strengthen institutional values, women empowerment, student support systems, and NAAC quality parameters related to governance and student welfare.
+
+__Women Safety Helplines__
+
+__Service__
+
+__Helpline Number__
+
+Women Helpline
+
+181
+
+Women Safety Helpline
+
+1091
+
+Police Emergency
+
+100 / 112
+
+Cyber Crime Helpline
+
+1930
+
+__Important Links__
+
+- POSH Act 2013 - [https://legislative.gov.in/sites/default/files/A2013-14.pdf](https://legislative.gov.in/sites/default/files/A2013-14.pdf)
+- UGC Regulations on Sexual Harassment Prevention - [https://www.ugc.gov.in/pdfnews/7203626_UGC_regulations-harassment.pdf](https://www.ugc.gov.in/pdfnews/7203626_UGC_regulations-harassment.pdf)
+- National Commission for Women - [https://ncw.nic.in](https://ncw.nic.in/)
+- Cyber Crime Reporting Portal - [https://cybercrime.gov.in](https://cybercrime.gov.in/)
+
+__Useful Documents__
+
+- UGC / MHRD Notifications on Prevention of Sexual Harassment
+- POSH Act Guidelines and Handbook
+- ICC Policy Document
+- Student Safety and Women Empowerment Handbook
+- Sexual Harassment Complaint Procedures and Awareness Materialss
+
+__Gallery __
+
+
+`
   },
   "anti-ragging": {
     title: "Anti-Ragging Committee",
-    content: "__Anti-Ragging Committee__\n\n__Objective__\n\nSt. Ann’s College for Women is committed to maintaining a safe, respectful, and ragging-free campus environment. The Anti-Ragging Committee functions in accordance with the guidelines of the University Grants Commission and the Government to prevent and eliminate ragging in all forms.\n\n__Roles & Responsibilities__\n\nThe Committee undertakes the following responsibilities:\n\n- Ensure a ragging-free campus environment at all times\n- Implement anti-ragging regulations as per Government and University norms\n- Create awareness among students regarding the ill-effects and legal consequences of ragging\n- Monitor student behaviour in classrooms, hostels, and campus premises to ensure discipline\n- Receive, investigate, and address complaints related to ragging promptly and confidentially\n- Take strict disciplinary action against individuals involved in ragging\n- Conduct regular meetings, inspections, and surprise checks\n- Display anti-ragging notices, guidelines, and helpline information prominently on campus\n- Counsel students to promote harmony, mutual respect, and inclusiveness\n- Maintain proper records and reports of incidents, actions taken, and preventive measures\n\n__Composition of the Committee__\n\n__Name__\n\n__Designation__\n\n__Department / Role__\n\n__Position__\n\nDr. Sr. Sandhya Thumma\n\nPrincipal\n\nMBA\n\nChairperson\n\nMrs. R. Sharon Rose\n\nVice Principal\n\nCommerce\n\nIQAC Coordinator\n\nMrs. J. Prameela Rani\n\nFaculty\n\nCommerce\n\nConvener\n\nMrs. D. Swarna Charani Rai\n\nFaculty\n\nComputer Science\n\nMember\n\nMrs. B. Usha Rani\n\nFaculty\n\nComputer Science\n\nMember\n\nMr. G. Bala Showreddy\n\nFaculty\n\nPhysical Education\n\nMember\n\nMrs. J. Sirisha\n\nFaculty\n\nMBA\n\nMember\n\nSr. Vyakula Rani\n\nStaff Nurse\n\nHealth Centre\n\nMember\n\nAdvocate (External Member)\n\nLegal Expert\n\n—\n\nMember\n\nSub-Inspector, Nallapadu Police Station\n\nPolice Representative\n\n—\n\nMember\n\nParent Representative (UG)\n\n—\n\n—\n\nMember\n\nParent Representative (PG)\n\n—\n\n—\n\nMember\n\nCommittee Activities\n\n__The Anti-Ragging Committee actively organizes and implements the following initiatives:__\n\n__Awareness Programmes:__ Orientation sessions for first-year students on anti-ragging norms and student rights\n\n__Undertaking Collection:__ Submission of anti-ragging affidavits by students and parents as per UGC norms\n\n__Counselling & Mentoring:__ Regular interaction with students to ensure emotional well-being and smooth adjustment\n\n__Surveillance Measures:__ Monitoring through faculty vigilance, surprise visits, and feedback mechanisms\n\n__Display & Communication:__ Posters, banners, and digital notices across campus highlighting anti-ragging rules and helplines\n\n__Collaboration with Authorities:__ Coordination with local police and legal authorities when required\n\n__Grievance Redressal:__ Prompt handling of complaints through a confidential and student-friendly mechanism\n\n__Reporting & Documentation__\n\nTo ensure transparency and compliance, the Committee maintains:\n\n- Minutes of Meetings (with action taken reports) \n- Incident Registers (if any cases are reported) \n- Preventive Measures Record (awareness programmes, campaigns conducted) \n- Student Undertaking Records (as mandated by UGC) \n- Annual Report summarizing activities, outcomes, and status of ragging cases \n- Submission of Compliance Reports to relevant authorities\n\n__Anti-Ragging Helpline__\n\n__\tCollege Anti Ragging Committee Convenor Number : 9032624741__\n\n- 📞 __National Anti-Ragging Helpline__: 1800-180-5522\n- 🌐 Website: [www.antiragging.in](http://www.antiragging.in/)\n- 📧 Email: [helpline@antiragging.in](mailto:helpline@antiragging.in)\n\n__Institutional Commitment__\n\nThe institution follows a zero-tolerance policy towards ragging. Any student found guilty of ragging will face strict disciplinary action, including suspension or expulsion, as per UGC regulations.\n\n__View Anti Ragging policy (PDF)__\n\n__Yearwsie Anti Ragging Committee  Activity Report   (View PDF)__\n\n__2023-2024 __\n\n__2024-2025__\n\n__2025-2026__\n\n"
+    content: `__Anti-Ragging Committee__
+
+__Objective__
+
+St. Ann’s College for Women is committed to maintaining a safe, respectful, and ragging-free campus environment. The Anti-Ragging Committee functions in accordance with the guidelines of the University Grants Commission and the Government to prevent and eliminate ragging in all forms.
+
+__Roles & Responsibilities__
+
+The Committee undertakes the following responsibilities:
+
+- Ensure a ragging-free campus environment at all times
+- Implement anti-ragging regulations as per Government and University norms
+- Create awareness among students regarding the ill-effects and legal consequences of ragging
+- Monitor student behaviour in classrooms, hostels, and campus premises to ensure discipline
+- Receive, investigate, and address complaints related to ragging promptly and confidentially
+- Take strict disciplinary action against individuals involved in ragging
+- Conduct regular meetings, inspections, and surprise checks
+- Display anti-ragging notices, guidelines, and helpline information prominently on campus
+- Counsel students to promote harmony, mutual respect, and inclusiveness
+- Maintain proper records and reports of incidents, actions taken, and preventive measures
+
+__Composition of the Committee__
+
+__Name__
+
+__Designation__
+
+__Department / Role__
+
+__Position__
+
+Dr. Sr. Sandhya Thumma
+
+Principal
+
+MBA
+
+Chairperson
+
+Mrs. R. Sharon Rose
+
+Vice Principal
+
+Commerce
+
+IQAC Coordinator
+
+Mrs. J. Prameela Rani
+
+Faculty
+
+Commerce
+
+Convener
+
+Mrs. D. Swarna Charani Rai
+
+Faculty
+
+Computer Science
+
+Member
+
+Mrs. B. Usha Rani
+
+Faculty
+
+Computer Science
+
+Member
+
+Mr. G. Bala Showreddy
+
+Faculty
+
+Physical Education
+
+Member
+
+Mrs. J. Sirisha
+
+Faculty
+
+MBA
+
+Member
+
+Sr. Vyakula Rani
+
+Staff Nurse
+
+Health Centre
+
+Member
+
+Advocate (External Member)
+
+Legal Expert
+
+—
+
+Member
+
+Sub-Inspector, Nallapadu Police Station
+
+Police Representative
+
+—
+
+Member
+
+Parent Representative (UG)
+
+—
+
+—
+
+Member
+
+Parent Representative (PG)
+
+—
+
+—
+
+Member
+
+__Committee Activities__
+
+__The Anti-Ragging Committee actively organizes and implements the following initiatives:__
+
+- Awareness Programmes: Orientation sessions for first-year students on anti-ragging norms and student rights
+- Undertaking Collection: Submission of anti-ragging affidavits by students and parents as per UGC norms
+- Counselling & Mentoring: Regular interaction with students to ensure emotional well-being and smooth adjustment
+- Surveillance Measures: Monitoring through faculty vigilance, surprise visits, and feedback mechanisms
+- Display & Communication: Posters, banners, and digital notices across campus highlighting anti-ragging rules and helplines
+- Collaboration with Authorities: Coordination with local police and legal authorities when required
+- Grievance Redressal: Prompt handling of complaints through a confidential and student-friendly mechanism
+
+__Reporting & Documentation__
+
+To ensure transparency and compliance, the Committee maintains:
+
+- Minutes of Meetings (with action taken reports) 
+- Incident Registers (if any cases are reported) 
+- Preventive Measures Record (awareness programmes, campaigns conducted) 
+- Student Undertaking Records (as mandated by UGC) 
+- Annual Report summarizing activities, outcomes, and status of ragging cases 
+- Submission of Compliance Reports to relevant authorities
+
+__Anti-Ragging Helpline__
+
+__	College Anti Ragging Committee Convenor Number : 9032624741__
+
+- __National Anti-Ragging Helpline__: 1800-180-5522
+- Website: [www.antiragging.in](http://www.antiragging.in/)
+- Email: [helpline@antiragging.in](mailto:helpline@antiragging.in)
+
+__Institutional Commitment__
+
+The institution follows a zero-tolerance policy towards ragging. Any student found guilty of ragging will face strict disciplinary action, including suspension or expulsion, as per UGC regulations.
+
+__View Anti Ragging policy (PDF)__
+
+__Yearwsie Anti Ragging Committee  Activity Report   (View PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+`
   },
   "parent-association": {
     title: "Parents Association Committee",
-    content: "__Parents Association Committee__\n\nThe Parents Association Committee of St. Ann’s College for Women, Gorantla, Guntur serves as an important support system in strengthening the relationship between parents and the institution. The committee promotes active parent participation in the academic, disciplinary, and overall developmental activities of students.\n\nThe committee functions as a collaborative platform to maintain effective communication between parents, faculty members, mentors, and the college administration for the welfare, safety, and holistic development of students in alignment with NAAC quality initiatives and student support practices.\n\n__Objectives of the Committee__\n\nThe Parents Association Committee aims to:\n\n- Strengthen communication between parents and the college.\n- Organize regular parent interaction meetings and counselling sessions.\n- Share information regarding students’ academic performance, attendance, discipline, and overall progress.\n- Support students’ academic growth, behaviour, emotional well-being, and personality development.\n- Create awareness among parents regarding college rules, policies, discipline, and institutional activities.\n- Encourage parent participation in academic, cultural, extension, and welfare programmes.\n- Build a cooperative and supportive relationship between parents and the institution.\n- Promote student welfare, safety, mentoring, and value-based education.\n- Maintain records of meetings, feedback, suggestions, and communications for institutional documentation and quality assurance.\n\n__Composition of the Parents Association Committee__\n\n__S. No.__\n\n__Name of the Member__\n\n__Designation / Department__\n\n__Role__\n\n1\n\nDr. Sr. Sandhya Thumma\n\nPrincipal, Dept. of MBA\n\nChairperson\n\n2\n\nMrs. R. Sharon Rose\n\nVice Principal\n\nIQAC Coordinator\n\n3\n\nMrs. B. Joyce N.J. Kumari\n\nDept. of Chemistry\n\nConvener\n\n4\n\nDr. J. Pratapa Reddy\n\nDept. of Statistics\n\nMember\n\n5\n\nMr. Ch. Rama Rao\n\nDept. of Physics\n\nMember\n\n6\n\nMrs. D. Swarna Charani Rai\n\nDept. of Computer Science\n\nMember\n\n7\n\nMrs. B. Manasa\n\nDept. of Computer Science\n\nMember\n\n__Activities of the Parents Association Committee__\n\nThe committee regularly undertakes the following activities:\n\n- Organizing Parent–Teacher Meetings (PTMs) to discuss academic performance, attendance, discipline, and student progress.\n- Conducting orientation programmes for parents regarding institutional policies, examination systems, mentoring practices, and student support services.\n- Facilitating interaction between parents, faculty mentors, Heads of Departments, and college administration.\n- Providing counselling support and guidance for students requiring academic or emotional support.\n- Creating awareness among parents regarding women safety, cyber safety, discipline, and career opportunities.\n- Encouraging parents to support students’ participation in co-curricular, extracurricular, extension, and community service activities.\n- Discussing student attendance, academic improvement plans, and behavioural development during review meetings.\n- Collecting feedback and suggestions from parents for institutional improvement and quality enhancement.\n- Promoting values, ethics, discipline, and holistic development among students through collaborative efforts.\n- Assisting in maintaining a safe, supportive, and student-friendly campus environment.\n- Coordinating with Mentoring System, Counselling Cell, Women Empowerment Cell, and Student Welfare Committees for student development initiatives.\n- Maintaining records of parent meetings, counselling sessions, feedback reports, and follow-up actions for NAAC documentation.\n\n__Best Practices__\n\nFor effective quality assurance and institutional development, the committee also focuses on:\n\n- Maintaining Parent Meeting Reports and Attendance Records\n- Documentation of Feedback and Action Taken Reports\n- Parent Satisfaction and Stakeholder Participation Initiatives\n- Student Mentoring and Counselling Support\n- Strengthening Parent–Institution Relationship\n- Supporting Student Welfare and Holistic Development\n- Enhancing Institutional Transparency and Communication Practices\n- Promoting Inclusive and Participative Governance\n\nThese initiatives contribute to student support systems, stakeholder participation, institutional governance, and NAAC quality parameters related to student progression and welfare.\n\n__Gallery __\n\n__View PDF__\n\n"
+    content: `__Parents Association Committee__
+
+The Parents Association Committee of St. Ann’s College for Women, Gorantla, Guntur serves as an important support system in strengthening the relationship between parents and the institution. The committee promotes active parent participation in the academic, disciplinary, and overall developmental activities of students.
+
+The committee functions as a collaborative platform to maintain effective communication between parents, faculty members, mentors, and the college administration for the welfare, safety, and holistic development of students in alignment with NAAC quality initiatives and student support practices.
+
+__Objectives of the Committee__
+
+The Parents Association Committee aims to:
+
+- Strengthen communication between parents and the college.
+- Organize regular parent interaction meetings and counselling sessions.
+- Share information regarding students’ academic performance, attendance, discipline, and overall progress.
+- Support students’ academic growth, behaviour, emotional well-being, and personality development.
+- Create awareness among parents regarding college rules, policies, discipline, and institutional activities.
+- Encourage parent participation in academic, cultural, extension, and welfare programmes.
+- Build a cooperative and supportive relationship between parents and the institution.
+- Promote student welfare, safety, mentoring, and value-based education.
+- Maintain records of meetings, feedback, suggestions, and communications for institutional documentation and quality assurance.
+
+__Composition of the Parents Association Committee__
+
+__S. No.__
+
+__Name of the Member__
+
+__Designation / Department__
+
+__Role__
+
+1
+
+Dr. Sr. Sandhya Thumma
+
+Principal, Dept. of MBA
+
+Chairperson
+
+2
+
+Mrs. R. Sharon Rose
+
+Vice Principal
+
+IQAC Coordinator
+
+3
+
+Mrs. B. Joyce N.J. Kumari
+
+Dept. of Chemistry
+
+Convener
+
+4
+
+Dr. J. Pratapa Reddy
+
+Dept. of Statistics
+
+Member
+
+5
+
+Mr. Ch. Rama Rao
+
+Dept. of Physics
+
+Member
+
+6
+
+Mrs. D. Swarna Charani Rai
+
+Dept. of Computer Science
+
+Member
+
+7
+
+Mrs. B. Manasa
+
+Dept. of Computer Science
+
+Member
+
+__Activities of the Parents Association Committee__
+
+The committee regularly undertakes the following activities:
+
+- Organizing Parent–Teacher Meetings (PTMs) to discuss academic performance, attendance, discipline, and student progress.
+- Conducting orientation programmes for parents regarding institutional policies, examination systems, mentoring practices, and student support services.
+- Facilitating interaction between parents, faculty mentors, Heads of Departments, and college administration.
+- Providing counselling support and guidance for students requiring academic or emotional support.
+- Creating awareness among parents regarding women safety, cyber safety, discipline, and career opportunities.
+- Encouraging parents to support students’ participation in co-curricular, extracurricular, extension, and community service activities.
+- Discussing student attendance, academic improvement plans, and behavioural development during review meetings.
+- Collecting feedback and suggestions from parents for institutional improvement and quality enhancement.
+- Promoting values, ethics, discipline, and holistic development among students through collaborative efforts.
+- Assisting in maintaining a safe, supportive, and student-friendly campus environment.
+- Coordinating with Mentoring System, Counselling Cell, Women Empowerment Cell, and Student Welfare Committees for student development initiatives.
+- Maintaining records of parent meetings, counselling sessions, feedback reports, and follow-up actions for NAAC documentation.
+
+__Best Practices__
+
+For effective quality assurance and institutional development, the committee also focuses on:
+
+- Maintaining Parent Meeting Reports and Attendance Records
+- Documentation of Feedback and Action Taken Reports
+- Parent Satisfaction and Stakeholder Participation Initiatives
+- Student Mentoring and Counselling Support
+- Strengthening Parent–Institution Relationship
+- Supporting Student Welfare and Holistic Development
+- Enhancing Institutional Transparency and Communication Practices
+- Promoting Inclusive and Participative Governance
+
+These initiatives contribute to student support systems, stakeholder participation, institutional governance, and NAAC quality parameters related to student progression and welfare.
+
+__Gallery __
+
+`
   },
   "women-empowerment": {
     title: "Women Empowerment Committee (Cell)",
-    content: "__Women Empowerment Committee (Cell)__\n\n__Introduction__\n\nSt. Ann’s College for Women, Gorantla, Guntur, established in 1997, is committed to empowering women through value-based education, leadership development, and holistic growth. In alignment with the Vision, Mission, Motto, and Institutional Strategic Framework of the college, the Women Empowerment Cell (WEC) has been constituted to foster a safe, inclusive, equitable, and empowering environment for women students and staff.\n\nThe Women Empowerment Cell functions in accordance with:\n\n- University Grants Commission (UGC) Guidelines\n- NAAC Quality Indicators on Gender Equity and Student Support\n- Constitutional Provisions of Equality under Articles 14, 15, 19, and 21\n- Government initiatives related to Women Empowerment, Safety, and Inclusive Education\n\nThe Cell serves as a platform to educate, enrich, and empower women by promoting leadership, self-confidence, legal awareness, professional competence, emotional well-being, and social responsibility.\n\nInspired by the institutional philosophy represented through the Candle (Knowledge), Book (Wisdom), and Lotus (Resilience), the Women Empowerment Cell strives to transform young women into confident, ethical, self-reliant, and socially responsible citizens.\n\n__Vision of the Women Empowerment Cell /Committee__\n\nTo empower women students intellectually, emotionally, socially, professionally, and ethically by nurturing leadership qualities, resilience, self-reliance, and lifelong learning in alignment with the vision of St. Ann’s College for Women and the spirit of Viksit Bharat.\n\n__Mission of the Women Empowerment Cell __\n\nThe Women Empowerment Cell is committed to:\n\n- Promoting gender equality, dignity, and respect for women.\n- Creating awareness on women’s rights, legal protection, health, and safety.\n- Developing confidence, leadership qualities, and entrepreneurial mindset among women students.\n- Providing opportunities for holistic development through skill enhancement, mentoring, counselling, and capacity-building programmes.\n- Encouraging women participation in academics, research, innovation, sports, cultural activities, and community engagement.\n- Creating a safe, inclusive, supportive, and value-based campus environment.\n- Preparing women students to become empowered leaders with integrity, professional ethics, and social responsibility.\n\n__Objectives of the Women Empowerment Cell__\n\nThe Women Empowerment Cell aims to:\n\n- Create awareness among students regarding constitutional rights and gender equality.\n- Promote self-confidence, leadership skills, and emotional strength among women students.\n- Encourage higher education, employability, entrepreneurship, and financial independence.\n- Organize workshops, seminars, guest lectures, and awareness programmes on women empowerment.\n- Provide guidance on health, hygiene, nutrition, mental wellness, and self-care.\n- Develop communication skills, decision-making ability, and professional competence.\n- Promote ethical values, social responsibility, and civic consciousness.\n- Ensure active participation of women students in academic, co-curricular, extension, and leadership activities.\n- Support students through mentoring, counselling, and career guidance initiatives.\n- Foster resilience and lifelong learning capabilities among students.\n\n__Core Values of the Women Empowerment Cell__\n\nThe Women Empowerment Cell functions on the following institutional values:\n\n- Equality & Dignity\n- Integrity & Ethical Leadership\n- Compassion & Inclusiveness\n- Resilience & Self-Reliance\n- Knowledge & Innovation\n- Social Responsibility\n- Professional Excellence\n- Lifelong Learning\n\n__Functions of the Women Empowerment Cell__\n\nThe Women Empowerment Cell shall:\n\n- Promote the welfare and holistic development of women students and staff.\n- Conduct gender sensitization and awareness programmes regularly.\n- Organize skill development, leadership, and entrepreneurship initiatives.\n- Facilitate mentoring, counselling, and emotional support systems.\n- Promote health awareness, mental wellness, and hygiene programmes.\n- Coordinate activities related to women empowerment in collaboration with experts, NGOs, and government agencies whenever possible.\n- Encourage women participation in academic, research, cultural, sports, and extension activities.\n- Celebrate women achievers and important national/international observance days related to women empowerment.\n- Maintain a respectful, safe, and empowering campus culture.\n\n__Major Activities & Initiatives__\n\nThe Women Empowerment Cell organizes the following activities as part of institutional best practices and NAAC quality initiatives:\n\n__Awareness & Legal Literacy Programmes__\n\n- Gender Sensitization Programmes\n- Women Rights Awareness\n- Cyber Safety Awareness\n- Prevention of Sexual Harassment Awareness\n- Human Rights Awareness\n- Legal Literacy Sessions\n\n__Health & Wellness Initiatives__\n\n- Menstrual Hygiene Awareness\n- Mental Health & Stress Management Programmes\n- Nutrition & Fitness Awareness\n- Yoga & Wellness Sessions\n- Health Check-up Camps\n\n__Leadership & Skill Development__\n\n- Personality Development Programmes\n- Communication Skills Training\n- Leadership Development Workshops\n- Self-Defense Training\n- Entrepreneurship Awareness Programmes\n- Financial Literacy Sessions\n- Career Guidance & Placement Training\n\n__Academic & Professional Enrichment__\n\n- Guest Lectures by Women Achievers\n- Workshops & Seminars\n- Research & Innovation Awareness\n- Higher Education Guidance\n- Capacity Building Programmes\n\n__Community Outreach & Social Responsibility__\n\n- Rural Women Awareness Campaigns\n- Community Service Activities\n- Environmental Awareness Initiatives\n- Girl Child Education Campaigns\n- Extension & NSS Activities\n\n__Celebrations & Recognition__\n\n- International Women’s Day\n- National Girl Child Day\n- Women Leadership Recognition Programmes\n- Competitions on Women Empowerment Themes\n- Cultural & Literary Activities\n\n__Women Empowerment Cell Committee__\n\n__S. No.__\n\n__Name of the Member__\n\n__Designation__\n\n__Role__\n\n1\n\nDr. Sr. Sandhya Thumma\n\nPrincipal, Dept. of MBA\n\nChairperson\n\n2\n\nMrs. R. Sharon Rose\n\nDept. of Commerce\n\nIQAC Coordinator\n\n3\n\nMrs. D. V. Ramanamma\n\nDept. of Computer Science\n\nConvener\n\n4\n\nMrs. M. Anjana Devi\n\nDept. of Commerce\n\nMember\n\n5\n\nMrs. G. Vijaya Lakshmi\n\nDept. of Statistics\n\nMember\n\n6\n\nMrs. L. Mary Anusha\n\nDept. of Mathematics\n\nMember\n\n7\n\nMiss G. Santha Kumari\n\nDept. of Physics\n\nMember\n\n8\n\nMiss K. Grace Shanthi Ann\n\nDept. of English\n\nMember\n\n9\n\nMrs. T. Durga Bhavani\n\nDept. of Computer Science\n\nMember\n\n__Expected Outcomes__\n\nThe Women Empowerment Cell aims to develop:\n\n- Confident and empowered women graduates\n- Ethical and socially responsible leaders\n- Strong communication and leadership abilities\n- Entrepreneurial and employability skills\n- Emotional resilience and mental well-being\n- Awareness regarding women’s rights and legal protections\n- Increased participation of women in academics, research, sports, and leadership roles\n- Lifelong learners capable of contributing to society and nation-building\n\n__Institutional Commitment__\n\nThe Women Empowerment Cell of St. Ann’s College for Women, Gorantla, Guntur, reflects the institutional commitment to the motto “Educate • Enrich • Empower.” Through awareness programmes, leadership initiatives, skill development activities, mentoring, counselling, and community engagement, the Cell strives to nurture empowered women who lead with knowledge, resilience, integrity, and social responsibility.\n\n__View Document (PDF)__\n\n__2023-2024__\n\n__2024-2025__\n\n__2025-2026__\n\n__Photo Galley__\n\n"
+    content: `__Women Empowerment Committee (Cell)__
+
+__Introduction__
+
+St. Ann’s College for Women, Gorantla, Guntur, established in 1997, is committed to empowering women through value-based education, leadership development, and holistic growth. In alignment with the Vision, Mission, Motto, and Institutional Strategic Framework of the college, the Women Empowerment Cell (WEC) has been constituted to foster a safe, inclusive, equitable, and empowering environment for women students and staff.
+
+The Women Empowerment Cell functions in accordance with:
+
+- University Grants Commission (UGC) Guidelines
+- NAAC Quality Indicators on Gender Equity and Student Support
+- Constitutional Provisions of Equality under Articles 14, 15, 19, and 21
+- Government initiatives related to Women Empowerment, Safety, and Inclusive Education
+
+The Cell serves as a platform to educate, enrich, and empower women by promoting leadership, self-confidence, legal awareness, professional competence, emotional well-being, and social responsibility.
+
+Inspired by the institutional philosophy represented through the Candle (Knowledge), Book (Wisdom), and Lotus (Resilience), the Women Empowerment Cell strives to transform young women into confident, ethical, self-reliant, and socially responsible citizens.
+
+__Vision of the Women Empowerment Cell /Committee__
+
+To empower women students intellectually, emotionally, socially, professionally, and ethically by nurturing leadership qualities, resilience, self-reliance, and lifelong learning in alignment with the vision of St. Ann’s College for Women and the spirit of Viksit Bharat.
+
+__Mission of the Women Empowerment Cell __
+
+The Women Empowerment Cell is committed to:
+
+- Promoting gender equality, dignity, and respect for women.
+- Creating awareness on women’s rights, legal protection, health, and safety.
+- Developing confidence, leadership qualities, and entrepreneurial mindset among women students.
+- Providing opportunities for holistic development through skill enhancement, mentoring, counselling, and capacity-building programmes.
+- Encouraging women participation in academics, research, innovation, sports, cultural activities, and community engagement.
+- Creating a safe, inclusive, supportive, and value-based campus environment.
+- Preparing women students to become empowered leaders with integrity, professional ethics, and social responsibility.
+
+__Objectives of the Women Empowerment Cell__
+
+The Women Empowerment Cell aims to:
+
+- Create awareness among students regarding constitutional rights and gender equality.
+- Promote self-confidence, leadership skills, and emotional strength among women students.
+- Encourage higher education, employability, entrepreneurship, and financial independence.
+- Organize workshops, seminars, guest lectures, and awareness programmes on women empowerment.
+- Provide guidance on health, hygiene, nutrition, mental wellness, and self-care.
+- Develop communication skills, decision-making ability, and professional competence.
+- Promote ethical values, social responsibility, and civic consciousness.
+- Ensure active participation of women students in academic, co-curricular, extension, and leadership activities.
+- Support students through mentoring, counselling, and career guidance initiatives.
+- Foster resilience and lifelong learning capabilities among students.
+
+__Core Values of the Women Empowerment Cell__
+
+The Women Empowerment Cell functions on the following institutional values:
+
+- Equality & Dignity
+- Integrity & Ethical Leadership
+- Compassion & Inclusiveness
+- Resilience & Self-Reliance
+- Knowledge & Innovation
+- Social Responsibility
+- Professional Excellence
+- Lifelong Learning
+
+__Functions of the Women Empowerment Cell__
+
+The Women Empowerment Cell shall:
+
+- Promote the welfare and holistic development of women students and staff.
+- Conduct gender sensitization and awareness programmes regularly.
+- Organize skill development, leadership, and entrepreneurship initiatives.
+- Facilitate mentoring, counselling, and emotional support systems.
+- Promote health awareness, mental wellness, and hygiene programmes.
+- Coordinate activities related to women empowerment in collaboration with experts, NGOs, and government agencies whenever possible.
+- Encourage women participation in academic, research, cultural, sports, and extension activities.
+- Celebrate women achievers and important national/international observance days related to women empowerment.
+- Maintain a respectful, safe, and empowering campus culture.
+
+__Major Activities & Initiatives__
+
+The Women Empowerment Cell organizes the following activities as part of institutional best practices and NAAC quality initiatives:
+
+__Awareness & Legal Literacy Programmes__
+
+- Gender Sensitization Programmes
+- Women Rights Awareness
+- Cyber Safety Awareness
+- Prevention of Sexual Harassment Awareness
+- Human Rights Awareness
+- Legal Literacy Sessions
+
+__Health & Wellness Initiatives__
+
+- Menstrual Hygiene Awareness
+- Mental Health & Stress Management Programmes
+- Nutrition & Fitness Awareness
+- Yoga & Wellness Sessions
+- Health Check-up Camps
+
+__Leadership & Skill Development__
+
+- Personality Development Programmes
+- Communication Skills Training
+- Leadership Development Workshops
+- Self-Defense Training
+- Entrepreneurship Awareness Programmes
+- Financial Literacy Sessions
+- Career Guidance & Placement Training
+
+__Academic & Professional Enrichment__
+
+- Guest Lectures by Women Achievers
+- Workshops & Seminars
+- Research & Innovation Awareness
+- Higher Education Guidance
+- Capacity Building Programmes
+
+__Community Outreach & Social Responsibility__
+
+- Rural Women Awareness Campaigns
+- Community Service Activities
+- Environmental Awareness Initiatives
+- Girl Child Education Campaigns
+- Extension & NSS Activities
+
+__Celebrations & Recognition__
+
+- International Women’s Day
+- National Girl Child Day
+- Women Leadership Recognition Programmes
+- Competitions on Women Empowerment Themes
+- Cultural & Literary Activities
+
+__Women Empowerment Cell Committee__
+
+__S. No.__
+
+__Name of the Member__
+
+__Designation__
+
+__Role__
+
+1
+
+Dr. Sr. Sandhya Thumma
+
+Principal, Dept. of MBA
+
+Chairperson
+
+2
+
+Mrs. R. Sharon Rose
+
+Dept. of Commerce
+
+IQAC Coordinator
+
+3
+
+Mrs. D. V. Ramanamma
+
+Dept. of Computer Science
+
+Convener
+
+4
+
+Mrs. M. Anjana Devi
+
+Dept. of Commerce
+
+Member
+
+5
+
+Mrs. G. Vijaya Lakshmi
+
+Dept. of Statistics
+
+Member
+
+6
+
+Mrs. L. Mary Anusha
+
+Dept. of Mathematics
+
+Member
+
+7
+
+Miss G. Santha Kumari
+
+Dept. of Physics
+
+Member
+
+8
+
+Miss K. Grace Shanthi Ann
+
+Dept. of English
+
+Member
+
+9
+
+Mrs. T. Durga Bhavani
+
+Dept. of Computer Science
+
+Member
+
+__Expected Outcomes__
+
+The Women Empowerment Cell aims to develop:
+
+- Confident and empowered women graduates
+- Ethical and socially responsible leaders
+- Strong communication and leadership abilities
+- Entrepreneurial and employability skills
+- Emotional resilience and mental well-being
+- Awareness regarding women’s rights and legal protections
+- Increased participation of women in academics, research, sports, and leadership roles
+- Lifelong learners capable of contributing to society and nation-building
+
+__Institutional Commitment__
+
+The Women Empowerment Cell of St. Ann’s College for Women, Gorantla, Guntur, reflects the institutional commitment to the motto “Educate • Enrich • Empower.” Through awareness programmes, leadership initiatives, skill development activities, mentoring, counselling, and community engagement, the Cell strives to nurture empowered women who lead with knowledge, resilience, integrity, and social responsibility.
+
+__View Document (PDF)__
+
+__2023-2024__
+
+__2024-2025__
+
+__2025-2026__
+
+__Photo Galley__
+
+`
   },
   "sports-infrastructure": {
     title: "Department of Physical Education",
-    content: "__Department of Physical Education__\n\n__Sports & Games__\n\n__Motto - __Educate • Enrich • Empower through Sports and Fitness\n\n__Vision__\n\nTo promote physical fitness, mental well-being, discipline, leadership, and sportsmanship among students through quality sports and physical education programmes, enabling them to become confident, healthy, and empowered individuals.\n\n__Mission__\n\n- To encourage active participation in sports, games, and fitness activities.\n- To develop discipline, teamwork, leadership, and ethical values through sportsmanship.\n- To provide opportunities for students to participate in intercollegiate, university, state, and national-level competitions.\n- To promote holistic development by integrating physical fitness with academic excellence.\n- To create awareness about health, wellness, yoga, and healthy lifestyles among students.\n\n__About the Department__\n\nAt St. Ann’s College for Women, the Department of Physical Education plays a vital role in promoting holistic student development through sports, games, fitness, and wellness activities. The department encourages students to actively participate in physical education programmes that foster discipline, leadership, teamwork, confidence, and sportsmanship.\n\nThe college provides opportunities for students to participate in indoor and outdoor games, intercollegiate competitions, university-level tournaments, athletics, yoga, and wellness activities. Through regular training programmes and sports events, students are motivated to maintain healthy lifestyles and develop competitive spirit alongside academic excellence.\n\n__Infrastructure & Sports Facilities__\n\nThe college provides adequate sports infrastructure and facilities to encourage active student participation in sports and physical fitness activities.\n\nFacilities Available\n\n- Spacious playground for outdoor games and athletics\n- Facilities for indoor and outdoor sports activities\n- Equipment for athletics and fitness training\n- Yoga and wellness activity space\n- Sports training and coaching support\n- Physical fitness and recreational facilities\n\n__Sports & Games Activities__\n\n- Annual Sports Meet\n- Intramural & Intercollegiate Competitions\n- Athletics & Track Events\n- Indoor & Outdoor Games\n- Yoga & Fitness Activities\n- Physical Fitness & Wellness Programmes\n- Sports Training & Coaching Support\n- Participation in University & State-Level Competitions\n- Student Achievements in Sports & Games\n\nThe institution continuously promotes a culture of active participation in sports and physical activities to ensure the overall personality development of students and to encourage excellence both in academics and athletics__.__\n\n__Annual Reports__\n\nThe Department of Physical Education publishes annual reports highlighting sports activities, student participation, achievements, competitions, and wellness initiatives conducted during the academic year.\n\n__View Annual Reports__\n\n- __2025 – 2026 *(View Document – PDF)*__\n- __2024 – 2025 *(View Document – PDF)*__\n- __2023 – 2024 *(View Document – PDF)*__\n\n__Intercollegiate Achievements__\n\nStudents of St. Ann’s College for Women actively participate in various intercollegiate sports and games competitions organized by affiliated colleges and universities. The institution encourages students to showcase their talents, sportsmanship, teamwork, and leadership abilities through competitive participation.\n\n__Highlights__\n\n- Participation in intercollegiate sports tournaments\n- Achievements in athletics, indoor, and outdoor games\n- Prizes and medals in sports competitions\n- Participation in karate, self-defence, and Karra Samu events\n- Recognition for team and individual performances\n\n__Inter-University Achievements__\n\nThe college takes pride in students representing the institution in inter-university sports and games competitions. Students demonstrate excellence, dedication, and competitive spirit through participation in university-level events and championships.\n\n__Highlights__\n\n- Representation in university-level sports tournaments\n- Achievements in athletics and team games\n- Participation in martial arts and self-defence competitions\n- Medals, certificates, and university recognitions\n- Promotion of leadership, discipline, and sportsmanship\n\n__State & National Level Achievements__\n\nStudents of the college have participated in various state and national-level sports, martial arts, and fitness competitions, bringing recognition and pride to the institution. The college continuously supports and motivates students to achieve excellence in sports and physical education.\n\n__Highlights__\n\n- Participation in state and national-level competitions\n- Achievements in athletics, games, karate, and Karra Samu\n- Medals, awards, and championship recognitions\n- Representation in women empowerment and self-defence programmes\n- Encouragement for professional sports training and excellence\n\nThe institution remains committed to promoting sports culture, physical fitness, discipline, and holistic development through active participation and achievement in sports and games activities.\n\n__Photo Gallery__\n\nThe gallery showcases various sports events, annual sports meets, competitions, yoga sessions, fitness activities, student achievements, and other physical education programmes conducted by the department.\n\n__Self-Defence Coaching & Achievements in Karate and Karra Samu__\n\nAt St. Ann’s College for Women, special emphasis is given to women empowerment and self-defence training as part of holistic student development. The college organizes regular coaching and training programmes in Karate and Karra Samu to help students develop self-confidence, discipline, physical fitness, mental strength, and personal safety awareness.\n\nStudents receive guidance and training from qualified coaches and trainers through structured practice sessions, demonstrations, workshops, and self-defence awareness programmes.\n\n__Self-Defence Training Activities__\n\n- Karate Coaching & Practice Sessions\n- Karra Samu Training Programmes\n- Self-Defence Workshops for Women Safety\n- Physical Fitness & Strength Training\n- Martial Arts Demonstrations & Awareness Programmes\n- Participation in Self-Defence Competitions & Camps\n\n__Achievements__\n\nStudents of the college actively participate in karate and Karra Samu competitions conducted at intercollegiate, university, district, state, and national levels. Many students have earned medals, certificates, awards, and recognitions for their outstanding performances in martial arts and self-defence activities.\n\n__Highlights__\n\n- Participation in Karate Championships\n- Achievements in Karra Samu Competitions\n- Medals, Certificates & Awards\n- Representation in State & National-Level Events\n- Promotion of Women Empowerment through Self-Defence Training\n\nThe institution continuously promotes self-defence education to empower students with confidence, courage, discipline, and the ability to protect themselves while contributing to their overall personality development.\n\n__Photo Galley __\n\n"
+    content: `__Department of Physical Education__
+
+__Sports & Games__
+
+__Motto - __Educate • Enrich • Empower through Sports and Fitness
+
+__Vision__
+
+To promote physical fitness, mental well-being, discipline, leadership, and sportsmanship among students through quality sports and physical education programmes, enabling them to become confident, healthy, and empowered individuals.
+
+__Mission__
+
+- To encourage active participation in sports, games, and fitness activities.
+- To develop discipline, teamwork, leadership, and ethical values through sportsmanship.
+- To provide opportunities for students to participate in intercollegiate, university, state, and national-level competitions.
+- To promote holistic development by integrating physical fitness with academic excellence.
+- To create awareness about health, wellness, yoga, and healthy lifestyles among students.
+
+__About the Department__
+
+At St. Ann’s College for Women, the Department of Physical Education plays a vital role in promoting holistic student development through sports, games, fitness, and wellness activities. The department encourages students to actively participate in physical education programmes that foster discipline, leadership, teamwork, confidence, and sportsmanship.
+
+The college provides opportunities for students to participate in indoor and outdoor games, intercollegiate competitions, university-level tournaments, athletics, yoga, and wellness activities. Through regular training programmes and sports events, students are motivated to maintain healthy lifestyles and develop competitive spirit alongside academic excellence.
+
+__Infrastructure & Sports Facilities__
+
+The college provides adequate sports infrastructure and facilities to encourage active student participation in sports and physical fitness activities.
+
+Facilities Available
+
+- Spacious playground for outdoor games and athletics
+- Facilities for indoor and outdoor sports activities
+- Equipment for athletics and fitness training
+- Yoga and wellness activity space
+- Sports training and coaching support
+- Physical fitness and recreational facilities
+
+__Sports & Games Activities__
+
+- Annual Sports Meet
+- Intramural & Intercollegiate Competitions
+- Athletics & Track Events
+- Indoor & Outdoor Games
+- Yoga & Fitness Activities
+- Physical Fitness & Wellness Programmes
+- Sports Training & Coaching Support
+- Participation in University & State-Level Competitions
+- Student Achievements in Sports & Games
+
+The institution continuously promotes a culture of active participation in sports and physical activities to ensure the overall personality development of students and to encourage excellence both in academics and athletics__.__
+
+__Annual Reports__
+
+The Department of Physical Education publishes annual reports highlighting sports activities, student participation, achievements, competitions, and wellness initiatives conducted during the academic year.
+
+__View Annual Reports__
+
+- __2025 – 2026 *(View Document – PDF)*__
+- __2024 – 2025 *(View Document – PDF)*__
+- __2023 – 2024 *(View Document – PDF)*__
+
+__Intercollegiate Achievements__
+
+Students of St. Ann’s College for Women actively participate in various intercollegiate sports and games competitions organized by affiliated colleges and universities. The institution encourages students to showcase their talents, sportsmanship, teamwork, and leadership abilities through competitive participation.
+
+__Highlights__
+
+- Participation in intercollegiate sports tournaments
+- Achievements in athletics, indoor, and outdoor games
+- Prizes and medals in sports competitions
+- Participation in karate, self-defence, and Karra Samu events
+- Recognition for team and individual performances
+
+__Inter-University Achievements__
+
+The college takes pride in students representing the institution in inter-university sports and games competitions. Students demonstrate excellence, dedication, and competitive spirit through participation in university-level events and championships.
+
+__Highlights__
+
+- Representation in university-level sports tournaments
+- Achievements in athletics and team games
+- Participation in martial arts and self-defence competitions
+- Medals, certificates, and university recognitions
+- Promotion of leadership, discipline, and sportsmanship
+
+__State & National Level Achievements__
+
+Students of the college have participated in various state and national-level sports, martial arts, and fitness competitions, bringing recognition and pride to the institution. The college continuously supports and motivates students to achieve excellence in sports and physical education.
+
+__Highlights__
+
+- Participation in state and national-level competitions
+- Achievements in athletics, games, karate, and Karra Samu
+- Medals, awards, and championship recognitions
+- Representation in women empowerment and self-defence programmes
+- Encouragement for professional sports training and excellence
+
+The institution remains committed to promoting sports culture, physical fitness, discipline, and holistic development through active participation and achievement in sports and games activities.
+
+__Photo Gallery__
+
+The gallery showcases various sports events, annual sports meets, competitions, yoga sessions, fitness activities, student achievements, and other physical education programmes conducted by the department.
+
+__Self-Defence Coaching & Achievements in Karate and Karra Samu__
+
+At St. Ann’s College for Women, special emphasis is given to women empowerment and self-defence training as part of holistic student development. The college organizes regular coaching and training programmes in Karate and Karra Samu to help students develop self-confidence, discipline, physical fitness, mental strength, and personal safety awareness.
+
+Students receive guidance and training from qualified coaches and trainers through structured practice sessions, demonstrations, workshops, and self-defence awareness programmes.
+
+__Self-Defence Training Activities__
+
+- Karate Coaching & Practice Sessions
+- Karra Samu Training Programmes
+- Self-Defence Workshops for Women Safety
+- Physical Fitness & Strength Training
+- Martial Arts Demonstrations & Awareness Programmes
+- Participation in Self-Defence Competitions & Camps
+
+__Achievements__
+
+Students of the college actively participate in karate and Karra Samu competitions conducted at intercollegiate, university, district, state, and national levels. Many students have earned medals, certificates, awards, and recognitions for their outstanding performances in martial arts and self-defence activities.
+
+__Highlights__
+
+- Participation in Karate Championships
+- Achievements in Karra Samu Competitions
+- Medals, Certificates & Awards
+- Representation in State & National-Level Events
+- Promotion of Women Empowerment through Self-Defence Training
+
+The institution continuously promotes self-defence education to empower students with confidence, courage, discipline, and the ability to protect themselves while contributing to their overall personality development.
+
+__Photo Galley __
+
+`
   },
   "academic-achievements": {
     title: "Student Academic Achievements",
-    content: "__Student Academic Achievements__\n\nSt. Ann’s College for Women, Gorantla, Guntur takes pride in the outstanding academic accomplishments of its students in university examinations, competitive examinations, research activities, scholarships, placements, and co-curricular achievements. The institution continuously encourages students to strive for academic excellence, leadership, innovation, and holistic development in alignment with NAAC quality initiatives and student progression practices.\n\nThe college provides a supportive academic environment through mentoring, remedial coaching, career guidance, value-added programmes, research exposure, and skill development initiatives to help students achieve success in academics and beyond.\n\n__1.University Rank Holders & Academic Excellence__\n\nThe students of St. Ann’s College for Women have consistently secured university ranks, gold medals, Pratibha Awards, and academic distinctions in various undergraduate and postgraduate programmes.\n\nThe institution proudly recognizes and appreciates the achievements of students who have excelled in university examinations and brought laurels to the college.\n\n__Major Academic Achievements__\n\n__Academic Year__\n\n__Programme__\n\n__Name of the Student__\n\n__Achievement__\n\n2022–2025\n\nB.Com (G)\n\nGundala Usha Rani\n\nTop 5 University Rank\n\n2020–2023\n\nBCA\n\nGunji Kusuma\n\nTop 5 University Rank\n\n2018–2021\n\nB.Com (G)\n\nPomulapati Ramya\n\nTop 5 University Rank\n\n2015–2018\n\nBBC\n\nK. Anuja\n\nPratibha Puraskar Award\n\n2015–2018\n\nBBC\n\nV. Bala Sri\n\nPratibha Puraskar Award\n\n2015–2018\n\nB.Com (G)\n\nK. Pratima\n\nPratibha Puraskar Award\n\n2015–2018\n\nMCA\n\nSk. Mastanbi\n\nPratibha Puraskar Award\n\n2015–2018\n\nMCA\n\nN. Suchandrika\n\nPratibha Puraskar Award\n\n2014–2017\n\nMCA\n\nS. Ravali\n\nGold Medals\n\n2014–2017\n\nB.Com (G)\n\nD. Sai Swetha\n\nPratibha Puraskar Award\n\n2013–2016\n\nMBC\n\nGayathri Thirumala\n\nPratibha Puraskar Award\n\n2012–2015\n\nMCA\n\nK. Naga Lakshmi\n\nPratibha Puraskar Award\n\n2012–2015\n\nBBC\n\nS. Hima Bindu\n\nGold Medal\n\n2012–2015\n\nB.Com (G)\n\nY. Satya Vani\n\nPratibha Puraskar Award\n\n2011–2014\n\nMBC\n\nV. Anitha\n\nPratibha Puraskar Award\n\n2011–2014\n\nBBC\n\nP. Amala Mary\n\nPratibha Puraskar Award\n\n2011–2014\n\nMBC\n\nB. Maha Lakshmi\n\nPratibha Puraskar Award\n\n2011–2014\n\nMBC\n\nV. Sivaparvathi Devi\n\nPratibha Puraskar Award\n\n2011–2014\n\nMPC\n\nP. Hemalatha\n\nPratibha Puraskar Award\n\n1998–2001\n\nBCA\n\nG. Neelima\n\nUniversity Rank Holder\n\n__Photo Galley__\n\n__2. Semester-wise Programme Highest Percentage Holders__\n\nSt. Ann’s College for Women, Gorantla, Guntur continuously encourages students to achieve academic excellence through learner-centric teaching practices, mentoring support, continuous evaluation, remedial coaching, and academic guidance. The institution proudly recognizes and appreciates students who secure the highest percentage and CGPA in their respective programmes every semester.\n\nThe Semester-wise Programme Highest Percentage Holders section highlights the outstanding academic performance of students across undergraduate and postgraduate programmes. These achievements reflect the institution’s commitment towards quality education, academic discipline, student progression, and holistic development in alignment with NAAC quality initiatives and best practices.\n\nThe semester-wise toppers are displayed programme-wise to motivate students towards consistent academic performance, healthy competition, and pursuit of excellence in learning.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__3.Outgoing Batch Programme-wise Toppers__\n\n__UG Semester I – VI & PG Semester I-IV __\n\n__ Consolidated Academic Excellence List__\n\nSt. Ann’s College for Women, Gorantla, Guntur recognizes and honours students who have demonstrated outstanding academic performance throughout their programme of study. The Outgoing Batch Programme-wise Toppers List highlights students who secured the highest percentage and cumulative CGPA from Semester I to Semester VI in their respective programmes.\n\nThis recognition reflects the institution’s commitment towards academic excellence, student progression, quality education, and holistic development in alignment with NAAC quality initiatives and best practices.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__4.Competitive Examination & Higher Education  Achievements__\n\nSt. Ann’s College for Women, Gorantla, Guntur encourages students to appear for various competitive examinations, higher education entrance tests, and government recruitment examinations through career guidance programmes, coaching support, aptitude training, and skill enhancement initiatives.\n\nThe institution regularly organizes awareness sessions, career counselling programmes, mock tests, and training workshops to prepare students for competitive examinations and career opportunities in government, banking, teaching, management, and higher education sectors.\n\n__Students Participate In__\n\n- APPSC\n- UPSC\n- ICET / PGCET\n- NET / SET\n- Banking Examinations\n- SSC Examinations\n- Police Recruitment Examinations\n- Teacher Eligibility Tests\n- Other Government and Competitive Examinations\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__5.Research & Innovation Achievements__\n\nThe institution promotes research culture, innovation, scientific temper, and experiential learning among students through academic projects, seminars, exhibitions, and competitions.\n\n__Student Participation Includes:__\n\n- Research Paper Presentations\n- Poster Presentations\n- Science Exhibitions\n- Project Exhibitions\n- Innovation Challenges\n- Workshops and Technical Events\n- Hackathons and Academic Competitions\n- Intercollegiate Research Activities\n\nStudents are encouraged to participate in research-oriented and skill-based academic activities at institutional, university, state, and national levels.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__6.Awards & Scholarships__\n\nThe college motivates deserving students by recognizing academic merit and supporting students through scholarships and awards.\n\n__Scholarships & Awards Include:__\n\n- Government Scholarships\n- Merit Scholarships\n- Academic Excellence Awards\n- Pratibha Puraskar Awards\n- Best Student Awards\n- Fee Concessions and Financial Support\n- NGO and External Scholarships\n\nThe institution provides continuous support to economically disadvantaged and meritorious students for higher education and academic progression.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__7.Seminar / Conference Participation__\n\nStudents actively participate in academic enrichment programmes conducted within and outside the institution.\n\n__Participation Includes:__\n\n- National Seminars\n- International Conferences\n- Workshops and Training Programmes\n- Intercollegiate Competitions\n- Skill Development Programmes\n- Student Development Activities\n- FDP-Linked Student Events\n- Awareness and Extension Programmes\n\nSuch participation enhances communication skills, leadership qualities, research aptitude, and professional competencies among students.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__8.Value-Added Certifications__\n\nTo enhance employability and professional skills, students are encouraged to complete various online and offline certification programmes.\n\n__Certification Platforms__\n\n- NPTEL\n- SWAYAM\n- Infosys Springboard\n- TCS iON\n- IBM SkillsBuild\n- Spoken Tutorial\n- Coursera\n- Cisco Certifications\n- Microsoft Certification Courses\n\nThese programmes help students strengthen technical skills, communication abilities, digital literacy, and industry readiness.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__9.Student Publications & Creative Contributions__\n\nStudents are encouraged to contribute to academic and creative publications through:\n\n- College Magazines\n- Research Articles\n- Department Newsletters\n- Journals and Creative Writing\n- Poster and Project Documentation\n- Essay Writing and Literary Competitions\n\nThe institution promotes creativity, critical thinking, communication skills, and academic writing practices among students.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n__10.Women Empowerment & Leadership Achievements__\n\nAs a women’s institution, the college gives special emphasis to empowering young women through academic, leadership, cultural, and social initiatives.\n\n__Highlights__\n\n- Women Leadership Programmes\n- Entrepreneurship Development\n- Women in STEM Activities\n- NSS & Community Outreach\n- Cultural Achievements\n- Social Responsibility Activities\n- Value-Based and Ethical Education\n\nThese initiatives contribute significantly to student empowerment, confidence building, leadership development, and social responsibility.\n\n__View PDF  2023-2024__\n\n__View PDF 2024-2025__\n\n__View PDF 2025-2026__\n\n__Photo Galley__\n\n"
+    content: `__Student Academic Achievements__
+
+St. Ann’s College for Women, Gorantla, Guntur takes pride in the outstanding academic accomplishments of its students in university examinations, competitive examinations, research activities, scholarships, placements, and co-curricular achievements. The institution continuously encourages students to strive for academic excellence, leadership, innovation, and holistic development in alignment with NAAC quality initiatives and student progression practices.
+
+The college provides a supportive academic environment through mentoring, remedial coaching, career guidance, value-added programmes, research exposure, and skill development initiatives to help students achieve success in academics and beyond.
+
+__1.University Rank Holders & Academic Excellence__
+
+The students of St. Ann’s College for Women have consistently secured university ranks, gold medals, Pratibha Awards, and academic distinctions in various undergraduate and postgraduate programmes.
+
+The institution proudly recognizes and appreciates the achievements of students who have excelled in university examinations and brought laurels to the college.
+
+__Major Academic Achievements__
+
+__Academic Year__
+
+__Programme__
+
+__Name of the Student__
+
+__Achievement__
+
+2022–2025
+
+B.Com (G)
+
+Gundala Usha Rani
+
+Top 5 University Rank
+
+2020–2023
+
+BCA
+
+Gunji Kusuma
+
+Top 5 University Rank
+
+2018–2021
+
+B.Com (G)
+
+Pomulapati Ramya
+
+Top 5 University Rank
+
+2015–2018
+
+BBC
+
+K. Anuja
+
+Pratibha Puraskar Award
+
+2015–2018
+
+BBC
+
+V. Bala Sri
+
+Pratibha Puraskar Award
+
+2015–2018
+
+B.Com (G)
+
+K. Pratima
+
+Pratibha Puraskar Award
+
+2015–2018
+
+MCA
+
+Sk. Mastanbi
+
+Pratibha Puraskar Award
+
+2015–2018
+
+MCA
+
+N. Suchandrika
+
+Pratibha Puraskar Award
+
+2014–2017
+
+MCA
+
+S. Ravali
+
+Gold Medals
+
+2014–2017
+
+B.Com (G)
+
+D. Sai Swetha
+
+Pratibha Puraskar Award
+
+2013–2016
+
+MBC
+
+Gayathri Thirumala
+
+Pratibha Puraskar Award
+
+2012–2015
+
+MCA
+
+K. Naga Lakshmi
+
+Pratibha Puraskar Award
+
+2012–2015
+
+BBC
+
+S. Hima Bindu
+
+Gold Medal
+
+2012–2015
+
+B.Com (G)
+
+Y. Satya Vani
+
+Pratibha Puraskar Award
+
+2011–2014
+
+MBC
+
+V. Anitha
+
+Pratibha Puraskar Award
+
+2011–2014
+
+BBC
+
+P. Amala Mary
+
+Pratibha Puraskar Award
+
+2011–2014
+
+MBC
+
+B. Maha Lakshmi
+
+Pratibha Puraskar Award
+
+2011–2014
+
+MBC
+
+V. Sivaparvathi Devi
+
+Pratibha Puraskar Award
+
+2011–2014
+
+MPC
+
+P. Hemalatha
+
+Pratibha Puraskar Award
+
+1998–2001
+
+BCA
+
+G. Neelima
+
+University Rank Holder
+
+__Photo Galley__
+
+__2. Semester-wise Programme Highest Percentage Holders__
+
+St. Ann’s College for Women, Gorantla, Guntur continuously encourages students to achieve academic excellence through learner-centric teaching practices, mentoring support, continuous evaluation, remedial coaching, and academic guidance. The institution proudly recognizes and appreciates students who secure the highest percentage and CGPA in their respective programmes every semester.
+
+The Semester-wise Programme Highest Percentage Holders section highlights the outstanding academic performance of students across undergraduate and postgraduate programmes. These achievements reflect the institution’s commitment towards quality education, academic discipline, student progression, and holistic development in alignment with NAAC quality initiatives and best practices.
+
+The semester-wise toppers are displayed programme-wise to motivate students towards consistent academic performance, healthy competition, and pursuit of excellence in learning.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__3.Outgoing Batch Programme-wise Toppers__
+
+__UG Semester I – VI & PG Semester I-IV __
+
+__ Consolidated Academic Excellence List__
+
+St. Ann’s College for Women, Gorantla, Guntur recognizes and honours students who have demonstrated outstanding academic performance throughout their programme of study. The Outgoing Batch Programme-wise Toppers List highlights students who secured the highest percentage and cumulative CGPA from Semester I to Semester VI in their respective programmes.
+
+This recognition reflects the institution’s commitment towards academic excellence, student progression, quality education, and holistic development in alignment with NAAC quality initiatives and best practices.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__4.Competitive Examination & Higher Education  Achievements__
+
+St. Ann’s College for Women, Gorantla, Guntur encourages students to appear for various competitive examinations, higher education entrance tests, and government recruitment examinations through career guidance programmes, coaching support, aptitude training, and skill enhancement initiatives.
+
+The institution regularly organizes awareness sessions, career counselling programmes, mock tests, and training workshops to prepare students for competitive examinations and career opportunities in government, banking, teaching, management, and higher education sectors.
+
+__Students Participate In__
+
+- APPSC
+- UPSC
+- ICET / PGCET
+- NET / SET
+- Banking Examinations
+- SSC Examinations
+- Police Recruitment Examinations
+- Teacher Eligibility Tests
+- Other Government and Competitive Examinations
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__5.Research & Innovation Achievements__
+
+The institution promotes research culture, innovation, scientific temper, and experiential learning among students through academic projects, seminars, exhibitions, and competitions.
+
+__Student Participation Includes:__
+
+- Research Paper Presentations
+- Poster Presentations
+- Science Exhibitions
+- Project Exhibitions
+- Innovation Challenges
+- Workshops and Technical Events
+- Hackathons and Academic Competitions
+- Intercollegiate Research Activities
+
+Students are encouraged to participate in research-oriented and skill-based academic activities at institutional, university, state, and national levels.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__6.Awards & Scholarships__
+
+The college motivates deserving students by recognizing academic merit and supporting students through scholarships and awards.
+
+__Scholarships & Awards Include:__
+
+- Government Scholarships
+- Merit Scholarships
+- Academic Excellence Awards
+- Pratibha Puraskar Awards
+- Best Student Awards
+- Fee Concessions and Financial Support
+- NGO and External Scholarships
+
+The institution provides continuous support to economically disadvantaged and meritorious students for higher education and academic progression.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__7.Seminar / Conference Participation__
+
+Students actively participate in academic enrichment programmes conducted within and outside the institution.
+
+__Participation Includes:__
+
+- National Seminars
+- International Conferences
+- Workshops and Training Programmes
+- Intercollegiate Competitions
+- Skill Development Programmes
+- Student Development Activities
+- FDP-Linked Student Events
+- Awareness and Extension Programmes
+
+Such participation enhances communication skills, leadership qualities, research aptitude, and professional competencies among students.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__8.Value-Added Certifications__
+
+To enhance employability and professional skills, students are encouraged to complete various online and offline certification programmes.
+
+__Certification Platforms__
+
+- NPTEL
+- SWAYAM
+- Infosys Springboard
+- TCS iON
+- IBM SkillsBuild
+- Spoken Tutorial
+- Coursera
+- Cisco Certifications
+- Microsoft Certification Courses
+
+These programmes help students strengthen technical skills, communication abilities, digital literacy, and industry readiness.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__9.Student Publications & Creative Contributions__
+
+Students are encouraged to contribute to academic and creative publications through:
+
+- College Magazines
+- Research Articles
+- Department Newsletters
+- Journals and Creative Writing
+- Poster and Project Documentation
+- Essay Writing and Literary Competitions
+
+The institution promotes creativity, critical thinking, communication skills, and academic writing practices among students.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+__10.Women Empowerment & Leadership Achievements__
+
+As a women’s institution, the college gives special emphasis to empowering young women through academic, leadership, cultural, and social initiatives.
+
+__Highlights__
+
+- Women Leadership Programmes
+- Entrepreneurship Development
+- Women in STEM Activities
+- NSS & Community Outreach
+- Cultural Achievements
+- Social Responsibility Activities
+- Value-Based and Ethical Education
+
+These initiatives contribute significantly to student empowerment, confidence building, leadership development, and social responsibility.
+
+__View PDF  2023-2024__
+
+__View PDF 2024-2025__
+
+__View PDF 2025-2026__
+
+__Photo Galley__
+
+`
   },
   "sports-cultural-achievements": {
     title: "Sports & Cultural Achievements",
-    content: "__Sports & Cultural Achievements__\n\nThe institution encourages students to actively participate in sports, games, cultural activities, and talent-based competitions conducted at intercollegiate, university, district, state, and national levels. Students are provided opportunities to showcase their skills, leadership qualities, creativity, and team spirit through various events organized within and outside the campus.\n\n__Sports Achievements__\n\nStudents of the college have participated in and achieved recognition in various sports and games such as:\n\n- Athletics\n- Volleyball\n- Kabaddi\n- Kho-Kho\n- Badminton\n- Chess\n- Throw Ball\n- Ball Badminton\n- Weight Lifting \n- Yoga and Fitness Activities\n- Krrasamu\n- Karate\n\nThe institution motivates students to participate in tournaments and sports meets by providing coaching support, practice facilities, and encouragement for physical fitness and discipline.\n\n__View Documents (PDF)__\n\n__2023-2024 __\n\n__2024-2025__\n\n__2025-2026__\n\n__Photo Galley__\n\n__Cultural Achievements__\n\nThe college promotes cultural excellence by encouraging participation in:\n\n- Dance Competitions\n- Singing Competitions\n- Essay Writing\n- Elocution & Debate\n- Skits and Drama\n- Rangoli Competitions\n- Fine Arts & Craft Exhibitions\n- Traditional Day & Cultural Fest Activities\n- Literary and Creative Events\n\nStudents have brought laurels to the institution by winning prizes and certificates in various cultural and literary competitions conducted by colleges, universities, and other organizations.\n\n__View Documents (PDF)__\n\n__2023-2024 __\n\n__2024-2025__\n\n__2025-2026__\n\n__Photo Galley__\n\n__Institutional Support__\n\nTo nurture holistic development, the institution regularly organizes:\n\n- Annual Sports Meet\n- Cultural Fest and Talent Day\n- Interdepartmental Competitions\n- Awareness Programmes and Celebrations of National Days\n- Student Clubs and Co-curricular Activities\n\nThese activities help students develop confidence, creativity, leadership qualities, communication skills, and overall personality development.\n\n__View Documents (PDF)__\n\n__2023-2024 __\n\n__2024-2025__\n\n__2025-2026__\n\n__Photo Galley__\n\n"
+    content: `__Sports & Cultural Achievements__
+
+The institution encourages students to actively participate in sports, games, cultural activities, and talent-based competitions conducted at intercollegiate, university, district, state, and national levels. Students are provided opportunities to showcase their skills, leadership qualities, creativity, and team spirit through various events organized within and outside the campus.
+
+__Sports Achievements__
+
+Students of the college have participated in and achieved recognition in various sports and games such as:
+
+- Athletics
+- Volleyball
+- Kabaddi
+- Kho-Kho
+- Badminton
+- Chess
+- Throw Ball
+- Ball Badminton
+- Weight Lifting 
+- Yoga and Fitness Activities
+- Krrasamu
+- Karate
+
+The institution motivates students to participate in tournaments and sports meets by providing coaching support, practice facilities, and encouragement for physical fitness and discipline.
+
+__View Documents (PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+__Photo Galley__
+
+__Cultural Achievements__
+
+The college promotes cultural excellence by encouraging participation in:
+
+- Dance Competitions
+- Singing Competitions
+- Essay Writing
+- Elocution & Debate
+- Skits and Drama
+- Rangoli Competitions
+- Fine Arts & Craft Exhibitions
+- Traditional Day & Cultural Fest Activities
+- Literary and Creative Events
+
+Students have brought laurels to the institution by winning prizes and certificates in various cultural and literary competitions conducted by colleges, universities, and other organizations.
+
+__View Documents (PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+__Photo Galley__
+
+__Institutional Support__
+
+To nurture holistic development, the institution regularly organizes:
+
+- Annual Sports Meet
+- Cultural Fest and Talent Day
+- Interdepartmental Competitions
+- Awareness Programmes and Celebrations of National Days
+- Student Clubs and Co-curricular Activities
+
+These activities help students develop confidence, creativity, leadership qualities, communication skills, and overall personality development.
+
+__View Documents (PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+__Photo Galley__
+
+`
   },
   "capacity-building": {
     title: "Capacity Building & Skill Enhancement Programmes",
-    content: "__Capacity Building & Skill Enhancement Programmes__\n\nThe institution is committed to the holistic development of students by organizing various Capacity Building and Skill Enhancement Programmes aimed at improving employability, leadership qualities, communication abilities, technical competencies, and life skills. These programmes are conducted through workshops, seminars, guest lectures, training sessions, awareness programmes, and hands-on activities throughout the academic year.\n\nThe college regularly organizes programmes in collaboration with industry experts, academicians, professional trainers, alumni, and resource persons to prepare students for higher education, employment, entrepreneurship, and responsible citizenship.\n\n__Objectives__\n\n- To enhance students’ professional and personal competencies\n- To improve communication, leadership, and interpersonal skills\n- To strengthen digital literacy and ICT competencies\n- To develop confidence, decision-making, and problem-solving abilities\n- To prepare students for competitive examinations and career opportunities\n- To promote ethical values, emotional well-being, and social responsibility\n\n__Outcome of the Programmes__\n\nThe Capacity Building and Skill Enhancement initiatives have contributed to:\n\n- Improved employability skills\n- Better communication and presentation abilities\n- Increased confidence and leadership qualities\n- Enhanced digital and technical competencies\n- Greater participation in competitive examinations and placements\n- Overall personality and professional development of students\n\nThe institution continues to strengthen student-centric skill development initiatives in alignment with the vision of holistic education and NAAC quality parameters.\n\n__1.List of Capacity Building & Skill Enhancement Activities__\n\nThe institution organizes various:\n\n- Workshops\n- Seminars\n- Faculty and Student Development Programmes\n- Career Guidance Programmes\n- Training Sessions\n- Skill Development Workshops\n- Awareness Campaigns\n- Guest Lectures\n- Hands-on Training Programmes\n\nThese programmes focus on academic enrichment, employability skills, entrepreneurship, communication, technology usage, and personality development.\n\n__View Document (PDF)__\n\n__2023-2024__\n\n__ 2024-2025 __\n\n__2025-2026 __\n\n__2.Soft Skills Development__\n\nThe college conducts Soft Skills Training Programmes to improve students’ overall personality and professional readiness.\n\n__Major Areas Covered__\n\n- Personality Development\n- Leadership Skills\n- Team Building\n- Time Management\n- Interview Skills\n- Group Discussion Techniques\n- Resume Preparation\n- Public Speaking\n- Critical Thinking and Problem Solving\n- Career Readiness Programmes\n\nThese programmes help students become confident, responsible, and career-oriented individuals.\n\n__View Document (PDF)__\n\n__2023-2024__\n\n__ 2024-2025 __\n\n__2025-2026 __\n\n__3.Language & Communication Skills__\n\nTo enhance communication competence and language proficiency, the institution organizes programmes focusing on verbal, written, and interpersonal communication skills.\n\n__Activities Include__\n\n- Spoken English Training\n- Communication Skills Workshops\n- Vocabulary Enhancement Sessions\n- Presentation Skills\n- Debate and Elocution Activities\n- Reading and Writing Skills Development\n- English Language Lab Activities\n- Business Communication Training\n\nThe institution encourages students to improve fluency, confidence, and effective communication for academic and professional success.\n\n__View Document (PDF)__\n\n__2023-2024__\n\n__ 2024-2025 __\n\n__2025-2026 __\n\n__4.Life Skills Education__\n\nLife Skill programmes are conducted to help students develop emotional intelligence, self-awareness, adaptability, and social responsibility.\n\n__Areas of Focus__\n\n- Stress Management\n- Mental Health Awareness\n- Self-Confidence Building\n- Gender Sensitization\n- Health & Hygiene Awareness\n- Ethical and Moral Values\n- Financial Literacy\n- Decision-Making Skills\n- Environmental Awareness\n- Social Responsibility and Community Engagement\n\nThese programmes enable students to face real-life challenges with confidence and responsibility.\n\n__View Document (PDF)__\n\n__2023-2024__\n\n__ 2024-2025 __\n\n__2025-2026 __\n\n__5.ICT / Computing Skills__\n\nThe institution provides ICT and Computing Skill programmes to improve digital literacy and technical competencies among students.\n\n__Programmes Include__\n\n- Basic Computer Skills Training\n- MS Office Applications\n- Internet and Digital Literacy\n- Programming Skills Workshops\n- ICT-enabled Learning\n- Online Learning Platforms Usage\n- Cyber Security Awareness\n- Data Analytics & Emerging Technologies Awareness\n- Computer Lab Training Sessions\n- Seminar Programmes on Artificial Intelligence and Modern Technologies\n\nStudents are encouraged to utilize digital tools and modern technologies effectively for academic, professional, and research purposes.\n\n__View Document (PDF)__\n\n__2023-2024__\n\n__ 2024-2025 __\n\n__2025-2026 __\n\n"
+    content: `__Capacity Building & Skill Enhancement Programmes__
+
+The institution is committed to the holistic development of students by organizing various Capacity Building and Skill Enhancement Programmes aimed at improving employability, leadership qualities, communication abilities, technical competencies, and life skills. These programmes are conducted through workshops, seminars, guest lectures, training sessions, awareness programmes, and hands-on activities throughout the academic year.
+
+The college regularly organizes programmes in collaboration with industry experts, academicians, professional trainers, alumni, and resource persons to prepare students for higher education, employment, entrepreneurship, and responsible citizenship.
+
+__Objectives__
+
+- To enhance students’ professional and personal competencies
+- To improve communication, leadership, and interpersonal skills
+- To strengthen digital literacy and ICT competencies
+- To develop confidence, decision-making, and problem-solving abilities
+- To prepare students for competitive examinations and career opportunities
+- To promote ethical values, emotional well-being, and social responsibility
+
+__Outcome of the Programmes__
+
+The Capacity Building and Skill Enhancement initiatives have contributed to:
+
+- Improved employability skills
+- Better communication and presentation abilities
+- Increased confidence and leadership qualities
+- Enhanced digital and technical competencies
+- Greater participation in competitive examinations and placements
+- Overall personality and professional development of students
+
+The institution continues to strengthen student-centric skill development initiatives in alignment with the vision of holistic education and NAAC quality parameters.
+
+__1.List of Capacity Building & Skill Enhancement Activities__
+
+The institution organizes various:
+
+- Workshops
+- Seminars
+- Faculty and Student Development Programmes
+- Career Guidance Programmes
+- Training Sessions
+- Skill Development Workshops
+- Awareness Campaigns
+- Guest Lectures
+- Hands-on Training Programmes
+
+These programmes focus on academic enrichment, employability skills, entrepreneurship, communication, technology usage, and personality development.
+
+__View Document (PDF)__
+
+__2023-2024__
+
+__ 2024-2025 __
+
+__2025-2026 __
+
+__2.Soft Skills Development__
+
+The college conducts Soft Skills Training Programmes to improve students’ overall personality and professional readiness.
+
+__Major Areas Covered__
+
+- Personality Development
+- Leadership Skills
+- Team Building
+- Time Management
+- Interview Skills
+- Group Discussion Techniques
+- Resume Preparation
+- Public Speaking
+- Critical Thinking and Problem Solving
+- Career Readiness Programmes
+
+These programmes help students become confident, responsible, and career-oriented individuals.
+
+__View Document (PDF)__
+
+__2023-2024__
+
+__ 2024-2025 __
+
+__2025-2026 __
+
+__3.Language & Communication Skills__
+
+To enhance communication competence and language proficiency, the institution organizes programmes focusing on verbal, written, and interpersonal communication skills.
+
+__Activities Include__
+
+- Spoken English Training
+- Communication Skills Workshops
+- Vocabulary Enhancement Sessions
+- Presentation Skills
+- Debate and Elocution Activities
+- Reading and Writing Skills Development
+- English Language Lab Activities
+- Business Communication Training
+
+The institution encourages students to improve fluency, confidence, and effective communication for academic and professional success.
+
+__View Document (PDF)__
+
+__2023-2024__
+
+__ 2024-2025 __
+
+__2025-2026 __
+
+__4.Life Skills Education__
+
+Life Skill programmes are conducted to help students develop emotional intelligence, self-awareness, adaptability, and social responsibility.
+
+__Areas of Focus__
+
+- Stress Management
+- Mental Health Awareness
+- Self-Confidence Building
+- Gender Sensitization
+- Health & Hygiene Awareness
+- Ethical and Moral Values
+- Financial Literacy
+- Decision-Making Skills
+- Environmental Awareness
+- Social Responsibility and Community Engagement
+
+These programmes enable students to face real-life challenges with confidence and responsibility.
+
+__View Document (PDF)__
+
+__2023-2024__
+
+__ 2024-2025 __
+
+__2025-2026 __
+
+__5.ICT / Computing Skills__
+
+The institution provides ICT and Computing Skill programmes to improve digital literacy and technical competencies among students.
+
+__Programmes Include__
+
+- Basic Computer Skills Training
+- MS Office Applications
+- Internet and Digital Literacy
+- Programming Skills Workshops
+- ICT-enabled Learning
+- Online Learning Platforms Usage
+- Cyber Security Awareness
+- Data Analytics & Emerging Technologies Awareness
+- Computer Lab Training Sessions
+- Seminar Programmes on Artificial Intelligence and Modern Technologies
+
+Students are encouraged to utilize digital tools and modern technologies effectively for academic, professional, and research purposes.
+
+__View Document (PDF)__
+
+__2023-2024__
+
+__ 2024-2025 __
+
+__2025-2026 __
+
+`
   },
   "nss-activities": {
     title: "Extension Activities",
-    content: "__Extension Activities__\n\nAt St. Ann’s College for Women, extension activities form an integral part of holistic education and student development. The institution encourages students to actively participate in community service, environmental protection, social awareness, health initiatives, leadership programmes, and outreach activities to nurture social responsibility, compassion, discipline, and civic consciousness.\n\n__NSS Activities__\n\nThe National Service Scheme (NSS) unit of the college promotes community engagement and social responsibility among students through various service-oriented programmes and outreach activities.\n\n__Major Activities__\n\n- Rural outreach programmes\n- Swachh Bharat & cleanliness drives\n- Health camps & blood donation camps\n- Awareness programmes on social issues\n- Plantation & environmental protection activities\n- Community development initiatives\n- Women empowerment programmes\n- National festivals & special camps\n\nNSS activities help students develop leadership qualities, teamwork, discipline, and a spirit of service to society.\n\n__View Annual Report PDF __\n\n__2025-2026__\n\n__2024-2025__\n\n__2023-2024__\n\n__Phot Galley__\n\n"
+    content: `__Extension Activities__
+
+At St. Ann’s College for Women, extension activities form an integral part of holistic education and student development. The institution encourages students to actively participate in community service, environmental protection, social awareness, health initiatives, leadership programmes, and outreach activities to nurture social responsibility, compassion, discipline, and civic consciousness.
+
+__NSS Activities__
+
+The National Service Scheme (NSS) unit of the college promotes community engagement and social responsibility among students through various service-oriented programmes and outreach activities.
+
+__Major Activities__
+
+- Rural outreach programmes
+- Swachh Bharat & cleanliness drives
+- Health camps & blood donation camps
+- Awareness programmes on social issues
+- Plantation & environmental protection activities
+- Community development initiatives
+- Women empowerment programmes
+- National festivals & special camps
+
+NSS activities help students develop leadership qualities, teamwork, discipline, and a spirit of service to society.
+
+__View Annual Report PDF __
+
+__2025-2026__
+
+__2024-2025__
+
+__2023-2024__
+
+__Phot Galley__
+
+`
   },
   "ncc-activities": {
     title: "NCC Activities",
-    content: "__NCC Activities__\n\nThe National Cadet Corps (NCC) encourages discipline, patriotism, leadership, and self-confidence among students. NCC activities strengthen character development and responsible citizenship through training and service.\n\n__Major Activities__\n\n- Parade & drill training\n- Leadership and personality development programmes\n- National integration activities\n- Disaster management awareness programmes\n- Community service activities\n- Participation in NCC camps and events\n- Self-discipline and physical fitness training\n\nThe NCC unit motivates students to become confident, responsible, and service-oriented citizens.\n\n__View  Annual Report  PDF__\n\n__2025-2026__\n\n__2024-2025__\n\n__2023-2024__\n\n__Galley__\n\n"
+    content: `__NCC Activities__
+
+The National Cadet Corps (NCC) encourages discipline, patriotism, leadership, and self-confidence among students. NCC activities strengthen character development and responsible citizenship through training and service.
+
+__Major Activities__
+
+- Parade & drill training
+- Leadership and personality development programmes
+- National integration activities
+- Disaster management awareness programmes
+- Community service activities
+- Participation in NCC camps and events
+- Self-discipline and physical fitness training
+
+The NCC unit motivates students to become confident, responsible, and service-oriented citizens.
+
+__View  Annual Report  PDF__
+
+__2025-2026__
+
+__2024-2025__
+
+__2023-2024__
+
+__Galley__
+
+`
   },
   "mother-gnanamma": {
     title: "Community Service & Outreach Activities",
-    content: "__Community Service & Outreach Activities__\n\n[Embedded Image Removed]\n\n__Mother Gnanamma Outreach Committee__\n\nAt St. Ann’s College for Women, community service and extension activities are integral to the institution’s mission of nurturing socially responsible and empowered women. Inspired by the vision and values of Mother Gnanamma, the Mother Gnanamma Outreach Committee actively engages students in community development, social responsibility, women empowerment, and humanitarian service activities in alignment with NAAC quality initiatives for extension and outreach.\n\nThe committee promotes value-based education through meaningful engagement with society and encourages students to participate in outreach programmes that foster compassion, leadership, empathy, and civic responsibility.\n\n__Objectives__\n\n- To promote community engagement and social responsibility among students\n- To encourage women empowerment and value-based leadership\n- To develop compassion, empathy, and service-mindedness\n- To create awareness on social, health, environmental, and educational issues\n- To strengthen institutional participation in rural and community development initiatives\n\n__Major Activities__\n\n- Community outreach programmes\n- Educational support and literacy initiatives\n- Women empowerment and awareness programmes\n- Rural development and village adoption activities\n- Health, hygiene, and sanitation awareness campaigns\n- Social welfare and humanitarian service activities\n- Environmental awareness and sustainability programmes\n- Awareness programmes for women and children\n- Value-based social service and volunteer activities\n- Community engagement through extension and outreach programmes\n\n__Unnat Bharat Abhiyan (UBA)__\n\nThe institution is registered under the __Unnat Bharat Abhiyan (UBA)__, a flagship programme of the Government of India initiated by the Ministry of Education. Through UBA activities, the college promotes rural development and sustainable community engagement by encouraging students and faculty to participate in village development initiatives and community-based programmes.\n\n__UBA Related Activities__\n\n- Rural community surveys\n- Awareness programmes in adopted villages\n- Health and sanitation initiatives\n- Educational and literacy support programmes\n- Environmental sustainability activities\n- Women and youth empowerment programmes\n- Community participation and social development activities\n\n__Outcome & Social Impact__\n\nThrough community service and outreach initiatives, students develop leadership qualities, social sensitivity, teamwork, ethical values, and civic consciousness. These activities contribute to holistic student development while strengthening the institution’s commitment towards nation-building, social transformation, and community welfare in accordance with NAAC extension and outreach practices.\n\n__View PDF Annual Report __\n\n__2025-2026__\n\n__2024-2025__\n\n__2023-2024__\n\n__Photo Galley__\n\n"
+    content: `__Community Service & Outreach Activities__
+
+[Embedded Image Removed]
+
+__Mother Gnanamma Outreach Committee__
+
+At St. Ann’s College for Women, community service and extension activities are integral to the institution’s mission of nurturing socially responsible and empowered women. Inspired by the vision and values of Mother Gnanamma, the Mother Gnanamma Outreach Committee actively engages students in community development, social responsibility, women empowerment, and humanitarian service activities in alignment with NAAC quality initiatives for extension and outreach.
+
+The committee promotes value-based education through meaningful engagement with society and encourages students to participate in outreach programmes that foster compassion, leadership, empathy, and civic responsibility.
+
+__Objectives__
+
+- To promote community engagement and social responsibility among students
+- To encourage women empowerment and value-based leadership
+- To develop compassion, empathy, and service-mindedness
+- To create awareness on social, health, environmental, and educational issues
+- To strengthen institutional participation in rural and community development initiatives
+
+__Major Activities__
+
+- Community outreach programmes
+- Educational support and literacy initiatives
+- Women empowerment and awareness programmes
+- Rural development and village adoption activities
+- Health, hygiene, and sanitation awareness campaigns
+- Social welfare and humanitarian service activities
+- Environmental awareness and sustainability programmes
+- Awareness programmes for women and children
+- Value-based social service and volunteer activities
+- Community engagement through extension and outreach programmes
+
+__Unnat Bharat Abhiyan (UBA)__
+
+The institution is registered under the __Unnat Bharat Abhiyan (UBA)__, a flagship programme of the Government of India initiated by the Ministry of Education. Through UBA activities, the college promotes rural development and sustainable community engagement by encouraging students and faculty to participate in village development initiatives and community-based programmes.
+
+__UBA Related Activities__
+
+- Rural community surveys
+- Awareness programmes in adopted villages
+- Health and sanitation initiatives
+- Educational and literacy support programmes
+- Environmental sustainability activities
+- Women and youth empowerment programmes
+- Community participation and social development activities
+
+__Outcome & Social Impact__
+
+Through community service and outreach initiatives, students develop leadership qualities, social sensitivity, teamwork, ethical values, and civic consciousness. These activities contribute to holistic student development while strengthening the institution’s commitment towards nation-building, social transformation, and community welfare in accordance with NAAC extension and outreach practices.
+
+__View PDF Annual Report __
+
+__2025-2026__
+
+__2024-2025__
+
+__2023-2024__
+
+__Photo Galley__
+
+`
   },
   "environmental-social": {
     title: "Eco Club & Environmental Awareness Activities",
-    content: "__Eco Club & Environmental Awareness Activities__\n\nAt St. Ann’s College for Women, the Eco Club plays a significant role in promoting environmental consciousness, sustainability, and responsible citizenship among students. In alignment with NAAC quality initiatives for environmental sustainability and community engagement, the club organizes various eco-friendly activities and awareness programmes to encourage environmental protection and sustainable practices.\n\nThe Eco Club motivates students to actively participate in environmental conservation activities and develop awareness about ecological balance, resource conservation, waste management, and sustainable living.\n\n__Objectives__\n\n- To create environmental awareness among students and society\n- To promote sustainable and eco-friendly practices on campus\n- To encourage student participation in environmental protection activities\n- To develop social responsibility towards conservation of natural resources\n- To support green campus and clean environment initiatives\n\n__Major Activities__\n\n- Plantation and tree conservation drives\n- Plastic-free campus awareness campaigns\n- Clean & green campus initiatives\n- Water conservation and energy-saving awareness programmes\n- Waste management and recycling awareness activities\n- Environmental protection rallies and campaigns\n- Observation of World Environment Day and other environmental days\n- Awareness programmes on biodiversity and sustainability\n- Campus cleanliness and community environmental activities\n- Promotion of eco-friendly practices and green initiatives\n\n__Green Campus Initiatives__\n\nThe institution continuously undertakes green campus initiatives to create a healthy and sustainable environment for students and staff. The college promotes:\n\n- Clean and green campus practices\n- Energy conservation measures\n- Water management initiatives\n- Waste reduction and recycling practices\n- Environmental sustainability awareness\n\n__Outcome & Impact__\n\nEco Club activities help students develop environmental ethics, social responsibility, teamwork, and leadership qualities. Through active participation in environmental awareness and sustainability programmes, students become responsible citizens committed to protecting nature and promoting sustainable development in society.\n\n__View Report PDF __\n\n__2025-2026__\n\n__2024-2025__\n\n__2023-2024__\n\n"
+    content: `__Eco Club & Environmental Awareness Activities__
+
+At St. Ann’s College for Women, the Eco Club plays a significant role in promoting environmental consciousness, sustainability, and responsible citizenship among students. In alignment with NAAC quality initiatives for environmental sustainability and community engagement, the club organizes various eco-friendly activities and awareness programmes to encourage environmental protection and sustainable practices.
+
+The Eco Club motivates students to actively participate in environmental conservation activities and develop awareness about ecological balance, resource conservation, waste management, and sustainable living.
+
+__Objectives__
+
+- To create environmental awareness among students and society
+- To promote sustainable and eco-friendly practices on campus
+- To encourage student participation in environmental protection activities
+- To develop social responsibility towards conservation of natural resources
+- To support green campus and clean environment initiatives
+
+__Major Activities__
+
+- Plantation and tree conservation drives
+- Plastic-free campus awareness campaigns
+- Clean & green campus initiatives
+- Water conservation and energy-saving awareness programmes
+- Waste management and recycling awareness activities
+- Environmental protection rallies and campaigns
+- Observation of World Environment Day and other environmental days
+- Awareness programmes on biodiversity and sustainability
+- Campus cleanliness and community environmental activities
+- Promotion of eco-friendly practices and green initiatives
+
+__Green Campus Initiatives__
+
+The institution continuously undertakes green campus initiatives to create a healthy and sustainable environment for students and staff. The college promotes:
+
+- Clean and green campus practices
+- Energy conservation measures
+- Water management initiatives
+- Waste reduction and recycling practices
+- Environmental sustainability awareness
+
+__Outcome & Impact__
+
+Eco Club activities help students develop environmental ethics, social responsibility, teamwork, and leadership qualities. Through active participation in environmental awareness and sustainability programmes, students become responsible citizens committed to protecting nature and promoting sustainable development in society.
+
+__View Report PDF __
+
+__2025-2026__
+
+__2024-2025__
+
+__2023-2024__
+
+`
   },
   "red-ribbon-club": {
     title: "Red Ribbon Club",
-    content: "__Red Ribbon Club__\n\nAt St. Ann’s College for Women, the Red Ribbon Club (RRC) functions as an important student support and extension activity promoting health awareness, social responsibility, and community well-being. In alignment with NAAC quality initiatives related to health awareness, student welfare, and community engagement, the club organizes various educational, awareness, and outreach programmes for students and society.\n\nThe Red Ribbon Club aims to create awareness about HIV/AIDS prevention, health and hygiene, blood donation, mental wellness, and healthy lifestyles while encouraging students to become socially responsible citizens.\n\n__Objectives__\n\n- To create awareness on HIV/AIDS prevention and health education\n- To promote healthy lifestyles and personal hygiene among students\n- To encourage voluntary blood donation and social responsibility\n- To organize youth awareness and wellness programmes\n- To develop leadership, service orientation, and community participation among students.\n\n__Major Activities__\n\n- HIV/AIDS awareness programmes\n- Health and hygiene awareness campaigns\n- Blood donation awareness and motivational activities\n- Youth health education programmes\n- Counselling and wellness awareness sessions\n- Awareness rallies and community outreach campaigns\n- Observation of World AIDS Day and other health-related events\n- Awareness programmes on mental health and well-being\n- Community health and social awareness initiatives\n- Student participation in health education activities\n\n__Community Outreach & Awareness__\n\nThe Red Ribbon Club actively participates in community outreach and awareness programmes to educate students and society on preventive healthcare, social well-being, and responsible living. The club collaborates in conducting awareness campaigns, health education drives, and social service activities that support community health initiatives.\n\n__Outcome & Impact__\n\nThrough Red Ribbon Club activities, students develop awareness about health, hygiene, social responsibility, and community welfare. The club nurtures leadership qualities, empathy, volunteerism, and responsible citizenship while promoting a healthy and socially conscious campus environment in accordance with NAAC extension and student support practices.\n\n__View PDF Annual Report __\n\n__2025-2026__\n\n__2024-2025__\n\n__2023-2024__\n\n"
+    content: `__Red Ribbon Club__
+
+At St. Ann’s College for Women, the Red Ribbon Club (RRC) functions as an important student support and extension activity promoting health awareness, social responsibility, and community well-being. In alignment with NAAC quality initiatives related to health awareness, student welfare, and community engagement, the club organizes various educational, awareness, and outreach programmes for students and society.
+
+The Red Ribbon Club aims to create awareness about HIV/AIDS prevention, health and hygiene, blood donation, mental wellness, and healthy lifestyles while encouraging students to become socially responsible citizens.
+
+__Objectives__
+
+- To create awareness on HIV/AIDS prevention and health education
+- To promote healthy lifestyles and personal hygiene among students
+- To encourage voluntary blood donation and social responsibility
+- To organize youth awareness and wellness programmes
+- To develop leadership, service orientation, and community participation among students.
+
+__Major Activities__
+
+- HIV/AIDS awareness programmes
+- Health and hygiene awareness campaigns
+- Blood donation awareness and motivational activities
+- Youth health education programmes
+- Counselling and wellness awareness sessions
+- Awareness rallies and community outreach campaigns
+- Observation of World AIDS Day and other health-related events
+- Awareness programmes on mental health and well-being
+- Community health and social awareness initiatives
+- Student participation in health education activities
+
+__Community Outreach & Awareness__
+
+The Red Ribbon Club actively participates in community outreach and awareness programmes to educate students and society on preventive healthcare, social well-being, and responsible living. The club collaborates in conducting awareness campaigns, health education drives, and social service activities that support community health initiatives.
+
+__Outcome & Impact__
+
+Through Red Ribbon Club activities, students develop awareness about health, hygiene, social responsibility, and community welfare. The club nurtures leadership qualities, empathy, volunteerism, and responsible citizenship while promoting a healthy and socially conscious campus environment in accordance with NAAC extension and student support practices.
+
+__View PDF Annual Report __
+
+__2025-2026__
+
+__2024-2025__
+
+__2023-2024__
+
+`
   },
 };

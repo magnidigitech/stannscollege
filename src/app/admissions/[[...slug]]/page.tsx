@@ -107,7 +107,7 @@ export default function AdmissionsPage({ params }: PageProps) {
 
           {/* A. Left Sidebar Sticky Navigation */}
           <aside className="lg:col-span-3 xl:col-span-3">
-            <div className="sticky top-28 flex flex-col gap-8">
+            <div className="sticky top-28 flex flex-col gap-8 max-h-[calc(100vh-9rem)] overflow-y-auto pr-2">
 
               {/* Navigation Box */}
               <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
@@ -115,7 +115,7 @@ export default function AdmissionsPage({ params }: PageProps) {
                   <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Admissions</h3>
                 </div>
 
-                <nav className="flex flex-col gap-8">
+                <nav className="flex flex-col gap-8 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
                   {navigationStructure.map((group, idx) => (
                     <div key={idx} className="flex flex-col gap-3">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400/90 border-l-2 border-slate-200 pl-2.5 leading-none">

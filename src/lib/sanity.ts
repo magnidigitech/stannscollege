@@ -934,5 +934,39 @@ export async function getResearchSection(slug: string) {
   }
 }
 
+export async function getStudentSupportDocuments(sectionSlug: string) {
+  try {
+    const query = `*[_type == "studentSupport" && section == $sectionSlug && !(_id in path("drafts.**"))] | order(academicYear desc) {
+      _id,
+      title,
+      academicYear,
+      "fileUrl": pdfFile.asset->url
+    }`;
+    const data = await sanityClient.fetch(query, { sectionSlug });
+    return data || [];
+  } catch (err) {
+    console.error(`Sanity fetch error (getStudentSupportDocuments) for ${sectionSlug}:`, err);
+    return [];
+  }
+}
+
+export async function getUniversityRankHolders() {
+  try {
+    const query = `*[_type == "universityRankHolder" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      academicYear,
+      programme,
+      studentName,
+      achievement,
+      displayOrder
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (getUniversityRankHolders):", err);
+    return [];
+  }
+}
+
 
 

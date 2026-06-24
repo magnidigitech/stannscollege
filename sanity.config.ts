@@ -286,6 +286,55 @@ export default defineConfig({
         ]
       },
       {
+        name: "studentSupport",
+        title: "Student Support Documents",
+        type: "document",
+        fields: [
+          { name: "title", title: "Document Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          {
+            name: "section",
+            title: "Section",
+            type: "string",
+            options: {
+              list: [
+                { title: "Mentor–Mentee System", value: "mentor-mentee" },
+                { title: "Student Counselling", value: "student-counselling" },
+                { title: "Grievance Redressal Cell", value: "grievance-redressal" },
+                { title: "Internal Complaints (ICC)", value: "internal-complaints" },
+                { title: "Anti-Ragging Committee", value: "anti-ragging" },
+                { title: "Parent Association", value: "parent-association" },
+                { title: "Women Empowerment Cell", value: "women-empowerment" },
+                { title: "Sports Infrastructure", value: "sports-infrastructure" },
+                { title: "Academic Achievements", value: "academic-achievements" },
+              ]
+            }
+          },
+          { name: "pdfFile", title: "PDF File", type: "file" }
+        ],
+        orderings: [
+          {
+            title: 'Academic Year, Newest First',
+            name: 'academicYearDesc',
+            by: [
+              {field: 'academicYear', direction: 'desc'}
+            ]
+          }
+        ]
+      },
+      {
+        name: "universityRankHolder",
+        title: "University Rank Holders",
+        type: "document",
+        fields: [
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "programme", title: "Programme", type: "string" },
+          { name: "studentName", title: "Name of the Student", type: "string" },
+          { name: "achievement", title: "Achievement", type: "string" },
+          { name: "displayOrder", title: "Display Order", type: "number" }
+        ]
+      },
+      {
         name: "alumniGallery",
         title: "Alumni Gallery",
         type: "document",
