@@ -22,20 +22,31 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
   const activeSlug = resolvedParams?.slug?.[0] || "mentor-mentee";
 
   // Fetch images, documents and rank holders dynamically from Sanity
-  const [sanityData, sanityFiles, rankHolders] = await Promise.all([
+  // If activeSlug is "sports-games", fetch from both "sports-games" and the old individual slugs to merge them
+  const [sanityData, sanityDataOld, sanityFiles, sanityFilesOld, rankHolders] = await Promise.all([
     getStudentSupportImages(activeSlug),
+    activeSlug === "sports-games" ? getStudentSupportImages("sports-cultural-achievements") : Promise.resolve(null),
     getStudentSupportDocuments(activeSlug),
+    activeSlug === "sports-games" ? getStudentSupportDocuments("sports-infrastructure") : Promise.resolve([]),
     activeSlug === "academic-achievements" ? getUniversityRankHolders() : Promise.resolve([])
   ]);
 
-  const galleryImages = sanityData?.images || [];
+  const galleryImages = [
+    ...(sanityData?.images || []),
+    ...(sanityDataOld?.images || [])
+  ];
+
+  const mergedFiles = [
+    ...sanityFiles,
+    ...sanityFilesOld
+  ];
 
   return (
     <div className="bg-slate-50/50 min-h-screen animate-fadeIn select-none">
       <StudentSupportClientPortal 
         activeSlug={activeSlug} 
         galleryImages={galleryImages}
-        sanityFiles={sanityFiles}
+        sanityFiles={mergedFiles}
         rankHolders={rankHolders}
         initialSections={[]} 
       />

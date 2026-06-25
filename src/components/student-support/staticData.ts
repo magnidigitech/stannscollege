@@ -1235,11 +1235,9 @@ __Photo Galley__
 
 `
   },
-  "sports-infrastructure": {
-    title: "Department of Physical Education",
-    content: `__Department of Physical Education__
-
-__Sports & Games__
+  "sports-games": {
+    title: "Sports & Games",
+    content: `__Sports & Games__
 
 __Motto - __Educate • Enrich • Empower through Sports and Fitness
 
@@ -1336,10 +1334,6 @@ __Highlights__
 
 The institution remains committed to promoting sports culture, physical fitness, discipline, and holistic development through active participation and achievement in sports and games activities.
 
-__Photo Gallery__
-
-The gallery showcases various sports events, annual sports meets, competitions, yoga sessions, fitness activities, student achievements, and other physical education programmes conducted by the department.
-
 __Self-Defence Coaching & Achievements in Karate and Karra Samu__
 
 At St. Ann’s College for Women, special emphasis is given to women empowerment and self-defence training as part of holistic student development. The college organizes regular coaching and training programmes in Karate and Karra Samu to help students develop self-confidence, discipline, physical fitness, mental strength, and personal safety awareness.
@@ -1369,8 +1363,84 @@ __Highlights__
 
 The institution continuously promotes self-defence education to empower students with confidence, courage, discipline, and the ability to protect themselves while contributing to their overall personality development.
 
-__Photo Galley __
+---
 
+__Sports & Cultural Achievements__
+
+The institution encourages students to actively participate in sports, games, cultural activities, and talent-based competitions conducted at intercollegiate, university, district, state, and national levels. Students are provided opportunities to showcase their skills, leadership qualities, creativity, and team spirit through various events organized within and outside the campus.
+
+__Sports Achievements__
+
+Students of the college have participated in and achieved recognition in various sports and games such as:
+
+- Athletics
+- Volleyball
+- Kabaddi
+- Kho-Kho
+- Badminton
+- Chess
+- Throw Ball
+- Ball Badminton
+- Weight Lifting 
+- Yoga and Fitness Activities
+- Krrasamu
+- Karate
+
+The institution motivates students to participate in tournaments and sports meets by providing coaching support, practice facilities, and encouragement for physical fitness and discipline.
+
+__View Documents (PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+__Cultural Achievements__
+
+The college promotes cultural excellence by encouraging participation in:
+
+- Dance Competitions
+- Singing Competitions
+- Essay Writing
+- Elocution & Debate
+- Skits and Drama
+- Rangoli Competitions
+- Fine Arts & Craft Exhibitions
+- Traditional Day & Cultural Fest Activities
+- Literary and Creative Events
+
+Students have brought laurels to the institution by winning prizes and certificates in various cultural and literary competitions conducted by colleges, universities, and other organizations.
+
+__View Documents (PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+__Institutional Support__
+
+To nurture holistic development, the institution regularly organizes:
+
+- Annual Sports Meet
+- Cultural Fest and Talent Day
+- Interdepartmental Competitions
+- Awareness Programmes and Celebrations of National Days
+- Student Clubs and Co-curricular Activities
+
+These activities help students develop confidence, creativity, leadership qualities, communication skills, and overall personality development.
+
+__View Documents (PDF)__
+
+__2023-2024 __
+
+__2024-2025__
+
+__2025-2026__
+
+__Photo Gallery__
 `
   },
   "academic-achievements": {
@@ -1761,91 +1831,6 @@ __View PDF  2023-2024__
 __View PDF 2024-2025__
 
 __View PDF 2025-2026__
-
-__Photo Galley__
-
-`
-  },
-  "sports-cultural-achievements": {
-    title: "Sports & Cultural Achievements",
-    content: `__Sports & Cultural Achievements__
-
-The institution encourages students to actively participate in sports, games, cultural activities, and talent-based competitions conducted at intercollegiate, university, district, state, and national levels. Students are provided opportunities to showcase their skills, leadership qualities, creativity, and team spirit through various events organized within and outside the campus.
-
-__Sports Achievements__
-
-Students of the college have participated in and achieved recognition in various sports and games such as:
-
-- Athletics
-- Volleyball
-- Kabaddi
-- Kho-Kho
-- Badminton
-- Chess
-- Throw Ball
-- Ball Badminton
-- Weight Lifting 
-- Yoga and Fitness Activities
-- Krrasamu
-- Karate
-
-The institution motivates students to participate in tournaments and sports meets by providing coaching support, practice facilities, and encouragement for physical fitness and discipline.
-
-__View Documents (PDF)__
-
-__2023-2024 __
-
-__2024-2025__
-
-__2025-2026__
-
-__Photo Galley__
-
-__Cultural Achievements__
-
-The college promotes cultural excellence by encouraging participation in:
-
-- Dance Competitions
-- Singing Competitions
-- Essay Writing
-- Elocution & Debate
-- Skits and Drama
-- Rangoli Competitions
-- Fine Arts & Craft Exhibitions
-- Traditional Day & Cultural Fest Activities
-- Literary and Creative Events
-
-Students have brought laurels to the institution by winning prizes and certificates in various cultural and literary competitions conducted by colleges, universities, and other organizations.
-
-__View Documents (PDF)__
-
-__2023-2024 __
-
-__2024-2025__
-
-__2025-2026__
-
-__Photo Galley__
-
-__Institutional Support__
-
-To nurture holistic development, the institution regularly organizes:
-
-- Annual Sports Meet
-- Cultural Fest and Talent Day
-- Interdepartmental Competitions
-- Awareness Programmes and Celebrations of National Days
-- Student Clubs and Co-curricular Activities
-
-These activities help students develop confidence, creativity, leadership qualities, communication skills, and overall personality development.
-
-__View Documents (PDF)__
-
-__2023-2024 __
-
-__2024-2025__
-
-__2025-2026__
 
 __Photo Galley__
 

@@ -169,6 +169,7 @@ export default function Navigation() {
         { text: "Internal Complaints (ICC)", slug: "internal-complaints" },
         { text: "Anti-Ragging Committee", slug: "anti-ragging" },
         { text: "Women Empowerment", slug: "women-empowerment" },
+        { text: "Sports & Games", slug: "sports-games" },
       ]
     },
     {
@@ -176,7 +177,6 @@ export default function Navigation() {
       icon: Trophy,
       items: [
         { text: "Academic Achievements", slug: "academic-achievements" },
-        { text: "Sports & Cultural", slug: "sports-cultural-achievements" },
         { text: "Capacity Building & Skills", slug: "capacity-building" },
       ]
     },

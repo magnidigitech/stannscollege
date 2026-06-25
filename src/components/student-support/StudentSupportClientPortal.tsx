@@ -36,11 +36,10 @@ const tabs = [
   { text: "Anti-Ragging Committee", slug: "anti-ragging", icon: ShieldCheck, group: "Student Support Services" },
   { text: "Parent Association", slug: "parent-association", icon: Users, group: "Student Support Services" },
   { text: "Women Empowerment Cell", slug: "women-empowerment", icon: Sparkles, group: "Student Support Services" },
+  { text: "Sports & Games", slug: "sports-games", icon: Trophy, group: "Student Support Services" },
 
   // Category 2: Student Achievements
   { text: "Academic Achievements", slug: "academic-achievements", icon: GraduationCap, group: "Student Achievements" },
-  { text: "Sports & Cultural Achievements", slug: "sports-cultural-achievements", icon: Trophy, group: "Student Achievements" },
-  { text: "Sports Infrastructure", slug: "sports-infrastructure", icon: Trophy, group: "Student Achievements" },
 
   // Category 3: Capacity Building
   { text: "Capacity Building & Skills", slug: "capacity-building", icon: Compass, group: "Skill Enhancement" },

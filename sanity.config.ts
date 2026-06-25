@@ -327,7 +327,7 @@ export default defineConfig({
                 { title: "Anti-Ragging Committee", value: "anti-ragging" },
                 { title: "Parent Association", value: "parent-association" },
                 { title: "Women Empowerment Cell", value: "women-empowerment" },
-                { title: "Sports Infrastructure", value: "sports-infrastructure" },
+                { title: "Sports & Games", value: "sports-games" },
                 { title: "Academic Achievements", value: "academic-achievements" },
               ]
             }
