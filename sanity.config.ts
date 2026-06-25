@@ -286,6 +286,28 @@ export default defineConfig({
         ]
       },
       {
+        name: "placementsImages",
+        title: "Placements Images",
+        type: "document",
+        fields: [
+          { name: "category", title: "Category Slug", type: "string" },
+          {
+            name: "images",
+            title: "Gallery Images",
+            type: "array",
+            of: [
+              {
+                type: "image",
+                options: { hotspot: true },
+                fields: [
+                  { name: "caption", title: "Caption", type: "string" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         name: "studentSupport",
         title: "Student Support Documents",
         type: "document",

@@ -1,6 +1,6 @@
 import PlacementsClientPortal from "@/components/placements/PlacementsClientPortal";
 import { Metadata } from "next";
-import { getPlacementSections } from "@/lib/sanity";
+import { getPlacementSections, getPlacementsImages } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Placements & Industry Linkages | St. Ann's College for Women",
@@ -59,11 +59,19 @@ export function generateStaticParams() {
 export default async function PlacementsPage({ params }: { params: Promise<{ slug?: string[] }> }) {
   const resolvedParams = await params;
   const activeSlug = resolvedParams.slug?.[0] || "about-cell";
-  const placementSections = await getPlacementSections();
+  
+  const [placementSections, placementsImagesData] = await Promise.all([
+    getPlacementSections(),
+    getPlacementsImages(activeSlug)
+  ]);
+  
+  const galleryImages = placementsImagesData?.images || [];
+
   return (
     <PlacementsClientPortal
       activeSlug={activeSlug}
       initialSections={placementSections}
+      galleryImages={galleryImages}
     />
   );
 }

@@ -875,6 +875,23 @@ export async function getStudentSupportImages(category: string) {
   }
 }
 
+export async function getPlacementsImages(category: string) {
+  try {
+    const query = `*[_type == "placementsImages" && category == $category && !(_id in path("drafts.**"))][0] {
+      category,
+      images[] {
+        "url": asset->url,
+        caption
+      }
+    }`;
+    const data = await sanityClient.fetch(query, { category });
+    return data || null;
+  } catch (err) {
+    console.error(`Sanity fetch error (getPlacementsImages) for ${category}:`, err);
+    return null;
+  }
+}
+
 export async function getAlumniGallery() {
   try {
     const query = `*[_type == "alumniGallery" && !(_id in path("drafts.**"))] | order(order asc) {

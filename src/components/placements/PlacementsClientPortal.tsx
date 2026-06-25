@@ -8,6 +8,7 @@ import {
   Handshake,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   Eye,
   BookOpen,
   Menu,
@@ -140,11 +141,13 @@ const PlacementsLanding = ({ onNavigate }: { onNavigate: (slug: string, e: React
 interface PlacementsClientPortalProps {
   activeSlug: string;
   initialSections?: any[];
+  galleryImages?: Array<{ url: string; caption?: string }>;
 }
 
 export default function PlacementsClientPortal({
   activeSlug = "about-cell",
-  initialSections = []
+  initialSections = [],
+  galleryImages = []
 }: PlacementsClientPortalProps) {
 
   // Accordion Expand States
@@ -164,6 +167,16 @@ export default function PlacementsClientPortal({
 
   const [currentActiveSlug, setCurrentActiveSlug] = useState(activeSlug);
 
+  // Gallery states
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Reset search queries and gallery pagination when jumping slugs
+  useEffect(() => {
+    setVisibleCount(12);
+    setLightboxIndex(null);
+  }, [currentActiveSlug]);
+
   // Sync activeSlug prop from router/URL
   useEffect(() => {
     setCurrentActiveSlug(activeSlug);
@@ -179,6 +192,54 @@ export default function PlacementsClientPortal({
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  // Sort and group gallery images by academic year
+  const processedImages = React.useMemo(() => {
+    return [...galleryImages].sort((a, b) => {
+      const matchA = a.caption?.match(/^\[(\d{4}-\d{4})\]/);
+      const matchB = b.caption?.match(/^\[(\d{4}-\d{4})\]/);
+      const yearA = matchA ? matchA[1] : "";
+      const yearB = matchB ? matchB[1] : "";
+      if (yearA && yearB) {
+        return yearB.localeCompare(yearA); // latest year first
+      }
+      if (yearA) return -1;
+      if (yearB) return 1;
+      return 0;
+    });
+  }, [galleryImages]);
+
+  // Group visible images by year
+  const visibleImages = processedImages.slice(0, visibleCount);
+
+  const groupedImages = React.useMemo(() => {
+    const groups: Record<string, Array<{ img: { url: string; caption?: string }; globalIndex: number }>> = {};
+    visibleImages.forEach((img, idx) => {
+      const match = img.caption?.match(/^\[(\d{4}-\d{4})\]/);
+      const year = match ? match[1] : "Other Photos";
+      if (!groups[year]) {
+        groups[year] = [];
+      }
+      groups[year].push({ img, globalIndex: idx });
+    });
+    return groups;
+  }, [visibleImages]);
+
+  // Sort year headings: latest first, and "Other Photos" last
+  const sortedYearHeadings = React.useMemo(() => {
+    return Object.keys(groupedImages).sort((a, b) => {
+      if (a === "Other Photos") return 1;
+      if (b === "Other Photos") return -1;
+      return b.localeCompare(a);
+    });
+  }, [groupedImages]);
+
+  const hasMultipleGroupsOrYear = React.useMemo(() => {
+    const keys = Object.keys(groupedImages);
+    if (keys.length > 1) return true;
+    if (keys.length === 1 && keys[0] !== "Other Photos") return true;
+    return false;
+  }, [groupedImages]);
 
   // Click handler for sidebar / internal links
   const handleSlugChange = (slug: string, e: React.MouseEvent) => {
@@ -1046,6 +1107,91 @@ export default function PlacementsClientPortal({
                 </div>
               </div>
             </div>
+
+            {/* Beautiful Image Gallery Section */}
+            {processedImages && processedImages.length > 0 && (
+              <div className="mt-8 bg-white border border-slate-200/50 rounded-2xl p-6 md:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] animate-fadeIn select-none">
+                <h3 className="font-outfit text-xl md:text-2xl font-black text-[#004225] tracking-tight mb-6 flex items-center gap-3">
+                  <span className="h-6 w-1.5 rounded-full bg-gradient-to-b from-[#004225] to-emerald-600 shrink-0"></span>
+                  Event & Activity Gallery
+                </h3>
+
+                {hasMultipleGroupsOrYear ? (
+                  sortedYearHeadings.map((year) => {
+                    const items = groupedImages[year];
+                    if (!items || items.length === 0) return null;
+                    return (
+                      <div key={year} className="mb-8 last:mb-0">
+                        <h4 className="font-outfit text-sm md:text-base font-extrabold text-emerald-800 mb-4 flex items-center gap-2 uppercase tracking-wider">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                          Academic Year: {year}
+                        </h4>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+                          {items.map(({ img, globalIndex }) => {
+                            const displayCaption = img.caption?.replace(/^\[\d{4}-\d{4}\]\s*/, "") || "";
+                            return (
+                              <div 
+                                key={globalIndex}
+                                onClick={() => setLightboxIndex(globalIndex)}
+                                className="group relative h-40 sm:h-48 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200/40 shadow-sm hover:shadow-lg hover:border-emerald-350 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                              >
+                                <img 
+                                  src={img.url ? `${img.url}?w=600&q=70&fit=max&auto=format` : ""} 
+                                  alt={displayCaption || `Photo ${globalIndex + 1}`}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  loading="lazy"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                                  <p className="text-white text-[11px] font-semibold line-clamp-2 leading-snug">
+                                    {displayCaption || `View full image`}
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+                    {visibleImages.map((img, idx) => {
+                      const displayCaption = img.caption?.replace(/^\[\d{4}-\d{4}\]\s*/, "") || "";
+                      return (
+                        <div 
+                          key={idx}
+                          onClick={() => setLightboxIndex(idx)}
+                          className="group relative h-40 sm:h-48 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200/40 shadow-sm hover:shadow-lg hover:border-emerald-350 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                        >
+                          <img 
+                            src={img.url ? `${img.url}?w=600&q=70&fit=max&auto=format` : ""} 
+                            alt={displayCaption || `Photo ${idx + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                            <p className="text-white text-[11px] font-semibold line-clamp-2 leading-snug">
+                              {displayCaption || `View full image`}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {visibleCount < processedImages.length && (
+                  <div className="flex justify-center mt-8">
+                    <button
+                      onClick={() => setVisibleCount((prev) => prev + 12)}
+                      className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-[#004225] px-5 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-900/10 hover:from-emerald-500 hover:to-emerald-600 active:scale-95 transition-all duration-300 cursor-pointer"
+                    >
+                      Load More Photos ({visibleCount} of {processedImages.length})
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
         </div>
@@ -1061,6 +1207,76 @@ export default function PlacementsClientPortal({
         fileUrl={selectedFileUrl || ""}
         title={selectedFileTitle}
       />
+
+      {/* Premium Gallery Lightbox Modal */}
+      {lightboxIndex !== null && processedImages[lightboxIndex] && (() => {
+        const currentImg = processedImages[lightboxIndex];
+        const displayCaption = currentImg.caption?.replace(/^\[\d{4}-\d{4}\]\s*/, "") || "Placements Activity Image";
+        return (
+          <div 
+            className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-4 md:p-8 select-none animate-fadeIn"
+            onClick={() => setLightboxIndex(null)}
+          >
+            {/* Close button */}
+            <button 
+              onClick={() => setLightboxIndex(null)}
+              className="absolute top-6 right-6 h-12 w-12 rounded-full bg-white/10 border border-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-95 z-[101] cursor-pointer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Main Viewer Row */}
+            <div className="w-full max-w-5xl h-[70vh] flex items-center justify-between gap-4 relative">
+              {/* Left Nav */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex((prev) => (prev === 0 ? processedImages.length - 1 : prev! - 1));
+                }}
+                className="h-12 w-12 rounded-full bg-white/10 border border-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-95 shrink-0 cursor-pointer"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+
+              {/* Image Frame */}
+              <div 
+                className="flex-1 h-full relative flex items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img 
+                  src={currentImg.url ? `${currentImg.url}?w=1600&q=80&fit=max&auto=format` : ""}
+                  alt={displayCaption}
+                  className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl select-text"
+                />
+              </div>
+
+              {/* Right Nav */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex((prev) => (prev === processedImages.length - 1 ? 0 : prev! + 1));
+                }}
+                className="h-12 w-12 rounded-full bg-white/10 border border-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-95 shrink-0 cursor-pointer"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Metadata Footer */}
+            <div 
+              className="mt-6 text-center max-w-2xl px-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-white font-outfit text-base md:text-lg font-bold leading-relaxed select-text">
+                {displayCaption}
+              </p>
+              <span className="inline-block mt-2 text-xs font-semibold text-slate-400">
+                Image {lightboxIndex + 1} of {processedImages.length}
+              </span>
+            </div>
+          </div>
+        );
+      })()}
     </main>
   );
 }
