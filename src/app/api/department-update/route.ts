@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
     addKeysToObj(departmentData);
 
     // Write to Sanity CMS
-    await client.createOrReplace(departmentData);
+    await client.createOrReplace(departmentData as any);
 
     return NextResponse.json({
       success: true,

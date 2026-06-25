@@ -42,9 +42,11 @@ scratch/
 # Raw local data folders
 6.Student Support/
 7.Placements & Industry Linkages/
+7.Placements & Industry Linakegs Photos/
 Committees Documents/
 Faculty Professional Development/
 I. Academic Programmes/
+*.webp
 
 # Root level reference assets
 /*.pdf

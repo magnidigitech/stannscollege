@@ -330,6 +330,12 @@ export default defineConfig({
                 { title: "Sports & Games", value: "sports-games" },
                 { title: "Academic Achievements", value: "academic-achievements" },
                 { title: "Literacy & Cultural Achievements", value: "literacy-cultural-achievements" },
+                { title: "Capacity Building & Skills", value: "capacity-building" },
+                { title: "NSS Activities", value: "nss-activities" },
+                { title: "NCC Activities", value: "ncc-activities" },
+                { title: "Mother Gnanamma Outreach", value: "mother-gnanamma" },
+                { title: "Eco Club & Environment", value: "environmental-social" },
+                { title: "Red Ribbon Club", value: "red-ribbon-club" },
               ]
             }
           },

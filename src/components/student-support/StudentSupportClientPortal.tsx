@@ -114,22 +114,22 @@ export default function StudentSupportClientPortal({
           url: f.fileUrl
         });
       });
-    }
-
-    // 2. Add static fallbacks
-    if (slug === "anti-ragging") {
-      files.push({ name: "Download Comprehensive Anti-Ragging Policy (PDF)", url: "/documents/policies/student-support/anti-ragging-policy.pdf" });
-    } else if (slug === "grievance-redressal") {
-      files.push({ name: "Download Grievance Redressal Mechanism Policy (PDF)", url: "/documents/policies/student-support/grievance-redressal-policy.pdf" });
-    } else if (slug === "internal-complaints") {
-      files.push({ name: "Download Internal Complaints Committee (ICC) POSH Policy (PDF)", url: "/documents/policies/student-support/icc-policy.pdf" });
-    } else if (slug === "women-empowerment") {
-      files.push({ name: "Download Women Empowerment Cell Policy 2026 (PDF)", url: "/documents/policies/student-support/women-empowerment-cell-policy-2026.pdf" });
-    } else if (slug === "academic-achievements") {
-      files.push(
-        { name: "Download Outgoing Batch Academic Toppers (PDF)", url: "/documents/policies/student-support/outgoing-batch-academic-toppers-2025.pdf" },
-        { name: "Download Competitive Exams Achievement Statistics (PDF)", url: "/documents/policies/student-support/competitive-examination-achievements.pdf" }
-      );
+    } else {
+      // 2. Add static fallbacks only if there are no Sanity uploads
+      if (slug === "anti-ragging") {
+        files.push({ name: "Download Comprehensive Anti-Ragging Policy (PDF)", url: "/documents/policies/student-support/anti-ragging-policy.pdf" });
+      } else if (slug === "grievance-redressal") {
+        files.push({ name: "Download Grievance Redressal Mechanism Policy (PDF)", url: "/documents/policies/student-support/grievance-redressal-policy.pdf" });
+      } else if (slug === "internal-complaints") {
+        files.push({ name: "Download Internal Complaints Committee (ICC) POSH Policy (PDF)", url: "/documents/policies/student-support/icc-policy.pdf" });
+      } else if (slug === "women-empowerment") {
+        files.push({ name: "Download Women Empowerment Cell Policy 2026 (PDF)", url: "/documents/policies/student-support/women-empowerment-cell-policy-2026.pdf" });
+      } else if (slug === "academic-achievements") {
+        files.push(
+          { name: "Download Outgoing Batch Academic Toppers (PDF)", url: "/documents/policies/student-support/outgoing-batch-academic-toppers-2025.pdf" },
+          { name: "Download Competitive Exams Achievement Statistics (PDF)", url: "/documents/policies/student-support/competitive-examination-achievements.pdf" }
+        );
+      }
     }
 
     return {

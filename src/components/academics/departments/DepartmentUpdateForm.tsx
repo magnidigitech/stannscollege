@@ -113,7 +113,7 @@ export function DepartmentUpdateForm() {
   // Refs and intervals for secure autosave without state staleness
   const stateRef = React.useRef({
     password, selectedDeptId, established, tagline, description, vision, mission, programmes,
-    valueAddedCourses, mous, bestPractices, activities, facultyMembers, passPercentage, mouActivities,
+    valueAddedCourses, mous, bestPractices, activities, infrastructure, careerOpps, facultyMembers, passPercentage, mouActivities,
     studentAchievements, academicAchievements, placements, activitiesList, activitiesSummary, internships,
     bestPracticesImpact, gallery, otherStudentAchievements, focusOnWomenEmpowerment, overallApproach,
     saving: false, autoSaving
@@ -122,7 +122,7 @@ export function DepartmentUpdateForm() {
   React.useEffect(() => {
     stateRef.current = {
       password, selectedDeptId, established, tagline, description, vision, mission, programmes,
-      valueAddedCourses, mous, bestPractices, activities, facultyMembers, passPercentage, mouActivities,
+      valueAddedCourses, mous, bestPractices, activities, infrastructure, careerOpps, facultyMembers, passPercentage, mouActivities,
       studentAchievements, academicAchievements, placements, activitiesList, activitiesSummary, internships,
       bestPracticesImpact, gallery, otherStudentAchievements, focusOnWomenEmpowerment, overallApproach,
       saving: false, autoSaving
