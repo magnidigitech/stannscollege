@@ -118,6 +118,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'women-empowerment',
     'sports-games',
     'academic-achievements',
+    'literacy-cultural-achievements',
     'ncc-activities',
     'mother-gnanamma',
     'environmental-social',

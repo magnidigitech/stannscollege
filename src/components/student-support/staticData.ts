@@ -1836,6 +1836,35 @@ __Photo Galley__
 
 `
   },
+  "literacy-cultural-achievements": {
+    title: "Literacy and Cultural Achievements",
+    content: `__Literacy and Cultural Achievements__
+
+__Cultural Achievements__
+
+The college promotes cultural excellence by encouraging participation in:
+
+- Dance Competitions
+- Singing Competitions
+- Essay Writing
+- Elocution & Debate
+- Skits and Drama
+- Rangoli Competitions
+- Fine Arts & Craft Exhibitions
+- Traditional Day & Cultural Fest Activities
+- Literary and Creative Events
+
+Students have brought laurels to the institution by winning prizes and certificates in various cultural and literary competitions conducted by colleges, universities, and other organizations.
+
+__View Documents (PDF)__
+
+- __2023-2024__
+- __2024-2025__
+- __2025-2026__
+
+__Photo Gallery__
+`
+  },
   "capacity-building": {
     title: "Capacity Building & Skill Enhancement Programmes",
     content: `__Capacity Building & Skill Enhancement Programmes__

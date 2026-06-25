@@ -40,6 +40,7 @@ const tabs = [
 
   // Category 2: Student Achievements
   { text: "Academic Achievements", slug: "academic-achievements", icon: GraduationCap, group: "Student Achievements" },
+  { text: "Literacy and Cultural Achievements", slug: "literacy-cultural-achievements", icon: Trophy, group: "Student Achievements" },
 
   // Category 3: Capacity Building
   { text: "Capacity Building & Skills", slug: "capacity-building", icon: Compass, group: "Skill Enhancement" },

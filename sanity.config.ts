@@ -329,6 +329,7 @@ export default defineConfig({
                 { title: "Women Empowerment Cell", value: "women-empowerment" },
                 { title: "Sports & Games", value: "sports-games" },
                 { title: "Academic Achievements", value: "academic-achievements" },
+                { title: "Literacy & Cultural Achievements", value: "literacy-cultural-achievements" },
               ]
             }
           },

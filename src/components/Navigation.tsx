@@ -177,6 +177,7 @@ export default function Navigation() {
       icon: Trophy,
       items: [
         { text: "Academic Achievements", slug: "academic-achievements" },
+        { text: "Literacy and Cultural", slug: "literacy-cultural-achievements" },
         { text: "Capacity Building & Skills", slug: "capacity-building" },
       ]
     },
