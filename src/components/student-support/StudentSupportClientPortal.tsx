@@ -216,7 +216,9 @@ export default function StudentSupportClientPortal({
         cleanChunk === "photogalley" || 
         cleanChunk === "photogalleryviewpdf" ||
         cleanChunk === "viewphotogallery" ||
-        cleanChunk === "viewgallery";
+        cleanChunk === "viewgallery" ||
+        cleanChunk.includes("viewdocument") ||
+        cleanChunk.includes("viewpdf");
         
       const isYearRange = /^\d+$/.test(cleanChunk) && cleanChunk.length >= 8 && cleanChunk.length <= 12;
 
@@ -707,10 +709,22 @@ export default function StudentSupportClientPortal({
                 </div>
                 <div>
                   <h4 className="font-outfit font-black text-sm md:text-base text-slate-800">
-                    {activeSlug === "academic-achievements" ? "Academic Achievements Reports & PDFs" : "Institutional Policy Framework"}
+                    {activeSlug === "academic-achievements" 
+                      ? "Academic Achievements Reports & PDFs" 
+                      : activeSlug === "sports-games"
+                      ? "Sports & Games Reports & PDFs"
+                      : activeSlug === "literacy-cultural-achievements"
+                      ? "Literacy & Cultural Achievements Reports & PDFs"
+                      : "Institutional Policy Framework"}
                   </h4>
                   <p className="text-slate-500 text-[11px] font-semibold">
-                    {activeSlug === "academic-achievements" ? "Academic year-wise toppers and statistical records." : "Mandatory official documentations associated with this segment."}
+                    {activeSlug === "academic-achievements" 
+                      ? "Academic year-wise toppers and statistical records." 
+                      : activeSlug === "sports-games"
+                      ? "Official reports, physical education and sports records."
+                      : activeSlug === "literacy-cultural-achievements"
+                      ? "Official reports, cultural event details and achievements."
+                      : "Mandatory official documentations associated with this segment."}
                   </p>
                 </div>
               </div>
