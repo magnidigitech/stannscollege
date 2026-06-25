@@ -51,18 +51,18 @@ export function StudentHandbook() {
     <div className="flex flex-col gap-16 animate-fadeIn pb-12 font-sans">
       
       {/* Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] rounded-[2.5rem] p-10 md:p-14 text-white relative overflow-hidden shadow-lg">
+      <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-lg">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
           <BookOpen className="h-[450px] w-[450px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-4">
-          <span className="inline-flex items-center gap-2 font-black text-sm uppercase tracking-widest bg-white/15 backdrop-blur px-5 py-2 rounded-full w-fit text-blue-50">
+        <div className="relative z-10 flex flex-col gap-2">
+          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur px-4 py-1.5 rounded-full w-fit text-blue-50">
             Regulatory Guidelines
           </span>
-          <h2 className="font-outfit text-4xl md:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-tight">
             Student Handbook
           </h2>
-          <p className="text-blue-100/90 font-semibold text-lg md:text-xl mt-2 max-w-3xl leading-relaxed">
+          <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
             The definitive guide containing the institutional code of conduct, general rules, curriculum schedules, evaluation methods and student-centric administrative policies.
           </p>
         </div>

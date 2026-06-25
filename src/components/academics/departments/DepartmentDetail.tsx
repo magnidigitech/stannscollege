@@ -54,19 +54,19 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
     <div className="flex flex-col gap-16 animate-fadeIn font-sans pb-12">
       
       {/* 1. Dynamic Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#0e50a3] rounded-[2.5rem] p-10 md:p-14 text-white relative overflow-hidden shadow-lg">
+      <div className="bg-gradient-to-br from-[#002147] to-[#0e50a3] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-lg">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
           <Building className="h-[500px] w-[500px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-4 md:max-w-3xl">
-          <span className="inline-flex items-center gap-2 font-black text-sm uppercase tracking-widest bg-white/15 backdrop-blur px-5 py-2 rounded-full w-fit shadow-inner text-blue-50">
-            <Sparkles className="h-4 w-4 text-amber-300" /> Established {data.established || "1997-98"}
+        <div className="relative z-10 flex flex-col gap-2 md:max-w-3xl">
+          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur px-4 py-1.5 rounded-full w-fit shadow-inner text-blue-50">
+            <Sparkles className="h-3.5 w-3.5 text-amber-300" /> Established {data.established || "1997-98"}
           </span>
-          <h2 className="font-outfit text-4xl md:text-6xl font-black tracking-tight leading-tight drop-shadow-sm">
+          <h2 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-tight drop-shadow-sm">
             {data.name}
           </h2>
           {data.tagline && (
-            <p className="text-blue-100/95 font-semibold text-lg md:text-xl mt-3 italic border-l-4 border-blue-200/40 pl-5 py-1">
+            <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-2 italic border-l-4 border-blue-200/40 pl-5 py-1">
               “{data.tagline}”
             </p>
           )}

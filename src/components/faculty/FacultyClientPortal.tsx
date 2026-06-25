@@ -375,7 +375,7 @@ export default function FacultyClientPortal({
     return processedNodes.map((node, i) => {
       if (node.type === 'letterhead') {
         return (
-          <div key={i} className="bg-gradient-to-br from-[#002147] to-[#053d79] p-8 md:p-12 rounded-[2.5rem] text-white relative overflow-hidden mb-12 text-center shadow-xl border border-indigo-950 animate-fadeIn">
+          <div key={i} className="bg-gradient-to-br from-[#002147] to-[#053d79] p-6 md:p-10 rounded-3xl text-white relative overflow-hidden mb-8 text-center shadow-xl border border-indigo-950 animate-fadeIn">
             <div className="absolute right-0 top-0 opacity-[0.04] transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
               <Award className="h-[400px] w-[400px] text-white" />
             </div>
@@ -586,18 +586,18 @@ export default function FacultyClientPortal({
     <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-16 font-sans w-full">
       
       {/* Page Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#053d79] rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden shadow-xl mb-12">
+      <div className="bg-gradient-to-br from-[#002147] to-[#053d79] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-xl mb-8">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
           <Users className="h-[500px] w-[500px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-4">
-          <span className="inline-flex items-center gap-2 font-black text-xs md:text-sm uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-5 py-2 rounded-full w-fit text-blue-100">
-            <Sparkles className="h-4 w-4 animate-pulse text-yellow-300" /> Core Intellectual Pillars
+        <div className="relative z-10 flex flex-col gap-2">
+          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full w-fit text-blue-100">
+            <Sparkles className="h-3.5 w-3.5 animate-pulse text-yellow-300" /> Core Intellectual Pillars
           </span>
-          <h1 className="font-outfit text-4xl md:text-6xl font-black tracking-tight leading-none">
+          <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
             Faculty & Staff
           </h1>
-          <p className="text-blue-100/80 font-semibold text-base md:text-xl mt-2 max-w-3xl leading-relaxed">
+          <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
             An accomplished assembly of educators, researchers, and administrative specialists fostering empowerment and transforming ambitions into reality.
           </p>
         </div>

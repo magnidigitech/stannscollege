@@ -152,7 +152,7 @@ export default function InfrastructureClientPortal({
       // 1. Clean chunk values & Ultra-robust normalized table matching helpers
       const clean = (s: string) => (s || "").replace(/[*_]+/g, '').trim();
       const norm = (s: string) => (s || "").replace(/[*_\s\.]+/g, '').toLowerCase();
-      
+
       const n0 = norm(chunk);
       const n1 = norm(rawChunks[i + 1] || "");
       const n2 = norm(rawChunks[i + 2] || "");
@@ -179,7 +179,7 @@ export default function InfrastructureClientPortal({
         (n0 === "academicyear" && n1 === "programme" && n2.includes("nameofthestudent"));
 
       // Intelligent 3-Column Table Engine (Matches "S.No", "Particulars", "Total" or "S.No", "Name", "Link")
-      const is3ColTable = 
+      const is3ColTable =
         (isSNo && n1 === "particulars" && n2 === "total") ||
         (isSNo && n1 === "name" && n2 === "link");
 
@@ -287,13 +287,12 @@ export default function InfrastructureClientPortal({
                       const lowerH = h.toLowerCase().replace(/[^a-z]/g, '');
                       const isSno = lowerH === 'sno' || lowerH === 'slno' || lowerH === 's';
                       const isTotal = lowerH === 'total' || lowerH === 'link';
-                      
+
                       return (
-                        <th 
-                          key={hIdx} 
-                          className={`px-8 py-5.5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 last:border-0 ${
-                            isSno ? 'text-center' : isTotal ? 'text-right' : 'text-left'
-                          }`}
+                        <th
+                          key={hIdx}
+                          className={`px-8 py-5.5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 last:border-0 ${isSno ? 'text-center' : isTotal ? 'text-right' : 'text-left'
+                            }`}
                         >
                           {renderRichString(h)}
                         </th>
@@ -316,11 +315,10 @@ export default function InfrastructureClientPortal({
                         const isEmpty = cell === "—" || cell.trim() === "";
 
                         return (
-                          <td 
-                            key={cIdx} 
-                            className={`px-8 py-5 text-slate-600 text-xs md:text-[14px] font-medium leading-relaxed transition-colors duration-200 ${
-                              isSno ? 'text-center w-[80px] md:w-[100px]' : isTotal || isLink ? 'text-right' : 'text-left'
-                            }`}
+                          <td
+                            key={cIdx}
+                            className={`px-8 py-5 text-slate-600 text-xs md:text-[14px] font-medium leading-relaxed transition-colors duration-200 ${isSno ? 'text-center w-[80px] md:w-[100px]' : isTotal || isLink ? 'text-right' : 'text-left'
+                              }`}
                           >
                             {isSno ? (
                               <div className="flex justify-center">
@@ -357,7 +355,19 @@ export default function InfrastructureClientPortal({
         const cleanTitle = stripEmojis(p.replace(/__/g, '').trim())
           .replace(/^(?:(?:\d+(?:\.\d+)*|[IVXLCDM]+|[a-zA-Z])[\.\)]\s+)+/i, '')
           .trim();
-        
+
+        const cleanTitleLower = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const activeTabLower = activeTab.text.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const sectionTitleLower = (sectionData.title || "").toLowerCase().replace(/[^a-z0-9]/g, '');
+
+        if (cleanTitleLower === activeTabLower ||
+          cleanTitleLower === sectionTitleLower ||
+          cleanTitleLower.includes(activeTabLower) ||
+          activeTabLower.includes(cleanTitleLower) ||
+          (sectionTitleLower && (cleanTitleLower.includes(sectionTitleLower) || sectionTitleLower.includes(cleanTitleLower)))) {
+          return null;
+        }
+
         const isBigTitle = /^[IVX\d]+\./.test(p.replace(/__/g, '').trim()) || cleanTitle.toUpperCase() === cleanTitle;
 
         if (isBigTitle) {
@@ -492,18 +502,18 @@ export default function InfrastructureClientPortal({
     <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-16 font-sans min-h-screen bg-[#fafcfb]/50 w-full">
 
       {/* Modern Elite Emerald Header Banner */}
-      <div className="bg-gradient-to-br from-[#004225] to-[#0b5f36] rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden shadow-2xl mb-12 select-none animate-fadeIn">
+      <div className="bg-gradient-to-br from-[#004225] to-[#0b5f36] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-2xl mb-8 select-none animate-fadeIn">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
           <Building2 className="h-[500px] w-[500px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-4 animate-fadeIn">
-          <span className="inline-flex items-center gap-2 font-black text-xs md:text-sm uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-5 py-2 rounded-full w-fit text-emerald-50">
-            <Layers className="h-4 w-4 text-emerald-200" /> Campus & Academic Assets
+        <div className="relative z-10 flex flex-col gap-2 animate-fadeIn">
+          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full w-fit text-emerald-50">
+            <Layers className="h-3.5 w-3.5 text-emerald-200" /> Campus & Academic Assets
           </span>
-          <h1 className="font-outfit text-4xl md:text-6xl font-black tracking-tight leading-none">
+          <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
             World-Class Infrastructure
           </h1>
-          <p className="text-emerald-50/80 font-semibold text-base md:text-xl mt-2 max-w-3xl leading-relaxed">
+          <p className="text-emerald-50/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
             Step inside our ultra-modern 25+ acre green campus hosting digitised classroom pods, scientific labs, holistic residencies, and lush sustainable initiatives.
           </p>
 
@@ -707,31 +717,20 @@ export default function InfrastructureClientPortal({
             </div>
 
             {/* Primary Text canvas view */}
-            <div className="md:col-span-3 flex flex-col gap-10 animate-fadeInUp">
-
-              {/* Header Segment */}
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b-2 border-slate-100 pb-6">
-                <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 shrink-0 bg-[#004225]/5 border border-[#004225]/10 rounded-2xl text-[#004225] flex items-center justify-center shadow-xs">
-                    <activeTab.icon className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h2 className="font-outfit text-2xl md:text-3xl font-black text-[#004225] tracking-tight leading-none">
-                      {sectionData.title || activeTab.text}
-                    </h2>
-                    <p className="text-slate-400 font-bold text-[10px] md:text-xs mt-1.5 uppercase tracking-widest flex items-center gap-1">
-                      <span>{activeTab.group}</span>
-                      <ChevronRight className="h-3 w-3 text-slate-300" />
-                      <span className="text-slate-600 font-black">Campus Facilities</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="md:col-span-3 flex flex-col gap-8 animate-fadeInUp">
 
               {/* Text & Smart Tables block */}
-              <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 shadow-xs select-text selection:bg-emerald-50 selection:text-[#004225]">
+              <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-10 shadow-xs select-text selection:bg-emerald-50 selection:text-[#004225]">
+                <div className="flex items-center gap-4 border-b border-slate-100 pb-6 mb-8">
+                  <div className="h-12 w-12 shrink-0 bg-[#004225]/5 border border-[#004225]/10 rounded-xl text-[#004225] flex items-center justify-center shadow-xs">
+                    <activeTab.icon className="h-5 w-5" />
+                  </div>
+                  <h2 className="font-outfit text-2xl md:text-3xl font-black text-[#004225] tracking-tight leading-none">
+                    {sectionData.title || activeTab.text}
+                  </h2>
+                </div>
                 {sectionData.content ? renderContentBody(sectionData.content) : (
-                  <p className="text-slate-400 italic text-sm">Consulting archive data records...</p>
+                  <p className="text-slate-400 italic text-sm">Consulting data records...</p>
                 )}
               </div>
 

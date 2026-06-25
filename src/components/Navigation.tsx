@@ -229,10 +229,20 @@ export default function Navigation() {
       title: "I. Placements",
       icon: Briefcase,
       items: [
-        { text: "Training & Placement Cell", slug: "about-cell" },
-        { text: "Placement Statistics", slug: "placement-statistics" },
+        { text: "About Training & Placement Cell", slug: "about-cell" },
         { text: "Annual Reports", slug: "annual-reports" },
-        { text: "Campus Recruitment Drives", slug: "recruitment-drives" }
+        { text: "Placement Statistics", slug: "placement-statistics" },
+        { text: "Campus Recruitment Drives", slug: "recruitment-drives" },
+        { text: "Skill Development Initiatives", slug: "skill-development" },
+        { text: "Soft Skills & Personality Development", slug: "soft-skills" },
+        { text: "Internships & Industry Exposure", slug: "internships-exposure" },
+        { text: "Competitive Exam Coaching", slug: "competitive-coaching" },
+        { text: "Career Guidance & Counselling", slug: "career-guidance" },
+        { text: "Entrepreneurship Development", slug: "entrepreneurship" },
+        { text: "Placement Partnerships", slug: "placement-partnerships" },
+        { text: "Capacity Building & Skill Enhancement", slug: "capacity-building" },
+        { text: "Alumni Career Support", slug: "alumni-support" },
+        { text: "Training Calendar / Activity Gallery", slug: "training-calendar" }
       ]
     },
     {
@@ -240,9 +250,16 @@ export default function Navigation() {
       icon: Handshake,
       items: [
         { text: "Industry Partnerships", slug: "industry-partnerships" },
+        { text: "Internships & Apprenticeships", slug: "internships-apprenticeships" },
         { text: "MoUs / Agreements", slug: "mous-agreements" },
         { text: "MoU Activities", slug: "mou-activities" },
-        { text: "Placement Partnerships", slug: "industry-placement-partnerships" }
+        { text: "CSR Initiatives", slug: "csr-initiatives" },
+        { text: "Placement Partnerships", slug: "industry-placement-partnerships" },
+        { text: "Professional Certification Programmes", slug: "certifications" },
+        { text: "Industry Expert Lectures", slug: "expert-lectures" },
+        { text: "Industrial Visits", slug: "industrial-visits" },
+        { text: "Skill-Based Training Programmes", slug: "skill-training" },
+        { text: "Employability Enhancement Activities", slug: "employability-activities" }
       ]
     },
     {
@@ -251,7 +268,12 @@ export default function Navigation() {
       items: [
         { text: "International Collaborations", slug: "international-collaborations" },
         { text: "Internationalization Policy", slug: "internationalization-policy" },
-        { text: "Accreditations & Memberships", slug: "accreditations-memberships" }
+        { text: "International Accreditations & Memberships", slug: "accreditations-memberships" },
+        { text: "Global Alumni & Outreach Engagement", slug: "global-alumni" },
+        { text: "Global Research Collaborations", slug: "global-research" },
+        { text: "Student Exchange / Faculty Exchange", slug: "student-faculty-exchange" },
+        { text: "International Webinars & Conferences", slug: "webinars-conferences" },
+        { text: "Cross-Cultural Learning Activities", slug: "cross-cultural-learning" }
       ]
     }
   ];
@@ -741,14 +763,14 @@ export default function Navigation() {
             onMouseEnter={() => handleMouseEnter("placements")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/placements/training-placements" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/placements" className="hover:text-[#002147] select-none font-bold">
               Placements & Industry Linkages
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
 
             {activeMenu === "placements" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn max-h-[75vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
                 onMouseEnter={() => handleMouseEnter("placements")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -795,7 +817,7 @@ export default function Navigation() {
             onMouseEnter={() => handleMouseEnter("research")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/research-innovation/research-development-cell" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/research-innovation" className="hover:text-[#002147] select-none font-bold">
               Research & Innovation
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />

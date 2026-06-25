@@ -118,30 +118,20 @@ export default function MandatoryDisclosuresPage() {
               <span className="text-[#002147]">Mandatory Disclosures & Compliance</span>
             </div>
           </div>
-
-          <div className="hidden sm:flex items-center gap-3 text-xs font-black uppercase tracking-widest text-[#002147]">
-            <div className="flex items-center gap-1.5 bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-100 shadow-xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
-              Statutory Compliance Active
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
-        
+
         {/* Banner */}
-        <div className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white p-8 md:p-12 rounded-[2.5rem] shadow-xl relative overflow-hidden mb-12">
+        <div className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white p-6 md:p-10 rounded-3xl shadow-xl relative overflow-hidden mb-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-          <div className="relative z-10 max-w-3xl flex flex-col gap-4">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase w-fit">
-              <Scale className="h-3.5 w-3.5 text-indigo-300" /> Academic Governance
-            </span>
-            <h1 className="font-outfit text-3xl md:text-5xl font-black tracking-tight leading-none">
+          <div className="relative z-10 max-w-3xl flex flex-col gap-2">
+            <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
               Mandatory Disclosures & Statutory Compliance
             </h1>
-            <p className="text-blue-100/90 text-sm md:text-base leading-relaxed font-medium">
+            <p className="text-blue-100/80 text-sm md:text-base leading-relaxed font-semibold mt-1">
               In absolute compliance with the statutory regulations of AICTE, UGC, and Acharya Nagarjuna University, St. Ann&apos;s College for Women makes all essential governance charters, committee rosters, and approval certificates accessible below.
             </p>
           </div>
@@ -149,25 +139,20 @@ export default function MandatoryDisclosuresPage() {
 
         {/* Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
+
           {/* Category Tabs Sidebar */}
           <aside className="lg:col-span-3">
             <div className="sticky top-28 bg-white border border-slate-200/70 p-6 rounded-[2rem] shadow-sm flex flex-col gap-6">
-              <div className="border-b border-slate-100 pb-3 mb-1 select-none">
-                <span className="text-[10px] uppercase font-black tracking-widest text-[#002147]/60">Document Hub</span>
-                <h4 className="font-outfit text-lg font-black text-[#002147] mt-0.5">Filter by Category</h4>
-              </div>
-              
+
               <nav className="flex flex-col gap-1.5">
                 {categories.map((cat) => (
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border ${
-                      selectedCategory === cat.id
-                        ? "bg-[#002147] text-white border-transparent shadow-md translate-x-1"
-                        : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100"
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border ${selectedCategory === cat.id
+                      ? "bg-[#002147] text-white border-transparent shadow-md translate-x-1"
+                      : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100"
+                      }`}
                   >
                     <cat.icon className="h-4 w-4 shrink-0" />
                     <span>{cat.name}</span>
@@ -190,7 +175,7 @@ export default function MandatoryDisclosuresPage() {
             <div className="bg-white border border-slate-200/70 p-6 md:p-8 rounded-[2rem] shadow-sm">
               <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight border-b border-slate-100 pb-4 mb-6 flex items-center justify-between">
                 <span>Documents List ({filteredDisclosures.length})</span>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Society of St. Anne</span>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">St Anns College for Women</span>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

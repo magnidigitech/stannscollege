@@ -63,18 +63,18 @@ export function DepartmentOfCommerce() {
     <div className="flex flex-col gap-12 animate-fadeIn font-sans">
       
       {/* 1. Header Banner */}
-      <div className="bg-gradient-to-r from-[#002147] to-[#0b4b96] rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-lg">
+      <div className="bg-gradient-to-r from-[#002147] to-[#0b4b96] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-lg">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
           <Building className="h-[400px] w-[400px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-3 md:max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider bg-white/15 backdrop-blur px-4 py-1.5 rounded-full w-fit">
+        <div className="relative z-10 flex flex-col gap-2 md:max-w-3xl">
+          <span className="inline-flex items-center gap-1.5 font-bold text-[10px] md:text-xs uppercase tracking-wider bg-white/15 backdrop-blur px-4 py-1.5 rounded-full w-fit">
             Established 1997-98
           </span>
-          <h2 className="font-outfit text-3xl md:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-tight">
             Department of Commerce
           </h2>
-          <p className="text-blue-100/90 font-medium text-sm md:text-base mt-2 italic">
+          <p className="text-blue-100/80 font-semibold text-xs md:text-sm mt-1 italic">
             “Commerce Wonder World – Emphasizing Holistic Student Development”
           </p>
         </div>

@@ -73,6 +73,70 @@ const navigationGroups = [
   }
 ];
 
+const PlacementsLanding = ({ onNavigate }: { onNavigate: (slug: string, e: React.MouseEvent) => void }) => {
+  return (
+    <div className="flex flex-col gap-10">
+      {/* Hero Welcome */}
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-[#004225] to-[#085e36] p-8 md:p-12 text-white shadow-md">
+        <div className="absolute right-0 top-0 h-full w-1/3 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_60%)] pointer-events-none" />
+        <div className="relative z-10 max-w-2xl flex flex-col gap-4">
+          <span className="text-xs font-black uppercase tracking-widest text-emerald-300">
+            Career & Placements Hub
+          </span>
+          <h2 className="font-outfit text-3xl md:text-4xl font-black tracking-tight leading-tight">
+            Placements & Industry Linkages
+          </h2>
+          <p className="text-emerald-100/90 text-sm md:text-base leading-relaxed font-medium">
+            Welcome to the Training, Placement, and Global Outreach portal of St. Ann's College for Women. 
+            We empower our students with industry-aligned skills, career-ready initiatives, robust corporate linkages, 
+            and global academic opportunities. Explore the sections below to learn more about our cells, statistics, MoUs, and outreach.
+          </p>
+        </div>
+      </div>
+
+      {/* Directory Grid */}
+      <div className="flex flex-col gap-10">
+        {navigationGroups.map((group, gIdx) => {
+          const GroupIcon = group.icon;
+          return (
+            <div key={gIdx} className="flex flex-col gap-6 animate-fadeIn">
+              <div className="border-b border-slate-100 pb-3 flex items-center gap-3">
+                <span className="p-2.5 bg-emerald-50 rounded-xl text-[#004225]">
+                  <GroupIcon className="w-5 h-5" />
+                </span>
+                <div>
+                  <h3 className="font-outfit text-xl md:text-2xl font-black text-[#004225] tracking-tight">
+                    {group.title}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {group.items.map((item, itemIdx) => (
+                  <Link
+                    key={itemIdx}
+                    href={`/placements/${item.slug}`}
+                    onClick={(e) => onNavigate(item.slug, e)}
+                    className="group flex items-center justify-between p-4 bg-white border border-slate-200/65 rounded-2xl hover:border-emerald-200/50 hover:bg-emerald-50/10 hover:shadow-sm hover:scale-[1.01] transition-all duration-200 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0 group-hover:scale-125 transition-transform" />
+                      <span className="font-outfit font-bold text-slate-700 text-sm leading-snug truncate group-hover:text-[#004225] transition-colors">
+                        {item.text}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-350 shrink-0 group-hover:text-[#004225] group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 interface PlacementsClientPortalProps {
   activeSlug: string;
   initialSections?: any[];
@@ -93,21 +157,54 @@ export default function PlacementsClientPortal({
   // Mobile Menu State
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sections, setSections] = useState<Record<string, any>>(staticPlacementSections);
-  
+
   // Flipbook States
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [selectedFileTitle, setSelectedFileTitle] = useState("");
 
+  const [currentActiveSlug, setCurrentActiveSlug] = useState(activeSlug);
+
+  // Sync activeSlug prop from router/URL
+  useEffect(() => {
+    setCurrentActiveSlug(activeSlug);
+  }, [activeSlug]);
+
+  // Sync with browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const pathParts = window.location.pathname.split("/");
+      const slug = pathParts[pathParts.length - 1] || "about-cell";
+      setCurrentActiveSlug(slug);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // Click handler for sidebar / internal links
+  const handleSlugChange = (slug: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setCurrentActiveSlug(slug);
+    window.history.pushState(null, "", `/placements/${slug}`);
+
+    // On mobile, smooth scroll to the content area
+    if (window.innerWidth < 1024) {
+      const contentElem = document.getElementById("placements-content-area");
+      if (contentElem) {
+        contentElem.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   // Auto-expand group of the active slug
   useEffect(() => {
-    const activeGroup = navigationGroups.find(g => g.items.some(item => item.slug === activeSlug));
+    const activeGroup = navigationGroups.find(g => g.items.some(item => item.slug === currentActiveSlug));
     if (activeGroup) {
       setExpandedGroups(prev => ({
         ...prev,
         [activeGroup.title]: true
       }));
     }
-  }, [activeSlug]);
+  }, [currentActiveSlug]);
 
   // Merge server-side pre-fetched Sanity data with local static fallbacks
   useEffect(() => {
@@ -132,8 +229,7 @@ export default function PlacementsClientPortal({
     setMobileMenuOpen(false);
     setSelectedFileUrl(null);
     setSelectedFileTitle("");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [activeSlug]);
+  }, [currentActiveSlug]);
 
   const toggleGroup = (groupTitle: string) => {
     setExpandedGroups(prev => ({
@@ -143,10 +239,10 @@ export default function PlacementsClientPortal({
   };
 
   // Find active item and active group definitions
-  const activeGroup = navigationGroups.find(g => g.items.some(item => item.slug === activeSlug)) || navigationGroups[0];
-  const activeItem = activeGroup.items.find(item => item.slug === activeSlug) || activeGroup.items[0];
+  const activeGroup = navigationGroups.find(g => g.items.some(item => item.slug === currentActiveSlug)) || navigationGroups[0];
+  const activeItem = activeGroup.items.find(item => item.slug === currentActiveSlug) || activeGroup.items[0];
 
-  const sectionData = sections[activeSlug] || {
+  const sectionData = sections[currentActiveSlug] || {
     title: activeItem.text,
     content: ""
   };
@@ -220,10 +316,47 @@ export default function PlacementsClientPortal({
     return parts.length > 0 ? parts : sanitized;
   };
 
+  const sanitizeAsciiTables = (text: string) => {
+    if (!text) return "";
+
+    // If the text contains ASCII table borders, replace them with clean markdown tables
+    if (text.includes("+-") && text.includes("|")) {
+      // Replace the "Year wise Placement Packages" ASCII block
+      const packagesRegex = /\+-+[\s\S]*?Year wise Placement Packages[\s\S]*?2018-2019[\s\S]*?\+-+/i;
+      if (packagesRegex.test(text)) {
+        const cleanPackages = `__**Year wise Placement Packages**__\n\n**Academic Year**\n\n**Students Eligible (UG & PG)**\n\n**Students Placed**\n\n**Placement %**\n\n**Highest Package**\n\n2025-2026\n\n—\n\n—\n\n—\n\n—\n\n2024-2025\n\n—\n\n—\n\n—\n\n—\n\n2023-2024\n\n—\n\n—\n\n—\n\n—\n\n2022-2023\n\n—\n\n—\n\n—\n\n—\n\n2021-2022\n\n—\n\n—\n\n—\n\n—\n\n2020-2021\n\n—\n\n—\n\n—\n\n—\n\n2019-2020\n\n—\n\n—\n\n—\n\n—\n\n2018-2019\n\n—\n\n—\n\n—\n\n—`;
+        text = text.replace(packagesRegex, cleanPackages);
+      }
+
+      // Replace "Department/Programme -wise Placements" ASCII block
+      const deptRegex = /\+-+[\s\S]*?Department\/Programme -wise Placements[\s\S]*?MBA - Master of Business[\s\S]*?\+-+/i;
+      if (deptRegex.test(text)) {
+        const cleanDept = `__**Department/Programme -wise Placements**__\n\n**Academic Year**\n\n**Programme**\n\n**Total No.of Students**\n\n**Students Placed**\n\n**Placement %**\n\n2025-2026\n\nB.Com Honours - General\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Com Honours Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nBBA Honours-Business Management\n\n—\n\n—\n\n—\n\n2025-2026\n\nB. Sc Honours Computer Science\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours Artificial Intelligence\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Mathematics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Physics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Statistics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Biotechnology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc honours -Microbiology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nMCA-Master of Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nMBA - Master of Business Administration\n\n—\n\n—\n\n—`;
+        text = text.replace(deptRegex, cleanDept);
+      }
+
+      // Replace "Higher Education Progression" ASCII block
+      const higherRegex = /\+-+[\s\S]*?Higher Education Progression[\s\S]*?MBA - Master of Business[\s\S]*?\+-+/i;
+      if (higherRegex.test(text)) {
+        const cleanHigher = `__**Higher Education Progression**__\n\n**Academic Year**\n\n**Programme**\n\n**Total No.of Students**\n\n**Programme in Which Students Pursuing Higher Education**\n\n**No.of Students**\n\n2025-2026\n\nB.Com Honours - General\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Com Honours Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nBBA Honours-Business Management\n\n—\n\n—\n\n—\n\n2025-2026\n\nB. Sc Honours Computer Science\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours Artificial Intelligence\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Mathematics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Physics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Statistics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Biotechnology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc honours -Microbiology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nMCA-Master of Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nMBA - Master of Business Administration\n\n—\n\n—\n\n—`;
+        text = text.replace(higherRegex, cleanHigher);
+      }
+    }
+    return text;
+  };
+
   const renderContentBody = (text: string) => {
     if (!text) return null;
 
-    const rawChunks = text.split("\n\n").map(c => c.trim()).filter(Boolean);
+    // Clean dynamic/static annual reports year header and duplicate View Document texts
+    if (currentActiveSlug === "annual-reports") {
+      text = text
+        .replace(/\*\*2023-2024\s*,\s*2024-2025\s*,\s*2025-.*?\*\*/gi, "")
+        .replace(/\*\*View Document\s*\(PDF\)\*\*/gi, "");
+    }
+
+    const sanitizedText = sanitizeAsciiTables(text);
+    const rawChunks = sanitizedText.split("\n\n").map(c => c.trim()).filter(Boolean);
     const nodes: any[] = [];
 
     let i = 0;
@@ -232,7 +365,7 @@ export default function PlacementsClientPortal({
 
       const clean = (s: string) => (s || "").replace(/[*_]+/g, "").trim();
       const norm = (s: string) => (s || "").replace(/[*_\s\.]+/g, "").toLowerCase();
-      
+
       const n0 = norm(chunk);
       const n1 = norm(rawChunks[i + 1] || "");
       const n2 = norm(rawChunks[i + 2] || "");
@@ -248,9 +381,9 @@ export default function PlacementsClientPortal({
       const isColStart = n0 === "academicyear" || n0 === "category" || n0 === "programme" || n0 === "year" || n0 === "nameofthedepartment";
 
       // Intelligent Tables
-      const is8ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4 && norm(rawChunks[i+5]) && norm(rawChunks[i+6]) && norm(rawChunks[i+7]);
-      const is7ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4 && norm(rawChunks[i+5]) && norm(rawChunks[i+6]);
-      const is6ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4 && norm(rawChunks[i+5]);
+      const is8ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4 && norm(rawChunks[i + 5]) && norm(rawChunks[i + 6]) && norm(rawChunks[i + 7]);
+      const is7ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4 && norm(rawChunks[i + 5]) && norm(rawChunks[i + 6]);
+      const is6ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4 && norm(rawChunks[i + 5]);
       const is5ColTable = (isSNo || isColStart) && n1 && n2 && n3 && n4;
       const is4ColTable = (isSNo || isColStart) && n1 && n2 && n3;
       const is3ColTable = (isSNo || isColStart) && n1 && n2;
@@ -259,7 +392,7 @@ export default function PlacementsClientPortal({
       const parseTable = (colCount: number) => {
         const headers = [];
         for (let j = 0; j < colCount; j++) {
-            headers.push(rawChunks[i+j]);
+          headers.push(rawChunks[i + j]);
         }
         const rowItems: string[] = [];
         let lookAhead = i + colCount;
@@ -267,7 +400,7 @@ export default function PlacementsClientPortal({
         while (lookAhead < rawChunks.length) {
           const nextVal = rawChunks[lookAhead];
           const nextClean = clean(nextVal);
-          if (nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) break;
+          if (((nextVal.startsWith("__") && nextVal.endsWith("__")) || (nextVal.startsWith("**") && nextVal.endsWith("**"))) && nextVal.length > 4) break;
           if (nextVal.startsWith("Link:")) break;
           if (nextClean.includes("Services") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
           rowItems.push(nextVal);
@@ -286,43 +419,73 @@ export default function PlacementsClientPortal({
         i = lookAhead;
       };
 
-      if (is8ColTable && (norm(rawChunks[i+7]).includes("notyetplaced") || norm(rawChunks[i+7]).includes("document") || norm(rawChunks[i+7]).includes("years"))) {
+      if (is8ColTable && (norm(rawChunks[i + 7]).includes("notyetplaced") || norm(rawChunks[i + 7]).includes("document") || norm(rawChunks[i + 7]).includes("years"))) {
         parseTable(8);
         continue;
       }
-      if (is7ColTable && (norm(rawChunks[i+6]).includes("viewdocument") || norm(rawChunks[i+6]).includes("document") || norm(rawChunks[i+6]).includes("years"))) {
-          parseTable(7);
-          continue;
+      if (is7ColTable && (norm(rawChunks[i + 6]).includes("viewdocument") || norm(rawChunks[i + 6]).includes("document") || norm(rawChunks[i + 6]).includes("years"))) {
+        parseTable(7);
+        continue;
       }
-      if (is6ColTable && (norm(rawChunks[i+5]).includes("placementdrive") || norm(rawChunks[i+5]).includes("year") || norm(rawChunks[i+5]).includes("view"))) {
-          parseTable(6);
-          continue;
+      if (is6ColTable && (norm(rawChunks[i + 5]).includes("placementdrive") || norm(rawChunks[i + 5]).includes("year") || norm(rawChunks[i + 5]).includes("view"))) {
+        parseTable(6);
+        continue;
       }
-      if (is5ColTable && (norm(rawChunks[i+4]).includes("highestpackage") || norm(rawChunks[i+4]).includes("studentsplaced") || norm(rawChunks[i+4]).includes("duration"))) {
+      if (is5ColTable && (norm(rawChunks[i + 4]).includes("highestpackage") || norm(rawChunks[i + 4]).includes("studentsplaced") || norm(rawChunks[i + 4]).includes("duration") || norm(rawChunks[i + 4]).includes("placement") || norm(rawChunks[i + 4]).includes("students") || norm(rawChunks[i + 4]).includes("interned") || norm(rawChunks[i + 4]).includes("noofstudents"))) {
         parseTable(5);
         continue;
       }
       if (is4ColTable) {
-        if (norm(rawChunks[i+3]).includes("studentsinterned") || norm(rawChunks[i+3]).includes("purpose") || norm(rawChunks[i+3]).includes("duration")) {
-            parseTable(4);
-            continue;
+        if (norm(rawChunks[i + 3]).includes("studentsinterned") || norm(rawChunks[i + 3]).includes("purpose") || norm(rawChunks[i + 3]).includes("duration")) {
+          parseTable(4);
+          continue;
         }
       }
       if (is3ColTable) {
-         if (norm(rawChunks[i+2]).includes("totalselections")) {
-            parseTable(3);
-            continue;
-         }
+        if (norm(rawChunks[i + 2]).includes("totalselections")) {
+          parseTable(3);
+          continue;
+        }
       }
       if (is2ColTable && n0 === "category" && n1.includes("totalselections")) {
         parseTable(2);
         continue;
       }
 
+      // Check if this chunk is a line of PDF or document links (to display as cards)
+      const docLinkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+?\.(pdf|docx|xlsx|doc|xls))[^\s)]*\)/gi;
+      const matches = [...chunk.matchAll(docLinkRegex)];
+      if (matches.length > 0) {
+        const totalLinkTextLength = matches.reduce((acc, m) => acc + m[0].length, 0);
+        if (totalLinkTextLength > chunk.length * 0.7) {
+          const links = matches.map(m => ({ title: m[1], url: m[2] }));
+          nodes.push({ type: "pdf-cards", links });
+          i++;
+          continue;
+        }
+      }
+
       if (chunk.startsWith("Link:")) {
-         nodes.push({ type: "link", text: chunk.replace("Link:", "").trim() });
-         i++;
-         continue;
+        nodes.push({ type: "link", text: chunk.replace("Link:", "").trim() });
+        i++;
+        continue;
+      }
+
+      if (chunk.startsWith("- ") || chunk.startsWith("* ")) {
+        const listItems = [chunk];
+        let lookAhead = i + 1;
+        while (lookAhead < rawChunks.length) {
+          const nextChunk = rawChunks[lookAhead];
+          if (nextChunk.startsWith("- ") || nextChunk.startsWith("* ")) {
+            listItems.push(nextChunk);
+            lookAhead++;
+          } else {
+            break;
+          }
+        }
+        nodes.push({ type: "list", items: listItems });
+        i = lookAhead;
+        continue;
       }
 
       nodes.push({ type: "paragraph", text: chunk });
@@ -332,26 +495,165 @@ export default function PlacementsClientPortal({
     let hasBoostedFirstHeader = false;
 
     return nodes.map((node, idx) => {
+      if (node.type === "pdf-cards") {
+        return (
+          <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-8 animate-fadeIn select-text">
+            {node.links.map((link: any, lIdx: number) => (
+              <div
+                key={lIdx}
+                className="flex flex-col justify-between p-5 bg-white border border-slate-200/60 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-emerald-200/50 hover:scale-[1.01] transition-all duration-300 group min-h-[180px]"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="p-2.5 bg-emerald-50 rounded-xl text-emerald-700">
+                      <BookOpen className="w-5 h-5 text-emerald-600 group-hover:text-emerald-700" />
+                    </span>
+                    <span className="text-[10px] font-black uppercase text-emerald-800 bg-emerald-50/50 px-2 py-0.5 rounded border border-emerald-100/30">
+                      PDF Document
+                    </span>
+                  </div>
+                  <h4 className="font-outfit font-black text-slate-800 text-base leading-snug mb-5 group-hover:text-[#004225] transition-colors">
+                    {link.title}
+                  </h4>
+                </div>
+
+                <div className="flex items-center gap-3 pt-4 border-t border-slate-100 mt-auto select-none">
+                  <button
+                    onClick={() => {
+                      setSelectedFileUrl(link.url);
+                      setSelectedFileTitle(link.title);
+                    }}
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-black text-white bg-[#004225] hover:bg-[#02542f] rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    View
+                  </button>
+                  <a
+                    href={link.url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-black text-[#004225] bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-xl transition-all active:scale-95 cursor-pointer text-center text-decoration-none"
+                  >
+                    Download
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
       if (node.type === "link") {
-         const fileUrl = node.text;
-         const fileName = fileUrl.split("/").pop() || "View Document";
-         const cleanName = decodeURIComponent(fileName).replace(/\.[^/.]+$/, "");
-         return (
-             <button
-                key={idx}
-                onClick={() => {
-                  setSelectedFileUrl(fileUrl);
-                  setSelectedFileTitle(cleanName);
-                }}
-                className="inline-flex items-center gap-2 px-6 py-3 mt-3 mb-6 bg-emerald-50 hover:bg-emerald-100 text-[#004225] font-extrabold rounded-xl transition-all border border-emerald-200/30 group w-fit hover:scale-[1.02] active:scale-[0.98] mr-4 shadow-sm"
-             >
-                <BookOpen className="w-5 h-5 text-emerald-600 group-hover:text-emerald-700" />
-                {cleanName}
-             </button>
-         );
+        const fileUrl = node.text;
+        const fileName = fileUrl.split("/").pop() || "View Document";
+        const cleanName = decodeURIComponent(fileName).replace(/\.[^/.]+$/, "");
+        return (
+          <button
+            key={idx}
+            onClick={() => {
+              setSelectedFileUrl(fileUrl);
+              setSelectedFileTitle(cleanName);
+            }}
+            className="inline-flex items-center gap-2 px-6 py-3 mt-3 mb-6 bg-emerald-50 hover:bg-emerald-100 text-[#004225] font-extrabold rounded-xl transition-all border border-emerald-200/30 group w-fit hover:scale-[1.02] active:scale-[0.98] mr-4 shadow-sm"
+          >
+            <BookOpen className="w-5 h-5 text-emerald-600 group-hover:text-emerald-700" />
+            {cleanName}
+          </button>
+        );
       }
 
       if (node.type === "table") {
+        if (currentActiveSlug === "mous-agreements" || currentActiveSlug === "mou-activities") {
+          return (
+            <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-5 my-6 animate-fadeIn">
+              {node.rows.map((row: string[], rIdx: number) => {
+                const sNo = row[0] || "";
+                const department = row[1] || "";
+                const company = row[2] || "";
+                const yearOfSigning = row[3] || "";
+                const duration = row[4] || "";
+                const purpose = row[5] || "";
+                const years = row[6] || "";
+                const viewDocument = row[7] || "";
+
+                // Extract clean department badge
+                const cleanDept = department
+                  .replace(/St\.?\s*Ann['’]?s\s+College\s+for\s+Women,?\s*(Gorantla,)?\s*Guntur/gi, "")
+                  .replace(/Department\s+of/gi, "")
+                  .trim();
+                const deptBadge = cleanDept || "College-Wide";
+
+                // View PDF click handling
+                const linkMatch = viewDocument.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                const linkUrl = linkMatch ? linkMatch[2] : null;
+
+                const displayYears = years && years !== "—" ? `${years} ${years.toLowerCase().includes("year") ? "" : "Years"}` : null;
+                const displayDuration = displayYears || duration || "—";
+
+                return (
+                  <div
+                    key={rIdx}
+                    className="flex flex-col justify-between bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:border-emerald-200/50 hover:scale-[1.01]"
+                  >
+                    <div>
+                      {/* Badge & S.No */}
+                      <div className="flex items-center justify-between mb-3.5">
+                        {deptBadge !== "College-Wide" ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-[#004225] border border-emerald-100/50">
+                            {deptBadge}
+                          </span>
+                        ) : (
+                          <div />
+                        )}
+                        <span className="text-[10px] font-bold text-slate-350">
+                          #{sNo}
+                        </span>
+                      </div>
+
+                      {/* Company / Institution Name */}
+                      <h4 className="font-outfit text-sm md:text-base font-black text-slate-805 mb-2 leading-snug group-hover:text-[#004225] transition-colors">
+                        {company}
+                      </h4>
+
+                      {/* Purpose */}
+                      {purpose && purpose !== "—" && (
+                        <p className="text-slate-500 text-[12.5px] leading-relaxed mb-5 font-semibold">
+                          {purpose}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Bottom Metadata Line */}
+                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between gap-4 text-[10.5px] md:text-[11px] font-bold text-slate-450 uppercase tracking-wider shrink-0">
+                      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                        <span>Signed: {yearOfSigning}</span>
+                        <span className="text-slate-200 font-normal">|</span>
+                        <span>Duration: {displayDuration}</span>
+                      </div>
+
+                      {linkUrl ? (
+                        <button
+                          onClick={() => {
+                            setSelectedFileUrl(linkUrl);
+                            setSelectedFileTitle(company || "MoU Document");
+                          }}
+                          className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-black text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-md transition-all cursor-pointer"
+                        >
+                          <Eye className="w-3 h-3" />
+                          View PDF
+                        </button>
+                      ) : (
+                        <span className="text-slate-300 font-normal text-[10px] shrink-0">No PDF</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        }
+
         return (
           <div key={idx} className="my-8 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text animate-fadeIn">
             <div className="overflow-x-auto">
@@ -362,15 +664,14 @@ export default function PlacementsClientPortal({
                       const lowerH = h.toLowerCase().replace(/[^a-z]/g, "");
                       const isSno = lowerH === "sno" || lowerH === "slno" || lowerH === "s";
                       const isTotal = lowerH === "total" || lowerH === "link" || lowerH === "highestpackage" || lowerH === "placement%";
-                      
+
                       return (
-                        <th 
-                          key={hIdx} 
-                          className={`px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 last:border-0 ${
-                            isSno ? "text-center" : isTotal ? "text-right" : "text-left"
-                          }`}
+                        <th
+                          key={hIdx}
+                          className={`px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 last:border-0 ${isSno ? "text-center" : isTotal ? "text-right" : "text-left"
+                            }`}
                         >
-                          {renderRichString(h)}
+                          {renderRichString(h.replace(/\*\*|__/g, ""))}
                         </th>
                       );
                     })}
@@ -386,7 +687,7 @@ export default function PlacementsClientPortal({
                         const headerText = node.headers[cIdx] || "";
                         const lowerH = headerText.toLowerCase().replace(/[^a-z]/g, "");
                         const isSno = lowerH === "sno" || lowerH === "slno" || lowerH === "s";
-                        const isTotal = lowerH === "total" || lowerH === "highestpackage" || lowerH === "placement%";
+                        const isTotal = lowerH === "total" || headerText.toLowerCase().includes("total") || lowerH === "highestpackage" || lowerH === "placement%";
                         const isEmpty = cell === "—" || cell.trim() === "";
 
                         // Check if the cell has a document link (markdown link format)
@@ -415,11 +716,10 @@ export default function PlacementsClientPortal({
                         }
 
                         return (
-                          <td 
-                            key={cIdx} 
-                            className={`px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold leading-relaxed transition-colors duration-200 ${
-                              isSno ? "text-center w-[80px]" : isTotal ? "text-right" : "text-left"
-                            }`}
+                          <td
+                            key={cIdx}
+                            className={`px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold leading-relaxed transition-colors duration-200 ${isSno ? "text-center w-[80px]" : isTotal ? "text-right" : "text-left"
+                              }`}
                           >
                             {isSno ? (
                               <div className="flex justify-center">
@@ -448,14 +748,44 @@ export default function PlacementsClientPortal({
         );
       }
 
+      if (node.type === "list") {
+        const lines: string[] = [];
+        for (const item of node.items) {
+          const rawLines = item.split("\n").map((l: string) => l.trim()).filter(Boolean);
+          for (const line of rawLines) {
+            if (line.startsWith("-") || line.startsWith("*")) {
+              lines.push(line.replace(/^[-*]\s*/, "").trim());
+            } else {
+              if (lines.length > 0) {
+                lines[lines.length - 1] += " " + line;
+              } else {
+                lines.push(line.replace(/^[-*]\s*/, "").trim());
+              }
+            }
+          }
+        }
+        return (
+          <ul key={idx} className="space-y-2.5 my-5 bg-slate-50/30 rounded-xl p-4 md:p-5 border border-slate-100/50 shadow-sm">
+            {lines.map((item: string, i: number) => (
+              <li key={i} className="flex items-start gap-3 text-slate-700 leading-relaxed text-[14px] md:text-[15px] group animate-fadeIn">
+                <div className="mt-2 min-w-[8px] flex items-center justify-center shrink-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#004225]" />
+                </div>
+                <span className="flex-1 font-semibold text-slate-650">{renderRichString(item)}</span>
+              </li>
+            ))}
+          </ul>
+        );
+      }
+
       const p = node.text;
 
-      if (p.startsWith("__") && p.endsWith("__") && p.length > 4) {
-        const cleanTitle = stripEmojis(p.replace(/__/g, "").trim())
+      if (p && ((p.startsWith("__") && p.endsWith("__")) || (p.startsWith("**") && p.endsWith("**"))) && p.length > 4) {
+        const cleanTitle = stripEmojis(p.replace(/[*_]+/g, "").trim())
           .replace(/^(?:(?:\d+(?:\.\d+)*|[IVXLCDM]+|[a-zA-Z])[\.\)]\s+)+/i, "")
           .trim();
-        
-        const isBigTitle = /^[IVX\d]+\./.test(p.replace(/__/g, "").trim()) || cleanTitle.toUpperCase() === cleanTitle;
+
+        const isBigTitle = /^[IVX\d]+\./.test(p.replace(/[*_]+/g, "").trim()) || cleanTitle.toUpperCase() === cleanTitle;
 
         if (isBigTitle) {
           if (!hasBoostedFirstHeader) {
@@ -482,8 +812,8 @@ export default function PlacementsClientPortal({
         );
       }
 
-      if (p.startsWith("- ") || p.startsWith("* ")) {
-        const rawLines = p.split("\\n").map((l: string) => l.trim()).filter(Boolean);
+      if (p && (p.startsWith("- ") || p.startsWith("* "))) {
+        const rawLines = p.split("\n").map((l: string) => l.trim()).filter(Boolean);
         const lines: string[] = [];
         for (const line of rawLines) {
           if (line.startsWith("-") || line.startsWith("*")) {
@@ -497,13 +827,13 @@ export default function PlacementsClientPortal({
           }
         }
         return (
-          <ul key={idx} className="space-y-4 my-8 bg-slate-50/50 rounded-2xl p-6 md:p-8 border border-slate-100/50">
+          <ul key={idx} className="space-y-2.5 my-5 bg-slate-50/30 rounded-xl p-4 md:p-5 border border-slate-100/50 shadow-sm">
             {lines.map((item: string, i: number) => (
-              <li key={i} className="flex items-start gap-4 text-slate-700 leading-relaxed text-[15px] group">
-                <div className="mt-1.5 min-w-[20px] flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#004225] group-hover:scale-150 group-hover:bg-[#004225] transition-all duration-300 ring-4 ring-emerald-400/10" />
+              <li key={i} className="flex items-start gap-3 text-slate-700 leading-relaxed text-[14px] md:text-[15px] group">
+                <div className="mt-2 min-w-[8px] flex items-center justify-center shrink-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#004225]" />
                 </div>
-                <span className="flex-1 font-semibold text-slate-600">{renderRichString(item)}</span>
+                <span className="flex-1 font-semibold text-slate-650">{renderRichString(item)}</span>
               </li>
             ))}
           </ul>
@@ -512,7 +842,7 @@ export default function PlacementsClientPortal({
 
       return (
         <p key={idx} className="text-slate-650 leading-[1.8] text-[15px] md:text-[16px] mb-6 font-medium text-justify">
-          {renderRichString(p)}
+          {p ? renderRichString(p) : ""}
         </p>
       );
     });
@@ -526,24 +856,20 @@ export default function PlacementsClientPortal({
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-900/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
         </div>
-        <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-12 py-16 lg:py-20">
-          <div className="flex items-center gap-3 text-emerald-350 font-medium text-sm tracking-widest uppercase mb-6 animate-fadeIn">
-            <span className="w-8 h-[2px] bg-emerald-400/50 rounded-full"></span>
-            St. Ann&apos;s College for Women
-          </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white font-outfit tracking-tight mb-6 max-w-4xl leading-[1.15] animate-slideUp">
+        <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-12 py-10 lg:py-12">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black text-white font-outfit tracking-tight mb-3 max-w-4xl leading-[1.15] animate-slideUp">
             Placements & Industry Linkages
           </h1>
-          <p className="text-emerald-100/80 text-base md:text-lg max-w-3xl font-medium leading-relaxed animate-slideUp">
+          <p className="text-emerald-100/80 text-xs md:text-sm max-w-2xl font-medium leading-relaxed animate-slideUp">
             Empowering students with career-ready skillsets, dynamic placement opportunities, robust industry tie-ups, and global collaborations.
           </p>
         </div>
       </div>
 
       {/* Main Content Layout */}
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 py-12 lg:py-16">
-        <div className="flex flex-col lg:flex-row gap-10">
-          
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="flex flex-col lg:flex-row gap-8">
+
           {/* Mobile Floating Drawer Trigger */}
           <div className="lg:hidden z-40">
             <button
@@ -567,7 +893,7 @@ export default function PlacementsClientPortal({
           {mobileMenuOpen && (
             <div className="fixed inset-0 z-50 flex lg:hidden">
               <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onClick={() => setMobileMenuOpen(false)} />
-              
+
               <div className="relative flex flex-col w-full max-w-xs ml-auto bg-white h-full shadow-2xl animate-slideLeft">
                 <div className="flex items-center justify-between p-6 border-b border-slate-100">
                   <span className="font-outfit font-black text-slate-800 text-lg">Navigation Hub</span>
@@ -575,7 +901,7 @@ export default function PlacementsClientPortal({
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-                
+
                 <div className="flex-1 overflow-y-auto p-6 space-y-4">
                   {navigationGroups.map((group) => {
                     const Icon = group.icon;
@@ -584,9 +910,8 @@ export default function PlacementsClientPortal({
                       <div key={group.title} className="space-y-2">
                         <button
                           onClick={() => toggleGroup(group.title)}
-                          className={`w-full flex items-center justify-between p-3.5 rounded-xl font-outfit font-extrabold text-sm transition-all text-left ${
-                            isGroupExpanded ? "bg-emerald-50 text-[#004225]" : "bg-slate-50 text-slate-700 hover:bg-slate-100"
-                          }`}
+                          className={`w-full flex items-center justify-between p-3.5 rounded-xl font-outfit font-extrabold text-sm transition-all text-left ${isGroupExpanded ? "bg-emerald-50 text-[#004225]" : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+                            }`}
                         >
                           <div className="flex items-center gap-2.5">
                             <Icon className="w-4 h-4" />
@@ -598,16 +923,16 @@ export default function PlacementsClientPortal({
                         {isGroupExpanded && (
                           <div className="pl-4 border-l border-emerald-100/70 space-y-1 mt-1">
                             {group.items.map((item) => {
-                              const isActive = item.slug === activeSlug;
+                              const isActive = item.slug === currentActiveSlug;
                               return (
                                 <Link
                                   key={item.slug}
                                   href={`/placements/${item.slug}`}
-                                  className={`block py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
-                                    isActive 
-                                      ? "bg-[#004225] text-white" 
-                                      : "text-slate-600 hover:text-[#004225] hover:bg-slate-50"
-                                  }`}
+                                  onClick={(e) => handleSlugChange(item.slug, e)}
+                                  className={`block py-2 px-3 rounded-lg text-xs font-semibold transition-all ${isActive
+                                    ? "bg-[#004225] text-white"
+                                    : "text-slate-600 hover:text-[#004225] hover:bg-slate-50"
+                                    }`}
                                 >
                                   {item.text}
                                 </Link>
@@ -624,39 +949,36 @@ export default function PlacementsClientPortal({
           )}
 
           {/* Desktop Left Accordion Sidebar Navigation */}
-          <div className="hidden lg:block w-88 shrink-0">
-            <div className="sticky top-28 bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-200/50 backdrop-blur-xl">
-              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-6 px-4">Navigation Hub</h3>
-              <div className="space-y-4">
+          <div className="hidden lg:block w-80 shrink-0">
+            <div className="sticky top-28 bg-white rounded-2xl p-4 md:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-200/50 backdrop-blur-xl max-h-[calc(100vh-140px)] flex flex-col">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">Navigation Hub</h3>
+              <div className="space-y-3 overflow-y-auto pr-1 flex-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
                 {navigationGroups.map((group) => {
                   const Icon = group.icon;
                   const isExpanded = !!expandedGroups[group.title];
-                  const hasActiveChild = group.items.some(item => item.slug === activeSlug);
+                  const hasActiveChild = group.items.some(item => item.slug === currentActiveSlug);
 
                   return (
-                    <div 
-                      key={group.title} 
-                      className={`rounded-2xl border transition-all duration-300 ${
-                        isExpanded || hasActiveChild 
-                          ? "border-emerald-150/40 bg-emerald-50/10" 
-                          : "border-slate-100 bg-white"
-                      }`}
+                    <div
+                      key={group.title}
+                      className={`rounded-2xl border transition-all duration-300 ${isExpanded || hasActiveChild
+                        ? "border-emerald-150/40 bg-emerald-50/10"
+                        : "border-slate-100 bg-white"
+                        }`}
                     >
                       {/* Accordion Group Trigger */}
                       <button
                         onClick={() => toggleGroup(group.title)}
-                        className={`w-full flex items-center justify-between p-4 font-outfit font-black text-[13px] tracking-wide transition-all ${
-                          isExpanded 
-                            ? "text-[#004225]" 
-                            : "text-slate-650 hover:text-[#004225]"
-                        }`}
+                        className={`w-full flex items-center justify-between p-3.5 font-outfit font-black text-[13px] tracking-wide transition-all ${isExpanded
+                          ? "text-[#004225]"
+                          : "text-slate-655 hover:text-[#004225]"
+                          }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-xl transition-all ${
-                            isExpanded || hasActiveChild 
-                              ? "bg-[#004225] text-white" 
-                              : "bg-slate-100 text-slate-500"
-                          }`}>
+                          <div className={`p-2 rounded-xl transition-all ${isExpanded || hasActiveChild
+                            ? "bg-[#004225] text-white"
+                            : "bg-slate-100 text-slate-500"
+                            }`}>
                             <Icon className="w-4 h-4" />
                           </div>
                           <span className="text-left leading-snug">{group.title}</span>
@@ -666,20 +988,20 @@ export default function PlacementsClientPortal({
 
                       {/* Accordion Group Submenu Items */}
                       {isExpanded && (
-                        <div className="px-4 pb-4 pt-1 border-t border-slate-100/50 space-y-1.5 animate-fadeIn">
+                        <div className="px-3 pb-3 pt-1 border-t border-slate-100/50 space-y-1 animate-fadeIn">
                           {group.items.map((item) => {
-                            const isActive = item.slug === activeSlug;
+                            const isActive = item.slug === currentActiveSlug;
                             return (
                               <Link
                                 key={item.slug}
                                 href={`/placements/${item.slug}`}
-                                className={`group/item flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 text-left ${
-                                  isActive 
-                                    ? "bg-[#004225] text-white font-bold shadow-md shadow-emerald-900/10 scale-[1.01]" 
-                                    : "hover:bg-slate-50 text-slate-600 hover:text-[#004225]"
-                                }`}
+                                onClick={(e) => handleSlugChange(item.slug, e)}
+                                className={`group/item flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all duration-200 text-left ${isActive
+                                  ? "bg-[#004225] text-white font-bold shadow-sm shadow-emerald-900/10 scale-[1.01]"
+                                  : "hover:bg-slate-50 text-slate-600 hover:text-[#004225]"
+                                  }`}
                               >
-                                <span className={`text-[12.5px] font-semibold leading-normal ${isActive ? "text-white" : "text-slate-600 group-hover/item:text-[#004225]"}`}>
+                                <span className={`text-[12px] font-semibold leading-normal ${isActive ? "text-white" : "text-slate-600 group-hover/item:text-[#004225]"}`}>
                                   {item.text}
                                 </span>
                                 {isActive && <ChevronRight className="w-3.5 h-3.5 text-white/80" />}
@@ -696,23 +1018,31 @@ export default function PlacementsClientPortal({
           </div>
 
           {/* Dynamic Content Pane */}
-          <div className="flex-1 min-w-0">
-            <div className="bg-white rounded-[24px] md:p-12 p-6 shadow-[0_8px_40px_rgba(0,0,0,0.02)] border border-slate-200/50 relative overflow-hidden min-h-[500px]">
+          <div id="placements-content-area" className="flex-1 min-w-0">
+            <div className="bg-white rounded-2xl md:p-8 p-5 shadow-[0_8px_40px_rgba(0,0,0,0.02)] border border-slate-200/50 relative overflow-hidden min-h-[500px]">
               {/* Premium Background Accent */}
               <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-50/40 rounded-full blur-[80px] pointer-events-none"></div>
-              
+
               <div className="relative z-10 select-text">
-                <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700 font-extrabold text-[10px] md:text-xs uppercase tracking-widest font-outfit mb-8 shadow-sm">
-                  {React.createElement(activeGroup.icon, { className: "w-3.5 h-3.5" })}
-                  {activeGroup.title}
-                </div>
-                
-                <h2 className="font-outfit text-2xl md:text-4xl font-black text-slate-850 mb-8 leading-tight tracking-tight">
-                  {sectionData.title}
-                </h2>
-                
+                {currentActiveSlug !== "about-cell" && (
+                  <>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700 font-extrabold text-[10px] md:text-xs uppercase tracking-widest font-outfit mb-8 shadow-sm">
+                      {React.createElement(activeGroup.icon, { className: "w-3.5 h-3.5" })}
+                      {activeGroup.title}
+                    </div>
+
+                    <h2 className="font-outfit text-2xl md:text-4xl font-black text-slate-850 mb-8 leading-tight tracking-tight">
+                      {sectionData.title}
+                    </h2>
+                  </>
+                )}
+
                 <div className="prose prose-slate max-w-none prose-headings:font-outfit prose-p:font-sans">
-                  {renderContentBody(sectionData.content)}
+                  {currentActiveSlug === "about-cell" ? (
+                    <PlacementsLanding onNavigate={handleSlugChange} />
+                  ) : (
+                    renderContentBody(sectionData.content)
+                  )}
                 </div>
               </div>
             </div>

@@ -498,15 +498,15 @@ export function DepartmentUpdateForm() {
       </div>
 
       {/* 1. Header Banner */}
-      <div className="bg-gradient-to-r from-[#002147] to-[#0a3d75] rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-lg">
+      <div className="bg-gradient-to-r from-[#002147] to-[#0a3d75] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-lg">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
           <Settings className="h-96 w-96" />
         </div>
-        <div className="relative z-10 flex flex-col gap-3 max-w-2xl">
+        <div className="relative z-10 flex flex-col gap-2 max-w-2xl">
           <span className="inline-flex items-center gap-1.5 font-bold text-[10px] uppercase tracking-widest bg-white/10 border border-white/20 px-4 py-1.5 rounded-full w-fit">
             <Sparkles className="h-3 w-3 text-amber-300 animate-pulse" /> Content Manager
           </span>
-          <h2 className="font-outfit text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-tight">
             Academic Department Customizer
           </h2>
           <p className="text-blue-150/90 font-medium text-xs md:text-sm mt-1 leading-relaxed">

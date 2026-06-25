@@ -6,168 +6,4132 @@ export interface PlacementSection {
 
 export const staticPlacementSections: Record<string, PlacementSection> = {
   "about-cell": {
-    "id": "about-cell",
-    "title": "About Training & Placement Cell",
-    "content": "__About Training & Placement Cell__\n\nThe Training & Placement Cell at St. Ann's College for Women acts as a vital bridge between academic learning and corporate expectations. The cell is dedicated to enhancing the employability of students by equipping them with industry-relevant skills and providing them with excellent placement opportunities in reputed organizations.\n\nWith a structured approach to career progression, the cell organizes training programs, workshops, pre-placement talks, and campus recruitment drives throughout the academic year. Under the guidance of our Principal, Sr. Sandhya T, and Placement Officer, Dr. J. Pratapa Reddy, the cell ensures that every student gets the necessary exposure and guidance to achieve their career goals.\n\n__Core Objectives:__\n\n- To provide career counseling and guidance to students for higher studies and employment opportunities.\n- To organize on-campus and off-campus recruitment drives in collaboration with leading corporate houses and industries.\n- To establish MoUs with government bodies, industries, and professional placement agencies for internships and training.\n- To conduct systematic training in soft skills, communication, quantitative aptitude, and logical reasoning.\n- To assist students in building professional resumes and developing confident interview-facing skills."
+    id: "about-cell",
+    title: "About Training & Placement Cell",
+    content: `7.Placements & Industry Linkages I. Training & Placements 1. About Training & Placement Cell 2. Annual Reports 3. Placement Statistics 4. Campus Recruitment Drives 5. Skill Development Initiatives 6. Soft Skills & Personality Development 7. Internships & Industry Exposure 8. Competitive Exam Coaching 9. Career Guidance & Counselling 10. Entrepreneurship Development 11. Industry Linkages / Placement Partnerships 12. Capacity Building & Skill Enhancement 13. Alumni Career Support 14. Training Calendar / Activity Gallery II. Industry Linkages & Employability 1. Industry Partnerships 2. Internships & Apprenticeships 3. MoUs / Agreements 4. MoU Activities 5. CSR Initiatives 6. Placement Partnerships 7. Professional Certification Programmes 8. Industry Expert Lectures 9. Industrial Visits 10.Skill-Based Training Programmes 11.Employability Enhancement Activities III. Internationalization & Global Outreach 1. International Collaborations 2. Internationalization Policy 3. International Accreditations & Memberships 4. Global Alumni & Outreach Engagement 5. Global Research Collaborations 6. Student Exchange / Faculty Exchange 7. International Webinars & Conferences 8. Cross-Cultural Learning Activities`
   },
   "annual-reports": {
-    "id": "annual-reports",
-    "title": "Annual Reports",
-    "content": "**Annual Reports**\n\nThe Training & Placement Cell prepares and publishes Annual Reports\nhighlighting the various activities, programmes, achievements, and\nstudent progression initiatives undertaken during each academic year.\nThe reports reflect the institution's continuous efforts toward\nenhancing employability, professional competency, industry exposure, and\ncareer readiness among students.\n\nThe Annual Reports provide a comprehensive overview of the Training &\nPlacement Cell's contribution to student development in alignment with\nUGC guidelines and NAAC quality parameters.\n\n**The Annual Reports Include:**\n\n- Placement activities conducted during the academic year\n\n- Student placement records and progression details\n\n- Internship programmes and industrial exposure activities\n\n- Skill development and capacity-building initiatives\n\n- Industry interaction programmes and expert sessions\n\n- Career guidance and counselling activities\n\n- Soft skills and personality development programmes\n\n- Competitive examination coaching initiatives\n\n- Entrepreneurship development activities\n\n- Workshops, seminars, and training programmes organized\n\n- Participation of students in placement and training activities\n\n- Collaborations with industries and professional organizations\n\nThe reports serve as important institutional records showcasing the\ncollege's commitment to holistic student development, career\nadvancement, women empowerment, and professional excellence.\n\nThe Annual Reports are maintained systematically for academic\ndocumentation, quality assurance, and NAAC accreditation purposes.\n\n**View Document (PDF)**\n\n**2023-2024 ,2024-2025 ,2025-2026**"
+    id: "annual-reports",
+    title: "Annual Reports",
+    content: `Annual Reports The Training & Placement Cell prepares and publishes Annual Reports highlighting the various activities, programmes, achievements, and student progression initiatives undertaken during each academic year. The reports reflect the institution’s continuous efforts toward enhancing employability, professional competency, industry exposure, and career readiness among students. The Annual Reports provide a comprehensive overview of the Training & Placement Cell’s contribution to student development in alignment with UGC guidelines and NAAC quality parameters. The Annual Reports Include:
+
+- Placement activities conducted during the academic year
+
+- Student placement records and progression details
+
+- Internship programmes and industrial exposure activities
+
+- Skill development and capacity-building initiatives
+
+- Industry interaction programmes and expert sessions
+
+- Career guidance and counselling activities
+
+- Soft skills and personality development programmes
+
+- competitive examination coaching initiatives
+
+- Entrepreneurship development activities
+
+- Workshops, seminars, and training programmes organized
+
+- participation of students in placement and training activities
+
+- Collaborations with industries and professional organizations
+
+The reports serve as important institutional records showcasing the college’s commitment to holistic student development, career advancement, women empowerment, and professional excellence. The Annual Reports are maintained systematically for academic documentation, quality assurance, and NAAC accreditation purposes.
+
+[2023-2024](https://cdn.sanity.io/files/fhjwqub5/production/2432fdc8ccd7708b1ed38cc5905fd081bdef28a9.pdf) , [2024-2025](https://cdn.sanity.io/files/fhjwqub5/production/edfb3ca68a3cf748b7d033d11fa8c0ed92ffde7a.pdf) , [2025-2026](https://cdn.sanity.io/files/fhjwqub5/production/c4878fbe9126e06e5b48e8473226fa300e72f79f.pdf)`
   },
   "placement-statistics": {
-    "id": "placement-statistics",
-    "title": "Placement Statistics",
-    "content": "**Placement Statistics**\n\nThe institution maintains placement records and progression data to\nmonitor students' career advancement and employment opportunities.\n\n**Placement Highlights**\n\n- Students placed in reputed companies and organizations\n\n- Department-wise placement records\n\n- Higher education admissions\n\n- Entrepreneurship initiatives by students\n\n- Government and private sector placements\n\n\n__Academic Year__\n\n__Total Outgoing Batch Students__\n\n__Students Placed__\n\n__Students Pursuing Higher Education__\n\n__Students with Internship Offers__\n\n__Students Preparing for Competitive Exams__\n\n__Students Opted for Entrepreneurship / Self Employment__\n\n__Students Not Yet Placed / Awaiting Opportunities__\n\n2025-2026\n\n—\n\n—\n\n—\n\n—\n\n—\n\n—\n\n—\n\n2024-2025\n\n—\n\n—\n\n—\n\n—\n\n—\n\n—\n\n—\n\n2023-2024\n\n—\n\n—\n\n—\n\n—\n\n—\n\n—\n\n—\n\n\nThe placement statistics are updated periodically for transparency and\ninstitutional quality assurance.\n\n**Outgoing Batch -- Career Progression Statistics**\n\n\n__**Year wise Placement Packages**__\n\n**Academic Year**\n\n**Students Eligible (UG & PG)**\n\n**Students Placed**\n\n**Placement %**\n\n**Highest Package**\n\n2025-2026\n\n—\n\n—\n\n—\n\n—\n\n2024-2025\n\n—\n\n—\n\n—\n\n—\n\n2023-2024\n\n—\n\n—\n\n—\n\n—\n\n2022-2023\n\n—\n\n—\n\n—\n\n—\n\n2021-2022\n\n—\n\n—\n\n—\n\n—\n\n2020-2021\n\n—\n\n—\n\n—\n\n—\n\n2019-2020\n\n—\n\n—\n\n—\n\n—\n\n2018-2019\n\n—\n\n—\n\n—\n\n—\n\n\n\n__**Department/Programme -wise Placements**__\n\n**Academic Year**\n\n**Programme**\n\n**Total No.of Students**\n\n**Students Placed**\n\n**Placement %**\n\n2025-2026\n\nB.Com Honours - General\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Com Honours Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nBBA Honours-Business Management\n\n—\n\n—\n\n—\n\n2025-2026\n\nB. Sc Honours Computer Science\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours Artificial Intelligence\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Mathematics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Physics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Statistics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Biotechnology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc honours -Microbiology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nMCA-Master of Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nMBA - Master of Business Administration\n\n—\n\n—\n\n—\n\n\n\n__**Higher Education Progression**__\n\n**Academic Year**\n\n**Programme**\n\n**Total No.of Students**\n\n**Programme in Which Students Pursuing Higher Education**\n\n**No.of Students**\n\n2025-2026\n\nB.Com Honours - General\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Com Honours Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nBBA Honours-Business Management\n\n—\n\n—\n\n—\n\n2025-2026\n\nB. Sc Honours Computer Science\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours Artificial Intelligence\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Mathematics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Physics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Statistics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Biotechnology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc honours -Microbiology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nMCA-Master of Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nMBA - Master of Business Administration\n\n—\n\n—\n\n—\n\n\n\n__**Internship Statistics**__\n\n**Academic Year**\n\n**Programme**\n\n**Total No.of Students**\n\n**Partner Organizations**\n\n**Students Interned**\n\n2025-2026\n\nB.Com Honours - General\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Com Honours Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nBBA Honours-Business Management\n\n—\n\n—\n\n—\n\n2025-2026\n\nB. Sc Honours Computer Science\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours Artificial Intelligence\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Mathematics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Physics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Statistics\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours -Biotechnology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc honours -Microbiology\n\n—\n\n—\n\n—\n\n2025-2026\n\nB.Sc Honours-Chemistry\n\n—\n\n—\n\n—\n\n2025-2026\n\nMCA-Master of Computer Applications\n\n—\n\n—\n\n—\n\n2025-2026\n\nMBA - Master of Business Administration\n\n—\n\n—\n\n—"
+    id: "placement-statistics",
+    title: "Placement Statistics",
+    content: `**Placement Statistics**
+
+The institution maintains placement records and progression data to monitor students’ career advancement and employment opportunities.
+
+**Placement Highlights**
+
+- Students placed in reputed companies and organizations
+
+- Department-wise placement records
+
+- Higher education admissions
+
+- Entrepreneurship initiatives by students
+
+- Government and private sector placements
+
+The placement statistics are updated periodically for transparency and institutional quality assurance.
+
+**Outgoing Batch – Career Progression Statistics**
+
+**Academic Year**
+
+**Total Outgoing Batch Students**
+
+**Students Placed**
+
+**Students Pursuing Higher Education**
+
+**Students with Internship Offers**
+
+**Students Preparing for Competitive Exams**
+
+**Students Opted for Entrepreneurship / Self Employment**
+
+**Students Not Yet Placed / Awaiting Opportunities**
+
+2025-2026
+
+—
+
+—
+
+—
+
+—
+
+—
+
+—
+
+—
+
+2024-2025
+
+—
+
+—
+
+—
+
+—
+
+—
+
+—
+
+—
+
+2023-2024
+
+—
+
+—
+
+—
+
+—
+
+—
+
+—
+
+—
+
+__**Year wise Placement Packages**__
+
+**Academic Year**
+
+**Students Eligible (UG & PG)**
+
+**Students Placed**
+
+**Placement %**
+
+**Highest Package**
+
+2025-2026
+
+—
+
+—
+
+—
+
+—
+
+2024-2025
+
+—
+
+—
+
+—
+
+—
+
+2023-2024
+
+—
+
+—
+
+—
+
+—
+
+2022-2023
+
+—
+
+—
+
+—
+
+—
+
+2021-2022
+
+—
+
+—
+
+—
+
+—
+
+2020-2021
+
+—
+
+—
+
+—
+
+—
+
+2019-2020
+
+—
+
+—
+
+—
+
+—
+
+2018-2019
+
+—
+
+—
+
+—
+
+—
+
+__**Department/Programme -wise Placements**__
+
+**Academic Year**
+
+**Programme**
+
+**Total No.of Students**
+
+**Students Placed**
+
+**Placement %**
+
+2025-2026
+
+B.Com Honours - General
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Com Honours Computer Applications
+
+—
+
+—
+
+—
+
+2025-2026
+
+BBA Honours-Business Management
+
+—
+
+—
+
+—
+
+2025-2026
+
+B. Sc Honours Computer Science
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours Artificial Intelligence
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Mathematics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Physics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours-Statistics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Chemistry
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Biotechnology
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc honours -Microbiology
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours-Chemistry
+
+—
+
+—
+
+—
+
+2025-2026
+
+MCA-Master of Computer Applications
+
+—
+
+—
+
+—
+
+2025-2026
+
+MBA - Master of Business Administration
+
+—
+
+—
+
+—
+
+__**Higher Education Progression**__
+
+**Academic Year**
+
+**Programme**
+
+**Total No.of Students**
+
+**Programme in Which Students Pursuing Higher Education**
+
+**No.of Students**
+
+2025-2026
+
+B.Com Honours - General
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Com Honours Computer Applications
+
+—
+
+—
+
+—
+
+2025-2026
+
+BBA Honours-Business Management
+
+—
+
+—
+
+—
+
+2025-2026
+
+B. Sc Honours Computer Science
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours Artificial Intelligence
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Mathematics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Physics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours-Statistics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Chemistry
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Biotechnology
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc honours -Microbiology
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours-Chemistry
+
+—
+
+—
+
+—
+
+2025-2026
+
+MCA-Master of Computer Applications
+
+—
+
+—
+
+—
+
+2025-2026
+
+MBA - Master of Business Administration
+
+—
+
+—
+
+—
+
+__**Internship Statistics**__
+
+**Academic Year**
+
+**Programme**
+
+**Total No.of Students**
+
+**Partner Organizations**
+
+**Students Interned**
+
+2025-2026
+
+B.Com Honours - General
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Com Honours Computer Applications
+
+—
+
+—
+
+—
+
+2025-2026
+
+BBA Honours-Business Management
+
+—
+
+—
+
+—
+
+2025-2026
+
+B. Sc Honours Computer Science
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours Artificial Intelligence
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Mathematics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Physics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours-Statistics
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Chemistry
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours -Biotechnology
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc honours -Microbiology
+
+—
+
+—
+
+—
+
+2025-2026
+
+B.Sc Honours-Chemistry
+
+—
+
+—
+
+—
+
+2025-2026
+
+MCA-Master of Computer Applications
+
+—
+
+—
+
+—
+
+2025-2026
+
+MBA - Master of Business Administration
+
+—
+
+—
+
+—`
   },
   "recruitment-drives": {
-    "id": "recruitment-drives",
-    "title": "Campus Recruitment Drives",
-    "content": "**Campus Recruitment Drives**\n\nThe college regularly organizes campus recruitment drives in\ncollaboration with companies, industries, and placement agencies.\n\n**Recruitment Activities**\n\n- On-Campus Recruitment\n\n- Off-Campus Placement Support\n\n- Walk-in Drive Information\n\n- Company Interaction Sessions\n\n- Pre-Placement Talks\n\n- Mock Interviews & Group Discussions\n\nThese initiatives help students gain exposure to recruitment processes\nand employment opportunities.\n\n**On-Campus & Off-Campus Placement Drives 2025-2026**\n\n\n__Sl. No.__\n\n__Date__\n\n__Name of the Company / Organization__\n\n__No. of Students Attended__\n\n__No. of Students Placed__\n\n__Placement Drive Type__\n\n1\n\n09-01-2026\n\nFSL -- First Source Solutions Limited\n\n---\n\n32\n\nOn-Campus Placement Drive\n\n2\n\n09-02-2026\n\nInfo Quest Background Check Pvt. Ltd\n\n---\n\n34\n\nOn-Campus Placement Drive\n\n3\n\n10-02-2026\n\nILM -- Institute of Language Management (P) Ltd\n\n---\n\n35\n\nOn-Campus Placement Drive\n\n4\n\n18-02-2026\n\nEnglish For You Institution\n\n---\n\n62\n\nOn-Campus Placement Drive\n\n5\n\n19-02-2026\n\nTechbium Software Services Pvt. Ltd\n\n---\n\n38\n\nOn-Campus Placement Drive\n\n6\n\n16-02-2026\n\nTata Consultancy Services (TCS)\n\n---\n\n03\n\nOff-Campus Placement Drive\n\n7\n\n2024--2026\n\nAccenture -- MCA\n\n---\n\n01\n\nOff-Campus Placement Drive\n\n8\n\n2025--2026\n\nTECH MAHENDRA -- MCA\n\n---\n\n01\n\nOff-Campus Placement Drive\n\n9\n\n02-03-2026\n\nCALIBHR (State Bank Operations Support Services Pvt. Ltd)\n\n---\n\n01\n\nOff-Campus Placement Drive\n\n\n\n__📌 Placement Summary* --------------------- Category__\n\n__-------------- Total Selections__\n\nOn-Campus Placements\n\n201\n\nOff-Campus Placements\n\n06\n\nTotal Number of Selections\n\n207"
+    id: "recruitment-drives",
+    title: "Campus Recruitment Drives",
+    content: `Campus Recruitment Drives
+
+The college regularly organizes campus recruitment drives in collaboration with companies, industries, and placement agencies.
+
+**Recruitment Activities**
+- On-Campus Recruitment
+- Off-Campus Placement Support
+- Walk-in Drive Information
+- Company Interaction Sessions
+- Pre-Placement Talks
+- Mock Interviews & Group Discussions
+
+These initiatives help students gain exposure to recruitment processes and employment opportunities.
+
+**On-Campus & Off-Campus Placement Drives 2025-2026**
+
+**Sl. No.**
+
+**Date**
+
+**Name of the Company / Organization**
+
+**No. of Students Attended**
+
+**No. of Students Placed**
+
+**Placement Drive Type**
+
+4
+
+18-02-2026
+
+English For You Institution
+
+—
+
+62
+
+On-Campus
+
+6
+
+16-02-2026
+
+Tata Consultancy Services (TCS)
+
+—
+
+03
+
+Off-Campus
+
+
+
+**Category**
+
+**Total Selections**
+
+On-Campus Placements
+
+201
+
+Off-Campus Placements
+
+06
+
+Total Number of Selections
+
+207`
   },
   "skill-development": {
-    "id": "skill-development",
-    "title": "Skill Development Initiatives",
-    "content": "**Skill Development Initiatives**\n\nThe institution conducts various skill enhancement programmes to equip\nstudents with practical knowledge and industry-relevant competencies.\n\n**Major Skill Areas**\n\n- Communication Skills\n\n- Leadership Skills\n\n- Digital Literacy\n\n- Computer Applications\n\n- Time Management\n\n- Teamwork & Collaboration\n\n- Problem Solving Skills\n\n- Critical Thinking\n\n- Workplace Ethics\n\n**Activities Conducted**\n\n- Workshops\n\n- Hands-on Training Programmes\n\n- Add-on Courses\n\n- Certificate Courses\n\n- Expert Lectures\n\n- Skill-Based Seminars"
+    id: "skill-development",
+    title: "Skill Development Initiatives",
+    content: `Skill Development Initiatives The institution conducts various skill enhancement programmes to equip students with practical knowledge and industry-relevant competencies.
+
+**Major Skill Areas**
+
+- Communication Skills
+
+- Leadership Skills
+
+- Digital Literacy
+
+- Computer Applications
+
+- Time Management
+
+- Teamwork & Collaboration
+
+- Problem Softving Skills
+
+- Critical Thinking
+
+- Workplace Ethics
+
+**Activities Conducted**
+
+- Workshops
+
+- Hands-on Training Programmes
+
+- Add-on Courses
+
+- Certificate Courses
+
+- Expert Lectures
+
+- Skill-Based Seminars`
   },
   "soft-skills": {
-    "id": "soft-skills",
-    "title": "Soft Skills & Personality Development",
-    "content": "**Soft Skills & Personality Development**\n\nThe college gives special emphasis to personality development and soft\nskills training to improve students' confidence and professionalism.\n\n**Focus Areas**\n\n- Communication & Presentation Skills\n\n- Public Speaking\n\n- Interview Skills\n\n- Resume Writing\n\n- Leadership Development\n\n- Interpersonal Skills\n\n- Professional Etiquette\n\n- Self-Confidence Building\n\nThese programmes help students become career-ready and socially\nresponsible individuals."
+    id: "soft-skills",
+    title: "Soft Skills & Personality Development",
+    content: `Soft Skills & Personality Development The college gives special emphasis to personality development and soft skills training to improve students’ confidence and professionalism.
+
+**Focus Areas**
+
+- Communication & Presentation Skills
+
+- Public Speaking
+
+- Interview Skills
+
+- Resume Writing
+
+- Leadership Development
+
+- Interpersonal Skills
+
+- Professional Etiquette
+
+- Self-Confidence Building
+
+These programmes help students become career-ready and socially responsible individuals.`
   },
   "internships-exposure": {
-    "id": "internships-exposure",
-    "title": "Internships & Industry Exposure",
-    "content": "**Internships & Industry Exposure**\n\nExperiential learning is encouraged through internships, industrial\nvisits, field work, and industry interaction programmes.\n\n**Internship Opportunities**\n\n- Industry-Based Internships\n\n- NGO Internships\n\n- Project Internships\n\n- Summer Training Programmes\n\n- Community Engagement Activities\n\n**Industry Exposure Activities**\n\n- Industrial Visits\n\n- Field Trips\n\n- Guest Lectures by Industry Experts\n\n- Industry--Academia Interaction Sessions\n\n- Live Projects and Case Studies\n\nSuch exposure helps students connect classroom learning with real-world\napplications."
+    id: "internships-exposure",
+    title: "Internships & Industry Exposure",
+    content: `Internships & Industry Exposure Experiential learning is encouraged through internships, industrial visits, field work, and industry interaction programmes.
+
+**Internship Opportunities**
+
+- Industry-Based Internships
+
+- NGO Internships
+
+- Project Internships
+
+- Summer Training Programmes
+
+- Community Engagement Activities
+
+Industry Exposure Activities
+
+- Industrial Visits
+
+- Field Trips
+
+- Guest Lectures by Industry Experts
+
+- Industry–Academia Interaction Sessions
+
+- Live Projects and Case Studies
+
+Such exposure helps students connect classroom learning with real-world applications.`
   },
   "competitive-coaching": {
-    "id": "competitive-coaching",
-    "title": "Competitive Exam Coaching",
-    "content": "**Competitive Exam Coaching**\n\nThe institution supports students preparing for higher education\nentrance tests and government recruitment examinations.\n\n**Coaching Support for**\n\n- APPSC\n\n- UPSC\n\n- Banking Examinations\n\n- SSC Examinations\n\n- ICET / PGCET\n\n- NET / SET\n\n- Teacher Eligibility Tests\n\n- Police Recruitment Examinations\n\n**Coaching Activities**\n\n- Aptitude Training\n\n- Reasoning Skills\n\n- Quantitative Techniques\n\n- Communication Skills\n\n- Career Guidance Sessions\n\n- Motivational Programmes\n\n\n\n\n**Competitive Examination Achievements -2025-2026**\n\n\n__S.No__\n\n__Student Name__\n\n__Programme__\n\n__Competitive Examination__\n\n__Qualification/Achievement__\n\n__Year__\n\n__View Document__\n\n\n**Higher Education & Entrance Examination Achievements :2025-2026**\n\n\n__S.No__\n\n__Student Name__\n\n__Programme__\n\n__Entrance Examination__\n\n__Admission / Achievement__\n\n__Academic Year__\n\n__View Document__"
+    id: "competitive-coaching",
+    title: "Competitive Exam Coaching",
+    content: `Competitive Exam Coaching The institution supports students preparing for higher education entrance tests and government recruitment examinations.
+
+**Coaching Support for**
+
+- APPSC
+
+- UPSC
+
+- Banking Examinations
+
+- SSC Examinations
+
+- ICET / PGCET
+
+- NET / SET
+
+- Teacher Eligibility Tests
+
+- Police Recruitment Examinations
+
+**Coaching Activities**
+
+- Aptitude Training
+
+- Reasoning Skills
+
+- Quantitative Techniques
+
+- Communication Skills
+
+- Career Guidance Sessions
+
+- Motivational Programmes
+
+Competitive Examination Achievements -2025-2026 S.No Student Name Programme Competitive Examination Qualification/Achievement Year View Document Higher Education & Entrance Examination Achievements :2025-2026 S.No Student Name Programme Entrance Examination Admission / Achievement Academic Year View Document`
   },
   "career-guidance": {
-    "id": "career-guidance",
-    "title": "Career Guidance & Counselling",
-    "content": "**Career Guidance & Counselling**\n\nCareer guidance programmes are organized to help students identify\nsuitable career paths and higher education opportunities.\n\n**Guidance Activities**\n\n- Career Awareness Programmes\n\n- Higher Education Guidance\n\n- Overseas Education Counselling\n\n- Employment Opportunity Awareness\n\n- One-to-One Counselling Sessions\n\n- Alumni Interaction Sessions\n\nThe counselling initiatives support informed career decision-making\namong students."
+    id: "career-guidance",
+    title: "Career Guidance & Counselling",
+    content: `Career Guidance & Counselling Career guidance programmes are organized to help students identify suitable career paths and higher education opportunities.
+
+**Guidance Activities**
+
+- Career Awareness Programmes
+
+- Higher Education Guidance
+
+- Overseas Education Counselling
+
+- Employment Opportunity Awareness
+
+- One-to-One Counselling Sessions
+
+- Alumni Interaction Sessions
+
+The counselling initiatives support informed career decision-making among students.`
   },
   "entrepreneurship": {
-    "id": "entrepreneurship",
-    "title": "Entrepreneurship Development",
-    "content": "**Entrepreneurship Development**\n\nThe Institution promotes entrepreneurial thinking and innovation among\nstudents through entrepreneurship awareness programmes and skill\ndevelopment activities.\n\n**Entrepreneurship Initiatives**\n\n- Entrepreneurship Awareness Camps\n\n- Startup Motivation Sessions\n\n- Innovation & Business Idea Competitions\n\n- Financial Literacy Programmes\n\n- Women Entrepreneurship Guidance\n\n- Interaction with Entrepreneurs\n\nThe programmes encourage self-employment and leadership development."
+    id: "entrepreneurship",
+    title: "Entrepreneurship Development",
+    content: `Entrepreneurship Development The Institution promotes entrepreneurial thinking and innovation among students through entrepreneurship awareness programmes and skill development activities.
+
+**Entrepreneurship Initiatives**
+
+- Entrepreneurship Awareness Camps
+
+- Startup Motivation Sessions
+
+- Innovation & Business Idea Competitions
+
+- Financial Literacy Programmes
+
+- Women Entrepreneurship Guidance
+
+- Interaction with Entrepreneurs
+
+The programmes encourage self-employment and leadership development.`
   },
   "placement-partnerships": {
-    "id": "placement-partnerships",
-    "title": "Industry Linkages / Placement Partnerships",
-    "content": "**Industry Linkages / Placement Partnerships**\n\nThe college establishes collaborations with industries, organizations,\nand professional bodies to strengthen employability opportunities.\n\n**Key Objectives**\n\n- Industry--Institution Collaboration\n\n- Internship Support\n\n- Placement Assistance\n\n- Skill Training Partnerships\n\n- Expert Interaction Sessions\n\n- Career-Oriented Programmes\n\nThese linkages help students gain industry exposure and practical\nlearning experiences."
+    id: "placement-partnerships",
+    title: "Industry Linkages / Placement Partnerships",
+    content: `Industry Linkages / Placement Partnerships The college establishes collaborations with industries, organizations, and professional bodies to strengthen employability opportunities.
+
+**Key Objectives**
+
+- Industry–Institution Collaboration
+
+- Internship Support
+
+- Placement Assistance
+
+- Skill Training Partnerships
+
+- Expert Interaction Sessions
+
+- Career-Oriented Programmes
+
+These linkages help students gain industry exposure and practical learning experiences.`
   },
   "capacity-building": {
-    "id": "capacity-building",
-    "title": "Capacity Building & Skill Enhancement",
-    "content": "**Capacity Building & Skill Enhancement**\n\nThe institution regularly conducts programmes for holistic student\ndevelopment in accordance with NAAC quality initiatives.\n\n**Areas Covered**\n\n- Soft Skills Development\n\n- ICT & Computing Skills\n\n- Life Skills Education\n\n- Language & Communication Skills\n\n- Leadership & Management Skills\n\n- Emotional Well-being & Stress Management\n\n- Employability Enhancement\n\nThe programmes contribute to students' academic, personal, and\nprofessional growth."
+    id: "capacity-building",
+    title: "Capacity Building & Skill Enhancement",
+    content: `Capacity Building & Skill Enhancement The institution regularly conducts programmes for holistic student development in accordance with NAAC quality initiatives.
+
+**Areas Covered**
+
+- Soft Skills Development
+
+- ICT & Computing Skills
+
+- Life Skills Education
+
+- Language & Communication Skills
+
+- Leadership & Management Skills
+
+- Emotional Well-being & Stress Management
+
+- Employability Enhancement
+
+The programmes contribute to students’ academic, personal, and professional growth.`
   },
   "alumni-support": {
-    "id": "alumni-support",
-    "title": "Alumni Career Support",
-    "content": "**Alumni Career Support**\n\nThe Alumni Association actively supports students by providing career\nguidance, mentorship, and professional networking opportunities.\n\n**Alumni Support Activities**\n\n- Career Interaction Sessions\n\n- Placement Guidance\n\n- Industry Exposure\n\n- Mentoring Programmes\n\n- Internship Assistance\n\n- Motivational Talks by Alumni\n\nThe alumni network contributes significantly to institutional growth and\nstudent progression."
+    id: "alumni-support",
+    title: "Alumni Career Support",
+    content: `Alumni Career Support The Alumni Association actively supports students by providing career guidance, mentorship, and professional networking opportunities.
+
+**Alumni Support Activities**
+
+- Career Interaction Sessions
+
+- Placement Guidance
+
+- Industry Exposure
+
+- Mentoring Programmes
+
+- Internship Assistance
+
+- Motivational Talks by Alumni
+
+The alumni network contributes significantly to institutional growth and student progression.`
   },
   "training-calendar": {
-    "id": "training-calendar",
-    "title": "Training Calendar / Activity Gallery",
-    "content": "**Training Calendar / Activity Gallery**\n\nThe Training & Placement Cell maintains a yearly calendar of activities\nand events conducted for student development.\n\n**Activities Included**\n\n- Workshops & Seminars\n\n- Placement Drives\n\n- Internship Programmes\n\n- Skill Development Sessions\n\n- Career Guidance Activities\n\n- Industrial Visits\n\n- Personality Development Programmes\n\nPhotographs, reports, and event highlights are displayed in the Activity\nGallery to showcase student participation and achievements.\n\n**Contact Information**\n\n**Training & Placement Cell**\n\n**Dr. J. Pratapa Reddy**\\\n*M.Sc., M.Phil., Ph.D.*\\\nPlacement Officer\n\n📞 **Mobile:** +91 94405 42609\n\n📧 **Email:**\n\n- <gntstannsplacementcell@gmail.com>\n\n- <St_anns_coll@yahoo.co.in>\n\n🏛 St. Ann's College for Women\\\nTraining & Placement Cell\n\n**Activity Gallery**"
+    id: "training-calendar",
+    title: "Training Calendar / Activity Gallery",
+    content: `Training Calendar / Activity Gallery The Training & Placement Cell maintains a yearly calendar of activities and events conducted for student development.
+
+**Activities Included**
+
+- Workshops & Seminars
+
+- Placement Drives
+
+- Internship Programmes
+
+- Skill Development Sessions
+
+- Career Guidance Activities
+
+- Industrial Visits
+
+- Personality Development Programmes
+
+Photographs, reports, and event highlights are displayed in the Activity Gallery to showcase student participation and achievements.
+
+**Contact Information**
+
+Training & Placement Cell Dr. J. Pratapa Reddy M.Sc., M.Phil., Ph.D. Placement Officer Mobile: +91 94405 42609 Email:
+
+- gntstannsplacementcell@gmail.com
+
+- St_anns_coll@yahoo.co.in 🏛 St. Ann’s College for Women
+
+Training & Placement Cell Activity Gallery`
   },
   "industry-partnerships": {
-    "id": "industry-partnerships",
-    "title": "Industry Partnerships",
-    "content": "**Industry Partnerships**\n\n**Industry--Institution Collaboration**\n\nAt St. Ann's College for Women, the institution actively promotes strong\nindustry linkages to bridge the gap between academic learning and\nprofessional practice. The college collaborates with industries,\ncorporate organizations, professional bodies, educational institutions,\nand service sectors to enhance students' employability, practical\nexposure, and career readiness.\n\nSpecial focus is given to students of Degree, PG, MBA, and MCA\nprogrammes through industry-oriented training, professional\ninteractions, internships, and skill enhancement initiatives.\n\n**Objectives**\n\n- Strengthen academia--industry collaboration\n\n- Enhance employability and professional competencies of students\n\n- Promote experiential and outcome-based learning\n\n- Facilitate internships, training, and placement opportunities\n\n- Encourage innovation, entrepreneurship, and professional exposure\n\n- Develop industry-relevant skills among Degree, MBA, and MCA students\n\n**Major Industry Partnership Activities**\n\n**Industry--Academia Interaction Programmes**\n\nThe college regularly organizes interaction sessions with industry\nprofessionals, entrepreneurs, corporate trainers, and domain experts to\nprovide students with practical insights into current industry practices\nand emerging career opportunities.\n\n**Skill Development & Training Initiatives**\n\nIndustry-supported training programmes are conducted to improve:\n\n- Communication and soft skills\n\n- Technical and digital competencies\n\n- Leadership and teamwork abilities\n\n- Aptitude and problem-solving skills\n\n- Career readiness and workplace ethics\n\n**Seminars, Workshops & Conferences**\n\nCollaborative academic programmes such as:\n\n- Workshops\n\n- Seminars\n\n- Webinars\n\n- Faculty development programmes\n\n- Career guidance sessions\\\n  are organized in association with industry experts and professional\n  organizations.\n\n**Internship & Placement Support**\n\nIndustry collaborations facilitate:\n\n- Internship opportunities\n\n- Industrial training\n\n- Project work guidance\n\n- Campus recruitment support\n\n- Career mentoring and placement assistance\n\n**Professional Exposure for MBA & MCA Students**\n\nSpecialized industry interactions are conducted for MBA and MCA students\nin areas such as:\n\n- Business management practices\n\n- Entrepreneurship development\n\n- IT and software technologies\n\n- Digital transformation\n\n- Data analytics and emerging technologies\n\n**Institutional Commitment**\n\nThe institution continuously strives to establish sustainable\npartnerships with reputed organizations and industries to empower\nstudents with professional knowledge, practical exposure, and\nemployability skills in alignment with NAAC quality initiatives and UGC\nguidelines.\n\n**View PDF**\n\n**Photo Galley**"
+    id: "industry-partnerships",
+    title: "Industry Partnerships",
+    content: `Industry Partnerships Industry–Institution Collaboration At St. Ann’s College for Women, the institution actively promotes strong industry linkages to bridge the gap between academic learning and professional practice. The college collaborates with industries, corporate organizations, professional bodies, educational institutions, and service sectors to enhance students’ employability, practical exposure, and career readiness. Special focus is given to students of Degree, PG, MBA, and MCA programmes through industry-oriented training, professional interactions, internships, and skill enhancement initiatives.
+
+**Objectives**
+
+- Strengthen academia–industry collaboration
+
+- Enhance employability and professional competencies of students
+
+- Promote experiential and outcome-based learning
+
+- Facilitate internships, training, and placement opportunities
+
+- Encourage innovation, entrepreneurship, and professional exposure
+
+- Develop industry-relevant skills among Degree, MBA, and MCA students
+
+Major Industry Partnership Activities Industry–Academia Interaction Programmes The college regularly organizes interaction sessions with industry professionals, entrepreneurs, corporate trainers, and domain experts to provide students with practical insights into current industry practices and emerging career opportunities. Skill Development & Training Initiatives Industry-supported training programmes are conducted to improve:
+
+- Communication and soft skills
+
+- Technical and digital competencies
+
+- Leadership and teamwork abilities
+
+- Aptitude and problem-Softving skills
+
+- Career readiness and workplace ethics
+
+Seminars, Workshops & Conferences Collaborative academic programmes such as:
+
+- Workshops
+
+- Seminars
+
+- Webinars
+
+- Faculty development programmes
+
+- Career guidance sessions are organized in association with industry experts and professional organizations.
+
+Internship & Placement Support Industry collaborations facilitate:
+
+- Internship opportunities
+
+- Industrial training
+
+- Project work guidance
+
+- Campus recruitment support
+
+- Career mentoring and placement assistance
+
+Professional Exposure for MBA & MCA Students Specialized industry interactions are conducted for MBA and MCA students in areas such as:
+
+- Business management practices
+
+- Entrepreneurship development
+
+- IT and software technologies
+
+- Digital transformation
+
+- Data analytics and emerging technologies
+
+**Institutional Commitment**
+
+The institution continuously strives to establish sustainable partnerships with reputed organizations and industries to empower students with professional knowledge, practical exposure, and employability skills in alignment with NAAC quality initiatives and UGC guidelines. View PDF Photo Galley`
   },
   "internships-apprenticeships": {
-    "id": "internships-apprenticeships",
-    "title": "Internships & Apprenticeships",
-    "content": "**Internships & Apprenticeships**\n\n**Experiential Learning & Industry Exposure**\n\nAt St. Ann's College for Women, the institution strongly promotes\ninternships, apprenticeships, field projects, and hands-on training\nprogrammes as an integral part of holistic education and student\nemployability enhancement. In alignment with NAAC quality initiatives,\nUGC guidelines, and experiential learning practices, the college\nprovides opportunities for students to gain practical exposure,\nworkplace experience, and industry-oriented skills.\n\nThe institution encourages Degree, PG, MBA, and MCA students to\nparticipate in internships and training programmes that enhance\nprofessional competencies, career readiness, and real-time learning\nexperiences.\n\n**Objectives**\n\n- Provide real-time industry and workplace exposure\n\n- Develop professional competencies and workplace ethics\n\n- Enhance employability and career readiness\n\n- Promote experiential and outcome-based learning\n\n- Strengthen practical knowledge and problem-solving abilities\n\n- Encourage industry interaction and professional networking\n\n**Internship Support & Facilitation**\n\nThe institution provides continuous guidance and support to students\nthrough structured internship and apprenticeship initiatives.\n\n**Internship Guidance & Orientation**\n\nStudents are provided with:\n\n- Internship orientation programmes\n\n- Career guidance and mentoring\n\n- Awareness sessions on internship opportunities\n\n- Resume preparation and interview guidance\n\n- Professional communication training\n\n**Collaboration with Industries & Organizations**\n\nThe college collaborates with:\n\n- Industries and corporate organizations\n\n- IT companies and software firms\n\n- Educational institutions\n\n- NGOs and social service organizations\n\n- Startups and entrepreneurship centres\n\n- Government departments and agencies\n\nThese collaborations help students gain practical exposure in their\nrespective disciplines.\n\n**Department-wise Internship Opportunities**\n\nInternship opportunities are facilitated for students of:\n\n- Degree Programmes\n\n- MBA\n\n- MCA\n\n- Commerce & Management\n\n- Computer Applications\n\n- Sciences and Humanities\n\nStudents undertake internships relevant to their academic specialization\nand career goals.\n\n**Monitoring & Evaluation**\n\nThe institution ensures effective implementation of internships through:\n\n- Faculty mentorship and monitoring\n\n- Internship progress evaluation\n\n- Student performance assessment\n\n- Submission of internship reports and presentations\n\n- Feedback from organizations and mentors\n\n**Internship Certifications & Documentation**\n\nStudents are encouraged to complete internships successfully and obtain:\n\n- Internship completion certificates\n\n- Training participation certificates\n\n- Project reports and practical documentation\n\n- Industry evaluation feedback\n\n**Types of Internship Opportunities**\n\nStudents are encouraged to undertake internships and apprenticeships in:\n\n- Industries and manufacturing sectors\n\n- IT and software organizations\n\n- Financial and banking institutions\n\n- Educational institutions\n\n- NGOs and community organizations\n\n- Healthcare and service sectors\n\n- Government and private organizations\n\n- Entrepreneurship and startup ecosystems\n\n**Benefits to Students**\n\n- Exposure to real-time work environments\n\n- Development of technical and professional skills\n\n- Improved communication and teamwork abilities\n\n- Better understanding of industry expectations\n\n- Enhanced confidence and employability\n\n- Career awareness and professional networking opportunities\n\n**Institutional Commitment**\n\nThe institution remains committed to empowering students through\nexperiential learning, practical training, and industry engagement to\nprepare them for higher education, entrepreneurship, and successful\nprofessional careers.\n\n**View PDF**\n\n**Photo Galley**\n\n**Suggested Website Additions Buutton**\n\nYou may also display:\n\n- Internship activity photographs\n\n- Student internship reports\n\n- Internship completion certificates\n\n- Company/organization logos\n\n- Internship statistics\n\n- MoUs related to internships\n\n- Student success stories\n\n- Annual internship reports PDF section\n\n- Student Internship Testimonials\n\n- Internship Gallery\n\n- Placement & Career Outcomes"
+    id: "internships-apprenticeships",
+    title: "Internships & Apprenticeships",
+    content: `Internships & Apprenticeships Experiential Learning & Industry Exposure At St. Ann’s College for Women, the institution strongly promotes internships, apprenticeships, field projects, and hands-on training programmes as an integral part of holistic education and student employability enhancement. In alignment with NAAC quality initiatives, UGC guidelines, and experiential learning practices, the college provides opportunities for students to gain practical exposure, workplace experience, and industry-oriented skills. The institution encourages Degree, PG, MBA, and MCA students to participate in internships and training programmes that enhance professional competencies, career readiness, and real-time learning experiences.
+
+**Objectives**
+
+- Provide real-time industry and workplace exposure
+
+- Develop professional competencies and workplace ethics
+
+- Enhance employability and career readiness
+
+- Promote experiential and outcome-based learning
+
+- Strengthen practical knowledge and problem-Softving abilities
+
+- Encourage industry interaction and professional networking
+
+Internship Support & Facilitation The institution provides continuous guidance and support to students through structured internship and apprenticeship initiatives. Internship Guidance & Orientation Students are provided with:
+
+- Internship orientation programmes
+
+- Career guidance and mentoring
+
+- Awareness sessions on internship opportunities
+
+- Resume preparation and interview guidance
+
+- Professional communication training
+
+Collaboration with Industries & Organizations The college collaborates with:
+
+- Industries and corporate organizations
+
+- IT companies and software firms
+
+- Educational institutions
+
+- NGOs and social service organizations
+
+- Startups and entrepreneurship centres
+
+- Government departments and agencies
+
+These collaborations help students gain practical exposure in their respective disciplines. Department-wise Internship Opportunities
+
+**Internship opportunities are facilitated for students of:**
+
+- Degree Programmes
+
+- MBA
+
+- MCA
+
+- Commerce & Management
+
+- Computer Applications
+
+- Sciences and Humanities
+
+Students undertake internships relevant to their academic specialization and career goals. Monitoring & Evaluation The institution ensures effective implementation of internships through:
+
+- Faculty mentorship and monitoring
+
+- Internship progress evaluation
+
+- Student performance assessment
+
+- Submission of internship reports and presentations
+
+- Feedback from organizations and mentors
+
+Internship Certifications & Documentation Students are encouraged to complete internships successfully and obtain:
+
+- Internship completion certificates
+
+- Training participation certificates
+
+- Project reports and practical documentation
+
+- Industry evaluation feedback
+
+Types of Internship Opportunities Students are encouraged to undertake internships and apprenticeships in:
+
+- Industries and manufacturing sectors
+
+- IT and software organizations
+
+- Financial and banking institutions
+
+- Educational institutions
+
+- NGOs and community organizations
+
+- Healthcare and service sectors
+
+- Government and private organizations
+
+- Entrepreneurship and startup ecosystems
+
+**Benefits to Students**
+
+- Exposure to real-time work environments
+
+- Development of technical and professional skills
+
+- Improved communication and teamwork abilities
+
+- Better understanding of industry expectations
+
+- Enhanced confidence and employability
+
+- Career awareness and professional networking opportunities
+
+**Institutional Commitment**
+
+The institution remains committed to empowering students through experiential learning, practical training, and industry engagement to prepare them for higher education, entrepreneurship, and successful professional careers. View PDF Photo Galley Suggested Website Additions Buutton You may also display:
+
+- Internship activity photographs
+
+- Student internship reports
+
+- Internship completion certificates
+
+- Company/organization logos
+
+- Internship statistics
+
+- MoUs related to internships
+
+- Student success stories
+
+- Annual internship reports PDF section
+
+- Student Internship Testimonials
+
+- Internship Gallery
+
+- Placement & Career Outcomes`
   },
   "mous-agreements": {
-    "id": "mous-agreements",
-    "title": "MoUs / Agreements",
-    "content": "__**MEMORANDUM OF UNDERSTANDING (MOUS) 2025-2026**__\n\n—\n\n**S. No**\n\n**Name of the Department**\n\n**Name of the Organization/Institution/Corporate with which MoUs is Singed**\n\n**Year of Signing**\n\n**Duration**\n\n**Purpose**\n\n**Years**\n\n—\n\n1\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nExcelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka\n\n19-02-2025\n\n19-02-2027\n\nSkill development and internships\n\n2\n\n[View PDF](/documents/placements/MOUS 2025-2026/01. EXCELR Edtech Pvt.Ltd 2025-2027.pdf)\n\n2\n\nSt.Ann's College for Women, Gorantla,Guntur\n\nDimensions Coaching Centre 4/12 Bordipet, Guntur -2\n\n03-08-2025\n\n03-08-2030\n\nCareer guidance and Competitive Exam coaching\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/02 Dimensions Coaching Centre 2025-2030.pdf)\n\n3\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nData Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081\n\n09-12-2024\n\n—\n\nTechnical training\n\n1\n\n—\n\n4\n\nSt. Ann's College for Women, Gorantla, Guntur\n\nAla Hospital Amaravathi Road, Guntur\n\n12-06-2017\n\n12-06-2026\n\nHealth awareness and medical assistance\n\n10\n\n[View PDF](/documents/placements/MOUS 2025-2026/04 Ala Hospital 2017-2026.pdf)\n\n5\n\nSt. Ann's College for Women, Gorantla, Guntur\n\nAndhra Pradesh State Skill Development Centre (APSSDC)\n\n24-05-2017\n\n—\n\nSkill training and certification programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/05 Apssdc 2019-.pdf)\n\n6\n\nSt.Ann's College for Women, Gorantla, Guntur\n\nPidilite Industries Ltd., Guntur\n\n15-11-2025\n\n—\n\nIndustrial exposure and skill enhancement\n\n3\n\n—\n\n7\n\nSt.Ann's College for Women, Gorantla, Guntur\n\nMagic Bus India Foundation Registered Office Relaibale Plaza, Unit No.301,3rd Floor, Plot No K 10, Navi Mumbai\n\n28-01-2026\n\n28-01-2029\n\nSkill training and Placements Assistance\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/07 Magic Bus India Foundation 2026-2029.pdf)\n\n8\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nVnurtureit Training & Placement Guntur\n\n22-10-2024\n\n20-10-2026\n\n-- -- -------------- Technical training and placement assistance -------------- --------------\n\n2\n\n[View PDF](/documents/placements/MOUS 2025-2026/08 Vnutureit Training & Placement -MCA 2024-2026.pdf)\n\n9\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nJKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n21-10-2024\n\n21-10-2029\n\nAcademic collaboration and student workshops\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/09 JKC College Guntur 2024-2029 -MCA Department.pdf)\n\n10\n\nDepartment of MBA St.Ann's College for Women, Gorantla,Guntur\n\nSri Satya Sai Marketings Industrial Estate,Amaravathi Road,Guntur\n\n05-06-2025\n\n05-06-2030\n\nIndustrial exposure and internship training\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/10  Sri Satya Sai Marketings MBA 2025-2030.pdf)\n\n11\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nSree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka,Narakoduru,Guntur\n\n01-06-2025\n\n01-06-2030\n\nIndustrial training and management exposure\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/11.Sree Lalitha Parameswari Spinning Mills (P)Ltd MBA 2025-2030.pdf)\n\n12\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nAmaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.\n\n24-04-2022\n\n24-04-2025\n\n-- -- -------------- Internship support and practical business learning -------------- --------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/12 Amaravathi Poly Plastic MBA 2022-2025.pdf)\n\n13\n\nDepartment of MBA St.Ann's College for Women,Gorantla,Guntur\n\nUpendra Homeo Pharmaseuticals Phase III,Plot No 220,Auto Nagar,Guntur,AP\n\n13-06-2025\n\n13-06-2030\n\nIndustrial exposure and management training\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/13.Upendra Homeo Pharmaseuticals MBA 2025-2030.pdf)\n\n14\n\nDepartment of BCA St.Ann's College for Women,Gorantla,Guntur\n\nThe Red-carpet Animation Visualfx Bordipet,Guntur.\n\n10-06-2025\n\n10-06-2028\n\nAnimation training and visual effects skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/14 The Red Carpet Animation -BCA 2025-2028.pdf)\n\n15\n\nDepartment of Statistics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n03-02-2026\n\n02-02-2029\n\n-- -- --------------- Academic collaboration and student training programmes --------------- ---------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/15.JKC Statistics 2026-2029.pdf)\n\n16\n\nDepartment of Statistics St.Ann's College for Women,Gorantla,Guntur\n\nDepartment of Statistics Career Degree College/9 Bordipet,Guntur\n\n03-02-2026\n\n02-02-2029\n\nWorkshops, knowledge sharing, and statistical learning activities\n\n4\n\n[View PDF](/documents/placements/MOUS 2025-2026/16. Career Degree -Statistics 2022-2026.pdf)\n\n17\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and laboratory exposure\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/17 AC College Physcis 2019-2024.pdf)\n\n18\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics JKC (Tellakula Jalayya Polisetty Somasundaram )College Guntur\n\n02-02-2023\n\n02-02-2026\n\nStudent workshops and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/18.JKC Physics 2026-2029.pdf)\n\n19\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Botany Andhra Christian College, Guntur.\n\n01-06-2022\n\n01-06-2025\n\nAcademic collaboration and botanical research activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/19  AC  College Botany  2022.pdf)\n\n20\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nNexus Research Institute Nagarala, Guntur\n\n01-07-2024\n\n01-07-2027\n\nResearch training and laboratory exposure programmes\n\n3\n\n—\n\n21\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nSri Ramakrishna Nursery MG Inner Ring Road,Guntur\n\n01-07-2025\n\n01-07-2028\n\nPlant cultivation and nursery management training Practical exposure in horticulture and botanical studies\n\n3\n\n—\n\n22\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n10-09-2024\n\n10-09-2029\n\nResearch training and laboratory skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/22. PEARL Biotechnology 2024-2029.pdf)\n\n23\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/23. SR Technologies -Biotechnology 2022.pdf)\n\n24\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nKrishi Vigyan Kendra lam Farm Sri Venkateswara Veternity University,Lam,Guntur\n\n04-02-2026\n\n04-02-2031\n\nAgricultural biotechnology training and research exposure Practical learning in biofertilizers, plant sciences, and laboratory techniques\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/24 SVV university LAm -Biotechnology 2026-2031.pdf)\n\n25\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n12-11-2025\n\n12-11-2030\n\nResearch training and laboratory skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/25. PEARL Microbiology 2025-2029.pdf)\n\n26\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nFuture India Foundation MA Advanced Diagnostic & Research Centre, Kothapet\n\n17-07-2022\n\n—\n\nDiagnostic training and research exposure\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/26 Future India Imcrobiology 2022.pdf)\n\n27\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/27.SR Technologies -Microbiology  2022.pdf)\n\n28\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n29-04-2022\n\nEffective untill terminated by any one of the Partner\n\nLaboratory training and research skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/28.PEARL Chemsitry 2022.pdf)\n\n29\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Chemistry Andhra Christian College, Guntur.\n\n20-06-2021\n\n20-06-2026\n\nAcademic collaboration and student training programmes\n\n6\n\n[View PDF](/documents/placements/MOUS 2025-2026/29 AC College Chemistry 2021.pdf)\n\n30\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Andhra Christian College, Guntur.\n\n09-03-2023\n\n09-03-2025\n\nAcademic collaboration and commerce-related student training\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/30 AC College  Commerce 2023.pdf)\n\n31\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nNitya Computer Accounting Training Arundelpet, Guntur\n\n25-07-2022\n\n25-07-2025\n\nAccounting software training and skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/31 Nitya Computer -Commerce  2022.pdf)\n\n32\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Career Degree College, Guntur\n\n01-06-2022\n\n01-06-2025\n\nWorkshops, seminars, and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/32.Career Degree Collee -Commerece 2022.pdf)\n\n33\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce BHH Degree College for Women\n\n04-06-2022\n\n04-06-2025\n\nStudent interaction and academic enrichment programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/33. BHH College Commerece 2022.pdf)\n\n34\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nAndhra Pradesh Silabam Association Sangadigunta, Guntur\n\n22-03-2022\n\n22-03-2027\n\nSports training and martial arts skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/34.Silabam-Physical Edcuation.pdf)\n\n35\n\nDepartment of Physical Education St.Ann's College for Women,Gorantla,Guntur\n\nShito Ryu Kai International Karate Do-Academy India Brundavan Gardens, Guntur-AP\n\n01-09-2021\n\n01-09-2026\n\nKarate training and self-defence skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/35.Karate-Physical Edcucation.pdf)\n\n36\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physical Education Hindu College, Guntur,AP\n\n06-09-2022\n\n06-09-2025\n\nSports collaboration and student training programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/36.Hindu College-Physical Educaiton.pdf)\n\n37\n\nDepartment of Mathematics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Hindu College, Guntur.\n\n23-01-2023\n\n—\n\nAcademic collaboration and mathematical skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/37.Hindu College -Mathematics.pdf)\n\n38\n\nDepartment of Mathematics St. Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Andhra Christian College, Guntur\n\n15-07-2019\n\n—\n\nWorkshops, seminars, and mathematical knowledge-sharing activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/38.AC College-Mathematics.pdf)\n\n39\n\nDepartment of Mathematics St. Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Chalapathi Degree College\n\n03-11-2022\n\n—\n\nStudent workshops, seminars, and knowledge-sharing programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/39 Chalapathi College-Mathematics.pdf)\n\n40\n\nDepartment of Oriental Languages St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Telugu Hindu College, Guntur\n\n07-07-2021\n\n—\n\nLanguage enrichment and literary activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/40.Hindu COllege -Oriental Languages.pdf)\n\n41\n\nDepartment of English St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of English Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and communication skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/41.AC College -English.pdf)\n\n42\n\nDepartment of English St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of English Hindu College ,Guntur\n\n04-05-2021\n\n04-05-2024\n\nAcademic collaboration and communication skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/42.Hindu COllege English.pdf)\n\n\n\n__**MEMORANDUM OF UNDERSTANDING (MOUS) 2024-2025**__\n\n—\n\n**S. No**\n\n**Name of the Department**\n\n**Name of the Organization/Institution/Corporate with which MoUs is Singed**\n\n**Year of Signing**\n\n**Duration**\n\n**Purpose**\n\n**Years**\n\n—\n\n1\n\nSt. Ann's College for Women, Gorantla,Guntur\n\nExcelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka\n\n09-02-2023\n\n09-02-2025\n\nSkill development and internships\n\n2\n\n[View PDF](/documents/placements/MOUS 2024-2025/01 EXCER Edtech Pvt.Ltd 2023-2024 & 2024-2025.pdf)\n\n2\n\nSt.Ann's College for Women, Gorantla,Guntur\n\nDimensions Coaching Centre 4/12 Brodipet, Guntur -2\n\n02-08-2020\n\n02-08-2025\n\nCareer guidance and Competitive Exam coaching\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/02.Dimensions CoachingCentre 2020-2025.pdf)\n\n3\n\nSt.Ann's College for Women, Gorantla, Guntur\n\nData Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081\n\n09-12-2024\n\n—\n\nTechnical training\n\n1\n\n[View PDF](/documents/placements/MOUS 2024-2025/03 Datavalley India Pvt.Ltd (Long Term Internship 2024-2025).pdf)\n\n4\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nAla Hospital Amaravathi Road, Guntur\n\n12-06-2017\n\n12-06-2026\n\nHealth awareness and medical assistance\n\n10\n\n[View PDF](/documents/placements/MOUS 2024-2025/04 Ala Hospital 2017-26.pdf)\n\n5\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nAndhra Pradesh State Skill Development Centre (APSSDC)\n\n24-05-2017\n\n—\n\nSkill training and certification programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/05 Apssdc 2017.pdf)\n\n6\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nPidilite Industries Ltd., Guntur\n\n15-11-2022\n\n15-11-2025\n\nIndustrial exposure and skill enhancement\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/06 Pidilite Industires Ltd.,Guntur.pdf)\n\n7\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nVnurtureit Training & Placement Guntur\n\n22-10-2024\n\n20-10-2026\n\n-- -- -------------- Technical training and placement assistance -------------- --------------\n\n2\n\n[View PDF](/documents/placements/MOUS 2024-2025/07  Vnutureit Training & Placement Guntur 2024-2026 MCA.pdf)\n\n8\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nJKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n21-10-2024\n\n21-10-2029\n\nAcademic collaboration and student workshops\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/08 JKC College Guntur 2024-2029 -MCA Department.pdf)\n\n9\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nSri Satya Sai Marketings Industrial Estate, Amaravathi Road, Guntur\n\n24-04-2022\n\n25-04-2025\n\nIndustrial exposure and internship training\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/09  Sri Satya Sai Marketiings -MBA-2022-2025.pdf)\n\n10\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nSree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka, Narakoduru, Guntur\n\n27-04-2022\n\n27-04-2025\n\nIndustrial training and management exposure\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/10.Sree Lalitha Parameswari Spinning Mills (P) Ltd MBA 2022-2025.pdf)\n\n11\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nAmaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.\n\n24-04-2022\n\n24-04-2025\n\n-- -- -------------- Internship support and practical business learning -------------- --------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/11. Amaravathi Poly Plastic MBA 2022-2025.pdf)\n\n12\n\nDepartment of BCA (Computer Science) St.Ann's College for Women,Gorantla,Guntur\n\nThe Red-carpet Animation Visualfx Bordipet,Guntur.\n\n06-07-2022\n\n06-07-2025\n\nAnimation training and visual effects skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/12 The Red Carpet Animation Visualfx CS 2022-2025.pdf)\n\n13\n\nDepartment of Statistics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n02-02-2023\n\n02-02-2026\n\n-- -- --------------- Academic collaboration and student training programmes --------------- ---------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/13.JKC Statistics 2022-2025.pdf)\n\n14\n\nDepartment of Statistics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Statistics Career Degree College/9 Bordipet, Guntur\n\n09-08-2022\n\n09-08-2026\n\nWorkshops, knowledge sharing, and statistical learning activities\n\n4\n\n[View PDF](/documents/placements/MOUS 2024-2025/14 Career Degree -Statistics 2022-2026.pdf)\n\n15\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and laboratory exposure\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/15 AC College Physcis 2019-2024.pdf)\n\n16\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n02-02-2023\n\n02-02-2026\n\nStudent workshops and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/16.JKC Physics 2023-2026.pdf)\n\n17\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Botany Andhra Christian College, Guntur.\n\n01-06-2022\n\n01-06-2025\n\nAcademic collaboration and botanical research activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/17  AC  College Botany  2022.pdf)\n\n18\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nNexus Research Institute Nagarala, Guntur\n\n01-07-2024\n\n01-07-2027\n\nResearch training and laboratory exposure programmes\n\n3\n\n—\n\n19\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n10-09-2024\n\n10-09-2029\n\nResearch training and laboratory skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/19.PEARL Biotechnology.pdf)\n\n20\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/20. SR Technologies -Biotechnology 2022.pdf)\n\n21\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n31-03-2022\n\n11-11-2025\n\nResearch training and laboratory skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/21 PEARL Microbiology.pdf)\n\n22\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nFuture India Foundation MA Advanced Diagnostic & Research Centre, Kothapet\n\n17-07-2022\n\n—\n\nDiagnostic training and research exposure\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/22 A Future India Imcrobiology 2022.pdf)\n\n23\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/23.SR Technologies -Microbiology  2022.pdf)\n\n24\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n29-04-2022\n\nEffective untill terminated by any one of the Partner\n\nLaboratory training and research skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/24.PEARL Chemsitry 2022.pdf)\n\n25\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Chemistry Andhra Christian College, Guntur.\n\n20-06-2021\n\n20-06-2026\n\nAcademic collaboration and student training programmes\n\n6\n\n[View PDF](/documents/placements/MOUS 2024-2025/25.AC College Chemistry 2021.pdf)\n\n26\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Andhra Christian College, Guntur.\n\n09-03-2023\n\n09-03-2025\n\nAcademic collaboration and commerce-related student training\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/26 AC College  Commerce 2023.pdf)\n\n27\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nNitya Computer Accounting Training Arundelpet, Guntur\n\n25-07-2022\n\n25-07-2025\n\nAccounting software training and skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/27 Nitya Computer -Commerce  2022.pdf)\n\n28\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Career Degree College, Guntur\n\n01-06-2022\n\n01-06-2025\n\nWorkshops, seminars, and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/28..Career Degree Collee -Commerece 2022.pdf)\n\n29\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce BHH Degree College for Women\n\n04-06-2022\n\n04-06-2025\n\nStudent interaction and academic enrichment programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/29. BHH College Commerece 2022.pdf)\n\n30\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nAndhra Pradesh Silabam Association Sangadigunta, Guntur\n\n22-03-2022\n\n22-03-2027\n\nSports training and martial arts skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/30..Silabam-Physical Edcuation.pdf)\n\n31\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nShito Ryu Kai International Karate Do-Academy India Brundavan Gardens, Guntur-AP\n\n01-09-2021\n\n01-09-2026\n\nKarate training and self-defence skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/31.Karate-Physical Edcucation.pdf)\n\n32\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physical Education Hindu College, Guntur, AP\n\n06-09-2022\n\n06-09-2025\n\nSports collaboration and student training programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/32..Hindu College-Physical Educaiton.pdf)\n\n33\n\nDepartment of Mathematics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Hindu College, Guntur.\n\n23-01-2023\n\n—\n\nAcademic collaboration and mathematical skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/33.AC College-Mathematics.pdf)\n\n34\n\nDepartment of Mathematics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Andhra Christian College, Guntur\n\n15-07-2019\n\n—\n\nWorkshops, seminars, and mathematical knowledge-sharing activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/34.Hindu College -Mathematics.pdf)\n\n35\n\nDepartment of Mathematics St. Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Chalapathi Degree College\n\n03-11-2022\n\n—\n\nStudent workshops, seminars, and knowledge-sharing programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/35. Chalapathi College-Mathematics.pdf)\n\n35\n\nDepartment of Oriental Languages St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Telugu Hindu College, Guntur\n\n07-07-2021\n\n—\n\nLanguage enrichment and literary activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/35. Chalapathi College-Mathematics.pdf)\n\n36\n\nDepartment of English St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of English Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and communication skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/36.Hindu COllege -Oriental Languages.pdf)\n\n37\n\nDepartment of English St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of English\n\n04-05-2021\n\n04-05-2024\n\nAcademic collaboration and communication skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/37..AC College -English.pdf)"
+    id: "mous-agreements",
+    title: "MoUs / Agreements",
+    content: `__**MEMORANDUM OF UNDERSTANDING (MOUS) 2025-2026**__
+
+**S. No**
+
+**Name of the Department**
+
+**Name of the Organization/Institution/Corporate with which MoUs is Signed**
+
+**Year of Signing**
+
+**Duration**
+
+**Purpose**
+
+**Years**
+
+**View Document**
+
+1
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Excelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka
+
+19-02-2025
+
+19-02-2027
+
+Skill development and internships
+
+2
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/558b748d12d2787351032b8f4a90175e87c9d8d2.pdf)
+
+2
+
+St.Ann's College for Women, Gorantla,Guntur
+
+Dimensions Coaching Centre 4/12 Bordipet, Guntur -2
+
+03-08-2025
+
+03-08-2030
+
+Career guidance and Competitive Exam coaching
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/49b5b8645d3edfc7ca49e0b59737b1acd4df01b3.pdf)
+
+3
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Data Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081
+
+09-12-2024
+
+—
+
+Technical training
+
+1
+
+—
+
+4
+
+St. Ann’s College for Women, Gorantla, Guntur
+
+Ala Hospital Amaravathi Road, Guntur
+
+12-06-2017
+
+12-06-2026
+
+Health awareness and medical assistance
+
+10
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3384e286dcf2c4ff75eac0bdb22a1972a9f86a03.pdf)
+
+5
+
+St. Ann’s College for Women, Gorantla, Guntur
+
+Andhra Pradesh State Skill Development Centre (APSSDC)
+
+24-05-2017
+
+—
+
+Skill training and certification programmes
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/bab6104a7e0ba9a053094cca63e2563696e83ea6.pdf)
+
+6
+
+St.Ann's College for Women, Gorantla, Guntur
+
+Pidilite Industries Ltd., Guntur
+
+15-11-2025
+
+—
+
+Industrial exposure and skill enhancement
+
+3
+
+—
+
+7
+
+St.Ann's College for Women, Gorantla, Guntur
+
+Magic Bus India Foundation Registered Office Relaibale Plaza, Unit No.301,3rd Floor, Plot No K 10, Navi Mumbai
+
+28-01-2026
+
+28-01-2029
+
+Skill training and Placements Assistance
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/46d0a6e09722cde91f1f62aa980e0b5f43895697.pdf)
+
+8
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+Vnurtureit Training & Placement Guntur
+
+22-10-2024
+
+20-10-2026
+
+Technical training and placement assistance
+
+2
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/58a3ff157465909372cfc284e978255a0ea5fe60.pdf)
+
+9
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+21-10-2024
+
+21-10-2029
+
+Academic collaboration and student workshops
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e2821f6e80f69237eb1c40f1981d93db9088fd41.pdf)
+
+10
+
+Department of MBA St.Ann's College for Women, Gorantla,Guntur
+
+Sri Satya Sai Marketings Industrial Estate,Amaravathi Road,Guntur
+
+05-06-2025
+
+05-06-2030
+
+Industrial exposure and internship training
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/903a9f07c0a1119e65d1a82eaeb49a679c5c078a.pdf)
+
+11
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Sree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka,Narakoduru,Guntur
+
+01-06-2025
+
+01-06-2030
+
+Industrial training and management exposure
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1b410096e08707a474171ea17929286b575ec404.pdf)
+
+12
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Amaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.
+
+24-04-2022
+
+24-04-2025
+
+3    Internship support and practical business learning
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f85c169b8d20376d4fa3e3cca05361816690cd2a.pdf)
+
+13
+
+Department of MBA St.Ann's College for Women,Gorantla,Guntur
+
+Upendra Homeo Pharmaseuticals Phase III,Plot No 220,Auto Nagar,Guntur,AP
+
+13-06-2025
+
+13-06-2030
+
+Industrial exposure and management training
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3dc4039234b2463dd26aeb8d627bf0dd014a2502.pdf)
+
+14
+
+Department of BCA St.Ann's College for Women,Gorantla,Guntur
+
+The Red-carpet Animation Visualfx Bordipet,Guntur.
+
+10-06-2025
+
+10-06-2028
+
+Animation training and visual effects skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/35e1325139534616051f5d50286fecc27f945fc4.pdf)
+
+15
+
+Department of Statistics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+03-02-2026
+
+02-02-2029
+
+Academic collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1351774365d369a0cdd3bb714eeda73ad2004a02.pdf)
+
+16
+
+Department of Statistics St.Ann's College for Women,Gorantla,Guntur
+
+Department of Statistics Career Degree College/9 Bordipet,Guntur
+
+03-02-2026
+
+02-02-2029
+
+Workshops, knowledge sharing, and statistical learning activities
+
+4
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/a76a53a0011538fdfc414489d3be5df0eddb5582.pdf)
+
+17
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and laboratory exposure
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/36a6528a5d609f798d8cd2cb27f7d18f100ad00b.pdf)
+
+18
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics JKC (Tellakula Jalayya Polisetty Somasundaram )College Guntur
+
+02-02-2023
+
+02-02-2026
+
+Student workshops and knowledge-sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/583c4d32796cc6af479bbd154548dee6edc3f7dd.pdf)
+
+19
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Department of Botany Andhra Christian College, Guntur.
+
+01-06-2022
+
+01-06-2025
+
+Academic collaboration and botanical research activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/37bb0502664cc53d6f85aa33b02d162bce8a50ce.pdf)
+
+20
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Nexus Research Institute Nagarala, Guntur
+
+01-07-2024
+
+01-07-2027
+
+Research training and laboratory exposure programmes
+
+3
+
+—
+
+21
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Sri Ramakrishna Nursery MG Inner Ring Road,Guntur
+
+01-07-2025
+
+01-07-2028
+
+Plant cultivation and nursery management training Practical exposure in horticulture and botanical studies
+
+3
+
+—
+
+22
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+10-09-2024
+
+10-09-2029
+
+Research training and laboratory skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f188e58a7084eb541de8b21002b7c1a33d84c776.pdf)
+
+23
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8bd47e95fa497963778a8476fb52ce9e9da0bf53.pdf)
+
+24
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+Krishi Vigyan Kendra lam Farm Sri Venkateswara Veternity University,Lam,Guntur
+
+04-02-2026
+
+04-02-2031
+
+Agricultural biotechnology training and research exposure Practical learning in biofertilizers, plant sciences, and laboratory techniques
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/6490111a45ca4508870a46bcf31878ddafd20dab.pdf)
+
+25
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+12-11-2025
+
+12-11-2030
+
+Research training and laboratory skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3fc1ac205b400947809df650ea43e8a0ff055f67.pdf)
+
+26
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Future India Foundation MA Advanced Diagnostic & Research Centre, Kothapet
+
+17-07-2022
+
+—
+
+Diagnostic training and research exposure
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/9c1ce349e0f67ace296f41e45c9cf93adac3e02f.pdf)
+
+27
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/368334c448b1e364c6e7ef068467340f1c6df7a3.pdf)
+
+28
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+29-04-2022
+
+—
+
+Effective untill terminated by any one of the Partner Laboratory training and research skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/7e3cca9905e4aebb171c507869787fb763eb0a67.pdf)
+
+29
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Department of Chemistry Andhra Christian College, Guntur.
+
+20-06-2021
+
+20-06-2026
+
+Academic collaboration and student training programmes
+
+6
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/38b8df9f796b9c59f8844230eb258d8e9f9d350b.pdf)
+
+30
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Andhra Christian College, Guntur.
+
+09-03-2023
+
+09-03-2025
+
+Academic collaboration and commerce-related student training
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/68a248b63de5d694ea096c94d3a60ee5dc8338a4.pdf)
+
+31
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Nitya Computer Accounting Training Arundelpet, Guntur
+
+25-07-2022
+
+25-07-2025
+
+Accounting software training and skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/dd1ca929754a72ccac41bb8c1728f26886c6cf0d.pdf)
+
+32
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Career Degree College, Guntur
+
+01-06-2022
+
+01-06-2025
+
+Workshops, seminars, and knowledge-sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/2a61c34b90ce2d5a251af52dce530ffc6d045812.pdf)
+
+33
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce BHH Degree College for Women
+
+04-06-2022
+
+04-06-2025
+
+Student interaction and academic enrichment programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e6b0cfd37764a575a3ba0614d4b6a03b16816386.pdf)
+
+34
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Andhra Pradesh Silabam Association Sangadigunta, Guntur
+
+22-03-2022
+
+22-03-2027
+
+Sports training and martial arts skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1bf019ca4118b3b896647c36f791389d93682ca9.pdf)
+
+35
+
+Department of Physical Education St.Ann's College for Women,Gorantla,Guntur
+
+Shito Ryu Kai International Karate Do- Academy India Brundavan Gardens, Guntur-AP
+
+01-09-2021
+
+01-09-2026
+
+Karate training and self-defence skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/32a9993abfd65fb729dc5803d8632854af336f9b.pdf)
+
+36
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physical Education Hindu College, Guntur,AP
+
+06-09-2022
+
+06-09-2025
+
+Sports collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8e929d0986fa79a6ba1631698db51327cea81a82.pdf)
+
+37
+
+Department of Mathematics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics Hindu College, Guntur.
+
+23-01-2023
+
+—
+
+Academic collaboration and mathematical skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/89944205e8614d5e10ab8a242e45195580309b21.pdf)
+
+38
+
+Department of Mathematics St. Ann’s College for Women, Gorantla, Guntur
+
+Department of Mathematics Andhra Christian College, Guntur
+
+15-07-2019
+
+—
+
+Workshops, seminars, and mathematical knowledge-sharing activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/d8e9ec3a3d3047ac12b7b9af82dc9dd721f9a2d5.pdf)
+
+39
+
+Department of Mathematics St. Ann’s College for Women, Gorantla, Guntur
+
+Department of Mathematics Chalapathi Degree College
+
+03-11-2022
+
+—
+
+Student workshops, seminars, and knowledge-sharing programmes
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/60b069682d31de80bb3d429db6516875e7322b33.pdf)
+
+40
+
+Department of Oriental Languages St.Ann's College for Women, Gorantla, Guntur
+
+Department of Telugu Hindu College, Guntur
+
+07-07-2021
+
+—
+
+Language enrichment and literary activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e8d93970b6c3d34e5bfdd97116133ddf62c0a6cb.pdf)
+
+41
+
+Department of English St.Ann's College for Women, Gorantla, Guntur
+
+Department of English Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and communication skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/c2d444ca3f97d5c3f3b8e0d553c210a2d03cf70c.pdf)
+
+42
+
+Department of English St.Ann's College for Women, Gorantla, Guntur
+
+Department of English Hindu College ,Guntur
+
+04-05-2021
+
+04-05-2024
+
+Academic collaboration and communication skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/5763b3a38653eec77cebdcd81b13ac558a3ad5c1.pdf)
+
+
+
+__**MEMORANDUM OF UNDERSTANDING (MOUS) 2024-2025**__
+
+**S. No**
+
+**Name of the Department**
+
+**Name of the Organization/Institution/Corporate with which MoUs is Signed**
+
+**Year of Signing**
+
+**Duration**
+
+**Purpose**
+
+**Years**
+
+**View Document**
+
+1
+
+St. Ann’s College for Women, Gorantla,Guntur
+
+Excelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka
+
+09-02-2023
+
+09-02-2025
+
+Skill development and internships
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f6ed67c3913638d2ee46eb827058658ea8f0ec50.pdf)
+
+2
+
+View Document PDF 2
+
+St.Ann's College for Women, Gorantla,Guntur Dimensions Coaching Centre 4/12 Brodipet, Guntur -2
+
+02-08-2020
+
+02-08-2025
+
+Career guidance and Competitive Exam coaching
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/5b671da8dd6d7a9f277f86d9540826e122dd00c2.pdf)
+
+3
+
+St.Ann's College for Women, Gorantla, Guntur
+
+Data Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081
+
+09-12-2024
+
+—
+
+Technical training
+
+1
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3bbe700384939cb6693dc039132ab2a9d4b46e4f.pdf)
+
+4
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Ala Hospital Amaravathi Road, Guntur
+
+12-06-2017
+
+12-06-2026
+
+Health awareness and medical assistance
+
+10
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3384e286dcf2c4ff75eac0bdb22a1972a9f86a03.pdf)
+
+5
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Andhra Pradesh State Skill Development Centre (APSSDC)
+
+24-05-2017
+
+—
+
+Skill training and certification programmes  F
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/c2716c64b2e3a8ffd88bd99875e852c732335a42.pdf)
+
+6
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Pidilite Industries Ltd., Guntur
+
+15-11-2022
+
+15-11-2025
+
+Industrial exposure and skill enhancement
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/9d27454059b14cc51a50ee2e9a1f060fd9478243.pdf)
+
+7
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+Vnurtureit Training & Placement Guntur
+
+22-10-2024
+
+20-10-2026
+
+2    Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/58a3ff157465909372cfc284e978255a0ea5fe60.pdf)
+
+8
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+21-10-2024
+
+21-10-2029
+
+Academic collaboration and student workshops
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e2821f6e80f69237eb1c40f1981d93db9088fd41.pdf)
+
+9
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Sri Satya Sai Marketings Industrial Estate, Amaravathi Road, Guntur
+
+24-04-2022
+
+25-04-2025
+
+Industrial exposure and internship training
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/0c094bbc089550f4ace01bf3406616b29898a7ad.pdf)
+
+10
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Sree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka, Narakoduru, Guntur
+
+27-04-2022
+
+27-04-2025
+
+Industrial training and management exposure
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/0c094bbc089550f4ace01bf3406616b29898a7ad.pdf)
+
+11
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Amaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.
+
+24-04-2022
+
+24-04-2025
+
+Internship support and practical business learning
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f85c169b8d20376d4fa3e3cca05361816690cd2a.pdf)
+
+12
+
+Department of BCA (Computer Science) St.Ann's College for Women,Gorantla,Guntur
+
+The Red-carpet Animation Visualfx Bordipet,Guntur.
+
+06-07-2022
+
+06-07-2025
+
+Animation training and visual effects skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/ce40ea4eddce7a22a55998d4779716e92c720b27.pdf)
+
+13
+
+Department of Statistics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+02-02-2023
+
+02-02-2026
+
+Academic collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/370319f2526ac65b89a680cc604c4cbca6f01a44.pdf)
+
+14
+
+Department of Statistics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Statistics Career Degree College/9 Bordipet, Guntur
+
+09-08-2022
+
+09-08-2026
+
+Workshops, knowledge sharing, and statistical learning activities
+
+4
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/a76a53a0011538fdfc414489d3be5df0eddb5582.pdf)
+
+15
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and laboratory exposure
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/36a6528a5d609f798d8cd2cb27f7d18f100ad00b.pdf)
+
+16
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+02-02-2023
+
+02-02-2026
+
+Student workshops and knowledge-sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/69389ff19a2170253e087e04979de92bb03111fa.pdf)
+
+17
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Department of Botany Andhra Christian College, Guntur.
+
+01-06-2022
+
+01-06-2025
+
+Academic collaboration and botanical research activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/37bb0502664cc53d6f85aa33b02d162bce8a50ce.pdf)
+
+18
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Nexus Research Institute Nagarala, Guntur
+
+01-07-2024
+
+01-07-2027
+
+Research training and laboratory exposure programmes
+
+3
+
+—
+
+19
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+10-09-2024
+
+10-09-2029
+
+Research training and laboratory skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/7f573373b3144ba39d49e0e0fae4a5d5811116ff.pdf)
+
+20
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8bd47e95fa497963778a8476fb52ce9e9da0bf53.pdf)
+
+21
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+31-03-2022
+
+11-11-2025
+
+Research training and laboratory skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/dcccfdef2e58c32a349e9049269d8e36181c2010.pdf)
+
+22
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Future India Foundation MA Advanced Diagnostic & Research Centre, Kothapet
+
+17-07-2022
+
+—
+
+Diagnostic training and research exposure
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/9c1ce349e0f67ace296f41e45c9cf93adac3e02f.pdf)
+
+23
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/368334c448b1e364c6e7ef068467340f1c6df7a3.pdf)
+
+24
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+29-04-2022
+
+—
+
+Effective untill terminated by any one of the Partner Laboratory training and research skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/7e3cca9905e4aebb171c507869787fb763eb0a67.pdf)
+
+25
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Department of Chemistry Andhra Christian College, Guntur.
+
+20-06-2021
+
+20-06-2026
+
+Academic collaboration and student training programmes
+
+6
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/38b8df9f796b9c59f8844230eb258d8e9f9d350b.pdf)
+
+26
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Andhra Christian College, Guntur.
+
+09-03-2023
+
+09-03-2025
+
+Academic collaboration and commerce-related student training
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/68a248b63de5d694ea096c94d3a60ee5dc8338a4.pdf)
+
+27
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Nitya Computer Accounting Training Arundelpet, Guntur
+
+25-07-2022
+
+25-07-2025
+
+Accounting software training and skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/dd1ca929754a72ccac41bb8c1728f26886c6cf0d.pdf)
+
+28
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Career Degree College, Guntur
+
+01-06-2022
+
+01-06-2025
+
+Workshops, seminars, and knowledge-sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/2a61c34b90ce2d5a251af52dce530ffc6d045812.pdf)
+
+29
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce BHH Degree College for Women
+
+04-06-2022
+
+04-06-2025
+
+Student interaction and academic enrichment programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e6b0cfd37764a575a3ba0614d4b6a03b16816386.pdf)
+
+30
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Andhra Pradesh Silabam Association Sangadigunta, Guntur
+
+22-03-2022
+
+22-03-2027
+
+Sports training and martial arts skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1bf019ca4118b3b896647c36f791389d93682ca9.pdf)
+
+31
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Shito Ryu Kai International Karate Do- Academy India Brundavan Gardens, Guntur-AP
+
+01-09-2021
+
+01-09-2026
+
+Karate training and self-defence skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/32a9993abfd65fb729dc5803d8632854af336f9b.pdf)
+
+32
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physical Education Hindu College, Guntur, AP
+
+06-09-2022
+
+06-09-2025
+
+Sports collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8e929d0986fa79a6ba1631698db51327cea81a82.pdf)
+
+33
+
+Department of Mathematics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics Hindu College, Guntur.
+
+23-01-2023
+
+—
+
+Academic collaboration and mathematical skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/d8e9ec3a3d3047ac12b7b9af82dc9dd721f9a2d5.pdf)
+
+34
+
+Department of Mathematics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics Andhra Christian College, Guntur
+
+15-07-2019
+
+—
+
+Workshops, seminars, and mathematical knowledge-sharing activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/89944205e8614d5e10ab8a242e45195580309b21.pdf)
+
+35
+
+Department of Mathematics St. Ann’s College for Women, Gorantla, Guntur
+
+Department of Mathematics Chalapathi Degree College
+
+03-11-2022
+
+07-07-2021
+
+Language enrichment and literary activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/60b069682d31de80bb3d429db6516875e7322b33.pdf)
+
+36
+
+Department of English St.Ann's College for Women, Gorantla, Guntur
+
+Department of English Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and communication skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e8d93970b6c3d34e5bfdd97116133ddf62c0a6cb.pdf)
+
+37
+
+Department of English St.Ann's College for Women, Gorantla, Guntur
+
+Department of English
+
+04-05-2021
+
+04-05-2024
+
+Academic collaboration and communication skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/c2d444ca3f97d5c3f3b8e0d553c210a2d03cf70c.pdf)`
   },
   "mou-activities": {
-    "id": "mou-activities",
-    "title": "MoU Activities",
-    "content": "__**MEMORANDUM OF UNDERSTANDING (MOUS) 2025-2026**__\n\n—\n\n**S. No**\n\n**Name of the Department**\n\n**Name of the Organization/Institution/Corporate with which MoUs is Singed**\n\n**Year of Signing**\n\n**Duration**\n\n**Purpose**\n\n**Years**\n\n—\n\n1\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nExcelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka\n\n19-02-2025\n\n19-02-2027\n\nSkill development and internships\n\n2\n\n[View PDF](/documents/placements/MOUS 2025-2026/01. EXCELR Edtech Pvt.Ltd 2025-2027.pdf)\n\n2\n\nSt.Ann's College for Women, Gorantla,Guntur\n\nDimensions Coaching Centre 4/12 Bordipet, Guntur -2\n\n03-08-2025\n\n02-08-2030\n\nCareer guidance and Competitive Exam coaching\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/02 Dimensions Coaching Centre 2025-2030.pdf)\n\n3\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nData Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081\n\n09-12-2024\n\n—\n\nTechnical training\n\n1\n\n—\n\n4\n\nSt. Ann's College for Women, Gorantla, Guntur\n\nAla Hospital Amaravathi Road, Guntur\n\n12-06-2017\n\n12-06-2026\n\nHealth awareness and medical assistance\n\n10\n\n[View PDF](/documents/placements/MOUS 2025-2026/04 Ala Hospital 2017-2026.pdf)\n\n5\n\nSt. Ann's College for Women, Gorantla, Guntur\n\nAndhra Pradesh State Skill Development Centre (APSSDC)\n\n24-05-2017\n\n—\n\nSkill training and certification programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/05 Apssdc 2019-.pdf)\n\n6\n\nSt.Ann's College for Women, Gorantla, Guntur\n\nPidilite Industries Ltd., Guntur\n\n15-11-2022\n\n15-11-2025\n\nIndustrial exposure and skill enhancement\n\n3\n\n—\n\n7\n\nSt.Ann's College for Women, Gorantla, Guntur\n\nMagic Bus India Foundation Registered Office Relaibale Plaza, Unit No.301,3rd Floor, Plot No K 10, Navi Mumbai\n\n28-01-2026\n\n28-01-2029\n\nSkill training and Placements Assistance\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/07 Magic Bus India Foundation 2026-2029.pdf)\n\n8\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nVnurtureit Training & Placement Guntur\n\n22-10-2024\n\n20-10-2026\n\n-- -- ------------ Technical training and placement assistance ------------ ------------\n\n2\n\n[View PDF](/documents/placements/MOUS 2025-2026/08 Vnutureit Training & Placement -MCA 2024-2026.pdf)\n\n9\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nJKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n21-10-2024\n\n21-10-2029\n\nAcademic collaboration and student workshops\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/09 JKC College Guntur 2024-2029 -MCA Department.pdf)\n\n10\n\nDepartment of MBA St.Ann's College for Women, Gorantla,Guntur\n\nSri Satya Sai Marketings Industrial Estate,Amaravathi Road,Guntur\n\n05-06-2025\n\n05-06-2030\n\nIndustrial exposure and internship training\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/10  Sri Satya Sai Marketings MBA 2025-2030.pdf)\n\n11\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nSree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka,Narakoduru,Guntur\n\n01-06-2025\n\n01-06-2030\n\nIndustrial training and management exposure\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/11.Sree Lalitha Parameswari Spinning Mills (P)Ltd MBA 2025-2030.pdf)\n\n12\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nAmaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.\n\n24-04-2022\n\n24-04-2025\n\n-- -- ------------ Internship support and practical business learning ------------ ------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/12 Amaravathi Poly Plastic MBA 2022-2025.pdf)\n\n13\n\nDepartment of MBA St.Ann's College for Women,Gorantla,Guntur\n\nUpendra Homeo Pharmaseuticals Phase III,Plot No 220,Auto Nagar,Guntur,AP\n\n13-06-2025\n\n13-06-2030\n\nIndustrial exposure and management training\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/13.Upendra Homeo Pharmaseuticals MBA 2025-2030.pdf)\n\n14\n\nDepartment of BCA St.Ann's College for Women,Gorantla,Guntur\n\nThe Red-carpet Animation Visualfx Bordipet,Guntur.\n\n10-06-2025\n\n10-06-2028\n\nAnimation training and visual effects skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/14 The Red Carpet Animation -BCA 2025-2028.pdf)\n\n15\n\nDepartment of Statistics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n03-02-2026\n\n02-02-2029\n\n-- -- --------------- Academic collaboration and student training programmes --------------- ---------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/15.JKC Statistics 2026-2029.pdf)\n\n16\n\nDepartment of Statistics St.Ann's College for Women,Gorantla,Guntur\n\nDepartment of Statistics Career Degree College/9 Bordipet,Guntur\n\n03-02-2026\n\n02-02-2029\n\nWorkshops, knowledge sharing, and statistical learning activities\n\n4\n\n[View PDF](/documents/placements/MOUS 2025-2026/16. Career Degree -Statistics 2022-2026.pdf)\n\n17\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and laboratory exposure\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/17 AC College Physcis 2019-2024.pdf)\n\n18\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics JKC (Tellakula Jalayya Polisetty Somasundaram )College Guntur\n\n02-02-2023\n\n02-02-2026\n\nStudent workshops and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/18.JKC Physics 2026-2029.pdf)\n\n19\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Botany Andhra Christian College, Guntur.\n\n01-06-2022\n\n01-06-2025\n\nAcademic collaboration and botanical research activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/19  AC  College Botany  2022.pdf)\n\n20\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nNexus Research Institute Nagarala, Guntur\n\n01-07-2024\n\n01-07-2027\n\nResearch training and laboratory exposure programmes\n\n3\n\n—\n\n21\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nSri Ramakrishna Nursery MG Inner Ring Road,Guntur\n\n01-07-2025\n\n01-07-2028\n\nPlant cultivation and nursery management training Practical exposure in horticulture and botanical studies\n\n3\n\n—\n\n22\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n10-09-2024\n\n10-09-2029\n\nResearch training and laboratory skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/22. PEARL Biotechnology 2024-2029.pdf)\n\n23\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/23. SR Technologies -Biotechnology 2022.pdf)\n\n24\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nKrishi Vigyan Kendra lam Farm Sri Venkateswara Veternity University,Lam,Guntur\n\n04-02-2026\n\n04-02-2031\n\nAgricultural biotechnology training and research exposure Practical learning in biofertilizers, plant sciences, and laboratory techniques\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/24 SVV university LAm -Biotechnology 2026-2031.pdf)\n\n25\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n12-11-2025\n\n12-11-2030\n\nResearch training and laboratory skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/25. PEARL Microbiology 2025-2029.pdf)\n\n26\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nFuture India Foundation MA Advanced Diagnostic & Research Centre, Kothapet\n\n17-07-2022\n\n—\n\nDiagnostic training and research exposure\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/26 Future India Imcrobiology 2022.pdf)\n\n27\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/27.SR Technologies -Microbiology  2022.pdf)\n\n28\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n29-04-2022\n\nEffective untill terminated by any one of the Partner\n\nLaboratory training and research skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/28.PEARL Chemsitry 2022.pdf)\n\n29\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Chemistry Andhra Christian College, Guntur.\n\n20-06-2021\n\n20-06-2026\n\nAcademic collaboration and student training programmes\n\n6\n\n[View PDF](/documents/placements/MOUS 2025-2026/29 AC College Chemistry 2021.pdf)\n\n30\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Andhra Christian College, Guntur.\n\n09-03-2023\n\n09-03-2025\n\nAcademic collaboration and commerce-related student training\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/30 AC College  Commerce 2023.pdf)\n\n31\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nNitya Computer Accounting Training Arundelpet, Guntur\n\n25-07-2022\n\n25-07-2025\n\nAccounting software training and skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/31 Nitya Computer -Commerce  2022.pdf)\n\n32\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Career Degree College, Guntur\n\n01-06-2022\n\n01-06-2025\n\nWorkshops, seminars, and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/32.Career Degree Collee -Commerece 2022.pdf)\n\n33\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce BHH Degree College for Women\n\n04-06-2022\n\n04-06-2025\n\nStudent interaction and academic enrichment programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/33. BHH College Commerece 2022.pdf)\n\n34\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nAndhra Pradesh Silabam Association Sangadigunta, Guntur\n\n22-03-2022\n\n22-03-2027\n\nSports training and martial arts skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/34.Silabam-Physical Edcuation.pdf)\n\n35\n\nDepartment of Physical Education St.Ann's College for Women,Gorantla,Guntur\n\nShito Ryu Kai International Karate Do-Academy India Brundavan Gardens, Guntur-AP\n\n01-09-2021\n\n01-09-2026\n\nKarate training and self-defence skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2025-2026/35.Karate-Physical Edcucation.pdf)\n\n36\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physical Education Hindu College, Guntur,AP\n\n06-09-2022\n\n06-09-2025\n\nSports collaboration and student training programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2025-2026/36.Hindu College-Physical Educaiton.pdf)\n\n37\n\nDepartment of Mathematics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Hindu College, Guntur.\n\n23-01-2023\n\n—\n\nAcademic collaboration and mathematical skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/37.Hindu College -Mathematics.pdf)\n\n38\n\nDepartment of Mathematics St. Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Andhra Christian College, Guntur\n\n15-07-2019\n\n—\n\nWorkshops, seminars, and mathematical knowledge-sharing activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/38.AC College-Mathematics.pdf)\n\n39\n\nDepartment of Mathematics St. Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Chalapathi Degree College\n\n03-11-2022\n\n—\n\nStudent workshops, seminars, and knowledge-sharing programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/39 Chalapathi College-Mathematics.pdf)\n\n40\n\nDepartment of Oriental Languages St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Telugu Hindu College, Guntur\n\n07-07-2021\n\n—\n\nLanguage enrichment and literary activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/40.Hindu COllege -Oriental Languages.pdf)\n\n41\n\nDepartment of English St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of English Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and communication skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2025-2026/41.AC College -English.pdf)\n\n\n\n__**MEMORANDUM OF UNDERSTANDING (MOUS) 2024-2025**__\n\n—\n\n**S. No**\n\n**Name of the Department**\n\n**Name of the Organization/Institution/Corporate with which MoUs is Singed**\n\n**Year of Signing**\n\n**Duration**\n\n**Purpose**\n\n**Years**\n\n—\n\n1\n\nSt. Ann's College for Women, Gorantla,Guntur\n\nExcelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka\n\n09-02-2023\n\n09-02-2025\n\nSkill development and internships\n\n2\n\n[View PDF](/documents/placements/MOUS 2024-2025/01 EXCER Edtech Pvt.Ltd 2023-2024 & 2024-2025.pdf)\n\n2\n\nSt.Ann's College for Women, Gorantla,Guntur\n\nDimensions Coaching Centre 4/12 Bordipet, Guntur -2\n\n02-08-2020\n\n02-08-2025\n\nCareer guidance and Competitive Exam coaching\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/02.Dimensions CoachingCentre 2020-2025.pdf)\n\n3\n\nSt.Ann's College for Women, Gorantla, Guntur\n\nData Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081\n\n09-12-2024\n\n—\n\nTechnical training\n\n1\n\n[View PDF](/documents/placements/MOUS 2024-2025/03 Datavalley India Pvt.Ltd (Long Term Internship 2024-2025).pdf)\n\n4\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nAla Hospital Amaravathi Road, Guntur\n\n12-06-2017\n\n12-06-2026\n\nHealth awareness and medical assistance\n\n10\n\n[View PDF](/documents/placements/MOUS 2024-2025/04 Ala Hospital 2017-26.pdf)\n\n5\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nAndhra Pradesh State Skill Development Centre (APSSDC)\n\n24-05-2017\n\n—\n\nSkill training and certification programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/05 Apssdc 2017.pdf)\n\n6\n\nSt.Ann's College for Women,Gorantla,Guntur\n\nPidilite Industries Ltd., Guntur\n\n15-11-2022\n\n15-11-2025\n\nIndustrial exposure and skill enhancement\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/06 Pidilite Industires Ltd.,Guntur.pdf)\n\n7\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nVnurtureit Training & Placement Guntur\n\n22-10-2024\n\n20-10-2026\n\n-- -- ------------ Technical training and placement assistance ------------ ------------\n\n2\n\n[View PDF](/documents/placements/MOUS 2024-2025/07  Vnutureit Training & Placement Guntur 2024-2026 MCA.pdf)\n\n8\n\nDepartment of MCA St.Ann's College for Women, Gorantla, Guntur\n\nJKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n21-10-2024\n\n21-10-2029\n\nAcademic collaboration and student workshops\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/08 JKC College Guntur 2024-2029 -MCA Department.pdf)\n\n9\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nSri Satya Sai Marketings Industrial Estate, Amaravathi Road, Guntur\n\n24-04-2022\n\n25-04-2025\n\nIndustrial exposure and internship training\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/09  Sri Satya Sai Marketiings -MBA-2022-2025.pdf)\n\n10\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nSree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka, Narakoduru, Guntur\n\n27-04-2022\n\n27-04-2025\n\nIndustrial training and management exposure\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/10.Sree Lalitha Parameswari Spinning Mills (P) Ltd MBA 2022-2025.pdf)\n\n11\n\nDepartment of MBA St.Ann's College for Women, Gorantla, Guntur\n\nAmaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.\n\n24-04-2022\n\n24-04-2025\n\n-- -- ------------ Internship support and practical business learning ------------ ------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/11. Amaravathi Poly Plastic MBA 2022-2025.pdf)\n\n12\n\nDepartment of Computer Science St.Ann's College for Women,Gorantla,Guntur\n\nThe Red-carpet Animation Visualfx Bordipet,Guntur.\n\n06-07-2022\n\n06-07-2025\n\nAnimation training and visual effects skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/12 The Red Carpet Animation Visualfx CS 2022-2025.pdf)\n\n13\n\nDepartment of Statistics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n02-02-2023\n\n02-02-2026\n\n-- -- --------------- Academic collaboration and student training programmes --------------- ---------------\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/13.JKC Statistics 2022-2025.pdf)\n\n14\n\nDepartment of Statistics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Statistics Career Degree College/9 Bordipet, Guntur\n\n09-08-2022\n\n09-08-2026\n\nWorkshops, knowledge sharing, and statistical learning activities\n\n4\n\n[View PDF](/documents/placements/MOUS 2024-2025/14 Career Degree -Statistics 2022-2026.pdf)\n\n15\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and laboratory exposure\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/15 AC College Physcis 2019-2024.pdf)\n\n16\n\nDepartment of Physics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur\n\n02-02-2023\n\n02-02-2026\n\nStudent workshops and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/16.JKC Physics 2023-2026.pdf)\n\n17\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Botany Andhra Christian College, Guntur.\n\n01-06-2022\n\n01-06-2025\n\nAcademic collaboration and botanical research activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/17  AC  College Botany  2022.pdf)\n\n18\n\nDepartment of Botany St.Ann's College for Women, Gorantla, Guntur\n\nNexus Research Institute Nagarala, Guntur\n\n01-07-2024\n\n01-07-2027\n\nResearch training and laboratory exposure programmes\n\n3\n\n—\n\n19\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n10-09-2024\n\n10-09-2029\n\nResearch training and laboratory skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/19.PEARL Biotechnology.pdf)\n\n20\n\nDepartment of Biotechnology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/20. SR Technologies -Biotechnology 2022.pdf)\n\n21\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n31-03-2022\n\n11-11-2025\n\nResearch training and laboratory skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/21 PEARL Microbiology.pdf)\n\n22\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nFuture India Foundation MA Advanced Diagnostic & Research Centre, Kothapet\n\n17-07-2022\n\n—\n\nDiagnostic training and research exposure\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/22 A Future India Imcrobiology 2022.pdf)\n\n23\n\nDepartment of Microbiology St.Ann's College for Women, Gorantla, Guntur\n\nSR Technologies Training & Placement Vijayawada\n\n10-03-2022\n\nEffective until terminated by any one of the Partner\n\nTechnical training and placement assistance\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/23.SR Technologies -Microbiology  2022.pdf)\n\n24\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nPasteur Education and Research Training Laboratory (PEARL) Guntur\n\n29-04-2022\n\nEffective untill terminated by any one of the Partner\n\nLaboratory training and research skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/24.PEARL Chemsitry 2022.pdf)\n\n25\n\nDepartment of Chemistry St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Chemistry Andhra Christian College, Guntur.\n\n20-06-2021\n\n20-06-2026\n\nAcademic collaboration and student training programmes\n\n6\n\n[View PDF](/documents/placements/MOUS 2024-2025/25.AC College Chemistry 2021.pdf)\n\n26\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Andhra Christian College, Guntur.\n\n09-03-2023\n\n09-03-2025\n\nAcademic collaboration and commerce-related student training\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/26 AC College  Commerce 2023.pdf)\n\n27\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nNitya Computer Accounting Training Arundelpet, Guntur\n\n25-07-2022\n\n25-07-2025\n\nAccounting software training and skill development\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/27 Nitya Computer -Commerce  2022.pdf)\n\n28\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce Career Degree College, Guntur\n\n01-06-2022\n\n01-06-2025\n\nWorkshops, seminars, and knowledge-sharing activities\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/28..Career Degree Collee -Commerece 2022.pdf)\n\n29\n\nDepartment of Commerce St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Commerce BHH Degree College for Women\n\n04-06-2022\n\n04-06-2025\n\nStudent interaction and academic enrichment programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/29. BHH College Commerece 2022.pdf)\n\n30\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nAndhra Pradesh Silabam Association Sangadigunta, Guntur\n\n22-03-2022\n\n22-03-2027\n\nSports training and martial arts skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/30..Silabam-Physical Edcuation.pdf)\n\n31\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nShito Ryu Kai International Karate Do-Academy India Brundavan Gardens, Guntur-AP\n\n01-09-2021\n\n01-09-2026\n\nKarate training and self-defence skill development\n\n5\n\n[View PDF](/documents/placements/MOUS 2024-2025/31.Karate-Physical Edcucation.pdf)\n\n32\n\nDepartment of Physical Education St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Physical Education Hindu College, Guntur, AP\n\n06-09-2022\n\n06-09-2025\n\nSports collaboration and student training programmes\n\n3\n\n[View PDF](/documents/placements/MOUS 2024-2025/32..Hindu College-Physical Educaiton.pdf)\n\n33\n\nDepartment of Mathematics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Hindu College, Guntur.\n\n23-01-2023\n\n—\n\nAcademic collaboration and mathematical skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/33.AC College-Mathematics.pdf)\n\n34\n\nDepartment of Mathematics St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Andhra Christian College, Guntur\n\n15-07-2019\n\n—\n\nWorkshops, seminars, and mathematical knowledge-sharing activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/34.Hindu College -Mathematics.pdf)\n\n35\n\nDepartment of Mathematics St. Ann's College for Women, Gorantla, Guntur\n\nDepartment of Mathematics Chalapathi Degree College\n\n03-11-2022\n\n—\n\nStudent workshops, seminars, and knowledge-sharing programmes\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/35. Chalapathi College-Mathematics.pdf)\n\n35\n\nDepartment of Oriental Languages St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of Telugu Hindu College, Guntur\n\n07-07-2021\n\n—\n\nLanguage enrichment and literary activities\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/35. Chalapathi College-Mathematics.pdf)\n\n36\n\nDepartment of English St.Ann's College for Women, Gorantla, Guntur\n\nDepartment of English Andhra Christian College, Guntur\n\n10-10-2019\n\n09-10-2024\n\nAcademic collaboration and communication skill development\n\n—\n\n[View PDF](/documents/placements/MOUS 2024-2025/36.Hindu COllege -Oriental Languages.pdf)"
+    id: "mou-activities",
+    title: "MoU Activities",
+    content: `__**MoU Activities 2025-2026**__
+
+**S. No**
+
+**Name of the Department**
+
+**Name of the Organization/Institution/Corporate with which MoUs is Signed**
+
+**Year of Signing**
+
+**Duration**
+
+**Purpose**
+
+**Years**
+
+**View Document**
+
+1
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Excelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka
+
+19-02-2025
+
+19-02-2027
+
+Skill development and internships
+
+2
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/558b748d12d2787351032b8f4a90175e87c9d8d2.pdf)
+
+2
+
+St.Ann's College for Women, Gorantla,Guntur
+
+Dimensions Coaching Centre 4/12 Bordipet, Guntur -2
+
+03-08-2025
+
+02-08-2030
+
+Career guidance and Competitive Exam coaching
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/49b5b8645d3edfc7ca49e0b59737b1acd4df01b3.pdf)
+
+3
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Data Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081
+
+09-12-2024
+
+—
+
+Technical training
+
+1
+
+—
+
+4
+
+St. Ann’s College for Women, Gorantla, Guntur
+
+Ala Hospital Amaravathi Road, Guntur
+
+12-06-2017
+
+12-06-2026
+
+Health awareness and medical assistance
+
+10
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3384e286dcf2c4ff75eac0bdb22a1972a9f86a03.pdf)
+
+5
+
+St. Ann’s College for Women, Gorantla, Guntur
+
+Andhra Pradesh State Skill Development Centre (APSSDC)
+
+24-05-2017
+
+—
+
+Skill training and certification programmes
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/bab6104a7e0ba9a053094cca63e2563696e83ea6.pdf)
+
+6
+
+St.Ann's College for Women, Gorantla, Guntur
+
+Pidilite Industries Ltd., Guntur
+
+15-11-2022
+
+15-11-2025
+
+Industrial exposure and skill enhancement
+
+3
+
+—
+
+7
+
+St.Ann's College for Women, Gorantla, Guntur
+
+Magic Bus India Foundation Registered Office Relaibale Plaza, Unit No.301,3rd Floor, Plot No K 10, Navi Mumbai
+
+28-01-2026
+
+28-01-2029
+
+Skill training and Placements Assistance
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/46d0a6e09722cde91f1f62aa980e0b5f43895697.pdf)
+
+8
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+Vnurtureit Training & Placement Guntur
+
+22-10-2024
+
+20-10-2026
+
+Technical training and placement assistance
+
+2
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/58a3ff157465909372cfc284e978255a0ea5fe60.pdf)
+
+9
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+21-10-2024
+
+21-10-2029
+
+Academic collaboration and student workshops
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e2821f6e80f69237eb1c40f1981d93db9088fd41.pdf)
+
+10
+
+Department of MBA St.Ann's College for Women, Gorantla,Guntur
+
+Sri Satya Sai Marketings Industrial Estate,Amaravathi Road,Guntur
+
+05-06-2025
+
+05-06-2030
+
+Industrial exposure and internship training
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/903a9f07c0a1119e65d1a82eaeb49a679c5c078a.pdf)
+
+11
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Sree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka,Narakoduru,Guntur
+
+01-06-2025
+
+01-06-2030
+
+Industrial training and management exposure
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1b410096e08707a474171ea17929286b575ec404.pdf)
+
+12
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Amaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.
+
+24-04-2022
+
+24-04-2025
+
+Internship support and practical business learning
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f85c169b8d20376d4fa3e3cca05361816690cd2a.pdf)
+
+13
+
+Department of MBA St.Ann's College for Women,Gorantla,Guntur
+
+Upendra Homeo Pharmaseuticals Phase III,Plot No 220,Auto Nagar,Guntur,AP
+
+13-06-2025
+
+13-06-2030
+
+Industrial exposure and management training
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3dc4039234b2463dd26aeb8d627bf0dd014a2502.pdf)
+
+14
+
+Department of BCA St.Ann's College for Women,Gorantla,Guntur
+
+The Red-carpet Animation Visualfx Bordipet,Guntur.
+
+10-06-2025
+
+10-06-2028
+
+Animation training and visual effects skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/35e1325139534616051f5d50286fecc27f945fc4.pdf)
+
+15
+
+Department of Statistics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+03-02-2026
+
+02-02-2029
+
+Academic collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1351774365d369a0cdd3bb714eeda73ad2004a02.pdf)
+
+16
+
+Department of Statistics St.Ann's College for Women,Gorantla,Guntur
+
+Department of Statistics Career Degree College/9 Bordipet,Guntur
+
+03-02-2026
+
+02-02-2029
+
+Workshops, knowledge sharing, and statistical learning activities
+
+4
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/a76a53a0011538fdfc414489d3be5df0eddb5582.pdf)
+
+17
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and laboratory exposure
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/36a6528a5d609f798d8cd2cb27f7d18f100ad00b.pdf)
+
+18
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics JKC (Tellakula Jalayya Polisetty Somasundaram )College Guntur
+
+02-02-2023
+
+02-02-2026
+
+Student workshops and knowledge- sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/583c4d32796cc6af479bbd154548dee6edc3f7dd.pdf)
+
+19
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Department of Botany Andhra Christian College, Guntur.
+
+01-06-2022
+
+01-06-2025
+
+Academic collaboration and botanical research activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/37bb0502664cc53d6f85aa33b02d162bce8a50ce.pdf)
+
+20
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Nexus Research Institute Nagarala, Guntur
+
+01-07-2024
+
+01-07-2027
+
+Research training and laboratory exposure programmes
+
+3
+
+—
+
+21
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Sri Ramakrishna Nursery MG Inner Ring Road,Guntur
+
+01-07-2025
+
+01-07-2028
+
+Plant cultivation and nursery management training Practical exposure in horticulture and botanical studies
+
+3
+
+—
+
+22
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+10-09-2024
+
+10-09-2029
+
+Research training and laboratory skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f188e58a7084eb541de8b21002b7c1a33d84c776.pdf)
+
+23
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8bd47e95fa497963778a8476fb52ce9e9da0bf53.pdf)
+
+24
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+Krishi Vigyan Kendra lam Farm Sri Venkateswara Veternity University,Lam,Guntur
+
+04-02-2026
+
+04-02-2031
+
+Agricultural biotechnology training and research exposure Practical learning in biofertilizers, 5    plant sciences, and laboratory techniques
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/6490111a45ca4508870a46bcf31878ddafd20dab.pdf)
+
+25
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+12-11-2025
+
+12-11-2030
+
+Research training and laboratory skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3fc1ac205b400947809df650ea43e8a0ff055f67.pdf)
+
+26
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Future India Foundation MA Advanced Diagnostic & Research Centre, Kothapet
+
+17-07-2022
+
+—
+
+Diagnostic training and research exposure
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/9c1ce349e0f67ace296f41e45c9cf93adac3e02f.pdf)
+
+27
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/368334c448b1e364c6e7ef068467340f1c6df7a3.pdf)
+
+28
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+29-04-2022
+
+—
+
+Effective untill terminated by any one of the Partner Laboratory training and research skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/7e3cca9905e4aebb171c507869787fb763eb0a67.pdf)
+
+29
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Department of Chemistry Andhra Christian College, Guntur.
+
+20-06-2021
+
+20-06-2026
+
+Academic collaboration and student training programmes
+
+6
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/38b8df9f796b9c59f8844230eb258d8e9f9d350b.pdf)
+
+30
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Andhra Christian College, Guntur.
+
+09-03-2023
+
+09-03-2025
+
+Academic collaboration and commerce-related student training
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/68a248b63de5d694ea096c94d3a60ee5dc8338a4.pdf)
+
+31
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Nitya Computer Accounting Training Arundelpet, Guntur
+
+25-07-2022
+
+25-07-2025
+
+Accounting software training 3    and skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/dd1ca929754a72ccac41bb8c1728f26886c6cf0d.pdf)
+
+32
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Career Degree College, Guntur
+
+01-06-2022
+
+01-06-2025
+
+Workshops, seminars, and knowledge-sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/2a61c34b90ce2d5a251af52dce530ffc6d045812.pdf)
+
+33
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce BHH Degree College for Women
+
+04-06-2022
+
+04-06-2025
+
+Student interaction and academic enrichment programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e6b0cfd37764a575a3ba0614d4b6a03b16816386.pdf)
+
+34
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Andhra Pradesh Silabam Association Sangadigunta, Guntur
+
+22-03-2022
+
+22-03-2027
+
+Sports training and martial arts skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1bf019ca4118b3b896647c36f791389d93682ca9.pdf)
+
+35
+
+Department of Physical Education St.Ann's College for Women,Gorantla,Guntur
+
+Shito Ryu Kai International Karate Do- Academy India Brundavan Gardens, Guntur-AP
+
+01-09-2021
+
+01-09-2026
+
+Karate training and self-defence skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/32a9993abfd65fb729dc5803d8632854af336f9b.pdf)
+
+36
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physical Education Hindu College, Guntur,AP
+
+06-09-2022
+
+06-09-2025
+
+Sports collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8e929d0986fa79a6ba1631698db51327cea81a82.pdf)
+
+37
+
+Department of Mathematics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics Hindu College, Guntur.
+
+23-01-2023
+
+—
+
+Academic collaboration and mathematical skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/89944205e8614d5e10ab8a242e45195580309b21.pdf)
+
+38
+
+Department of Mathematics St. Ann’s College for Women, Gorantla, Guntur
+
+Department of Mathematics Andhra Christian College, Guntur
+
+15-07-2019
+
+—
+
+Workshops, seminars, and mathematical    knowledge-sharing activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/d8e9ec3a3d3047ac12b7b9af82dc9dd721f9a2d5.pdf)
+
+39
+
+Department of Mathematics St. Ann’s College for Women, Gorantla, Guntur
+
+Department of Mathematics Chalapathi Degree College
+
+03-11-2022
+
+—
+
+Student workshops, seminars, and knowledge-sharing programmes
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/60b069682d31de80bb3d429db6516875e7322b33.pdf)
+
+40
+
+Department of Oriental Languages St.Ann's College for Women, Gorantla, Guntur
+
+Department of Telugu Hindu College, Guntur
+
+07-07-2021
+
+—
+
+Language enrichment and literary activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e8d93970b6c3d34e5bfdd97116133ddf62c0a6cb.pdf)
+
+41
+
+Department of English St.Ann's College for Women, Gorantla, Guntur
+
+Department of English Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and communication skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/c2d444ca3f97d5c3f3b8e0d553c210a2d03cf70c.pdf)
+
+
+
+__**MoU Activities 2024-2025**__
+
+**S. No**
+
+**Name of the Department**
+
+**Name of the Organization/Institution/Corporate with which MoUs is Signed**
+
+**Year of Signing**
+
+**Duration**
+
+**Purpose**
+
+**Years**
+
+**View Document**
+
+1
+
+St. Ann’s College for Women, Gorantla,Guntur
+
+Excelr Edtech Pvt. Ltd., 49, 1st Cross, 27th Main, Bengaluru, Karnataka
+
+09-02-2023
+
+09-02-2025
+
+Skill development and internships
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f6ed67c3913638d2ee46eb827058658ea8f0ec50.pdf)
+
+2
+
+View PDF 2 St.Ann's
+
+College for Women, Gorantla,Guntur Dimensions Coaching Centre 4/12 Bordipet, Guntur -2
+
+02-08-2020
+
+02-08-2025
+
+Career guidance and Competitive Exam coaching
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/5b671da8dd6d7a9f277f86d9540826e122dd00c2.pdf)
+
+3
+
+St.Ann's College for Women, Gorantla, Guntur
+
+Data Valley India Private Limited 203,2nd Floor, SBN CV Towers, Madhapur, Hyderabad 500081
+
+09-12-2024
+
+—
+
+Technical training
+
+1
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3bbe700384939cb6693dc039132ab2a9d4b46e4f.pdf)
+
+4
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Ala Hospital Amaravathi Road, Guntur
+
+12-06-2017
+
+12-06-2026
+
+Health awareness and medical assistance
+
+10
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/3384e286dcf2c4ff75eac0bdb22a1972a9f86a03.pdf)
+
+5
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Andhra Pradesh State Skill Development Centre (APSSDC)
+
+24-05-2017
+
+—
+
+Skill training and certification programmes
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/c2716c64b2e3a8ffd88bd99875e852c732335a42.pdf)
+
+6
+
+St.Ann's College for Women,Gorantla,Guntur
+
+Pidilite Industries Ltd., Guntur
+
+15-11-2022
+
+15-11-2025
+
+Industrial exposure and skill enhancement
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/9d27454059b14cc51a50ee2e9a1f060fd9478243.pdf)
+
+7
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+Vnurtureit Training & Placement Guntur
+
+22-10-2024
+
+20-10-2026
+
+Technical training and placement assistance
+
+2
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/58a3ff157465909372cfc284e978255a0ea5fe60.pdf)
+
+8
+
+Department of MCA St.Ann's College for Women, Gorantla, Guntur
+
+JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+21-10-2024
+
+21-10-2029
+
+Academic collaboration and student workshops
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e2821f6e80f69237eb1c40f1981d93db9088fd41.pdf)
+
+9
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Sri Satya Sai Marketings Industrial Estate, Amaravathi Road, Guntur
+
+24-04-2022
+
+25-04-2025
+
+Industrial exposure and internship training
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/0c094bbc089550f4ace01bf3406616b29898a7ad.pdf)
+
+10
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Sree Lalitha Parameswari Spinning Mills (P) Ltd. Chebrolu Donka, Narakoduru, Guntur
+
+27-04-2022
+
+27-04-2025
+
+Industrial training and management exposure
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/0c094bbc089550f4ace01bf3406616b29898a7ad.pdf)
+
+11
+
+Department of MBA St.Ann's College for Women, Gorantla, Guntur
+
+Amaravathi Poly Plastic Plot No. F-Industrial Estate, Amaravathi Road, Guntur.
+
+24-04-2022
+
+24-04-2025
+
+Internship support and practical business learning
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/f85c169b8d20376d4fa3e3cca05361816690cd2a.pdf)
+
+12
+
+Department of Computer Science St.Ann's College for Women,Gorantla,Guntur
+
+The Red-carpet Animation Visualfx Bordipet,Guntur.
+
+06-07-2022
+
+06-07-2025
+
+Animation training and visual effects skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/ce40ea4eddce7a22a55998d4779716e92c720b27.pdf)
+
+13
+
+Department of Statistics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics & Statistics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+02-02-2023
+
+02-02-2026
+
+Academic collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/370319f2526ac65b89a680cc604c4cbca6f01a44.pdf)
+
+14
+
+Department of Statistics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Statistics Career Degree College/9 Bordipet, Guntur
+
+09-08-2022
+
+09-08-2026
+
+Workshops, knowledge sharing, and statistical learning activities
+
+4
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/a76a53a0011538fdfc414489d3be5df0eddb5582.pdf)
+
+15
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and laboratory exposure
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/36a6528a5d609f798d8cd2cb27f7d18f100ad00b.pdf)
+
+16
+
+Department of Physics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physics JKC (Tellakula Jalayya Polisetty Somasundaram) College Guntur
+
+02-02-2023
+
+02-02-2026
+
+Student workshops and knowledge- sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/69389ff19a2170253e087e04979de92bb03111fa.pdf)
+
+17
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Department of Botany Andhra Christian College, Guntur.
+
+01-06-2022
+
+01-06-2025
+
+Academic collaboration and botanical research activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/37bb0502664cc53d6f85aa33b02d162bce8a50ce.pdf)
+
+18
+
+Department of Botany St.Ann's College for Women, Gorantla, Guntur
+
+Nexus Research Institute Nagarala, Guntur
+
+01-07-2024
+
+01-07-2027
+
+Research training and laboratory exposure programmes
+
+3
+
+—
+
+19
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+10-09-2024
+
+10-09-2029
+
+Research training and laboratory skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/7f573373b3144ba39d49e0e0fae4a5d5811116ff.pdf)
+
+20
+
+Department of Biotechnology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8bd47e95fa497963778a8476fb52ce9e9da0bf53.pdf)
+
+21
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+31-03-2022
+
+11-11-2025
+
+Research training and laboratory skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/dcccfdef2e58c32a349e9049269d8e36181c2010.pdf)
+
+22
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+Future India Foundation MA Advanced Diagnostic & Research Centre, Kothapet
+
+17-07-2022
+
+—
+
+Diagnostic training and research exposure
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/9c1ce349e0f67ace296f41e45c9cf93adac3e02f.pdf)
+
+23
+
+Department of Microbiology St.Ann's College for Women, Gorantla, Guntur
+
+SR Technologies Training & Placement Vijayawada
+
+10-03-2022
+
+—
+
+Effective until terminated by any one of the Partner Technical training and placement assistance
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/368334c448b1e364c6e7ef068467340f1c6df7a3.pdf)
+
+24
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Pasteur Education and Research Training Laboratory (PEARL) Guntur
+
+29-04-2022
+
+—
+
+Effective untill terminated by any one of the Partner Laboratory training and research skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/7e3cca9905e4aebb171c507869787fb763eb0a67.pdf)
+
+25
+
+Department of Chemistry St.Ann's College for Women, Gorantla, Guntur
+
+Department of Chemistry Andhra Christian College, Guntur.
+
+20-06-2021
+
+20-06-2026
+
+Academic collaboration and student training programmes
+
+6
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/38b8df9f796b9c59f8844230eb258d8e9f9d350b.pdf)
+
+26
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Andhra Christian College, Guntur.
+
+09-03-2023
+
+09-03-2025
+
+Academic collaboration and commerce-related student training
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/68a248b63de5d694ea096c94d3a60ee5dc8338a4.pdf)
+
+27
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Nitya Computer Accounting Training Arundelpet, Guntur
+
+25-07-2022
+
+25-07-2025
+
+Accounting software training and skill development
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/dd1ca929754a72ccac41bb8c1728f26886c6cf0d.pdf)
+
+28
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce Career Degree College, Guntur
+
+01-06-2022
+
+01-06-2025
+
+Workshops, seminars, and knowledge-sharing activities
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/2a61c34b90ce2d5a251af52dce530ffc6d045812.pdf)
+
+29
+
+Department of Commerce St.Ann's College for Women, Gorantla, Guntur
+
+Department of Commerce BHH Degree College for Women
+
+04-06-2022
+
+04-06-2025
+
+Student interaction and academic enrichment programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e6b0cfd37764a575a3ba0614d4b6a03b16816386.pdf)
+
+30
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Andhra Pradesh Silabam Association Sangadigunta, Guntur
+
+22-03-2022
+
+22-03-2027
+
+Sports training and martial arts skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/1bf019ca4118b3b896647c36f791389d93682ca9.pdf)
+
+31
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Shito Ryu Kai International Karate Do- Academy India Brundavan Gardens, Guntur-AP
+
+01-09-2021
+
+01-09-2026
+
+Karate training and self-defence skill development
+
+5
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/32a9993abfd65fb729dc5803d8632854af336f9b.pdf)
+
+32
+
+Department of Physical Education St.Ann's College for Women, Gorantla, Guntur
+
+Department of Physical Education Hindu College, Guntur, AP
+
+06-09-2022
+
+06-09-2025
+
+Sports collaboration and student training programmes
+
+3
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/8e929d0986fa79a6ba1631698db51327cea81a82.pdf)
+
+33
+
+Department of Mathematics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics Hindu College, Guntur.
+
+23-01-2023
+
+—
+
+Academic collaboration and mathematical skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/d8e9ec3a3d3047ac12b7b9af82dc9dd721f9a2d5.pdf)
+
+34
+
+Department of Mathematics St.Ann's College for Women, Gorantla, Guntur
+
+Department of Mathematics Andhra Christian College, Guntur
+
+15-07-2019
+
+—
+
+Workshops, seminars, and mathematical    knowledge-sharing activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/89944205e8614d5e10ab8a242e45195580309b21.pdf)
+
+35
+
+Department of Mathematics St. Ann’s College for Women, Gorantla, Guntur
+
+Department of Mathematics Chalapathi Degree College
+
+03-11-2022
+
+07-07-2021
+
+Language enrichment and literary activities
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/60b069682d31de80bb3d429db6516875e7322b33.pdf)
+
+36
+
+Department of English St.Ann's College for Women, Gorantla, Guntur
+
+Department of English Andhra Christian College, Guntur
+
+10-10-2019
+
+09-10-2024
+
+Academic collaboration and communication skill development
+
+—
+
+[View PDF](https://cdn.sanity.io/files/fhjwqub5/production/e8d93970b6c3d34e5bfdd97116133ddf62c0a6cb.pdf)`
   },
   "csr-initiatives": {
-    "id": "csr-initiatives",
-    "title": "CSR Initiatives",
-    "content": "**CSR Initiatives**\n\nSt. Ann\\'s College for Women promotes social responsibility and\ncommunity development through various Corporate Social Responsibility\n(CSR) initiatives in collaboration with organizations, institutions, and\ncommunity partners. These initiatives aim to create social awareness,\nempower women, and contribute to sustainable community development.\n\n**Focus Areas**\n\n- Women empowerment and self-development programmes\\\n- Skill development and employability training\\\n- Health, hygiene, and wellness awareness programmes\\\n- Environmental protection and sustainability activities\\\n- Digital literacy and financial awareness initiatives\\\n- Community outreach and social service programmes\\\n- Awareness programmes on social and ethical values\n\nThe institution encourages students to actively participate in\nCSR-related activities to develop leadership qualities, social\ncommitment, and civic responsibility. These initiatives support holistic\neducation and strengthen the institution's commitment towards community\nwelfare and nation building.\n\n**View PDF**\n\n**Photo Galley**"
+    id: "csr-initiatives",
+    title: "CSR Initiatives",
+    content: `CSR Initiatives St. Ann's College for Women promotes social responsibility and community development through various Corporate Social Responsibility (CSR) initiatives in collaboration with organizations, institutions, and community partners. These initiatives aim to create social awareness, empower women, and contribute to sustainable community development.
+
+**Focus Areas**
+
+- Women empowerment and self-development programmes
+
+- Skill development and employability training
+
+- Health, hygiene, and wellness awareness programmes
+
+- Environmental protection and sustainability activities
+
+- Digital literacy and financial awareness initiatives
+
+- Community outreach and social service programmes
+
+- Awareness programmes on social and ethical values
+
+The institution encourages students to actively participate in CSR-related activities to develop leadership qualities, social commitment, and civic responsibility. These initiatives support holistic education and strengthen the institution’s commitment towards community welfare and nation building. View PDF Photo Galley`
   },
   "industry-placement-partnerships": {
-    "id": "industry-placement-partnerships",
-    "title": "Placement Partnerships",
-    "content": "**Placement Partnerships**\n\nSt. Ann\\'s College for Women has established placement partnerships with\ncompanies, training organizations, educational institutions, and\nrecruitment agencies to enhance students' employability and career\nopportunities. These collaborations help bridge the gap between academic\nlearning and industry expectations.\n\n**Major Areas of Collaboration**\n\n- Campus recruitment support\\\n- Skill development and employability training\\\n- Career guidance and counselling programmes\\\n- Resume writing and interview preparation\\\n- Aptitude and soft skills training\\\n- Internship and industry exposure opportunities\\\n- Placement networking and industry interaction\n\nThe institution continuously strengthens its industry partnerships\nthrough the Training & Placement Cell to support students in achieving\ncareer growth, higher education opportunities, and professional\ndevelopment.\n\n**View PDF**\n\n**Photo Galley**"
+    id: "industry-placement-partnerships",
+    title: "Placement Partnerships",
+    content: `Placement Partnerships St. Ann's College for Women has established placement partnerships with companies, training organizations, educational institutions, and recruitment agencies to enhance students’ employability and career opportunities. These collaborations help bridge the gap between academic learning and industry expectations. Major Areas of Collaboration
+
+- Campus recruitment support
+
+- Skill development and employability training
+
+- Career guidance and counselling programmes
+
+- Resume writing and interview preparation
+
+- Aptitude and soft skills training
+
+- Internship and industry exposure opportunities
+
+- Placement networking and industry interaction
+
+The institution continuously strengthens its industry partnerships through the Training & Placement Cell to support students in achieving career growth, higher education opportunities, and professional development. View PDF Photo Galley`
   },
   "certifications": {
-    "id": "certifications",
-    "title": "Professional Certification Programmes",
-    "content": "**Professional Certification Programmes**\n\nSt. Ann\\'s College for Women offers professional certification\nprogrammes and value-added courses in collaboration with industry\nexperts, training organizations, and academic partners to enhance\nstudents' professional competencies and career readiness.\n\nThese programmes are designed to provide practical knowledge, industry\nexposure, and skill-based learning beyond the regular curriculum,\nenabling students to meet emerging professional and industry\nrequirements.\n\n**Objectives**\n\n- Enhance industry readiness and employability\\\n- Develop technical, professional, and life skills\\\n- Provide exposure to emerging technologies and trends\\\n- Encourage entrepreneurship and innovation\\\n- Promote continuous learning and self-development\n\n**Programme Areas**\n\n- Communication and soft skills\\\n- Computer applications and digital skills\\\n- Financial literacy and accounting tools\\\n- Entrepreneurship and business development\\\n- Data analytics and emerging technologies\\\n- Career-oriented and skill-based certification courses\n\nThe institution regularly organizes certification programmes, workshops,\nand training sessions to help students acquire additional\nqualifications, improve confidence, and strengthen career opportunities\nin diverse professional fields.\n\n**View PDF**\n\n**Photo Galley**"
+    id: "certifications",
+    title: "Professional Certification Programmes",
+    content: `Professional Certification Programmes St. Ann's College for Women offers professional certification programmes and value-added courses in collaboration with industry experts, training organizations, and academic partners to enhance students’ professional competencies and career readiness. These programmes are designed to provide practical knowledge, industry exposure, and skill- based learning beyond the regular curriculum, enabling students to meet emerging professional and industry requirements.
+
+**Objectives**
+
+- Enhance industry readiness and employability
+
+- Develop technical, professional, and life skills
+
+- Provide exposure to emerging technologies and trends
+
+- Encourage entrepreneurship and innovation
+
+- Promote continuous learning and self-development
+
+Programme Areas
+
+- Communication and soft skills
+
+- Computer applications and digital skills
+
+- Financial literacy and accounting tools
+
+- Entrepreneurship and business development
+
+- Data analytics and emerging technologies
+
+- Career-oriented and skill-based certification courses
+
+The institution regularly organizes certification programmes, workshops, and training sessions to help students acquire additional qualifications, improve confidence, and strengthen career opportunities in diverse professional fields. View PDF Photo Galley`
   },
   "expert-lectures": {
-    "id": "expert-lectures",
-    "title": "Industry Expert Lectures",
-    "content": "**Industry Expert Lectures**\n\nSt. Ann\\'s College for Women regularly organizes guest lectures, expert\ntalks, webinars, and interactive sessions by industry professionals,\nentrepreneurs, academicians, and corporate experts to provide students\nwith practical exposure and professional awareness.\n\nThese programmes help students understand current industry practices,\nemerging trends, career opportunities, and the skills required to\nsucceed in the professional world.\n\n**Objectives**\n\n- Expose students to current industry trends and developments\\\n- Provide career guidance and professional insights\\\n- Bridge the gap between academic learning and industry expectations\\\n- Enhance subject knowledge and employability skills\\\n- Encourage innovation, leadership, and entrepreneurship\n\n**Key Features**\n\n- Interactive sessions with industry experts\\\n- Career guidance and awareness programmes\\\n- Sector-specific knowledge sharing\\\n- Discussions on emerging technologies and innovations\\\n- Entrepreneurship and startup guidance\\\n- Skill development and professional motivation programmes\n\nThe institution continuously promotes industry-academia interaction\nthrough expert lectures and professional engagement activities to enrich\nthe learning experience and prepare students for future career\nopportunities.\n\n**View PDF**\n\n**Phot Galley**"
+    id: "expert-lectures",
+    title: "Industry Expert Lectures",
+    content: `Industry Expert Lectures St. Ann's College for Women regularly organizes guest lectures, expert talks, webinars, and interactive sessions by industry professionals, entrepreneurs, academicians, and corporate experts to provide students with practical exposure and professional awareness. These programmes help students understand current industry practices, emerging trends, career opportunities, and the skills required to succeed in the professional world.
+
+**Objectives**
+
+- Expose students to current industry trends and developments
+
+- Provide career guidance and professional insights
+
+- Bridge the gap between academic learning and industry expectations
+
+- Enhance subject knowledge and employability skills
+
+- Encourage innovation, leadership, and entrepreneurship
+
+Key Features
+
+- Interactive sessions with industry experts
+
+- Career guidance and awareness programmes
+
+- Sector-specific knowledge sharing
+
+- Discussions on emerging technologies and innovations
+
+- Entrepreneurship and startup guidance
+
+- Skill development and professional motivation programmes
+
+The institution continuously promotes industry-academia interaction through expert lectures and professional engagement activities to enrich the learning experience and prepare students for future career opportunities. View PDF Phot Galley`
   },
   "industrial-visits": {
-    "id": "industrial-visits",
-    "title": "Industrial Visits",
-    "content": "**Industrial Visits**\n\nSt. Ann\\'s College for Women organizes industrial visits and field\nexposure programmes to provide students with practical learning\nexperiences and firsthand understanding of industrial operations,\norganizational functioning, and workplace culture.\n\nIndustrial visits help students connect theoretical knowledge with\npractical applications and create awareness about professional\nenvironments, technologies, and career opportunities.\n\n**Objectives**\n\n- Promote experiential and practical learning\\\n- Understand industrial processes and organizational systems\\\n- Develop industry awareness and professional exposure\\\n- Bridge the gap between classroom learning and real-world applications\\\n- Enhance career orientation and employability skills\n\n**Benefits**\n\n- Exposure to real-time industrial and work environments\\\n- Understanding production, management, and operational practices\\\n- Interaction with industry professionals and experts\\\n- Awareness of career opportunities and workplace expectations\\\n- Development of professional skills and confidence\n\nThe institution regularly encourages students to participate in\nindustrial visits, educational tours, and field-based learning\nactivities to strengthen practical knowledge, industry interaction, and\ncareer preparedness.\n\n**View Department wise Industry Visits PDF**"
+    id: "industrial-visits",
+    title: "Industrial Visits",
+    content: `Industrial Visits St. Ann's College for Women organizes industrial visits and field exposure programmes to provide students with practical learning experiences and firsthand understanding of industrial operations, organizational functioning, and workplace culture. Industrial visits help students connect theoretical knowledge with practical applications and create awareness about professional environments, technologies, and career opportunities.
+
+**Objectives**
+
+- Promote experiential and practical learning
+
+- Understand industrial processes and organizational systems
+
+- Develop industry awareness and professional exposure
+
+- Bridge the gap between classroom learning and real-world applications
+
+- Enhance career orientation and employability skills
+
+Benefits
+
+- Exposure to real-time industrial and work environments
+
+- Understanding production, management, and operational practices
+
+- Interaction with industry professionals and experts
+
+- Awareness of career opportunities and workplace expectations
+
+- Development of professional skills and confidence
+
+The institution regularly encourages students to participate in industrial visits, educational tours, and field-based learning activities to strengthen practical knowledge, industry interaction, and career preparedness. View Department wise Industry Visits PDF`
   },
   "skill-training": {
-    "id": "skill-training",
-    "title": "Skill-Based Training Programmes",
-    "content": "**Skill-Based Training Programmes**\n\nSt. Ann\\'s College for Women conducts skill-based training programmes to\nenhance students' employability, professional competencies, and career\nreadiness. These programmes focus on developing communication skills,\nleadership qualities, digital literacy, and workplace preparedness.\n\n**Training Areas**\n\n- Soft skills and personality development\\\n- Communication and presentation skills\\\n- Aptitude and reasoning training\\\n- Leadership and teamwork\\\n- Digital and computer skills\\\n- Entrepreneurship and innovation\\\n- Interview and group discussion skills\n\nThe institution regularly organizes training sessions, workshops, and\ncareer-oriented programmes aligned with industry expectations and\nemerging employment trends to prepare students for professional success.\n\n**View PDF**\n\n**Phot Galley**"
+    id: "skill-training",
+    title: "Skill-Based Training Programmes",
+    content: `Skill-Based Training Programmes St. Ann's College for Women conducts skill-based training programmes to enhance students’ employability, professional competencies, and career readiness. These programmes focus on developing communication skills, leadership qualities, digital literacy, and workplace preparedness. Training Areas
+
+- Soft skills and personality development
+
+- Communication and presentation skills
+
+- Aptitude and reasoning training
+
+- Leadership and teamwork
+
+- Digital and computer skills
+
+- Entrepreneurship and innovation
+
+- Interview and group discussion skills
+
+The institution regularly organizes training sessions, workshops, and career-oriented programmes aligned with industry expectations and emerging employment trends to prepare students for professional success. View PDF Phot Galley`
   },
   "employability-activities": {
-    "id": "employability-activities",
-    "title": "Employability Enhancement Activities",
-    "content": "**Employability Enhancement Activities**\n\nSt. Ann\\'s College for Women organizes various employability enhancement\nactivities to prepare students for higher education, entrepreneurship,\nand professional careers. The institution focuses on skill development,\ncareer guidance, and industry exposure to improve students' confidence\nand workplace readiness.\n\n**Major Activities**\n\n- Career counselling and mentoring\\\n- Placement training programmes\\\n- Competitive examination coaching\\\n- Internship and project guidance\\\n- Entrepreneurship awareness programmes\\\n- Communication and soft skills training\\\n- Industry interaction and networking opportunities\n\nThese initiatives help students enhance professional competencies,\ncareer awareness, and employability skills required for successful\ncareers and responsible citizenship.\n\n**Website Button**\n\n🔘 **View Documents**\\\n(Upload PDFs such as activity reports, training schedules, certificates,\nphotos, placement records, and workshop reports.)"
+    id: "employability-activities",
+    title: "Employability Enhancement Activities",
+    content: `Employability Enhancement Activities St. Ann's College for Women organizes various employability enhancement activities to prepare students for higher education, entrepreneurship, and professional careers. The institution focuses on skill development, career guidance, and industry exposure to improve students’ confidence and workplace readiness. Major Activities
+
+- Career counselling and mentoring
+
+- Placement training programmes
+
+- Competitive examination coaching
+
+- Internship and project guidance
+
+- Entrepreneurship awareness programmes
+
+- Communication and soft skills training
+
+- Industry interaction and networking opportunities
+
+These initiatives help students enhance professional competencies, career awareness, and employability skills required for successful careers and responsible citizenship. Website Button 🔘 View Documents (Upload PDFs such as activity reports, training schedules, certificates, photos, placement records, and workshop reports.)`
   },
   "international-collaborations": {
-    "id": "international-collaborations",
-    "title": "International Collaborations",
-    "content": "**International Collaborations**\n\nSt. Ann\\'s College for Women promotes international collaboration\nthrough academic partnerships, online interactions, research\ninitiatives, and knowledge-sharing programmes with institutions and\norganizations across the globe. These collaborations aim to enhance\nglobal exposure, academic quality, and cross-cultural learning\nopportunities for students and faculty.\n\n**Focus Areas**\n\n- Academic and research collaborations\\\n- International webinars and expert lectures\\\n- Faculty interaction and knowledge exchange\\\n- Student exposure to global learning practices\\\n- Collaborative skill development programmes\n\nThe institution encourages global engagement to enrich academic\nexperiences and develop international perspectives among students.\n\n**View Documents\\\n(View PDF -International Collaboration MoUs, Activity Reports, Webinar\nReports, Photos, Certificates)**"
+    id: "international-collaborations",
+    title: "International Collaborations",
+    content: `International Collaborations St. Ann's College for Women promotes international collaboration through academic partnerships, online interactions, research initiatives, and knowledge-sharing programmes with institutions and organizations across the globe. These collaborations aim to enhance global exposure, academic quality, and cross-cultural learning opportunities for students and faculty.
+
+**Focus Areas**
+
+- Academic and research collaborations
+
+- International webinars and expert lectures
+
+- Faculty interaction and knowledge exchange
+
+- Student exposure to global learning practices
+
+- Collaborative skill development programmes
+
+The institution encourages global engagement to enrich academic experiences and develop international perspectives among students. View Documents (View PDF -International Collaboration MoUs, Activity Reports, Webinar Reports, Photos, Certificates)`
   },
   "internationalization-policy": {
-    "id": "internationalization-policy",
-    "title": "Internationalization Policy",
-    "content": "**2. Internationalization Policy**\n\nSt. Ann\\'s College for Women is committed to promoting\ninternationalization in higher education by integrating global\nperspectives into teaching, learning, research, and student development\nactivities.\n\n**Objectives**\n\n- Promote global academic exposure\\\n- Encourage international collaborations and partnerships\\\n- Enhance cross-cultural understanding and communication\\\n- Support participation in international academic activities\\\n- Develop globally competent graduates\n\nThe institution continuously strives to create opportunities that\nstrengthen international academic engagement and global outlook among\nstudents and faculty.\n\n**View Documents\\\n(Internationalization Policy PDF, Academic Collaboration Reports,\nParticipation Records)**"
+    id: "internationalization-policy",
+    title: "Internationalization Policy",
+    content: `2. Internationalization Policy St. Ann's College for Women is committed to promoting internationalization in higher education by integrating global perspectives into teaching, learning, research, and student development activities.
+
+**Objectives**
+
+- Promote global academic exposure
+
+- Encourage international collaborations and partnerships
+
+- Enhance cross-cultural understanding and communication
+
+- Support participation in international academic activities
+
+- Develop globally competent graduates
+
+The institution continuously strives to create opportunities that strengthen international academic engagement and global outlook among students and faculty. View Documents (Internationalization Policy PDF, Academic Collaboration Reports, Participation Records)`
   },
   "accreditations-memberships": {
-    "id": "accreditations-memberships",
-    "title": "International Accreditations & Memberships",
-    "content": "**3. International Accreditations & Memberships**\n\nThe institution encourages participation in international academic\nnetworks, professional bodies, and collaborative educational initiatives\nto promote quality education and global academic standards.\n\n**Major Areas**\n\n- Membership in academic and professional associations\\\n- Participation in international academic forums\\\n- Collaboration with global educational platforms\\\n- Online certification and international learning initiatives\n\nThese efforts contribute to academic excellence, institutional quality\nenhancement, and global visibility.\n\n**View Documents\\\n(Membership Certificates, Accreditation Documents, International\nProgramme Details)**"
+    id: "accreditations-memberships",
+    title: "International Accreditations & Memberships",
+    content: `3. International Accreditations & Memberships The institution encourages participation in international academic networks, professional bodies, and collaborative educational initiatives to promote quality education and global academic standards. Major Areas
+
+- Membership in academic and professional associations
+
+- Participation in international academic forums
+
+- Collaboration with global educational platforms
+
+- Online certification and international learning initiatives
+
+These efforts contribute to academic excellence, institutional quality enhancement, and global visibility. View Documents (Membership Certificates, Accreditation Documents, International Programme Details)`
   },
   "global-alumni": {
-    "id": "global-alumni",
-    "title": "Global Alumni & Outreach Engagement",
-    "content": "**4. Global Alumni & Outreach Engagement**\n\nSt. Ann\\'s College for Women maintains interaction with alumni residing\nin different regions and countries to strengthen institutional\ndevelopment, mentoring, and global outreach activities.\n\n**Activities**\n\n- Alumni interaction sessions\\\n- Career guidance and mentoring\\\n- International alumni networking\\\n- Alumni support for student development initiatives\\\n- Knowledge-sharing and motivational talks\n\nGlobal alumni engagement helps students gain professional insights and\ninternational career awareness.\n\n**View Documents\\\n(Alumni Interaction Reports, Outreach Activities, Alumni Meeting\nPhotos)**"
+    id: "global-alumni",
+    title: "Global Alumni & Outreach Engagement",
+    content: `4. Global Alumni & Outreach Engagement St. Ann's College for Women maintains interaction with alumni residing in different regions and countries to strengthen institutional development, mentoring, and global outreach activities. Activities
+
+- Alumni interaction sessions
+
+- Career guidance and mentoring
+
+- International alumni networking
+
+- Alumni support for student development initiatives
+
+- Knowledge-sharing and motivational talks
+
+Global alumni engagement helps students gain professional insights and international career awareness. View Documents (Alumni Interaction Reports, Outreach Activities, Alumni Meeting Photos)`
   },
   "global-research": {
-    "id": "global-research",
-    "title": "Global Research Collaborations",
-    "content": "**5. Global Research Collaborations**\n\nThe institution encourages faculty members and researchers to\nparticipate in collaborative research activities, publications,\nwebinars, and academic discussions with scholars and institutions at\nnational and international levels.\n\n**Research Initiatives**\n\n- Joint research publications\\\n- Participation in international conferences and seminars\\\n- Collaborative webinars and academic discussions\\\n- Research networking and knowledge exchange\n\nThese initiatives promote research culture, innovation, and academic\nexcellence.\n\n**View Documents\\\n(Research Publications, Conference Participation Certificates, Webinar\nReports)**"
+    id: "global-research",
+    title: "Global Research Collaborations",
+    content: `5. Global Research Collaborations The institution encourages faculty members and researchers to participate in collaborative research activities, publications, webinars, and academic discussions with scholars and institutions at national and international levels. Research Initiatives
+
+- Joint research publications
+
+- Participation in international conferences and seminars
+
+- Collaborative webinars and academic discussions
+
+- Research networking and knowledge exchange
+
+These initiatives promote research culture, innovation, and academic excellence. View Documents (Research Publications, Conference Participation Certificates, Webinar Reports)`
   },
   "student-faculty-exchange": {
-    "id": "student-faculty-exchange",
-    "title": "Student Exchange / Faculty Exchange",
-    "content": "**6. Student Exchange / Faculty Exchange**\n\nSt. Ann\\'s College for Women encourages academic interaction and\nexchange opportunities through collaborative programmes, online learning\nplatforms, and institutional partnerships.\n\n**Objectives**\n\n- Promote academic and cultural exchange\\\n- Enhance global learning experiences\\\n- Encourage collaborative teaching and learning\\\n- Improve communication and intercultural competencies\n\nThe institution supports opportunities that broaden students' and\nfaculty members' global perspectives and academic exposure.\n\n**View Documents\\\n(Exchange Programme Reports, Participation Certificates, Activity\nPhotos)**"
+    id: "student-faculty-exchange",
+    title: "Student Exchange / Faculty Exchange",
+    content: `6. Student Exchange / Faculty Exchange St. Ann's College for Women encourages academic interaction and exchange opportunities through collaborative programmes, online learning platforms, and institutional partnerships.
+
+**Objectives**
+
+- Promote academic and cultural exchange
+
+- Enhance global learning experiences
+
+- Encourage collaborative teaching and learning
+
+- Improve communication and intercultural competencies
+
+The institution supports opportunities that broaden students’ and faculty members’ global perspectives and academic exposure. View Documents (Exchange Programme Reports, Participation Certificates, Activity Photos)`
   },
   "webinars-conferences": {
-    "id": "webinars-conferences",
-    "title": "International Webinars & Conferences",
-    "content": "**7. International Webinars & Conferences**\n\nThe institution regularly organizes and participates in international\nwebinars, conferences, workshops, and expert sessions to provide\nexposure to global academic trends and emerging developments.\n\n**Key Features**\n\n- International expert lectures and talks\\\n- Online global academic interactions\\\n- Research paper presentations\\\n- Emerging technologies and innovation discussions\\\n- Professional and interdisciplinary learning opportunities\n\nThese programmes help students and faculty strengthen knowledge,\nresearch skills, and global academic engagement.\n\n**🔘 View Documents\\\n(Webinar Brochures, Conference Reports, Certificates, Event Photos)**"
+    id: "webinars-conferences",
+    title: "International Webinars & Conferences",
+    content: `7. International Webinars & Conferences The institution regularly organizes and participates in international webinars, conferences, workshops, and expert sessions to provide exposure to global academic trends and emerging developments. Key Features
+
+- International expert lectures and talks
+
+- Online global academic interactions
+
+- Research paper presentations
+
+- Emerging technologies and innovation discussions
+
+- Professional and interdisciplinary learning opportunities
+
+These programmes help students and faculty strengthen knowledge, research skills, and global academic engagement. 🔘 View Documents (Webinar Brochures, Conference Reports, Certificates, Event Photos)`
   },
   "cross-cultural-learning": {
-    "id": "cross-cultural-learning",
-    "title": "Cross-Cultural Learning Activities",
-    "content": "**8. Cross-Cultural Learning Activities**\n\nSt. Ann\\'s College for Women promotes cross-cultural learning activities\nto encourage mutual respect, cultural understanding, and global\nawareness among students.\n\n**Activities**\n\n- Cultural exchange programmes\\\n- International days and celebrations\\\n- Language and communication activities\\\n- Awareness programmes on global cultures and values\\\n- Collaborative learning and interaction sessions\n\nCross-cultural learning activities help students develop inclusiveness,\ncommunication skills, and global citizenship values.\n\n**🔘 View Documents\\\n(Cultural Activity Reports, Celebration Photos, Participation\nCertificates)**"
+    id: "cross-cultural-learning",
+    title: "Cross-Cultural Learning Activities",
+    content: `8. Cross-Cultural Learning Activities St. Ann's College for Women promotes cross-cultural learning activities to encourage mutual respect, cultural understanding, and global awareness among students. Activities
+
+- Cultural exchange programmes
+
+- International days and celebrations
+
+- Language and communication activities
+
+- Awareness programmes on global cultures and values
+
+- Collaborative learning and interaction sessions
+
+Cross-cultural learning activities help students develop inclusiveness, communication skills, and global citizenship values. 🔘 View Documents (Cultural Activity Reports, Celebration Photos, Participation Certificates)`
   }
 };

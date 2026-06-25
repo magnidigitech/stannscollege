@@ -873,7 +873,7 @@ export default function FacultyProfilePage({ profile: p }: FacultyProfilePagePro
       </Link>
 
       {/* ─── HERO ──────────────────────────────────────────────────────── */}
-      <div className="bg-gradient-to-br from-[#002147] via-[#053d79] to-[#0a4d96] rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl mb-10">
+      <div className="bg-gradient-to-br from-[#002147] via-[#053d79] to-[#0a4d96] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-2xl mb-8">
         {/* decorative circles */}
         <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-white/5 translate-x-1/3 -translate-y-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-1/2 h-40 w-40 rounded-full bg-white/5 translate-y-1/3 pointer-events-none" />
