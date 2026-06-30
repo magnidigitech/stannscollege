@@ -892,6 +892,72 @@ export async function getPlacementsImages(category: string) {
   }
 }
 
+export async function getPlacementsData(slug: string) {
+  try {
+    const query = `*[_type == "placements" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
+      title,
+      "slug": slug.current,
+      "policyUrl": policy.asset->url,
+      annualReports[] {
+        year,
+        "fileUrl": file.asset->url
+      },
+      "cellConstitutionOrderUrl": cellConstitutionOrder.asset->url,
+      workshopReports[] {
+        description,
+        "fileUrl": file.asset->url
+      },
+      awarenessReports[] {
+        description,
+        "fileUrl": file.asset->url
+      },
+      skillDevelopmentReports[] {
+        description,
+        "fileUrl": file.asset->url
+      },
+      startupActivities[] {
+        description,
+        "fileUrl": file.asset->url
+      },
+      certificateReports[] {
+        description,
+        "fileUrl": file.asset->url
+      },
+      mouAgreements[] {
+        academicYear,
+        mous[] {
+          sNo,
+          department,
+          organization,
+          yearOfSigning,
+          duration,
+          purpose,
+          years,
+          "fileUrl": file.asset->url
+        }
+      },
+      mouActivities[] {
+        academicYear,
+        activities[] {
+          sNo,
+          department,
+          organization,
+          yearOfSigning,
+          duration,
+          purpose,
+          years,
+          "fileUrl": file.asset->url
+        }
+      }
+    }`;
+    const data = await sanityClient.fetch(query, { slug });
+    return data || null;
+  } catch (err) {
+    console.error(`Sanity fetch error (getPlacementsData) for ${slug}:`, err);
+    return null;
+  }
+}
+
 export async function getAlumniGallery() {
   try {
     const query = `*[_type == "alumniGallery" && !(_id in path("drafts.**"))] | order(order asc) {
@@ -953,17 +1019,19 @@ export async function getResearchSection(slug: string) {
 
 export async function getStudentSupportDocuments(sectionSlug: string) {
   try {
-    const query = `*[_type == "studentSupport" && section == $sectionSlug && !(_id in path("drafts.**"))] | order(academicYear desc) {
-      _id,
-      title,
-      academicYear,
-      "fileUrl": pdfFile.asset->url
+    const query = `*[_type == "studentSupport" && section == $sectionSlug && !(_id in path("drafts.**"))][0] {
+      "policyUrl": policy.asset->url,
+      reports[] {
+        title,
+        academicYear,
+        "fileUrl": file.asset->url
+      }
     }`;
     const data = await sanityClient.fetch(query, { sectionSlug });
-    return data || [];
+    return data || null;
   } catch (err) {
     console.error(`Sanity fetch error (getStudentSupportDocuments) for ${sectionSlug}:`, err);
-    return [];
+    return null;
   }
 }
 

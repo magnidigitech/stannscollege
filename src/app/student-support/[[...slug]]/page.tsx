@@ -27,7 +27,7 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
     getStudentSupportImages(activeSlug),
     activeSlug === "sports-games" ? getStudentSupportImages("sports-cultural-achievements") : Promise.resolve(null),
     getStudentSupportDocuments(activeSlug),
-    activeSlug === "sports-games" ? getStudentSupportDocuments("sports-infrastructure") : Promise.resolve([]),
+    activeSlug === "sports-games" ? getStudentSupportDocuments("sports-infrastructure") : Promise.resolve(null),
     activeSlug === "academic-achievements" ? getUniversityRankHolders() : Promise.resolve([])
   ]);
 
@@ -36,17 +36,20 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
     ...(sanityDataOld?.images || [])
   ];
 
-  const mergedFiles = [
-    ...sanityFiles,
-    ...sanityFilesOld
-  ];
+  const studentSupportData = {
+    policyUrl: sanityFiles?.policyUrl || sanityFilesOld?.policyUrl || null,
+    reports: [
+      ...(sanityFiles?.reports || []),
+      ...(sanityFilesOld?.reports || [])
+    ]
+  };
 
   return (
     <div className="bg-slate-50/50 min-h-screen animate-fadeIn select-none">
       <StudentSupportClientPortal 
         activeSlug={activeSlug} 
         galleryImages={galleryImages}
-        sanityFiles={mergedFiles}
+        studentSupportData={studentSupportData}
         rankHolders={rankHolders}
         initialSections={[]} 
       />

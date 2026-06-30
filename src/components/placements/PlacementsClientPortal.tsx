@@ -142,12 +142,14 @@ interface PlacementsClientPortalProps {
   activeSlug: string;
   initialSections?: any[];
   galleryImages?: Array<{ url: string; caption?: string }>;
+  placementsData?: any;
 }
 
 export default function PlacementsClientPortal({
   activeSlug = "about-cell",
   initialSections = [],
-  galleryImages = []
+  galleryImages = [],
+  placementsData = null
 }: PlacementsClientPortalProps) {
 
   // Accordion Expand States
@@ -463,7 +465,9 @@ export default function PlacementsClientPortal({
           const nextClean = clean(nextVal);
           if (((nextVal.startsWith("__") && nextVal.endsWith("__")) || (nextVal.startsWith("**") && nextVal.endsWith("**"))) && nextVal.length > 4) break;
           if (nextVal.startsWith("Link:")) break;
-          if (nextClean.includes("Services") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
+          const nextNorm = norm(nextVal);
+          const isSeparatingHeader = nextNorm === "viewpdf" || nextNorm === "viewpdfpdf" || nextNorm === "viewdocument" || nextNorm === "viewpdfdocument";
+          if (nextClean.includes("Services") || isSeparatingHeader || nextClean.includes("Gallery")) break;
           rowItems.push(nextVal);
           lookAhead++;
         }
@@ -508,6 +512,13 @@ export default function PlacementsClientPortal({
           continue;
         }
       }
+      
+      const isCompositionTable = n0 === "name" && n1 === "designation" && n2 === "role";
+      if (isCompositionTable) {
+        parseTable(3);
+        continue;
+      }
+
       if (is2ColTable && n0 === "category" && n1.includes("totalselections")) {
         parseTable(2);
         continue;
@@ -625,96 +636,6 @@ export default function PlacementsClientPortal({
       }
 
       if (node.type === "table") {
-        if (currentActiveSlug === "mous-agreements" || currentActiveSlug === "mou-activities") {
-          return (
-            <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-5 my-6 animate-fadeIn">
-              {node.rows.map((row: string[], rIdx: number) => {
-                const sNo = row[0] || "";
-                const department = row[1] || "";
-                const company = row[2] || "";
-                const yearOfSigning = row[3] || "";
-                const duration = row[4] || "";
-                const purpose = row[5] || "";
-                const years = row[6] || "";
-                const viewDocument = row[7] || "";
-
-                // Extract clean department badge
-                const cleanDept = department
-                  .replace(/St\.?\s*Ann['’]?s\s+College\s+for\s+Women,?\s*(Gorantla,)?\s*Guntur/gi, "")
-                  .replace(/Department\s+of/gi, "")
-                  .trim();
-                const deptBadge = cleanDept || "College-Wide";
-
-                // View PDF click handling
-                const linkMatch = viewDocument.match(/\[([^\]]+)\]\(([^)]+)\)/);
-                const linkUrl = linkMatch ? linkMatch[2] : null;
-
-                const displayYears = years && years !== "—" ? `${years} ${years.toLowerCase().includes("year") ? "" : "Years"}` : null;
-                const displayDuration = displayYears || duration || "—";
-
-                return (
-                  <div
-                    key={rIdx}
-                    className="flex flex-col justify-between bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:border-emerald-200/50 hover:scale-[1.01]"
-                  >
-                    <div>
-                      {/* Badge & S.No */}
-                      <div className="flex items-center justify-between mb-3.5">
-                        {deptBadge !== "College-Wide" ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-[#004225] border border-emerald-100/50">
-                            {deptBadge}
-                          </span>
-                        ) : (
-                          <div />
-                        )}
-                        <span className="text-[10px] font-bold text-slate-350">
-                          #{sNo}
-                        </span>
-                      </div>
-
-                      {/* Company / Institution Name */}
-                      <h4 className="font-outfit text-sm md:text-base font-black text-slate-805 mb-2 leading-snug group-hover:text-[#004225] transition-colors">
-                        {company}
-                      </h4>
-
-                      {/* Purpose */}
-                      {purpose && purpose !== "—" && (
-                        <p className="text-slate-500 text-[12.5px] leading-relaxed mb-5 font-semibold">
-                          {purpose}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Bottom Metadata Line */}
-                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between gap-4 text-[10.5px] md:text-[11px] font-bold text-slate-450 uppercase tracking-wider shrink-0">
-                      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                        <span>Signed: {yearOfSigning}</span>
-                        <span className="text-slate-200 font-normal">|</span>
-                        <span>Duration: {displayDuration}</span>
-                      </div>
-
-                      {linkUrl ? (
-                        <button
-                          onClick={() => {
-                            setSelectedFileUrl(linkUrl);
-                            setSelectedFileTitle(company || "MoU Document");
-                          }}
-                          className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-black text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-md transition-all cursor-pointer"
-                        >
-                          <Eye className="w-3 h-3" />
-                          View PDF
-                        </button>
-                      ) : (
-                        <span className="text-slate-300 font-normal text-[10px] shrink-0">No PDF</span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        }
-
         return (
           <div key={idx} className="my-8 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text animate-fadeIn">
             <div className="overflow-x-auto">
@@ -909,6 +830,129 @@ export default function PlacementsClientPortal({
     });
   };
 
+  const appendPlacementsPdfs = (content: string, data: any) => {
+    if (!data) return content;
+    
+    let pdfMarkdown = "";
+    
+    // Policy
+    if (data.policyUrl) {
+      pdfMarkdown += `\n\n__**View PDF**__\n\n[Entrepreneurship Development Policy](${data.policyUrl})`;
+    }
+    
+    // Cell Constitution Order
+    if (data.cellConstitutionOrderUrl) {
+      if (!pdfMarkdown.includes("View PDF")) {
+        pdfMarkdown += `\n\n__**View PDF**__\n\n`;
+      } else {
+        pdfMarkdown += `\n\n`;
+      }
+      pdfMarkdown += `[Cell Constitution Order](${data.cellConstitutionOrderUrl})`;
+    }
+    
+    // Annual Activity Reports
+    if (data.annualReports && data.annualReports.length > 0) {
+      pdfMarkdown += `\n\n__**Annual Activity Reports**__\n\n`;
+      const reportLinks = data.annualReports
+        .map((r: any) => `[${r.year}](${r.fileUrl})`)
+        .join(" ");
+      pdfMarkdown += reportLinks;
+    }
+    
+    // Workshop & Seminar Reports
+    if (data.workshopReports && data.workshopReports.length > 0) {
+      pdfMarkdown += `\n\n__**Workshop & Seminar Reports**__\n\n`;
+      const links = data.workshopReports
+        .map((r: any) => `[${r.description || "Report"}](${r.fileUrl})`)
+        .join(" ");
+      pdfMarkdown += links;
+    }
+    
+    // Entrepreneurship Awareness Programme Reports
+    if (data.awarenessReports && data.awarenessReports.length > 0) {
+      pdfMarkdown += `\n\n__**Entrepreneurship Awareness Programme Reports**__\n\n`;
+      const links = data.awarenessReports
+        .map((r: any) => `[${r.description || "Report"}](${r.fileUrl})`)
+        .join(" ");
+      pdfMarkdown += links;
+    }
+    
+    // Skill Development Reports
+    if (data.skillDevelopmentReports && data.skillDevelopmentReports.length > 0) {
+      pdfMarkdown += `\n\n__**Skill Development Reports**__\n\n`;
+      const links = data.skillDevelopmentReports
+        .map((r: any) => `[${r.description || "Report"}](${r.fileUrl})`)
+        .join(" ");
+      pdfMarkdown += links;
+    }
+    
+    // Start-up & Innovation Activities
+    if (data.startupActivities && data.startupActivities.length > 0) {
+      pdfMarkdown += `\n\n__**Start-up & Innovation Activities**__\n\n`;
+      const links = data.startupActivities
+        .map((r: any) => `[${r.description || "Report"}](${r.fileUrl})`)
+        .join(" ");
+      pdfMarkdown += links;
+    }
+    
+    // Certificate Course Reports
+    if (data.certificateReports && data.certificateReports.length > 0) {
+      pdfMarkdown += `\n\n__**Certificate Course Reports**__\n\n`;
+      const links = data.certificateReports
+        .map((r: any) => `[${r.description || "Report"}](${r.fileUrl})`)
+        .join(" ");
+      pdfMarkdown += links;
+    }
+    
+    return content + pdfMarkdown;
+  };
+
+  const compileMousToMarkdown = (academicYearsList: any[], isActivity: boolean) => {
+    if (!academicYearsList || academicYearsList.length === 0) return "";
+    
+    let markdown = "";
+    
+    // Sort academic years (latest first)
+    const sortedAYs = [...academicYearsList].sort((a, b) => (b.academicYear || "").localeCompare(a.academicYear || ""));
+    
+    sortedAYs.forEach((ay: any) => {
+      const items = isActivity ? ay.activities : ay.mous;
+      if (!items || items.length === 0) return;
+      
+      markdown += `\n\n__**MoU ${isActivity ? "Activities" : "Agreements"} ${ay.academicYear}**__\n\n`;
+      
+      // Table Headers
+      markdown += `**S. No**\n\n**Name of the Department**\n\n**Name of the Organization/Institution/Corporate with which MoUs is Signed**\n\n**Year of Signing**\n\n**Duration**\n\n**Purpose**\n\n**Years**\n\n**View Document**\n\n`;
+      
+      // Rows
+      items.forEach((item: any) => {
+        const sNo = item.sNo || "—";
+        const dept = item.department || "—";
+        const org = item.organization || "—";
+        const signDate = item.yearOfSigning || "—";
+        const duration = item.duration || "—";
+        const purpose = item.purpose || "—";
+        const years = item.years || "—";
+        const docLink = item.fileUrl ? `[View PDF](${item.fileUrl})` : "—";
+        
+        markdown += `${sNo}\n\n${dept}\n\n${org}\n\n${signDate}\n\n${duration}\n\n${purpose}\n\n${years}\n\n${docLink}\n\n`;
+      });
+    });
+    
+    return markdown;
+  };
+
+  const rawContent = sectionData.content;
+  let mergedContent = rawContent;
+  
+  if (currentActiveSlug === "entrepreneurship" && placementsData) {
+    mergedContent = appendPlacementsPdfs(rawContent, placementsData);
+  } else if (currentActiveSlug === "mous-agreements" && placementsData && placementsData.mouAgreements && placementsData.mouAgreements.length > 0) {
+    mergedContent = compileMousToMarkdown(placementsData.mouAgreements, false);
+  } else if (currentActiveSlug === "mou-activities" && placementsData && placementsData.mouActivities && placementsData.mouActivities.length > 0) {
+    mergedContent = compileMousToMarkdown(placementsData.mouActivities, true);
+  }
+
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
       {/* Premium Header */}
@@ -1102,7 +1146,7 @@ export default function PlacementsClientPortal({
                   {currentActiveSlug === "about-cell" ? (
                     <PlacementsLanding onNavigate={handleSlugChange} />
                   ) : (
-                    renderContentBody(sectionData.content)
+                    renderContentBody(mergedContent)
                   )}
                 </div>
               </div>

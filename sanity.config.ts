@@ -312,8 +312,7 @@ export default defineConfig({
         title: "Student Support Documents",
         type: "document",
         fields: [
-          { name: "title", title: "Document Title", type: "string" },
-          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "title", title: "Section/Document Title", type: "string" },
           {
             name: "section",
             title: "Section",
@@ -339,7 +338,24 @@ export default defineConfig({
               ]
             }
           },
-          { name: "pdfFile", title: "PDF File", type: "file" }
+          { name: "policy", title: "Policy PDF (Single)", type: "file" },
+          {
+            name: "reports",
+            title: "Academic Year Reports",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "studentSupportReport",
+                title: "Report Entry",
+                fields: [
+                  { name: "title", title: "Report Title (e.g. Annual Activity Report)", type: "string" },
+                  { name: "academicYear", title: "Academic Year (e.g. 2024-2025)", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          }
         ],
         orderings: [
           {
@@ -1081,6 +1097,187 @@ export default defineConfig({
           },
           { name: "title", title: "Title", type: "string" },
           { name: "content", title: "Content Markdown Text", type: "text" }
+        ]
+      },
+      {
+        name: "placements",
+        title: "Placements",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "slug", title: "Slug", type: "slug", options: { source: "title", maxLength: 96 } },
+          { name: "policy", title: "Policy PDF", type: "file" },
+          {
+            name: "annualReports",
+            title: "Annual Activity Reports",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "annualReport",
+                title: "Annual Report",
+                fields: [
+                  { name: "year", title: "Year", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          },
+          { name: "cellConstitutionOrder", title: "Cell Constitution Order", type: "file" },
+          {
+            name: "workshopReports",
+            title: "Workshop & Seminar Reports",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "workshopReport",
+                title: "Workshop & Seminar Report",
+                fields: [
+                  { name: "description", title: "Description/Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "awarenessReports",
+            title: "Entrepreneurship Awareness Programme Reports",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "awarenessReport",
+                title: "Awareness Programme Report",
+                fields: [
+                  { name: "description", title: "Description/Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "skillDevelopmentReports",
+            title: "Skill Development Reports",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "skillDevelopmentReport",
+                title: "Skill Development Report",
+                fields: [
+                  { name: "description", title: "Description/Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "startupActivities",
+            title: "Start-up & Innovation Activities",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "startupActivity",
+                title: "Start-up & Innovation Activity",
+                fields: [
+                  { name: "description", title: "Description/Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "certificateReports",
+            title: "Certificate Course Reports",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "certificateReport",
+                title: "Certificate Course Report",
+                fields: [
+                  { name: "description", title: "Description/Title", type: "string" },
+                  { name: "file", title: "PDF File", type: "file" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "mouAgreements",
+            title: "MoU Agreements by Academic Year",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "mouAcademicYear",
+                title: "Academic Year MoUs",
+                fields: [
+                  { name: "academicYear", title: "Academic Year (e.g. 2025-2026)", type: "string" },
+                  {
+                    name: "mous",
+                    title: "MoUs",
+                    type: "array",
+                    of: [
+                      {
+                        type: "object",
+                        name: "mouEntry",
+                        title: "MoU Entry",
+                        fields: [
+                          { name: "sNo", title: "S. No", type: "string" },
+                          { name: "department", title: "Name of the Department", type: "string" },
+                          { name: "organization", title: "Name of the Organization/Institution/Corporate", type: "string" },
+                          { name: "yearOfSigning", title: "Year of Signing", type: "string" },
+                          { name: "duration", title: "Duration", type: "string" },
+                          { name: "purpose", title: "Purpose", type: "text" },
+                          { name: "years", title: "Years", type: "string" },
+                          { name: "file", title: "View Document (PDF File)", type: "file" }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "mouActivities",
+            title: "MoU Activities by Academic Year",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                name: "mouActivityAcademicYear",
+                title: "Academic Year MoU Activities",
+                fields: [
+                  { name: "academicYear", title: "Academic Year (e.g. 2025-2026)", type: "string" },
+                  {
+                    name: "activities",
+                    title: "MoU Activities",
+                    type: "array",
+                    of: [
+                      {
+                        type: "object",
+                        name: "mouActivityEntry",
+                        title: "MoU Activity Entry",
+                        fields: [
+                          { name: "sNo", title: "S. No", type: "string" },
+                          { name: "department", title: "Name of the Department", type: "string" },
+                          { name: "organization", title: "Name of the Organization/Institution/Corporate", type: "string" },
+                          { name: "yearOfSigning", title: "Year of Signing", type: "string" },
+                          { name: "duration", title: "Duration", type: "string" },
+                          { name: "purpose", title: "Purpose", type: "text" },
+                          { name: "years", title: "Years", type: "string" },
+                          { name: "file", title: "View Document (PDF File)", type: "file" }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       // ─────────────────────────────────────────────────────────────────

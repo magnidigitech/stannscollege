@@ -57,7 +57,10 @@ interface StudentSupportClientPortalProps {
   initialSections?: any[];
   activeSlug: string;
   galleryImages?: Array<{ url: string; caption?: string }>;
-  sanityFiles?: Array<{ title: string; academicYear: string; fileUrl: string }>;
+  studentSupportData?: {
+    policyUrl?: string | null;
+    reports?: Array<{ title: string; academicYear: string; fileUrl: string }>;
+  } | null;
   rankHolders?: any[];
 }
 
@@ -65,7 +68,7 @@ export default function StudentSupportClientPortal({
   initialSections = [], 
   activeSlug = "mentor-mentee",
   galleryImages = [],
-  sanityFiles = [],
+  studentSupportData = null,
   rankHolders = []
 }: StudentSupportClientPortalProps) {
   
@@ -106,16 +109,26 @@ export default function StudentSupportClientPortal({
     // Append PDF associations explicitly to corresponding sections for Native PDF view overlays!
     let files: any[] = [];
 
-    // 1. Add sanity dynamic uploads at the top
-    if (sanityFiles && sanityFiles.length > 0) {
-      sanityFiles.forEach((f: any) => {
+    // 1. Add policy file from Sanity if uploaded
+    if (studentSupportData?.policyUrl) {
+      files.push({
+        name: "Download Institutional Policy Framework (PDF)",
+        url: studentSupportData.policyUrl
+      });
+    }
+
+    // 2. Add reports from Sanity if uploaded
+    if (studentSupportData?.reports && studentSupportData.reports.length > 0) {
+      studentSupportData.reports.forEach((f: any) => {
         files.push({
-          name: `${f.title} (${f.academicYear})`,
+          name: `${f.title || "Annual Activity Report"} (${f.academicYear})`,
           url: f.fileUrl
         });
       });
-    } else {
-      // 2. Add static fallbacks only if there are no Sanity uploads
+    }
+
+    // 3. Fallback to static PDFs if there are no uploads in Sanity at all
+    if (files.length === 0) {
       if (slug === "anti-ragging") {
         files.push({ name: "Download Comprehensive Anti-Ragging Policy (PDF)", url: "/documents/policies/student-support/anti-ragging-policy.pdf" });
       } else if (slug === "grievance-redressal") {
@@ -140,10 +153,10 @@ export default function StudentSupportClientPortal({
     };
   };
 
-  const currentSection = useMemo(() => getSectionContent(activeSlug), [activeSlug, initialSections, sanityFiles]);
+  const currentSection = useMemo(() => getSectionContent(activeSlug), [activeSlug, initialSections, studentSupportData]);
 
   // Helper: Enhanced Robust Regex Tokenizer to hydrate BOTH links and bold markdown wrappers!
-  const renderRichString = (str: string) => {
+  const renderRichString = (str: string, isHeader = false) => {
     if (!str) return "";
     
     // Upgraded regex supporting dotAll [\s\S] matching to capture multi-line wrapped bold content
@@ -162,8 +175,8 @@ export default function StudentSupportClientPortal({
         // Bold Marker matched (strip stray internal underscores if leaked)
         const boldContent = match[2].replace(/__/g, '').trim();
         parts.push(
-          <strong key={keyCounter++} className="text-[#002147] font-black tracking-tight inline">
-            {renderRichString(boldContent)}
+          <strong key={keyCounter++} className={`${isHeader ? "text-white" : "text-[#002147]"} font-black tracking-tight inline`}>
+            {renderRichString(boldContent, isHeader)}
           </strong>
         );
       } else if (match[3]) {
@@ -397,7 +410,7 @@ export default function StudentSupportClientPortal({
                             isSno ? 'text-center' : isTotal ? 'text-right' : 'text-left'
                           }`}
                         >
-                          {renderRichString(h)}
+                          {renderRichString(h, true)}
                         </th>
                       );
                     })}

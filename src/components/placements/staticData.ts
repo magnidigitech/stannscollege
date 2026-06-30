@@ -909,23 +909,120 @@ The counselling initiatives support informed career decision-making among studen
   "entrepreneurship": {
     id: "entrepreneurship",
     title: "Entrepreneurship Development",
-    content: `Entrepreneurship Development The Institution promotes entrepreneurial thinking and innovation among students through entrepreneurship awareness programmes and skill development activities.
+    content: `__**Innovation & Start-Up Centre**__
 
-**Entrepreneurship Initiatives**
+__**About the Cell**__
 
-- Entrepreneurship Awareness Camps
+The Entrepreneurship Development / Innovation & Start-Up Centre of St. Ann’s College for Women, Gorantla, Guntur, has been established to promote entrepreneurship, innovation, creativity, and self-employment opportunities among students. The centre functions in alignment with the objectives of UGC, AICTE, Innovation and Entrepreneurship Development initiatives, and NAAC quality enhancement practices.
 
-- Startup Motivation Sessions
+The centre aims to nurture entrepreneurial mindset, leadership qualities, business skills, and innovative thinking among students through various academic, co-curricular, and skill development programmes. It motivates students to become job creators rather than job seekers by providing awareness on start-ups, business opportunities, innovation practices, and government support schemes.
 
-- Innovation & Business Idea Competitions
+The Entrepreneurship Development Cell also promotes employability, financial literacy, business planning, and industry-oriented learning to empower students for professional and entrepreneurial success.
 
-- Financial Literacy Programmes
+__**Objectives**__
 
-- Women Entrepreneurship Guidance
+- Promote entrepreneurship and innovation among students
+- Develop entrepreneurial mindset and leadership qualities
+- Encourage self-employment and start-up initiatives
+- Create awareness about government schemes and funding support for start-ups
+- Enhance business management and financial literacy skills
+- Encourage innovative and creative business ideas
+- Promote industry-oriented and skill-based learning
+- Motivate students to become job creators and socially responsible entrepreneurs
 
-- Interaction with Entrepreneurs
+__**Functions of the Entrepreneurship Development Cell**__
 
-The programmes encourage self-employment and leadership development.`
+The Entrepreneurship Development / Innovation & Start-Up Centre shall:
+
+- Organize awareness programmes, workshops, seminars, FDPs, and training programmes on entrepreneurship and innovation
+- Conduct add-on courses and certificate programmes related to entrepreneurship and start-up development
+- Encourage students to develop innovative business ideas and projects
+- Provide awareness on government schemes, funding agencies, and start-up support systems
+- Facilitate interaction with entrepreneurs, business leaders, and industry experts
+- Promote financial literacy, leadership, and business management skills
+- Conduct activities related to employability and skill development
+- Encourage participation in innovation competitions, exhibitions, and entrepreneurship events
+- Maintain records, reports, and documentation of all EDC activities
+- Coordinate entrepreneurship initiatives in collaboration with IQAC and academic departments
+
+__**Major Activities**__
+
+- Entrepreneurship awareness programmes
+- Workshops on start-ups and innovation
+- Business plan competitions and idea presentation sessions
+- Skill development and leadership training programmes
+- Financial literacy and business management workshops
+- Marketing and communication skill programmes
+- Interaction with entrepreneurs and professionals
+- Certificate courses and add-on programmes
+- Start-up guidance and mentoring sessions
+- Seminars on emerging business opportunities
+- Innovation exhibitions and entrepreneurial activities
+
+__**Expected Outcomes**__
+
+- Development of entrepreneurial and innovative mindset among students
+- Enhancement of leadership, communication, and management skills
+- Increased awareness about self-employment and start-up opportunities
+- Promotion of creativity, innovation, and business ethics
+- Improvement in employability and professional competencies
+- Encouragement of women entrepreneurship and economic empowerment
+
+__**Composition of the Entrepreneurship Development / Innovation & Start-Up Centre**__
+
+Name
+
+Designation
+
+Role
+
+Dr. Sr. Sandhya Thumma
+
+Principal, Dept. of MBA
+
+Chairperson
+
+Mrs. R. Sharon Rose
+
+Dept. of Commerce
+
+IQAC Coordinator
+
+Dr. G. Radhika
+
+Dept. of MBA
+
+Convener
+
+Mrs. G. Saroja
+
+Dept. of Commerce
+
+Member
+
+Mrs. D. Ramanamma
+
+Dept. of Computer Science
+
+Member
+
+Mr. D. Simon
+
+Dept. of Botany
+
+Member
+
+__**Annual Activities of the Entrepreneurship Development Cell**__
+
+- Conducting Entrepreneurship Awareness Programmes (EAPs)
+- Organizing workshops and seminars on innovation and start-ups
+- Conducting business idea and business plan competitions
+- Arranging interaction sessions with entrepreneurs and industry experts
+- Organizing skill development and employability training programmes
+- Conducting financial literacy and leadership development programmes
+- Facilitating certificate courses and entrepreneurial training sessions
+- Encouraging participation in innovation and entrepreneurship events
+- Maintaining records and reports of all entrepreneurship development activities`
   },
   "placement-partnerships": {
     id: "placement-partnerships",
