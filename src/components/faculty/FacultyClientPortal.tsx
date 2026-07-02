@@ -85,11 +85,11 @@ export default function FacultyClientPortal({
         dateOfJoining: m.dateOfJoining,
         experience: m.experience,
         profilePdfUrl: m.profilePdfUrl,
-        imageUrl: m.imageUrl
+        imageUrl: m.imageUrl,
+        slug: m.slug
       }));
     }
-    // Default fallback to preloaded TS module
-    return staticFacultyMembers;
+    return [];
   }, [initialMembers]);
 
   // 2. COMPUTE SECTIONS DATA
@@ -737,7 +737,7 @@ export default function FacultyClientPortal({
                                 <span className="inline-block w-fit mt-1 px-2 py-0.5 rounded text-[8px] font-black uppercase bg-amber-50 border border-amber-100 text-amber-800">Contingent</span>
                               )}
                               {(() => {
-                                const profileSlug = profileSlugMap[m.name?.trim().toLowerCase()];
+                                const profileSlug = (m as any).slug || profileSlugMap[m.name?.trim().toLowerCase()];
                                 return profileSlug ? (
                                   <Link
                                     href={`/faculty/profile/${profileSlug}`}
@@ -827,24 +827,66 @@ export default function FacultyClientPortal({
                       {/* Collapsible Container */}
                       {isCollapsed && (
                         <div className="border-t border-slate-100 p-6 bg-slate-50/30 flex flex-col gap-4 animate-slideDown">
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-6">
                             {matchesSearch.map((m, idx) => (
-                              <div key={idx} className="bg-white border border-slate-200/70 hover:border-indigo-200 hover:shadow-sm rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all">
-                                <div className="flex items-start gap-4">
-                                  <div className="flex-1 flex flex-col gap-1.5">
-                                    <div className="flex items-center justify-between gap-2">
-                                      <span className="text-[10px] font-black uppercase bg-indigo-50 text-indigo-950 px-2.5 py-1 rounded-md tracking-wider">Rank #{m.sNo}</span>
-                                      {m.designation.includes("Principal") && <span className="bg-rose-50 text-rose-600 px-2.5 py-1 border border-rose-100 rounded-md text-[10px] font-black tracking-widest uppercase shrink-0">Leadership</span>}
-                                    </div>
-                                    <h4 className="font-outfit text-base font-black text-[#002147] leading-snug">{m.name}</h4>
-                                    <p className="text-slate-600 font-bold text-xs">{m.designation}</p>
-                                    <p className="text-slate-500 font-semibold text-xs italic leading-relaxed border-t border-slate-50 pt-2 mt-1">{m.qualification}</p>
+                              <div key={idx} className="bg-white border border-slate-200/80 hover:border-emerald-200/50 hover:shadow-md rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center md:items-stretch justify-between gap-6 md:gap-8 transition-all duration-300">
+                                {/* Left Side: Faculty Info */}
+                                <div className="flex-1 flex flex-col justify-center text-left">
+                                  <div className="flex items-center gap-2">
+                                    {m.designation.includes("Principal") && (
+                                      <span className="bg-rose-50 text-rose-600 border border-rose-100 px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-widest uppercase">
+                                        Leadership
+                                      </span>
+                                    )}
+                                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase">
+                                      Rank #{m.sNo}
+                                    </span>
+                                  </div>
+                                  
+                                  <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] mt-2 mb-3 md:mb-4 leading-tight">
+                                    {m.name}
+                                  </h4>
+                                  
+                                  <div className="space-y-1.5 md:space-y-2 mt-2 border-t border-slate-100 pt-3 md:pt-4 text-slate-650 text-sm md:text-base font-semibold">
+                                    <p>
+                                      <span className="font-black text-slate-800">Designation:</span> {m.designation}
+                                    </p>
+                                    <p>
+                                      <span className="font-black text-slate-800">Qualifications:</span> {m.qualification}
+                                    </p>
+                                    <p>
+                                      <span className="font-black text-slate-800">Date of Joining:</span> {m.dateOfJoining}
+                                    </p>
+                                    <p>
+                                      <span className="font-black text-slate-800">Teaching Experience:</span> {m.experience} Years
+                                    </p>
                                   </div>
                                 </div>
-                                
-                                <div className="flex items-center justify-between gap-2 text-[11px] border-t border-slate-100 pt-3 font-bold text-slate-400">
-                                  <span>DOJ: {m.dateOfJoining}</span>
-                                  <span className="text-[#002147] bg-slate-50 px-2 py-0.5 rounded font-black">{m.experience} Years Exp</span>
+
+                                {/* Right Side: Framed Image & View Profile Link */}
+                                <div className="flex flex-col items-center justify-center gap-3 shrink-0">
+                                  <div className="relative p-2 bg-slate-50 border border-slate-200/80 rounded-2xl shadow-inner w-36 h-44 overflow-hidden flex items-center justify-center group/img">
+                                    {m.imageUrl ? (
+                                      <img 
+                                        src={m.imageUrl} 
+                                        alt={m.name} 
+                                        className="w-full h-full object-cover rounded-xl transition duration-500 group-hover/img:scale-105"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 font-bold font-outfit text-xs">
+                                        No Photo
+                                      </div>
+                                    )}
+                                  </div>
+                                  
+                                  <a 
+                                    href={m.profilePdfUrl || "/documents/dummy-profile.pdf"}
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="font-outfit text-sm font-black text-rose-600 hover:text-rose-800 transition-colors uppercase tracking-wider flex items-center gap-1 hover:underline underline-offset-4"
+                                  >
+                                    View Profile
+                                  </a>
                                 </div>
                               </div>
                             ))}

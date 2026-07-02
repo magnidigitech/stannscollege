@@ -7,6 +7,9 @@ export interface FacultyMember {
   qualification?: string;
   dateOfJoining: string;
   experience: string;
+  profilePdfUrl?: string;
+  imageUrl?: string;
+  slug?: string;
 }
 
 export interface FacultySection {

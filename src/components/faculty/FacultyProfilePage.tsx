@@ -885,10 +885,10 @@ export default function FacultyProfilePage({ profile: p }: FacultyProfilePagePro
               <img
                 src={p.profilePhotoUrl}
                 alt={p.imageAltText || p.facultyName}
-                className="h-32 w-32 md:h-40 md:w-40 rounded-[2rem] object-cover border-4 border-white/20 shadow-xl"
+                className="w-32 h-40 md:w-40 md:h-52 rounded-3xl object-cover border-4 border-white/20 shadow-xl"
               />
             ) : (
-              <div className="h-32 w-32 md:h-40 md:w-40 rounded-[2rem] bg-white/10 border-4 border-white/20 flex items-center justify-center shadow-xl">
+              <div className="w-32 h-40 md:w-40 md:h-52 rounded-3xl bg-white/10 border-4 border-white/20 flex items-center justify-center shadow-xl">
                 <User className="h-16 w-16 text-white/30" />
               </div>
             )}

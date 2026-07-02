@@ -430,17 +430,18 @@ export async function getDepartment(slug: string) {
 
 export async function getFacultyMembers() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "facultyMember"] | order(sNo asc) {
+    const data = await sanityClient.fetch(`*[_type == "facultyProfileNew"] | order(sNo asc) {
       sNo,
-      name,
+      "name": facultyName,
       staffType,
       designation,
       department,
-      qualification,
+      "qualification": highestQualification,
       dateOfJoining,
-      experience,
-      "profilePdfUrl": profilePdf.asset->url,
-      "imageUrl": image.asset->url
+      "experience": totalExperience,
+      "profilePdfUrl": facultyProfilePdf.asset->url,
+      "imageUrl": profilePhoto.asset->url,
+      "slug": slug.current
     }`);
     return data;
   } catch (err) {
@@ -674,14 +675,14 @@ export async function getPlacementSections() {
  */
 export async function getAllFacultyProfiles() {
   try {
-    const query = `*[_type == "facultyProfile" && showOnWebsite == true && !(_id in path("drafts.**"))] | order(displayOrder asc) {
-      facultyName,
+    const query = `*[_type == "facultyProfileNew" && showOnWebsite == true && !(_id in path("drafts.**"))] | order(sNo asc) {
+      "facultyName": facultyName,
       "slug": slug.current,
       designation,
       department,
       "profilePhotoUrl": profilePhoto.asset->url,
       featuredFaculty,
-      displayOrder
+      sNo
     }`;
     const data = await sanityClient.fetch(query);
     return data || [];
@@ -697,7 +698,7 @@ export async function getAllFacultyProfiles() {
  */
 export async function getFacultyProfile(slug: string) {
   try {
-    const query = `*[_type == "facultyProfile" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
+    const query = `*[_type == "facultyProfileNew" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       facultyName,
       "slug": slug.current,
       "profilePhotoUrl": profilePhoto.asset->url,
