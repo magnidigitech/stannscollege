@@ -1073,5 +1073,89 @@ export async function getPlacementYearlyStats() {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// HOME PAGE QUERY FUNCTIONS (Magazines, Newsletters, Banners, Gallery)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function getCollegeMagazines() {
+  try {
+    const query = `*[_type == "collegeMagazine" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      academicYear,
+      displayOrder,
+      "pdfUrl": pdfFile.asset->url,
+      "coverUrl": coverImage.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (getCollegeMagazines):", err);
+  }
+  return [];
+}
+
+export async function getNewsletters() {
+  try {
+    const query = `*[_type == "newsletter" && !(_id in path("drafts.**"))] | order(academicYear desc, displayOrder asc) {
+      _id,
+      title,
+      academicYear,
+      month,
+      displayOrder,
+      "pdfUrl": pdfFile.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (getNewsletters):", err);
+  }
+  return [];
+}
+
+export async function getHomeBanners() {
+  try {
+    const query = `*[_type == "homeBanner" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      tagline,
+      desc,
+      cta1Text,
+      cta1Link,
+      cta2Text,
+      cta2Link,
+      displayOrder,
+      "imageUrl": image.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (getHomeBanners):", err);
+  }
+  return [];
+}
+
+export async function getHomeGalleries() {
+  try {
+    const query = `*[_type == "homeGallery" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      academicYear,
+      category,
+      displayOrder,
+      images[] {
+        caption,
+        "imageUrl": asset->url
+      }
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (getHomeGalleries):", err);
+  }
+  return [];
+}
+
+
 
 

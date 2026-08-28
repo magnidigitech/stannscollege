@@ -427,6 +427,95 @@ export default defineConfig({
         ]
       },
       {
+        name: "collegeMagazine",
+        title: "College Magazines",
+        type: "document",
+        fields: [
+          { name: "title", title: "Magazine Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "pdfFile", title: "PDF File", type: "file" },
+          { name: "coverImage", title: "Cover Image", type: "image", options: { hotspot: true } },
+          { name: "displayOrder", title: "Display Order", type: "number" }
+        ],
+        orderings: [
+          {
+            title: "Academic Year, Newest First",
+            name: "academicYearDesc",
+            by: [{ field: "academicYear", direction: "desc" }]
+          }
+        ]
+      },
+      {
+        name: "newsletter",
+        title: "Newsletters (The St. Ann's Chronicle)",
+        type: "document",
+        fields: [
+          { name: "title", title: "Newsletter Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "month", title: "Month", type: "string" },
+          { name: "pdfFile", title: "PDF File", type: "file" },
+          { name: "displayOrder", title: "Display Order", type: "number" }
+        ],
+        orderings: [
+          {
+            title: "Academic Year, Newest First",
+            name: "academicYearDesc",
+            by: [{ field: "academicYear", direction: "desc" }]
+          }
+        ]
+      },
+      {
+        name: "homeBanner",
+        title: "Home Hero Banners",
+        type: "document",
+        fields: [
+          { name: "title", title: "Banner Title", type: "string" },
+          { name: "tagline", title: "Tagline / Subheading", type: "string" },
+          { name: "desc", title: "Description", type: "text" },
+          { name: "image", title: "Banner Image", type: "image", options: { hotspot: true } },
+          { name: "cta1Text", title: "CTA 1 Button Text", type: "string" },
+          { name: "cta1Link", title: "CTA 1 Link URL", type: "string" },
+          { name: "cta2Text", title: "CTA 2 Button Text", type: "string" },
+          { name: "cta2Link", title: "CTA 2 Link URL", type: "string" },
+          { name: "displayOrder", title: "Display Order", type: "number" }
+        ]
+      },
+      {
+        name: "homeGallery",
+        title: "Home Photo & Event Gallery",
+        type: "document",
+        fields: [
+          { name: "title", title: "Event / Album Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          {
+            name: "category",
+            title: "Category",
+            type: "string",
+            options: {
+              list: [
+                { title: "Campus Life & Environment", value: "campus" },
+                { title: "Accreditations & Awards", value: "accreditations" },
+                { title: "Placements & Recruitment", value: "placements" },
+                { title: "Cultural & Celebrations", value: "events" }
+              ]
+            }
+          },
+          {
+            name: "images",
+            title: "Gallery Images",
+            type: "array",
+            of: [
+              {
+                type: "image",
+                options: { hotspot: true },
+                fields: [{ name: "caption", title: "Caption", type: "string" }]
+              }
+            ]
+          },
+          { name: "displayOrder", title: "Display Order", type: "number" }
+        ]
+      },
+      {
         name: "researchPublications",
         title: "Research Publications Page",
         type: "document",
