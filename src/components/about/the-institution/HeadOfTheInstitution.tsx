@@ -13,9 +13,6 @@ export function HeadOfTheInstitution() {
               <GraduationCap className="h-8 w-8 md:h-10 md:w-10" />
             </span>
             <div className="text-center md:text-left">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase">
-                <ShieldCheck className="h-3.5 w-3.5" /> Head of the Institution
-              </span>
               <h2 className="mt-3 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
                 Dr. Sr. Sandhya Thumma
               </h2>

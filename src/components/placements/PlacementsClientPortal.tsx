@@ -12,7 +12,9 @@ import {
   Eye,
   BookOpen,
   Menu,
-  X
+  X,
+  Trophy,
+  TrendingUp
 } from "lucide-react";
 import { staticPlacementSections } from "./staticData";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
@@ -143,13 +145,15 @@ interface PlacementsClientPortalProps {
   initialSections?: any[];
   galleryImages?: Array<{ url: string; caption?: string }>;
   placementsData?: any;
+  placementYearlyStats?: any[];
 }
 
 export default function PlacementsClientPortal({
   activeSlug = "about-cell",
   initialSections = [],
   galleryImages = [],
-  placementsData = null
+  placementsData = null,
+  placementYearlyStats = []
 }: PlacementsClientPortalProps) {
 
   // Accordion Expand States
@@ -531,6 +535,20 @@ export default function PlacementsClientPortal({
         const totalLinkTextLength = matches.reduce((acc, m) => acc + m[0].length, 0);
         if (totalLinkTextLength > chunk.length * 0.7) {
           const links = matches.map(m => ({ title: m[1], url: m[2] }));
+          
+          // Sort links by latest year first if titles contain year ranges or years
+          const allYears = links.every(l => /(\d{4})/.test(l.title));
+          if (allYears) {
+            links.sort((a, b) => {
+              const matchA = a.title.match(/(\d{4})/);
+              const matchB = b.title.match(/(\d{4})/);
+              if (matchA && matchB) {
+                return parseInt(matchB[1], 10) - parseInt(matchA[1], 10);
+              }
+              return b.title.localeCompare(a.title);
+            });
+          }
+
           nodes.push({ type: "pdf-cards", links });
           i++;
           continue;
@@ -853,7 +871,15 @@ export default function PlacementsClientPortal({
     // Annual Activity Reports
     if (data.annualReports && data.annualReports.length > 0) {
       pdfMarkdown += `\n\n__**Annual Activity Reports**__\n\n`;
-      const reportLinks = data.annualReports
+      const sortedReports = [...data.annualReports].sort((a: any, b: any) => {
+        const matchA = a.year?.match(/(\d{4})/);
+        const matchB = b.year?.match(/(\d{4})/);
+        if (matchA && matchB) {
+          return parseInt(matchB[1], 10) - parseInt(matchA[1], 10);
+        }
+        return (b.year || "").localeCompare(a.year || "");
+      });
+      const reportLinks = sortedReports
         .map((r: any) => `[${r.year}](${r.fileUrl})`)
         .join(" ");
       pdfMarkdown += reportLinks;
@@ -940,6 +966,218 @@ export default function PlacementsClientPortal({
     });
     
     return markdown;
+  };
+
+  const renderPlacementStatisticsDynamic = (stats: any[]) => {
+    // Sort stats descending by academicYear (newest first)
+    const sortedStats = [...stats].sort((a, b) => (b.academicYear || "").localeCompare(a.academicYear || ""));
+
+    return (
+      <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
+        <div>
+          <p className="text-slate-650 leading-[1.8] text-[15px] md:text-[16px] mb-6 font-medium text-justify">
+            The institution maintains placement records and progression data to monitor students’ career advancement and employment opportunities. The placement statistics are updated periodically for transparency and institutional quality assurance.
+          </p>
+        </div>
+
+        {/* 1. Outgoing Batch – Career Progression Statistics */}
+        <div>
+          <h3 className="font-outfit text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+            <span className="h-6 w-1.5 rounded-full bg-gradient-to-b from-[#004225] to-emerald-600 shrink-0"></span>
+            Outgoing Batch – Career Progression Statistics
+          </h3>
+          <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gradient-to-r from-[#004225] via-[#02542f] to-[#085e36] text-white">
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Academic Year</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Total Outgoing Batch Students</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Placed</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Pursuing Higher Ed</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students with Internship Offers</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Preparing for Competitive Exams</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Opted for Entrepreneurship</th>
+                    <th className="px-4 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black text-right">Students Awaiting Opportunities</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100/70">
+                  {sortedStats.map((stat, idx) => {
+                    const overview = stat.outgoingOverview || {};
+                    return (
+                      <tr key={stat._id || idx} className="group transition-all duration-200 hover:bg-emerald-50/20">
+                        <td className="px-4 py-5 text-slate-800 text-xs md:text-[14px] font-bold text-left">{stat.academicYear}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.totalOutgoing ?? "—"}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.placed ?? "—"}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.higherEd ?? "—"}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.internships ?? "—"}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.compExams ?? "—"}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.entrepreneurship ?? "—"}</td>
+                        <td className="px-4 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{overview.awaiting ?? "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Year wise Placement Packages */}
+        <div>
+          <h3 className="font-outfit text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+            <span className="h-6 w-1.5 rounded-full bg-gradient-to-b from-[#004225] to-emerald-600 shrink-0"></span>
+            Year wise Placement Packages
+          </h3>
+          <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gradient-to-r from-[#004225] via-[#02542f] to-[#085e36] text-white">
+                    <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Academic Year</th>
+                    <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Eligible (UG & PG)</th>
+                    <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Placed</th>
+                    <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Placement %</th>
+                    <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black text-right">Highest Package</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100/70">
+                  {sortedStats.map((stat, idx) => {
+                    const pkgs = stat.packages || {};
+                    const percentage = pkgs.eligible > 0 ? ((pkgs.placed / pkgs.eligible) * 100).toFixed(2) + "%" : "—";
+                    return (
+                      <tr key={stat._id || idx} className="group transition-all duration-200 hover:bg-emerald-50/20">
+                        <td className="px-6 py-5 text-slate-800 text-xs md:text-[14px] font-bold text-left">{stat.academicYear}</td>
+                        <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{pkgs.eligible ?? "—"}</td>
+                        <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{pkgs.placed ?? "—"}</td>
+                        <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-bold text-emerald-700 text-right">{percentage}</td>
+                        <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{pkgs.highest ?? "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. Detailed Academic Year breakdowns */}
+        {sortedStats.map((stat) => (
+          <div key={stat._id} className="border-t border-slate-200/80 pt-10 mt-4">
+            <h3 className="font-outfit text-2xl font-black text-[#004225] tracking-tight mb-8 flex items-center gap-3 animate-fadeIn">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100 text-[#004225]">
+                <TrendingUp className="h-4 w-4" />
+              </span>
+              Academic Year {stat.academicYear}
+            </h3>
+
+            <div className="flex flex-col gap-10">
+              {/* Department/Programme-wise Placements */}
+              {stat.programmePlacements && stat.programmePlacements.length > 0 && (
+                <div>
+                  <h4 className="font-outfit text-base font-bold text-slate-700 mb-4 select-none">
+                    Department/Programme-wise Placements ({stat.academicYear})
+                  </h4>
+                  <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-[#004225] via-[#02542f] to-[#085e36] text-white">
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Programme</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Total No. of Students</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Students Placed</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black text-right">Placement %</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100/70">
+                          {stat.programmePlacements.map((row: any, rIdx: number) => {
+                            const percentage = row.totalStudents > 0 ? ((row.placedStudents / row.totalStudents) * 100).toFixed(2) + "%" : "—";
+                            return (
+                              <tr key={rIdx} className="group transition-all duration-200 hover:bg-emerald-50/20">
+                                <td className="px-6 py-5 text-slate-800 text-xs md:text-[14px] font-semibold text-left">{row.programme}</td>
+                                <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{row.totalStudents ?? "—"}</td>
+                                <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{row.placedStudents ?? "—"}</td>
+                                <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-bold text-emerald-700 text-right">{percentage}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Higher Education Progression */}
+              {stat.higherEducation && stat.higherEducation.length > 0 && (
+                <div>
+                  <h4 className="font-outfit text-base font-bold text-slate-700 mb-4 select-none">
+                    Higher Education Progression ({stat.academicYear})
+                  </h4>
+                  <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-[#004225] via-[#02542f] to-[#085e36] text-white">
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Programme</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Total No. of Students</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Programme Pursuing</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black text-right">No. of Students</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100/70">
+                          {stat.higherEducation.map((row: any, rIdx: number) => (
+                            <tr key={rIdx} className="group transition-all duration-200 hover:bg-emerald-50/20">
+                              <td className="px-6 py-5 text-slate-800 text-xs md:text-[14px] font-semibold text-left">{row.programme}</td>
+                              <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{row.totalStudents ?? "—"}</td>
+                              <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-left">{row.pursuingProgramme ?? "—"}</td>
+                              <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{row.studentsCount ?? "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Internship Statistics */}
+              {stat.internships && stat.internships.length > 0 && (
+                <div>
+                  <h4 className="font-outfit text-base font-bold text-slate-700 mb-4 select-none">
+                    Internship Statistics ({stat.academicYear})
+                  </h4>
+                  <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-[#004225] via-[#02542f] to-[#085e36] text-white">
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Programme</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-right">Total No. of Students</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 text-left">Partner Organizations</th>
+                            <th className="px-6 py-5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black text-right">Students Interned</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100/70">
+                          {stat.internships.map((row: any, rIdx: number) => (
+                            <tr key={rIdx} className="group transition-all duration-200 hover:bg-emerald-50/20">
+                              <td className="px-6 py-5 text-slate-800 text-xs md:text-[14px] font-semibold text-left">{row.programme}</td>
+                              <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{row.totalStudents ?? "—"}</td>
+                              <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-left">{row.partnerOrganizations ?? "—"}</td>
+                              <td className="px-6 py-5 text-slate-650 text-xs md:text-[14px] font-semibold text-right">{row.studentsInterned ?? "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const rawContent = sectionData.content;
@@ -1145,6 +1383,8 @@ export default function PlacementsClientPortal({
                 <div className="prose prose-slate max-w-none prose-headings:font-outfit prose-p:font-sans">
                   {currentActiveSlug === "about-cell" ? (
                     <PlacementsLanding onNavigate={handleSlugChange} />
+                  ) : currentActiveSlug === "placement-statistics" && placementYearlyStats && placementYearlyStats.length > 0 ? (
+                    renderPlacementStatisticsDynamic(placementYearlyStats)
                   ) : (
                     renderContentBody(mergedContent)
                   )}

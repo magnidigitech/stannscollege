@@ -349,9 +349,6 @@ export function StrategicDevelopmentPlan() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_45%)] pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="flex flex-col gap-4 flex-1">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/25 px-4 py-1.5 text-xs font-black text-indigo-200 tracking-wider uppercase w-fit">
-              <Shield className="h-3.5 w-3.5 text-indigo-300" /> Strategic Roadmap
-            </span>
             <h1 className="font-outfit text-3xl md:text-5xl font-black tracking-tight leading-none text-white">
               {data.title}
             </h1>

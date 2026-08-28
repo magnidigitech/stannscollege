@@ -22,9 +22,6 @@ export async function StudentLaurels() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/20 backdrop-blur-md border border-rose-400/30 px-3.5 py-1 text-xs font-bold text-rose-200 tracking-wider uppercase">
-              <Trophy className="h-3.5 w-3.5 animate-pulse" /> Student Laurels
-            </span>
             <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
               Student Laurels & Awards
             </h2>

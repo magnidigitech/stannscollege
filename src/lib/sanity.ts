@@ -1038,7 +1038,7 @@ export async function getStudentSupportDocuments(sectionSlug: string) {
 
 export async function getUniversityRankHolders() {
   try {
-    const query = `*[_type == "universityRankHolder" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+    const query = `*[_type == "universityRankHolder" && !(_id in path("drafts.**"))] | order(academicYear desc, displayOrder asc) {
       _id,
       academicYear,
       programme,
@@ -1050,6 +1050,25 @@ export async function getUniversityRankHolders() {
     return data || [];
   } catch (err) {
     console.error("Sanity fetch error (getUniversityRankHolders):", err);
+    return [];
+  }
+}
+
+export async function getPlacementYearlyStats() {
+  try {
+    const query = `*[_type == "placementYearlyStats" && !(_id in path("drafts.**"))] | order(academicYear desc) {
+      _id,
+      academicYear,
+      outgoingOverview,
+      packages,
+      programmePlacements,
+      higherEducation,
+      internships
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (getPlacementYearlyStats):", err);
     return [];
   }
 }

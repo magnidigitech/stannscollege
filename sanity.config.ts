@@ -377,7 +377,30 @@ export default defineConfig({
           { name: "studentName", title: "Name of the Student", type: "string" },
           { name: "achievement", title: "Achievement", type: "string" },
           { name: "displayOrder", title: "Display Order", type: "number" }
-        ]
+        ],
+        orderings: [
+          {
+            title: 'Academic Year, Newest First',
+            name: 'academicYearDesc',
+            by: [
+              {field: 'academicYear', direction: 'desc'}
+            ]
+          }
+        ],
+        preview: {
+          select: {
+            title: 'studentName',
+            academicYear: 'academicYear',
+            programme: 'programme'
+          },
+          prepare(selection) {
+            const { title, academicYear, programme } = selection;
+            return {
+              title: title || 'Unnamed Student',
+              subtitle: [academicYear, programme].filter(Boolean).join(' - ')
+            };
+          }
+        }
       },
       {
         name: "alumniGallery",
@@ -1279,6 +1302,99 @@ export default defineConfig({
             ]
           }
         ]
+      },
+      {
+        name: "placementYearlyStats",
+        title: "Placement Statistics (Yearly)",
+        type: "document",
+        fields: [
+          { name: "academicYear", title: "Academic Year (e.g. 2025-2026)", type: "string", validation: Rule => Rule.required() },
+          {
+            name: "outgoingOverview",
+            title: "Career Progression / Outgoing Batch Overview",
+            type: "object",
+            fields: [
+              { name: "totalOutgoing", title: "Total Outgoing Batch Students", type: "number" },
+              { name: "placed", title: "Students Placed", type: "number" },
+              { name: "higherEd", title: "Students Pursuing Higher Education", type: "number" },
+              { name: "internships", title: "Students with Internship Offers", type: "number" },
+              { name: "compExams", title: "Students Preparing for Competitive Exams", type: "number" },
+              { name: "entrepreneurship", title: "Students Opted for Entrepreneurship / Self Employment", type: "number" },
+              { name: "awaiting", title: "Students Not Yet Placed / Awaiting Opportunities", type: "number" }
+            ]
+          },
+          {
+            name: "packages",
+            title: "Year wise Placement Packages",
+            type: "object",
+            fields: [
+              { name: "eligible", title: "Students Eligible (UG & PG)", type: "number" },
+              { name: "placed", title: "Students Placed", type: "number" },
+              { name: "highest", title: "Highest Package (e.g. 6.5 LPA)", type: "string" }
+            ]
+          },
+          {
+            name: "programmePlacements",
+            title: "Department/Programme-wise Placements",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "programme", title: "Programme", type: "string" },
+                  { name: "totalStudents", title: "Total No. of Students", type: "number" },
+                  { name: "placedStudents", title: "Students Placed", type: "number" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "higherEducation",
+            title: "Higher Education Progression",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "programme", title: "Programme", type: "string" },
+                  { name: "totalStudents", title: "Total No. of Students", type: "number" },
+                  { name: "pursuingProgramme", title: "Programme Pursuing (e.g. MBA)", type: "string" },
+                  { name: "studentsCount", title: "No. of Students Pursuing", type: "number" }
+                ]
+              }
+            ]
+          },
+          {
+            name: "internships",
+            title: "Internship Statistics",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "programme", title: "Programme", type: "string" },
+                  { name: "totalStudents", title: "Total No. of Students", type: "number" },
+                  { name: "partnerOrganizations", title: "Partner Organizations", type: "string" },
+                  { name: "studentsInterned", title: "Students Interned", type: "number" }
+                ]
+              }
+            ]
+          }
+        ],
+        orderings: [
+          {
+            title: 'Academic Year, Newest First',
+            name: 'academicYearDesc',
+            by: [
+              {field: 'academicYear', direction: 'desc'}
+            ]
+          }
+        ],
+        preview: {
+          select: {
+            title: "academicYear"
+          }
+        }
       },
       // ─────────────────────────────────────────────────────────────────
       // FACULTY PROFILE (Full CMS — 17 sections)

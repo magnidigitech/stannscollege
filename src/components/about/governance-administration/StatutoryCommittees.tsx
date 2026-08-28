@@ -144,9 +144,6 @@ export function StatutoryCommittees({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_45%)] pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-col gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/15 backdrop-blur-md border border-indigo-400/20 px-3.5 py-1.5 text-xs font-black text-indigo-300 tracking-wider uppercase w-fit">
-              <Shield className="h-3.5 w-3.5" /> Governance & Structure
-            </span>
             <h1 className="font-outfit text-3xl md:text-4xl font-black tracking-tight leading-none text-white">
               College Committees, Cells & Clubs
             </h1>

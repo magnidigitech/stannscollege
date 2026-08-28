@@ -291,6 +291,7 @@ export default function Navigation() {
         "Student Laurels",
         "Institutional Distinctiveness",
         "Head of the Institution",
+        "Legacy of Leadership",
       ],
     },
     {
