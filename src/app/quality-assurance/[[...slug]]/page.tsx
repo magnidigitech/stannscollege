@@ -86,21 +86,26 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
           {/* A. Left Sidebar Sticky Navigation */}
           <aside className="lg:col-span-3 xl:col-span-3">
-            <div className="sticky top-28 flex flex-col gap-8 max-h-[calc(100vh-9rem)] overflow-y-auto pr-2">
+            <div className="sticky top-24 flex flex-col gap-4 max-h-[calc(100vh-7rem)] overflow-hidden">
 
               {/* Navigation Box */}
-              <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
-                <div className="flex flex-col gap-1 border-b border-slate-100 pb-5 mb-6">
-                  <h3 className="font-outfit text-xl md:text-xl font-black text-[#002147] tracking-tight">IQAC<br />Quality Assurance & Accredation</h3>
+              <div className="bg-white border border-slate-200/70 rounded-[2rem] p-6 shadow-sm max-h-[350px] flex flex-col">
+
+                {/* Fixed Header (Stays pinned at top) */}
+                <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 mb-4 shrink-0">
+                  <h3 className="font-outfit text-base font-black text-[#002147] tracking-tight leading-snug">
+                    IQAC<br />Quality Assurance & Accreditation
+                  </h3>
                 </div>
 
-                <nav className="flex flex-col gap-8 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+                {/* Scrollable Navigation Menu */}
+                <nav className="flex flex-col gap-4 overflow-y-auto pr-1 custom-scrollbar flex-1">
                   {navigationStructure.map((group, idx) => (
-                    <div key={idx} className="flex flex-col gap-3">
+                    <div key={idx} className="flex flex-col gap-2">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400/90 border-l-2 border-slate-200 pl-2.5 leading-none">
                         {group.title}
                       </h4>
-                      <ul className="flex flex-col gap-1.5">
+                      <ul className="flex flex-col gap-1">
                         {group.items.map((item, i) => {
                           const fullHref = `/quality-assurance/${item.slug}`;
                           const isActive = currentSlug === item.slug;
@@ -114,7 +119,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
                                   : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
                                   }`}
                               >
-                                <div className="flex items-center gap-2.5 truncate">
+                                <div className="flex items-center gap-2 truncate">
                                   <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-emerald-400" : "text-slate-400 group-hover:text-emerald-500"}`} />
                                   <span className="truncate">{item.text}</span>
                                 </div>
@@ -128,24 +133,25 @@ export default function QualityAssurancePage({ params }: PageProps) {
                     </div>
                   ))}
                 </nav>
+
               </div>
 
               {/* Sidebar Contact Card */}
-              <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] text-white rounded-[2rem] p-6 shadow-sm relative overflow-hidden group">
+              <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] text-white rounded-[2rem] p-4 shadow-sm relative overflow-hidden group shrink-0">
                 <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4 pointer-events-none group-hover:scale-105 transition-transform">
-                  <ShieldCheck className="h-40 w-40" />
+                  <ShieldCheck className="h-28 w-28" />
                 </div>
-                <div className="relative z-10 flex flex-col gap-4 font-sans">
-                  <h4 className="font-outfit font-black text-lg tracking-tight">IQAC Enquiries?</h4>
-                  <p className="text-blue-100/80 text-xs leading-relaxed font-medium">
+                <div className="relative z-10 flex flex-col gap-2.5 font-sans">
+                  <h4 className="font-outfit font-black text-sm tracking-tight">IQAC Enquiries?</h4>
+                  <p className="text-blue-100/80 text-[11px] leading-relaxed font-medium">
                     Connect with the IQAC coordinator for queries related to accreditation, feedback, and quality reports.
                   </p>
-                  <div className="flex flex-col gap-2.5 border-t border-white/10 pt-4 text-xs">
-                    <a href="tel:+918632231381" className="flex items-center gap-2.5 hover:text-blue-200 font-black transition-colors">
-                      <Phone className="h-4 w-4 text-blue-300" /> +91 863 2231381
+                  <div className="flex flex-col gap-1.5 border-t border-white/10 pt-2.5 text-[11px]">
+                    <a href="tel:+918632231381" className="flex items-center gap-2 hover:text-blue-200 font-bold transition-colors">
+                      <Phone className="h-3.5 w-3.5 text-blue-300 shrink-0" /> +91 863 2231381
                     </a>
-                    <a href="mailto:iqac@stannscollege.com" className="flex items-center gap-2.5 hover:text-blue-200 font-black transition-colors">
-                      <Mail className="h-4 w-4 text-blue-300" /> iqac@stannscollege.com
+                    <a href="mailto:iqac@stannscollege.com" className="flex items-center gap-2 hover:text-blue-200 font-bold transition-colors">
+                      <Mail className="h-3.5 w-3.5 text-blue-300 shrink-0" /> iqac@stannscollege.com
                     </a>
                   </div>
                 </div>
