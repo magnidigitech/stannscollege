@@ -1,11 +1,12 @@
 import { createClient } from "@sanity/client";
+import { cache } from "react";
 
 export const sanityClient = createClient({
   projectId: "fhjwqub5",
   dataset: "production",
   apiVersion: "2024-03-01",
   token: "sk2B6oq7TV44M3rCRTu17hThjlyGyarJzispWzZsPMcc6LUgrAcxlKKYnJPiSPCizWCGIkwCCYmXTwzDHZaVTxrDkyhFAyxNnStQZj6wCcxo0z1aaz4tnH8vgMPApmF5Z8u7rXN87IVVPA1rYJPX4VoDSDF4ekCdENzvyRLSraWWowOhBKOw",
-  useCdn: false,
+  useCdn: true,
 });
 
 // Default/mock data fallback functions
@@ -696,7 +697,7 @@ export async function getAllFacultyProfiles() {
  * Returns the full profile for a single faculty member by slug.
  * Used by the individual profile page /faculty/profile/[slug].
  */
-export async function getFacultyProfile(slug: string) {
+export const getFacultyProfile = cache(async (slug: string) => {
   try {
     const query = `*[_type == "facultyProfileNew" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       facultyName,
@@ -813,7 +814,7 @@ export async function getFacultyProfile(slug: string) {
     console.error("Sanity fetch error (getFacultyProfile):", err);
     return null;
   }
-}
+});
 
 /**
  * Returns all faculty PDF documents (e.g. FDP and Seminars PDFs) sorted by displayOrder.
