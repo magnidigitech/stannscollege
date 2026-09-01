@@ -29,44 +29,41 @@ stannscollegeforwomen.org/
 
 # Exclude massive local NAAC backup files (8GB) to prevent Git bloat
 public/documents/naac/
-
-# Exclude massive local AQAR backup files (3.9GB) to prevent Git bloat
 public/documents/aqar2324/
-
-# Exclude massive local DVV backup files to prevent Git bloat
 public/documents/dvv/
+
+# Videos and heavy media
+public/videos/
+*.mp4
+*.zip
+*.tar.gz
+*.crdownload
 
 # Local migration caches
 scripts/sanity-upload-cache.json
 
-# Raw PDF and docx asset sources
-Stategic Plans PDF/
-
 # Scratch script directory
 scratch/
 
-# Raw local data folders
+# Raw local data folders & source assets
 6.Student Support/
 7.Placements & Industry Linkages/
 7.Placements & Industry Linakegs Photos/
 Committees Documents/
 Faculty Professional Development/
 I. Academic Programmes/
-*.webp
-
-# Root level reference assets
-/*.pdf
-/build
-/note.txt
-*.crdownload
-
-# Large photo folders and archives
+Seminars Workshops/
+Sports & Physical Edcuation/
+Anti- Ragging/
+Stategic Plans PDF/
 Photos 2/
 ALL STAFF PP--2026/
 Home page/
+
+# Root level reference assets and PDFs
+/*.pdf
+/build
+/note.txt
+*.webp
+*.JPG
 CHA_2140.JPG
-*.zip
-
-
-
-
