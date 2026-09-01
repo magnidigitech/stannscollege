@@ -128,13 +128,13 @@ export const ContentRenderer = ({ slug }: { slug: string }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex items-center gap-4 mb-4 border-b border-slate-100 pb-6">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-4 border-b border-slate-100 pb-4">
         <div>
           <h2 className="text-2xl md:text-3xl font-outfit font-black text-[#002147] tracking-tight">
             {data.title}
           </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full mt-4" />
+          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full mt-2.5" />
         </div>
       </div>
 
@@ -213,7 +213,7 @@ export const ContentRenderer = ({ slug }: { slug: string }) => {
           if (text.startsWith('__') && text.endsWith('__')) {
             const hText = text.slice(2, -2);
             return (
-              <h3 key={idx} className="text-xl md:text-2xl font-outfit font-bold text-slate-800 mt-8 mb-4 tracking-tight flex items-center gap-3">
+              <h3 key={idx} className={`text-xl md:text-2xl font-outfit font-bold text-slate-800 tracking-tight flex items-center gap-3 ${idx === 0 ? '!mt-1 mb-3' : 'mt-7 mb-3'}`}>
                 {hText}
               </h3>
             );
