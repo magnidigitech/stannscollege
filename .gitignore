@@ -6,7 +6,13 @@ out
 .env.development.local
 .env.test.local
 .env.production.local
+# macOS system files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
 *.local
 
 # Local Workspace Temps
