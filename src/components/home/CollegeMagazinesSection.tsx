@@ -1,7 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import { BookOpen, Calendar, Download, Eye, X, ExternalLink, Sparkles, Filter, ChevronDown } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import {
+  BookOpen,
+  Calendar,
+  Download,
+  Eye,
+  X,
+  ExternalLink,
+  Filter,
+  Search,
+  LayoutGrid,
+  Table as TableIcon,
+  ArrowUpDown,
+} from "lucide-react";
 
 export interface MagazineItem {
   _id: string;
@@ -18,141 +30,325 @@ interface CollegeMagazinesSectionProps {
 
 export default function CollegeMagazinesSection({ magazines }: CollegeMagazinesSectionProps) {
   const [selectedYear, setSelectedYear] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [viewMode, setViewMode] = useState<"table" | "grid">("table");
+  const [sortLatestFirst, setSortLatestFirst] = useState<boolean>(true);
   const [activePdfModal, setActivePdfModal] = useState<{ title: string; pdfUrl: string } | null>(null);
 
   // Extract unique academic years for filter dropdown
-  const years = Array.from(new Set(magazines.map((m) => m.academicYear))).filter(Boolean);
+  const years = useMemo(() => {
+    return Array.from(new Set(magazines.map((m) => m.academicYear))).filter(Boolean);
+  }, [magazines]);
 
-  const filteredMagazines = selectedYear === "ALL" 
-    ? magazines 
-    : magazines.filter((m) => m.academicYear === selectedYear);
+  // Filter & sort magazines (latest academic year first by displayOrder / order)
+  const filteredMagazines = useMemo(() => {
+    let list = magazines.filter((m) => {
+      const matchesYear = selectedYear === "ALL" || m.academicYear === selectedYear;
+      const matchesQuery =
+        searchQuery.trim() === "" ||
+        m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        m.academicYear.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesYear && matchesQuery;
+    });
+
+    return list.sort((a, b) => {
+      const orderA = a.displayOrder ?? 999;
+      const orderB = b.displayOrder ?? 999;
+      // displayOrder 1 is latest (2025-2026), 8 is oldest (2016-2017)
+      return sortLatestFirst ? orderA - orderB : orderB - orderA;
+    });
+  }, [magazines, selectedYear, searchQuery, sortLatestFirst]);
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white via-slate-50/50 to-white border-y border-slate-200/60 select-none">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
+    <section className="py-14 bg-slate-50/60 border-y border-slate-200/80 select-none">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 w-full">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="flex flex-col items-start gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
-              <BookOpen className="h-3.5 w-3.5 text-indigo-500" /> Annual Publications
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 shadow-2xs mb-2.5">
+              <BookOpen className="h-3.5 w-3.5 text-[#002147]" /> Annual Publications
             </span>
-            <h2 className="font-outfit text-3xl sm:text-4xl font-black text-slate-800 tracking-tight leading-tight">
-              College Magazines & Archival Editions
+            <h2 className="font-outfit text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002147] tracking-tight">
+              College Annual Magazines
             </h2>
-            <p className="font-sans text-xs md:text-sm text-slate-500 font-semibold max-w-2xl">
-              Chronicles of academic excellence, creative literature, student accolades, and institution milestones.
+            <p className="font-sans text-xs sm:text-sm text-slate-500 font-normal max-w-2xl mt-1.5 leading-relaxed">
+              Official academic yearbooks documenting institution milestones, faculty research, student laurels, and creative literature.
             </p>
           </div>
 
-          {/* Academic Year Select Dropdown */}
-          <div className="flex items-center gap-3">
+          {/* Action Bar: Search, Year Filter, View Switcher */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Search Input */}
+            <div className="relative flex items-center min-w-[180px] sm:min-w-[220px]">
+              <Search className="absolute left-3 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search magazines..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 hover:border-slate-300 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#002147]/10 focus:border-[#002147] shadow-2xs transition-colors"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 text-slate-400 hover:text-slate-600 p-0.5"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+
+            {/* Academic Year Filter */}
             <div className="relative flex items-center">
-              <Filter className="absolute left-3.5 h-4 w-4 text-indigo-600 pointer-events-none" />
+              <Filter className="absolute left-3 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="appearance-none pl-10 pr-10 py-3 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 shadow-sm transition-all cursor-pointer min-w-[210px]"
+                className="appearance-none pl-9 pr-8 py-2 bg-white border border-slate-200 hover:border-slate-300 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#002147]/10 focus:border-[#002147] shadow-2xs transition-colors cursor-pointer"
               >
-                <option value="ALL">All Academic Years ({magazines.length})</option>
+                <option value="ALL">All Academic Years</option>
                 {years.map((yr) => (
                   <option key={yr} value={yr}>
-                    Academic Year {yr}
+                    AY {yr}
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3.5 h-4 w-4 text-slate-400 pointer-events-none" />
+            </div>
+
+            {/* View Mode Toggle */}
+            <div className="flex items-center bg-white border border-slate-200 rounded-xl p-0.5 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setViewMode("table")}
+                className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                  viewMode === "table"
+                    ? "bg-[#002147] text-white shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+                title="Table View"
+                aria-label="Table View"
+              >
+                <TableIcon className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                  viewMode === "grid"
+                    ? "bg-[#002147] text-white shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+                title="Grid View"
+                aria-label="Grid View"
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Magazine Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredMagazines.map((mag) => (
-            <div
-              key={mag._id}
-              className="group bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-indigo-200 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
-            >
-              {/* Top Accent Pill */}
-              <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-[11px] font-black text-indigo-600 uppercase tracking-wider">
-                  <Calendar className="h-3 w-3 text-indigo-500" /> {mag.academicYear}
-                </span>
-                <span className="text-[10px] font-extrabold uppercase text-slate-400 tracking-widest">
-                  Annual Issue
-                </span>
-              </div>
+        {/* Content View: Clean Table or Grid */}
+        {filteredMagazines.length === 0 ? (
+          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500">
+            <BookOpen className="h-8 w-8 mx-auto mb-3 text-slate-400" />
+            <p className="font-semibold text-sm text-slate-700">No magazines found</p>
+            <p className="text-xs text-slate-400 mt-1">Try adjusting your search query or academic year filter.</p>
+          </div>
+        ) : viewMode === "table" ? (
+          /* =======================================================
+             CLEAN, STREAMLINED 3-COLUMN TABLE
+             (Academic Year, Magazine Edition / Title, Actions)
+             ======================================================= */
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-2xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50/90 border-b border-slate-200/80 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+                    <th scope="col" className="py-3.5 px-6 w-48 sm:w-56">
+                      <button
+                        type="button"
+                        onClick={() => setSortLatestFirst(!sortLatestFirst)}
+                        className="inline-flex items-center gap-1.5 hover:text-slate-900 font-bold uppercase tracking-wider cursor-pointer"
+                        title={sortLatestFirst ? "Showing latest first (click for oldest first)" : "Showing oldest first (click for latest first)"}
+                      >
+                        Academic Year <ArrowUpDown className="h-3 w-3 text-slate-400" />
+                      </button>
+                    </th>
+                    <th scope="col" className="py-3.5 px-6">
+                      Magazine Edition / Title
+                    </th>
+                    <th scope="col" className="py-3.5 px-6 text-right w-44">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-xs">
+                  {filteredMagazines.map((mag) => (
+                    <tr
+                      key={mag._id}
+                      className="hover:bg-slate-50/80 transition-colors duration-150 group"
+                    >
+                      {/* Academic Year */}
+                      <td className="py-4 px-6 whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-slate-100/90 text-slate-700 border border-slate-200/70">
+                          <Calendar className="h-3.5 w-3.5 text-[#002147]" />
+                          {mag.academicYear}
+                        </span>
+                      </td>
 
-              {/* Title & Cover Representation */}
-              <div className="flex flex-col gap-3 my-2">
-                <div className="h-44 w-full bg-gradient-to-br from-indigo-900 via-[#002147] to-slate-900 rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-inner group-hover:scale-[1.02] transition-transform duration-300">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-                  <div className="flex items-center justify-between z-10">
-                    <span className="text-[10px] font-black tracking-widest text-indigo-300 uppercase">
-                      ST. ANN&apos;S COLLEGE
+                      {/* Magazine Edition / Title */}
+                      <td className="py-4 px-6">
+                        <div className="flex items-center gap-3.5">
+                          <div className="h-10 w-10 rounded-xl bg-[#002147]/5 border border-[#002147]/10 flex items-center justify-center text-[#002147] shrink-0 group-hover:bg-[#002147] group-hover:text-white transition-colors">
+                            <BookOpen className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <span className="font-outfit text-sm sm:text-base font-bold text-slate-900 block leading-tight group-hover:text-[#002147] transition-colors">
+                              {mag.title}
+                            </span>
+                            <span className="font-sans text-xs text-slate-400 block mt-0.5 font-medium">
+                              St. Ann&apos;s College for Women • Annual Academic Issue
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="py-4 px-6 text-right whitespace-nowrap">
+                        {mag.pdfUrl ? (
+                          <div className="inline-flex items-center gap-2 justify-end">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActivePdfModal({
+                                  title: `${mag.title} (${mag.academicYear})`,
+                                  pdfUrl: mag.pdfUrl!,
+                                })
+                              }
+                              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-[#002147] bg-[#002147]/5 hover:bg-[#002147] hover:text-white border border-[#002147]/15 transition-all cursor-pointer shadow-2xs active:scale-95"
+                              title="Read Magazine Online"
+                            >
+                              <Eye className="h-3.5 w-3.5" />
+                              <span>Read</span>
+                            </button>
+                            <a
+                              href={mag.pdfUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              download
+                              className="inline-flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:text-[#002147] hover:bg-slate-100 border border-slate-200 transition-colors"
+                              title="Download PDF"
+                            >
+                              <Download className="h-3.5 w-3.5" />
+                            </a>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-slate-400 italic">Processing</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Table Footer Summary */}
+            <div className="bg-slate-50/60 border-t border-slate-200/80 px-6 py-3 flex items-center justify-between text-xs text-slate-500 font-medium">
+              <span>
+                Showing <strong className="text-slate-700">{filteredMagazines.length}</strong> of{" "}
+                <strong className="text-slate-700">{magazines.length}</strong> publications
+              </span>
+              <span className="text-[11px] text-slate-400">
+                Official documents published by St. Ann&apos;s College for Women
+              </span>
+            </div>
+          </div>
+        ) : (
+          /* =======================================================
+             CLEAN & LIGHT GRID CARDS (Optional View)
+             ======================================================= */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {filteredMagazines.map((mag) => (
+              <div
+                key={mag._id}
+                className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/60">
+                      <Calendar className="h-3 w-3 text-slate-400" />
+                      {mag.academicYear}
                     </span>
-                    <Sparkles className="h-4 w-4 text-indigo-400" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Annual Issue
+                    </span>
                   </div>
-                  <div className="z-10">
-                    <h3 className="font-outfit text-xl font-black tracking-tight text-white leading-tight">
-                      {mag.title}
-                    </h3>
-                    <p className="font-sans text-[11px] text-indigo-200/80 mt-1 font-semibold">
-                      Official Academic Magazine
-                    </p>
+
+                  <div className="h-10 w-10 rounded-xl bg-[#002147]/5 border border-[#002147]/10 flex items-center justify-center text-[#002147] mb-3 group-hover:bg-[#002147] group-hover:text-white transition-colors">
+                    <BookOpen className="h-5 w-5" />
                   </div>
-                  <div className="flex items-center justify-between border-t border-white/10 pt-2 text-[10px] font-medium text-slate-300 z-10">
-                    <span>Year {mag.academicYear}</span>
-                    <span className="uppercase text-indigo-300 font-bold">PDF Format</span>
-                  </div>
+
+                  <h3 className="font-outfit text-base font-bold text-slate-900 leading-snug">
+                    {mag.title}
+                  </h3>
+                  <p className="font-sans text-xs text-slate-500 mt-1 leading-relaxed">
+                    St. Ann&apos;s College for Women Official Annual Magazine
+                  </p>
+                </div>
+
+                <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center gap-2">
+                  {mag.pdfUrl ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActivePdfModal({
+                            title: `${mag.title} (${mag.academicYear})`,
+                            pdfUrl: mag.pdfUrl!,
+                          })
+                        }
+                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#002147]/5 hover:bg-[#002147] hover:text-white text-[#002147] py-2 text-xs font-bold border border-[#002147]/15 transition-all"
+                      >
+                        <Eye className="h-3.5 w-3.5" /> Read
+                      </button>
+                      <a
+                        href={mag.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                        className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors shrink-0"
+                        title="Download PDF"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                      </a>
+                    </>
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">Processing</span>
+                  )}
                 </div>
               </div>
-
-              {/* Actions Footer */}
-              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
-                {mag.pdfUrl ? (
-                  <>
-                    <button
-                      onClick={() => setActivePdfModal({ title: `${mag.title} (${mag.academicYear})`, pdfUrl: mag.pdfUrl! })}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#002147] hover:bg-[#002b5c] text-white py-2.5 text-xs font-bold transition-all shadow-sm active:scale-95"
-                    >
-                      <Eye className="h-3.5 w-3.5" /> Read Magazine
-                    </button>
-                    <a
-                      href={mag.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      download
-                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
-                      title="Download PDF"
-                    >
-                      <Download className="h-4 w-4" />
-                    </a>
-                  </>
-                ) : (
-                  <span className="text-xs text-slate-400 italic">Document uploading...</span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* PDF View Modal */}
       {activePdfModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 sm:p-6 animate-fadeIn">
-          <div className="relative w-full max-w-5xl h-[85vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 sm:p-6 animate-fadeIn">
+          <div className="relative w-full max-w-5xl h-[88vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
             {/* Modal Header */}
-            <div className="flex items-center justify-between bg-[#002147] px-6 py-4 text-white">
+            <div className="flex items-center justify-between bg-[#002147] px-5 py-3.5 text-white">
               <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 text-indigo-300">
-                  <BookOpen className="h-5 w-5" />
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white">
+                  <BookOpen className="h-4 w-4" />
                 </span>
                 <div>
-                  <h3 className="font-outfit text-base font-black leading-tight text-white">
+                  <h3 className="font-outfit text-sm sm:text-base font-bold text-white leading-tight">
                     {activePdfModal.title}
                   </h3>
-                  <p className="font-sans text-xs text-indigo-200 font-semibold">
-                    St. Ann&apos;s College Official Magazine Reader
+                  <p className="font-sans text-[11px] text-slate-300 font-normal">
+                    St. Ann&apos;s College for Women • Official Magazine Reader
                   </p>
                 </div>
               </div>
@@ -161,15 +357,18 @@ export default function CollegeMagazinesSection({ magazines }: CollegeMagazinesS
                   href={activePdfModal.pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 text-xs font-bold transition-all"
+                  className="flex items-center gap-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 text-xs font-semibold transition-colors"
                 >
-                  Open Full Window <ExternalLink className="h-3.5 w-3.5" />
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Open in New Tab</span>
                 </a>
                 <button
+                  type="button"
                   onClick={() => setActivePdfModal(null)}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                  aria-label="Close reader"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             </div>
@@ -177,7 +376,7 @@ export default function CollegeMagazinesSection({ magazines }: CollegeMagazinesS
             {/* Modal Body iframe */}
             <div className="flex-1 w-full bg-slate-100 relative">
               <iframe
-                src={`${activePdfModal.pdfUrl}#toolbar=0`}
+                src={`${activePdfModal.pdfUrl}#toolbar=1`}
                 className="w-full h-full border-none"
                 title={activePdfModal.title}
               />
