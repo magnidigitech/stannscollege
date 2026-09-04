@@ -1,3 +1,5 @@
+const BUILD_ID = `build-${Date.now()}`;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -5,10 +7,7 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: false,
   poweredByHeader: false,
-  generateBuildId: async () => {
-    // Generate unique build ID with timestamp as cache buster
-    return `build-${Date.now()}`;
-  },
+  generateBuildId: async () => BUILD_ID,
   async headers() {
     return [
       {
