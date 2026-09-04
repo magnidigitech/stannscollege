@@ -6,6 +6,7 @@ out
 .env.development.local
 .env.test.local
 .env.production.local
+
 # macOS system files
 .DS_Store
 .DS_Store?
@@ -14,6 +15,8 @@ out
 .Trashes
 
 *.local
+*.log
+*.tmp
 
 # Local Workspace Temps
 faculty-temp/
@@ -44,6 +47,21 @@ scripts/sanity-upload-cache.json
 
 # Scratch script directory
 scratch/
+
+# Temporary & scratch extraction / test scripts
+db.js
+extractPlacements.js
+extractResearch.js
+fixLinks.js
+fixLinks2.js
+fixQuotes.js
+getPublications.js
+parse_aqar.js
+parse_naac.js
+testParser.js
+testRegex.js
+testTableRender.js
+testTableRender.jsx
 
 # Raw local data folders & source assets
 6.Student Support/
