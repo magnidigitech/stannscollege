@@ -25,7 +25,7 @@ export default function ContactPage() {
     name: "",
     email: "",
     phone: "",
-    subject: "General Inquiry (Others)",
+    subject: "General Enquiry / Others",
     message: ""
   });
 
@@ -86,7 +86,7 @@ export default function ContactPage() {
         name: "",
         email: "",
         phone: "",
-        subject: "General Inquiry (Others)",
+        subject: "General Enquiry / Others",
         message: ""
       });
     } catch (err: any) {
@@ -389,7 +389,7 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       className="w-full bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white px-4 py-3.5 rounded-2xl text-xs font-bold text-slate-700 outline-none transition-all focus:ring-4 focus:ring-indigo-100 appearance-none cursor-pointer"
                     >
-                      <option value="General Inquiry (Others)">General Inquiry (Others)</option>
+                      <option value="General Enquiry / Others">General Enquiry / Others</option>
                       <option value="Admissions UG (Degree)">Admissions UG (Degree)</option>
                       <option value="Admissions PG (MBA/MCA)">Admissions PG (MBA/MCA)</option>
                       <option value="Academic Audits & IQAC">Academic Audits & IQAC</option>
