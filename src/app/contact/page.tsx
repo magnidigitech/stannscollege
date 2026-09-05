@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapPin,
   Phone,
@@ -37,6 +37,18 @@ export default function ContactPage() {
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      setIsMobile(mobileRegex.test(userAgent) || (typeof window !== "undefined" && window.innerWidth < 768));
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleCopy = (text: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -185,7 +197,7 @@ export default function ContactPage() {
               onClick={() => setPhoneModalOpen(true)}
               className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-indigo-600 hover:text-indigo-700 select-none group/btn text-left cursor-pointer"
             >
-              Call Admissions ({phoneNumbers.length} Lines) <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+              Call Admissions <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
             </button>
           </div>
 
@@ -234,7 +246,7 @@ export default function ContactPage() {
               onClick={() => setEmailModalOpen(true)}
               className="mt-5 inline-flex items-center gap-1.5 text-xs font-black text-amber-600 hover:text-amber-700 select-none group/btn text-left cursor-pointer"
             >
-              Send Email ({emailAddresses.length} Addresses) <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+              Send Email <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
             </button>
           </div>
 
@@ -560,108 +572,88 @@ export default function ContactPage() {
         </div>
       )}
 
-      {/* 5. INTERACTIVE EMAIL SELECTION MODAL (Solves blank tab on laptop Chrome) */}
+      {/* 5. INTERACTIVE EMAIL SELECTION MODAL */}
       {emailModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 relative animate-fadeInUp">
+          <div className="bg-white rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl border border-slate-100 relative animate-fadeInUp">
             <button
               onClick={() => setEmailModalOpen(false)}
-              className="absolute top-5 right-5 h-9 w-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+              className="absolute top-5 right-5 h-9 w-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
               title="Close"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-11 w-11 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-10 w-10 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
                 <Mail className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="font-outfit font-black text-slate-800 text-lg sm:text-xl">Choose Email to Contact</h3>
+                <h3 className="font-outfit font-black text-slate-800 text-lg">Send Email</h3>
                 <p className="text-slate-400 text-xs font-bold">St. Ann&apos;s Electronic Communications Desk</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-500 font-medium mb-5 leading-relaxed">
-              Select which college inbox you want to reach, and choose how to open it:
-            </p>
-
-            <div className="flex flex-col gap-3.5 max-h-[60vh] overflow-y-auto pr-1">
+            <div className="flex flex-col gap-3">
               {emailAddresses.map((item, idx) => {
                 const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(item.email)}&su=${encodeURIComponent("Inquiry regarding St. Ann's College for Women")}`;
                 return (
                   <div
                     key={idx}
-                    className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 transition-all flex flex-col gap-3"
+                    className="bg-slate-50 hover:bg-amber-50/20 border border-slate-200/80 rounded-2xl p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] uppercase font-black text-amber-700 tracking-wider">
-                          {item.label}
-                        </span>
-                        <span className="bg-amber-100/80 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded-full">
-                          {item.badge}
-                        </span>
-                      </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                        {item.label}
+                      </span>
+                      <span className="text-slate-800 font-extrabold text-xs sm:text-sm tracking-tight break-all font-mono select-all mt-0.5">
+                        {item.email}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
                       <button
                         type="button"
                         onClick={() => handleCopy(item.email)}
-                        className="text-[11px] font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors"
-                        title="Copy email to clipboard"
+                        className="px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                        title="Copy Email Address"
                       >
                         {copiedText === item.email ? (
                           <>
                             <Check className="h-3.5 w-3.5 text-emerald-600" />
-                            <span className="text-emerald-600 font-bold">Copied!</span>
+                            <span className="text-emerald-600">Copied</span>
                           </>
                         ) : (
                           <>
-                            <Copy className="h-3 w-3" />
+                            <Copy className="h-3.5 w-3.5" />
                             <span>Copy</span>
                           </>
                         )}
                       </button>
-                    </div>
 
-                    <div className="font-extrabold text-xs sm:text-sm text-slate-800 break-all select-text font-mono bg-white px-3 py-2 rounded-xl border border-slate-200/60">
-                      {item.email}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      {/* Web Gmail Option: Guaranteed to work in Chrome on laptops without empty tabs */}
-                      <a
-                        href={gmailComposeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition-all"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        <span>Open in Gmail</span>
-                      </a>
-
-                      {/* Default Mail Client (mailto) */}
-                      <a
-                        href={`mailto:${item.email}`}
-                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-xs transition-all"
-                      >
-                        <Mail className="h-3.5 w-3.5" />
-                        <span>Email App</span>
-                      </a>
+                      {isMobile ? (
+                        <a
+                          href={`mailto:${item.email}`}
+                          className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                        >
+                          <Mail className="h-3.5 w-3.5" />
+                          <span>Open in App</span>
+                        </a>
+                      ) : (
+                        <a
+                          href={gmailComposeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                        >
+                          <Mail className="h-3.5 w-3.5" />
+                          <span>Open in Email</span>
+                        </a>
+                      )}
                     </div>
                   </div>
                 );
               })}
-            </div>
-
-            <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-bold">
-              <span>💡 Tip: &quot;Open in Gmail&quot; works directly in laptop Chrome</span>
-              <button
-                type="button"
-                onClick={() => setEmailModalOpen(false)}
-                className="text-slate-600 hover:text-slate-900 font-black cursor-pointer"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>
