@@ -11,7 +11,8 @@ import {
   CheckCircle2,
   ArrowRight,
   Clock,
-  Building
+  Building,
+  AlertCircle
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -25,18 +26,31 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      alert("Please fill in all required fields.");
+    setErrorMessage(null);
+
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setErrorMessage("Please fill in all required fields (Name, Email, and Message).");
       return;
     }
 
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to transmit inquiry. Please try again.");
+      }
+
       setIsSuccess(true);
       setFormData({
         name: "",
@@ -45,7 +59,11 @@ export default function ContactPage() {
         subject: "General Inquiry",
         message: ""
       });
-    }, 1200);
+    } catch (err: any) {
+      setErrorMessage(err.message || "An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -243,9 +261,9 @@ export default function ContactPage() {
             {isSuccess ? (
               <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-8 text-center animate-fadeIn my-6">
                 <CheckCircle2 className="h-16 w-16 text-emerald-650 mx-auto mb-4 animate-bounce" />
-                <h3 className="font-outfit font-black text-slate-800 text-xl mb-2">Message Transmitted!</h3>
+                <h3 className="font-outfit font-black text-slate-800 text-xl mb-2">Inquiry Sent Successfully!</h3>
                 <p className="text-slate-600 text-xs md:text-sm font-semibold max-w-sm mx-auto leading-relaxed">
-                  Thank you for contacting St. Ann&apos;s College for Women. Our office desk has received your request and will follow up with you within 24–48 working hours.
+                  Thank you for contacting St. Ann&apos;s College for Women. Your message has been directly dispatched to our administrative desk at <strong className="text-[#002147]">stannsofficegorantla@gmail.com</strong>. We will follow up with you within 24–48 working hours.
                 </p>
                 <button
                   onClick={() => setIsSuccess(false)}
@@ -326,6 +344,13 @@ export default function ContactPage() {
                     className="w-full bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white px-4.5 py-3 rounded-2xl text-xs font-bold text-slate-800 placeholder-slate-400 outline-none transition-all focus:ring-4 focus:ring-indigo-100 resize-none"
                   />
                 </div>
+
+                {errorMessage && (
+                  <div className="flex items-center gap-2.5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs font-bold text-rose-700 animate-fadeIn">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-rose-500" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
 
                 <button
                   type="submit"
