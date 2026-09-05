@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Globe, 
-  Send, 
-  Sparkles, 
-  CheckCircle2, 
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  Send,
+  Sparkles,
+  CheckCircle2,
   ArrowRight,
   Clock,
   Building
@@ -22,7 +22,7 @@ export default function ContactPage() {
     subject: "General Inquiry",
     message: ""
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -32,7 +32,7 @@ export default function ContactPage() {
       alert("Please fill in all required fields.");
       return;
     }
-    
+
     setIsSubmitting(true);
     // Simulate API call
     setTimeout(() => {
@@ -50,15 +50,15 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 font-sans pb-20 select-none">
-      
+
       {/* 1. HERO BANNER HEADER */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#001730] via-[#002147] to-[#0d3b66] text-white py-20 px-6 select-none">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#001730] via-[#002147] to-[#0d3b66] text-white pt-10 pb-16 px-6 select-none">
         {/* Animated Background Accents */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_45%)]" />
         <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
-        
+
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full text-center relative z-10">
-          <span className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-400/20 rounded-full px-4.5 py-1.5 text-xs font-black text-indigo-300 uppercase tracking-widest mb-6 backdrop-blur-md">
+          <span className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-400/20 rounded-full px-4.5 py-1.5 text-xs font-black text-indigo-300 uppercase tracking-widest mb-4 backdrop-blur-md">
             <Sparkles className="h-3.5 w-3.5 animate-pulse text-indigo-300" /> Connect with St. Ann&apos;s
           </span>
           <h1 className="font-outfit text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none mb-6">
@@ -73,7 +73,7 @@ export default function ContactPage() {
       {/* 2. DIRECT CONTACT CHANNELS (GRID) */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full -mt-10 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
+
           {/* Card 1: Postal Location */}
           <div className="bg-white border border-slate-100/80 shadow-xl shadow-slate-100/50 hover:shadow-2xl rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1">
             <div>
@@ -85,13 +85,14 @@ export default function ContactPage() {
                 St. Ann&apos;s College for Women<br />
                 D. No: 10 – 209 / 2,<br />
                 Amaravathi Road, Gorantla,<br />
-                Guntur, Andhra Pradesh, 522034.
+                Guntur, Andhra Pradesh, India,<br />
+                522034.
               </p>
             </div>
-            <a 
-              href="https://maps.google.com/?q=St.Ann's+College+for+Women+Gorantla+Guntur" 
-              target="_blank" 
-              rel="noreferrer" 
+            <a
+              href="https://maps.google.com/?q=St.Ann's+College+for+Women+Gorantla+Guntur"
+              target="_blank"
+              rel="noreferrer"
               className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-emerald-600 hover:text-emerald-700 select-none group/btn"
             >
               Get Directions <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
@@ -158,32 +159,62 @@ export default function ContactPage() {
                 Official Website:<br />
                 <a href="https://www.stannscollegeforwomen.ac.in" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">www.stannscollegeforwomen.ac.in</a>
               </p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                <a href="#" className="p-2 rounded-lg bg-slate-50 hover:bg-red-50 hover:text-red-650 text-slate-500 transition-colors" title="YouTube">
-                  <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.388.508 9.388.508s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              <div className="flex flex-wrap gap-2.5 mt-2">
+                <a
+                  href="https://www.youtube.com/@stannscollegeforwomen"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-red-50 hover:text-red-600 text-slate-500 border border-slate-100 hover:border-red-200 transition-all group/icon"
+                  title="YouTube: @stannscollegeforwomen"
+                >
+                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.388.508 9.388.508s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                   </svg>
                 </a>
-                <a href="#" className="p-2 rounded-lg bg-slate-50 hover:bg-pink-50 hover:text-pink-600 text-slate-500 transition-colors" title="Instagram">
-                  <svg className="h-4.5 w-4.5 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61593155107273"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-600 text-slate-500 border border-slate-100 hover:border-blue-200 transition-all group/icon"
+                  title="Facebook: St. Ann's College for Women"
+                >
+                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
                   </svg>
                 </a>
-                <a href="#" className="p-2 rounded-lg bg-slate-50 hover:bg-blue-50 hover:text-blue-705 text-slate-500 transition-colors" title="LinkedIn">
-                  <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                <a
+                  href="https://www.instagram.com/stannscollegeforwomengnt"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-pink-50 hover:text-pink-600 text-slate-500 border border-slate-100 hover:border-pink-200 transition-all group/icon"
+                  title="Instagram: @stannscollegeforwomengnt"
+                >
+                  <svg className="h-5 w-5 stroke-current fill-none stroke-2 group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
                 </a>
-                <a href="#" className="p-2 rounded-lg bg-slate-50 hover:bg-blue-50 hover:text-blue-600 text-slate-500 transition-colors" title="Facebook">
-                  <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                <a
+                  href="https://whatsapp.com/channel/0029Vb9FPmy0bIdpHlLFXY3c"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-600 text-slate-500 border border-slate-100 hover:border-emerald-200 transition-all group/icon"
+                  title="WhatsApp Channel"
+                >
+                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <path d="M12.031 0C5.394 0 0 5.394 0 12.031c0 2.115.547 4.179 1.586 6.002L.07 23.93l6.094-1.554a11.96 11.96 0 0 0 5.867 1.528c6.637 0 12.031-5.394 12.031-12.031C24.062 5.394 18.668 0 12.031 0zm0 21.875a9.83 9.83 0 0 1-5.01-1.373l-.36-.214-3.623.924.965-3.533-.234-.372A9.83 9.83 0 0 1 2.2 12.031C2.2 6.61 6.61 2.2 12.031 2.2c5.422 0 9.832 4.41 9.832 9.831 0 5.422-4.41 9.844-9.832 9.844zm5.385-7.375c-.295-.148-1.748-.862-2.02-.96-.27-.098-.468-.148-.665.148-.198.295-.765.96-.938 1.158-.172.197-.345.222-.64.074-.296-.148-1.25-.461-2.38-1.47-.88-.785-1.474-1.756-1.646-2.052-.172-.295-.018-.455.13-.602.133-.133.296-.345.444-.517.148-.172.197-.295.295-.492.098-.197.05-.37-.025-.518-.074-.148-.665-1.603-.912-2.194-.24-.576-.484-.498-.665-.508-.172-.01-.37-.01-.567-.01-.197 0-.518.074-.789.37-.27.295-1.036 1.012-1.036 2.467 0 1.455 1.06 2.862 1.208 3.059.148.197 2.086 3.185 5.054 4.468.706.305 1.258.487 1.688.624.71.226 1.356.194 1.867.118.57-.085 1.748-.714 1.995-1.403.246-.69.246-1.28.172-1.403-.074-.123-.271-.197-.566-.345z"/>
                   </svg>
                 </a>
-                <a href="#" className="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 hover:text-sky-500 text-slate-500 transition-colors" title="Twitter">
-                  <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                <a
+                  href="https://www.linkedin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-700 text-slate-500 border border-slate-100 hover:border-blue-200 transition-all group/icon"
+                  title="LinkedIn"
+                >
+                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                   </svg>
                 </a>
               </div>
@@ -198,7 +229,7 @@ export default function ContactPage() {
 
       {/* 3. SPLIT AREA: INTERACTIVE FORM + INTERACTIVE GOOGLE MAP */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch select-none">
-        
+
         {/* ENQUIRY FORM COLUMN (7 cols) */}
         <div className="lg:col-span-7 bg-white border border-slate-200/60 shadow-xl rounded-3xl p-8 md:p-10 flex flex-col justify-between">
           <div>
@@ -208,7 +239,7 @@ export default function ContactPage() {
               </span>
               <h2 className="font-outfit font-black text-slate-800 text-xl sm:text-2xl">Send us an Enquiry</h2>
             </div>
-            
+
             {isSuccess ? (
               <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-8 text-center animate-fadeIn my-6">
                 <CheckCircle2 className="h-16 w-16 text-emerald-650 mx-auto mb-4 animate-bounce" />
@@ -225,13 +256,13 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="name" className="text-xs font-black text-slate-600 uppercase tracking-wider">Your Full Name <span className="text-rose-500">*</span></label>
-                    <input 
+                    <input
                       id="name"
-                      type="text" 
+                      type="text"
                       required
                       placeholder="e.g. Priyadarshini Rao"
                       value={formData.name}
@@ -241,9 +272,9 @@ export default function ContactPage() {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="email" className="text-xs font-black text-slate-600 uppercase tracking-wider">Email Address <span className="text-rose-500">*</span></label>
-                    <input 
+                    <input
                       id="email"
-                      type="email" 
+                      type="email"
                       required
                       placeholder="e.g. name@example.com"
                       value={formData.email}
@@ -256,9 +287,9 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="phone" className="text-xs font-black text-slate-600 uppercase tracking-wider">Mobile Number</label>
-                    <input 
+                    <input
                       id="phone"
-                      type="tel" 
+                      type="tel"
                       placeholder="e.g. +91 98765 43210"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -285,7 +316,7 @@ export default function ContactPage() {
 
                 <div className="flex flex-col gap-1.5">
                   <label htmlFor="message" className="text-xs font-black text-slate-600 uppercase tracking-wider">Your Message <span className="text-rose-500">*</span></label>
-                  <textarea 
+                  <textarea
                     id="message"
                     required
                     rows={5}
@@ -313,7 +344,7 @@ export default function ContactPage() {
               </form>
             )}
           </div>
-          
+
           <div className="mt-8 border-t border-slate-100 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between text-[11px] text-slate-400 font-bold gap-3">
             <div className="flex items-center gap-1.5">
               <Clock className="h-3.5 w-3.5 text-slate-400" />
@@ -333,7 +364,7 @@ export default function ContactPage() {
               </span>
               <h2 className="font-outfit font-black text-slate-800 text-xl">Campus Map</h2>
             </div>
-            
+
             {/* Embedded Google Map */}
             <div className="flex-1 w-full rounded-2xl overflow-hidden border border-slate-100 relative min-h-[300px] lg:min-h-0 bg-slate-50">
               <iframe
@@ -347,7 +378,7 @@ export default function ContactPage() {
                 className="absolute inset-0 w-full h-full"
               ></iframe>
             </div>
-            
+
             {/* Quick Map Coordinates / Help */}
             <div className="bg-slate-50/50 border border-slate-100/60 rounded-xl p-4 text-[11px] text-slate-500 font-bold leading-normal">
               <span className="text-[#002147] font-extrabold uppercase block mb-1">Geographic Coordinates</span>
@@ -358,7 +389,7 @@ export default function ContactPage() {
         </div>
 
       </section>
-      
+
     </div>
   );
 }

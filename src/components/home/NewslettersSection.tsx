@@ -83,7 +83,7 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
 
   return (
     <section className="py-14 bg-white border-b border-slate-200/80 select-none">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 w-full">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div>
@@ -290,7 +290,7 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
           /* =======================================================
              CLEAN & LIGHT GRID CARDS (Optional View)
              ======================================================= */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 min-[1920px]:grid-cols-6 gap-5">
             {filteredNewsletters.map((item) => (
               <div
                 key={item._id}

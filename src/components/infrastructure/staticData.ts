@@ -12,13 +12,11 @@ export interface InfrastructureSection {
 export const staticInfrastructureSections: Record<string, InfrastructureSection> = {
   "campus-buildings": {
     title: "College Campus & Buildings",
-    content: `__Infrastructure__
-
-__ Overview__
+    content: `## Overview
 
 The College provides a well-planned, student-centric infrastructure that supports academic excellence, research, skill development, and holistic growth. The campus integrates modern facilities with a safe, inclusive, and eco-friendly environment.
 
-__1. Campus & Buildings__
+## 1. Campus & Buildings
 
 The College campus provides a serene, safe, and student-friendly environment that supports academic excellence and holistic development.
 
@@ -69,29 +67,31 @@ Digital Learning Environment`,
   },
   "library": {
     title: "Knowledge Resource Centre & Library",
-    content: `__3. Department of Library & Information Science __
+    content: `# 3. Department of Library & Information Science
 
-__About Us :__
+## About Us
 
-The College Library is a central academic facility that supports teaching, learning, and research. It provides access to print and digital resources, fostering reading habits, academic excellence, and lifelong learning. 
+The College Library is a central academic facility that supports teaching, learning, and research. It provides access to print and digital resources, fostering reading habits, academic excellence, and lifelong learning.
 
-__ Library Development__
+## Library Development
 
-__UG Library__
+The College Library has witnessed phased developmental milestones over the years across undergraduate and postgraduate divisions, culminating in the establishment of a unified Central Library:
+
+### UG Library
 
 - Established in 1997 with 107 volumes and 44 titles 
 - Shifted to Gorantla (1999) – St. Ann’s Block 
 - Relocated to Gnanam Block (2019–2024) 
 - Presently located in St. Ann’s Block (Second Floor) 
 
-__PG Library__
+### PG Library
 
 - Established in 2002–2003 (MCA Programme) 
 - Expanded with MBA Programme (2007–2008) 
 - Functioned in St. Ann’s Block until 2023–2024 
-- Shifted to Gnanam Block (2024–2025__)__ 
+- Shifted to Gnanam Block (2024–2025) 
 
-__NAAC Initiative – Central Library (2025)__
+### NAAC Initiative – Central Library (2025)
 
 As per recommendations of the NAAC Peer Team (June 2024):
 
@@ -99,17 +99,19 @@ As per recommendations of the NAAC Peer Team (June 2024):
 - Renovated during April–May 2025 
 - Functioning from June 2025 onwards 
 
-__Vision__
+## Vision & Mission
+
+### Vision
 
 To promote a knowledge-enriched learning community committed to the development and empowerment of society with integrity.
 
-__ Mission__
+### Mission
 
 - To support teaching, learning, and research with state-of-the-art information resources 
 - To promote reflective thinking and intellectual growth 
 - To facilitate access to contemporary knowledge in relevant fields 
 
-__ Objectives of the Library__
+## Objectives of the Library
 
 - To promote reading habits among students and faculty 
 - To encourage extensive use of library resources 
@@ -118,23 +120,21 @@ __ Objectives of the Library__
 - To provide guidance and assistance in the effective use of library resources and services 
 - To develop the library as a dynamic and growing knowledge centre
 
-__At a Glance__
+## At a Glance
 
-__Infrastructure__
+### Infrastructure
 
 - Library Built-up Area: 203.45 sq. mt 
 - Spacious Reading Hall with adequate seating 
 - Dedicated Digital Library Section with internet-enabled systems 
 - Quiet, well-maintained and learner-friendly environment 
 
-Photo Gallery : Library & books etc.
-
-__ Library Timings__
+### Library Timings
 
 - Monday to Friday: 8:00 AM to 4:00 PM 
 - Saturday: 8:00 AM to 1:00 PM
 
-__Our Team __
+## Our Team
 
 __S. No__
 
@@ -166,7 +166,7 @@ Librarian
 
 14 Years
 
-__Library Services__
+## Library Services
 
 - Circulation Services (Issue, Return & Renewal of Books) 
 - Access to Print Journals and E-Journals 
@@ -182,7 +182,7 @@ __Library Services__
 - Organization of Library Events and Awareness Programmes 
 - Overnight Issue Facility for reference books
 
-__Library Resources __
+## Library Resources
 
 S.NO
 
@@ -192,7 +192,7 @@ TOTAL
 
 1
 
-No. of  Books
+No. of Books
 
 23459
 
@@ -252,28 +252,24 @@ DELNET Union Catalogues and Databases
 
 11
 
- Software
+Software
 
 NewGenLib 3.0
 
 12
 
- Systems for Internet
+Systems for Internet
 
 07
 
-__Access Platforms__
+## Access Platforms
 
 The Library provides access to national and international digital resources to support academic learning, research, and self-study.
 
-- National Digital Library (NDL):   
-[__https://www.ndl.gov.in/__](https://www.ndl.gov.in)__ __
-- __DELNET (Developing Library Network):  
-[__https://delnet.in/index.html__](https://delnet.in/index.html)
+- National Digital Library (NDL): [https://www.ndl.gov.in](https://www.ndl.gov.in)
+- DELNET (Developing Library Network): [https://delnet.in/index.html](https://delnet.in/index.html)
 
-
-
-__Open Access Resources__
+## Open Access Resources
 
 The following platforms are freely accessible to all users (students, faculty, and public) and provide a wide range of e-learning materials, courses, and academic resources:
 
@@ -355,16 +351,16 @@ National Scholarships Portal
 
 [https://scholarships.gov.in](https://scholarships.gov.in)
 
-__MOOCs (Massive Open Online Courses)__
+## MOOCs (Massive Open Online Courses)
 
 The Library facilitates access to online learning platforms that offer free and structured courses across various disciplines to enhance knowledge, skills, and employability.
 
 - UGC MOOCs (INFLIBNET) – [https://ugcmoocs.inflibnet.ac.in](https://ugcmoocs.inflibnet.ac.in) 
 - SWAYAM Online Courses – [https://swayam.gov.in](https://swayam.gov.in) 
 - NPTEL Online Courses – [https://onlinecourses.nptel.ac.in](https://onlinecourses.nptel.ac.in) 
-- ANU MOOCs – [https://moocs.anuonline.ac.i](https://moocs.anuonline.ac.in)
+- ANU MOOCs – [https://moocs.anuonline.ac.in](https://moocs.anuonline.ac.in)
 
-__Projects & Training Programmes__
+## Projects & Training Programmes
 
 The Library provides information and access to various national and international organizations that support research projects, training programmes, fellowships, and academic initiatives for students and faculty.
 
@@ -377,7 +373,7 @@ The Library provides information and access to various national and internationa
 - Ministry of Education (formerly MHRD) – [https://mhrd.gov.in](https://mhrd.gov.in) 
 - University Grants Commission (UGC) – [https://ugc.ac.in](https://ugc.ac.in)
 
-__Electronic Theses & Dissertations (ETDs)__
+## Electronic Theses & Dissertations (ETDs)
 
 The Library provides access to Electronic Theses and Dissertations (ETDs) to support academic learning, research, and project work for UG and PG students.
 
@@ -388,7 +384,7 @@ The Library provides access to Electronic Theses and Dissertations (ETDs) to sup
 - Cochin University Digital Repository (Dyuthi) – [https://dyuthi.cusat.ac.in](https://dyuthi.cusat.ac.in) 
 - North-Eastern Hill University Repository – [https://dspace.nehu.ac.in](https://dspace.nehu.ac.in) 
 
-__National Digital Library of Theses & Dissertations (NDLTD)__
+## National Digital Library of Theses & Dissertations (NDLTD)
 
 The Library provides access to international repositories of theses, dissertations, and research publications, supporting advanced academic study and research activities.
 
@@ -398,7 +394,7 @@ The Library provides access to international repositories of theses, dissertatio
 - EThOS – British Library Theses Service – [https://ethos.bl.uk](https://ethos.bl.uk) 
 - Deutsche Nationalbibliothek (German National Library) – [https://portal.dnb.de](https://portal.dnb.de) 
 
-__Digital Libraries__
+## Digital Libraries
 
 The Library also provides access to major national and international digital libraries, offering a wide range of books, research materials, and academic resources.
 
@@ -410,25 +406,25 @@ The Library also provides access to major national and international digital lib
 - Virtual Library – [https://vlib.org](https://vlib.org) 
 - World Digital Library (WDL) – [https://wdl.org](https://wdl.org)
 
-__E-Journals & Digital Academic Resources__
+## E-Journals & Digital Academic Resources
 
 The Library provides access to a wide range of national and international e-journals, open access publications, and digital academic platforms to support teaching, learning, and research.
 
-__ E-Journal Sources (Open Access & Academic Platforms)__
+### E-Journal Sources (Open Access & Academic Platforms)
 
 - UGC Approved Journals – [https://ugc.ac.in/journallist](https://ugc.ac.in/journallist) 
 - CSIR Journals – [https://nopr.niscair.res.in](https://nopr.niscair.res.in) 
 - Indian Academy of Sciences Journals – [https://ias.ac.in](https://ias.ac.in) 
 - Directory of Open Access Journals (DOAJ) – [https://doaj.org](https://doaj.org) 
 
-__ Science & Research Academies__
+### Science & Research Academies
 
 - Indian National Science Academy (INSA) – [https://insaindia.res.in](https://insaindia.res.in) 
 - National Academy of Sciences, India (NASI) – [https://nasi.org.in](https://nasi.org.in) 
 - PhysNet Journals – [https://physnet.net](https://physnet.net) 
 - SPIE Digital Library – [https://spiedigitallibrary.org](https://spiedigitallibrary.org) 
 
-__ International Journals & Open Access Platforms__
+### International Journals & Open Access Platforms
 
 - Open Access Library (OALib) – [https://oalib.com](https://oalib.com) 
 - Cambridge Core – [https://cambridge.org/core](https://cambridge.org/core) 
@@ -439,14 +435,14 @@ __ International Journals & Open Access Platforms__
 - ABC Chemistry – [https://abc-chemistry.org](https://abc-chemistry.org) 
 - Directory of Open Access Books (DOAB) – [https://doabooks.org](https://doabooks.org) 
 
-__ Digital Libraries & E-Books__
+### Digital Libraries & E-Books
 
-- __Internet Archive (Digital Library of India)__ – [https://archive.org](https://archive.org) 
-- __Ebook Friendly__ – [https://ebookfriendly.com](https://ebookfriendly.com) 
-- __Kathanilayam (Telugu Resources)__ – [https://kathanilayam.com](https://kathanilayam.com) 
-- __Rare Ebooks__ – [https://rareebooks.com](https://rareebooks.com) 
+- Internet Archive (Digital Library of India) – [https://archive.org](https://archive.org) 
+- Ebook Friendly – [https://ebookfriendly.com](https://ebookfriendly.com) 
+- Kathanilayam (Telugu Resources) – [https://kathanilayam.com](https://kathanilayam.com) 
+- Rare Ebooks – [https://rareebooks.com](https://rareebooks.com) 
 
-__ Subject-wise E-Book Resources__
+### Subject-wise E-Book Resources
 
 - Engineering & Technology – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
 - Humanities – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
@@ -455,11 +451,11 @@ __ Subject-wise E-Book Resources__
 - History & Tourism – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
 - UNESCO Open Access Publications – [https://unesco.org/open-access](https://unesco.org/open-access) 
 
-__ Reference & Dictionary Resources__
+### Reference & Dictionary Resources
 
-- Oxford English Dictionary (Online__)__ – [https://oed.com](https://oed.com) 
+- Oxford English Dictionary (Online) – [https://oed.com](https://oed.com) 
 
-__Useful Academic & Career Links__
+### Useful Academic & Career Links
 
 - Online Exams Practice – [https://brainbashers.com](https://brainbashers.com) 
 - Online Universities – [https://testsworld.com](https://testsworld.com) 
@@ -472,17 +468,17 @@ __Useful Academic & Career Links__
 - Career Guidance (Career Varsity) – [https://careervarsity.com](https://careervarsity.com) 
 - MOOCs (ANU Online Courses) – [https://moocs.anuonline.ac.in](https://moocs.anuonline.ac.in) 
 
-__ User Access Policy__
+### User Access Policy
 
 - Most resources listed above are open access and freely available 
 - Some platforms (like premium journals) may require institutional subscription or login 
 - Access is supported through library systems and internet-enabled facilities 
 
-__NAAC Enhancement Line__
+### NAAC Enhancement Line
 
 - *The library provides access to diverse e-journal platforms and digital resources to enhance research capability, academic writing, and knowledge enrichment.*
 
-__General Academic Resources__
+## General Academic Resources
 
 - __CCE e-Learning (UG Courses)__  
 [http://www.ccelms.ap.gov.in/rusa/user/gpapers](http://www.ccelms.ap.gov.in/rusa/user/gpapers)  
@@ -494,7 +490,7 @@ __General Academic Resources__
 [http://www.rarebooksociety.org](http://www.rarebooksociety.org)  
 *Collection of rare and historical books* 
 
-__Telugu & Regional Language Resources__
+## Telugu & Regional Language Resources
 
 - __Telugu & Sanskrit Digital Books__  
 [http://www.teluguthesis.com](http://www.teluguthesis.com) 
@@ -507,7 +503,7 @@ __Telugu & Regional Language Resources__
 - __AP Public Digital Libraries__  
 [https://publiclibraries.ap.gov.in](https://publiclibraries.ap.gov.in)
 
-__Best Practices of the Library__
+## Best Practices of the Library
 
 - __User-Centric Collection Development__:  
 Students and faculty are encouraged to recommend books and journals through a prescribed requisition form, ensuring the collection remains relevant and need-based. 
@@ -519,12 +515,12 @@ The library provides access to digital resources through DELNET, enabling users 
 Orientation sessions are conducted for newly admitted students to familiarize them with library resources, services, and usage guidelines. 
 - __Home Lending of Multimedia Resources:__  
 CDs and DVDs are made available for home lending to both students and staff to support academic and co-curricular learning. 
-- __Promotion of Reading Culture:  
-__The library offers free access to reading materials, fostering reading habits and encouraging lifelong learning among students.
+- __Promotion of Reading Culture:__  
+The library offers free access to reading materials, fostering reading habits and encouraging lifelong learning among students.
 
-__Library Circulation & Discipline Policy__
+## Library Circulation & Discipline Policy
 
-__🔹 __Book Issue Policy
+### Book Issue Policy
 
 - Students are permitted to borrow up to 3 books at a time. 
 - Faculty members may borrow up to 10 books. 
@@ -532,25 +528,25 @@ __🔹 __Book Issue Policy
 - A renewal facility is available, subject to demand and reservation status. 
 - Overdue charges are applicable for late returns as per library rules. 
 
-__ Library Discipline__
+### Library Discipline
 
 - Strict silence must be maintained within the library premises. 
 - Eating and drinking are not permitted inside the library. 
 - Mobile phones should be kept on silent mode or switched off. 
 
-__ Penalties__
+### Penalties
 
 - Damage to Books: Users must compensate for any damage caused to library materials. 
 - Loss of Books: Lost books must be replaced with the same or latest edition, or the prescribed fine must be paid. 
 - Late Return: A fine is imposed for overdue books as per library policy.
 
-__Library Activities & Programmes__
+## Library Activities & Programmes
 
 The Library and Information Science section consistently organizes a wide range of academic, cultural, and awareness programmes every year to promote reading habits, information literacy, and holistic student development.
 
 These activities are designed to create an engaging learning environment, enhance access to knowledge resources, and develop lifelong learning skills among students.
 
-__Regular Activities Conducted__
+### Regular Activities Conducted
 
 - __User Orientation Programmes:__  
 Conducted for newly admitted students to familiarize them with library resources, services, digital platforms, and usage guidelines. 
@@ -571,7 +567,7 @@ Creative and collaborative activities like competitions, awareness campaigns, an
 - __Educational Visits:__  
 Visits to book fairs and exhibitions such as the Vijayawada Book Festival to expose students and faculty to a wide range of publications and learning resources. 
 
-__Sample Activities (Academic Year 2025–2026)__
+### Sample Activities (Academic Year 2025–2026)
 
 During the academic year 2025–2026, the library organized several programmes including:
 
@@ -583,7 +579,6 @@ During the academic year 2025–2026, the library organized several programmes i
 - Educational visit to a book festival 
 
 These programmes witnessed active participation from students across all departments, reflecting the vibrant academic culture of the institution.
-
 
 `,
     images: ["/images/infrastructure/library/img-1.jpg", "/images/infrastructure/library/img-2.jpg", "/images/infrastructure/library/img-3.jpg", "/images/infrastructure/library/img-4.jpg", "/images/infrastructure/library/img-5.jpg", "/images/infrastructure/library/img-6.jpg", "/images/infrastructure/library/img-7.jpg", "/images/infrastructure/library/img-8.jpg", "/images/infrastructure/library/img-9.jpg", "/images/infrastructure/library/img-10.jpg", "/images/infrastructure/library/img-11.jpg"]

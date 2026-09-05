@@ -41,6 +41,7 @@ public/videos/
 *.zip
 *.tar.gz
 *.crdownload
+*.docx
 
 # Local migration caches
 scripts/sanity-upload-cache.json

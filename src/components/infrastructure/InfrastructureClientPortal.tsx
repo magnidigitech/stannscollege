@@ -191,8 +191,8 @@ export default function InfrastructureClientPortal({
         while (lookAhead < rawChunks.length) {
           const nextVal = rawChunks[lookAhead];
           const nextClean = clean(nextVal);
-          // Table terminates on next bold title or section breaks
-          if (nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) break;
+          // Table terminates on next bold title or markdown headers
+          if ((nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) || nextVal.startsWith("#")) break;
           if (nextClean.includes("Services") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
           rowItems.push(nextVal);
           lookAhead++;
@@ -220,7 +220,7 @@ export default function InfrastructureClientPortal({
         while (lookAhead < rawChunks.length) {
           const nextVal = rawChunks[lookAhead];
           const nextClean = clean(nextVal);
-          if (nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) break;
+          if ((nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) || nextVal.startsWith("#")) break;
           if (nextClean.includes("Services") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
           rowItems.push(nextVal);
           lookAhead++;
@@ -248,7 +248,7 @@ export default function InfrastructureClientPortal({
         while (lookAhead < rawChunks.length) {
           const nextVal = rawChunks[lookAhead];
           const nextClean = clean(nextVal);
-          if (nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) break;
+          if ((nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) || nextVal.startsWith("#")) break;
           if (nextClean.includes("Access Platforms") || nextClean.includes("Open Access") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
           rowItems.push(nextVal);
           lookAhead++;
@@ -272,8 +272,9 @@ export default function InfrastructureClientPortal({
       i++;
     }
 
-    // Tracker to make sure only the FIRST Big Heading rendered is boosted in size
+    // Tracker to ensure first section title is boosted as Hero, and first Major Section flows seamlessly
     let hasBoostedFirstHeader = false;
+    let hasRenderedFirstMajorHeader = false;
 
     return nodes.map((node, idx) => {
       if (node.type === 'table') {
@@ -286,15 +287,18 @@ export default function InfrastructureClientPortal({
                     {node.headers.map((h: string, hIdx: number) => {
                       const lowerH = h.toLowerCase().replace(/[^a-z]/g, '');
                       const isSno = lowerH === 'sno' || lowerH === 'slno' || lowerH === 's';
-                      const isTotal = lowerH === 'total' || lowerH === 'link';
+                      const isTotal = lowerH === 'total';
+                      const cleanHeaderText = stripEmojis(h.replace(/[*_#]/g, '').trim());
 
                       return (
                         <th
                           key={hIdx}
-                          className={`px-8 py-5.5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/5 last:border-0 ${isSno ? 'text-center' : isTotal ? 'text-right' : 'text-left'
+                          className={`px-8 py-5.5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/10 last:border-0 ${isSno ? 'text-center' : isTotal ? 'text-right' : 'text-left'
                             }`}
                         >
-                          {renderRichString(h)}
+                          <span className="text-white font-black tracking-wider block">
+                            {cleanHeaderText}
+                          </span>
                         </th>
                       );
                     })}
@@ -317,7 +321,7 @@ export default function InfrastructureClientPortal({
                         return (
                           <td
                             key={cIdx}
-                            className={`px-8 py-5 text-slate-600 text-xs md:text-[14px] font-medium leading-relaxed transition-colors duration-200 ${isSno ? 'text-center w-[80px] md:w-[100px]' : isTotal || isLink ? 'text-right' : 'text-left'
+                            className={`px-8 py-5 text-slate-600 text-xs md:text-[14px] font-medium leading-relaxed transition-colors duration-200 ${isSno ? 'text-center w-[80px] md:w-[100px]' : isTotal ? 'text-right' : 'text-left'
                               }`}
                           >
                             {isSno ? (
@@ -350,9 +354,22 @@ export default function InfrastructureClientPortal({
 
       const p = node.text;
 
-      // 1. Heading Detection
-      if (p.startsWith("__") && p.endsWith("__") && p.length > 4) {
-        const cleanTitle = stripEmojis(p.replace(/__/g, '').trim())
+      // 1. Heading Detection (Markdown ###, ##, # or legacy __...__)
+      const isMdH3 = p.startsWith("### ");
+      const isMdH2 = p.startsWith("## ");
+      const isMdH1 = p.startsWith("# ");
+      const isUnderlineHeader = p.startsWith("__") && p.endsWith("__") && p.length > 4;
+
+      if (isMdH3 || isMdH2 || isMdH1 || isUnderlineHeader) {
+        const rawTitle = isMdH3
+          ? p.replace(/^###\s+/, '')
+          : isMdH2
+          ? p.replace(/^##\s+/, '')
+          : isMdH1
+          ? p.replace(/^#\s+/, '')
+          : p.replace(/__/g, '');
+
+        const cleanTitle = stripEmojis(rawTitle.trim())
           .replace(/^(?:(?:\d+(?:\.\d+)*|[IVXLCDM]+|[a-zA-Z])[\.\)]\s+)+/i, '')
           .trim();
 
@@ -360,39 +377,53 @@ export default function InfrastructureClientPortal({
         const activeTabLower = activeTab.text.toLowerCase().replace(/[^a-z0-9]/g, '');
         const sectionTitleLower = (sectionData.title || "").toLowerCase().replace(/[^a-z0-9]/g, '');
 
-        if (cleanTitleLower === activeTabLower ||
+        if (
+          cleanTitleLower === activeTabLower ||
           cleanTitleLower === sectionTitleLower ||
-          cleanTitleLower.includes(activeTabLower) ||
-          activeTabLower.includes(cleanTitleLower) ||
-          (sectionTitleLower && (cleanTitleLower.includes(sectionTitleLower) || sectionTitleLower.includes(cleanTitleLower)))) {
+          cleanTitleLower === activeTabLower + "infrastructure" ||
+          cleanTitleLower === "infrastructure" + activeTabLower ||
+          cleanTitleLower === "infrastructure"
+        ) {
           return null;
         }
 
-        const isBigTitle = /^[IVX\d]+\./.test(p.replace(/__/g, '').trim()) || cleanTitle.toUpperCase() === cleanTitle;
+        // Level 1: Explicit # or First numbered Department header
+        const isLevel1 = isMdH1 || (!hasBoostedFirstHeader && /^[IVX\d]+\./.test(rawTitle.trim()));
 
-        if (isBigTitle) {
-          // First heading layout booster (makes first heading standalone Hero size!)
-          if (!hasBoostedFirstHeader) {
-            hasBoostedFirstHeader = true;
-            return (
-              <h3 key={idx} className="font-outfit text-3xl md:text-4xl font-black text-[#004225] tracking-tight mt-2 mb-10 flex items-center gap-4 leading-tight animate-fadeIn">
-                <span className="h-10 w-2 rounded-full bg-gradient-to-b from-[#004225] to-[#08723c] shrink-0"></span>
-                {cleanTitle}
-              </h3>
-            );
-          }
-
+        if (isLevel1) {
+          hasBoostedFirstHeader = true;
           return (
-            <h3 key={idx} className="font-outfit text-xl md:text-2xl font-black text-[#004225] tracking-tight mt-12 mb-6 pt-8 border-t border-slate-100 flex items-center gap-3">
-              <span className="h-6 w-1.5 rounded-full bg-[#004225] shrink-0"></span>
+            <h2 key={idx} className="font-outfit text-2xl sm:text-3xl md:text-4xl font-black text-[#004225] tracking-tight mt-2 mb-8 flex items-center gap-3.5 leading-tight animate-fadeIn">
+              <span className="h-9 md:h-10 w-2 md:w-2.5 rounded-full bg-gradient-to-b from-[#004225] to-[#08723c] shrink-0"></span>
               {cleanTitle}
-            </h3>
+            </h2>
           );
         }
+
+        // Level 3: Explicit ### Sub-heading
+        if (isMdH3) {
+          return (
+            <h4 key={idx} className="font-outfit text-base sm:text-lg font-bold text-slate-800 mt-7 mb-3 flex items-center gap-2.5 tracking-tight">
+              <span className="h-2.5 w-2.5 rounded bg-emerald-600 shrink-0 shadow-xs"></span>
+              <span>{cleanTitle}</span>
+            </h4>
+          );
+        }
+
+        // Level 2: Explicit ## or standard Major Section
+        const isFirstMajor = !hasRenderedFirstMajorHeader;
+        hasRenderedFirstMajorHeader = true;
+
         return (
-          <h4 key={idx} className="font-outfit text-sm md:text-base font-black text-slate-800 mt-8 mb-3 uppercase tracking-wider border-l-4 border-emerald-100 pl-3">
+          <h3
+            key={idx}
+            className={`font-outfit text-xl sm:text-2xl font-black text-[#004225] tracking-tight flex items-center gap-3 ${
+              isFirstMajor ? 'mt-6 mb-4' : 'mt-14 mb-5 pt-8 border-t border-slate-200/80'
+            }`}
+          >
+            <span className="h-6 w-2 rounded-full bg-[#004225] shrink-0"></span>
             {cleanTitle}
-          </h4>
+          </h3>
         );
       }
 

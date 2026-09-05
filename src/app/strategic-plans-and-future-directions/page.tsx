@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import { StrategicDevelopmentPlan } from "@/components/about/governance-administration/StrategicDevelopmentPlan";
+import AboutSidebar from "@/components/about/AboutSidebar";
 
 export default function StrategicPlansFutureDirectionsPage() {
   return (
@@ -14,6 +15,8 @@ export default function StrategicPlansFutureDirectionsPage() {
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
               <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
+              <span className="text-slate-350">/</span>
+              <Link href="/about/governance-administration" className="hover:text-[#002147] hover:underline transition-all">About Us</Link>
               <span className="text-slate-350">/</span>
               <span className="text-[#002147]">Strategic Plans & Future Directions</span>
             </div>
@@ -28,9 +31,22 @@ export default function StrategicPlansFutureDirectionsPage() {
         </div>
       </div>
 
-      {/* Main Content Container */}
+      {/* Main Content Container with About Sidebar */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
-        <StrategicDevelopmentPlan />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+          {/* About Navigation Sidebar */}
+          <div className="lg:col-span-3">
+            <AboutSidebar
+              currentCatSlug="governance-administration"
+              currentItemSlug="strategic-development-plan"
+            />
+          </div>
+
+          {/* Strategic Development Plan Content */}
+          <div className="lg:col-span-9 mb-16">
+            <StrategicDevelopmentPlan />
+          </div>
+        </div>
       </div>
     </div>
   );
