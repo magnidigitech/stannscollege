@@ -23,24 +23,33 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const gmailUser = process.env.GMAIL_USER;
-    const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
-    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "stannsofficegorantla@gmail.com";
+    // Sanitization helpers to strip accidental quotes and spaces added in hosting dashboards
+    const cleanString = (val?: string) =>
+      (val || "")
+        .replace(/^["'`\s]+|["'`\s]+$/g, "")
+        .trim();
 
-    if (!gmailUser || !gmailAppPassword) {
-      console.error("Missing Gmail credentials in environment variables.");
-      return NextResponse.json(
-        { error: "Mail server configuration is missing on the server." },
-        { status: 500 }
-      );
-    }
+    const cleanPassword = (val?: string) =>
+      (val || "")
+        .replace(/["'`]/g, "")
+        .replace(/\s+/g, "")
+        .trim();
 
-    // Configure Nodemailer transporter with Gmail SMTP
+    const gmailUser = cleanString(process.env.GMAIL_USER) || "stannsofficegorantla@gmail.com";
+    const gmailAppPassword = cleanPassword(process.env.GMAIL_APP_PASSWORD) || "bujcmngktmmfhcjk";
+    const receiverEmail = cleanString(process.env.CONTACT_RECEIVER_EMAIL) || "stannsofficegorantla@gmail.com";
+
+    // Configure Nodemailer transporter with robust direct SSL on port 465
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: gmailUser,
         pass: gmailAppPassword,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
