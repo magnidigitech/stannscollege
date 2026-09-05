@@ -23,21 +23,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Sanitization helpers to strip accidental quotes and spaces added in hosting dashboards
-    const cleanString = (val?: string) =>
+    // Sanitization helpers to strip accidental angle brackets (<>), quotes, and whitespace added in hosting dashboards
+    const cleanCredential = (val?: string) =>
       (val || "")
-        .replace(/^["'`\s]+|["'`\s]+$/g, "")
+        .replace(/[<>"'`\s]/g, "")
         .trim();
 
-    const cleanPassword = (val?: string) =>
-      (val || "")
-        .replace(/["'`]/g, "")
-        .replace(/\s+/g, "")
-        .trim();
-
-    const gmailUser = cleanString(process.env.GMAIL_USER) || "stannsofficegorantla@gmail.com";
-    const gmailAppPassword = cleanPassword(process.env.GMAIL_APP_PASSWORD) || "bujcmngktmmfhcjk";
-    const receiverEmail = cleanString(process.env.CONTACT_RECEIVER_EMAIL) || "stannsofficegorantla@gmail.com";
+    const gmailUser = cleanCredential(process.env.GMAIL_USER) || "stannsofficegorantla@gmail.com";
+    const gmailAppPassword = cleanCredential(process.env.GMAIL_APP_PASSWORD) || "bujcmngktmmfhcjk";
+    const receiverEmail = cleanCredential(process.env.CONTACT_RECEIVER_EMAIL) || "stannsofficegorantla@gmail.com";
 
     // Configure Nodemailer transporter with robust direct SSL on port 465
     const transporter = nodemailer.createTransport({
