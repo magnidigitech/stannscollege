@@ -12,7 +12,12 @@ import {
   ArrowRight,
   Clock,
   Building,
-  AlertCircle
+  AlertCircle,
+  Copy,
+  Check,
+  ExternalLink,
+  X,
+  PhoneCall
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -20,13 +25,26 @@ export default function ContactPage() {
     name: "",
     email: "",
     phone: "",
-    subject: "General Inquiry",
+    subject: "General Inquiry (Others)",
     message: ""
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Selection modals state for multiple phone numbers and emails
+  const [phoneModalOpen, setPhoneModalOpen] = useState(false);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  const handleCopy = (text: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopiedText(text);
+      setTimeout(() => setCopiedText(null), 2000);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +74,7 @@ export default function ContactPage() {
         name: "",
         email: "",
         phone: "",
-        subject: "General Inquiry",
+        subject: "General Inquiry (Others)",
         message: ""
       });
     } catch (err: any) {
@@ -65,6 +83,30 @@ export default function ContactPage() {
       setIsSubmitting(false);
     }
   };
+
+  const phoneNumbers = [
+    { label: "Mobile Admissions 1", number: "7382104655", display: "+91 7382104655" },
+    { label: "Mobile Admissions 2", number: "8500656134", display: "+91 8500656134" },
+    { label: "Landline Office Desk", number: "08632236470", display: "0863-2236470" }
+  ];
+
+  const emailAddresses = [
+    {
+      label: "Official Admissions & Office Desk",
+      email: "stannsofficegorantla@gmail.com",
+      badge: "Fastest Response"
+    },
+    {
+      label: "Official College Email",
+      email: "st_anns_coll@yahoo.co.in",
+      badge: "Administration"
+    },
+    {
+      label: "Alternate Contact Desk",
+      email: "stannscollegegnt@gmail.com",
+      badge: "General"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50/50 font-sans pb-20 select-none">
@@ -138,9 +180,13 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-            <a href="tel:7382104655" className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-indigo-600 hover:text-indigo-700 select-none group/btn">
-              Call Admissions <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
-            </a>
+            <button
+              type="button"
+              onClick={() => setPhoneModalOpen(true)}
+              className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-indigo-600 hover:text-indigo-700 select-none group/btn text-left cursor-pointer"
+            >
+              Call Admissions ({phoneNumbers.length} Lines) <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+            </button>
           </div>
 
           {/* Card 3: Electronic Inbox */}
@@ -150,20 +196,46 @@ export default function ContactPage() {
                 <Mail className="h-6 w-6" />
               </div>
               <h3 className="font-outfit font-black text-slate-800 text-lg mb-2">Email Desk</h3>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-2">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Admissions Desk</span>
+                  <button
+                    type="button"
+                    onClick={() => setEmailModalOpen(true)}
+                    className="text-slate-600 text-xs font-bold hover:text-amber-600 transition-colors break-all text-left cursor-pointer"
+                  >
+                    stannsofficegorantla@gmail.com
+                  </button>
+                </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Official Inquiry</span>
-                  <a href="mailto:st_anns_coll@yahoo.co.in" className="text-slate-600 text-xs font-bold hover:text-amber-600 transition-colors break-all">st_anns_coll@yahoo.co.in</a>
+                  <button
+                    type="button"
+                    onClick={() => setEmailModalOpen(true)}
+                    className="text-slate-600 text-xs font-bold hover:text-amber-600 transition-colors break-all text-left cursor-pointer"
+                  >
+                    st_anns_coll@yahoo.co.in
+                  </button>
                 </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Alternate Contact</span>
-                  <a href="mailto:stannscollegegnt@gmail.com" className="text-slate-600 text-xs font-bold hover:text-amber-600 transition-colors break-all">stannscollegegnt@gmail.com</a>
+                  <button
+                    type="button"
+                    onClick={() => setEmailModalOpen(true)}
+                    className="text-slate-600 text-xs font-bold hover:text-amber-600 transition-colors break-all text-left cursor-pointer"
+                  >
+                    stannscollegegnt@gmail.com
+                  </button>
                 </div>
               </div>
             </div>
-            <a href="mailto:st_anns_coll@yahoo.co.in" className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-amber-600 hover:text-amber-700 select-none group/btn">
-              Send Email <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
-            </a>
+            <button
+              type="button"
+              onClick={() => setEmailModalOpen(true)}
+              className="mt-5 inline-flex items-center gap-1.5 text-xs font-black text-amber-600 hover:text-amber-700 select-none group/btn text-left cursor-pointer"
+            >
+              Send Email ({emailAddresses.length} Addresses) <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+            </button>
           </div>
 
           {/* Card 4: Web & Socials */}
@@ -182,57 +254,55 @@ export default function ContactPage() {
                   href="https://www.youtube.com/@stannscollegeforwomen"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-red-50 hover:text-red-600 text-slate-500 border border-slate-100 hover:border-red-200 transition-all group/icon"
-                  title="YouTube: @stannscollegeforwomen"
+                  title="YouTube"
+                  className="h-9 w-9 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all duration-200 border border-red-100"
                 >
-                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
-                    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.388.508 9.388.508s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </a>
                 <a
                   href="https://www.facebook.com/profile.php?id=61593155107273"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-600 text-slate-500 border border-slate-100 hover:border-blue-200 transition-all group/icon"
-                  title="Facebook: St. Ann's College for Women"
+                  title="Facebook"
+                  className="h-9 w-9 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all duration-200 border border-blue-100"
                 >
-                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
-                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
                 <a
                   href="https://www.instagram.com/stannscollegeforwomengnt"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-pink-50 hover:text-pink-600 text-slate-500 border border-slate-100 hover:border-pink-200 transition-all group/icon"
-                  title="Instagram: @stannscollegeforwomengnt"
+                  title="Instagram"
+                  className="h-9 w-9 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-600 hover:text-white flex items-center justify-center transition-all duration-200 border border-pink-100"
                 >
-                  <svg className="h-5 w-5 stroke-current fill-none stroke-2 group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                   </svg>
                 </a>
                 <a
                   href="https://whatsapp.com/channel/0029Vb9FPmy0bIdpHlLFXY3c"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-600 text-slate-500 border border-slate-100 hover:border-emerald-200 transition-all group/icon"
                   title="WhatsApp Channel"
+                  className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-all duration-200 border border-emerald-100"
                 >
-                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
-                    <path d="M12.031 0C5.394 0 0 5.394 0 12.031c0 2.115.547 4.179 1.586 6.002L.07 23.93l6.094-1.554a11.96 11.96 0 0 0 5.867 1.528c6.637 0 12.031-5.394 12.031-12.031C24.062 5.394 18.668 0 12.031 0zm0 21.875a9.83 9.83 0 0 1-5.01-1.373l-.36-.214-3.623.924.965-3.533-.234-.372A9.83 9.83 0 0 1 2.2 12.031C2.2 6.61 6.61 2.2 12.031 2.2c5.422 0 9.832 4.41 9.832 9.831 0 5.422-4.41 9.844-9.832 9.844zm5.385-7.375c-.295-.148-1.748-.862-2.02-.96-.27-.098-.468-.148-.665.148-.198.295-.765.96-.938 1.158-.172.197-.345.222-.64.074-.296-.148-1.25-.461-2.38-1.47-.88-.785-1.474-1.756-1.646-2.052-.172-.295-.018-.455.13-.602.133-.133.296-.345.444-.517.148-.172.197-.295.295-.492.098-.197.05-.37-.025-.518-.074-.148-.665-1.603-.912-2.194-.24-.576-.484-.498-.665-.508-.172-.01-.37-.01-.567-.01-.197 0-.518.074-.789.37-.27.295-1.036 1.012-1.036 2.467 0 1.455 1.06 2.862 1.208 3.059.148.197 2.086 3.185 5.054 4.468.706.305 1.258.487 1.688.624.71.226 1.356.194 1.867.118.57-.085 1.748-.714 1.995-1.403.246-.69.246-1.28.172-1.403-.074-.123-.271-.197-.566-.345z"/>
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                   </svg>
                 </a>
                 <a
-                  href="https://www.linkedin.com"
+                  href="https://linkedin.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-700 text-slate-500 border border-slate-100 hover:border-blue-200 transition-all group/icon"
                   title="LinkedIn"
+                  className="h-9 w-9 rounded-xl bg-sky-50 text-sky-700 hover:bg-sky-700 hover:text-white flex items-center justify-center transition-all duration-200 border border-sky-100"
                 >
-                  <svg className="h-5 w-5 fill-current group-hover/icon:scale-110 transition-transform" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                   </svg>
                 </a>
               </div>
@@ -267,7 +337,7 @@ export default function ContactPage() {
                 </p>
                 <button
                   onClick={() => setIsSuccess(false)}
-                  className="mt-6 px-6 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-100"
+                  className="mt-6 px-6 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-100 cursor-pointer"
                 >
                   Send Another Inquiry
                 </button>
@@ -322,12 +392,13 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       className="w-full bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white px-4 py-3.5 rounded-2xl text-xs font-bold text-slate-700 outline-none transition-all focus:ring-4 focus:ring-indigo-100 appearance-none cursor-pointer"
                     >
-                      <option>General Inquiry</option>
-                      <option>Admissions UG (Degree)</option>
-                      <option>Admissions PG (MBA/MCA)</option>
-                      <option>Academic Audits & IQAC</option>
-                      <option>Industry Collaborations</option>
-                      <option>Careers & Employment</option>
+                      <option value="General Inquiry (Others)">General Inquiry (Others)</option>
+                      <option value="Admissions UG (Degree)">Admissions UG (Degree)</option>
+                      <option value="Admissions PG (MBA/MCA)">Admissions PG (MBA/MCA)</option>
+                      <option value="Academic Audits & IQAC">Academic Audits & IQAC</option>
+                      <option value="Industry Collaborations">Industry Collaborations</option>
+                      <option value="Careers & Employment">Careers & Employment</option>
+                      <option value="Others">Others</option>
                     </select>
                   </div>
                 </div>
@@ -414,6 +485,187 @@ export default function ContactPage() {
         </div>
 
       </section>
+
+      {/* 4. INTERACTIVE PHONE SELECTION MODAL */}
+      {phoneModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 relative animate-fadeInUp">
+            <button
+              onClick={() => setPhoneModalOpen(false)}
+              className="absolute top-5 right-5 h-9 w-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+              title="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-11 w-11 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
+                <PhoneCall className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-outfit font-black text-slate-800 text-lg sm:text-xl">Choose Number to Call</h3>
+                <p className="text-slate-400 text-xs font-bold">St. Ann&apos;s Communications Desk</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {phoneNumbers.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="bg-slate-50 hover:bg-indigo-50/30 border border-slate-200/80 rounded-2xl p-4 transition-all flex items-center justify-between gap-3"
+                >
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase font-black text-indigo-600 tracking-wider">
+                      {item.label}
+                    </span>
+                    <span className="text-slate-800 font-extrabold text-sm sm:text-base tracking-tight mt-0.5">
+                      {item.display}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(item.number)}
+                      className="px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs font-bold flex items-center gap-1.5 transition-all"
+                      title="Copy Number"
+                    >
+                      {copiedText === item.number ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 text-emerald-600" />
+                          <span className="text-emerald-600">Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3.5 w-3.5" />
+                          <span>Copy</span>
+                        </>
+                      )}
+                    </button>
+                    <a
+                      href={`tel:${item.number}`}
+                      className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black tracking-wide flex items-center gap-1.5 shadow-md shadow-indigo-100 transition-all"
+                    >
+                      <Phone className="h-3.5 w-3.5" />
+                      <span>Call</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[11px] text-slate-400 font-medium mt-5 text-center">
+              Available Monday – Saturday during college office hours (9:00 AM – 5:00 PM).
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 5. INTERACTIVE EMAIL SELECTION MODAL (Solves blank tab on laptop Chrome) */}
+      {emailModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 relative animate-fadeInUp">
+            <button
+              onClick={() => setEmailModalOpen(false)}
+              className="absolute top-5 right-5 h-9 w-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+              title="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-2">
+              <div className="h-11 w-11 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
+                <Mail className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-outfit font-black text-slate-800 text-lg sm:text-xl">Choose Email to Contact</h3>
+                <p className="text-slate-400 text-xs font-bold">St. Ann&apos;s Electronic Communications Desk</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 font-medium mb-5 leading-relaxed">
+              Select which college inbox you want to reach, and choose how to open it:
+            </p>
+
+            <div className="flex flex-col gap-3.5 max-h-[60vh] overflow-y-auto pr-1">
+              {emailAddresses.map((item, idx) => {
+                const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(item.email)}&su=${encodeURIComponent("Inquiry regarding St. Ann's College for Women")}`;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 transition-all flex flex-col gap-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] uppercase font-black text-amber-700 tracking-wider">
+                          {item.label}
+                        </span>
+                        <span className="bg-amber-100/80 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded-full">
+                          {item.badge}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(item.email)}
+                        className="text-[11px] font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors"
+                        title="Copy email to clipboard"
+                      >
+                        {copiedText === item.email ? (
+                          <>
+                            <Check className="h-3.5 w-3.5 text-emerald-600" />
+                            <span className="text-emerald-600 font-bold">Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3" />
+                            <span>Copy</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="font-extrabold text-xs sm:text-sm text-slate-800 break-all select-text font-mono bg-white px-3 py-2 rounded-xl border border-slate-200/60">
+                      {item.email}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      {/* Web Gmail Option: Guaranteed to work in Chrome on laptops without empty tabs */}
+                      <a
+                        href={gmailComposeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition-all"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        <span>Open in Gmail</span>
+                      </a>
+
+                      {/* Default Mail Client (mailto) */}
+                      <a
+                        href={`mailto:${item.email}`}
+                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-xs transition-all"
+                      >
+                        <Mail className="h-3.5 w-3.5" />
+                        <span>Email App</span>
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-bold">
+              <span>💡 Tip: &quot;Open in Gmail&quot; works directly in laptop Chrome</span>
+              <button
+                type="button"
+                onClick={() => setEmailModalOpen(false)}
+                className="text-slate-600 hover:text-slate-900 font-black cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
