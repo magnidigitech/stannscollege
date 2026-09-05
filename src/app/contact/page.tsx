@@ -104,11 +104,6 @@ export default function ContactPage() {
 
   const emailAddresses = [
     {
-      label: "Official Admissions & Office Desk",
-      email: "stannsofficegorantla@gmail.com",
-      badge: "Fastest Response"
-    },
-    {
       label: "Official College Email",
       email: "st_anns_coll@yahoo.co.in",
       badge: "Administration"
@@ -208,17 +203,7 @@ export default function ContactPage() {
                 <Mail className="h-6 w-6" />
               </div>
               <h3 className="font-outfit font-black text-slate-800 text-lg mb-2">Email Desk</h3>
-              <div className="flex flex-col gap-2">
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Admissions Desk</span>
-                  <button
-                    type="button"
-                    onClick={() => setEmailModalOpen(true)}
-                    className="text-slate-600 text-xs font-bold hover:text-amber-600 transition-colors break-all text-left cursor-pointer"
-                  >
-                    stannsofficegorantla@gmail.com
-                  </button>
-                </div>
+              <div className="flex flex-col gap-2.5">
                 <div>
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Official Inquiry</span>
                   <button
