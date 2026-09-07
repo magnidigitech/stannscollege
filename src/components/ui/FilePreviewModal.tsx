@@ -11,7 +11,6 @@ import {
   ZoomIn,
   ZoomOut,
   RotateCcw,
-  MousePointer,
   Hand
 } from "lucide-react";
 
@@ -35,7 +34,6 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
   // Zoom & Pan state
   const [zoom, setZoom] = useState(1);
   const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [cursorPanEnabled, setCursorPanEnabled] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
 
@@ -289,55 +287,22 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
   };
 
   const updatePanFromMouse = (clientX: number, clientY: number) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !isDragging || !dragStartRef.current || !panStartRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const { limitX, limitY } = calculatePanLimits(rect.width, rect.height);
 
-    // 1. Drag-to-pan mode (active mouse drag)
-    if (isDragging && dragStartRef.current && panStartRef.current) {
-      const dx = clientX - dragStartRef.current.x;
-      const dy = clientY - dragStartRef.current.y;
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-        setHasDragged(true);
-      }
-      const rawX = panStartRef.current.x + dx;
-      const rawY = panStartRef.current.y + dy;
-
-      setPanOffset({
-        x: Math.max(-limitX, Math.min(limitX, rawX)),
-        y: Math.max(-limitY, Math.min(limitY, rawY)),
-      });
-      return;
+    const dx = clientX - dragStartRef.current.x;
+    const dy = clientY - dragStartRef.current.y;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      setHasDragged(true);
     }
+    const rawX = panStartRef.current.x + dx;
+    const rawY = panStartRef.current.y + dy;
 
-    // 2. Cursor-Follow Pan mode (smooth screen pan when moving cursor)
-    if (zoom > 1 && cursorPanEnabled && !isDragging) {
-      const mouseX = clientX - rect.left;
-      const mouseY = clientY - rect.top;
-
-      // Normalized coordinates from -1.0 (left/top) to +1.0 (right/bottom)
-      const normX = Math.max(-1, Math.min(1, ((mouseX / rect.width) - 0.5) * 2));
-      const normY = Math.max(-1, Math.min(1, ((mouseY / rect.height) - 0.5) * 2));
-
-      // Dead-zone in center (8%) and reach 100% full travel comfortably at 80% distance
-      let factorX = 0;
-      if (Math.abs(normX) > 0.08) {
-        const progressX = Math.min(1, (Math.abs(normX) - 0.08) / 0.72);
-        factorX = Math.sign(normX) * Math.sin(progressX * (Math.PI / 2));
-      }
-
-      let factorY = 0;
-      if (Math.abs(normY) > 0.08) {
-        const progressY = Math.min(1, (Math.abs(normY) - 0.08) / 0.72);
-        factorY = Math.sign(normY) * Math.sin(progressY * (Math.PI / 2));
-      }
-
-      // Smooth translation directly scaling to the exact edge bounds
-      setPanOffset({
-        x: -factorX * limitX,
-        y: -factorY * limitY,
-      });
-    }
+    setPanOffset({
+      x: Math.max(-limitX, Math.min(limitX, rawX)),
+      y: Math.max(-limitY, Math.min(limitY, rawY)),
+    });
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -351,12 +316,14 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    updatePanFromMouse(e.clientX, e.clientY);
+    if (isDragging) {
+      updatePanFromMouse(e.clientX, e.clientY);
+    }
   };
 
-  // Global mousemove and mouseup listeners for seamless edge tracking
+  // Global mousemove and mouseup listeners for seamless edge-to-edge drag tracking
   useEffect(() => {
-    if (!isOpen || zoom <= 1) return;
+    if (!isOpen || zoom <= 1 || !isDragging) return;
 
     const handleGlobalMouseMove = (e: MouseEvent) => {
       updatePanFromMouse(e.clientX, e.clientY);
@@ -376,7 +343,7 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
       window.removeEventListener("mousemove", handleGlobalMouseMove);
       window.removeEventListener("mouseup", handleGlobalMouseUp);
     };
-  }, [isOpen, zoom, cursorPanEnabled, isDragging, hasDragged, bookWidth, bookHeight, currentPage]);
+  }, [isOpen, zoom, isDragging, hasDragged, bookWidth, bookHeight, currentPage]);
 
   const handleMouseUp = () => {
     setIsDragging(false);
@@ -468,41 +435,43 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
         {/* 1. TOP HEADER (PERMANENTLY PINNED AT TOP)                 */}
         {/* ========================================================= */}
         <div className="bg-[#0b0f13] px-5 py-3.5 text-white flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
-          <div className="flex flex-col max-w-[60%] sm:max-w-[70%]">
+          <div className="flex flex-col min-w-0 flex-1 mr-3">
             <h4 className="font-outfit text-xs md:text-sm lg:text-base font-black tracking-tight leading-tight select-none uppercase truncate text-white">
               {title}
             </h4>
-            <span className="font-sans text-[9px] md:text-xs text-slate-400 font-semibold tracking-wide select-none">
+            <span className="font-sans text-[9px] md:text-xs text-slate-400 font-semibold tracking-wide select-none truncate">
               St. Ann&apos;s College for Women • Interactive Reader
             </span>
           </div>
           
           {/* Action Buttons */}
-          <div className="flex items-center gap-1.5 md:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <a
               href={fileUrl}
               download
               className="flex h-9 px-3 items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all hover:scale-105 active:scale-95 duration-200 text-xs font-bold font-sans"
               title="Download File"
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4 shrink-0" />
               <span className="hidden sm:inline">Download</span>
             </a>
             <a
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all hover:scale-105 active:scale-95 duration-200"
-              title="Open in new tab"
+              className="flex h-9 px-2.5 sm:px-3 items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all hover:scale-105 active:scale-95 duration-200 text-xs font-bold font-sans whitespace-nowrap"
+              title="Standard PDF View (Opens document in new tab)"
             >
-              <ExternalLink className="h-4 w-4" />
+              <ExternalLink className="h-4 w-4 shrink-0" />
+              <span className="hidden sm:inline">Standard PDF View</span>
+              <span className="sm:hidden">Standard PDF</span>
             </a>
             <button
               onClick={onClose}
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all hover:scale-105 active:scale-95 duration-200"
               title="Close viewer"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4 shrink-0" />
             </button>
           </div>
         </div>
@@ -527,9 +496,7 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
               ref={containerRef}
               className={`relative w-full h-full flex items-center justify-center overflow-hidden select-none ${
                 zoom > 1 
-                  ? cursorPanEnabled 
-                    ? isDragging ? "cursor-grabbing" : "cursor-crosshair" 
-                    : isDragging ? "cursor-grabbing" : "cursor-grab"
+                  ? isDragging ? "cursor-grabbing" : "cursor-grab"
                   : "cursor-default"
               }`}
               onMouseDown={handleMouseDown}
@@ -700,9 +667,7 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
               ref={containerRef}
               className={`w-full h-full p-4 flex items-center justify-center overflow-hidden select-none relative ${
                 zoom > 1 
-                  ? cursorPanEnabled 
-                    ? isDragging ? "cursor-grabbing" : "cursor-crosshair" 
-                    : isDragging ? "cursor-grabbing" : "cursor-grab"
+                  ? isDragging ? "cursor-grabbing" : "cursor-grab"
                   : "cursor-default"
               }`}
               onMouseDown={handleMouseDown}
@@ -808,36 +773,24 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
             </button>
           </div>
 
-          {/* Right: Pan Mode Option Toggle */}
+          {/* Right: Drag to Pan Indicator */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setCursorPanEnabled(!cursorPanEnabled)}
-              className={`flex items-center gap-1.5 px-3 h-8 rounded-xl border transition-all active:scale-95 cursor-pointer text-xs font-bold ${
-                cursorPanEnabled
-                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm shadow-emerald-500/20"
-                  : "bg-white/10 text-slate-300 border-white/10 hover:bg-white/15"
+            <div
+              className={`flex items-center gap-1.5 px-3 h-8 rounded-xl border text-xs font-bold transition-all ${
+                zoom > 1
+                  ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30 shadow-xs"
+                  : "bg-white/5 text-slate-400 border-white/10"
               }`}
-              title="Toggle Cursor Pan: when enabled, moving your cursor smoothly pans the screen"
+              title="Click and drag to pan across the document when zoomed in"
             >
-              {cursorPanEnabled ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <MousePointer className="h-3.5 w-3.5 text-emerald-400" />
-                  <span className="hidden sm:inline">Cursor Pan: ON</span>
-                  <span className="sm:hidden">Auto</span>
-                </>
-              ) : (
-                <>
-                  <Hand className="h-3.5 w-3.5 text-slate-400" />
-                  <span className="hidden sm:inline">Drag to Pan</span>
-                  <span className="sm:hidden">Drag</span>
-                </>
-              )}
-            </button>
+              <Hand className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Drag to Pan</span>
+              <span className="sm:hidden">Drag</span>
+            </div>
 
             {zoom > 1 && (
               <span className="text-[11px] font-semibold text-slate-400 hidden lg:inline">
-                {cursorPanEnabled ? "• Move cursor to pan" : "• Drag to pan"}
+                • Click & drag to move
               </span>
             )}
           </div>
