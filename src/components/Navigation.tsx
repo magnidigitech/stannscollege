@@ -21,7 +21,9 @@ import {
   Menu,
   X,
   Plus,
-  Minus
+  Minus,
+  Phone,
+  MapPin
 } from "lucide-react";
 
 export function toSlug(text: string) {
@@ -66,6 +68,11 @@ export default function Navigation() {
   const [mSupport, setMSupport] = useState(false);
   const [mPlacements, setMPlacements] = useState(false);
   const [mResearch, setMResearch] = useState(false);
+  const [mAlumni, setMAlumni] = useState(false);
+  const [mIqac, setMIqac] = useState(false);
+  const [mMandatory, setMMandatory] = useState(false);
+  const [mStrategic, setMStrategic] = useState(false);
+  const [mContact, setMContact] = useState(false);
 
   const researchCategories = [
     {
@@ -94,6 +101,156 @@ export default function Navigation() {
         { text: "Intellectual Property Cell", slug: "ipr-cell" },
         { text: "Institution Innovation Cell", slug: "institution-innovation-cell" },
         { text: "Entrepreneurship Development", slug: "entrepreneurship-development" },
+      ]
+    }
+  ];
+
+  const alumniCategories = [
+    {
+      title: "I. The Association",
+      icon: Users,
+      items: [
+        { text: "Alumni Home", href: "/alumni" },
+        { text: "About Alumni Association", href: "/alumni/about-alumni-association" },
+        { text: "Contact Association Desk", href: "/alumni/contact-us" },
+      ]
+    },
+    {
+      title: "II. Engagement & Events",
+      icon: HeartHandshake,
+      items: [
+        { text: "Alumni Connect Portal", href: "/alumni/alumni-connect" },
+        { text: "Alumni Day Celebrations", href: "/alumni/alumni-day" },
+        { text: "Alumni Events & Activities", href: "/alumni/alumni-events" },
+        { text: "Re-Union Gatherings", href: "/alumni/re-union" },
+      ]
+    },
+    {
+      title: "III. Media & Portals",
+      icon: Trophy,
+      items: [
+        { text: "Alumni Photo Gallery", href: "/alumni/gallery" },
+        { text: "Alumni Registration Form", href: "/alumni/register" },
+        { text: "Giving & Institutional Support", href: "/alumni/donate" },
+      ]
+    }
+  ];
+
+  const iqacCategories = [
+    {
+      title: "I. Quality Framework",
+      icon: ShieldCheck,
+      items: [
+        { text: "About IQAC Cell", href: "/quality-assurance/iqac" },
+        { text: "AQAR Annual Quality Reports", href: "/quality-assurance/aqar" },
+        { text: "NAAC Accreditation Details", href: "/quality-assurance/naac" },
+        { text: "NAAC Peer Team Portal", href: "/naac-peer-team" },
+      ]
+    },
+    {
+      title: "II. Quality Processes",
+      icon: Lightbulb,
+      items: [
+        { text: "Quality Initiatives", href: "/quality-assurance/quality-initiatives" },
+        { text: "Academic & Administrative Audit (AAA)", href: "/quality-assurance/audit" },
+        { text: "Feedback System & Action Taken", href: "/quality-assurance/feedback" },
+      ]
+    },
+    {
+      title: "III. Evaluation & Media",
+      icon: BookOpen,
+      items: [
+        { text: "Student Satisfaction Surveys", href: "/quality-assurance/surveys" },
+        { text: "IQAC Activity Gallery", href: "/quality-assurance/gallery" },
+        { text: "Contact IQAC Coordinator", href: "/quality-assurance/contact" },
+      ]
+    }
+  ];
+
+  const mandatoryCategories = [
+    {
+      title: "I. Statutory Approvals & Status",
+      icon: ShieldCheck,
+      items: [
+        { text: "All Mandatory Disclosures", href: "/mandatory-disclosures" },
+        { text: "AICTE Extension of Approval (EoA)", href: "/mandatory-disclosures?category=aicte" },
+        { text: "UGC 2(f) & 12(B) Recognition", href: "/mandatory-disclosures?category=ugc" },
+        { text: "ANU Affiliation Orders", href: "/mandatory-disclosures?category=anu" },
+      ]
+    },
+    {
+      title: "II. Statutory Committees",
+      icon: Users,
+      items: [
+        { text: "Governing Body Constitution", href: "/mandatory-disclosures?category=committees" },
+        { text: "Anti-Ragging Committee & SOPs", href: "/mandatory-disclosures?category=committees" },
+        { text: "Internal Complaints Committee (ICC)", href: "/mandatory-disclosures?category=committees" },
+      ]
+    },
+    {
+      title: "III. Compliance Policies",
+      icon: BookOpen,
+      items: [
+        { text: "Code of Conduct & Ethics Handbook", href: "/mandatory-disclosures?category=policies" },
+        { text: "Institutional Policies Compendium", href: "/mandatory-disclosures?category=policies" },
+      ]
+    }
+  ];
+
+  const strategicCategories = [
+    {
+      title: "I. Strategic Framework",
+      icon: GraduationCap,
+      items: [
+        { text: "Overview & Executive Summary", href: "/strategic-plans-and-future-directions" },
+        { text: "Institutional Performance Indicators", href: "/strategic-plans-and-future-directions#indicators" },
+        { text: "Strategic Priorities – Next 5 Years", href: "/strategic-plans-and-future-directions#priorities" },
+      ]
+    },
+    {
+      title: "II. Deployment Plans & Reports",
+      icon: LineChart,
+      items: [
+        { text: "Strategic Framework (2024–2030)", href: "/strategic-plans-and-future-directions#documents" },
+        { text: "Annual Deployment Plan 2025–2026", href: "/strategic-plans-and-future-directions#documents" },
+        { text: "Annual Deployment Plan 2024–2025", href: "/strategic-plans-and-future-directions#documents" },
+      ]
+    },
+    {
+      title: "III. Vision 2047 & Engagement",
+      icon: Flag,
+      items: [
+        { text: "Vision 2047: Viksit Bharat & Swarna Andhra", href: "/strategic-plans-and-future-directions#vision-2047" },
+        { text: "Stakeholder Feedback Mechanisms", href: "/strategic-plans-and-future-directions#stakeholder-feedback" },
+        { text: "National & State Resource Links", href: "/strategic-plans-and-future-directions#resources" },
+      ]
+    }
+  ];
+
+  const contactCategories = [
+    {
+      title: "I. Direct Communications",
+      icon: Phone,
+      items: [
+        { text: "Send an Enquiry Message", href: "/contact#enquiry-form" },
+        { text: "Admissions Helpline Directory", href: "/contact#admissions-helpline" },
+        { text: "Principal & Office Contacts", href: "/contact#admissions-helpline" },
+      ]
+    },
+    {
+      title: "II. Campus Location",
+      icon: MapPin,
+      items: [
+        { text: "Interactive Campus Map", href: "/contact#campus-map" },
+        { text: "Address & Geographic Coordinates", href: "/contact#campus-map" },
+      ]
+    },
+    {
+      title: "III. Office & Timings",
+      icon: Building,
+      items: [
+        { text: "Administrative Office Hours", href: "/contact#working-hours" },
+        { text: "Official Social Media Portals", href: "/contact" },
       ]
     }
   ];
@@ -414,24 +571,24 @@ export default function Navigation() {
       {/* ============================================================== */}
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
-      <div className="hidden md:flex items-center justify-center py-3.5 text-xs lg:text-[13px] font-bold text-slate-700 relative w-full">
-        <nav className="flex items-center justify-center gap-x-8 lg:gap-x-10 w-full">
+      <div className="hidden md:flex items-center justify-between py-3 text-xs lg:text-[13px] font-bold text-white relative w-full">
+        <nav className="flex items-center justify-between w-full">
 
           {/* 1. Home */}
-          <Link href="/" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
+          <Link href="/" className="text-white hover:text-blue-200 transition-all duration-200 whitespace-nowrap">
             Home
           </Link>
 
           {/* 2. About Us */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("about")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/about/the-institution/basic-institutional-information" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/about/the-institution/basic-institutional-information" className="hover:text-blue-200 select-none font-bold">
               About Us
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "about" && (
               <div
@@ -478,14 +635,14 @@ export default function Navigation() {
 
           {/* 3. Academics */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("academics")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:text-blue-200 select-none font-bold">
               Academics
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "academics" && (
               <div
@@ -581,14 +738,14 @@ export default function Navigation() {
 
           {/* 4. Admissions */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("admissions")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/admissions/policy-process" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/admissions/policy-process" className="hover:text-blue-200 select-none font-bold">
               Admissions
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "admissions" && (
               <div
@@ -626,14 +783,14 @@ export default function Navigation() {
 
           {/* 5. Infrastructure */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("infra")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/infrastructure" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/infrastructure" className="hover:text-blue-200 select-none font-bold">
               Infrastructure
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "infra" && (
               <div
@@ -671,14 +828,14 @@ export default function Navigation() {
 
           {/* 6. Faculty */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("faculty")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/faculty/teaching-staff" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/faculty/teaching-staff" className="hover:text-blue-200 select-none font-bold">
               Faculty
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "faculty" && (
               <div
@@ -716,14 +873,14 @@ export default function Navigation() {
 
           {/* 7. Student Support Services */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("support")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/student-support/mentor-mentee" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/student-support/mentor-mentee" className="hover:text-blue-200 select-none font-bold">
               Student Support Services
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "support" && (
               <div
@@ -761,14 +918,14 @@ export default function Navigation() {
 
           {/* 8. Placements & Industry Linkages */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("placements")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/placements" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/placements" className="hover:text-blue-200 select-none font-bold">
               Placements & Industry Linkages
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "placements" && (
               <div
@@ -809,20 +966,20 @@ export default function Navigation() {
 
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
-      <div className="hidden md:flex items-center justify-center py-3.5 border-t border-slate-100 text-xs lg:text-[13px] font-bold text-slate-600 relative w-full">
-        <nav className="flex items-center justify-center gap-x-8 lg:gap-x-10 w-full">
+      <div className="hidden md:flex items-center justify-between py-2.5 border-t border-white/15 text-xs lg:text-[13px] font-bold text-slate-200 relative w-full">
+        <nav className="flex items-center justify-between w-full">
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
           <div
-            className="flex items-center gap-1 cursor-pointer hover:text-[#002147] transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("research")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/research-innovation" className="hover:text-[#002147] select-none font-bold">
+            <Link href="/research-innovation" className="hover:text-white select-none font-bold">
               Research & Innovation
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 text-[#002147]' : 'text-slate-400'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
             {activeMenu === "research" && (
               <div
@@ -859,25 +1016,230 @@ export default function Navigation() {
           </div>
 
 
-          <Link href="/alumni" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Alumni
-          </Link>
+          {/* 10. Alumni */}
+          <div
+            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("alumni")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/alumni" className="hover:text-white select-none font-bold">
+              Alumni
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
-          <Link href="/quality-assurance" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            IQAC, Quality Assurance & Accreditation
-          </Link>
+            {activeMenu === "alumni" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("alumni")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {alumniCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-          <Link href="/mandatory-disclosures" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Mandatory Disclosures & Compliance
-          </Link>
+          {/* 11. IQAC, Quality Assurance & Accreditation */}
+          <div
+            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("iqac")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/quality-assurance" className="hover:text-white select-none font-bold">
+              IQAC, Quality Assurance & Accreditation
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
 
-          <Link href="/strategic-plans-and-future-directions" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Strategic Plans & Future Directions
-          </Link>
+            {activeMenu === "iqac" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("iqac")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {iqacCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-          <Link href="/contact" className="hover:text-[#002147] transition-all duration-200 whitespace-nowrap">
-            Contact Us
-          </Link>
+          {/* 12. Mandatory Disclosures & Compliance */}
+          <div
+            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("mandatory")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/mandatory-disclosures" className="hover:text-white select-none font-bold">
+              Mandatory Disclosures & Compliance
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+
+            {activeMenu === "mandatory" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("mandatory")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {mandatoryCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 13. Strategic Plans & Future Directions */}
+          <div
+            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("strategic")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/strategic-plans-and-future-directions" className="hover:text-white select-none font-bold">
+              Strategic Plans & Future Directions
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+
+            {activeMenu === "strategic" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("strategic")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {strategicCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 14. Contact Us */}
+          <div
+            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            onMouseEnter={() => handleMouseEnter("contact")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link href="/contact" className="hover:text-white select-none font-bold">
+              Contact Us
+            </Link>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+
+            {activeMenu === "contact" && (
+              <div
+                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                onMouseEnter={() => handleMouseEnter("contact")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {contactCategories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                        <cat.icon className="h-4 w-4" />
+                      </span>
+                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                        {cat.title}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
         </nav>
       </div>
@@ -887,13 +1249,13 @@ export default function Navigation() {
       {/* ============================================================== */}
 
       {/* Mobile Top Header (Visible only on mobile screens when sticky nav is active) */}
-      <div className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 bg-white">
-        <Link href="/" className="font-outfit font-black text-base text-[#002147] uppercase tracking-tight leading-none">
+      <div className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 bg-[#002147] px-4">
+        <Link href="/" className="font-outfit font-black text-base text-white uppercase tracking-tight leading-none">
           St. Ann&apos;s College
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 hover:bg-slate-100 text-[#002147] transition-all"
+          className="p-2.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 text-white transition-all"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -1138,30 +1500,120 @@ export default function Navigation() {
                 )}
               </div>
 
-              {/* 10. Alumni */}
-              <Link href="/alumni" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
-                <span>10. Alumni</span>
-              </Link>
+              {/* 10. Alumni Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMAlumni(!mAlumni)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>10. Alumni</span>
+                  {mAlumni ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mAlumni && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {alumniCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-              {/* 11. IQAC */}
-              <Link href="/quality-assurance" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
-                <span>11. IQAC, Quality & Accreditation</span>
-              </Link>
+              {/* 11. IQAC Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMIqac(!mIqac)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>11. IQAC & Accreditation</span>
+                  {mIqac ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mIqac && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {iqacCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-              {/* 12. Mandatory Disclosures */}
-              <Link href="/mandatory-disclosures" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
-                <span>12. Mandatory Disclosures</span>
-              </Link>
+              {/* 12. Mandatory Disclosures Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMMandatory(!mMandatory)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>12. Mandatory Disclosures</span>
+                  {mMandatory ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mMandatory && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {mandatoryCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-              {/* 13. Strategic Plans */}
-              <Link href="/strategic-plans-and-future-directions" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
-                <span>13. Strategic Plans</span>
-              </Link>
+              {/* 13. Strategic Plans Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMStrategic(!mStrategic)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>13. Strategic Plans</span>
+                  {mStrategic ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mStrategic && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {strategicCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-              {/* Contact */}
-              <Link href="/contact" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 border-t border-slate-50 pt-1.5 hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
-                <span>Contact Us</span>
-              </Link>
+              {/* 14. Contact Us Accordion */}
+              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+                <button
+                  onClick={() => setMContact(!mContact)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                >
+                  <span>14. Contact Us</span>
+                  {mContact ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
+                </button>
+                {mContact && (
+                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    {contactCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        {cat.items.map((item, idx) => (
+                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
             </div>
 
