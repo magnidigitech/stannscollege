@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
 import { StrategicDevelopmentPlan } from "@/components/about/governance-administration/StrategicDevelopmentPlan";
 import AboutSidebar from "@/components/about/AboutSidebar";
 
@@ -19,13 +18,6 @@ export default function StrategicPlansFutureDirectionsPage() {
               <Link href="/about/governance-administration" className="hover:text-[#002147] hover:underline transition-all">About Us</Link>
               <span className="text-slate-350">/</span>
               <span className="text-[#002147]">Strategic Plans & Future Directions</span>
-            </div>
-          </div>
-
-          <div className="hidden sm:flex items-center gap-3 text-xs font-black uppercase tracking-widest text-[#002147]">
-            <div className="flex items-center gap-1.5 bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-100 shadow-xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
-              Institutional Autonomy Roadmap
             </div>
           </div>
         </div>
