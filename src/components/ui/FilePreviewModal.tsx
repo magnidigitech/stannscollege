@@ -1,7 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { X, ExternalLink, Download, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import React, { useEffect, useState, useRef } from "react";
+import { 
+  X, 
+  ExternalLink, 
+  Download, 
+  ArrowLeft, 
+  ArrowRight, 
+  Loader2,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  MousePointer,
+  Hand
+} from "lucide-react";
 
 interface FilePreviewModalProps {
   isOpen: boolean;
@@ -19,6 +31,17 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
   const [windowSize, setWindowSize] = useState({ width: 1000, height: 600 });
+
+  // Zoom & Pan state
+  const [zoom, setZoom] = useState(1);
+  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [cursorPanEnabled, setCursorPanEnabled] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const panStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   // Handle window resizing for responsive dimensions
   useEffect(() => {
@@ -43,16 +66,63 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     };
   }, [isOpen]);
 
-  // Handle escape key
+  // Handle keyboard shortcuts
   useEffect(() => {
+    if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
+      } else if (e.key === "ArrowLeft") {
+        setCurrentPage((prev) => Math.max(0, prev - 1));
+      } else if (e.key === "ArrowRight") {
+        setCurrentPage((prev) => prev + 1);
+      } else if (e.key === "+" || e.key === "=") {
+        setZoom((prev) => Math.min(3, +(prev + 0.25).toFixed(2)));
+      } else if (e.key === "-") {
+        setZoom((prev) => {
+          const next = Math.max(1, +(prev - 0.25).toFixed(2));
+          if (next === 1) setPanOffset({ x: 0, y: 0 });
+          return next;
+        });
+      } else if (e.key === "0" || e.key.toLowerCase() === "r") {
+        setZoom(1);
+        setPanOffset({ x: 0, y: 0 });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [isOpen, onClose]);
+
+  // Recenter pan whenever the current page changes
+  useEffect(() => {
+    setPanOffset({ x: 0, y: 0 });
+  }, [currentPage]);
+
+  // Non-passive wheel listener for smooth wheel zooming
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !isOpen) return;
+
+    const handleWheelNative = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        setZoom((prev) => Math.min(3, +(prev + 0.25).toFixed(2)));
+      } else if (e.deltaY > 0) {
+        setZoom((prev) => {
+          const next = Math.max(1, +(prev - 0.25).toFixed(2));
+          if (next === 1) {
+            setPanOffset({ x: 0, y: 0 });
+          }
+          return next;
+        });
+      }
+    };
+
+    container.addEventListener("wheel", handleWheelNative, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", handleWheelNative);
+    };
+  }, [isOpen]);
 
   // Load and render PDF pages when fileUrl/isOpen changes
   useEffect(() => {
@@ -63,6 +133,8 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
       setUseFallback(false);
       setCurrentPage(0);
       setPageSize({ width: 0, height: 0 });
+      setZoom(1);
+      setPanOffset({ x: 0, y: 0 });
       return;
     }
 
@@ -71,6 +143,8 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
       setLoadingPages(false);
       setUseFallback(false);
       setRenderedPages([]);
+      setZoom(1);
+      setPanOffset({ x: 0, y: 0 });
       return;
     }
 
@@ -80,11 +154,12 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     setRenderedPages([]);
     setCurrentPage(0);
     setPageSize({ width: 0, height: 0 });
+    setZoom(1);
+    setPanOffset({ x: 0, y: 0 });
     setLoadingProgress("Initializing flipbook...");
 
     async function convertPdf() {
       try {
-        // Load PDF.js from CDN dynamically to prevent Next.js SSR and build issues
         const pdfjsLib = await new Promise<any>((resolve, reject) => {
           if ((window as any).pdfjsLib) {
             resolve((window as any).pdfjsLib);
@@ -110,13 +185,13 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
         const total = pdf.numPages;
         const images: string[] = [];
 
-        // Render each page into an offscreen canvas and convert to Image URL
+        // High-quality rendering scale for crisp zoomed text
         for (let i = 1; i <= total; i++) {
           if (!isMounted) return;
           setLoadingProgress(`Preparing page ${i} of ${total}...`);
 
           const page = await pdf.getPage(i);
-          const viewport = page.getViewport({ scale: 1.5 }); // High-quality display scale
+          const viewport = page.getViewport({ scale: 1.85 });
           
           if (i === 1 && isMounted) {
             setPageSize({ width: viewport.width, height: viewport.height });
@@ -134,7 +209,7 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
             viewport: viewport,
           }).promise;
 
-          images.push(canvas.toDataURL("image/jpeg", 0.85));
+          images.push(canvas.toDataURL("image/jpeg", 0.88));
         }
 
         if (isMounted) {
@@ -177,12 +252,12 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     }
   };
 
-  // Calculate dynamic dimensions for the book spread based on PDF page ratio
+  // Dimensions for the book spread inside the available viewport area (accounting for pinned header & footer)
   const pageRatio = pageSize.width > 0 ? pageSize.width / pageSize.height : 0.707;
-  const maxW = windowSize.width * 0.96;
-  const maxH = windowSize.height * 0.85;
+  const maxW = Math.max(360, windowSize.width * 0.94);
+  const maxH = Math.max(300, (windowSize.height - 130) * 0.90);
 
-  let bookHeight = Math.min(maxH, 850);
+  let bookHeight = Math.min(maxH, 800);
   let bookWidth = bookHeight * 2 * pageRatio;
 
   if (bookWidth > maxW) {
@@ -194,17 +269,206 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     bookWidth = bookHeight * 2 * pageRatio;
   }
 
+  // --- Exact Mathematical Pan Calculation ---
+  // Calculates the precise pan limits required to bring any edge of the document fully into view
+  const calculatePanLimits = (viewportWidth: number, viewportHeight: number) => {
+    const isCover = currentPage === 0;
+    // Cover page is 1 page wide (bookWidth / 2); two-page spread is bookWidth
+    const contentWidth = (isCover ? (bookWidth / 2) : bookWidth) * zoom;
+    const contentHeight = bookHeight * zoom;
+
+    const overflowX = Math.max(0, (contentWidth - viewportWidth) / 2);
+    const overflowY = Math.max(0, (contentHeight - viewportHeight) / 2);
+
+    // 40px margin buffer so the page edge and margin comfortably frame inside the viewport
+    const margin = 40;
+    const limitX = overflowX > 0 ? (overflowX + margin) : 0;
+    const limitY = overflowY > 0 ? (overflowY + margin) : 0;
+
+    return { limitX, limitY };
+  };
+
+  const updatePanFromMouse = (clientX: number, clientY: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const { limitX, limitY } = calculatePanLimits(rect.width, rect.height);
+
+    // 1. Drag-to-pan mode (active mouse drag)
+    if (isDragging && dragStartRef.current && panStartRef.current) {
+      const dx = clientX - dragStartRef.current.x;
+      const dy = clientY - dragStartRef.current.y;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+        setHasDragged(true);
+      }
+      const rawX = panStartRef.current.x + dx;
+      const rawY = panStartRef.current.y + dy;
+
+      setPanOffset({
+        x: Math.max(-limitX, Math.min(limitX, rawX)),
+        y: Math.max(-limitY, Math.min(limitY, rawY)),
+      });
+      return;
+    }
+
+    // 2. Cursor-Follow Pan mode (smooth screen pan when moving cursor)
+    if (zoom > 1 && cursorPanEnabled && !isDragging) {
+      const mouseX = clientX - rect.left;
+      const mouseY = clientY - rect.top;
+
+      // Normalized coordinates from -1.0 (left/top) to +1.0 (right/bottom)
+      const normX = Math.max(-1, Math.min(1, ((mouseX / rect.width) - 0.5) * 2));
+      const normY = Math.max(-1, Math.min(1, ((mouseY / rect.height) - 0.5) * 2));
+
+      // Dead-zone in center (8%) and reach 100% full travel comfortably at 80% distance
+      let factorX = 0;
+      if (Math.abs(normX) > 0.08) {
+        const progressX = Math.min(1, (Math.abs(normX) - 0.08) / 0.72);
+        factorX = Math.sign(normX) * Math.sin(progressX * (Math.PI / 2));
+      }
+
+      let factorY = 0;
+      if (Math.abs(normY) > 0.08) {
+        const progressY = Math.min(1, (Math.abs(normY) - 0.08) / 0.72);
+        factorY = Math.sign(normY) * Math.sin(progressY * (Math.PI / 2));
+      }
+
+      // Smooth translation directly scaling to the exact edge bounds
+      setPanOffset({
+        x: -factorX * limitX,
+        y: -factorY * limitY,
+      });
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (zoom <= 1) return;
+    if ((e.target as HTMLElement).closest("button, a")) return;
+
+    setIsDragging(true);
+    setHasDragged(false);
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+    panStartRef.current = { x: panOffset.x, y: panOffset.y };
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    updatePanFromMouse(e.clientX, e.clientY);
+  };
+
+  // Global mousemove and mouseup listeners for seamless edge tracking
+  useEffect(() => {
+    if (!isOpen || zoom <= 1) return;
+
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      updatePanFromMouse(e.clientX, e.clientY);
+    };
+
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false);
+      if (hasDragged) {
+        setTimeout(() => setHasDragged(false), 120);
+      }
+    };
+
+    window.addEventListener("mousemove", handleGlobalMouseMove);
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+    };
+  }, [isOpen, zoom, cursorPanEnabled, isDragging, hasDragged, bookWidth, bookHeight, currentPage]);
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    if (hasDragged) {
+      setTimeout(() => setHasDragged(false), 120);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // Window-level tracking continues smooth tracking
+  };
+
+  // Touch pan support for tablets and mobile devices
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (zoom <= 1 || e.touches.length !== 1) return;
+    setIsDragging(true);
+    dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    panStartRef.current = { x: panOffset.x, y: panOffset.y };
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging && e.touches.length === 1 && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const { limitX, limitY } = calculatePanLimits(rect.width, rect.height);
+      const dx = e.touches[0].clientX - dragStartRef.current.x;
+      const dy = e.touches[0].clientY - dragStartRef.current.y;
+      const rawX = panStartRef.current.x + dx;
+      const rawY = panStartRef.current.y + dy;
+      setPanOffset({
+        x: Math.max(-limitX, Math.min(limitX, rawX)),
+        y: Math.max(-limitY, Math.min(limitY, rawY)),
+      });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Double-click to toggle zoom
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest("button, a")) return;
+    if (zoom === 1) {
+      setZoom(1.75);
+    } else {
+      setZoom(1);
+      setPanOffset({ x: 0, y: 0 });
+    }
+  };
+
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(3, +(prev + 0.25).toFixed(2)));
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prev) => {
+      const next = Math.max(1, +(prev - 0.25).toFixed(2));
+      if (next === 1) {
+        setPanOffset({ x: 0, y: 0 });
+      }
+      return next;
+    });
+  };
+
+  const handleCycleZoom = () => {
+    if (zoom === 1) setZoom(1.5);
+    else if (zoom === 1.5) setZoom(2);
+    else if (zoom === 2) setZoom(2.5);
+    else {
+      setZoom(1);
+      setPanOffset({ x: 0, y: 0 });
+    }
+  };
+
+  const handleResetZoom = () => {
+    setZoom(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 md:p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 md:p-4 bg-slate-950/75 backdrop-blur-md animate-fadeIn">
       {/* Click outside to close container */}
       <div className="absolute inset-0 cursor-default" onClick={onClose}></div>
       
       {/* Modal Box */}
       <div className="relative w-[98vw] h-[96vh] bg-[#1a1f26] rounded-2xl md:rounded-[2.5rem] shadow-2xl border border-slate-700/40 overflow-hidden flex flex-col z-[210] animate-scaleUp">
         
-        {/* Header - Styled with dark theme to suit the reader layout */}
-        <div className="bg-[#0b0f13] px-5 py-3.5 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
-          <div className="flex flex-col max-w-[65%] sm:max-w-[75%]">
+        {/* ========================================================= */}
+        {/* 1. TOP HEADER (PERMANENTLY PINNED AT TOP)                 */}
+        {/* ========================================================= */}
+        <div className="bg-[#0b0f13] px-5 py-3.5 text-white flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
+          <div className="flex flex-col max-w-[60%] sm:max-w-[70%]">
             <h4 className="font-outfit text-xs md:text-sm lg:text-base font-black tracking-tight leading-tight select-none uppercase truncate text-white">
               {title}
             </h4>
@@ -241,7 +505,11 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
               <X className="h-4 w-4" />
             </button>
           </div>
-        </div>        {/* Content Viewer Body */}
+        </div>
+
+        {/* ========================================================= */}
+        {/* 2. VIEWER VIEWPORT (MIDDLE - EXPANDS TO FILL REMAINING)   */}
+        {/* ========================================================= */}
         <div className="flex-1 bg-[#181c22] p-0 flex flex-col items-center justify-center overflow-hidden relative">
           
           {/* Render PDF using Flipbook style layout */}
@@ -255,135 +523,167 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
               </div>
             </div>
           ) : isPdf && !useFallback && totalPages > 0 ? (
-            <div className="flex flex-col items-center gap-4 w-full h-full py-3 select-none animate-fadeIn justify-center">
-              
-              {/* Perspective book container */}
+            <div 
+              ref={containerRef}
+              className={`relative w-full h-full flex items-center justify-center overflow-hidden select-none ${
+                zoom > 1 
+                  ? cursorPanEnabled 
+                    ? isDragging ? "cursor-grabbing" : "cursor-crosshair" 
+                    : isDragging ? "cursor-grabbing" : "cursor-grab"
+                  : "cursor-default"
+              }`}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onDoubleClick={handleDoubleClick}
+            >
+              {/* Floating Side Arrow: Previous Page */}
+              {currentPage > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrev();
+                  }}
+                  className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-md border border-white/15 flex items-center justify-center shadow-2xl transition-all active:scale-95 hover:scale-110 cursor-pointer"
+                  title="Previous Page (Left Arrow)"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                </button>
+              )}
+
+              {/* Floating Side Arrow: Next Page */}
+              {currentPage < numSheets - 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNext();
+                  }}
+                  className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-md border border-white/15 flex items-center justify-center shadow-2xl transition-all active:scale-95 hover:scale-110 cursor-pointer"
+                  title="Next Page (Right Arrow)"
+                >
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              )}
+
+              {/* Interactive Zoom & Pan Transform Layer */}
               <div 
-                className="relative flex items-center justify-center transition-all duration-300"
-                style={{ 
-                  perspective: "2000px", 
-                  width: `${bookWidth}px`, 
-                  height: `${bookHeight}px` 
+                className="flex items-center justify-center will-change-transform"
+                style={{
+                  transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
+                  transformOrigin: "center center",
+                  transition: isDragging ? "none" : "transform 0.14s ease-out",
                 }}
               >
-                {/* Underlay depth Shadow */}
-                <div className="absolute inset-0 bg-black/40 blur-2xl rounded-full scale-95 pointer-events-none translate-y-6"></div>
-
-                {/* Book Wrapper */}
+                {/* Perspective book container */}
                 <div 
-                  className="relative w-full h-full transition-transform duration-700 ease-out"
-                  style={{
-                    transformStyle: "preserve-3d",
-                    transform: currentPage === 0 
-                      ? "translateX(-25%)" 
-                      : (currentPage === numSheets - 1 && currentPage * 2 >= totalPages)
-                        ? "translateX(25%)" 
-                        : "translateX(0)"
+                  className="relative flex items-center justify-center transition-all duration-300"
+                  style={{ 
+                    perspective: "2000px", 
+                    width: `${bookWidth}px`, 
+                    height: `${bookHeight}px` 
                   }}
                 >
-                  {/* Sheets */}
-                  {Array.from({ length: numSheets }).map((_, sheetIdx) => {
-                    const isFlipped = sheetIdx < currentPage;
-                    const zIndex = isFlipped ? sheetIdx : numSheets - sheetIdx;
+                  {/* Underlay depth Shadow */}
+                  <div className="absolute inset-0 bg-black/40 blur-2xl rounded-full scale-95 pointer-events-none translate-y-6"></div>
 
-                    const frontPageIdx = sheetIdx * 2;
-                    const backPageIdx = sheetIdx * 2 + 1;
+                  {/* Book Wrapper */}
+                  <div 
+                    className="relative w-full h-full transition-transform duration-700 ease-out"
+                    style={{
+                      transformStyle: "preserve-3d",
+                      transform: currentPage === 0 
+                        ? "translateX(-25%)" 
+                        : (currentPage === numSheets - 1 && currentPage * 2 >= totalPages)
+                          ? "translateX(25%)" 
+                          : "translateX(0)"
+                    }}
+                  >
+                    {/* Sheets */}
+                    {Array.from({ length: numSheets }).map((_, sheetIdx) => {
+                      const isFlipped = sheetIdx < currentPage;
+                      const zIndex = isFlipped ? sheetIdx : numSheets - sheetIdx;
 
-                    return (
-                      <div
-                        key={sheetIdx}
-                        className="absolute top-0 right-0 w-1/2 h-full origin-left transition-transform duration-[850ms] cubic-bezier(0.25, 1, 0.5, 1) cursor-pointer select-none"
-                        style={{
-                          transformStyle: "preserve-3d",
-                          zIndex: zIndex,
-                          transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
-                        }}
-                        onClick={() => {
-                          if (isFlipped) {
-                            setCurrentPage(sheetIdx);
-                          } else {
-                            setCurrentPage(sheetIdx + 1);
-                          }
-                        }}
-                      >
-                        {/* Front of sheet */}
-                        <div 
-                          className={`absolute inset-0 w-full h-full select-none flex items-center justify-center transition-all ${
-                            frontPageIdx < totalPages 
-                              ? "bg-white shadow-md rounded-r-2xl border border-slate-200/45 overflow-hidden" 
-                              : "bg-transparent pointer-events-none border-none shadow-none"
-                          }`}
-                          style={{ 
-                            backfaceVisibility: "hidden",
-                            WebkitBackfaceVisibility: "hidden",
-                            transform: "translateZ(1px)"
+                      const frontPageIdx = sheetIdx * 2;
+                      const backPageIdx = sheetIdx * 2 + 1;
+
+                      return (
+                        <div
+                          key={sheetIdx}
+                          className="absolute top-0 right-0 w-1/2 h-full origin-left transition-transform duration-[850ms] cubic-bezier(0.25, 1, 0.5, 1) cursor-pointer select-none"
+                          style={{
+                            transformStyle: "preserve-3d",
+                            zIndex: zIndex,
+                            transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+                          }}
+                          onClick={() => {
+                            if (hasDragged || zoom > 1) return;
+                            if (isFlipped) {
+                              setCurrentPage(sheetIdx);
+                            } else {
+                              setCurrentPage(sheetIdx + 1);
+                            }
                           }}
                         >
-                          {frontPageIdx < totalPages ? (
-                            <div className="relative w-full h-full">
-                              <img 
-                                src={renderedPages[frontPageIdx]} 
-                                alt={`Page ${frontPageIdx + 1}`} 
-                                className="w-full h-full object-fill pointer-events-none bg-white p-0"
-                              />
-                              {/* Inner Fold shadow on the left edge of right-hand pages */}
-                              {frontPageIdx > 0 && (
-                                <div className="absolute top-0 left-0 w-6 h-full bg-gradient-to-r from-black/20 via-black/5 to-transparent pointer-events-none"></div>
-                              )}
-                            </div>
-                          ) : null}
-                        </div>
+                          {/* Front of sheet */}
+                          <div 
+                            className={`absolute inset-0 w-full h-full select-none flex items-center justify-center transition-all ${
+                              frontPageIdx < totalPages 
+                                ? "bg-white shadow-md rounded-r-2xl border border-slate-200/45 overflow-hidden" 
+                                : "bg-transparent pointer-events-none border-none shadow-none"
+                            }`}
+                            style={{ 
+                              backfaceVisibility: "hidden",
+                              WebkitBackfaceVisibility: "hidden",
+                              transform: "translateZ(1px)"
+                            }}
+                          >
+                            {frontPageIdx < totalPages ? (
+                              <div className="relative w-full h-full">
+                                <img 
+                                  src={renderedPages[frontPageIdx]} 
+                                  alt={`Page ${frontPageIdx + 1}`} 
+                                  className="w-full h-full object-fill pointer-events-none bg-white p-0"
+                                />
+                                {frontPageIdx > 0 && (
+                                  <div className="absolute top-0 left-0 w-6 h-full bg-gradient-to-r from-black/20 via-black/5 to-transparent pointer-events-none"></div>
+                                )}
+                              </div>
+                            ) : null}
+                          </div>
 
-                        {/* Back of sheet */}
-                        <div 
-                          className={`absolute inset-0 w-full h-full select-none flex items-center justify-center transition-all ${
-                            backPageIdx < totalPages 
-                              ? "bg-white shadow-md rounded-l-2xl border border-slate-200/45 overflow-hidden" 
-                              : "bg-transparent pointer-events-none border-none shadow-none"
-                          }`}
-                          style={{ 
-                            backfaceVisibility: "hidden", 
-                            WebkitBackfaceVisibility: "hidden",
-                            transform: "rotateY(180deg) translateZ(1px)" 
-                          }}
-                        >
-                          {backPageIdx < totalPages ? (
-                            <div className="relative w-full h-full">
-                              <img 
-                                src={renderedPages[backPageIdx]} 
-                                alt={`Page ${backPageIdx + 1}`} 
-                                className="w-full h-full object-fill pointer-events-none bg-white p-0"
-                              />
-                              {/* Inner Fold shadow on the right edge of left-hand pages */}
-                              <div className="absolute top-0 right-0 w-6 h-full bg-gradient-to-l from-black/20 via-black/5 to-transparent pointer-events-none"></div>
-                            </div>
-                          ) : null}
+                          {/* Back of sheet */}
+                          <div 
+                            className={`absolute inset-0 w-full h-full select-none flex items-center justify-center transition-all ${
+                              backPageIdx < totalPages 
+                                ? "bg-white shadow-md rounded-l-2xl border border-slate-200/45 overflow-hidden" 
+                                : "bg-transparent pointer-events-none border-none shadow-none"
+                            }`}
+                            style={{ 
+                              backfaceVisibility: "hidden", 
+                              WebkitBackfaceVisibility: "hidden",
+                              transform: "rotateY(180deg) translateZ(1px)" 
+                            }}
+                          >
+                            {backPageIdx < totalPages ? (
+                              <div className="relative w-full h-full">
+                                <img 
+                                  src={renderedPages[backPageIdx]} 
+                                  alt={`Page ${backPageIdx + 1}`} 
+                                  className="w-full h-full object-fill pointer-events-none bg-white p-0"
+                                />
+                                <div className="absolute top-0 right-0 w-6 h-full bg-gradient-to-l from-black/20 via-black/5 to-transparent pointer-events-none"></div>
+                              </div>
+                            ) : null}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-
-              {/* Navigation controls */}
-              <div className="flex items-center gap-6 mt-2 z-20 text-white font-sans">
-                <button
-                  onClick={handlePrev}
-                  disabled={currentPage === 0}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/50 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer shadow-md"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </button>
-                <span className="text-xs font-bold text-slate-400 tracking-wider">
-                  Page {currentPage === 0 ? "Cover (1)" : `${currentPage * 2} - ${Math.min(currentPage * 2 + 1, totalPages)}`} of {totalPages}
-                </span>
-                <button
-                  onClick={handleNext}
-                  disabled={currentPage === numSheets - 1}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/50 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer shadow-md"
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </button>
               </div>
 
             </div>
@@ -395,13 +695,39 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
               title={title}
             />
           ) : !isPdf ? (
-            // Standard Image viewer
-            <div className="w-full h-full p-4 flex items-center justify-center overflow-auto">
-              <img
-                src={fileUrl}
-                alt={title}
-                className="max-w-full max-h-full object-contain rounded-lg shadow-sm border border-slate-800 bg-white"
-              />
+            // Standard Image viewer with zoom and pan
+            <div 
+              ref={containerRef}
+              className={`w-full h-full p-4 flex items-center justify-center overflow-hidden select-none relative ${
+                zoom > 1 
+                  ? cursorPanEnabled 
+                    ? isDragging ? "cursor-grabbing" : "cursor-crosshair" 
+                    : isDragging ? "cursor-grabbing" : "cursor-grab"
+                  : "cursor-default"
+              }`}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onDoubleClick={handleDoubleClick}
+            >
+              <div
+                className="max-w-full max-h-full flex items-center justify-center will-change-transform"
+                style={{
+                  transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
+                  transformOrigin: "center center",
+                  transition: isDragging ? "none" : "transform 0.14s ease-out",
+                }}
+              >
+                <img
+                  src={fileUrl}
+                  alt={title}
+                  className="max-w-full max-h-full object-contain rounded-lg shadow-sm border border-slate-800 bg-white"
+                />
+              </div>
             </div>
           ) : (
             // Spinner while loading
@@ -412,6 +738,112 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
           )}
 
         </div>
+
+        {/* ========================================================= */}
+        {/* 3. OPTIONS BAR (PERMANENTLY PINNED AT THE BOTTOM)         */}
+        {/* ========================================================= */}
+        <div className="bg-[#0b0f13] px-3 sm:px-6 py-2.5 text-white flex flex-wrap items-center justify-between gap-2 border-t border-slate-800 shrink-0 z-30 shadow-2xl font-sans">
+          
+          {/* Left: Page Navigator */}
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <button
+              onClick={handlePrev}
+              disabled={currentPage === 0}
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+              title="Previous Page (Left Arrow)"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+            </button>
+            <span className="text-[11px] md:text-xs font-bold text-slate-300 tracking-wider px-1.5 whitespace-nowrap min-w-[75px] text-center">
+              {totalPages > 0 
+                ? (currentPage === 0 ? "Cover (1)" : `${currentPage * 2} - ${Math.min(currentPage * 2 + 1, totalPages)}`) + ` / ${totalPages}`
+                : "Page 1 of 1"
+              }
+            </span>
+            <button
+              onClick={handleNext}
+              disabled={currentPage === numSheets - 1}
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+              title="Next Page (Right Arrow)"
+            >
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          {/* Center: Zoom Controls */}
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <button
+              onClick={handleZoomOut}
+              disabled={zoom <= 1}
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+              title="Zoom Out (-)"
+            >
+              <ZoomOut className="h-3.5 w-3.5" />
+            </button>
+            
+            <button
+              onClick={handleCycleZoom}
+              className="px-2.5 h-8 flex items-center justify-center rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold tracking-tight transition-all active:scale-95 cursor-pointer"
+              title="Click to cycle zoom (100% -> 150% -> 200% -> 250% -> 100%)"
+            >
+              {Math.round(zoom * 100)}%
+            </button>
+
+            <button
+              onClick={handleZoomIn}
+              disabled={zoom >= 3}
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+              title="Zoom In (+)"
+            >
+              <ZoomIn className="h-3.5 w-3.5" />
+            </button>
+
+            <button
+              onClick={handleResetZoom}
+              disabled={zoom === 1 && panOffset.x === 0 && panOffset.y === 0}
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+              title="Reset Zoom & Pan (0 / R)"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          {/* Right: Pan Mode Option Toggle */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCursorPanEnabled(!cursorPanEnabled)}
+              className={`flex items-center gap-1.5 px-3 h-8 rounded-xl border transition-all active:scale-95 cursor-pointer text-xs font-bold ${
+                cursorPanEnabled
+                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm shadow-emerald-500/20"
+                  : "bg-white/10 text-slate-300 border-white/10 hover:bg-white/15"
+              }`}
+              title="Toggle Cursor Pan: when enabled, moving your cursor smoothly pans the screen"
+            >
+              {cursorPanEnabled ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <MousePointer className="h-3.5 w-3.5 text-emerald-400" />
+                  <span className="hidden sm:inline">Cursor Pan: ON</span>
+                  <span className="sm:hidden">Auto</span>
+                </>
+              ) : (
+                <>
+                  <Hand className="h-3.5 w-3.5 text-slate-400" />
+                  <span className="hidden sm:inline">Drag to Pan</span>
+                  <span className="sm:hidden">Drag</span>
+                </>
+              )}
+            </button>
+
+            {zoom > 1 && (
+              <span className="text-[11px] font-semibold text-slate-400 hidden lg:inline">
+                {cursorPanEnabled ? "• Move cursor to pan" : "• Drag to pan"}
+              </span>
+            )}
+          </div>
+
+        </div>
+
       </div>
     </div>
   );
