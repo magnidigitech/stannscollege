@@ -6,6 +6,7 @@ import Navigation from "@/components/Navigation";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { TopLogoBar } from "@/components/TopLogoBar";
 import ColorPaletteCustomizer from "@/components/ColorPaletteCustomizer";
+import HeaderNavCustomizer from "@/components/HeaderNavCustomizer";
 import { Award, Sparkles, Bell, ArrowRight } from "lucide-react";
 
 const inter = Inter({
@@ -203,6 +204,9 @@ export default function RootLayout({
 
         {/* Live Color Palette Customizer Drawer & Controls */}
         <ColorPaletteCustomizer />
+
+        {/* Live Header & Navigation Studio Customizer Drawer & Controls */}
+        <HeaderNavCustomizer />
       </body>
     </html>
   );

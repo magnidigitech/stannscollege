@@ -1,33 +1,149 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export function TopLogoBar() {
+  const [headerMode, setHeaderMode] = useState<"image_v1" | "image_v2" | "text">("image_v2");
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("header_display_mode");
+      if (stored === "image_v1" || stored === "image_v2" || stored === "text") {
+        setHeaderMode(stored);
+      }
+    } catch (e) {
+      // Ignore
+    }
+
+    const handleUpdate = (e: any) => {
+      if (e.detail && e.detail.headerMode) {
+        setTimeout(() => {
+          setHeaderMode(e.detail.headerMode);
+        }, 0);
+      }
+    };
+
+    window.addEventListener("headerCustomizerUpdate", handleUpdate);
+    return () => window.removeEventListener("headerCustomizerUpdate", handleUpdate);
+  }, []);
+
   return (
     <div
       id="top-logo-bar"
-      className="w-full bg-white border-b border-slate-200/90 select-none transition-colors duration-200 shadow-xs"
+      className="w-full bg-white border-b border-slate-200/90 select-none transition-all duration-200 shadow-xs"
       style={{
         backgroundColor: "var(--logo-bar-bg, #ffffff)",
-        borderColor: "var(--logo-bar-border, #e2e8f0)"
+        borderColor: "var(--logo-bar-border, #e2e8f0)",
+        paddingTop: "var(--logo-bar-padding-y, 10px)",
+        paddingBottom: "var(--logo-bar-padding-y, 10px)"
       }}
     >
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full py-2 sm:py-2.5 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 transition-all duration-200">
         
-        {/* Left: Official College Logo & Full Header Graphic */}
+        {/* Left: Official College Logo & Full Header Graphic / Text */}
         <Link href="/" className="flex items-center gap-3 sm:gap-4 group shrink-0">
           <img
             src="/images/Stanns_CLG_Website_Logo_without_background.png"
             alt="St. Ann's College Logo"
-            className="h-12 sm:h-14 md:h-[58px] lg:h-[62px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs"
+            className="w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0"
+            style={{ height: "var(--crest-logo-size, 64px)" }}
           />
-          <img
-            src="/images/Stanns_CLG_Website_Header_without_background.png?v=2"
-            alt="St. Ann's College for Women"
-            className="h-12 sm:h-14 md:h-[58px] lg:h-[62px] w-auto max-w-[280px] sm:max-w-md md:max-w-lg lg:max-w-xl object-contain select-none"
-          />
+
+          {/* Option 1: Image Version 1 (4 lines) */}
+          {headerMode === "image_v1" && (
+            <img
+              src="/images/Stanns_CLG_Website_Header_v1.png"
+              alt="St. Ann's College for Women (4-line)"
+              className="w-auto max-w-[320px] sm:max-w-md md:max-w-lg lg:max-w-xl object-contain select-none transition-all duration-300 animate-fadeIn"
+              style={{ height: "var(--header-graphic-size, 64px)" }}
+            />
+          )}
+
+          {/* Option 2: Image Version 2 (6 lines with address) */}
+          {headerMode === "image_v2" && (
+            <img
+              src="/images/Stanns_CLG_Website_Header_without_background.png?v=3"
+              alt="St. Ann's College for Women (6-line)"
+              className="w-auto max-w-[320px] sm:max-w-md md:max-w-lg lg:max-w-xl object-contain select-none transition-all duration-300 animate-fadeIn"
+              style={{ height: "var(--header-graphic-size, 64px)" }}
+            />
+          )}
+
+          {/* Option 3: Live HTML Typography Text Mode */}
+          {headerMode === "text" && (
+            <div
+              className="flex flex-col justify-center select-none transition-all duration-200 animate-fadeIn"
+              style={{
+                fontFamily: "var(--header-text-font, inherit)",
+                textAlign: "var(--header-text-align, left)" as any,
+                alignItems: "var(--header-text-align-items, flex-start)" as any
+              }}
+            >
+              <h1
+                className="font-black tracking-tight leading-none uppercase select-none transition-colors duration-200 w-full"
+                style={{
+                  fontSize: "var(--header-title-size, 21px)",
+                  color: "var(--header-title-color, #002b49)",
+                  fontFamily: "var(--header-title-font, var(--font-outfit, inherit))",
+                  textAlign: "inherit"
+                }}
+              >
+                ST. ANN’S COLLEGE FOR WOMEN
+              </h1>
+              <span
+                className="font-bold tracking-tight leading-tight mt-0.5 w-full"
+                style={{
+                  fontSize: "var(--header-sub-size, 11px)",
+                  color: "var(--header-sub-color, #1e3a8a)",
+                  textAlign: "inherit"
+                }}
+              >
+                Run by The Society of St Anne
+              </span>
+              <span
+                className="font-semibold tracking-tight leading-tight mt-0.5 w-full"
+                style={{
+                  fontSize: "var(--header-sub-size, 11px)",
+                  color: "var(--header-accent-color, #991b1b)",
+                  textAlign: "inherit"
+                }}
+              >
+                Affiliated to Acharya Nagarjuna University, Approved by AICTE
+              </span>
+              <span
+                className="font-semibold tracking-tight leading-tight w-full"
+                style={{
+                  fontSize: "var(--header-sub-size, 11px)",
+                  color: "var(--header-accent-color, #991b1b)",
+                  textAlign: "inherit"
+                }}
+              >
+                Recognized under Section 2(f) of the UGC Act, 1956, New Delhi.
+              </span>
+              <span
+                className="font-semibold tracking-tight leading-tight w-full"
+                style={{
+                  fontSize: "var(--header-sub-size, 11px)",
+                  color: "var(--header-sub-color, #0369a1)",
+                  textAlign: "inherit"
+                }}
+              >
+                Accredited by NAAC with &lsquo;A&rsquo; Grade in the First Cycle
+              </span>
+              <span
+                className="font-bold tracking-tight leading-tight mt-0.5 w-full"
+                style={{
+                  fontSize: "var(--header-address-size, 10.5px)",
+                  color: "var(--header-title-color, #002b49)",
+                  textAlign: "inherit"
+                }}
+              >
+                Amaravathi Road, Gorantla, Guntur–34, Andhra Pradesh, India.
+              </span>
+            </div>
+          )}
         </Link>
 
         {/* Right: Accreditations (29+ Years, NAAC, AICTE) & Apply Now CTA Button */}
@@ -38,7 +154,8 @@ export function TopLogoBar() {
               <img
                 src="/images/29_years+_logo-no_background.png"
                 alt="29+ Years of Excellence (1997 - 2026)"
-                className="h-11 sm:h-12 md:h-[50px] lg:h-[52px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs"
+                className="w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs"
+                style={{ height: "var(--accreditation-logos-size, 52px)" }}
               />
             </div>
 
@@ -53,7 +170,8 @@ export function TopLogoBar() {
               <img
                 src="/images/Naac_A_no_background.png?v=2"
                 alt="NAAC 'A' Grade"
-                className="h-11 sm:h-12 md:h-[50px] lg:h-[52px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs"
+                className="w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs"
+                style={{ height: "var(--accreditation-logos-size, 52px)" }}
               />
               <div className="flex flex-col text-left leading-tight">
                 <span className="text-xs sm:text-sm font-black text-amber-600 tracking-tight">
@@ -76,7 +194,8 @@ export function TopLogoBar() {
               <img
                 src="/images/AICTE_seal_hd.png?v=2"
                 alt="AICTE Approved"
-                className="h-11 sm:h-12 md:h-[50px] lg:h-[52px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs"
+                className="w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs"
+                style={{ height: "var(--accreditation-logos-size, 52px)" }}
               />
               <div className="flex flex-col text-left leading-tight">
                 <span className="text-xs sm:text-sm font-black text-blue-900 tracking-tight">
