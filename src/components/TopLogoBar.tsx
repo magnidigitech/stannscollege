@@ -96,7 +96,7 @@ export function TopLogoBar() {
                 className="font-bold tracking-tight leading-tight mt-0.5 w-full"
                 style={{
                   fontSize: "var(--header-sub-size, 11px)",
-                  color: "var(--header-sub-color, #1e3a8a)",
+                  color: "var(--header-sub-color, var(--header-title-color, #1e3a8a))",
                   textAlign: "inherit"
                 }}
               >
@@ -106,7 +106,7 @@ export function TopLogoBar() {
                 className="font-semibold tracking-tight leading-tight mt-0.5 w-full"
                 style={{
                   fontSize: "var(--header-sub-size, 11px)",
-                  color: "var(--header-accent-color, #991b1b)",
+                  color: "var(--header-accent-color, var(--header-title-color, #991b1b))",
                   textAlign: "inherit"
                 }}
               >
@@ -116,7 +116,7 @@ export function TopLogoBar() {
                 className="font-semibold tracking-tight leading-tight w-full"
                 style={{
                   fontSize: "var(--header-sub-size, 11px)",
-                  color: "var(--header-accent-color, #991b1b)",
+                  color: "var(--header-accent-color, var(--header-title-color, #991b1b))",
                   textAlign: "inherit"
                 }}
               >
@@ -126,7 +126,7 @@ export function TopLogoBar() {
                 className="font-semibold tracking-tight leading-tight w-full"
                 style={{
                   fontSize: "var(--header-sub-size, 11px)",
-                  color: "var(--header-sub-color, #0369a1)",
+                  color: "var(--header-sub-color, var(--header-title-color, #0369a1))",
                   textAlign: "inherit"
                 }}
               >
@@ -136,7 +136,7 @@ export function TopLogoBar() {
                 className="font-bold tracking-tight leading-tight mt-0.5 w-full"
                 style={{
                   fontSize: "var(--header-address-size, 10.5px)",
-                  color: "var(--header-title-color, #002b49)",
+                  color: "var(--header-address-color, var(--header-title-color, #002b49))",
                   textAlign: "inherit"
                 }}
               >

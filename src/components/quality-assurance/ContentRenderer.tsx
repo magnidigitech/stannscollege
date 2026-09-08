@@ -42,6 +42,48 @@ interface Criterion {
   sections: Section[];
 }
 
+const qualityMeta: Record<string, {
+  subtitle: string;
+  icon: React.ComponentType<{ className?: string }>;
+}> = {
+  "iqac": {
+    subtitle: "Promoting institutional quality culture, steering committee guidelines, and continuous academic benchmarking.",
+    icon: ClipboardCheck
+  },
+  "aqar": {
+    subtitle: "Annual institutional performance reviews, criteria metrics, departmental parameters, and verified portfolios.",
+    icon: FileText
+  },
+  "naac": {
+    subtitle: "National Assessment & Accreditation self-study reports, peer team portfolios, and quality criteria checklists.",
+    icon: ShieldCheck
+  },
+  "quality-initiatives": {
+    subtitle: "Proactive quality enhancement, faculty development programmes, outcome-based education, and student enrichment.",
+    icon: Target
+  },
+  "audit": {
+    subtitle: "Comprehensive internal and external academic, administrative, green, and energy audits for institutional excellence.",
+    icon: Award
+  },
+  "feedback": {
+    subtitle: "Structured stakeholder feedback collection and action-taken reports from students, teachers, parents, and employers.",
+    icon: MessageSquare
+  },
+  "surveys": {
+    subtitle: "Student Satisfaction Survey (SSS), semester pass percentages, rank progression, and programme outcome evaluations.",
+    icon: BarChart
+  },
+  "gallery": {
+    subtitle: "Visual documentation of peer visits, faculty workshops, national seminars, outreach activities, and institutional milestones.",
+    icon: ImageIcon
+  },
+  "contact": {
+    subtitle: "Direct communication with the IQAC Coordinator and Secretariat for quality assurance and accreditation queries.",
+    icon: Phone
+  }
+};
+
 export const ContentRenderer = ({ slug }: { slug: string }) => {
   if (slug === "naac") {
     return (
@@ -127,18 +169,41 @@ export const ContentRenderer = ({ slug }: { slug: string }) => {
     });
   };
 
+  const meta = qualityMeta[slug] || {
+    subtitle: "Promoting institutional quality culture, steering committee guidelines, and continuous academic benchmarking.",
+    icon: ClipboardCheck
+  };
+  const SectionIcon = meta.icon;
+
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-4 border-b border-slate-100 pb-4">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-outfit font-black text-[#002147] tracking-tight">
+    <section className="bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+      {/* Full-Width Section Header Banner (Heading Level 2 - Strategic Plans Style) */}
+      <div
+        className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+        style={{
+          backgroundColor: "var(--level2-bg, #002147)",
+          borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <SectionIcon className="h-6 w-6 text-indigo-300 shrink-0" />
+          <h2
+            className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+            style={{ color: "var(--level2-title, #ffffff)" }}
+          >
             {data.title}
           </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full mt-2.5" />
         </div>
+        <p
+          className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+          style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+        >
+          {meta.subtitle}
+        </p>
       </div>
 
-      <div className="prose prose-slate max-w-none">
+      <div className="p-6 sm:p-8 md:p-10 bg-white">
+        <div className="prose prose-slate max-w-none">
         {nodes.map((node, idx) => {
           if (node.type === 'table') {
             let processedHtml = node.text
@@ -225,8 +290,9 @@ export const ContentRenderer = ({ slug }: { slug: string }) => {
             </p>
           );
         })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -375,7 +441,7 @@ const CriterionViewer = ({ type, tagline, mainTitle, subtitle, loadDataFn }: Cri
   const filteredSections = getFilteredSections();
 
   return (
-    <div className="flex flex-col gap-8 font-sans animate-fade-in relative z-10">
+    <section className="bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm font-sans animate-fade-in relative z-10">
       {/* Global overrides to hide site header, breadcrumbs, and sidebar when the modal is active */}
       <style dangerouslySetInnerHTML={{ __html: `
         body.modal-open header,
@@ -385,40 +451,63 @@ const CriterionViewer = ({ type, tagline, mainTitle, subtitle, loadDataFn }: Cri
         }
       ` }} />
       
-      {/* Header and Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 pb-8">
-        <div className="flex flex-col gap-1.5">
-          <span className="text-[10px] uppercase font-black tracking-widest text-[#002147]/60 flex items-center gap-1.5">
-            <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" /> {tagline}
-          </span>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-outfit font-black text-[#002147] tracking-tight">
-            {mainTitle}
-          </h2>
-          <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-2xl mt-1">
-            {subtitle}
-          </p>
-        </div>
+      {/* Full-Width Section Header Banner (Heading Level 2 - Strategic Plans Style) */}
+      <div
+        className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+        style={{
+          backgroundColor: "var(--level2-bg, #002147)",
+          borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+        }}
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            {type === "naac" ? (
+              <ShieldCheck className="h-6 w-6 text-indigo-300 shrink-0" />
+            ) : (
+              <FileText className="h-6 w-6 text-indigo-300 shrink-0" />
+            )}
+            <div>
+              <span className="text-[10px] uppercase font-black tracking-widest text-blue-200 flex items-center gap-1.5">
+                {tagline}
+              </span>
+              <h2
+                className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                style={{ color: "var(--level2-title, #ffffff)" }}
+              >
+                {mainTitle}
+              </h2>
+            </div>
+          </div>
 
-        {/* Global Search Bar */}
-        <div className="relative w-full md:w-80 group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-hover:text-emerald-500 transition-colors" />
-          <input
-            type="text"
-            placeholder="Search metric or document..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white px-11 py-3 text-sm rounded-2xl border border-slate-200/80 focus:border-emerald-400 focus:outline-none transition-all focus:ring-4 focus:ring-emerald-50/50 font-semibold text-slate-700 shadow-2xs"
-          />
-          {searchQuery && (
-            <button 
-              onClick={() => setSearchQuery("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
+          {/* Global Search Bar embedded in Banner */}
+          <div className="relative w-full md:w-80 group shrink-0">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-200 group-hover:text-white transition-colors" />
+            <input
+              type="text"
+              placeholder="Search metric or document..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white/15 hover:bg-white/20 focus:bg-white text-white focus:text-slate-800 placeholder:text-blue-100/70 focus:placeholder:text-slate-400 pl-10 pr-9 py-2 text-xs md:text-sm rounded-xl border border-white/20 focus:border-white focus:outline-none transition-all font-semibold shadow-xs"
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-200 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
+        <p
+          className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+          style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+        >
+          {subtitle}
+        </p>
       </div>
+
+      <div className="p-6 sm:p-8 md:p-10 bg-white flex flex-col gap-8">
 
       {/* Criteria Carousel/Tabs (up to 10 tabs for NAAC/AQAR) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2.5">
@@ -780,6 +869,7 @@ const CriterionViewer = ({ type, tagline, mainTitle, subtitle, loadDataFn }: Cri
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </section>
   );
 };

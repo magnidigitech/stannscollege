@@ -102,127 +102,342 @@ export default function MandatoryDisclosuresPage() {
     }
   ];
 
+  const categoryDetails: Record<string, {
+    title: string;
+    subtitle: string;
+    icon: React.ComponentType<{ className?: string }>;
+  }> = {
+    all: {
+      title: "Statutory Compliance & Mandatory Disclosures",
+      subtitle: `All official governance charters, statutory committee rosters, and regulatory approval certificates on public record (${disclosures.length})`,
+      icon: BookOpen
+    },
+    aicte: {
+      title: "AICTE Approvals & Extension of Approval (EoA)",
+      subtitle: "Official regulatory approvals and Extension of Approval orders from the All India Council for Technical Education",
+      icon: ShieldCheck
+    },
+    ugc: {
+      title: "UGC Recognition & Section 2(f) Status",
+      subtitle: "Permanent recognition under Section 2(f) & 12(B) of the UGC Act, 1956, Government of India",
+      icon: Scale
+    },
+    anu: {
+      title: "ANU Affiliations & University Sanctions",
+      subtitle: "Official university affiliation orders and sanctions from Acharya Nagarjuna University (ANU)",
+      icon: GraduationCap
+    },
+    committees: {
+      title: "Statutory Committees & Compliance Charters",
+      subtitle: "Mandatory institutional committee constitutions, Anti-Ragging SOPs, and Internal Complaints Committee (ICC) rosters",
+      icon: Users2
+    },
+    policies: {
+      title: "Institutional Compliance & Governance Policies",
+      subtitle: "Statutory policies, Code of Conduct handbooks, green campus charters, and ethical governance standards",
+      icon: FileText
+    }
+  };
+
+  const subCategories = [
+    { id: "aicte", name: "AICTE Approvals", icon: ShieldCheck, count: disclosures.filter(d => d.category === "aicte").length },
+    { id: "ugc", name: "UGC Status", icon: Scale, count: disclosures.filter(d => d.category === "ugc").length },
+    { id: "anu", name: "ANU Affiliations", icon: GraduationCap, count: disclosures.filter(d => d.category === "anu").length },
+    { id: "committees", name: "Statutory Committees", icon: Users2, count: disclosures.filter(d => d.category === "committees").length },
+    { id: "policies", name: "Compliance Policies", icon: FileText, count: disclosures.filter(d => d.category === "policies").length }
+  ];
+
   const filteredDisclosures = selectedCategory === "all"
     ? disclosures
     : disclosures.filter(item => item.category === selectedCategory);
 
+  const activeCategoryInfo = categoryDetails[selectedCategory] || categoryDetails.all;
+  const ActiveIcon = activeCategoryInfo.icon;
+
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* Top Breadcrumb Header */}
-      <div className="bg-white border-b border-slate-200/70 py-5 px-4 sm:px-6 lg:px-12 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs w-full">
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
-              <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
-              <span className="text-slate-350">/</span>
-              <span className="text-[#002147]">Mandatory Disclosures & Compliance</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Main Content Container */}
+      <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
 
-      {/* Main Content */}
-      <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
-
-        {/* Banner */}
-        <div className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white p-6 md:p-10 rounded-3xl shadow-xl relative overflow-hidden mb-8">
+        {/* 1. Full-Width Heading 1 Banner (matching Strategic Plans style) */}
+        <div
+          className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white px-6 md:px-10 lg:px-14 rounded-3xl shadow-xl relative overflow-hidden mb-8 border transition-all duration-200"
+          style={{
+            background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
+            borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
+            paddingTop: "var(--level1-padding-y, 32px)",
+            paddingBottom: "var(--level1-padding-y, 32px)"
+          }}
+        >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-          <div className="relative z-10 max-w-3xl flex flex-col gap-2">
-            <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
+          <div 
+            className="relative z-10 flex flex-col w-full"
+            style={{
+              alignItems: "var(--level1-align-items, center)",
+              textAlign: "var(--level1-text-align, center)" as any,
+              gap: "var(--level1-gap, 10px)"
+            }}
+          >
+            <h1
+              className="tracking-tight leading-tight transition-all duration-200 font-black"
+              style={{ 
+                color: "var(--level1-title, #ffffff)",
+                fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
+                fontSize: "var(--level1-title-size, 38px)",
+                textAlign: "inherit"
+              }}
+            >
               Mandatory Disclosures & Statutory Compliance
             </h1>
-            <p className="text-blue-100/80 text-sm md:text-base leading-relaxed font-semibold mt-1">
+            <p 
+              className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/10 pt-2.5 px-2 sm:px-4"
+              style={{
+                fontSize: "var(--level1-sub-size, 14px)",
+                maxWidth: "var(--level1-sub-max-width, 56rem)",
+                textAlign: "inherit"
+              }}
+            >
               In absolute compliance with the statutory regulations of AICTE, UGC, and Acharya Nagarjuna University, St. Ann&apos;s College for Women makes all essential governance charters, committee rosters, and approval certificates accessible below.
             </p>
           </div>
         </div>
 
-        {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* 2. Layout Grid: Sidebar on Left, Data Elements on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
-          {/* Category Tabs Sidebar */}
+          {/* Left: Category Tabs Sidebar with Heading Banner and Hierarchical Sub-elements */}
           <aside className="lg:col-span-3">
-            <div className="sticky top-28 bg-white border border-slate-200/70 p-6 rounded-[2rem] shadow-sm flex flex-col gap-6">
-
-              <nav className="flex flex-col gap-1.5">
-                {categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border ${selectedCategory === cat.id
-                      ? "bg-[#002147] text-white border-transparent shadow-md translate-x-1"
-                      : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100"
-                      }`}
+            <div
+              className="sticky top-24 flex flex-col gap-6 select-none h-fit max-h-[calc(100vh-130px)] overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+              style={{
+                backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none"
+              }}
+            >
+              {/* Sidebar Heading Banner */}
+              <div
+                className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-sm border transition-colors duration-200 shrink-0"
+                style={{
+                  background: "var(--sidebar-bg, #1e40af)",
+                  borderColor: "var(--sidebar-border, rgba(30, 64, 175, 0.3))",
+                  color: "var(--sidebar-text, #ffffff)"
+                }}
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs">
+                  <BookOpen className="h-4 w-4" />
+                </span>
+                <div className="flex flex-col min-w-0">
+                  <span
+                    className="font-outfit text-xs font-black uppercase tracking-wider truncate"
+                    style={{ color: "var(--sidebar-text, #ffffff)" }}
                   >
-                    <cat.icon className="h-4 w-4 shrink-0" />
-                    <span>{cat.name}</span>
-                  </button>
-                ))}
+                    MANDATORY DISCLOSURES
+                  </span>
+                  <span
+                    className="text-[10px] opacity-85 font-medium truncate"
+                    style={{ color: "var(--sidebar-text, #ffffff)" }}
+                  >
+                    Statutory Compliance Directory
+                  </span>
+                </div>
+              </div>
+
+              {/* Navigation Hierarchy: All Disclosures at top, remaining as sub-elements */}
+              <nav className="flex flex-col gap-3">
+                {/* Parent Root Item: ALL DISCLOSURES */}
+                <button
+                  onClick={() => setSelectedCategory("all")}
+                  className={`group w-full flex items-center justify-between gap-3 px-3.5 py-3 rounded-xl font-sans text-xs sm:text-sm transition-all duration-200 select-none ${
+                    selectedCategory === "all"
+                      ? "font-bold shadow-xs"
+                      : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
+                  }`}
+                  style={
+                    selectedCategory === "all"
+                      ? {
+                          background: "var(--sidebar-bg, #1e40af)",
+                          borderColor: "var(--sidebar-border, #1e40af)",
+                          color: "var(--sidebar-text, #ffffff)",
+                          boxShadow: "0 2px 8px -1px rgba(30, 64, 175, 0.25)"
+                        }
+                      : undefined
+                  }
+                >
+                  <div className="flex items-center gap-2.5 truncate">
+                    <BookOpen className={`h-4 w-4 shrink-0 ${selectedCategory === "all" ? "text-white" : "text-blue-600"}`} />
+                    <span className="truncate uppercase font-bold tracking-wider text-xs">All Disclosures</span>
+                  </div>
+                  <span
+                    className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${
+                      selectedCategory === "all"
+                        ? "bg-white/20 text-white"
+                        : "bg-slate-200/80 text-slate-700"
+                    }`}
+                  >
+                    {disclosures.length}
+                  </span>
+                </button>
+
+                {/* Sub-elements Container */}
+                <div className="flex flex-col gap-1.5 pl-3 border-l-2 border-slate-300/60 ml-2.5">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1 pb-1">
+                    Statutory Categories
+                  </span>
+
+                  {subCategories.map((sub) => {
+                    const isSubActive = selectedCategory === sub.id;
+                    const SubIcon = sub.icon;
+
+                    return (
+                      <button
+                        key={sub.id}
+                        onClick={() => setSelectedCategory(sub.id)}
+                        className={`group w-full flex items-center justify-between gap-2.5 px-3 py-2.5 rounded-xl font-sans text-xs transition-all duration-200 select-none ${
+                          isSubActive
+                            ? "font-bold shadow-xs"
+                            : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
+                        }`}
+                        style={
+                          isSubActive
+                            ? {
+                                background: "var(--sidebar-bg, #1e40af)",
+                                borderColor: "var(--sidebar-border, #1e40af)",
+                                color: "var(--sidebar-text, #ffffff)",
+                                boxShadow: "0 2px 8px -1px rgba(30, 64, 175, 0.25)"
+                              }
+                            : undefined
+                        }
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          <SubIcon className={`h-3.5 w-3.5 shrink-0 ${isSubActive ? "text-white" : "text-slate-500 group-hover:text-blue-600"}`} />
+                          <span className="truncate">{sub.name}</span>
+                        </div>
+                        <span
+                          className={`text-[10px] font-bold px-1.5 py-0.2 rounded-md shrink-0 ${
+                            isSubActive
+                              ? "bg-white/20 text-white"
+                              : "bg-slate-200/70 text-slate-600"
+                          }`}
+                        >
+                          {sub.count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </nav>
 
-              <div className="bg-amber-50/60 border border-amber-100/80 rounded-2xl p-4 flex gap-3 text-xs leading-relaxed text-amber-800">
+              {/* Public Record Alert Card */}
+              <div className="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-4 flex gap-3 text-xs leading-relaxed text-amber-900 shadow-2xs">
                 <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <h5 className="font-bold mb-0.5">Public Record</h5>
-                  <p className="font-medium text-amber-700/90">These documents are updated immediately upon renewal or periodic statutory review by regulatory bodies.</p>
+                  <h5 className="font-bold mb-0.5 text-amber-950">Public Record</h5>
+                  <p className="font-medium text-amber-800/90 text-[11px]">
+                    These documents are updated immediately upon renewal or periodic statutory review by regulatory bodies.
+                  </p>
                 </div>
               </div>
             </div>
           </aside>
 
-          {/* List of Documents */}
-          <main className="lg:col-span-9 flex flex-col gap-6">
-            <div className="bg-white border border-slate-200/70 p-6 md:p-8 rounded-[2rem] shadow-sm">
-              <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight border-b border-slate-100 pb-4 mb-6 flex items-center justify-between">
-                <span>Documents List ({filteredDisclosures.length})</span>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">St Anns College for Women</span>
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredDisclosures.map((item) => (
-                  <div
-                    key={item.id}
-                    className="group bg-slate-50/50 hover:bg-white border border-slate-100 hover:border-indigo-100/80 p-5 rounded-2xl shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-indigo-600 border border-indigo-100/50">
-                          {item.category}
-                        </span>
-                        <span className="text-[10px] font-bold text-slate-400">
-                          AY {item.year}
-                        </span>
-                      </div>
-                      <h4 className="font-outfit text-base font-black text-slate-800 leading-snug group-hover:text-indigo-600 transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed mt-2.5">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-3 mt-6 border-t border-slate-100/80 pt-4">
-                      <button
-                        onClick={() => setSelectedPdf(item.fileUrl || "/documents/placeholder.pdf")}
-                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-100/40 hover:border-indigo-200/50 px-4 py-2.5 text-xs font-bold text-indigo-700 transition-all active:scale-95 select-none"
-                      >
-                        <Eye className="h-4 w-4" /> View PDF
-                      </button>
-                      <a
-                        href={item.fileUrl || "#"}
-                        download
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-800 transition-all active:scale-95 select-none"
-                      >
-                        <Download className="h-4 w-4" />
-                      </a>
-                    </div>
+          {/* Right: Data Elements Section with Strategic Plans Level 2 Banner */}
+          <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
+            <section className="bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+              {/* Heading Level 2 Banner (matching Strategic Plans style) */}
+              <div
+                className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                style={{
+                  backgroundColor: "var(--level2-bg, #002147)",
+                  borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+                }}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <ActiveIcon className="h-6 w-6 text-indigo-300 shrink-0" />
+                    <h2
+                      className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                      style={{ color: "var(--level2-title, #ffffff)" }}
+                    >
+                      {activeCategoryInfo.title}
+                    </h2>
                   </div>
-                ))}
+                  <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-black tracking-wide bg-white/15 text-white border border-white/20">
+                    {filteredDisclosures.length} Document{filteredDisclosures.length !== 1 ? "s" : ""}
+                  </span>
+                </div>
+                <p
+                  className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                  style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+                >
+                  {activeCategoryInfo.subtitle}
+                </p>
               </div>
-            </div>
+
+              {/* Document Cards with Alternating Colors (Pure White & Soft Ice Blue) */}
+              <div className="p-6 sm:p-8 md:p-10 space-y-6 bg-[#eaeff5]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredDisclosures.map((item, index) => {
+                    // Alternating 2-column checkerboard colors: 0=White, 1=IceBlue, 2=IceBlue, 3=White
+                    const isEvenRow = Math.floor(index / 2) % 2 === 0;
+                    const isEvenCol = index % 2 === 0;
+                    const isIceBlue = isEvenRow ? !isEvenCol : isEvenCol;
+
+                    return (
+                      <div
+                        key={item.id}
+                        className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between ${
+                          isIceBlue
+                            ? "bg-[#e8f1fd] border-2 border-blue-200/90 hover:border-blue-300"
+                            : "bg-white border-2 border-slate-200/90 hover:border-indigo-200"
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-blue-700 border border-blue-100">
+                              {item.category}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-500">
+                              AY {item.year}
+                            </span>
+                          </div>
+                          <h4
+                            className={`font-outfit text-base sm:text-lg font-black leading-snug transition-colors ${
+                              isIceBlue ? "text-blue-900" : "text-slate-900"
+                            }`}
+                          >
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-slate-600 font-medium leading-relaxed mt-2.5">
+                            {item.description}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-3 mt-6 border-t border-slate-200/60 pt-4">
+                          <button
+                            onClick={() => setSelectedPdf(item.fileUrl || "/documents/placeholder.pdf")}
+                            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-bold text-white transition-all active:scale-95 shadow-xs select-none"
+                          >
+                            <Eye className="h-4 w-4" /> View PDF
+                          </button>
+                          <a
+                            href={item.fileUrl || "#"}
+                            download
+                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-700 transition-all active:scale-95 select-none shadow-2xs"
+                            title="Download Document"
+                          >
+                            <Download className="h-4 w-4" />
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
 
             {/* Compliance Contact Board */}
-            <div className="bg-white border border-slate-200/70 p-6 md:p-8 rounded-[2rem] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="bg-white border-2 border-slate-200/90 p-6 md:p-8 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex flex-col gap-1.5">
                 <h4 className="font-outfit text-lg font-black text-slate-800 flex items-center gap-2">
                   <Scale className="h-5 w-5 text-indigo-600" /> Compliance Enquiries & Public Grievances

@@ -49,108 +49,173 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
+      {/* Main Content Container */}
+      <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
 
-      {/* Top Breadcrumb Header */}
-      <div className="bg-white border-b border-slate-200/70 py-5 px-4 sm:px-6 lg:px-12 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs w-full">
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
-              <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
-              <span className="text-slate-350">/</span>
-              <span className="hover:text-[#002147] transition-all">Quality Assurance</span>
-              <span className="text-slate-350">/</span>
-              <span className="text-[#002147]">
-                {currentSlug === "naac"
-                  ? "NAAC Accreditation"
-                  : currentSlug === "iqac"
-                    ? "About IQAC"
-                    : currentSlug === "aqar"
-                      ? "AQAR Reports"
-                      : currentSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
-              </span>
-            </div>
-          </div>
-
-          <div className="hidden sm:flex items-center gap-3 text-xs font-black uppercase tracking-widest text-[#002147]">
-            <div className="flex items-center gap-1.5 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-100 shadow-xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-              Accredited Institution
-            </div>
+        {/* 1. Full-Width Heading 1 Banner (matching Strategic Plans & Mandatory Disclosures) */}
+        <div
+          className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white px-6 md:px-10 lg:px-14 rounded-3xl shadow-xl relative overflow-hidden mb-8 border transition-all duration-200"
+          style={{
+            background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
+            borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
+            paddingTop: "var(--level1-padding-y, 32px)",
+            paddingBottom: "var(--level1-padding-y, 32px)"
+          }}
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
+          <div 
+            className="relative z-10 flex flex-col w-full"
+            style={{
+              alignItems: "var(--level1-align-items, center)",
+              textAlign: "var(--level1-text-align, center)" as any,
+              gap: "var(--level1-gap, 10px)"
+            }}
+          >
+            <h1
+              className="tracking-tight leading-tight transition-all duration-200 font-black"
+              style={{ 
+                color: "var(--level1-title, #ffffff)",
+                fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
+                fontSize: "var(--level1-title-size, 38px)",
+                textAlign: "inherit"
+              }}
+            >
+              Internal Quality Assurance Cell (IQAC)
+            </h1>
+            <p 
+              className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/10 pt-2.5 px-2 sm:px-4"
+              style={{
+                fontSize: "var(--level1-sub-size, 14px)",
+                maxWidth: "var(--level1-sub-max-width, 56rem)",
+                textAlign: "inherit"
+              }}
+            >
+              Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* Main Content Container */}
-      <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* 2. Layout Grid: Sidebar on Left, Data Elements on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
-          {/* A. Left Sidebar Sticky Navigation */}
-          <aside className="lg:col-span-3 xl:col-span-3">
-            <div className="sticky top-24 flex flex-col gap-4 max-h-[calc(100vh-7rem)] overflow-hidden">
-
-              {/* Navigation Box */}
-              <div className="bg-white border border-slate-200/70 rounded-[2rem] p-6 shadow-sm max-h-[350px] flex flex-col">
-
-                {/* Fixed Header (Stays pinned at top) */}
-                <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 mb-4 shrink-0">
-                  <h3 className="font-outfit text-base font-black text-[#002147] tracking-tight leading-snug">
-                    IQAC<br />Quality Assurance & Accreditation
-                  </h3>
+          {/* Left: Redesigned Collegiate Sidebar */}
+          <aside className="lg:col-span-3">
+            <div
+              className="sticky top-24 flex flex-col gap-6 select-none h-fit max-h-[calc(100vh-130px)] overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+              style={{
+                backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none"
+              }}
+            >
+              {/* Sidebar Heading Banner */}
+              <div
+                className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-sm border transition-colors duration-200 shrink-0"
+                style={{
+                  background: "var(--sidebar-bg, #1e40af)",
+                  borderColor: "var(--sidebar-border, rgba(30, 64, 175, 0.3))",
+                  color: "var(--sidebar-text, #ffffff)"
+                }}
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs">
+                  <ShieldCheck className="h-4 w-4" />
+                </span>
+                <div className="flex flex-col min-w-0">
+                  <span
+                    className="font-outfit text-xs font-black uppercase tracking-wider truncate"
+                    style={{ color: "var(--sidebar-text, #ffffff)" }}
+                  >
+                    IQAC DIRECTORY
+                  </span>
+                  <span
+                    className="text-[10px] opacity-85 font-medium truncate"
+                    style={{ color: "var(--sidebar-text, #ffffff)" }}
+                  >
+                    Quality Assurance &amp; Accreditation
+                  </span>
                 </div>
-
-                {/* Scrollable Navigation Menu */}
-                <nav className="flex flex-col gap-4 overflow-y-auto pr-1 custom-scrollbar flex-1">
-                  {navigationStructure.map((group, idx) => (
-                    <div key={idx} className="flex flex-col gap-2">
-                      <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400/90 border-l-2 border-slate-200 pl-2.5 leading-none">
-                        {group.title}
-                      </h4>
-                      <ul className="flex flex-col gap-1">
-                        {group.items.map((item, i) => {
-                          const fullHref = `/quality-assurance/${item.slug}`;
-                          const isActive = currentSlug === item.slug;
-
-                          return (
-                            <li key={i}>
-                              <Link
-                                href={fullHref}
-                                className={`group w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border ${isActive
-                                  ? "bg-[#002147] text-white border-transparent font-bold shadow-md translate-x-1"
-                                  : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
-                                  }`}
-                              >
-                                <div className="flex items-center gap-2 truncate">
-                                  <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-emerald-400" : "text-slate-400 group-hover:text-emerald-500"}`} />
-                                  <span className="truncate">{item.text}</span>
-                                </div>
-                                <ArrowRight className={`h-3.5 w-3.5 shrink-0 transform transition-all ${isActive ? "opacity-100 translate-x-0" : "opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
-                                  }`} />
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
-                </nav>
-
               </div>
 
+              {/* Navigation Category Groups */}
+              <nav className="flex flex-col gap-5">
+                {navigationStructure.map((group, idx) => (
+                  <div key={idx} className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-2 px-1 pb-1 border-b border-slate-300/70">
+                      <span
+                        className="h-1.5 w-1.5 rounded-full shrink-0 transition-colors duration-200"
+                        style={{ background: "var(--sidebar-bg, #1e40af)" }}
+                      />
+                      <h4 className="font-outfit text-xs font-extrabold text-[#002147] uppercase tracking-wider select-none">
+                        {group.title}
+                      </h4>
+                    </div>
+
+                    <div className="flex flex-col gap-1 mt-1">
+                      {group.items.map((item, i) => {
+                        const fullHref = `/quality-assurance/${item.slug}`;
+                        const isActive = currentSlug === item.slug;
+                        const ItemIcon = item.icon;
+
+                        return (
+                          <Link
+                            key={i}
+                            href={fullHref}
+                            className={`group font-sans text-xs md:text-sm py-2.5 px-3 rounded-xl transition-all duration-200 flex items-center justify-between select-none ${
+                              isActive
+                                ? "font-bold shadow-xs"
+                                : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
+                            }`}
+                            style={
+                              isActive
+                                ? {
+                                    background: "var(--sidebar-bg, #1e40af)",
+                                    borderColor: "var(--sidebar-border, #1e40af)",
+                                    color: "var(--sidebar-text, #ffffff)",
+                                    boxShadow: "0 2px 8px -1px rgba(30, 64, 175, 0.25)"
+                                  }
+                                : undefined
+                            }
+                          >
+                            <div className="flex items-center gap-2.5 truncate">
+                              <ItemIcon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-500 group-hover:text-blue-600"}`} />
+                              <span className="truncate">{item.text}</span>
+                            </div>
+                            {isActive ? (
+                              <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0 shadow-xs" />
+                            ) : (
+                              <ArrowRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-700 transition-all duration-200 group-hover:translate-x-0.5 shrink-0 opacity-60 group-hover:opacity-100" />
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </nav>
+
               {/* Sidebar Contact Card */}
-              <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] text-white rounded-[2rem] p-4 shadow-sm relative overflow-hidden group shrink-0">
+              <div
+                className="text-white rounded-2xl p-4 shadow-sm relative overflow-hidden group shrink-0 border transition-colors duration-200"
+                style={{
+                  background: "linear-gradient(135deg, #002147 0%, #0d3b66 100%)",
+                  borderColor: "rgba(255, 255, 255, 0.1)"
+                }}
+              >
                 <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4 pointer-events-none group-hover:scale-105 transition-transform">
-                  <ShieldCheck className="h-28 w-28" />
+                  <ShieldCheck className="h-28 w-28 text-white" />
                 </div>
-                <div className="relative z-10 flex flex-col gap-2.5 font-sans">
-                  <h4 className="font-outfit font-black text-sm tracking-tight">IQAC Enquiries?</h4>
+                <div className="relative z-10 flex flex-col gap-2 font-sans">
+                  <h4 className="font-outfit font-black text-sm tracking-tight text-white flex items-center gap-1.5">
+                    <ShieldCheck className="h-4 w-4 text-emerald-400" /> IQAC Enquiries?
+                  </h4>
                   <p className="text-blue-100/80 text-[11px] leading-relaxed font-medium">
                     Connect with the IQAC coordinator for queries related to accreditation, feedback, and quality reports.
                   </p>
                   <div className="flex flex-col gap-1.5 border-t border-white/10 pt-2.5 text-[11px]">
-                    <a href="tel:+918632231381" className="flex items-center gap-2 hover:text-blue-200 font-bold transition-colors">
+                    <a href="tel:+918632231381" className="flex items-center gap-2 hover:text-blue-200 font-bold transition-colors text-blue-100">
                       <Phone className="h-3.5 w-3.5 text-blue-300 shrink-0" /> +91 863 2231381
                     </a>
-                    <a href="mailto:iqac@stannscollege.com" className="flex items-center gap-2 hover:text-blue-200 font-bold transition-colors">
+                    <a href="mailto:iqac@stannscollege.com" className="flex items-center gap-2 hover:text-blue-200 font-bold transition-colors text-blue-100">
                       <Mail className="h-3.5 w-3.5 text-blue-300 shrink-0" /> iqac@stannscollege.com
                     </a>
                   </div>
@@ -160,11 +225,9 @@ export default function QualityAssurancePage({ params }: PageProps) {
             </div>
           </aside>
 
-          {/* B. Right Dynamic Component Content */}
-          <main className="lg:col-span-9 xl:col-span-9">
-            <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 lg:p-12 shadow-sm min-h-[500px]">
-              <ContentRenderer slug={currentSlug} />
-            </div>
+          {/* Right: Dynamic Component Content */}
+          <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
+            <ContentRenderer slug={currentSlug} />
           </main>
 
         </div>

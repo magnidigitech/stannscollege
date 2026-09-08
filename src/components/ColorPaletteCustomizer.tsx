@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Palette, Check, RotateCcw, Copy, X, Sliders, Sparkles,
   Building, Compass, Heading, Bookmark, BookmarkPlus,
-  Pipette, CheckCircle2, ArrowRight, Trash2, Clock, BookOpen
+  Pipette, CheckCircle2, ArrowRight, Trash2, Clock, BookOpen,
+  Type, SlidersHorizontal, Layers, Paintbrush
 } from "lucide-react";
 
 // --- Color Conversion Helpers ---
@@ -89,6 +90,7 @@ function hexToHsv(hex: string): { h: number; s: number; v: number } {
 }
 
 function isLightColor(colorStr: string): boolean {
+  if (!colorStr) return false;
   if (colorStr.includes("gradient")) {
     return colorStr.includes("#fff") || colorStr.includes("#f8") || colorStr.includes("#ea");
   }
@@ -99,7 +101,7 @@ function isLightColor(colorStr: string): boolean {
 }
 
 function extractSolidFromGradient(colorStr: string): string {
-  if (!colorStr.includes("gradient")) return colorStr;
+  if (!colorStr || !colorStr.includes("gradient")) return colorStr || "#002147";
   const match = colorStr.match(/#[a-fA-F0-9]{6}/);
   return match ? match[0] : "#002147";
 }
@@ -115,6 +117,12 @@ export interface SavedColorSetup {
   level2: string;
   sidebar?: string;
   sidebarBg?: string;
+  headerTitleColor?: string;
+  headerSubColor?: string;
+  headerAccentColor?: string;
+  headerAddressColor?: string;
+  topNavLinkColor?: string;
+  topNavRow2Color?: string;
 }
 
 export interface ReadyMadeOption {
@@ -127,6 +135,12 @@ export interface ReadyMadeOption {
   level2: string;
   sidebar?: string;
   sidebarBg?: string;
+  headerTitleColor?: string;
+  headerSubColor?: string;
+  headerAccentColor?: string;
+  headerAddressColor?: string;
+  topNavLinkColor?: string;
+  topNavRow2Color?: string;
 }
 
 const READY_MADE_OPTIONS: ReadyMadeOption[] = [
@@ -139,7 +153,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #002b36, #043d4d, #084c61)",
     level2: "#002147",
     sidebar: "#1e40af",
-    sidebarBg: "#eaeff5"
+    sidebarBg: "#eaeff5",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#bfdbfe",
+    headerAccentColor: "#93c5fd",
+    headerAddressColor: "#cbd5e1",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#e2e8f0"
   },
   {
     id: "preset-2",
@@ -150,7 +170,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #001730, #002147, #0d3b66)",
     level2: "#001730",
     sidebar: "#002147",
-    sidebarBg: "#eaeff5"
+    sidebarBg: "#eaeff5",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#bfdbfe",
+    headerAccentColor: "#93c5fd",
+    headerAddressColor: "#cbd5e1",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#e2e8f0"
   },
   {
     id: "preset-3",
@@ -161,7 +187,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #1e3a8a, #1e40af, #2563eb)",
     level2: "#1e40af",
     sidebar: "#1e40af",
-    sidebarBg: "#ffffff"
+    sidebarBg: "#ffffff",
+    headerTitleColor: "#002b49",
+    headerSubColor: "#1e3a8a",
+    headerAccentColor: "#991b1b",
+    headerAddressColor: "#334155",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#cbd5e1"
   },
   {
     id: "preset-4",
@@ -172,7 +204,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #002b36, #043d4d, #084c61)",
     level2: "#043d4d",
     sidebar: "#084c61",
-    sidebarBg: "#e8f1fd"
+    sidebarBg: "#e8f1fd",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#a5f3fc",
+    headerAccentColor: "#67e8f9",
+    headerAddressColor: "#e0f2fe",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#e2e8f0"
   },
   {
     id: "preset-5",
@@ -183,7 +221,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #1e1b4b, #3730a3, #4f46e5)",
     level2: "#312e81",
     sidebar: "#312e81",
-    sidebarBg: "#eef2ff"
+    sidebarBg: "#eef2ff",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#c7d2fe",
+    headerAccentColor: "#a5b4fc",
+    headerAddressColor: "#e0e7ff",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#e0e7ff"
   },
   {
     id: "preset-6",
@@ -194,7 +238,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #090d16, #0f172a, #2563eb)",
     level2: "#0f172a",
     sidebar: "#1e293b",
-    sidebarBg: "#f1f5f9"
+    sidebarBg: "#f1f5f9",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#94a3b8",
+    headerAccentColor: "#38bdf8",
+    headerAddressColor: "#cbd5e1",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#94a3b8"
   },
   {
     id: "preset-7",
@@ -205,7 +255,13 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #022c22, #064e3b, #047857)",
     level2: "#064e3b",
     sidebar: "#064e3b",
-    sidebarBg: "#f0fdf4"
+    sidebarBg: "#f0fdf4",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#a7f3d0",
+    headerAccentColor: "#6ee7b7",
+    headerAddressColor: "#d1fae5",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#a7f3d0"
   },
   {
     id: "preset-8",
@@ -216,11 +272,17 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     level1: "linear-gradient(to right, #2c0b0e, #581c1c, #831843)",
     level2: "#581c1c",
     sidebar: "#581c1c",
-    sidebarBg: "#fdf2f2"
+    sidebarBg: "#fdf2f2",
+    headerTitleColor: "#ffffff",
+    headerSubColor: "#fecdd3",
+    headerAccentColor: "#fda4af",
+    headerAddressColor: "#ffe4e6",
+    topNavLinkColor: "#ffffff",
+    topNavRow2Color: "#fecdd3"
   }
 ];
 
-// --- Custom Color Picker Canvas Matching User Image ---
+// --- Custom Color Picker Canvas Component ---
 interface ColorPickerProps {
   currentColor: string;
   onColorChange: (newColor: string) => void;
@@ -350,24 +412,21 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
   const activeSolidHex = rgbToHex(...hsvToRgb(hue, sat, val));
 
   return (
-    <div className="w-full bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
-      {/* Tabs matching user image: Solid colour | Gradient */}
-      <div className="flex items-center border-b border-slate-100">
+    <div className="w-full bg-white border-2 border-slate-200/90 rounded-2xl p-4 shadow-xs flex flex-col gap-3.5">
+      {/* High-Contrast Segmented Tabs: Solid colour | Gradient */}
+      <div className="flex items-center gap-2 border-b-2 border-slate-100 pb-2.5">
         <button
           onClick={() => {
             setColorMode("solid");
             onColorChange(activeSolidHex);
           }}
-          className={`relative pb-2.5 px-4 font-outfit text-xs md:text-sm font-bold transition-all cursor-pointer ${
+          className={`px-3.5 py-1.5 rounded-xl font-outfit text-xs font-black transition-all cursor-pointer ${
             colorMode === "solid"
-              ? "text-slate-900"
-              : "text-slate-400 hover:text-slate-700"
+              ? "bg-slate-950 text-white shadow-xs border border-slate-800"
+              : "text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900"
           }`}
         >
           Solid colour
-          {colorMode === "solid" && (
-            <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-indigo-600 rounded-full" />
-          )}
         </button>
 
         {supportsGradient && (
@@ -376,16 +435,13 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
               setColorMode("gradient");
               applyGradient(gradientStart, gradientEnd, gradientDir);
             }}
-            className={`relative pb-2.5 px-4 font-outfit text-xs md:text-sm font-bold transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl font-outfit text-xs font-black transition-all cursor-pointer ${
               colorMode === "gradient"
-                ? "text-slate-900"
-                : "text-slate-400 hover:text-slate-700"
+                ? "bg-slate-950 text-white shadow-xs border border-slate-800"
+                : "text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900"
             }`}
           >
-            Gradient
-            {colorMode === "gradient" && (
-              <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-indigo-600 rounded-full" />
-            )}
+            Gradient Tone
           </button>
         )}
       </div>
@@ -397,7 +453,7 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
             ref={canvasRef}
             onPointerDown={handlePointerDownCanvas}
             onPointerMove={handlePointerMoveCanvas}
-            className="relative w-full h-44 rounded-2xl cursor-crosshair overflow-hidden select-none touch-none shadow-inner"
+            className="relative w-full h-40 rounded-xl cursor-crosshair overflow-hidden select-none touch-none shadow-inner border border-slate-300"
             style={{
               backgroundColor: `hsl(${hue}, 100%, 50%)`,
               backgroundImage: `
@@ -406,9 +462,9 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
               `
             }}
           >
-            {/* Dragger circle with white ring & colored/black center */}
+            {/* Dragger circle with high-contrast ring */}
             <div
-              className="absolute w-5 h-5 rounded-full border-2 border-white shadow-md pointer-events-none -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
+              className="absolute w-5 h-5 rounded-full border-2 border-white shadow-md pointer-events-none -translate-x-1/2 -translate-y-1/2 flex items-center justify-center ring-1 ring-black/40"
               style={{
                 left: `${sat}%`,
                 top: `${100 - val}%`
@@ -426,7 +482,7 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
             ref={hueRef}
             onPointerDown={handlePointerDownHue}
             onPointerMove={handlePointerMoveHue}
-            className="relative w-full h-4 rounded-full cursor-pointer select-none touch-none shadow-inner"
+            className="relative w-full h-4 rounded-full cursor-pointer select-none touch-none shadow-inner border border-slate-300"
             style={{
               background: `linear-gradient(to right,
                 #ff0000 0%,
@@ -441,13 +497,13 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
           >
             {/* Draggable thumb */}
             <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full border-2 border-white shadow-md pointer-events-none flex items-center justify-center"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full border-2 border-white shadow-md pointer-events-none flex items-center justify-center ring-1 ring-black/30"
               style={{
                 left: `${(hue / 360) * 100}%`
               }}
             >
               <div
-                className="w-3 h-3 rounded-full shadow-2xs"
+                className="w-2.5 h-2.5 rounded-full shadow-2xs"
                 style={{ backgroundColor: `hsl(${hue}, 100%, 50%)` }}
               />
             </div>
@@ -455,9 +511,9 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
 
           {/* Bottom Bar: Swatch + Hex Input + EyeDropper */}
           <div className="flex items-center gap-2 pt-1">
-            <div className="flex-1 flex items-center gap-2.5 px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl focus-within:border-indigo-500 focus-within:bg-white transition-all">
+            <div className="flex-1 flex items-center gap-2.5 px-3 py-2 bg-slate-100 border-2 border-slate-300 rounded-xl focus-within:border-purple-600 focus-within:bg-white transition-all">
               <div
-                className="h-6 w-6 rounded-full border border-slate-300 shadow-inner shrink-0"
+                className="h-6 w-6 rounded-lg border-2 border-white shadow-xs shrink-0 ring-1 ring-black/10"
                 style={{ backgroundColor: activeSolidHex }}
               />
               <input
@@ -466,7 +522,7 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
                 onChange={(e) => handleHexInputChange(e.target.value)}
                 placeholder="#002147"
                 maxLength={7}
-                className="flex-1 font-mono font-bold text-xs md:text-sm text-slate-800 uppercase focus:outline-none bg-transparent"
+                className="flex-1 font-mono font-black text-xs md:text-sm text-slate-900 uppercase focus:outline-none bg-transparent"
               />
             </div>
 
@@ -474,7 +530,7 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
             <button
               onClick={handleEyeDropper}
               type="button"
-              className="p-2.5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-indigo-600 transition-all shadow-xs active:scale-95 cursor-pointer"
+              className="p-2.5 rounded-xl border-2 border-slate-300 bg-white hover:bg-slate-100 text-slate-800 hover:text-purple-600 transition-all shadow-xs active:scale-95 cursor-pointer font-bold"
               title="Pick a color from screen"
             >
               <Pipette className="h-4 w-4" />
@@ -492,9 +548,9 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
         </>
       ) : (
         /* Gradient Builder */
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3.5">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-slate-600">Direction</label>
+            <label className="text-xs font-black text-slate-700">Direction</label>
             <div className="grid grid-cols-3 gap-2">
               {[
                 { label: "Horizontal →", val: "to right" },
@@ -508,10 +564,10 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
                     setGradientDir(d.val);
                     applyGradient(gradientStart, gradientEnd, d.val);
                   }}
-                  className={`py-2 px-1 text-center rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                  className={`py-2 px-1 text-center rounded-xl text-xs font-black border-2 transition-all cursor-pointer ${
                     gradientDir === d.val
-                      ? "border-indigo-600 bg-indigo-50 text-indigo-900 shadow-xs"
-                      : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                      ? "border-slate-950 bg-slate-950 text-white shadow-xs"
+                      : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   {d.label}
@@ -522,8 +578,8 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-bold text-slate-600">Start Tone</label>
-              <div className="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl">
+              <label className="text-xs font-black text-slate-700">Start Tone</label>
+              <div className="flex items-center gap-2 p-2 bg-slate-100 border-2 border-slate-300 rounded-xl">
                 <input
                   type="color"
                   value={gradientStart}
@@ -533,13 +589,13 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
                   }}
                   className="h-7 w-8 rounded-lg cursor-pointer border border-slate-300 p-0.5 bg-white"
                 />
-                <span className="font-mono text-xs font-bold text-slate-700">{gradientStart}</span>
+                <span className="font-mono text-xs font-black text-slate-800">{gradientStart}</span>
               </div>
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-bold text-slate-600">End Tone</label>
-              <div className="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl">
+              <label className="text-xs font-black text-slate-700">End Tone</label>
+              <div className="flex items-center gap-2 p-2 bg-slate-100 border-2 border-slate-300 rounded-xl">
                 <input
                   type="color"
                   value={gradientEnd}
@@ -549,15 +605,15 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
                   }}
                   className="h-7 w-8 rounded-lg cursor-pointer border border-slate-300 p-0.5 bg-white"
                 />
-                <span className="font-mono text-xs font-bold text-slate-700">{gradientEnd}</span>
+                <span className="font-mono text-xs font-black text-slate-800">{gradientEnd}</span>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col gap-1 pt-1">
-            <span className="text-[11px] font-bold text-slate-500">Live Gradient Preview:</span>
+            <span className="text-[11px] font-black text-slate-600">Gradient Live Preview:</span>
             <div
-              className="h-10 w-full rounded-xl border border-slate-300 shadow-inner"
+              className="h-10 w-full rounded-xl border-2 border-slate-300 shadow-inner"
               style={{ background: currentColor }}
             />
           </div>
@@ -570,6 +626,7 @@ function ImageStyleColorPicker({ currentColor, onColorChange, supportsGradient =
 // --- Main Palette Customizer Component ---
 export default function ColorPaletteCustomizer() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeDrawer, setActiveDrawer] = useState<string | null>(null);
   const [topTab, setTopTab] = useState<"manual" | "ready" | "saved">("manual");
 
   // Manual Element selector: Logo, Top Nav, Heading 1, Heading 2, Side Nav
@@ -584,6 +641,21 @@ export default function ColorPaletteCustomizer() {
   const [level2Color, setLevel2Color] = useState<string>("#002147");
   const [sidebarColor, setSidebarColor] = useState<string>("#1e40af");
   const [sidebarBgColor, setSidebarBgColor] = useState<string>("#eaeff5");
+
+  // Logo sub-modes: Background vs Masthead Typography
+  const [logoSubMode, setLogoSubMode] = useState<"background" | "typography">("background");
+  const [headerTitleColor, setHeaderTitleColor] = useState<string>("#002b49");
+  const [headerSubColor, setHeaderSubColor] = useState<string>("#1e3a8a");
+  const [headerAccentColor, setHeaderAccentColor] = useState<string>("#991b1b");
+  const [headerAddressColor, setHeaderAddressColor] = useState<string>("#334155");
+  const [headerColorSync, setHeaderColorSync] = useState<"all" | "individual">("all");
+
+  // Nav sub-modes: Background vs Menu Links
+  const [navSubMode, setNavSubMode] = useState<"background" | "links">("background");
+  const [topNavLinkColor, setTopNavLinkColor] = useState<string>("#ffffff");
+  const [topNavRow2Color, setTopNavRow2Color] = useState<string>("#e2e8f0");
+
+  // Sidebar sub-mode
   const [sidebarColorMode, setSidebarColorMode] = useState<"accent" | "background">("accent");
 
   // Saved Setups / Versions List
@@ -599,6 +671,14 @@ export default function ColorPaletteCustomizer() {
       const savedL2 = localStorage.getItem("theme_level2Color");
       const savedSidebar = localStorage.getItem("theme_sidebarColor");
       const savedSidebarBg = localStorage.getItem("theme_sidebarBgColor");
+
+      const savedTitleCol = localStorage.getItem("theme_headerTitleColor");
+      const savedSubCol = localStorage.getItem("theme_headerSubColor");
+      const savedAccentCol = localStorage.getItem("theme_headerAccentColor");
+      const savedAddressCol = localStorage.getItem("theme_headerAddressColor");
+      const savedLinkCol = localStorage.getItem("theme_topNavLinkColor");
+      const savedRow2Col = localStorage.getItem("theme_topNavRow2Color");
+
       const savedList = localStorage.getItem("theme_savedColorSetups");
 
       if (savedLogo) setLogoBarColor(savedLogo);
@@ -608,6 +688,13 @@ export default function ColorPaletteCustomizer() {
       if (savedSidebar) setSidebarColor(savedSidebar);
       if (savedSidebarBg) setSidebarBgColor(savedSidebarBg);
 
+      if (savedTitleCol) setHeaderTitleColor(savedTitleCol);
+      if (savedSubCol) setHeaderSubColor(savedSubCol);
+      if (savedAccentCol) setHeaderAccentColor(savedAccentCol);
+      if (savedAddressCol) setHeaderAddressColor(savedAddressCol);
+      if (savedLinkCol) setTopNavLinkColor(savedLinkCol);
+      if (savedRow2Col) setTopNavRow2Color(savedRow2Col);
+
       if (savedList) {
         const parsed = JSON.parse(savedList);
         if (Array.isArray(parsed)) setSavedSetups(parsed);
@@ -615,10 +702,25 @@ export default function ColorPaletteCustomizer() {
     } catch (e) {
       // Ignore
     }
+
+    const handleDrawerState = (e: any) => {
+      if (e.detail) {
+        setActiveDrawer(e.detail.openDrawer);
+        if (e.detail.openDrawer === "layout") {
+          setIsOpen(false);
+        } else if (e.detail.openDrawer === "color") {
+          setIsOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener("customizerDrawerState", handleDrawerState);
+    return () => window.removeEventListener("customizerDrawerState", handleDrawerState);
   }, []);
 
   // Update CSS Variables in real time
   useEffect(() => {
+    if (typeof document === "undefined") return;
     const root = document.documentElement;
 
     // 1. Logo Bar variables
@@ -630,11 +732,17 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--logo-bar-border", isLogoLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.1)");
     root.style.setProperty("--logo-bar-icon-bg", isLogoLight ? "rgba(0,33,71,0.06)" : "rgba(255,255,255,0.1)");
 
+    // Typography Text Mode Colors
+    root.style.setProperty("--header-title-color", headerTitleColor);
+    root.style.setProperty("--header-sub-color", headerSubColor);
+    root.style.setProperty("--header-accent-color", headerAccentColor);
+    root.style.setProperty("--header-address-color", headerAddressColor);
+
     // 2. Top Nav Bar variables
     root.style.setProperty("--topnav-bg", topNavColor);
     const isNavLight = isLightColor(topNavColor);
-    root.style.setProperty("--topnav-link-color", isNavLight ? "#0f172a" : "#ffffff");
-    root.style.setProperty("--topnav-row2-color", isNavLight ? "#334155" : "#e2e8f0");
+    root.style.setProperty("--topnav-link-color", topNavLinkColor || (isNavLight ? "#0f172a" : "#ffffff"));
+    root.style.setProperty("--topnav-row2-color", topNavRow2Color || (isNavLight ? "#334155" : "#e2e8f0"));
     root.style.setProperty("--topnav-divider", isNavLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)");
     root.style.setProperty("--topnav-border", isNavLight ? "rgba(0,0,0,0.1)" : "#001730");
     root.style.setProperty("--topnav-chevron", isNavLight ? "#64748b" : "#94a3b8");
@@ -660,6 +768,7 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--sidebar-text", isSidebarLight ? "#002147" : "#ffffff");
     root.style.setProperty("--sidebar-border", isSidebarLight ? "rgba(0,0,0,0.12)" : "rgba(30, 64, 175, 0.4)");
 
+    // Store in localStorage
     try {
       localStorage.setItem("theme_logoBarColor", logoBarColor);
       localStorage.setItem("theme_topNavColor", topNavColor);
@@ -667,10 +776,51 @@ export default function ColorPaletteCustomizer() {
       localStorage.setItem("theme_level2Color", level2Color);
       localStorage.setItem("theme_sidebarColor", sidebarColor);
       localStorage.setItem("theme_sidebarBgColor", sidebarBgColor);
+
+      localStorage.setItem("theme_headerTitleColor", headerTitleColor);
+      localStorage.setItem("theme_headerSubColor", headerSubColor);
+      localStorage.setItem("theme_headerAccentColor", headerAccentColor);
+      localStorage.setItem("theme_headerAddressColor", headerAddressColor);
+      localStorage.setItem("theme_topNavLinkColor", topNavLinkColor);
+      localStorage.setItem("theme_topNavRow2Color", topNavRow2Color);
     } catch (e) {
       // Ignore
     }
-  }, [logoBarColor, topNavColor, level1Color, level2Color, sidebarColor, sidebarBgColor]);
+
+    // Dispatch real-time event for components
+    if (typeof window !== "undefined") {
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent("headerCustomizerUpdate", {
+            detail: {
+              headerTitleColor,
+              headerSubColor,
+              headerAccentColor,
+              headerAddressColor,
+              topNavLinkColor,
+              topNavRow2Color,
+              logoBarColor,
+              topNavColor
+            }
+          })
+        );
+      }, 0);
+    }
+  }, [
+    logoBarColor, topNavColor, level1Color, level2Color,
+    sidebarColor, sidebarBgColor, headerTitleColor, headerSubColor,
+    headerAccentColor, headerAddressColor, topNavLinkColor, topNavRow2Color
+  ]);
+
+  // Handle Unified Typography Color Change
+  const handleUnifiedTitleColorChange = (c: string) => {
+    setHeaderTitleColor(c);
+    if (headerColorSync === "all") {
+      setHeaderSubColor(c);
+      setHeaderAccentColor(c);
+      setHeaderAddressColor(c);
+    }
+  };
 
   // Save Current Setup to Version History
   const handleSaveCurrentSetup = () => {
@@ -688,7 +838,13 @@ export default function ColorPaletteCustomizer() {
       level1: level1Color,
       level2: level2Color,
       sidebar: sidebarColor,
-      sidebarBg: sidebarBgColor
+      sidebarBg: sidebarBgColor,
+      headerTitleColor,
+      headerSubColor,
+      headerAccentColor,
+      headerAddressColor,
+      topNavLinkColor,
+      topNavRow2Color
     };
 
     const updated = [newSetup, ...savedSetups];
@@ -710,12 +866,15 @@ export default function ColorPaletteCustomizer() {
     setTopNavColor(setup.topNav);
     setLevel1Color(setup.level1);
     setLevel2Color(setup.level2);
-    if (setup.sidebar) {
-      setSidebarColor(setup.sidebar);
-    }
-    if (setup.sidebarBg) {
-      setSidebarBgColor(setup.sidebarBg);
-    }
+    if (setup.sidebar) setSidebarColor(setup.sidebar);
+    if (setup.sidebarBg) setSidebarBgColor(setup.sidebarBg);
+
+    if (setup.headerTitleColor) setHeaderTitleColor(setup.headerTitleColor);
+    if (setup.headerSubColor) setHeaderSubColor(setup.headerSubColor);
+    if (setup.headerAccentColor) setHeaderAccentColor(setup.headerAccentColor);
+    if (setup.headerAddressColor) setHeaderAddressColor(setup.headerAddressColor);
+    if (setup.topNavLinkColor) setTopNavLinkColor(setup.topNavLinkColor);
+    if (setup.topNavRow2Color) setTopNavRow2Color(setup.topNavRow2Color);
 
     setSaveToast(`Applied "${setup.name}"!`);
     setTimeout(() => setSaveToast(null), 2000);
@@ -740,6 +899,13 @@ export default function ColorPaletteCustomizer() {
     setLevel2Color("#002147");
     setSidebarColor("#1e40af");
     setSidebarBgColor("#eaeff5");
+
+    setHeaderTitleColor("#ffffff");
+    setHeaderSubColor("#bfdbfe");
+    setHeaderAccentColor("#93c5fd");
+    setHeaderAddressColor("#cbd5e1");
+    setTopNavLinkColor("#ffffff");
+    setTopNavRow2Color("#e2e8f0");
   };
 
   const handleApplyReadyMade = (option: ReadyMadeOption) => {
@@ -747,21 +913,34 @@ export default function ColorPaletteCustomizer() {
     setTopNavColor(option.topNav);
     setLevel1Color(option.level1);
     setLevel2Color(option.level2);
-    if (option.sidebar) {
-      setSidebarColor(option.sidebar);
-    }
-    if (option.sidebarBg) {
-      setSidebarBgColor(option.sidebarBg);
-    }
+    if (option.sidebar) setSidebarColor(option.sidebar);
+    if (option.sidebarBg) setSidebarBgColor(option.sidebarBg);
+
+    if (option.headerTitleColor) setHeaderTitleColor(option.headerTitleColor);
+    if (option.headerSubColor) setHeaderSubColor(option.headerSubColor);
+    if (option.headerAccentColor) setHeaderAccentColor(option.headerAccentColor);
+    if (option.headerAddressColor) setHeaderAddressColor(option.headerAddressColor);
+    if (option.topNavLinkColor) setTopNavLinkColor(option.topNavLinkColor);
+    if (option.topNavRow2Color) setTopNavRow2Color(option.topNavRow2Color);
   };
 
   const handleCopyCodes = () => {
     const config = JSON.stringify(
       {
-        logoBar: logoBarColor,
-        topNav: topNavColor,
-        level1: level1Color,
-        level2: level2Color,
+        logoBarBackground: logoBarColor,
+        mastheadTypography: {
+          titleColor: headerTitleColor,
+          subColor: headerSubColor,
+          accentColor: headerAccentColor,
+          addressColor: headerAddressColor
+        },
+        topNavBackground: topNavColor,
+        topNavLinks: {
+          mainRowLinkColor: topNavLinkColor,
+          subRowLinkColor: topNavRow2Color
+        },
+        level1HeroBanner: level1Color,
+        level2SectionBanner: level2Color,
         sidebarAccent: sidebarColor,
         sidebarContainerBg: sidebarBgColor
       },
@@ -773,17 +952,35 @@ export default function ColorPaletteCustomizer() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleOpenDrawer = () => {
+    setIsOpen(true);
+    setActiveDrawer("color");
+    window.dispatchEvent(new CustomEvent("customizerDrawerState", { detail: { openDrawer: "color" } }));
+  };
+
+  const handleCloseDrawer = () => {
+    setIsOpen(false);
+    setActiveDrawer(null);
+    window.dispatchEvent(new CustomEvent("customizerDrawerState", { detail: { openDrawer: null } }));
+  };
+
+  const handleSwitchToLayout = () => {
+    setIsOpen(false);
+    setActiveDrawer("layout");
+    window.dispatchEvent(new CustomEvent("customizerDrawerState", { detail: { openDrawer: "layout" } }));
+  };
+
   return (
     <>
-      {/* Floating Trigger Button */}
-      {!isOpen && (
+      {/* Floating Trigger Button: ONLY rendered when NO customizer drawer is open */}
+      {!isOpen && activeDrawer === null && (
         <div className="fixed bottom-6 right-6 z-50 select-none animate-fadeIn">
           <button
-            onClick={() => setIsOpen(true)}
-            className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-slate-900 text-white font-bold text-xs shadow-2xl hover:bg-slate-800 border-2 border-indigo-400/50 hover:border-indigo-400 transition-all active:scale-95 group hover:-translate-y-0.5 hover:shadow-indigo-500/20 cursor-pointer"
-            title="Customize Colors for Logo Bar, Top Nav, Heading 1 & Heading 2"
+            onClick={handleOpenDrawer}
+            className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-slate-950 text-white font-bold text-xs shadow-2xl hover:bg-slate-900 border-2 border-purple-400/80 hover:border-purple-400 transition-all active:scale-95 group hover:-translate-y-0.5 hover:shadow-purple-500/20 cursor-pointer"
+            title="All Color Options: Logo Bar, Text Mode, Top Nav, Heading 1 & 2, Sidebar"
           >
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-amber-400 text-white shadow-xs group-hover:rotate-45 transition-transform duration-300">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-purple-500 via-indigo-500 to-amber-400 text-white shadow-xs group-hover:rotate-45 transition-transform duration-300">
               <Palette className="h-3.5 w-3.5" />
             </span>
             <span className="font-outfit tracking-wide">Color Palette</span>
@@ -792,65 +989,78 @@ export default function ColorPaletteCustomizer() {
         </div>
       )}
 
-      {/* Slide-over Drawer Panel (No blur, no darkening overlay so page colors remain 100% accurate & true-to-life) */}
+      {/* Slide-over Drawer Panel */}
       {isOpen && (
         <div className="fixed inset-0 z-50 pointer-events-none flex justify-end select-none">
-          {/* Drawer Container */}
-          <div className="relative z-10 w-full max-w-md h-full bg-white shadow-2xl flex flex-col border-l border-slate-300 pointer-events-auto animate-slideIn">
+          {/* Drawer Container with high-contrast slate canvas */}
+          <div className="relative z-10 w-full max-w-md h-full bg-[#f8fafc] shadow-2xl flex flex-col border-l-2 border-slate-300 pointer-events-auto animate-slideIn">
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/70 shrink-0">
-              <div className="flex items-center gap-2.5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
-                  <Sliders className="h-4 w-4" />
+            <div className="flex items-center justify-between px-6 py-4 border-b-2 border-slate-200/90 bg-white shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-sm">
+                  <Palette className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="font-outfit font-black text-slate-900 text-base leading-tight">
-                    Color Palette Manager
+                  <h3 className="font-outfit font-black text-slate-950 text-base leading-tight">
+                    Color Palette Studio
                   </h3>
-                  <p className="text-[11px] font-semibold text-slate-500">
-                    Live customization for Header, Nav &amp; Section Headings
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Colors for Logo, Text Mode, Top Nav &amp; Headings
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-all cursor-pointer"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleSwitchToLayout}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-400/40 hover:bg-emerald-500/25 text-emerald-800 hover:text-emerald-950 text-[11px] font-black transition-all cursor-pointer shadow-2xs"
+                  title="Switch directly to Layout & Sizing Studio"
+                >
+                  <SlidersHorizontal className="h-3.5 w-3.5 text-emerald-600" />
+                  <span className="hidden sm:inline">Layout &amp; Sizing</span>
+                </button>
+
+                <button
+                  onClick={handleCloseDrawer}
+                  className="p-2 rounded-xl bg-slate-100 border-2 border-slate-200 text-slate-600 hover:text-slate-950 hover:bg-slate-200 transition-all cursor-pointer font-bold"
+                  title="Close Drawer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             {/* Toast feedback when setup saved/applied */}
             {saveToast && (
-              <div className="bg-emerald-600 text-white px-4 py-2 text-xs font-bold text-center flex items-center justify-center gap-1.5 animate-fadeIn shrink-0">
+              <div className="bg-emerald-600 text-white px-4 py-2 text-xs font-bold text-center flex items-center justify-center gap-1.5 animate-fadeIn shrink-0 shadow-xs">
                 <Check className="h-3.5 w-3.5" /> {saveToast}
               </div>
             )}
 
-            {/* Navigation Tabs: Manual Selection | Ready-Made | Saved Versions */}
-            <div className="grid grid-cols-3 p-2 bg-slate-100/80 border-b border-slate-200/80 gap-1 shrink-0 text-xs font-bold text-slate-600">
+            {/* High-Contrast Segmented Tabs: Manual Selection | Presets | Saved */}
+            <div className="grid grid-cols-3 p-2 bg-slate-200/90 border-b-2 border-slate-300/80 gap-1.5 shrink-0 text-xs font-bold">
               <button
                 onClick={() => setTopTab("manual")}
                 className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl transition-all cursor-pointer ${
                   topTab === "manual"
-                    ? "bg-white text-indigo-700 shadow-xs border border-slate-200/60"
-                    : "hover:text-slate-900 hover:bg-white/50"
+                    ? "bg-slate-950 text-white shadow-md ring-2 ring-purple-500/30 font-black border border-slate-800"
+                    : "bg-white/80 text-slate-700 font-bold hover:bg-white hover:text-slate-950 border border-slate-300/60"
                 }`}
               >
-                <Sliders className="h-3.5 w-3.5" />
-                <span className="text-[11px]">Manual</span>
+                <SlidersHorizontal className="h-3.5 w-3.5" />
+                <span className="text-[11px]">Manual Colors</span>
               </button>
 
               <button
                 onClick={() => setTopTab("ready")}
                 className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl transition-all cursor-pointer ${
                   topTab === "ready"
-                    ? "bg-white text-indigo-700 shadow-xs border border-slate-200/60"
-                    : "hover:text-slate-900 hover:bg-white/50"
+                    ? "bg-slate-950 text-white shadow-md ring-2 ring-purple-500/30 font-black border border-slate-800"
+                    : "bg-white/80 text-slate-700 font-bold hover:bg-white hover:text-slate-950 border border-slate-300/60"
                 }`}
               >
-                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                <Sparkles className="h-3.5 w-3.5 text-amber-400" />
                 <span className="text-[11px]">Presets (8)</span>
               </button>
 
@@ -858,17 +1068,17 @@ export default function ColorPaletteCustomizer() {
                 onClick={() => setTopTab("saved")}
                 className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl transition-all cursor-pointer relative ${
                   topTab === "saved"
-                    ? "bg-white text-indigo-700 shadow-xs border border-slate-200/60"
-                    : "hover:text-slate-900 hover:bg-white/50"
+                    ? "bg-slate-950 text-white shadow-md ring-2 ring-purple-500/30 font-black border border-slate-800"
+                    : "bg-white/80 text-slate-700 font-bold hover:bg-white hover:text-slate-950 border border-slate-300/60"
                 }`}
               >
-                <Bookmark className="h-3.5 w-3.5 text-indigo-600" />
+                <Bookmark className="h-3.5 w-3.5 text-purple-400" />
                 <span className="text-[11px]">Saved ({savedSetups.length})</span>
               </button>
             </div>
 
             {/* Drawer Body */}
-            <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-5">
 
               {/* ======================================================== */}
               {/* TAB 1: MANUAL SELECTION                                 */}
@@ -876,151 +1086,138 @@ export default function ColorPaletteCustomizer() {
               {topTab === "manual" && (
                 <div className="flex flex-col gap-5 animate-fadeIn">
 
-                  {/* Quick Save Current Setup Action Box */}
-                  <div className="flex items-center gap-2 p-2.5 rounded-2xl bg-indigo-50/60 border border-indigo-100">
-                    <input
-                      type="text"
-                      placeholder={`Name setup (e.g. Version ${savedSetups.length + 1})`}
-                      value={newVersionName}
-                      onChange={(e) => setNewVersionName(e.target.value)}
-                      className="flex-1 px-3 py-1.5 text-xs bg-white border border-indigo-200 rounded-xl focus:outline-none focus:border-indigo-600 font-semibold"
-                    />
-                    <button
-                      onClick={handleSaveCurrentSetup}
-                      className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer shrink-0"
-                    >
-                      <BookmarkPlus className="h-3.5 w-3.5" />
-                      <span>Save Setup</span>
-                    </button>
-                  </div>
-
-                  {/* Element Selector Switcher: 5 distinct elements */}
+                  {/* High-Contrast Element Selector Switcher: 5 distinct sections */}
                   <div className="flex flex-col gap-2">
-                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
-                      Select Element to Customize:
-                    </span>
+                    <div className="flex items-center justify-between px-1">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-slate-600">
+                        Select Target Section:
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
+                        {selectedElement.toUpperCase()} ACTIVE
+                      </span>
+                    </div>
 
-                    <div className="grid grid-cols-5 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200/80">
+                    <div className="grid grid-cols-5 gap-1.5 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
 
                       {/* 1. Logo Bar */}
                       <button
                         onClick={() => setSelectedElement("logo")}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
+                        className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-xl transition-all cursor-pointer ${
                           selectedElement === "logo"
-                            ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
-                            : "text-slate-600 hover:text-slate-900"
+                            ? "bg-slate-950 text-white shadow-lg border-2 border-purple-500 ring-2 ring-purple-500/30 scale-[1.02]"
+                            : "bg-white text-slate-700 font-bold border-2 border-slate-200/90 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       >
                         <div className="flex items-center gap-1 mb-1">
                           <span
-                            className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                            className="h-3 w-3 rounded-full border border-slate-400 shrink-0"
                             style={{ backgroundColor: logoBarColor }}
                           />
                           <Building className="h-3 w-3" />
                         </div>
-                        <span className="text-[10px] font-extrabold leading-tight">Logo Bar</span>
+                        <span className="text-[10px] font-black leading-tight">Logo Bar</span>
                       </button>
 
                       {/* 2. Top Nav */}
                       <button
                         onClick={() => setSelectedElement("nav")}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
+                        className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-xl transition-all cursor-pointer ${
                           selectedElement === "nav"
-                            ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
-                            : "text-slate-600 hover:text-slate-900"
+                            ? "bg-slate-950 text-white shadow-lg border-2 border-purple-500 ring-2 ring-purple-500/30 scale-[1.02]"
+                            : "bg-white text-slate-700 font-bold border-2 border-slate-200/90 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       >
                         <div className="flex items-center gap-1 mb-1">
                           <span
-                            className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                            className="h-3 w-3 rounded-full border border-slate-400 shrink-0"
                             style={{ backgroundColor: topNavColor }}
                           />
                           <Compass className="h-3 w-3" />
                         </div>
-                        <span className="text-[10px] font-extrabold leading-tight">Top Nav</span>
+                        <span className="text-[10px] font-black leading-tight">Top Nav</span>
                       </button>
 
                       {/* 3. Heading Level 1 */}
                       <button
                         onClick={() => setSelectedElement("level1")}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
+                        className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-xl transition-all cursor-pointer ${
                           selectedElement === "level1"
-                            ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
-                            : "text-slate-600 hover:text-slate-900"
+                            ? "bg-slate-950 text-white shadow-lg border-2 border-purple-500 ring-2 ring-purple-500/30 scale-[1.02]"
+                            : "bg-white text-slate-700 font-bold border-2 border-slate-200/90 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       >
                         <div className="flex items-center gap-1 mb-1">
                           <span
-                            className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                            className="h-3 w-3 rounded-full border border-slate-400 shrink-0"
                             style={{ background: level1Color }}
                           />
                           <Heading className="h-3 w-3" />
                         </div>
-                        <span className="text-[10px] font-extrabold leading-tight">Heading 1</span>
+                        <span className="text-[10px] font-black leading-tight">Heading 1</span>
                       </button>
 
                       {/* 4. Heading Level 2 */}
                       <button
                         onClick={() => setSelectedElement("level2")}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
+                        className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-xl transition-all cursor-pointer ${
                           selectedElement === "level2"
-                            ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
-                            : "text-slate-600 hover:text-slate-900"
+                            ? "bg-slate-950 text-white shadow-lg border-2 border-purple-500 ring-2 ring-purple-500/30 scale-[1.02]"
+                            : "bg-white text-slate-700 font-bold border-2 border-slate-200/90 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       >
                         <div className="flex items-center gap-1 mb-1">
                           <span
-                            className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                            className="h-3 w-3 rounded-full border border-slate-400 shrink-0"
                             style={{ backgroundColor: level2Color }}
                           />
-                          <Heading className="h-3 w-3 text-indigo-500" />
+                          <Heading className="h-3 w-3 text-purple-400" />
                         </div>
-                        <span className="text-[10px] font-extrabold leading-tight">Heading 2</span>
+                        <span className="text-[10px] font-black leading-tight">Heading 2</span>
                       </button>
 
                       {/* 5. Side Nav */}
                       <button
                         onClick={() => setSelectedElement("sidebar")}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
+                        className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-xl transition-all cursor-pointer ${
                           selectedElement === "sidebar"
-                            ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
-                            : "text-slate-600 hover:text-slate-900"
+                            ? "bg-slate-950 text-white shadow-lg border-2 border-purple-500 ring-2 ring-purple-500/30 scale-[1.02]"
+                            : "bg-white text-slate-700 font-bold border-2 border-slate-200/90 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       >
                         <div className="flex items-center gap-1 mb-1">
                           <span
-                            className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                            className="h-3 w-3 rounded-full border border-slate-400 shrink-0"
                             style={{ backgroundColor: sidebarColor }}
                           />
-                          <BookOpen className="h-3 w-3 text-indigo-600" />
+                          <BookOpen className="h-3 w-3 text-indigo-400" />
                         </div>
-                        <span className="text-[10px] font-extrabold leading-tight">Side Nav</span>
+                        <span className="text-[10px] font-black leading-tight">Side Nav</span>
                       </button>
 
                     </div>
                   </div>
 
-                  {/* Active Element Info Header */}
-                  <div className="flex items-center justify-between px-1">
+                  {/* Active Section Info Card */}
+                  <div className="p-4 rounded-2xl bg-white border-2 border-slate-200/90 shadow-xs flex items-center justify-between gap-3">
                     <div>
-                      <h4 className="font-outfit text-sm font-black text-slate-800">
-                        {selectedElement === "logo" && "Section 1: College Logo Bar"}
-                        {selectedElement === "nav" && "Section 2: Sticky Top Nav Bar"}
+                      <h4 className="font-outfit text-sm font-black text-slate-900">
+                        {selectedElement === "logo" && "Section 1: College Logo Bar & Masthead"}
+                        {selectedElement === "nav" && "Section 2: Sticky Top Nav Bar & Links"}
                         {selectedElement === "level1" && "Section 3: Header Level 1 (Hero Banner)"}
                         {selectedElement === "level2" && "Section 4: Heading Level 2 (Section Banners)"}
                         {selectedElement === "sidebar" && "Section 5: Side Navigation Bar"}
                       </h4>
-                      <p className="text-xs text-slate-500">
-                        {selectedElement === "logo" && "Customizes top institution header with college crest & title."}
-                        {selectedElement === "nav" && "Customizes dual-row sticky navigation bar with menu links."}
-                        {selectedElement === "level1" && "Customizes main page title hero banner."}
-                        {selectedElement === "level2" && "Customizes all Level 2 section header banners across the page."}
-                        {selectedElement === "sidebar" && "Customizes sidebar header banner, active link indicator, and icons."}
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {selectedElement === "logo" && "Background color and live Text Mode typography colors."}
+                        {selectedElement === "nav" && "Navigation bar background and menu link text colors."}
+                        {selectedElement === "level1" && "Main page title hero banner background (solid or gradient)."}
+                        {selectedElement === "level2" && "Section headers across all academic and quality assurance pages."}
+                        {selectedElement === "sidebar" && "Sidebar header banner, active link indicator, and container background."}
                       </p>
                     </div>
 
                     <span
-                      className="h-6 w-10 rounded-lg border border-slate-300 shadow-2xs shrink-0"
+                      className="h-7 w-10 rounded-lg border-2 border-white shadow-sm shrink-0 ring-1 ring-slate-300"
                       style={{
                         background:
                           selectedElement === "logo"
@@ -1033,57 +1230,451 @@ export default function ColorPaletteCustomizer() {
                                   ? level2Color
                                   : sidebarColor
                       }}
-                      title="Current Color Preview"
+                      title="Current Section Color"
                     />
                   </div>
 
-                  {/* Color Picker Widget matching user image */}
+                  {/* ======================================================== */}
+                  {/* SECTION 1: LOGO BAR (BACKGROUND VS MASTHEAD TYPOGRAPHY) */}
+                  {/* ======================================================== */}
                   {selectedElement === "logo" && (
-                    <ImageStyleColorPicker
-                      currentColor={logoBarColor}
-                      onColorChange={(c) => setLogoBarColor(c)}
-                      supportsGradient={false}
-                    />
-                  )}
-
-                  {selectedElement === "nav" && (
-                    <ImageStyleColorPicker
-                      currentColor={topNavColor}
-                      onColorChange={(c) => setTopNavColor(c)}
-                      supportsGradient={false}
-                    />
-                  )}
-
-                  {selectedElement === "level1" && (
-                    <ImageStyleColorPicker
-                      currentColor={level1Color}
-                      onColorChange={(c) => setLevel1Color(c)}
-                      supportsGradient={true}
-                    />
-                  )}
-
-                  {selectedElement === "level2" && (
-                    <ImageStyleColorPicker
-                      currentColor={level2Color}
-                      onColorChange={(c) => setLevel2Color(c)}
-                      supportsGradient={false}
-                    />
-                  )}
-
-                  {selectedElement === "sidebar" && (
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
+                    <div className="flex flex-col gap-4">
+                      {/* Sub-mode switcher */}
+                      <div className="flex items-center gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
                         <button
-                          onClick={() => setSidebarColorMode("accent")}
-                          className={`flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                            sidebarColorMode === "accent"
-                              ? "bg-white text-indigo-700 shadow-xs border border-slate-200/80"
-                              : "text-slate-600 hover:text-slate-900"
+                          onClick={() => setLogoSubMode("background")}
+                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                            logoSubMode === "background"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
                           }`}
                         >
-                          <div className="flex items-center justify-center gap-1.5">
+                          <Paintbrush className="h-3.5 w-3.5" />
+                          <span>Logo Bar Background</span>
+                        </button>
+
+                        <button
+                          onClick={() => setLogoSubMode("typography")}
+                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                            logoSubMode === "typography"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Type className="h-3.5 w-3.5" />
+                          <span>Text Mode Typography</span>
+                        </button>
+                      </div>
+
+                      {logoSubMode === "background" ? (
+                        <div className="flex flex-col gap-3">
+                          <ImageStyleColorPicker
+                            currentColor={logoBarColor}
+                            onColorChange={(c) => setLogoBarColor(c)}
+                            supportsGradient={false}
+                          />
+
+                          {/* Quick Swatches for Logo Bar */}
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Quick Logo Bar Presets:
+                            </span>
+                            <div className="grid grid-cols-4 gap-2">
+                              {[
+                                { name: "Pure White", hex: "#ffffff" },
+                                { name: "Midnight Navy", hex: "#002147" },
+                                { name: "Slate Dark", hex: "#0f172a" },
+                                { name: "Off White", hex: "#f8fafc" },
+                                { name: "Deep Teal", hex: "#002b36" },
+                                { name: "Oxford Blue", hex: "#1e1b4b" },
+                                { name: "Emerald Dark", hex: "#022c22" },
+                                { name: "Ivory Cream", hex: "#fffbeb" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  onClick={() => setLogoBarColor(p.hex)}
+                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                    logoBarColor.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
+                                    style={{ backgroundColor: p.hex }}
+                                  />
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Text Mode Typography Colors */
+                        <div className="flex flex-col gap-4">
+                          <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
+                            <span className="font-black flex items-center gap-1 text-purple-900">
+                              <Type className="h-4 w-4" /> Live Text Mode Masthead Colors
+                            </span>
+                            <p className="text-[11px] text-purple-800 font-medium">
+                              Applies directly when Text Mode Header is active in Layout &amp; Sizing.
+                            </p>
+                          </div>
+
+                          {/* Sync Mode Toggle */}
+                          <div className="flex items-center gap-2 p-1 bg-slate-200/90 rounded-xl border border-slate-300">
+                            <button
+                              onClick={() => setHeaderColorSync("all")}
+                              className={`flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-black transition-all cursor-pointer ${
+                                headerColorSync === "all"
+                                  ? "bg-slate-950 text-white shadow-xs"
+                                  : "text-slate-700 hover:text-slate-950"
+                              }`}
+                            >
+                              Unified Color (All Lines)
+                            </button>
+                            <button
+                              onClick={() => setHeaderColorSync("individual")}
+                              className={`flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-black transition-all cursor-pointer ${
+                                headerColorSync === "individual"
+                                  ? "bg-slate-950 text-white shadow-xs"
+                                  : "text-slate-700 hover:text-slate-950"
+                              }`}
+                            >
+                              Custom Per-Line Colors
+                            </button>
+                          </div>
+
+                          {headerColorSync === "all" ? (
+                            <div className="flex flex-col gap-3">
+                              <span className="text-xs font-black text-slate-700">
+                                Single Unified Masthead Color:
+                              </span>
+                              <ImageStyleColorPicker
+                                currentColor={headerTitleColor}
+                                onColorChange={handleUnifiedTitleColorChange}
+                                supportsGradient={false}
+                              />
+
+                              {/* Popular Text Swatches */}
+                              <div className="p-3 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                  Quick Text Color Presets:
+                                </span>
+                                <div className="grid grid-cols-3 gap-2">
+                                  {[
+                                    { name: "Pure White", hex: "#ffffff" },
+                                    { name: "Midnight Navy", hex: "#002147" },
+                                    { name: "Crimson Red", hex: "#991b1b" },
+                                    { name: "Royal Blue", hex: "#1e3a8a" },
+                                    { name: "Warm Amber", hex: "#d97706" },
+                                    { name: "Dark Slate", hex: "#0f172a" },
+                                  ].map((p) => (
+                                    <button
+                                      key={p.hex}
+                                      onClick={() => handleUnifiedTitleColorChange(p.hex)}
+                                      className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                        headerTitleColor.toLowerCase() === p.hex.toLowerCase()
+                                          ? "border-purple-600 bg-purple-50 font-black shadow-xs"
+                                          : "border-slate-200 bg-white hover:bg-slate-50"
+                                      }`}
+                                    >
+                                      <span
+                                        className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
+                                        style={{ backgroundColor: p.hex }}
+                                      />
+                                      <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            /* Per-Line Independent Pickers */
+                            <div className="flex flex-col gap-3">
+                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                  <label className="text-xs font-black text-slate-800">1. College Name (Main Title)</label>
+                                  <span className="font-mono text-xs font-bold text-slate-600">{headerTitleColor}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="color"
+                                    value={headerTitleColor}
+                                    onChange={(e) => setHeaderTitleColor(e.target.value)}
+                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={headerTitleColor}
+                                    onChange={(e) => setHeaderTitleColor(e.target.value)}
+                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                  <label className="text-xs font-black text-slate-800">2. Society Name (Sub Line)</label>
+                                  <span className="font-mono text-xs font-bold text-slate-600">{headerSubColor}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="color"
+                                    value={headerSubColor}
+                                    onChange={(e) => setHeaderSubColor(e.target.value)}
+                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={headerSubColor}
+                                    onChange={(e) => setHeaderSubColor(e.target.value)}
+                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                  <label className="text-xs font-black text-slate-800">3. Affiliation &amp; Accreditation (Accent Lines)</label>
+                                  <span className="font-mono text-xs font-bold text-slate-600">{headerAccentColor}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="color"
+                                    value={headerAccentColor}
+                                    onChange={(e) => setHeaderAccentColor(e.target.value)}
+                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={headerAccentColor}
+                                    onChange={(e) => setHeaderAccentColor(e.target.value)}
+                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                  <label className="text-xs font-black text-slate-800">4. Address &amp; Pin Code (Bottom Line)</label>
+                                  <span className="font-mono text-xs font-bold text-slate-600">{headerAddressColor}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="color"
+                                    value={headerAddressColor}
+                                    onChange={(e) => setHeaderAddressColor(e.target.value)}
+                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={headerAddressColor}
+                                    onChange={(e) => setHeaderAddressColor(e.target.value)}
+                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* ======================================================== */}
+                  {/* SECTION 2: TOP NAV (BACKGROUND VS MENU LINKS TEXT)       */}
+                  {/* ======================================================== */}
+                  {selectedElement === "nav" && (
+                    <div className="flex flex-col gap-4">
+                      {/* Sub-mode switcher */}
+                      <div className="flex items-center gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                        <button
+                          onClick={() => setNavSubMode("background")}
+                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                            navSubMode === "background"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Compass className="h-3.5 w-3.5" />
+                          <span>Nav Bar Background</span>
+                        </button>
+
+                        <button
+                          onClick={() => setNavSubMode("links")}
+                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                            navSubMode === "links"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Type className="h-3.5 w-3.5" />
+                          <span>Menu Links &amp; Text</span>
+                        </button>
+                      </div>
+
+                      {navSubMode === "background" ? (
+                        <div className="flex flex-col gap-3">
+                          <ImageStyleColorPicker
+                            currentColor={topNavColor}
+                            onColorChange={(c) => setTopNavColor(c)}
+                            supportsGradient={false}
+                          />
+
+                          {/* Quick Swatches for Nav Bar */}
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Quick Nav Bar Presets:
+                            </span>
+                            <div className="grid grid-cols-4 gap-2">
+                              {[
+                                { name: "Midnight Navy", hex: "#002147" },
+                                { name: "Deep Teal", hex: "#084c61" },
+                                { name: "Oxford Indigo", hex: "#312e81" },
+                                { name: "Slate Charcoal", hex: "#1e293b" },
+                                { name: "Emerald Heritage", hex: "#064e3b" },
+                                { name: "Burgundy Wine", hex: "#581c1c" },
+                                { name: "Royal Blue", hex: "#1e3a8a" },
+                                { name: "Pure White", hex: "#ffffff" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  onClick={() => setTopNavColor(p.hex)}
+                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                    topNavColor.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
+                                    style={{ backgroundColor: p.hex }}
+                                  />
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Menu Links and Sub-Row Colors */
+                        <div className="flex flex-col gap-4">
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <label className="text-xs font-black text-slate-900">Primary Nav Links Color (Row 1)</label>
+                                <p className="text-[11px] text-slate-500">Main menu items like About Us, Academics, Admissions</p>
+                              </div>
+                              <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs" style={{ backgroundColor: topNavLinkColor }} />
+                            </div>
+
+                            <ImageStyleColorPicker
+                              currentColor={topNavLinkColor}
+                              onColorChange={(c) => setTopNavLinkColor(c)}
+                              supportsGradient={false}
+                            />
+
+                            {/* Quick Link Presets */}
+                            <div className="grid grid-cols-4 gap-2 pt-1 border-t border-slate-200">
+                              {[
+                                { name: "Pure White", hex: "#ffffff" },
+                                { name: "Soft Slate", hex: "#e2e8f0" },
+                                { name: "Pale Gold", hex: "#fef08a" },
+                                { name: "Ice Cyan", hex: "#67e8f9" },
+                                { name: "Dark Slate", hex: "#0f172a" },
+                                { name: "Midnight Navy", hex: "#002147" },
+                                { name: "Amber Gold", hex: "#f59e0b" },
+                                { name: "Mint Light", hex: "#a7f3d0" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  onClick={() => setTopNavLinkColor(p.hex)}
+                                  className={`p-1.5 rounded-lg border-2 text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                                    topNavLinkColor.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span className="h-3 w-3 rounded-full border border-slate-300 shrink-0" style={{ backgroundColor: p.hex }} />
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2.5">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <label className="text-xs font-black text-slate-900">Secondary Nav Links Color (Row 2)</label>
+                                <p className="text-[11px] text-slate-500">Sub-links bar like NIRF, NAAC, Placements, Examination</p>
+                              </div>
+                              <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs" style={{ backgroundColor: topNavRow2Color }} />
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="color"
+                                value={topNavRow2Color}
+                                onChange={(e) => setTopNavRow2Color(e.target.value)}
+                                className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
+                              />
+                              <input
+                                type="text"
+                                value={topNavRow2Color}
+                                onChange={(e) => setTopNavRow2Color(e.target.value)}
+                                className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* ======================================================== */}
+                  {/* SECTION 3: HEADING 1 (HERO BANNER)                       */}
+                  {/* ======================================================== */}
+                  {selectedElement === "level1" && (
+                    <div className="flex flex-col gap-3">
+                      <ImageStyleColorPicker
+                        currentColor={level1Color}
+                        onColorChange={(c) => setLevel1Color(c)}
+                        supportsGradient={true}
+                      />
+                    </div>
+                  )}
+
+                  {/* ======================================================== */}
+                  {/* SECTION 4: HEADING 2 (SECTION BANNERS)                   */}
+                  {/* ======================================================== */}
+                  {selectedElement === "level2" && (
+                    <div className="flex flex-col gap-3">
+                      <ImageStyleColorPicker
+                        currentColor={level2Color}
+                        onColorChange={(c) => setLevel2Color(c)}
+                        supportsGradient={false}
+                      />
+                    </div>
+                  )}
+
+                  {/* ======================================================== */}
+                  {/* SECTION 5: SIDE NAV                                      */}
+                  {/* ======================================================== */}
+                  {selectedElement === "sidebar" && (
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                        <button
+                          onClick={() => setSidebarColorMode("accent")}
+                          className={`flex-1 py-2 px-3 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
+                            sidebarColorMode === "accent"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center gap-2">
                             <span
-                              className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                              className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
                               style={{ backgroundColor: sidebarColor }}
                             />
                             <span>Banner &amp; Active</span>
@@ -1092,15 +1683,15 @@ export default function ColorPaletteCustomizer() {
 
                         <button
                           onClick={() => setSidebarColorMode("background")}
-                          className={`flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          className={`flex-1 py-2 px-3 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
                             sidebarColorMode === "background"
-                              ? "bg-white text-indigo-700 shadow-xs border border-slate-200/80"
-                              : "text-slate-600 hover:text-slate-900"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
                           }`}
                         >
-                          <div className="flex items-center justify-center gap-1.5">
+                          <div className="flex items-center justify-center gap-2">
                             <span
-                              className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                              className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
                               style={{ backgroundColor: sidebarBgColor }}
                             />
                             <span>Nav Background</span>
@@ -1109,32 +1700,22 @@ export default function ColorPaletteCustomizer() {
                       </div>
 
                       {sidebarColorMode === "accent" ? (
-                        <div>
-                          <span className="text-[11px] font-bold text-slate-500 block mb-2">
-                            Customize Header Banner &amp; Active Link Highlight:
-                          </span>
-                          <ImageStyleColorPicker
-                            currentColor={sidebarColor}
-                            onColorChange={(c) => setSidebarColor(c)}
-                            supportsGradient={false}
-                          />
-                        </div>
+                        <ImageStyleColorPicker
+                          currentColor={sidebarColor}
+                          onColorChange={(c) => setSidebarColor(c)}
+                          supportsGradient={false}
+                        />
                       ) : (
                         <div className="flex flex-col gap-3">
-                          <div>
-                            <span className="text-[11px] font-bold text-slate-500 block mb-2">
-                              Customize Side Nav Container Background:
-                            </span>
-                            <ImageStyleColorPicker
-                              currentColor={sidebarBgColor}
-                              onColorChange={(c) => setSidebarBgColor(c)}
-                              supportsGradient={false}
-                            />
-                          </div>
+                          <ImageStyleColorPicker
+                            currentColor={sidebarBgColor}
+                            onColorChange={(c) => setSidebarBgColor(c)}
+                            supportsGradient={false}
+                          />
 
                           {/* Quick popular background presets */}
-                          <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-200/70">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                          <div className="p-3 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
                               Quick Nav Background Presets:
                             </span>
                             <div className="grid grid-cols-4 gap-1.5">
@@ -1151,9 +1732,9 @@ export default function ColorPaletteCustomizer() {
                                 <button
                                   key={p.hex}
                                   onClick={() => setSidebarBgColor(p.hex)}
-                                  className={`p-1.5 rounded-lg border text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                                  className={`p-1.5 rounded-lg border-2 text-left flex items-center gap-1.5 transition-all cursor-pointer ${
                                     sidebarBgColor.toLowerCase() === p.hex.toLowerCase()
-                                      ? "border-indigo-600 bg-indigo-50 font-bold shadow-xs"
+                                      ? "border-purple-600 bg-purple-50 font-bold shadow-xs"
                                       : "border-slate-200 bg-white hover:bg-slate-50"
                                   }`}
                                 >
@@ -1161,7 +1742,7 @@ export default function ColorPaletteCustomizer() {
                                     className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
                                     style={{ backgroundColor: p.hex }}
                                   />
-                                  <span className="text-[10px] truncate text-slate-700 font-semibold">{p.name}</span>
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
                                 </button>
                               ))}
                             </div>
@@ -1171,125 +1752,22 @@ export default function ColorPaletteCustomizer() {
                     </div>
                   )}
 
-                  {/* Complete 5-Section Overview Card */}
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2.5 mt-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                        Live Overview Across 5 Sections:
-                      </span>
-                      {savedSetups.length > 0 && (
-                        <button
-                          onClick={() => setTopTab("saved")}
-                          className="text-[11px] font-bold text-indigo-600 hover:underline flex items-center gap-0.5 cursor-pointer"
-                        >
-                          View Saved Setups ({savedSetups.length}) →
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div
-                        onClick={() => setSelectedElement("logo")}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-3.5 w-5 rounded border border-slate-300"
-                            style={{ backgroundColor: logoBarColor }}
-                          />
-                          <span className="text-[11px] font-bold text-slate-800">Logo Bar</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
-                          {logoBarColor}
-                        </span>
-                      </div>
-
-                      <div
-                        onClick={() => setSelectedElement("nav")}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-3.5 w-5 rounded border border-slate-300"
-                            style={{ backgroundColor: topNavColor }}
-                          />
-                          <span className="text-[11px] font-bold text-slate-800">Top Nav</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
-                          {topNavColor}
-                        </span>
-                      </div>
-
-                      <div
-                        onClick={() => setSelectedElement("level1")}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-3.5 w-5 rounded border border-slate-300"
-                            style={{ background: level1Color }}
-                          />
-                          <span className="text-[11px] font-bold text-slate-800">Heading 1</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
-                          {level1Color.includes("gradient") ? "Gradient" : level1Color}
-                        </span>
-                      </div>
-
-                      <div
-                        onClick={() => setSelectedElement("level2")}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-3.5 w-5 rounded border border-slate-300"
-                            style={{ backgroundColor: level2Color }}
-                          />
-                          <span className="text-[11px] font-bold text-slate-800">Heading 2</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
-                          {level2Color}
-                        </span>
-                      </div>
-
-                      <div
-                        onClick={() => {
-                          setSelectedElement("sidebar");
-                          setSidebarColorMode("accent");
-                        }}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-3.5 w-5 rounded border border-slate-300"
-                            style={{ backgroundColor: sidebarColor }}
-                          />
-                          <span className="text-[11px] font-bold text-slate-800">Nav Header</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
-                          {sidebarColor}
-                        </span>
-                      </div>
-
-                      <div
-                        onClick={() => {
-                          setSelectedElement("sidebar");
-                          setSidebarColorMode("background");
-                        }}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-3.5 w-5 rounded border border-slate-300"
-                            style={{ backgroundColor: sidebarBgColor }}
-                          />
-                          <span className="text-[11px] font-bold text-slate-800">Nav Bg</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
-                          {sidebarBgColor}
-                        </span>
-                      </div>
-                    </div>
+                  {/* Save Current Setup Box */}
+                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-white border-2 border-purple-200 shadow-xs">
+                    <input
+                      type="text"
+                      placeholder={`Name setup (e.g. Version ${savedSetups.length + 1})`}
+                      value={newVersionName}
+                      onChange={(e) => setNewVersionName(e.target.value)}
+                      className="flex-1 px-3 py-2 text-xs bg-slate-50 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-purple-600 font-bold text-slate-800"
+                    />
+                    <button
+                      onClick={handleSaveCurrentSetup}
+                      className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-purple-700 text-white rounded-xl text-xs font-black shadow-xs active:scale-95 transition-all cursor-pointer shrink-0"
+                    >
+                      <BookmarkPlus className="h-3.5 w-3.5" />
+                      <span>Save Setup</span>
+                    </button>
                   </div>
 
                 </div>
@@ -1300,15 +1778,15 @@ export default function ColorPaletteCustomizer() {
               {/* ======================================================== */}
               {topTab === "ready" && (
                 <div className="flex flex-col gap-4 animate-fadeIn">
-                  <div>
-                    <span className="text-xs font-black uppercase tracking-wider text-indigo-600 block mb-1">
+                  <div className="p-3.5 rounded-2xl bg-white border-2 border-slate-200/90 shadow-xs">
+                    <span className="text-xs font-black uppercase tracking-wider text-purple-600 block mb-0.5">
                       Coordinated Palettes
                     </span>
-                    <h4 className="font-outfit text-sm font-black text-slate-800">
+                    <h4 className="font-outfit text-sm font-black text-slate-900">
                       8 Curated University Schemes
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      1-click harmonization across Logo Bar, Top Nav, Heading 1 &amp; Heading 2.
+                      1-click harmonization across Logo Bar, Text Mode, Top Nav, Heading 1 &amp; Heading 2.
                     </p>
                   </div>
 
@@ -1326,31 +1804,31 @@ export default function ColorPaletteCustomizer() {
                         <button
                           key={option.id}
                           onClick={() => handleApplyReadyMade(option)}
-                          className={`flex flex-col gap-2.5 p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                          className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${
                             isActive
-                              ? "border-indigo-600 bg-indigo-50/70 shadow-sm ring-2 ring-indigo-500/20"
-                              : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/80"
+                              ? "border-purple-600 bg-purple-50/90 shadow-md ring-2 ring-purple-500/25"
+                              : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-2xs"
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-outfit text-xs font-extrabold text-slate-900">
+                            <span className="font-outfit text-xs font-black text-slate-950">
                               {option.name}
                             </span>
                             {isActive ? (
-                              <span className="flex items-center gap-1 text-[11px] font-bold text-indigo-600">
-                                <CheckCircle2 className="h-3.5 w-3.5" /> Active
+                              <span className="flex items-center gap-1 text-[11px] font-black text-purple-700 bg-purple-100/90 px-2 py-0.5 rounded-md">
+                                <CheckCircle2 className="h-3.5 w-3.5" /> ACTIVE PRESET
                               </span>
                             ) : (
-                              <span className="text-[11px] font-bold text-slate-400 group-hover:text-indigo-600 flex items-center gap-0.5">
+                              <span className="text-[11px] font-bold text-slate-500 group-hover:text-purple-600 flex items-center gap-0.5">
                                 Apply <ArrowRight className="h-3 w-3" />
                               </span>
                             )}
                           </div>
-                          <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                          <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
                             {option.desc}
                           </p>
-                          <div className="flex items-center gap-2 pt-1">
-                            <span className="text-[10px] font-bold text-slate-400">6 Colors:</span>
+                          <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
+                            <span className="text-[10px] font-black text-slate-400">Palettes:</span>
                             <div className="flex items-center gap-1.5">
                               <span
                                 className="h-4 w-5 rounded border border-slate-300"
@@ -1375,12 +1853,12 @@ export default function ColorPaletteCustomizer() {
                               <span
                                 className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.sidebar || "#1e40af" }}
-                                title="Side Nav Header & Active"
+                                title="Side Nav"
                               />
                               <span
                                 className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.sidebarBg || "#eaeff5" }}
-                                title="Side Nav Container Background"
+                                title="Side Nav Background"
                               />
                             </div>
                           </div>
@@ -1395,47 +1873,26 @@ export default function ColorPaletteCustomizer() {
               {/* TAB 3: SAVED SETUPS (Save & Switch Between Versions)    */}
               {/* ======================================================== */}
               {topTab === "saved" && (
-                <div className="flex flex-col gap-5 animate-fadeIn">
-                  <div>
-                    <span className="text-xs font-black uppercase tracking-wider text-indigo-600 block mb-1">
+                <div className="flex flex-col gap-4 animate-fadeIn">
+                  <div className="p-3.5 rounded-2xl bg-white border-2 border-slate-200/90 shadow-xs">
+                    <span className="text-xs font-black uppercase tracking-wider text-purple-600 block mb-0.5">
                       Version Snapshots
                     </span>
-                    <h4 className="font-outfit text-sm font-black text-slate-800">
+                    <h4 className="font-outfit text-sm font-black text-slate-900">
                       Saved Color Setups
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Save your current palette setup, try different variations freely, and return to test or restore previous versions anytime.
+                      Save, switch and restore custom color palettes at any time.
                     </p>
-                  </div>
-
-                  {/* Save Current Box */}
-                  <div className="flex flex-col gap-2 p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-2xl">
-                    <span className="text-xs font-bold text-indigo-900">Save Current Setup as Version:</span>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        placeholder={`Setup Version ${savedSetups.length + 1}`}
-                        value={newVersionName}
-                        onChange={(e) => setNewVersionName(e.target.value)}
-                        className="flex-1 px-3 py-2 text-xs bg-white border border-indigo-200 rounded-xl focus:outline-none focus:border-indigo-600 font-semibold"
-                      />
-                      <button
-                        onClick={handleSaveCurrentSetup}
-                        className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer shrink-0"
-                      >
-                        <BookmarkPlus className="h-3.5 w-3.5" />
-                        <span>Save</span>
-                      </button>
-                    </div>
                   </div>
 
                   {/* List of Saved Versions */}
                   {savedSetups.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center p-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-2xl gap-2">
+                    <div className="flex flex-col items-center justify-center p-8 text-center bg-white border-2 border-dashed border-slate-200 rounded-2xl gap-2 shadow-xs">
                       <Bookmark className="h-8 w-8 text-slate-300" />
-                      <h5 className="font-outfit font-bold text-sm text-slate-700">No Saved Versions Yet</h5>
+                      <h5 className="font-outfit font-black text-sm text-slate-800">No Saved Versions Yet</h5>
                       <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-                        Customize your colors in Manual Selection, then click &quot;Save Setup&quot; to bookmark this version so you can switch back to it anytime.
+                        Customize your colors in Manual Selection, then click &quot;Save Setup&quot; to bookmark this version.
                       </p>
                     </div>
                   ) : (
@@ -1453,26 +1910,26 @@ export default function ColorPaletteCustomizer() {
                           <div
                             key={setup.id}
                             onClick={() => handleApplySavedSetup(setup)}
-                            className={`flex flex-col gap-2.5 p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                            className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${
                               isCurrentActive
-                                ? "border-indigo-600 bg-indigo-50/70 shadow-sm ring-2 ring-indigo-500/20"
-                                : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
+                                ? "border-purple-600 bg-purple-50/90 shadow-md ring-2 ring-purple-500/25"
+                                : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-2xs"
                             }`}
                           >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <span className="font-outfit text-xs font-extrabold text-slate-900">
+                                <span className="font-outfit text-xs font-black text-slate-950">
                                   {setup.name}
                                 </span>
                                 {isCurrentActive && (
-                                  <span className="text-[10px] font-bold text-indigo-600 bg-indigo-100/80 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                    <CheckCircle2 className="h-3 w-3" /> Active Now
+                                  <span className="text-[10px] font-black text-purple-700 bg-purple-100/90 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                    <CheckCircle2 className="h-3 w-3" /> Active
                                   </span>
                                 )}
                               </div>
 
                               <div className="flex items-center gap-1">
-                                <span className="text-[10px] font-semibold text-slate-400 flex items-center gap-1 mr-1">
+                                <span className="text-[10px] font-bold text-slate-500 flex items-center gap-1 mr-1">
                                   <Clock className="h-3 w-3" /> {setup.createdAt}
                                 </span>
                                 <button
@@ -1510,16 +1967,16 @@ export default function ColorPaletteCustomizer() {
                                 <span
                                   className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.sidebar || "#1e40af" }}
-                                  title="Side Nav Header & Active"
+                                  title="Side Nav"
                                 />
                                 <span
                                   className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.sidebarBg || "#eaeff5" }}
-                                  title="Side Nav Container Background"
+                                  title="Side Nav Background"
                                 />
                               </div>
 
-                              <span className="text-[11px] font-bold text-indigo-600 flex items-center gap-1">
+                              <span className="text-[11px] font-bold text-purple-700 flex items-center gap-1">
                                 {isCurrentActive ? "Active" : "Click to Apply →"}
                               </span>
                             </div>
@@ -1533,11 +1990,11 @@ export default function ColorPaletteCustomizer() {
 
             </div>
 
-            {/* Footer Actions */}
-            <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-2 shrink-0">
+            {/* Footer Actions with High Contrast */}
+            <div className="p-4 border-t-2 border-slate-200/90 bg-white flex items-center justify-between gap-2 shrink-0">
               <button
                 onClick={handleReset}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 transition-all active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-black text-slate-700 hover:text-slate-950 bg-slate-100 border-2 border-slate-200 rounded-xl hover:bg-slate-200 transition-all active:scale-95 cursor-pointer"
               >
                 <RotateCcw className="h-3.5 w-3.5" /> Reset
               </button>
@@ -1545,15 +2002,15 @@ export default function ColorPaletteCustomizer() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleCopyCodes}
-                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-indigo-600 rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-black text-white bg-slate-950 hover:bg-purple-700 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
                 >
                   {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Copy className="h-3.5 w-3.5" />}
                   {copied ? "Copied!" : "Copy Hex Codes"}
                 </button>
 
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-1 px-3 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-100 rounded-xl transition-all active:scale-95 cursor-pointer"
+                  onClick={handleCloseDrawer}
+                  className="flex items-center gap-1 px-3 py-2 text-xs font-black text-slate-700 hover:text-slate-950 bg-slate-100 border-2 border-slate-200 hover:bg-slate-200 rounded-xl transition-all active:scale-95 cursor-pointer"
                   title="Close Color Palette"
                 >
                   <X className="h-3.5 w-3.5" /> Close

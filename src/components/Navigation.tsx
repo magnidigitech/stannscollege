@@ -572,7 +572,7 @@ export default function Navigation() {
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
       <div
-        className="hidden md:flex items-center justify-between text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200"
+        className="hidden md:flex items-center justify-between text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 z-30"
         style={{
           color: "var(--topnav-link-color, #ffffff)",
           fontFamily: "var(--topnav-font-family, inherit)",
@@ -599,7 +599,7 @@ export default function Navigation() {
 
           {/* 2. About Us */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("about")}
             onMouseLeave={handleMouseLeave}
           >
@@ -610,7 +610,8 @@ export default function Navigation() {
 
             {activeMenu === "about" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("about")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -653,7 +654,7 @@ export default function Navigation() {
 
           {/* 3. Academics */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("academics")}
             onMouseLeave={handleMouseLeave}
           >
@@ -664,7 +665,8 @@ export default function Navigation() {
 
             {activeMenu === "academics" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[75vh] overflow-y-auto animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[75vh] overflow-y-auto animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("academics")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -756,7 +758,7 @@ export default function Navigation() {
 
           {/* 4. Admissions */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("admissions")}
             onMouseLeave={handleMouseLeave}
           >
@@ -767,7 +769,8 @@ export default function Navigation() {
 
             {activeMenu === "admissions" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("admissions")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -801,7 +804,7 @@ export default function Navigation() {
 
           {/* 5. Infrastructure */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("infra")}
             onMouseLeave={handleMouseLeave}
           >
@@ -812,7 +815,8 @@ export default function Navigation() {
 
             {activeMenu === "infra" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("infra")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -846,7 +850,7 @@ export default function Navigation() {
 
           {/* 6. Faculty */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("faculty")}
             onMouseLeave={handleMouseLeave}
           >
@@ -857,7 +861,8 @@ export default function Navigation() {
 
             {activeMenu === "faculty" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("faculty")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -891,7 +896,7 @@ export default function Navigation() {
 
           {/* 7. Student Support Services */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("support")}
             onMouseLeave={handleMouseLeave}
           >
@@ -902,7 +907,8 @@ export default function Navigation() {
 
             {activeMenu === "support" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("support")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -936,7 +942,7 @@ export default function Navigation() {
 
           {/* 8. Placements & Industry Linkages */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("placements")}
             onMouseLeave={handleMouseLeave}
           >
@@ -947,7 +953,8 @@ export default function Navigation() {
 
             {activeMenu === "placements" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn max-h-[75vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn max-h-[75vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("placements")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -985,7 +992,7 @@ export default function Navigation() {
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
       <div
-        className="hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200"
+        className="hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 z-20"
         style={{
           borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
           color: "var(--topnav-row2-color, var(--topnav-link-color, #e2e8f0))",
@@ -1009,7 +1016,7 @@ export default function Navigation() {
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("research")}
             onMouseLeave={handleMouseLeave}
           >
@@ -1020,7 +1027,8 @@ export default function Navigation() {
 
             {activeMenu === "research" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("research")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -1055,7 +1063,7 @@ export default function Navigation() {
 
           {/* 10. Alumni */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("alumni")}
             onMouseLeave={handleMouseLeave}
           >
@@ -1066,7 +1074,8 @@ export default function Navigation() {
 
             {activeMenu === "alumni" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("alumni")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -1100,7 +1109,7 @@ export default function Navigation() {
 
           {/* 11. IQAC, Quality Assurance & Accreditation */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("iqac")}
             onMouseLeave={handleMouseLeave}
           >
@@ -1111,7 +1120,8 @@ export default function Navigation() {
 
             {activeMenu === "iqac" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("iqac")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -1145,7 +1155,7 @@ export default function Navigation() {
 
           {/* 12. Mandatory Disclosures & Compliance */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("mandatory")}
             onMouseLeave={handleMouseLeave}
           >
@@ -1156,7 +1166,8 @@ export default function Navigation() {
 
             {activeMenu === "mandatory" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("mandatory")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -1190,7 +1201,7 @@ export default function Navigation() {
 
           {/* 13. Strategic Plans & Future Directions */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("strategic")}
             onMouseLeave={handleMouseLeave}
           >
@@ -1201,7 +1212,8 @@ export default function Navigation() {
 
             {activeMenu === "strategic" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("strategic")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -1235,7 +1247,7 @@ export default function Navigation() {
 
           {/* 14. Contact Us */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("contact")}
             onMouseLeave={handleMouseLeave}
           >
@@ -1246,7 +1258,8 @@ export default function Navigation() {
 
             {activeMenu === "contact" && (
               <div
-                className="absolute top-full left-0 w-full bg-white border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("contact")}
                 onMouseLeave={handleMouseLeave}
               >

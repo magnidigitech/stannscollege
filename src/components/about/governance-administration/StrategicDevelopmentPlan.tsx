@@ -30,7 +30,7 @@ interface StrategicPlanData {
 
 const defaultPlanData: StrategicPlanData = {
   title: "Strategic Plans & Future Directions",
-  executiveSummary: "St. Ann’s College for Women, Guntur, envisions a transformative future rooted in academic excellence, innovation, women empowerment, social responsibility, and nation-building. Guided by the values of the Congregation of the Sisters of St. Ann and aligned with the aspirations of Viksit Bharat @2047 and Swarna Andhra @2047, the institution is committed to nurturing globally competent, ethically grounded, and socially responsible women leaders.",
+  executiveSummary: "Towards academic excellence, innovations, women empowerment, social responsibility and nation building.",
   googleFormUrl: "https://www.google.com/search?q=%23",
   studentFeedbackFormUrl: "https://forms.gle/n6QfA4roPrqtPWjM8",
   facultyFeedbackFormUrl: "https://www.google.com/search?q=%23",
@@ -440,7 +440,9 @@ export function StrategicDevelopmentPlan() {
         if (fetchedPlan) {
           setData({
             title: fetchedPlan.title || defaultPlanData.title,
-            executiveSummary: fetchedPlan.executiveSummary || defaultPlanData.executiveSummary,
+            executiveSummary: (fetchedPlan.executiveSummary && !fetchedPlan.executiveSummary.includes("envisions a transformative future"))
+              ? fetchedPlan.executiveSummary
+              : defaultPlanData.executiveSummary,
             googleFormUrl: fetchedPlan.googleFormUrl || defaultPlanData.googleFormUrl,
             studentFeedbackFormUrl: (fetchedPlan.studentFeedbackFormUrl && fetchedPlan.studentFeedbackFormUrl !== "https://www.google.com/search?q=%23")
               ? fetchedPlan.studentFeedbackFormUrl
@@ -468,33 +470,55 @@ export function StrategicDevelopmentPlan() {
   const documentsList = data.documents || defaultPlanData.documents || [];
 
   return (
-    <div className="flex flex-col font-sans select-none animate-fadeIn">
-      {/* 1. Full-Width Heading 1 Banner */}
+    <div className="flex flex-col font-sans select-none animate-fadeIn w-full">
+      {/* 1. Full-Width Bleed Heading 1 Banner (Attached to Top Nav, Edge-to-Edge with Zero Gaps) */}
       <div
-        className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white py-6 md:py-7 lg:py-8 px-6 md:px-10 lg:px-14 rounded-3xl shadow-xl relative overflow-hidden mb-8 border transition-colors duration-200"
+        className="w-full text-white px-4 sm:px-6 lg:px-12 relative overflow-hidden transition-all duration-200 border-b shadow-md"
         style={{
           background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
-          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))"
+          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
+          paddingTop: "var(--level1-padding-y, 44px)",
+          paddingBottom: "var(--level1-padding-y, 44px)"
         }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full gap-2.5">
+        <div 
+          className="max-w-[1600px] mx-auto relative z-10 flex flex-col w-full"
+          style={{
+            alignItems: "var(--level1-align-items, center)",
+            textAlign: "var(--level1-text-align, center)" as any,
+            gap: "var(--level1-gap, 12px)"
+          }}
+        >
           <h1
-            className="font-outfit text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight transition-colors duration-200 text-center"
-            style={{ color: "var(--level1-title, #ffffff)" }}
+            className="tracking-tight leading-tight transition-all duration-200 font-black"
+            style={{ 
+              color: "var(--level1-title, #ffffff)",
+              fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
+              fontSize: "var(--level1-title-size, 38px)",
+              textAlign: "inherit"
+            }}
           >
             {data.title}
           </h1>
           {data.executiveSummary && (
-            <p className="text-blue-100/90 text-xs sm:text-sm md:text-base leading-relaxed font-semibold border-t border-white/10 pt-2.5 text-center w-full px-2 sm:px-4">
+            <p 
+              className="text-blue-100/95 leading-relaxed font-semibold border-t border-white/15 pt-3 px-2 sm:px-4"
+              style={{
+                fontSize: "var(--level1-sub-size, 16px)",
+                maxWidth: "var(--level1-sub-max-width, 56rem)",
+                textAlign: "inherit"
+              }}
+            >
               {data.executiveSummary}
             </p>
           )}
         </div>
       </div>
 
-      {/* 2. Layout Grid: Sidebar on Left, Data Elements on Right */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+      {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
+      <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
         {/* Left: About Navigation Sidebar */}
         <aside className="lg:col-span-3">
           <AboutSidebar
@@ -1289,6 +1313,7 @@ export function StrategicDevelopmentPlan() {
         </div>
       </section>
         </main>
+      </div>
       </div>
 
       {/* 7. Flipbook Modal Reader */}
