@@ -572,10 +572,25 @@ export default function Navigation() {
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
       <div
-        className="hidden md:flex items-center justify-between py-3 text-xs lg:text-[13px] font-bold relative w-full transition-colors duration-200"
-        style={{ color: "var(--topnav-link-color, #ffffff)" }}
+        className="hidden md:flex items-center justify-between text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200"
+        style={{
+          color: "var(--topnav-link-color, #ffffff)",
+          fontFamily: "var(--topnav-font-family, inherit)",
+          fontSize: "var(--topnav-font-size, 13px)",
+          fontWeight: "var(--topnav-font-weight, 700)",
+          paddingTop: "var(--topnav-padding-y, 12px)",
+          paddingBottom: "var(--topnav-padding-y, 12px)"
+        }}
       >
-        <nav className="flex items-center justify-between w-full text-inherit">
+        <nav
+          className="flex items-center justify-between w-full text-inherit"
+          style={{
+            gap: "var(--topnav-spacing, 20px)",
+            fontFamily: "inherit",
+            fontSize: "inherit",
+            fontWeight: "inherit"
+          }}
+        >
 
           {/* 1. Home */}
           <Link href="/" className="hover:opacity-80 transition-all duration-200 whitespace-nowrap text-inherit">
@@ -584,11 +599,11 @@ export default function Navigation() {
 
           {/* 2. About Us */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("about")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/about/the-institution/basic-institutional-information" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/about/the-institution/basic-institutional-information" className="hover:opacity-85 select-none font-bold text-inherit">
               About Us
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -638,11 +653,11 @@ export default function Navigation() {
 
           {/* 3. Academics */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("academics")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:opacity-85 select-none font-bold text-inherit">
               Academics
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -741,11 +756,11 @@ export default function Navigation() {
 
           {/* 4. Admissions */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("admissions")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/admissions/policy-process" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/admissions/policy-process" className="hover:opacity-85 select-none font-bold text-inherit">
               Admissions
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -786,11 +801,11 @@ export default function Navigation() {
 
           {/* 5. Infrastructure */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("infra")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/infrastructure" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/infrastructure" className="hover:opacity-85 select-none font-bold text-inherit">
               Infrastructure
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -831,11 +846,11 @@ export default function Navigation() {
 
           {/* 6. Faculty */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("faculty")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/faculty/teaching-staff" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/faculty/teaching-staff" className="hover:opacity-85 select-none font-bold text-inherit">
               Faculty
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -876,11 +891,11 @@ export default function Navigation() {
 
           {/* 7. Student Support Services */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("support")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/student-support/mentor-mentee" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/student-support/mentor-mentee" className="hover:opacity-85 select-none font-bold text-inherit">
               Student Support Services
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -921,11 +936,11 @@ export default function Navigation() {
 
           {/* 8. Placements & Industry Linkages */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-white hover:text-blue-200 transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("placements")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/placements" className="hover:text-blue-200 select-none font-bold">
+            <Link href="/placements" className="hover:opacity-85 select-none font-bold text-inherit">
               Placements & Industry Linkages
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -970,22 +985,35 @@ export default function Navigation() {
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
       <div
-        className="hidden md:flex items-center justify-between py-2.5 border-t text-xs lg:text-[13px] font-bold relative w-full transition-colors duration-200"
+        className="hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200"
         style={{
           borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
-          color: "var(--topnav-row2-color, #e2e8f0)"
+          color: "var(--topnav-row2-color, var(--topnav-link-color, #e2e8f0))",
+          fontFamily: "var(--topnav-font-family, inherit)",
+          fontSize: "var(--topnav-font-size, 13px)",
+          fontWeight: "var(--topnav-font-weight, 700)",
+          paddingTop: "calc(var(--topnav-padding-y, 12px) * 0.8)",
+          paddingBottom: "calc(var(--topnav-padding-y, 12px) * 0.8)"
         }}
       >
-        <nav className="flex items-center justify-between w-full text-inherit">
+        <nav
+          className="flex items-center justify-between w-full text-inherit"
+          style={{
+            gap: "var(--topnav-spacing, 20px)",
+            fontFamily: "inherit",
+            fontSize: "inherit",
+            fontWeight: "inherit"
+          }}
+        >
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("research")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/research-innovation" className="hover:text-white select-none font-bold">
+            <Link href="/research-innovation" className="hover:opacity-85 select-none font-bold text-inherit">
               Research & Innovation
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -1027,11 +1055,11 @@ export default function Navigation() {
 
           {/* 10. Alumni */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("alumni")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/alumni" className="hover:text-white select-none font-bold">
+            <Link href="/alumni" className="hover:opacity-85 select-none font-bold text-inherit">
               Alumni
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -1072,11 +1100,11 @@ export default function Navigation() {
 
           {/* 11. IQAC, Quality Assurance & Accreditation */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("iqac")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/quality-assurance" className="hover:text-white select-none font-bold">
+            <Link href="/quality-assurance" className="hover:opacity-85 select-none font-bold text-inherit">
               IQAC, Quality Assurance & Accreditation
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -1117,11 +1145,11 @@ export default function Navigation() {
 
           {/* 12. Mandatory Disclosures & Compliance */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("mandatory")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/mandatory-disclosures" className="hover:text-white select-none font-bold">
+            <Link href="/mandatory-disclosures" className="hover:opacity-85 select-none font-bold text-inherit">
               Mandatory Disclosures & Compliance
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -1162,11 +1190,11 @@ export default function Navigation() {
 
           {/* 13. Strategic Plans & Future Directions */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("strategic")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/strategic-plans-and-future-directions" className="hover:text-white select-none font-bold">
+            <Link href="/strategic-plans-and-future-directions" className="hover:opacity-85 select-none font-bold text-inherit">
               Strategic Plans & Future Directions
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
@@ -1207,11 +1235,11 @@ export default function Navigation() {
 
           {/* 14. Contact Us */}
           <div
-            className="flex items-center gap-1 cursor-pointer text-slate-200 hover:text-white transition-all duration-200 py-1 whitespace-nowrap"
+            className="flex items-center gap-1 cursor-pointer text-inherit hover:opacity-85 transition-all duration-200 py-1 whitespace-nowrap"
             onMouseEnter={() => handleMouseEnter("contact")}
             onMouseLeave={handleMouseLeave}
           >
-            <Link href="/contact" className="hover:text-white select-none font-bold">
+            <Link href="/contact" className="hover:opacity-85 select-none font-bold text-inherit">
               Contact Us
             </Link>
             <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />

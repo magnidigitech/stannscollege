@@ -40,3 +40,30 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes announcement-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-announcement-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: announcement-marquee 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-announcement-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-announcement-marquee {
+    animation: none;
+  }
+}
