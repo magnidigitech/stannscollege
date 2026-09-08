@@ -571,11 +571,14 @@ export default function Navigation() {
       {/* ============================================================== */}
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
-      <div className="hidden md:flex items-center justify-between py-3 text-xs lg:text-[13px] font-bold text-white relative w-full">
-        <nav className="flex items-center justify-between w-full">
+      <div
+        className="hidden md:flex items-center justify-between py-3 text-xs lg:text-[13px] font-bold relative w-full transition-colors duration-200"
+        style={{ color: "var(--topnav-link-color, #ffffff)" }}
+      >
+        <nav className="flex items-center justify-between w-full text-inherit">
 
           {/* 1. Home */}
-          <Link href="/" className="text-white hover:text-blue-200 transition-all duration-200 whitespace-nowrap">
+          <Link href="/" className="hover:opacity-80 transition-all duration-200 whitespace-nowrap text-inherit">
             Home
           </Link>
 
@@ -966,8 +969,14 @@ export default function Navigation() {
 
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
-      <div className="hidden md:flex items-center justify-between py-2.5 border-t border-white/15 text-xs lg:text-[13px] font-bold text-slate-200 relative w-full">
-        <nav className="flex items-center justify-between w-full">
+      <div
+        className="hidden md:flex items-center justify-between py-2.5 border-t text-xs lg:text-[13px] font-bold relative w-full transition-colors duration-200"
+        style={{
+          borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
+          color: "var(--topnav-row2-color, #e2e8f0)"
+        }}
+      >
+        <nav className="flex items-center justify-between w-full text-inherit">
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
@@ -1249,13 +1258,21 @@ export default function Navigation() {
       {/* ============================================================== */}
 
       {/* Mobile Top Header (Visible only on mobile screens when sticky nav is active) */}
-      <div className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 bg-[#002147] px-4">
-        <Link href="/" className="font-outfit font-black text-base text-white uppercase tracking-tight leading-none">
+      <div
+        className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 px-4 transition-colors duration-200"
+        style={{ backgroundColor: "var(--topnav-bg, #002147)" }}
+      >
+        <Link
+          href="/"
+          className="font-outfit font-black text-base uppercase tracking-tight leading-none"
+          style={{ color: "var(--topnav-link-color, #ffffff)" }}
+        >
           St. Ann&apos;s College
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 text-white transition-all"
+          className="p-2.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all cursor-pointer"
+          style={{ color: "var(--topnav-link-color, #ffffff)" }}
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>

@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
+import ColorPaletteCustomizer from "@/components/ColorPaletteCustomizer";
 import { Award, Sparkles, Bell, ArrowRight } from "lucide-react";
 
 const inter = Inter({
@@ -86,8 +87,15 @@ export default function RootLayout({
         {/* Announcement Bar - Rendered only on Home Page in its original position */}
         <AnnouncementBar />
 
-        {/* Top bar with College Logo, Accreditations & Apply Now distributed across the width */}
-        <div id="top-logo-bar" className="w-full bg-[#002147] border-b border-white/10 select-none">
+        {/* Top bar with College Logo, Accreditations & Apply Now in a single centered row */}
+        <div
+          id="top-logo-bar"
+          className="w-full border-b select-none transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--logo-bar-bg, #002147)",
+            borderColor: "var(--logo-bar-border, rgba(255, 255, 255, 0.1))"
+          }}
+        >
           <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full py-4 sm:py-5 flex flex-col md:flex-row items-center justify-between gap-4">
             
             {/* Left: College Logo, Name and Affiliation Subtitles */}
@@ -98,10 +106,16 @@ export default function RootLayout({
                 className="h-14 sm:h-16 w-auto object-contain select-none hover:scale-105 transition-all duration-300 bg-white/95 p-1 rounded-2xl shadow-sm"
               />
               <div className="flex flex-col items-start text-left">
-                <span className="font-outfit text-xl sm:text-2xl lg:text-[26px] font-black text-white tracking-tight leading-tight select-none uppercase">
+                <span
+                  className="font-outfit text-xl sm:text-2xl lg:text-[26px] font-black tracking-tight leading-tight select-none uppercase transition-colors duration-200"
+                  style={{ color: "var(--logo-bar-title, #ffffff)" }}
+                >
                   St. Ann&apos;s College for Women
                 </span>
-                <span className="font-sans text-xs md:text-sm font-semibold text-blue-200/90 tracking-wide select-none">
+                <span
+                  className="font-sans text-xs md:text-sm font-semibold tracking-wide select-none transition-colors duration-200"
+                  style={{ color: "var(--logo-bar-subtitle, rgba(191, 219, 254, 0.9))" }}
+                >
                   Run by the Society of St Anne
                 </span>
               </div>
@@ -119,17 +133,26 @@ export default function RootLayout({
                     className="h-11 w-11 rounded-full object-cover select-none shadow-sm"
                   />
                   <div className="flex flex-col text-left leading-tight">
-                    <span className="text-xs font-bold text-white tracking-wide">
+                    <span
+                      className="text-xs font-bold tracking-wide transition-colors duration-200"
+                      style={{ color: "var(--logo-bar-title, #ffffff)" }}
+                    >
                       30 Years of
                     </span>
-                    <span className="text-[11px] font-semibold text-blue-200 tracking-wide">
+                    <span
+                      className="text-[11px] font-semibold tracking-wide transition-colors duration-200"
+                      style={{ color: "var(--logo-bar-subtitle, rgba(191, 219, 254, 0.9))" }}
+                    >
                       Excellence
                     </span>
                   </div>
                 </div>
 
                 {/* Divider Line */}
-                <div className="h-8 w-px bg-white/20" />
+                <div
+                  className="h-8 w-px transition-colors duration-200"
+                  style={{ backgroundColor: "var(--logo-bar-divider, rgba(255, 255, 255, 0.2))" }}
+                />
 
                 {/* NAAC 'A' Accreditation */}
                 <div className="flex items-center gap-2.5">
@@ -142,7 +165,10 @@ export default function RootLayout({
                     <span className="text-xs font-bold text-amber-300 tracking-wide">
                       NAAC &apos;A&apos;
                     </span>
-                    <span className="text-[11px] font-semibold text-blue-200 tracking-wide">
+                    <span
+                      className="text-[11px] font-semibold tracking-wide transition-colors duration-200"
+                      style={{ color: "var(--logo-bar-subtitle, rgba(191, 219, 254, 0.9))" }}
+                    >
                       Accreditation
                     </span>
                   </div>
@@ -163,7 +189,14 @@ export default function RootLayout({
         </div>
 
         {/* Sticky Header below top bar for navigation (dynamic height to support dual row) */}
-        <header id="main-header" className="sticky top-0 z-50 bg-[#002147] border-b border-[#001730] shadow-md select-none">
+        <header
+          id="main-header"
+          className="sticky top-0 z-50 border-b shadow-md select-none transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--topnav-bg, #002147)",
+            borderColor: "var(--topnav-border, #001730)"
+          }}
+        >
           <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative">
             <Navigation />
           </div>
@@ -264,6 +297,9 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+
+        {/* Live Color Palette Customizer Drawer & Controls */}
+        <ColorPaletteCustomizer />
       </body>
     </html>
   );

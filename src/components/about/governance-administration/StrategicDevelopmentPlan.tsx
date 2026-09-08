@@ -347,15 +347,27 @@ export function StrategicDevelopmentPlan() {
   return (
     <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn pb-16">
       {/* 1. Header Hero Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#001730] via-[#002147] to-[#0d3b66] p-6 sm:p-8 md:px-10 md:py-8 text-white shadow-xl border border-indigo-950/20">
+      <div
+        className="relative overflow-hidden rounded-[2rem] p-6 sm:p-8 md:px-10 md:py-8 text-white shadow-xl border transition-colors duration-200"
+        style={{
+          background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
+          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))"
+        }}
+      >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_45%)] pointer-events-none"></div>
         <div className="relative z-10 flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex flex-col gap-1.5 flex-1 pr-2">
-              <h1 className="font-outfit text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
+              <h1
+                className="font-outfit text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight transition-colors duration-200"
+                style={{ color: "var(--level1-title, #ffffff)" }}
+              >
                 {data.title}
               </h1>
-              <p className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-indigo-200/90">
+              <p
+                className="text-[11px] md:text-xs font-bold uppercase tracking-widest transition-colors duration-200"
+                style={{ color: "var(--level1-breadcrumb, rgba(199, 210, 254, 0.9))" }}
+              >
                 St. Ann’s College for Women, Guntur
               </p>
             </div>
@@ -379,14 +391,26 @@ export function StrategicDevelopmentPlan() {
       {/* Section 1: Institutional Performance Indicators */}
       <section className="bg-[#002147]/[0.03] border-2 border-[#002147]/20 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
-        <div className="bg-[#002147] text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b border-indigo-950/20">
+        <div
+          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--level2-bg, #002147)",
+            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+          }}
+        >
           <div className="flex items-center gap-3">
             <GraduationCap className="h-6 w-6 text-indigo-300 shrink-0" />
-            <h2 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
+            <h2
+              className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+              style={{ color: "var(--level2-title, #ffffff)" }}
+            >
               Institutional Performance Indicators
             </h2>
           </div>
-          <p className="text-blue-100/90 text-sm font-medium mt-1 sm:pl-9">
+          <p
+            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+          >
             Academic, Research, Societal &amp; Impact Metrics tracking institutional progression.
           </p>
         </div>
@@ -479,14 +503,26 @@ export function StrategicDevelopmentPlan() {
       {/* Section 2: Strategic Plan Documents (Moved UP above Strategic Priorities) */}
       <section className="bg-slate-100/80 border-2 border-slate-300/80 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
-        <div className="bg-[#002147] text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b border-indigo-950/20">
+        <div
+          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--level2-bg, #002147)",
+            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+          }}
+        >
           <div className="flex items-center gap-3">
             <FileText className="h-6 w-6 text-indigo-300 shrink-0" />
-            <h2 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
+            <h2
+              className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+              style={{ color: "var(--level2-title, #ffffff)" }}
+            >
               Strategic Plan Documents
             </h2>
           </div>
-          <p className="text-blue-100/90 text-sm font-medium mt-1 sm:pl-9">
+          <p
+            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+          >
             Official institutional frameworks and annual deployment plan reports available for online flipbook preview and direct download.
           </p>
         </div>
@@ -550,14 +586,26 @@ export function StrategicDevelopmentPlan() {
       {/* Section 3: Strategic Priorities – Next Five Years */}
       <section className="bg-slate-50 border-2 border-slate-200/80 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
-        <div className="bg-[#002147] text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b border-indigo-950/20">
+        <div
+          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--level2-bg, #002147)",
+            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+          }}
+        >
           <div className="flex items-center gap-3">
             <Milestone className="h-6 w-6 text-indigo-300 shrink-0" />
-            <h2 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
+            <h2
+              className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+              style={{ color: "var(--level2-title, #ffffff)" }}
+            >
               Strategic Priorities – Next Five Years
             </h2>
           </div>
-          <p className="text-blue-100/90 text-sm font-medium mt-1 sm:pl-9">
+          <p
+            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+          >
             Target development parameters across four primary institutional categories (2026–2031).
           </p>
         </div>
@@ -619,14 +667,26 @@ export function StrategicDevelopmentPlan() {
       {/* Section 4: Stakeholder Engagement & Feedback Mechanisms */}
       <section className="bg-blue-50/40 border-2 border-blue-200/80 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
-        <div className="bg-[#002147] text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b border-indigo-950/20">
+        <div
+          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--level2-bg, #002147)",
+            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+          }}
+        >
           <div className="flex items-center gap-3">
             <Users className="h-6 w-6 text-indigo-300 shrink-0" />
-            <h2 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
+            <h2
+              className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+              style={{ color: "var(--level2-title, #ffffff)" }}
+            >
               Stakeholder Engagement &amp; Feedback Mechanisms
             </h2>
           </div>
-          <p className="text-blue-100/90 text-sm font-medium mt-1 sm:pl-9">
+          <p
+            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+          >
             St. Ann’s College values the active participation of all stakeholders in institutional development and decision-making.
           </p>
         </div>
@@ -974,14 +1034,26 @@ export function StrategicDevelopmentPlan() {
       {/* Section 6: Reference Resource Links */}
       <section className="bg-slate-100/70 border-2 border-slate-300/80 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
-        <div className="bg-[#002147] text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b border-indigo-950/20">
+        <div
+          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          style={{
+            backgroundColor: "var(--level2-bg, #002147)",
+            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+          }}
+        >
           <div className="flex items-center gap-3">
             <Globe className="h-6 w-6 text-indigo-300 shrink-0" />
-            <h2 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
+            <h2
+              className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+              style={{ color: "var(--level2-title, #ffffff)" }}
+            >
               Reference Resource Links
             </h2>
           </div>
-          <p className="text-blue-100/90 text-sm font-medium mt-1 sm:pl-9">
+          <p
+            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+          >
             National &amp; State portal alignments supporting developed India (Viksit Bharat) and Swarna Andhra roadmaps.
           </p>
         </div>
