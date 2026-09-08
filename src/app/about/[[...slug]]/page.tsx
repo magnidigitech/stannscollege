@@ -114,11 +114,17 @@ function SidebarWidget() {
   );
 }
 
+import { redirect } from "next/navigation";
+
 export default async function AboutPage({ params }: { params: Promise<{ slug?: string[] }> }) {
   const { slug } = await params;
 
   const catSlug = slug?.[0];
   const itemSlug = slug?.[1];
+
+  if (itemSlug === "strategic-development-plan") {
+    redirect("/strategic-plans-and-future-directions");
+  }
 
   const activeCategory = catSlug ? categoryMapping[catSlug] || catSlug : null;
   const activeItem = itemSlug ? itemsMapping[itemSlug] || itemSlug : null;

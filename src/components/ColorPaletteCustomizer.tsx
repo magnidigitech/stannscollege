@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Palette, Check, RotateCcw, Copy, X, Sliders, Sparkles,
   Building, Compass, Heading, Bookmark, BookmarkPlus,
-  Pipette, CheckCircle2, ArrowRight, Trash2, Clock
+  Pipette, CheckCircle2, ArrowRight, Trash2, Clock, BookOpen
 } from "lucide-react";
 
 // --- Color Conversion Helpers ---
@@ -113,6 +113,8 @@ export interface SavedColorSetup {
   topNav: string;
   level1: string;
   level2: string;
+  sidebar?: string;
+  sidebarBg?: string;
 }
 
 export interface ReadyMadeOption {
@@ -123,44 +125,54 @@ export interface ReadyMadeOption {
   topNav: string;
   level1: string;
   level2: string;
+  sidebar?: string;
+  sidebarBg?: string;
 }
 
 const READY_MADE_OPTIONS: ReadyMadeOption[] = [
   {
     id: "preset-1",
     name: "1. St. Ann's Navy & Teal",
-    desc: "Original collegiate Midnight Navy header, Deep Academic Teal hero banner & Navy section headers",
+    desc: "Original collegiate Midnight Navy header, Deep Academic Teal hero banner, Navy section headers & Royal Blue sidebar",
     logoBar: "#002147",
     topNav: "#002147",
     level1: "linear-gradient(to right, #002b36, #043d4d, #084c61)",
-    level2: "#002147"
+    level2: "#002147",
+    sidebar: "#1e40af",
+    sidebarBg: "#eaeff5"
   },
   {
     id: "preset-2",
     name: "2. All Midnight Navy",
-    desc: "Monochrome institutional elegance with seamless navy across logo, navigation and section banners",
+    desc: "Monochrome institutional elegance with seamless navy across logo, navigation, section banners and sidebar",
     logoBar: "#002147",
     topNav: "#002147",
     level1: "linear-gradient(to right, #001730, #002147, #0d3b66)",
-    level2: "#001730"
+    level2: "#001730",
+    sidebar: "#002147",
+    sidebarBg: "#eaeff5"
   },
   {
     id: "preset-3",
     name: "3. Classic Collegiate (White + Navy)",
-    desc: "Crisp white logo bar with high-contrast Midnight Navy nav and Royal Academic Blue banners",
+    desc: "Crisp white logo bar with high-contrast Midnight Navy nav and Royal Academic Blue banners & sidebar",
     logoBar: "#ffffff",
     topNav: "#002147",
     level1: "linear-gradient(to right, #1e3a8a, #1e40af, #2563eb)",
-    level2: "#1e40af"
+    level2: "#1e40af",
+    sidebar: "#1e40af",
+    sidebarBg: "#ffffff"
   },
   {
     id: "preset-4",
     name: "4. Deep Ocean University",
-    desc: "Coordinated deep teal logo bar, ocean teal nav bar, and academic teal hero and section headers",
+    desc: "Coordinated deep teal logo bar, ocean teal nav bar, academic teal hero and section headers & sidebar",
     logoBar: "#002b36",
     topNav: "#084c61",
     level1: "linear-gradient(to right, #002b36, #043d4d, #084c61)",
-    level2: "#043d4d"
+    level2: "#043d4d",
+    sidebar: "#084c61",
+    sidebarBg: "#e8f1fd"
   },
   {
     id: "preset-5",
@@ -169,7 +181,9 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     logoBar: "#1e1b4b",
     topNav: "#312e81",
     level1: "linear-gradient(to right, #1e1b4b, #3730a3, #4f46e5)",
-    level2: "#312e81"
+    level2: "#312e81",
+    sidebar: "#312e81",
+    sidebarBg: "#eef2ff"
   },
   {
     id: "preset-6",
@@ -178,7 +192,9 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     logoBar: "#0f172a",
     topNav: "#1e293b",
     level1: "linear-gradient(to right, #090d16, #0f172a, #2563eb)",
-    level2: "#0f172a"
+    level2: "#0f172a",
+    sidebar: "#1e293b",
+    sidebarBg: "#f1f5f9"
   },
   {
     id: "preset-7",
@@ -187,7 +203,9 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     logoBar: "#022c22",
     topNav: "#064e3b",
     level1: "linear-gradient(to right, #022c22, #064e3b, #047857)",
-    level2: "#064e3b"
+    level2: "#064e3b",
+    sidebar: "#064e3b",
+    sidebarBg: "#f0fdf4"
   },
   {
     id: "preset-8",
@@ -196,7 +214,9 @@ const READY_MADE_OPTIONS: ReadyMadeOption[] = [
     logoBar: "#3b0707",
     topNav: "#581c1c",
     level1: "linear-gradient(to right, #2c0b0e, #581c1c, #831843)",
-    level2: "#581c1c"
+    level2: "#581c1c",
+    sidebar: "#581c1c",
+    sidebarBg: "#fdf2f2"
   }
 ];
 
@@ -552,16 +572,19 @@ export default function ColorPaletteCustomizer() {
   const [isOpen, setIsOpen] = useState(false);
   const [topTab, setTopTab] = useState<"manual" | "ready" | "saved">("manual");
 
-  // Manual Element selector: Logo, Top Nav, Heading 1, Heading 2
-  const [selectedElement, setSelectedElement] = useState<"logo" | "nav" | "level1" | "level2">("logo");
+  // Manual Element selector: Logo, Top Nav, Heading 1, Heading 2, Side Nav
+  const [selectedElement, setSelectedElement] = useState<"logo" | "nav" | "level1" | "level2" | "sidebar">("logo");
   const [copied, setCopied] = useState(false);
   const [saveToast, setSaveToast] = useState<string | null>(null);
 
-  // States for 4 distinct sections
+  // States for 5 distinct sections
   const [logoBarColor, setLogoBarColor] = useState<string>("#002147");
   const [topNavColor, setTopNavColor] = useState<string>("#002147");
   const [level1Color, setLevel1Color] = useState<string>("linear-gradient(to right, #002b36, #043d4d, #084c61)");
   const [level2Color, setLevel2Color] = useState<string>("#002147");
+  const [sidebarColor, setSidebarColor] = useState<string>("#1e40af");
+  const [sidebarBgColor, setSidebarBgColor] = useState<string>("#eaeff5");
+  const [sidebarColorMode, setSidebarColorMode] = useState<"accent" | "background">("accent");
 
   // Saved Setups / Versions List
   const [savedSetups, setSavedSetups] = useState<SavedColorSetup[]>([]);
@@ -574,12 +597,16 @@ export default function ColorPaletteCustomizer() {
       const savedNav = localStorage.getItem("theme_topNavColor");
       const savedL1 = localStorage.getItem("theme_level1Color");
       const savedL2 = localStorage.getItem("theme_level2Color");
+      const savedSidebar = localStorage.getItem("theme_sidebarColor");
+      const savedSidebarBg = localStorage.getItem("theme_sidebarBgColor");
       const savedList = localStorage.getItem("theme_savedColorSetups");
 
       if (savedLogo) setLogoBarColor(savedLogo);
       if (savedNav) setTopNavColor(savedNav);
       if (savedL1) setLevel1Color(savedL1);
       if (savedL2) setLevel2Color(savedL2);
+      if (savedSidebar) setSidebarColor(savedSidebar);
+      if (savedSidebarBg) setSidebarBgColor(savedSidebarBg);
 
       if (savedList) {
         const parsed = JSON.parse(savedList);
@@ -626,15 +653,24 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--level2-subtitle", isL2Light ? "#334155" : "rgba(219, 234, 254, 0.9)");
     root.style.setProperty("--level2-border", isL2Light ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
 
+    // 5. Side Nav Bar variables
+    root.style.setProperty("--sidebar-bg", sidebarColor);
+    root.style.setProperty("--sidebar-container-bg", sidebarBgColor);
+    const isSidebarLight = isLightColor(sidebarColor);
+    root.style.setProperty("--sidebar-text", isSidebarLight ? "#002147" : "#ffffff");
+    root.style.setProperty("--sidebar-border", isSidebarLight ? "rgba(0,0,0,0.12)" : "rgba(30, 64, 175, 0.4)");
+
     try {
       localStorage.setItem("theme_logoBarColor", logoBarColor);
       localStorage.setItem("theme_topNavColor", topNavColor);
       localStorage.setItem("theme_level1Color", level1Color);
       localStorage.setItem("theme_level2Color", level2Color);
+      localStorage.setItem("theme_sidebarColor", sidebarColor);
+      localStorage.setItem("theme_sidebarBgColor", sidebarBgColor);
     } catch (e) {
       // Ignore
     }
-  }, [logoBarColor, topNavColor, level1Color, level2Color]);
+  }, [logoBarColor, topNavColor, level1Color, level2Color, sidebarColor, sidebarBgColor]);
 
   // Save Current Setup to Version History
   const handleSaveCurrentSetup = () => {
@@ -650,7 +686,9 @@ export default function ColorPaletteCustomizer() {
       logoBar: logoBarColor,
       topNav: topNavColor,
       level1: level1Color,
-      level2: level2Color
+      level2: level2Color,
+      sidebar: sidebarColor,
+      sidebarBg: sidebarBgColor
     };
 
     const updated = [newSetup, ...savedSetups];
@@ -672,6 +710,12 @@ export default function ColorPaletteCustomizer() {
     setTopNavColor(setup.topNav);
     setLevel1Color(setup.level1);
     setLevel2Color(setup.level2);
+    if (setup.sidebar) {
+      setSidebarColor(setup.sidebar);
+    }
+    if (setup.sidebarBg) {
+      setSidebarBgColor(setup.sidebarBg);
+    }
 
     setSaveToast(`Applied "${setup.name}"!`);
     setTimeout(() => setSaveToast(null), 2000);
@@ -694,6 +738,8 @@ export default function ColorPaletteCustomizer() {
     setTopNavColor("#002147");
     setLevel1Color("linear-gradient(to right, #002b36, #043d4d, #084c61)");
     setLevel2Color("#002147");
+    setSidebarColor("#1e40af");
+    setSidebarBgColor("#eaeff5");
   };
 
   const handleApplyReadyMade = (option: ReadyMadeOption) => {
@@ -701,6 +747,12 @@ export default function ColorPaletteCustomizer() {
     setTopNavColor(option.topNav);
     setLevel1Color(option.level1);
     setLevel2Color(option.level2);
+    if (option.sidebar) {
+      setSidebarColor(option.sidebar);
+    }
+    if (option.sidebarBg) {
+      setSidebarBgColor(option.sidebarBg);
+    }
   };
 
   const handleCopyCodes = () => {
@@ -709,7 +761,9 @@ export default function ColorPaletteCustomizer() {
         logoBar: logoBarColor,
         topNav: topNavColor,
         level1: level1Color,
-        level2: level2Color
+        level2: level2Color,
+        sidebarAccent: sidebarColor,
+        sidebarContainerBg: sidebarBgColor
       },
       null,
       2
@@ -840,13 +894,13 @@ export default function ColorPaletteCustomizer() {
                     </button>
                   </div>
 
-                  {/* Element Selector Switcher: 4 distinct elements */}
+                  {/* Element Selector Switcher: 5 distinct elements */}
                   <div className="flex flex-col gap-2">
                     <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
                       Select Element to Customize:
                     </span>
 
-                    <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200/80">
+                    <div className="grid grid-cols-5 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200/80">
 
                       {/* 1. Logo Bar */}
                       <button
@@ -924,6 +978,25 @@ export default function ColorPaletteCustomizer() {
                         <span className="text-[10px] font-extrabold leading-tight">Heading 2</span>
                       </button>
 
+                      {/* 5. Side Nav */}
+                      <button
+                        onClick={() => setSelectedElement("sidebar")}
+                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
+                          selectedElement === "sidebar"
+                            ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1 mb-1">
+                          <span
+                            className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                            style={{ backgroundColor: sidebarColor }}
+                          />
+                          <BookOpen className="h-3 w-3 text-indigo-600" />
+                        </div>
+                        <span className="text-[10px] font-extrabold leading-tight">Side Nav</span>
+                      </button>
+
                     </div>
                   </div>
 
@@ -935,12 +1008,14 @@ export default function ColorPaletteCustomizer() {
                         {selectedElement === "nav" && "Section 2: Sticky Top Nav Bar"}
                         {selectedElement === "level1" && "Section 3: Header Level 1 (Hero Banner)"}
                         {selectedElement === "level2" && "Section 4: Heading Level 2 (Section Banners)"}
+                        {selectedElement === "sidebar" && "Section 5: Side Navigation Bar"}
                       </h4>
                       <p className="text-xs text-slate-500">
                         {selectedElement === "logo" && "Customizes top institution header with college crest & title."}
                         {selectedElement === "nav" && "Customizes dual-row sticky navigation bar with menu links."}
                         {selectedElement === "level1" && "Customizes main page title hero banner."}
                         {selectedElement === "level2" && "Customizes all Level 2 section header banners across the page."}
+                        {selectedElement === "sidebar" && "Customizes sidebar header banner, active link indicator, and icons."}
                       </p>
                     </div>
 
@@ -954,7 +1029,9 @@ export default function ColorPaletteCustomizer() {
                               ? topNavColor
                               : selectedElement === "level1"
                                 ? level1Color
-                                : level2Color
+                                : selectedElement === "level2"
+                                  ? level2Color
+                                  : sidebarColor
                       }}
                       title="Current Color Preview"
                     />
@@ -993,11 +1070,112 @@ export default function ColorPaletteCustomizer() {
                     />
                   )}
 
-                  {/* Complete 4-Section Overview Card */}
+                  {selectedElement === "sidebar" && (
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
+                        <button
+                          onClick={() => setSidebarColorMode("accent")}
+                          className={`flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            sidebarColorMode === "accent"
+                              ? "bg-white text-indigo-700 shadow-xs border border-slate-200/80"
+                              : "text-slate-600 hover:text-slate-900"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center gap-1.5">
+                            <span
+                              className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                              style={{ backgroundColor: sidebarColor }}
+                            />
+                            <span>Banner &amp; Active</span>
+                          </div>
+                        </button>
+
+                        <button
+                          onClick={() => setSidebarColorMode("background")}
+                          className={`flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            sidebarColorMode === "background"
+                              ? "bg-white text-indigo-700 shadow-xs border border-slate-200/80"
+                              : "text-slate-600 hover:text-slate-900"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center gap-1.5">
+                            <span
+                              className="h-2.5 w-2.5 rounded-full border border-slate-300"
+                              style={{ backgroundColor: sidebarBgColor }}
+                            />
+                            <span>Nav Background</span>
+                          </div>
+                        </button>
+                      </div>
+
+                      {sidebarColorMode === "accent" ? (
+                        <div>
+                          <span className="text-[11px] font-bold text-slate-500 block mb-2">
+                            Customize Header Banner &amp; Active Link Highlight:
+                          </span>
+                          <ImageStyleColorPicker
+                            currentColor={sidebarColor}
+                            onColorChange={(c) => setSidebarColor(c)}
+                            supportsGradient={false}
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-3">
+                          <div>
+                            <span className="text-[11px] font-bold text-slate-500 block mb-2">
+                              Customize Side Nav Container Background:
+                            </span>
+                            <ImageStyleColorPicker
+                              currentColor={sidebarBgColor}
+                              onColorChange={(c) => setSidebarBgColor(c)}
+                              supportsGradient={false}
+                            />
+                          </div>
+
+                          {/* Quick popular background presets */}
+                          <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-200/70">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                              Quick Nav Background Presets:
+                            </span>
+                            <div className="grid grid-cols-4 gap-1.5">
+                              {[
+                                { name: "Pearl Slate", hex: "#eaeff5" },
+                                { name: "Pure White", hex: "#ffffff" },
+                                { name: "Off White", hex: "#f8fafc" },
+                                { name: "Cool Slate", hex: "#f1f5f9" },
+                                { name: "Ice Blue", hex: "#e8f1fd" },
+                                { name: "Mint Light", hex: "#f0fdf4" },
+                                { name: "Lavender", hex: "#faf5ff" },
+                                { name: "Dark Slate", hex: "#0f172a" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  onClick={() => setSidebarBgColor(p.hex)}
+                                  className={`p-1.5 rounded-lg border text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                                    sidebarBgColor.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-indigo-600 bg-indigo-50 font-bold shadow-xs"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
+                                    style={{ backgroundColor: p.hex }}
+                                  />
+                                  <span className="text-[10px] truncate text-slate-700 font-semibold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Complete 5-Section Overview Card */}
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2.5 mt-2">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                        Live Overview Across 4 Sections:
+                        Live Overview Across 5 Sections:
                       </span>
                       {savedSetups.length > 0 && (
                         <button
@@ -1073,6 +1251,44 @@ export default function ColorPaletteCustomizer() {
                           {level2Color}
                         </span>
                       </div>
+
+                      <div
+                        onClick={() => {
+                          setSelectedElement("sidebar");
+                          setSidebarColorMode("accent");
+                        }}
+                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="h-3.5 w-5 rounded border border-slate-300"
+                            style={{ backgroundColor: sidebarColor }}
+                          />
+                          <span className="text-[11px] font-bold text-slate-800">Nav Header</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
+                          {sidebarColor}
+                        </span>
+                      </div>
+
+                      <div
+                        onClick={() => {
+                          setSelectedElement("sidebar");
+                          setSidebarColorMode("background");
+                        }}
+                        className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 transition-all cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="h-3.5 w-5 rounded border border-slate-300"
+                            style={{ backgroundColor: sidebarBgColor }}
+                          />
+                          <span className="text-[11px] font-bold text-slate-800">Nav Bg</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-slate-500 font-bold truncate max-w-[60px]">
+                          {sidebarBgColor}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -1102,7 +1318,9 @@ export default function ColorPaletteCustomizer() {
                         logoBarColor === option.logoBar &&
                         topNavColor === option.topNav &&
                         level1Color === option.level1 &&
-                        level2Color === option.level2;
+                        level2Color === option.level2 &&
+                        (!option.sidebar || sidebarColor === option.sidebar) &&
+                        (!option.sidebarBg || sidebarBgColor === option.sidebarBg);
 
                       return (
                         <button
@@ -1132,27 +1350,37 @@ export default function ColorPaletteCustomizer() {
                             {option.desc}
                           </p>
                           <div className="flex items-center gap-2 pt-1">
-                            <span className="text-[10px] font-bold text-slate-400">4 Colors:</span>
+                            <span className="text-[10px] font-bold text-slate-400">6 Colors:</span>
                             <div className="flex items-center gap-1.5">
                               <span
-                                className="h-4 w-6 rounded border border-slate-300"
+                                className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.logoBar }}
                                 title="Logo Bar"
                               />
                               <span
-                                className="h-4 w-6 rounded border border-slate-300"
+                                className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.topNav }}
                                 title="Top Nav"
                               />
                               <span
-                                className="h-4 w-6 rounded border border-slate-300"
+                                className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.level1 }}
                                 title="Heading 1"
                               />
                               <span
-                                className="h-4 w-6 rounded border border-slate-300"
+                                className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.level2 }}
                                 title="Heading 2"
+                              />
+                              <span
+                                className="h-4 w-5 rounded border border-slate-300"
+                                style={{ background: option.sidebar || "#1e40af" }}
+                                title="Side Nav Header & Active"
+                              />
+                              <span
+                                className="h-4 w-5 rounded border border-slate-300"
+                                style={{ background: option.sidebarBg || "#eaeff5" }}
+                                title="Side Nav Container Background"
                               />
                             </div>
                           </div>
@@ -1217,7 +1445,9 @@ export default function ColorPaletteCustomizer() {
                           logoBarColor === setup.logoBar &&
                           topNavColor === setup.topNav &&
                           level1Color === setup.level1 &&
-                          level2Color === setup.level2;
+                          level2Color === setup.level2 &&
+                          (!setup.sidebar || sidebarColor === setup.sidebar) &&
+                          (!setup.sidebarBg || sidebarBgColor === setup.sidebarBg);
 
                         return (
                           <div
@@ -1258,24 +1488,34 @@ export default function ColorPaletteCustomizer() {
                             <div className="flex items-center justify-between pt-1 border-t border-slate-100">
                               <div className="flex items-center gap-1.5">
                                 <span
-                                  className="h-4 w-6 rounded border border-slate-300"
+                                  className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.logoBar }}
                                   title="Logo Bar"
                                 />
                                 <span
-                                  className="h-4 w-6 rounded border border-slate-300"
+                                  className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.topNav }}
                                   title="Top Nav"
                                 />
                                 <span
-                                  className="h-4 w-6 rounded border border-slate-300"
+                                  className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.level1 }}
                                   title="Heading 1"
                                 />
                                 <span
-                                  className="h-4 w-6 rounded border border-slate-300"
+                                  className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.level2 }}
                                   title="Heading 2"
+                                />
+                                <span
+                                  className="h-4 w-5 rounded border border-slate-300"
+                                  style={{ background: setup.sidebar || "#1e40af" }}
+                                  title="Side Nav Header & Active"
+                                />
+                                <span
+                                  className="h-4 w-5 rounded border border-slate-300"
+                                  style={{ background: setup.sidebarBg || "#eaeff5" }}
+                                  title="Side Nav Container Background"
                                 />
                               </div>
 

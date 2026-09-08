@@ -1,13 +1,25 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { BookOpen, ChevronRight } from "lucide-react";
 
-export interface AboutCategory {
-  catSlug: string;
-  title: string;
-  items: { text: string; slug: string }[];
+export interface SidebarItem {
+  text: string;
+  slug?: string;
+  id?: string;
 }
 
-export const ABOUT_CATEGORIES: AboutCategory[] = [
+export interface SidebarCategory {
+  catSlug: string;
+  title: string;
+  sectionId?: string;
+  items: SidebarItem[];
+}
+
+export type AboutCategory = SidebarCategory;
+
+export const ABOUT_CATEGORIES: SidebarCategory[] = [
   {
     catSlug: "the-institution",
     title: "I. The Institution",
@@ -53,43 +65,140 @@ export const ABOUT_CATEGORIES: AboutCategory[] = [
 interface AboutSidebarProps {
   currentCatSlug?: string;
   currentItemSlug?: string;
+  categories?: SidebarCategory[];
+  bannerTitle?: string;
+  bannerSubtitle?: string;
+  activeId?: string;
+  onItemClick?: (id: string) => void;
 }
 
-export default function AboutSidebar({ currentCatSlug, currentItemSlug }: AboutSidebarProps) {
-  return (
-    <div className="flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 pr-2">
-      <span className="inline-flex items-center gap-1.5 font-outfit text-xs font-black text-[#002147] uppercase tracking-wider px-2">
-        About Navigation
-      </span>
-      <div className="flex flex-col gap-6">
-        {ABOUT_CATEGORIES.map((cat) => (
-          <div key={cat.catSlug} className="flex flex-col gap-2">
-            <h4 className="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-1 px-2 select-none">
-              {cat.title}
-            </h4>
-            <div className="flex flex-col gap-1.5">
-              {cat.items.map((item) => {
-                const isActive =
-                  (currentCatSlug === cat.catSlug && currentItemSlug === item.slug) ||
-                  (item.slug === "strategic-development-plan" && currentItemSlug === "strategic-development-plan");
+export default function AboutSidebar({
+  currentCatSlug,
+  currentItemSlug,
+  categories,
+  bannerTitle = "ABOUT US",
+  bannerSubtitle = "Institutional Directory",
+  activeId,
+  onItemClick
+}: AboutSidebarProps) {
+  const activeCategories = categories || ABOUT_CATEGORIES;
 
-                const href =
-                  item.slug === "strategic-development-plan"
+  return (
+    <aside
+      className="flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-130px)] overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+      style={{
+        backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none"
+      }}
+    >
+      {/* Sidebar Top Banner Header - Scrolls naturally with content */}
+      <div
+        className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-sm border transition-colors duration-200 shrink-0"
+        style={{
+          background: "var(--sidebar-bg, #1e40af)",
+          borderColor: "var(--sidebar-border, rgba(30, 64, 175, 0.3))",
+          color: "var(--sidebar-text, #ffffff)"
+        }}
+      >
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs">
+          <BookOpen className="h-4 w-4" />
+        </span>
+        <div className="flex flex-col min-w-0">
+          <span
+            className="font-outfit text-xs font-black uppercase tracking-wider truncate"
+            style={{ color: "var(--sidebar-text, #ffffff)" }}
+          >
+            {bannerTitle}
+          </span>
+          <span
+            className="text-[10px] opacity-85 font-medium truncate"
+            style={{ color: "var(--sidebar-text, #ffffff)" }}
+          >
+            {bannerSubtitle}
+          </span>
+        </div>
+      </div>
+
+      {/* Category Groups */}
+      <div className="flex flex-col gap-6">
+        {activeCategories.map((cat) => (
+          <div key={cat.catSlug} className="flex flex-col gap-2">
+            <div
+              onClick={() => {
+                if (cat.sectionId) {
+                  const el = document.getElementById(cat.sectionId);
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  if (onItemClick) onItemClick(cat.sectionId);
+                }
+              }}
+              className={`flex items-center gap-2 px-1 pb-1.5 border-b border-slate-300/70 ${
+                cat.sectionId ? "cursor-pointer hover:opacity-80 transition-opacity" : ""
+              }`}
+            >
+              <span
+                className="h-1.5 w-1.5 rounded-full shrink-0 transition-colors duration-200"
+                style={{ background: "var(--sidebar-bg, #1e40af)" }}
+              />
+              <h4 className="font-outfit text-xs font-extrabold text-[#002147] uppercase tracking-wider select-none">
+                {cat.title}
+              </h4>
+            </div>
+            <div className="flex flex-col gap-1">
+              {cat.items.map((item) => {
+                const isItemActive =
+                  (item.id && activeId === item.id) ||
+                  (!item.id && (
+                    (currentCatSlug === cat.catSlug && currentItemSlug === item.slug) ||
+                    (item.slug === "strategic-development-plan" && currentItemSlug === "strategic-development-plan")
+                  ));
+
+                const handleClick = (e: React.MouseEvent) => {
+                  if (item.id) {
+                    e.preventDefault();
+                    const el = document.getElementById(item.id);
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                    if (onItemClick) onItemClick(item.id);
+                  }
+                };
+
+                const href = item.id
+                  ? `#${item.id}`
+                  : item.slug === "strategic-development-plan"
                     ? "/strategic-plans-and-future-directions"
                     : `/about/${cat.catSlug}/${item.slug}`;
 
                 return (
                   <Link
-                    key={item.slug}
+                    key={item.id || item.slug || item.text}
                     href={href}
-                    className={`font-sans text-xs md:text-sm p-3 rounded-xl transition-all border border-transparent flex items-center justify-between select-none ${
-                      isActive
-                        ? "bg-[#002147]/10 border-[#002147]/30 text-[#002147] font-bold shadow-sm"
-                        : "text-slate-600 hover:bg-slate-50/60 hover:text-[#002147] font-medium"
+                    onClick={handleClick}
+                    className={`group font-sans text-xs md:text-sm py-2.5 px-3 rounded-xl transition-all duration-200 flex items-center justify-between select-none ${
+                      isItemActive
+                        ? "font-bold shadow-xs"
+                        : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
                     }`}
+                    style={
+                      isItemActive
+                        ? {
+                            background: "var(--sidebar-bg, #1e40af)",
+                            borderColor: "var(--sidebar-border, #1e40af)",
+                            color: "var(--sidebar-text, #ffffff)",
+                            boxShadow: "0 2px 8px -1px rgba(30, 64, 175, 0.25)"
+                          }
+                        : undefined
+                    }
                   >
-                    <span className="truncate pr-2">{item.text}</span>
-                    {isActive && <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 flex-shrink-0" />}
+                    <span className="truncate pr-2 transition-transform duration-200">
+                      {item.text}
+                    </span>
+                    {isItemActive ? (
+                      <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0 shadow-xs" />
+                    ) : (
+                      <ChevronRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-700 transition-all duration-200 group-hover:translate-x-0.5 shrink-0 opacity-60 group-hover:opacity-100" />
+                    )}
                   </Link>
                 );
               })}
@@ -97,6 +206,6 @@ export default function AboutSidebar({ currentCatSlug, currentItemSlug }: AboutS
           </div>
         ))}
       </div>
-    </div>
+    </aside>
   );
 }

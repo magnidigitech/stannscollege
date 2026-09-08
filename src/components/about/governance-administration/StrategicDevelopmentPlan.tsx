@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { getStrategicPlan } from "@/lib/sanity";
+import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 
 interface StrategicPlanDocument {
   title: string;
@@ -304,11 +305,133 @@ const externalResources = {
   ]
 };
 
+const STRATEGIC_PLAN_CATEGORIES: SidebarCategory[] = [
+  {
+    catSlug: "performance-indicators",
+    title: "I. Performance Indicators",
+    sectionId: "performance-indicators",
+    items: [
+      { text: "Overview & Metrics", id: "performance-indicators" },
+      { text: "Academic Performance", id: "sec-academic-indicators" },
+      { text: "Research & Innovation", id: "sec-research-indicators" },
+      { text: "Societal & Extension", id: "sec-societal-indicators" },
+      { text: "Institutional Excellence", id: "sec-excellence-indicators" },
+    ],
+  },
+  {
+    catSlug: "plan-documents",
+    title: "II. Strategic Plan Documents",
+    sectionId: "plan-documents",
+    items: [
+      { text: "Plan Documents Overview", id: "plan-documents" },
+      { text: "Strategic Framework 2024-2030", id: "sec-plan-years" },
+      { text: "Deployment Plan 2025-2026", id: "sec-plan-2025-26" },
+      { text: "Deployment Plan 2024-2025", id: "sec-plan-2024-25" },
+    ],
+  },
+  {
+    catSlug: "strategic-priorities",
+    title: "III. Strategic Priorities",
+    sectionId: "strategic-priorities",
+    items: [
+      { text: "Key Focus Areas", id: "strategic-priorities" },
+      { text: "Academic & NEP 2020", id: "sec-priority-academic" },
+      { text: "Infrastructure & ICT", id: "sec-priority-infra" },
+      { text: "Financial Mobilization", id: "sec-priority-financial" },
+      { text: "Global Collaborations", id: "sec-priority-global" },
+    ],
+  },
+  {
+    catSlug: "stakeholder-engagement",
+    title: "IV. Stakeholder Consultations",
+    sectionId: "stakeholder-engagement",
+    items: [
+      { text: "Consultative Planning", id: "stakeholder-engagement" },
+      { text: "Student Feedback Portal", id: "sec-feedback-student" },
+      { text: "Faculty Consultations", id: "sec-feedback-faculty" },
+      { text: "Parent Participation", id: "sec-feedback-parent" },
+      { text: "Alumni Advisory", id: "sec-feedback-alumni" },
+    ],
+  },
+  {
+    catSlug: "vision-2047",
+    title: "V. Vision 2047 Alignment",
+    sectionId: "vision-2047",
+    items: [
+      { text: "Viksit Bharat Vision", id: "vision-2047" },
+      { text: "Our Commitment Pillars", id: "sec-vision-commitments" },
+      { text: "8 Core Focus Areas", id: "sec-vision-focus" },
+      { text: "6 Signature Initiatives", id: "sec-vision-initiatives" },
+      { text: "Swarna Andhra @2047", id: "sec-vision-swarna" },
+    ],
+  },
+  {
+    catSlug: "resource-links",
+    title: "VI. Resource Links & Portals",
+    sectionId: "resource-links",
+    items: [
+      { text: "Government Frameworks", id: "resource-links" },
+      { text: "National Vision Portals", id: "sec-resource-national" },
+      { text: "AP State Roadmap Portals", id: "sec-resource-state" },
+    ],
+  },
+];
+
 export function StrategicDevelopmentPlan() {
   const [data, setData] = useState<StrategicPlanData>(defaultPlanData);
   const [loading, setLoading] = useState(true);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [selectedFileTitle, setSelectedFileTitle] = useState("");
+  const [activeSectionId, setActiveSectionId] = useState<string>("performance-indicators");
+
+  useEffect(() => {
+    const allIds = [
+      "performance-indicators",
+      "sec-academic-indicators",
+      "sec-research-indicators",
+      "sec-societal-indicators",
+      "sec-excellence-indicators",
+      "plan-documents",
+      "sec-plan-years",
+      "sec-plan-2025-26",
+      "sec-plan-2024-25",
+      "strategic-priorities",
+      "sec-priority-academic",
+      "sec-priority-infra",
+      "sec-priority-financial",
+      "sec-priority-global",
+      "stakeholder-engagement",
+      "sec-feedback-student",
+      "sec-feedback-faculty",
+      "sec-feedback-parent",
+      "sec-feedback-alumni",
+      "vision-2047",
+      "sec-vision-commitments",
+      "sec-vision-focus",
+      "sec-vision-initiatives",
+      "sec-vision-swarna",
+      "resource-links",
+      "sec-resource-national",
+      "sec-resource-state",
+    ];
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+      for (let i = allIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(allIds[i]);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSectionId(allIds[i]);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -345,51 +468,48 @@ export function StrategicDevelopmentPlan() {
   const documentsList = data.documents || defaultPlanData.documents || [];
 
   return (
-    <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn pb-16">
-      {/* 1. Header Hero Banner */}
+    <div className="flex flex-col font-sans select-none animate-fadeIn">
+      {/* 1. Full-Width Heading 1 Banner */}
       <div
-        className="relative overflow-hidden rounded-[2rem] p-6 sm:p-8 md:px-10 md:py-8 text-white shadow-xl border transition-colors duration-200"
+        className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white py-6 md:py-7 lg:py-8 px-6 md:px-10 lg:px-14 rounded-3xl shadow-xl relative overflow-hidden mb-8 border transition-colors duration-200"
         style={{
           background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
           borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))"
         }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_45%)] pointer-events-none"></div>
-        <div className="relative z-10 flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex flex-col gap-1.5 flex-1 pr-2">
-              <h1
-                className="font-outfit text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight transition-colors duration-200"
-                style={{ color: "var(--level1-title, #ffffff)" }}
-              >
-                {data.title}
-              </h1>
-              <p
-                className="text-[11px] md:text-xs font-bold uppercase tracking-widest transition-colors duration-200"
-                style={{ color: "var(--level1-breadcrumb, rgba(199, 210, 254, 0.9))" }}
-              >
-                St. Ann’s College for Women, Guntur
-              </p>
-            </div>
-            {data.googleFormUrl && (
-              <a
-                href={data.googleFormUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-500 hover:bg-amber-600 border border-amber-400/20 px-5 py-3 md:px-6 md:py-3.5 text-xs font-black text-[#001730] uppercase tracking-wider transition-all select-none hover:scale-[1.02] shrink-0 shadow-lg shadow-amber-500/10 self-start sm:self-center cursor-pointer"
-              >
-                <MessageSquare className="h-4 w-4" /> Global Feedback Form
-              </a>
-            )}
-          </div>
-          <p className="text-slate-200 text-sm md:text-base font-normal leading-relaxed w-full text-justify pt-1">
-            {data.executiveSummary}
-          </p>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full gap-2.5">
+          <h1
+            className="font-outfit text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight transition-colors duration-200 text-center"
+            style={{ color: "var(--level1-title, #ffffff)" }}
+          >
+            {data.title}
+          </h1>
+          {data.executiveSummary && (
+            <p className="text-blue-100/90 text-xs sm:text-sm md:text-base leading-relaxed font-semibold border-t border-white/10 pt-2.5 text-center w-full px-2 sm:px-4">
+              {data.executiveSummary}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Section 1: Institutional Performance Indicators */}
-      <section className="bg-[#002147]/[0.03] border-2 border-[#002147]/20 rounded-[2.5rem] overflow-hidden shadow-sm">
+      {/* 2. Layout Grid: Sidebar on Left, Data Elements on Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+        {/* Left: About Navigation Sidebar */}
+        <aside className="lg:col-span-3">
+          <AboutSidebar
+            categories={STRATEGIC_PLAN_CATEGORIES}
+            bannerTitle="STRATEGIC PLAN"
+            bannerSubtitle="Sections on this Page"
+            activeId={activeSectionId}
+            onItemClick={(id) => setActiveSectionId(id)}
+          />
+        </aside>
+
+        {/* Right: Data Elements / Sections */}
+        <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
+          {/* Section 1: Institutional Performance Indicators */}
+      <section id="performance-indicators" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
@@ -415,15 +535,15 @@ export function StrategicDevelopmentPlan() {
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Indicator Card 1 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col gap-4">
+            {/* Indicator Card 1 - Color A (Pure White) */}
+            <div id="sec-academic-indicators" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/50 text-indigo-650">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
                   <GraduationCap className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider">
+                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
                   Academic Performance Indicators
                 </h4>
               </div>
@@ -437,14 +557,14 @@ export function StrategicDevelopmentPlan() {
               </ul>
             </div>
 
-            {/* Indicator Card 2 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col gap-4">
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/50 text-indigo-650">
+            {/* Indicator Card 2 - Color B (Soft Ice Blue) */}
+            <div id="sec-research-indicators" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+              <div className="flex items-center gap-3 border-b border-blue-200/60 pb-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
                   <Flame className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider">
-                  Research & Innovation Indicators
+                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                  Research &amp; Innovation Indicators
                 </h4>
               </div>
               <ul className="flex flex-col gap-2.5">
@@ -457,13 +577,13 @@ export function StrategicDevelopmentPlan() {
               </ul>
             </div>
 
-            {/* Indicator Card 3 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col gap-4">
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/50 text-indigo-650">
+            {/* Indicator Card 3 - Color B (Soft Ice Blue, checkerboard) */}
+            <div id="sec-societal-indicators" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+              <div className="flex items-center gap-3 border-b border-blue-200/60 pb-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
                   <Activity className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider">
+                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
                   Societal Impact Indicators
                 </h4>
               </div>
@@ -477,13 +597,13 @@ export function StrategicDevelopmentPlan() {
               </ul>
             </div>
 
-            {/* Indicator Card 4 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col gap-4">
+            {/* Indicator Card 4 - Color A (Pure White, checkerboard) */}
+            <div id="sec-excellence-indicators" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/50 text-indigo-650">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
                   <Award className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider">
+                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
                   Institutional Excellence Indicators
                 </h4>
               </div>
@@ -500,8 +620,8 @@ export function StrategicDevelopmentPlan() {
         </div>
       </section>
 
-      {/* Section 2: Strategic Plan Documents (Moved UP above Strategic Priorities) */}
-      <section className="bg-slate-100/80 border-2 border-slate-300/80 rounded-[2.5rem] overflow-hidden shadow-sm">
+      {/* Section 2: Strategic Plan Documents */}
+      <section id="plan-documents" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
@@ -510,8 +630,10 @@ export function StrategicDevelopmentPlan() {
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
           }}
         >
-          <div className="flex items-center gap-3">
-            <FileText className="h-6 w-6 text-indigo-300 shrink-0" />
+          <div className="flex items-center gap-3.5">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 border border-white/20 text-white shadow-xs shrink-0 backdrop-blur-xs">
+              <FileText className="h-5 w-5" />
+            </span>
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
               style={{ color: "var(--level2-title, #ffffff)" }}
@@ -520,71 +642,93 @@ export function StrategicDevelopmentPlan() {
             </h2>
           </div>
           <p
-            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            className="text-sm font-medium mt-1.5 sm:pl-14.5 transition-colors duration-200"
             style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
           >
             Official institutional frameworks and annual deployment plan reports available for online flipbook preview and direct download.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {documentsList.map((doc, idx) => (
-              <div
-                key={idx}
-                className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group relative overflow-hidden select-none"
-              >
-                <div className="flex items-start gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-50 border border-indigo-100/50 text-[#002147] group-hover:bg-[#002147] group-hover:text-white transition-all duration-300">
-                    <FileText className="h-6 w-6" />
-                  </span>
-                  <div className="flex flex-col gap-1 flex-1">
-                    <h4 className="font-outfit text-[#002147] font-extrabold text-base group-hover:text-indigo-650 transition-colors leading-snug">
-                      {doc.title}
-                    </h4>
-                    <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">
-                      PDF Document File
-                    </p>
+            {documentsList.map((doc, idx) => {
+              const cardId = idx === 0 ? "sec-plan-years" : idx === 1 ? "sec-plan-2025-26" : "sec-plan-2024-25";
+              const isBlue = idx % 2 === 1;
+              const cardBg = isBlue
+                ? "bg-[#e8f1fd] border-2 border-blue-200/90"
+                : "bg-white border-2 border-slate-200/90";
+              const titleColor = isBlue ? "text-blue-700 group-hover:text-blue-900" : "text-blue-600 group-hover:text-blue-700";
+              const iconStyle = isBlue
+                ? "bg-white border border-blue-200/80 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white"
+                : "bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white";
+              const buttonStyle = isBlue
+                ? "text-blue-700 bg-white hover:bg-[#1e40af] hover:text-white border border-blue-200/80 shadow-2xs"
+                : "text-blue-600 bg-blue-50 hover:bg-[#1e40af] hover:text-white border border-blue-100/80";
+              const downloadStyle = isBlue
+                ? "text-slate-700 bg-white/90 hover:bg-white border border-blue-200/60 shadow-2xs"
+                : "text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/60";
+              const formStyle = isBlue
+                ? "text-blue-700 hover:text-blue-900 bg-white hover:bg-blue-50 border border-blue-200 shadow-2xs"
+                : "text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-100";
+
+              return (
+                <div
+                  key={idx}
+                  id={cardId}
+                  className={`${cardBg} scroll-mt-32 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group relative overflow-hidden select-none`}
+                >
+                  <div className="flex items-start gap-4">
+                    <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${iconStyle} transition-all duration-300`}>
+                      <FileText className="h-6 w-6" />
+                    </span>
+                    <div className="flex flex-col gap-1 flex-1">
+                      <h4 className={`font-outfit ${titleColor} font-extrabold text-base transition-colors leading-snug`}>
+                        {doc.title}
+                      </h4>
+                      <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">
+                        PDF Document File
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 pt-4 border-t border-slate-200/60 mt-2">
+                    {doc.fileUrl && (
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => handleOpenPdf(doc.fileUrl, doc.title)}
+                          className={`inline-flex items-center justify-center gap-1.5 text-xs font-bold ${buttonStyle} px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer`}
+                        >
+                          <Eye className="h-4 w-4" /> View PDF
+                        </button>
+                        <a
+                          href={doc.fileUrl}
+                          download
+                          className={`inline-flex items-center justify-center gap-1.5 text-xs font-bold ${downloadStyle} px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer`}
+                        >
+                          <Download className="h-4 w-4" /> Download
+                        </a>
+                      </div>
+                    )}
+                    {doc.googleFormUrl && (
+                      <a
+                        href={doc.googleFormUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center justify-center gap-1.5 text-xs font-black ${formStyle} px-3 py-2.5 rounded-xl transition-all duration-200`}
+                      >
+                        <MessageSquare className="h-4 w-4" /> Section Form
+                      </a>
+                    )}
                   </div>
                 </div>
-
-                <div className="flex flex-col gap-2 pt-4 border-t border-slate-100 mt-2">
-                  {doc.fileUrl && (
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => handleOpenPdf(doc.fileUrl, doc.title)}
-                        className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#002147] bg-indigo-50 hover:bg-[#002147] hover:text-white border border-indigo-100 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer"
-                      >
-                        <Eye className="h-4 w-4" /> View PDF
-                      </button>
-                      <a
-                        href={doc.fileUrl}
-                        download
-                        className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer"
-                      >
-                        <Download className="h-4 w-4" /> Download
-                      </a>
-                    </div>
-                  )}
-                  {doc.googleFormUrl && (
-                    <a
-                      href={doc.googleFormUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 text-xs font-black text-indigo-650 hover:text-[#002147] bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 px-3 py-2.5 rounded-xl transition-all duration-200"
-                    >
-                      <MessageSquare className="h-4 w-4" /> Section Form
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Section 3: Strategic Priorities – Next Five Years */}
-      <section className="bg-slate-50 border-2 border-slate-200/80 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section id="strategic-priorities" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
@@ -610,51 +754,51 @@ export function StrategicDevelopmentPlan() {
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Priority Card 1 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col gap-3.5 hover:shadow-md transition-all">
-              <h4 className="font-outfit text-[#002147] font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Academic Priorities</h4>
+            {/* Priority Card 1 - Color A (Pure White) */}
+            <div id="sec-priority-academic" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+              <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Academic Priorities</h4>
               <ul className="flex flex-col gap-2">
                 {academicPriorities.map((item, i) => (
                   <li key={i} className="text-sm text-slate-700 font-semibold leading-relaxed flex items-start gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#002147] mt-2 shrink-0" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 mt-2 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            {/* Priority Card 2 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col gap-3.5 hover:shadow-md transition-all">
-              <h4 className="font-outfit text-[#002147] font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Infrastructure Priorities</h4>
+            {/* Priority Card 2 - Color B (Soft Ice Blue) */}
+            <div id="sec-priority-infra" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+              <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider border-b border-blue-200/60 pb-2">Infrastructure Priorities</h4>
               <ul className="flex flex-col gap-2">
                 {infraPriorities.map((item, i) => (
                   <li key={i} className="text-sm text-slate-700 font-semibold leading-relaxed flex items-start gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#002147] mt-2 shrink-0" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 mt-2 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            {/* Priority Card 3 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col gap-3.5 hover:shadow-md transition-all">
-              <h4 className="font-outfit text-[#002147] font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Financial Priorities</h4>
+            {/* Priority Card 3 - Color B (Soft Ice Blue, checkerboard) */}
+            <div id="sec-priority-financial" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+              <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider border-b border-blue-200/60 pb-2">Financial Priorities</h4>
               <ul className="flex flex-col gap-2">
                 {financialPriorities.map((item, i) => (
                   <li key={i} className="text-sm text-slate-700 font-semibold leading-relaxed flex items-start gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#002147] mt-2 shrink-0" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 mt-2 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            {/* Priority Card 4 */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col gap-3.5 hover:shadow-md transition-all">
-              <h4 className="font-outfit text-[#002147] font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Global Goals & International</h4>
+            {/* Priority Card 4 - Color A (Pure White, checkerboard) */}
+            <div id="sec-priority-global" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+              <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Global Goals &amp; International</h4>
               <ul className="flex flex-col gap-2">
                 {globalPriorities.map((item, i) => (
                   <li key={i} className="text-sm text-slate-700 font-semibold leading-relaxed flex items-start gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#002147] mt-2 shrink-0" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 mt-2 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -665,7 +809,7 @@ export function StrategicDevelopmentPlan() {
       </section>
 
       {/* Section 4: Stakeholder Engagement & Feedback Mechanisms */}
-      <section className="bg-blue-50/40 border-2 border-blue-200/80 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section id="stakeholder-engagement" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
@@ -674,8 +818,10 @@ export function StrategicDevelopmentPlan() {
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
           }}
         >
-          <div className="flex items-center gap-3">
-            <Users className="h-6 w-6 text-indigo-300 shrink-0" />
+          <div className="flex items-center gap-3.5">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 border border-white/20 text-white shadow-xs shrink-0 backdrop-blur-xs">
+              <Users className="h-5 w-5" />
+            </span>
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
               style={{ color: "var(--level2-title, #ffffff)" }}
@@ -684,22 +830,22 @@ export function StrategicDevelopmentPlan() {
             </h2>
           </div>
           <p
-            className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+            className="text-sm font-medium mt-1.5 sm:pl-14.5 transition-colors duration-200"
             style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
           >
             St. Ann’s College values the active participation of all stakeholders in institutional development and decision-making.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Card 1: Student */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            {/* Card 1: Student - Color A (Pure White) */}
+            <div id="sec-feedback-student" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
               <div className="flex flex-col gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-600 group-hover:bg-[#002147] group-hover:text-white transition-all">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all">
                   <Users className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
+                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
                   Student Feedback
                 </h4>
                 <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
@@ -711,22 +857,22 @@ export function StrategicDevelopmentPlan() {
                   href={data.studentFeedbackFormUrl || "https://forms.gle/n6QfA4roPrqtPWjM8"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center justify-center gap-2 text-xs font-black text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/70 px-4 py-3 rounded-xl transition-all shadow-xs cursor-pointer select-none group/btn"
+                  className="mt-2 inline-flex items-center justify-center gap-2 text-xs font-black text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200/70 px-4 py-3 rounded-xl transition-all shadow-xs cursor-pointer select-none group/btn"
                 >
-                  <MessageSquare className="h-4 w-4 text-indigo-600 group-hover/btn:scale-110 transition-transform" />
+                  <MessageSquare className="h-4 w-4 text-blue-600 group-hover/btn:scale-110 transition-transform" />
                   <span>Submit Student Feedback</span>
-                  <ExternalLink className="h-3.5 w-3.5 text-indigo-500 opacity-80" />
+                  <ExternalLink className="h-3.5 w-3.5 text-blue-500 opacity-80" />
                 </a>
               )}
             </div>
 
-            {/* Card 2: Faculty */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            {/* Card 2: Faculty - Color B (Soft Ice Blue) */}
+            <div id="sec-feedback-faculty" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
               <div className="flex flex-col gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-600 group-hover:bg-[#002147] group-hover:text-white transition-all">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all shadow-2xs">
                   <Building className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
+                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
                   Faculty Engagement
                 </h4>
                 <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
@@ -738,21 +884,21 @@ export function StrategicDevelopmentPlan() {
                   href={data.facultyFeedbackFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-black text-indigo-650 hover:text-indigo-850 bg-indigo-50 hover:bg-indigo-100/70 border border-indigo-100/50 px-4 py-3 rounded-xl transition-all shadow-xs"
+                  className="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-black text-blue-700 hover:text-blue-900 bg-white hover:bg-blue-50 border border-blue-200/80 px-4 py-3 rounded-xl transition-all shadow-2xs"
                 >
                   <MessageSquare className="h-4 w-4" />Google Form Link <ExternalLink className="h-3 w-3" />
                 </a>
               )}
             </div>
 
-            {/* Card 3: Parent */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            {/* Card 3: Parent - Color B (Soft Ice Blue, checkerboard) */}
+            <div id="sec-feedback-parent" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
               <div className="flex flex-col gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-600 group-hover:bg-[#002147] group-hover:text-white transition-all">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all shadow-2xs">
                   <HeartHandshake className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
-                  Parent & Community Participation
+                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
+                  Parent &amp; Community Participation
                 </h4>
                 <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
                   The institution engages parents and the community through parent-teacher interactions, community outreach programmes, social awareness campaigns, collaborative developmental initiatives, and extension/service-learning activities.
@@ -763,20 +909,20 @@ export function StrategicDevelopmentPlan() {
                   href={data.parentFeedbackFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-black text-indigo-650 hover:text-indigo-850 bg-indigo-50 hover:bg-indigo-100/70 border border-indigo-100/50 px-4 py-3 rounded-xl transition-all shadow-xs"
+                  className="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-black text-blue-700 hover:text-blue-900 bg-white hover:bg-blue-50 border border-blue-200/80 px-4 py-3 rounded-xl transition-all shadow-2xs"
                 >
                   <MessageSquare className="h-4 w-4" />Google Form Link <ExternalLink className="h-3 w-3" />
                 </a>
               )}
             </div>
 
-            {/* Card 4: Alumni */}
-            <div className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            {/* Card 4: Alumni - Color A (Pure White, checkerboard) */}
+            <div id="sec-feedback-alumni" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
               <div className="flex flex-col gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-600 group-hover:bg-[#002147] group-hover:text-white transition-all">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all">
                   <Globe className="h-5 w-5" />
                 </span>
-                <h4 className="font-outfit text-[#002147] font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
+                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider leading-snug">
                   Alumni Engagement
                 </h4>
                 <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
@@ -788,7 +934,7 @@ export function StrategicDevelopmentPlan() {
                   href={data.alumniFeedbackFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-black text-indigo-650 hover:text-indigo-850 bg-indigo-50 hover:bg-indigo-100/70 border border-indigo-100/50 px-4 py-3 rounded-xl transition-all shadow-xs"
+                  className="mt-2 inline-flex items-center justify-center gap-1.5 text-xs font-black text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200/70 px-4 py-3 rounded-xl transition-all shadow-xs"
                 >
                   <MessageSquare className="h-4 w-4" />Google Form Link <ExternalLink className="h-3 w-3" />
                 </a>
@@ -799,7 +945,7 @@ export function StrategicDevelopmentPlan() {
       </section>
 
       {/* Section 5: Vision for 2047: Viksit Bharat (Indian Flag Theme / Thought of India) */}
-      <section className="bg-gradient-to-b from-amber-50/90 via-orange-50/30 to-emerald-50/80 border-2 border-amber-300/80 rounded-[2.5rem] shadow-md relative overflow-hidden">
+      <section id="vision-2047" className="scroll-mt-28 bg-gradient-to-b from-amber-50/90 via-orange-50/30 to-emerald-50/80 border-2 border-amber-300/80 rounded-[2.5rem] shadow-md relative overflow-hidden">
         {/* Indian National Tricolor Top Ribbon (Saffron, White, Green) */}
         <div className="h-3 w-full grid grid-cols-3 shadow-xs">
           <div className="bg-[#FF9933]"></div>
@@ -867,7 +1013,7 @@ export function StrategicDevelopmentPlan() {
 
         <div className="p-6 sm:p-8 md:p-10 space-y-8 relative z-10">
           {/* Our Commitment List */}
-          <div className="flex flex-col gap-4 relative z-10">
+          <div id="sec-vision-commitments" className="scroll-mt-32 flex flex-col gap-4 relative z-10">
             <div className="flex items-center gap-2.5">
               <h4 className="font-outfit text-[#D97706] font-extrabold text-base md:text-lg uppercase tracking-wider select-none">
                 Our Commitment
@@ -907,7 +1053,7 @@ export function StrategicDevelopmentPlan() {
           </div>
 
           {/* Strategic Focus Areas */}
-          <div className="flex flex-col gap-4 mt-2 relative z-10">
+          <div id="sec-vision-focus" className="scroll-mt-32 flex flex-col gap-4 mt-2 relative z-10">
             <div className="flex items-center gap-2.5">
               <h4 className="font-outfit text-[#138808] font-extrabold text-base md:text-lg uppercase tracking-wider select-none">
                 Strategic Focus Areas
@@ -962,7 +1108,7 @@ export function StrategicDevelopmentPlan() {
           </div>
 
           {/* Signature Initiatives */}
-          <div className="flex flex-col gap-4 mt-2 relative z-10">
+          <div id="sec-vision-initiatives" className="scroll-mt-32 flex flex-col gap-4 mt-2 relative z-10">
             <div className="flex items-center gap-2.5">
               <h4 className="font-outfit text-[#D97706] font-extrabold text-base md:text-lg uppercase tracking-wider select-none">
                 Vision 2047 – Signature Initiatives
@@ -998,7 +1144,7 @@ export function StrategicDevelopmentPlan() {
           </div>
 
           {/* Future Vision Summary */}
-          <div className="flex flex-col gap-4 mt-2 relative z-10">
+          <div id="sec-vision-swarna" className="scroll-mt-32 flex flex-col gap-4 mt-2 relative z-10">
             <div className="flex items-center gap-2.5">
               <h4 className="font-outfit text-[#138808] font-extrabold text-base md:text-lg uppercase tracking-wider select-none">
                 Our Vision for the Future
@@ -1032,7 +1178,7 @@ export function StrategicDevelopmentPlan() {
       </section>
 
       {/* Section 6: Reference Resource Links */}
-      <section className="bg-slate-100/70 border-2 border-slate-300/80 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section id="resource-links" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
@@ -1058,72 +1204,92 @@ export function StrategicDevelopmentPlan() {
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
           {/* Viksit Bharat links */}
-          <div className="flex flex-col gap-4">
-            <h5 className="font-outfit text-[#002147] font-extrabold text-base uppercase tracking-wider">
+          <div id="sec-resource-national" className="scroll-mt-32 flex flex-col gap-4">
+            <h5 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
               Viksit Bharat @2047 Links
             </h5>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {externalResources.viksit.map((portal, index) => (
-                <a
-                  key={index}
-                  href={portal.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col justify-between hover:shadow-lg hover:border-slate-300 hover:scale-[1.02] transition-all group"
-                >
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-1.5">
-                      <h5 className="font-outfit text-slate-800 font-black text-sm md:text-base tracking-tight group-hover:text-[#002147] transition-colors">
-                        {portal.title}
-                      </h5>
-                      <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                        {portal.desc}
-                      </p>
+              {externalResources.viksit.map((portal, index) => {
+                const isBlue = index % 2 === 1;
+                const cardBg = isBlue
+                  ? "bg-[#e8f1fd] border-2 border-blue-200/90"
+                  : "bg-white border-2 border-slate-200/90";
+                const titleHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
+                const linkHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
+
+                return (
+                  <a
+                    key={index}
+                    href={portal.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${cardBg} rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-lg hover:scale-[1.02] transition-all group`}
+                  >
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-1.5">
+                        <h5 className={`font-outfit text-slate-800 font-black text-sm md:text-base tracking-tight ${titleHover} transition-colors`}>
+                          {portal.title}
+                        </h5>
+                        <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                          {portal.desc}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-end text-xs font-bold text-slate-400 group-hover:text-[#002147] transition-colors pt-4 mt-2 border-t border-slate-100 gap-1.5">
-                    View Portal <ExternalLink className="h-3 w-3" />
-                  </div>
-                </a>
-              ))}
+                    <div className={`flex items-center justify-end text-xs font-bold text-slate-400 ${linkHover} transition-colors pt-4 mt-2 border-t border-slate-200/60 gap-1.5`}>
+                      View Portal <ExternalLink className="h-3 w-3" />
+                    </div>
+                  </a>
+                );
+              })}
             </div>
           </div>
 
           {/* Swarna Andhra links */}
-          <div className="flex flex-col gap-4 mt-2">
-            <h5 className="font-outfit text-[#002147] font-extrabold text-base uppercase tracking-wider">
+          <div id="sec-resource-state" className="scroll-mt-32 flex flex-col gap-4 mt-2">
+            <h5 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
               Swarna Andhra @2047 Links
             </h5>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {externalResources.swarna.map((portal, index) => (
-                <a
-                  key={index}
-                  href={portal.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white/90 border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col justify-between hover:shadow-lg hover:border-slate-300 hover:scale-[1.02] transition-all group"
-                >
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-1.5">
-                      <h5 className="font-outfit text-slate-800 font-black text-sm md:text-base tracking-tight group-hover:text-[#002147] transition-colors">
-                        {portal.title}
-                      </h5>
-                      <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                        {portal.desc}
-                      </p>
+              {externalResources.swarna.map((portal, index) => {
+                const isBlue = index % 2 === 1;
+                const cardBg = isBlue
+                  ? "bg-[#e8f1fd] border-2 border-blue-200/90"
+                  : "bg-white border-2 border-slate-200/90";
+                const titleHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
+                const linkHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
+
+                return (
+                  <a
+                    key={index}
+                    href={portal.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${cardBg} rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-lg hover:scale-[1.02] transition-all group`}
+                  >
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-1.5">
+                        <h5 className={`font-outfit text-slate-800 font-black text-sm md:text-base tracking-tight ${titleHover} transition-colors`}>
+                          {portal.title}
+                        </h5>
+                        <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                          {portal.desc}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-end text-xs font-bold text-slate-400 group-hover:text-[#002147] transition-colors pt-4 mt-2 border-t border-slate-100 gap-1.5">
-                    View Portal <ExternalLink className="h-3 w-3" />
-                  </div>
-                </a>
-              ))}
+                    <div className={`flex items-center justify-end text-xs font-bold text-slate-400 ${linkHover} transition-colors pt-4 mt-2 border-t border-slate-200/60 gap-1.5`}>
+                      View Portal <ExternalLink className="h-3 w-3" />
+                    </div>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
+        </main>
+      </div>
 
       {/* 7. Flipbook Modal Reader */}
       {selectedFileUrl && (
