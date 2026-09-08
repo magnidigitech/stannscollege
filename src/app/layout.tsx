@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
+import { TopLogoBar } from "@/components/TopLogoBar";
 import ColorPaletteCustomizer from "@/components/ColorPaletteCustomizer";
 import { Award, Sparkles, Bell, ArrowRight } from "lucide-react";
 
@@ -87,106 +88,8 @@ export default function RootLayout({
         {/* Announcement Bar - Rendered only on Home Page in its original position */}
         <AnnouncementBar />
 
-        {/* Top bar with College Logo, Accreditations & Apply Now in a single centered row */}
-        <div
-          id="top-logo-bar"
-          className="w-full border-b select-none transition-colors duration-200"
-          style={{
-            backgroundColor: "var(--logo-bar-bg, #002147)",
-            borderColor: "var(--logo-bar-border, rgba(255, 255, 255, 0.1))"
-          }}
-        >
-          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full py-4 sm:py-5 flex flex-col md:flex-row items-center justify-between gap-4">
-            
-            {/* Left: College Logo, Name and Affiliation Subtitles */}
-            <Link href="/" className="flex items-center gap-3.5 sm:gap-4 group shrink-0">
-              <img
-                src="/images/collegelogo.png"
-                alt="College Logo"
-                className="h-14 sm:h-16 w-auto object-contain select-none hover:scale-105 transition-all duration-300 bg-white/95 p-1 rounded-2xl shadow-sm"
-              />
-              <div className="flex flex-col items-start text-left">
-                <span
-                  className="font-outfit text-xl sm:text-2xl lg:text-[26px] font-black tracking-tight leading-tight select-none uppercase transition-colors duration-200"
-                  style={{ color: "var(--logo-bar-title, #ffffff)" }}
-                >
-                  St. Ann&apos;s College for Women
-                </span>
-                <span
-                  className="font-sans text-xs md:text-sm font-semibold tracking-wide select-none transition-colors duration-200"
-                  style={{ color: "var(--logo-bar-subtitle, rgba(191, 219, 254, 0.9))" }}
-                >
-                  Run by the Society of St Anne
-                </span>
-              </div>
-            </Link>
-
-            {/* Right: Accreditations (30 Years, NAAC) & Apply Now CTA Button */}
-            <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-              {/* Accreditations and Anniversary directly on header without enclosing box */}
-              <div className="flex items-center gap-5 sm:gap-6">
-                {/* 30 Years of Excellence */}
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="/images/30 Years Icon.png"
-                    alt="30 Years of Excellence"
-                    className="h-11 w-11 rounded-full object-cover select-none shadow-sm"
-                  />
-                  <div className="flex flex-col text-left leading-tight">
-                    <span
-                      className="text-xs font-bold tracking-wide transition-colors duration-200"
-                      style={{ color: "var(--logo-bar-title, #ffffff)" }}
-                    >
-                      30 Years of
-                    </span>
-                    <span
-                      className="text-[11px] font-semibold tracking-wide transition-colors duration-200"
-                      style={{ color: "var(--logo-bar-subtitle, rgba(191, 219, 254, 0.9))" }}
-                    >
-                      Excellence
-                    </span>
-                  </div>
-                </div>
-
-                {/* Divider Line */}
-                <div
-                  className="h-8 w-px transition-colors duration-200"
-                  style={{ backgroundColor: "var(--logo-bar-divider, rgba(255, 255, 255, 0.2))" }}
-                />
-
-                {/* NAAC 'A' Accreditation */}
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="/images/naac logo.png"
-                    alt="NAAC 'A' Accreditation"
-                    className="h-11 w-auto object-contain select-none"
-                  />
-                  <div className="flex flex-col text-left leading-tight">
-                    <span className="text-xs font-bold text-amber-300 tracking-wide">
-                      NAAC &apos;A&apos;
-                    </span>
-                    <span
-                      className="text-[11px] font-semibold tracking-wide transition-colors duration-200"
-                      style={{ color: "var(--logo-bar-subtitle, rgba(191, 219, 254, 0.9))" }}
-                    >
-                      Accreditation
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Apply Now button */}
-              <Link
-                href="/admissions/policy-process"
-                className="flex items-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-500 px-5 sm:px-6 py-2.5 font-bold text-white text-xs hover:shadow-xl hover:shadow-emerald-500/30 transition-all active:scale-95 duration-300 hover:-translate-y-0.5 group/btn select-none shrink-0 border border-emerald-400/30 shadow-md"
-              >
-                <span>Apply Now</span>
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
-              </Link>
-            </div>
-
-          </div>
-        </div>
+        {/* Top bar with College Logo, Accreditations & Apply Now */}
+        <TopLogoBar />
 
         {/* Sticky Header below top bar for navigation (dynamic height to support dual row) */}
         <header
