@@ -5,7 +5,7 @@ import {
   FileText, Eye, Shield, BookOpen, GraduationCap, Users, Laptop,
   Briefcase, Leaf, ShieldCheck, ArrowRight, Milestone, Download,
   ExternalLink, Globe, CheckCircle2, MessageSquare, Building, Scale,
-  Flame, Activity, Award, HeartHandshake, TrendingUp, Coins
+  Flame, Activity, Award, HeartHandshake, TrendingUp, Coins, Sparkles, Quote
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { getStrategicPlan } from "@/lib/sanity";
@@ -30,7 +30,7 @@ interface StrategicPlanData {
 
 const defaultPlanData: StrategicPlanData = {
   title: "Strategic Plans & Future Directions",
-  executiveSummary: "Towards academic excellence, innovations, women empowerment, social responsibility and nation building.",
+  executiveSummary: "St. Ann’s College for Women, Guntur, envisions a transformative future rooted in academic excellence, innovation, women empowerment, social responsibility, and nation-building. Guided by the values of the Congregation of the Sisters of St. Ann and aligned with the aspirations of Viksit Bharat @2047 and Swarna Andhra @2047, the institution is committed to nurturing globally competent, ethically grounded, and socially responsible women leaders.",
   googleFormUrl: "https://www.google.com/search?q=%23",
   studentFeedbackFormUrl: "https://forms.gle/n6QfA4roPrqtPWjM8",
   facultyFeedbackFormUrl: "https://www.google.com/search?q=%23",
@@ -440,7 +440,7 @@ export function StrategicDevelopmentPlan() {
         if (fetchedPlan) {
           setData({
             title: fetchedPlan.title || defaultPlanData.title,
-            executiveSummary: (fetchedPlan.executiveSummary && !fetchedPlan.executiveSummary.includes("envisions a transformative future"))
+            executiveSummary: (fetchedPlan.executiveSummary && fetchedPlan.executiveSummary.includes("envisions a transformative future"))
               ? fetchedPlan.executiveSummary
               : defaultPlanData.executiveSummary,
             googleFormUrl: fetchedPlan.googleFormUrl || defaultPlanData.googleFormUrl,
@@ -501,18 +501,6 @@ export function StrategicDevelopmentPlan() {
           >
             {data.title}
           </h1>
-          {data.executiveSummary && (
-            <p 
-              className="text-blue-100/95 leading-relaxed font-semibold border-t border-white/15 pt-3 px-2 sm:px-4"
-              style={{
-                fontSize: "var(--level1-sub-size, 16px)",
-                maxWidth: "var(--level1-sub-max-width, 56rem)",
-                textAlign: "inherit"
-              }}
-            >
-              {data.executiveSummary}
-            </p>
-          )}
         </div>
       </div>
 
@@ -532,11 +520,20 @@ export function StrategicDevelopmentPlan() {
 
         {/* Right: Data Elements / Sections */}
         <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
-          {/* Section 1: Institutional Performance Indicators */}
-      <section id="performance-indicators" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
-        {/* Full-Width Section Header Banner */}
+          <div className="flex flex-col gap-4">
+            {/* Sub-text Box */}
+            <div className="relative overflow-hidden bg-white border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm">
+              <Quote className="absolute right-6 top-6 h-12 w-12 text-slate-300 pointer-events-none" />
+              <p className="text-slate-700 text-sm sm:text-base md:text-[1.05rem] leading-relaxed font-normal pr-10 sm:pr-14 relative z-10">
+                St. Ann’s College for Women, Guntur, envisions a transformative future rooted in academic excellence, innovation, women empowerment, social responsibility, and nation-building. Guided by the values of the Congregation of the Sisters of St. Ann and aligned with the aspirations of Viksit Bharat @2047 and Swarna Andhra @2047, the institution is committed to nurturing globally competent, ethically grounded, and socially responsible women leaders.
+              </p>
+            </div>
+
+            {/* Section 1: Institutional Performance Indicators */}
+            <section id="performance-indicators" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+            {/* Full-Width Section Header Banner */}
         <div
-          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
             backgroundColor: "var(--level2-bg, #002147)",
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
@@ -643,12 +640,13 @@ export function StrategicDevelopmentPlan() {
           </div>
         </div>
       </section>
+    </div>
 
       {/* Section 2: Strategic Plan Documents */}
       <section id="plan-documents" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
-          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
             backgroundColor: "var(--level2-bg, #002147)",
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
@@ -755,7 +753,7 @@ export function StrategicDevelopmentPlan() {
       <section id="strategic-priorities" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
-          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
             backgroundColor: "var(--level2-bg, #002147)",
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
@@ -836,7 +834,7 @@ export function StrategicDevelopmentPlan() {
       <section id="stakeholder-engagement" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
-          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
             backgroundColor: "var(--level2-bg, #002147)",
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
@@ -978,7 +976,7 @@ export function StrategicDevelopmentPlan() {
         </div>
 
         {/* Full-Width Section Header Banner (Thought of India / Tricolor Identity) */}
-        <div className="bg-gradient-to-r from-[#001730] via-[#002147] to-[#001a35] text-white px-6 py-6 sm:px-8 sm:py-7 md:px-10 md:py-8 w-full relative z-10 border-b-4 border-b-[#FF9933]">
+        <div className="bg-gradient-to-r from-[#001730] via-[#002147] to-[#001a35] text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full relative z-10 border-b-4 border-b-[#FF9933]">
           <div className="flex items-center gap-3.5">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px] shrink-0 shadow-md">
               <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-[#002147]">
@@ -1205,7 +1203,7 @@ export function StrategicDevelopmentPlan() {
       <section id="resource-links" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
         {/* Full-Width Section Header Banner */}
         <div
-          className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+          className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
             backgroundColor: "var(--level2-bg, #002147)",
             borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"

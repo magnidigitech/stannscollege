@@ -156,53 +156,51 @@ export default function MandatoryDisclosuresPage() {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* Main Content Container */}
-      <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
-
-        {/* 1. Full-Width Heading 1 Banner (matching Strategic Plans style) */}
-        <div
-          className="bg-gradient-to-br from-[#002147] via-[#022f63] to-[#043c7d] text-white px-6 md:px-10 lg:px-14 rounded-3xl shadow-xl relative overflow-hidden mb-8 border transition-all duration-200"
+      {/* 1. Full-Width Bleed Heading 1 Banner (Attached to Top Nav, Edge-to-Edge with Zero Gaps) */}
+      <div
+        className="w-full text-white px-4 sm:px-6 lg:px-12 relative overflow-hidden transition-all duration-200 border-b shadow-md"
+        style={{
+          background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
+          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
+          paddingTop: "var(--level1-padding-y, 44px)",
+          paddingBottom: "var(--level1-padding-y, 44px)"
+        }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
+        <div 
+          className="max-w-[1600px] mx-auto relative z-10 flex flex-col w-full"
           style={{
-            background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
-            borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
-            paddingTop: "var(--level1-padding-y, 32px)",
-            paddingBottom: "var(--level1-padding-y, 32px)"
+            alignItems: "var(--level1-align-items, center)",
+            textAlign: "var(--level1-text-align, center)" as any,
+            gap: "var(--level1-gap, 12px)"
           }}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-          <div 
-            className="relative z-10 flex flex-col w-full"
-            style={{
-              alignItems: "var(--level1-align-items, center)",
-              textAlign: "var(--level1-text-align, center)" as any,
-              gap: "var(--level1-gap, 10px)"
+          <h1
+            className="tracking-tight leading-tight transition-all duration-200 font-black"
+            style={{ 
+              color: "var(--level1-title, #ffffff)",
+              fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
+              fontSize: "var(--level1-title-size, 38px)",
+              textAlign: "inherit"
             }}
           >
-            <h1
-              className="tracking-tight leading-tight transition-all duration-200 font-black"
-              style={{ 
-                color: "var(--level1-title, #ffffff)",
-                fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
-                fontSize: "var(--level1-title-size, 38px)",
-                textAlign: "inherit"
-              }}
-            >
-              Mandatory Disclosures & Statutory Compliance
-            </h1>
-            <p 
-              className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/10 pt-2.5 px-2 sm:px-4"
-              style={{
-                fontSize: "var(--level1-sub-size, 14px)",
-                maxWidth: "var(--level1-sub-max-width, 56rem)",
-                textAlign: "inherit"
-              }}
-            >
-              In absolute compliance with the statutory regulations of AICTE, UGC, and Acharya Nagarjuna University, St. Ann&apos;s College for Women makes all essential governance charters, committee rosters, and approval certificates accessible below.
-            </p>
-          </div>
+            Mandatory Disclosures &amp; Statutory Compliance
+          </h1>
+          <p 
+            className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/15 pt-3 px-2 sm:px-4"
+            style={{
+              fontSize: "var(--level1-sub-size, 14px)",
+              maxWidth: "var(--level1-sub-max-width, 56rem)",
+              textAlign: "inherit"
+            }}
+          >
+            In absolute compliance with the statutory regulations of AICTE, UGC, and Acharya Nagarjuna University, St. Ann&apos;s College for Women makes all essential governance charters, committee rosters, and approval certificates accessible below.
+          </p>
         </div>
+      </div>
 
-        {/* 2. Layout Grid: Sidebar on Left, Data Elements on Right */}
+      {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
+      <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
           {/* Left: Category Tabs Sidebar with Heading Banner and Hierarchical Sub-elements */}
