@@ -44,12 +44,22 @@ export function TopLogoBar() {
         
         {/* Left: Official College Logo & Full Header Graphic / Text */}
         <Link href="/" className="flex items-center gap-3 sm:gap-4 group shrink-0">
-          <img
-            src="/images/Stanns_CLG_Website_Logo_without_background.png"
-            alt="St. Ann's College Logo"
-            className="w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0"
-            style={{ height: "var(--crest-logo-size, 64px)" }}
-          />
+          {/* College Crest Logo Box */}
+          <div
+            id="crest-logo-box"
+            className="flex items-center justify-center p-1.5 sm:p-2 rounded-2xl border shadow-xs transition-all duration-200 shrink-0"
+            style={{
+              backgroundColor: "var(--crest-box-bg, #ffffff)",
+              borderColor: "var(--crest-box-border, rgba(0, 0, 0, 0.08))"
+            }}
+          >
+            <img
+              src="/images/Stanns_CLG_Website_Logo_without_background.png"
+              alt="St. Ann's College Logo"
+              className="w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0"
+              style={{ height: "var(--crest-logo-size, 64px)" }}
+            />
+          </div>
 
           {/* Option 1: Image Version 1 (4 lines) */}
           {headerMode === "image_v1" && (
@@ -148,7 +158,15 @@ export function TopLogoBar() {
 
         {/* Right: Accreditations (29+ Years, NAAC, AICTE) & Apply Now CTA Button */}
         <div className="flex items-center gap-3.5 sm:gap-5 shrink-0">
-          <div className="flex items-center gap-3 sm:gap-4">
+          {/* Accreditation Logos Box */}
+          <div
+            id="top-logos-box"
+            className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border shadow-xs transition-all duration-200"
+            style={{
+              backgroundColor: "var(--logo-box-bg, #ffffff)",
+              borderColor: "var(--logo-box-border, rgba(0, 0, 0, 0.08))"
+            }}
+          >
             {/* 29+ Years of Excellence Graphic */}
             <div className="flex items-center">
               <img
@@ -160,7 +178,10 @@ export function TopLogoBar() {
             </div>
 
             {/* Divider Line */}
-            <div className="h-9 sm:h-10 w-px bg-slate-200 hidden sm:block" />
+            <div
+              className="h-9 sm:h-10 w-px hidden sm:block transition-colors duration-200"
+              style={{ backgroundColor: "var(--logo-box-divider, rgba(0, 0, 0, 0.12))" }}
+            />
 
             {/* NAAC 'A' Accreditation with Side Text */}
             <div
@@ -177,14 +198,20 @@ export function TopLogoBar() {
                 <span className="text-xs sm:text-sm font-black text-amber-600 tracking-tight">
                   NAAC &apos;A&apos;
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-wide">
+                <span
+                  className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wide transition-colors duration-200"
+                  style={{ color: "var(--logo-box-text, #334155)" }}
+                >
                   Accreditation
                 </span>
               </div>
             </div>
 
             {/* Divider Line */}
-            <div className="h-9 sm:h-10 w-px bg-slate-200 hidden sm:block" />
+            <div
+              className="h-9 sm:h-10 w-px hidden sm:block transition-colors duration-200"
+              style={{ backgroundColor: "var(--logo-box-divider, rgba(0, 0, 0, 0.12))" }}
+            />
 
             {/* AICTE Approved with Side Text */}
             <div
@@ -198,10 +225,16 @@ export function TopLogoBar() {
                 style={{ height: "var(--accreditation-logos-size, 52px)" }}
               />
               <div className="flex flex-col text-left leading-tight">
-                <span className="text-xs sm:text-sm font-black text-blue-900 tracking-tight">
+                <span
+                  className="text-xs sm:text-sm font-black tracking-tight transition-colors duration-200"
+                  style={{ color: "var(--logo-box-title, #1e3a8a)" }}
+                >
                   AICTE
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-wide">
+                <span
+                  className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wide transition-colors duration-200"
+                  style={{ color: "var(--logo-box-text, #334155)" }}
+                >
                   Approved
                 </span>
               </div>

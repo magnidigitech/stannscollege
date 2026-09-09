@@ -5,7 +5,7 @@ import {
   Palette, Check, RotateCcw, Copy, X, Sliders, Sparkles,
   Building, Compass, Heading, Bookmark, BookmarkPlus,
   Pipette, CheckCircle2, ArrowRight, Trash2, Clock, BookOpen,
-  Type, SlidersHorizontal, Layers, Paintbrush
+  Type, SlidersHorizontal, Layers, Paintbrush, Shield
 } from "lucide-react";
 
 // --- Color Conversion Helpers ---
@@ -112,6 +112,8 @@ export interface SavedColorSetup {
   name: string;
   createdAt: string;
   logoBar: string;
+  crestBoxColor?: string;
+  logoBoxColor?: string;
   topNav: string;
   level1: string;
   level2: string;
@@ -130,6 +132,8 @@ export interface ReadyMadeOption {
   name: string;
   desc: string;
   logoBar: string;
+  crestBoxColor?: string;
+  logoBoxColor?: string;
   topNav: string;
   level1: string;
   level2: string;
@@ -636,14 +640,16 @@ export default function ColorPaletteCustomizer() {
 
   // States for 5 distinct sections
   const [logoBarColor, setLogoBarColor] = useState<string>("#002147");
+  const [crestBoxColor, setCrestBoxColor] = useState<string>("#ffffff");
+  const [logoBoxColor, setLogoBoxColor] = useState<string>("#ffffff");
   const [topNavColor, setTopNavColor] = useState<string>("#002147");
   const [level1Color, setLevel1Color] = useState<string>("linear-gradient(to right, #002b36, #043d4d, #084c61)");
   const [level2Color, setLevel2Color] = useState<string>("#002147");
   const [sidebarColor, setSidebarColor] = useState<string>("#1e40af");
   const [sidebarBgColor, setSidebarBgColor] = useState<string>("#eaeff5");
 
-  // Logo sub-modes: Background vs Masthead Typography
-  const [logoSubMode, setLogoSubMode] = useState<"background" | "typography">("background");
+  // Logo sub-modes: Background vs Crest Box vs Logos Box vs Masthead Typography
+  const [logoSubMode, setLogoSubMode] = useState<"background" | "crest" | "box" | "typography">("background");
   const [headerTitleColor, setHeaderTitleColor] = useState<string>("#002b49");
   const [headerSubColor, setHeaderSubColor] = useState<string>("#1e3a8a");
   const [headerAccentColor, setHeaderAccentColor] = useState<string>("#991b1b");
@@ -666,6 +672,8 @@ export default function ColorPaletteCustomizer() {
   useEffect(() => {
     try {
       const savedLogo = localStorage.getItem("theme_logoBarColor");
+      const savedCrestBoxBg = localStorage.getItem("theme_crestBoxColor");
+      const savedBoxBg = localStorage.getItem("theme_logoBoxColor");
       const savedNav = localStorage.getItem("theme_topNavColor");
       const savedL1 = localStorage.getItem("theme_level1Color");
       const savedL2 = localStorage.getItem("theme_level2Color");
@@ -682,6 +690,8 @@ export default function ColorPaletteCustomizer() {
       const savedList = localStorage.getItem("theme_savedColorSetups");
 
       if (savedLogo) setLogoBarColor(savedLogo);
+      if (savedCrestBoxBg) setCrestBoxColor(savedCrestBoxBg);
+      if (savedBoxBg) setLogoBoxColor(savedBoxBg);
       if (savedNav) setTopNavColor(savedNav);
       if (savedL1) setLevel1Color(savedL1);
       if (savedL2) setLevel2Color(savedL2);
@@ -732,6 +742,19 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--logo-bar-border", isLogoLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.1)");
     root.style.setProperty("--logo-bar-icon-bg", isLogoLight ? "rgba(0,33,71,0.06)" : "rgba(255,255,255,0.1)");
 
+    // 1b. Crest Box variables
+    root.style.setProperty("--crest-box-bg", crestBoxColor);
+    const isCrestBoxLight = isLightColor(crestBoxColor);
+    root.style.setProperty("--crest-box-border", isCrestBoxLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)");
+
+    // 1c. Logos Box variables
+    root.style.setProperty("--logo-box-bg", logoBoxColor);
+    const isBoxLight = isLightColor(logoBoxColor);
+    root.style.setProperty("--logo-box-border", isBoxLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)");
+    root.style.setProperty("--logo-box-text", isBoxLight ? "#334155" : "#f1f5f9");
+    root.style.setProperty("--logo-box-title", isBoxLight ? "#1e3a8a" : "#93c5fd");
+    root.style.setProperty("--logo-box-divider", isBoxLight ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.2)");
+
     // Typography Text Mode Colors
     root.style.setProperty("--header-title-color", headerTitleColor);
     root.style.setProperty("--header-sub-color", headerSubColor);
@@ -771,6 +794,8 @@ export default function ColorPaletteCustomizer() {
     // Store in localStorage
     try {
       localStorage.setItem("theme_logoBarColor", logoBarColor);
+      localStorage.setItem("theme_crestBoxColor", crestBoxColor);
+      localStorage.setItem("theme_logoBoxColor", logoBoxColor);
       localStorage.setItem("theme_topNavColor", topNavColor);
       localStorage.setItem("theme_level1Color", level1Color);
       localStorage.setItem("theme_level2Color", level2Color);
@@ -800,6 +825,8 @@ export default function ColorPaletteCustomizer() {
               topNavLinkColor,
               topNavRow2Color,
               logoBarColor,
+              crestBoxColor,
+              logoBoxColor,
               topNavColor
             }
           })
@@ -807,7 +834,7 @@ export default function ColorPaletteCustomizer() {
       }, 0);
     }
   }, [
-    logoBarColor, topNavColor, level1Color, level2Color,
+    logoBarColor, crestBoxColor, logoBoxColor, topNavColor, level1Color, level2Color,
     sidebarColor, sidebarBgColor, headerTitleColor, headerSubColor,
     headerAccentColor, headerAddressColor, topNavLinkColor, topNavRow2Color
   ]);
@@ -834,6 +861,8 @@ export default function ColorPaletteCustomizer() {
       name: nameToUse,
       createdAt: timeString,
       logoBar: logoBarColor,
+      crestBoxColor,
+      logoBoxColor,
       topNav: topNavColor,
       level1: level1Color,
       level2: level2Color,
@@ -863,6 +892,8 @@ export default function ColorPaletteCustomizer() {
   // Restore/Apply a Saved Version
   const handleApplySavedSetup = (setup: SavedColorSetup) => {
     setLogoBarColor(setup.logoBar);
+    if (setup.crestBoxColor) setCrestBoxColor(setup.crestBoxColor);
+    if (setup.logoBoxColor) setLogoBoxColor(setup.logoBoxColor);
     setTopNavColor(setup.topNav);
     setLevel1Color(setup.level1);
     setLevel2Color(setup.level2);
@@ -894,6 +925,8 @@ export default function ColorPaletteCustomizer() {
 
   const handleReset = () => {
     setLogoBarColor("#002147");
+    setCrestBoxColor("#ffffff");
+    setLogoBoxColor("#ffffff");
     setTopNavColor("#002147");
     setLevel1Color("linear-gradient(to right, #002b36, #043d4d, #084c61)");
     setLevel2Color("#002147");
@@ -910,6 +943,8 @@ export default function ColorPaletteCustomizer() {
 
   const handleApplyReadyMade = (option: ReadyMadeOption) => {
     setLogoBarColor(option.logoBar);
+    setCrestBoxColor(option.crestBoxColor || "#ffffff");
+    setLogoBoxColor(option.logoBoxColor || "#ffffff");
     setTopNavColor(option.topNav);
     setLevel1Color(option.level1);
     setLevel2Color(option.level2);
@@ -928,6 +963,8 @@ export default function ColorPaletteCustomizer() {
     const config = JSON.stringify(
       {
         logoBarBackground: logoBarColor,
+        crestBoxBackground: crestBoxColor,
+        logosBoxBackground: logoBoxColor,
         mastheadTypography: {
           titleColor: headerTitleColor,
           subColor: headerSubColor,
@@ -1235,38 +1272,63 @@ export default function ColorPaletteCustomizer() {
                   </div>
 
                   {/* ======================================================== */}
-                  {/* SECTION 1: LOGO BAR (BACKGROUND VS MASTHEAD TYPOGRAPHY) */}
+                  {/* SECTION 1: LOGO BAR (BACKGROUND VS CREST VS LOGOS BOX)    */}
                   {/* ======================================================== */}
                   {selectedElement === "logo" && (
                     <div className="flex flex-col gap-4">
                       {/* Sub-mode switcher */}
-                      <div className="flex items-center gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                      <div className="grid grid-cols-4 gap-1.5 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
                         <button
                           onClick={() => setLogoSubMode("background")}
-                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
                             logoSubMode === "background"
                               ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
                               : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
                           }`}
                         >
-                          <Paintbrush className="h-3.5 w-3.5" />
-                          <span>Logo Bar Background</span>
+                          <Paintbrush className="h-3.5 w-3.5 shrink-0" />
+                          <span className="truncate">Bar BG</span>
+                        </button>
+
+                        <button
+                          onClick={() => setLogoSubMode("crest")}
+                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                            logoSubMode === "crest"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Shield className="h-3.5 w-3.5 shrink-0" />
+                          <span className="truncate">Crest Box</span>
+                        </button>
+
+                        <button
+                          onClick={() => setLogoSubMode("box")}
+                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                            logoSubMode === "box"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Layers className="h-3.5 w-3.5 shrink-0" />
+                          <span className="truncate">Logos Box</span>
                         </button>
 
                         <button
                           onClick={() => setLogoSubMode("typography")}
-                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
                             logoSubMode === "typography"
                               ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
                               : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
                           }`}
                         >
-                          <Type className="h-3.5 w-3.5" />
-                          <span>Text Mode Typography</span>
+                          <Type className="h-3.5 w-3.5 shrink-0" />
+                          <span className="truncate">Typography</span>
                         </button>
                       </div>
 
-                      {logoSubMode === "background" ? (
+                      {/* 1. Logo Bar Background */}
+                      {logoSubMode === "background" && (
                         <div className="flex flex-col gap-3">
                           <ImageStyleColorPicker
                             currentColor={logoBarColor}
@@ -1309,8 +1371,217 @@ export default function ColorPaletteCustomizer() {
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        /* Text Mode Typography Colors */
+                      )}
+
+                      {/* 2. College Crest Box Background */}
+                      {logoSubMode === "crest" && (
+                        <div className="flex flex-col gap-3">
+                          <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
+                            <span className="font-black flex items-center gap-1 text-purple-900">
+                              <Shield className="h-4 w-4" /> Left Crest Logo Box Background
+                            </span>
+                            <p className="text-[11px] text-purple-800 font-medium">
+                              Controls the background color of the college crest logo box on the left.
+                            </p>
+                          </div>
+
+                          <ImageStyleColorPicker
+                            currentColor={crestBoxColor}
+                            onColorChange={(c) => setCrestBoxColor(c)}
+                            supportsGradient={false}
+                          />
+
+                          {/* Quick Swatches for Crest Box */}
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Quick Crest Box Presets:
+                            </span>
+                            <div className="grid grid-cols-4 gap-2">
+                              {[
+                                { name: "Pure White", hex: "#ffffff" },
+                                { name: "Off White", hex: "#f8fafc" },
+                                { name: "Soft Cream", hex: "#fffbeb" },
+                                { name: "Ice Blue", hex: "#f0f9ff" },
+                                { name: "Pale Mint", hex: "#f0fdf4" },
+                                { name: "Light Lavender", hex: "#f5f3ff" },
+                                { name: "Midnight Navy", hex: "#002147" },
+                                { name: "Slate Dark", hex: "#0f172a" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  onClick={() => setCrestBoxColor(p.hex)}
+                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                    crestBoxColor.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
+                                    style={{ backgroundColor: p.hex }}
+                                  />
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Match Side Logos Box Button */}
+                          <button
+                            onClick={() => setCrestBoxColor(logoBoxColor)}
+                            className="p-3 rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50/60 hover:bg-purple-100 text-purple-900 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2"
+                          >
+                            <Layers className="h-4 w-4 text-purple-600" />
+                            <span>Match Side Logos Box Color ({logoBoxColor})</span>
+                          </button>
+
+                          {/* Live Mini Preview */}
+                          <div className="p-3.5 bg-slate-100 border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Crest Box Live Preview (on Current Logo Bar):
+                            </span>
+                            <div
+                              className="p-3.5 rounded-2xl flex items-center justify-between border transition-all duration-200"
+                              style={{ backgroundColor: logoBarColor }}
+                            >
+                              <div
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl border shadow-xs transition-all duration-200"
+                                style={{
+                                  backgroundColor: crestBoxColor,
+                                  borderColor: isLightColor(crestBoxColor) ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)"
+                                }}
+                              >
+                                <img
+                                  src="/images/Stanns_CLG_Website_Logo_without_background.png"
+                                  alt="Preview Crest"
+                                  className="h-9 w-auto object-contain"
+                                />
+                                <span className="text-xs font-black" style={{ color: isLightColor(crestBoxColor) ? "#002147" : "#ffffff" }}>
+                                  St. Ann&apos;s Crest
+                                </span>
+                              </div>
+                              <span
+                                className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border"
+                                style={{
+                                  backgroundColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.1)",
+                                  color: isLightColor(logoBarColor) ? "#0f172a" : "#ffffff",
+                                  borderColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)"
+                                }}
+                              >
+                                {crestBoxColor}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 3. Logos Box Background */}
+                      {logoSubMode === "box" && (
+                        <div className="flex flex-col gap-3">
+                          <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
+                            <span className="font-black flex items-center gap-1 text-purple-900">
+                              <Layers className="h-4 w-4" /> Logos Box Background Color
+                            </span>
+                            <p className="text-[11px] text-purple-800 font-medium">
+                              Controls the background color of the logos container box in the top logo bar.
+                            </p>
+                          </div>
+
+                          <ImageStyleColorPicker
+                            currentColor={logoBoxColor}
+                            onColorChange={(c) => setLogoBoxColor(c)}
+                            supportsGradient={false}
+                          />
+
+                          {/* Quick Swatches for Logos Box */}
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Quick Logos Box Presets:
+                            </span>
+                            <div className="grid grid-cols-4 gap-2">
+                              {[
+                                { name: "Pure White", hex: "#ffffff" },
+                                { name: "Off White", hex: "#f8fafc" },
+                                { name: "Soft Cream", hex: "#fffbeb" },
+                                { name: "Ice Blue", hex: "#f0f9ff" },
+                                { name: "Pale Mint", hex: "#f0fdf4" },
+                                { name: "Light Lavender", hex: "#f5f3ff" },
+                                { name: "Midnight Navy", hex: "#002147" },
+                                { name: "Slate Dark", hex: "#0f172a" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  onClick={() => setLogoBoxColor(p.hex)}
+                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                    logoBoxColor.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
+                                    style={{ backgroundColor: p.hex }}
+                                  />
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Match Crest Box Button */}
+                          <button
+                            onClick={() => setLogoBoxColor(crestBoxColor)}
+                            className="p-3 rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50/60 hover:bg-purple-100 text-purple-900 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2"
+                          >
+                            <Shield className="h-4 w-4 text-purple-600" />
+                            <span>Match Left Crest Box Color ({crestBoxColor})</span>
+                          </button>
+
+                          {/* Live Mini Preview */}
+                          <div className="p-3.5 bg-slate-100 border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Box Live Preview (on Current Logo Bar):
+                            </span>
+                            <div
+                              className="p-3.5 rounded-2xl flex items-center justify-between border transition-all duration-200"
+                              style={{ backgroundColor: logoBarColor }}
+                            >
+                              <div
+                                className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border shadow-xs transition-all duration-200"
+                                style={{
+                                  backgroundColor: logoBoxColor,
+                                  borderColor: isLightColor(logoBoxColor) ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)"
+                                }}
+                              >
+                                <span className="text-[11px] font-black" style={{ color: isLightColor(logoBoxColor) ? "#d97706" : "#fbbf24" }}>
+                                  29+ YRS
+                                </span>
+                                <span className="h-3.5 w-px" style={{ backgroundColor: isLightColor(logoBoxColor) ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.2)" }} />
+                                <span className="text-[11px] font-bold" style={{ color: isLightColor(logoBoxColor) ? "#334155" : "#f1f5f9" }}>
+                                  NAAC &apos;A&apos;
+                                </span>
+                                <span className="h-3.5 w-px" style={{ backgroundColor: isLightColor(logoBoxColor) ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.2)" }} />
+                                <span className="text-[11px] font-black" style={{ color: isLightColor(logoBoxColor) ? "#1e3a8a" : "#93c5fd" }}>
+                                  AICTE
+                                </span>
+                              </div>
+                              <span
+                                className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border"
+                                style={{
+                                  backgroundColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.1)",
+                                  color: isLightColor(logoBarColor) ? "#0f172a" : "#ffffff",
+                                  borderColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)"
+                                }}
+                              >
+                                {logoBoxColor}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 3. Text Mode Typography */}
+                      {logoSubMode === "typography" && (
                         <div className="flex flex-col gap-4">
                           <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
                             <span className="font-black flex items-center gap-1 text-purple-900">
@@ -1341,60 +1612,23 @@ export default function ColorPaletteCustomizer() {
                                   : "text-slate-700 hover:text-slate-950"
                               }`}
                             >
-                              Custom Per-Line Colors
+                              Individual Line Colors
                             </button>
                           </div>
 
                           {headerColorSync === "all" ? (
                             <div className="flex flex-col gap-3">
-                              <span className="text-xs font-black text-slate-700">
-                                Single Unified Masthead Color:
-                              </span>
                               <ImageStyleColorPicker
                                 currentColor={headerTitleColor}
                                 onColorChange={handleUnifiedTitleColorChange}
                                 supportsGradient={false}
                               />
-
-                              {/* Popular Text Swatches */}
-                              <div className="p-3 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
-                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                                  Quick Text Color Presets:
-                                </span>
-                                <div className="grid grid-cols-3 gap-2">
-                                  {[
-                                    { name: "Pure White", hex: "#ffffff" },
-                                    { name: "Midnight Navy", hex: "#002147" },
-                                    { name: "Crimson Red", hex: "#991b1b" },
-                                    { name: "Royal Blue", hex: "#1e3a8a" },
-                                    { name: "Warm Amber", hex: "#d97706" },
-                                    { name: "Dark Slate", hex: "#0f172a" },
-                                  ].map((p) => (
-                                    <button
-                                      key={p.hex}
-                                      onClick={() => handleUnifiedTitleColorChange(p.hex)}
-                                      className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
-                                        headerTitleColor.toLowerCase() === p.hex.toLowerCase()
-                                          ? "border-purple-600 bg-purple-50 font-black shadow-xs"
-                                          : "border-slate-200 bg-white hover:bg-slate-50"
-                                      }`}
-                                    >
-                                      <span
-                                        className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
-                                        style={{ backgroundColor: p.hex }}
-                                      />
-                                      <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
                             </div>
                           ) : (
-                            /* Per-Line Independent Pickers */
                             <div className="flex flex-col gap-3">
                               <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
                                 <div className="flex items-center justify-between">
-                                  <label className="text-xs font-black text-slate-800">1. College Name (Main Title)</label>
+                                  <label className="text-xs font-black text-slate-800">1. College Name (Title Line)</label>
                                   <span className="font-mono text-xs font-bold text-slate-600">{headerTitleColor}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -1837,6 +2071,11 @@ export default function ColorPaletteCustomizer() {
                               />
                               <span
                                 className="h-4 w-5 rounded border border-slate-300"
+                                style={{ background: option.logoBoxColor || "#ffffff" }}
+                                title="Logos Box"
+                              />
+                              <span
+                                className="h-4 w-5 rounded border border-slate-300"
                                 style={{ background: option.topNav }}
                                 title="Top Nav"
                               />
@@ -1948,6 +2187,11 @@ export default function ColorPaletteCustomizer() {
                                   className="h-4 w-5 rounded border border-slate-300"
                                   style={{ background: setup.logoBar }}
                                   title="Logo Bar"
+                                />
+                                <span
+                                  className="h-4 w-5 rounded border border-slate-300"
+                                  style={{ background: setup.logoBoxColor || "#ffffff" }}
+                                  title="Logos Box"
                                 />
                                 <span
                                   className="h-4 w-5 rounded border border-slate-300"

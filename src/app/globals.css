@@ -23,6 +23,15 @@
   --input: 220 13% 91%;
   --ring: 224 71.4% 4.1%;
   --radius: 0.75rem;
+
+  /* Logo Bar Logos Box & Crest Box */
+  --crest-box-bg: #ffffff;
+  --crest-box-border: rgba(0, 0, 0, 0.08);
+  --logo-box-bg: #ffffff;
+  --logo-box-border: rgba(0, 0, 0, 0.08);
+  --logo-box-text: #334155;
+  --logo-box-title: #1e3a8a;
+  --logo-box-divider: rgba(0, 0, 0, 0.12);
 }
 
 .no-layout #top-announcement-bar,
