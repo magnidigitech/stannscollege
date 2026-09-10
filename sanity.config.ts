@@ -204,6 +204,19 @@ export default defineConfig({
         ],
       },
       {
+        name: "rtiDocument",
+        title: "Right to Information (RTI)",
+        type: "document",
+        fields: [
+          { name: "title", title: "Document Title", type: "string" },
+          { name: "tag", title: "Category Tag", type: "string" },
+          { name: "badge", title: "Badge / Scope", type: "string" },
+          { name: "description", title: "Description", type: "text" },
+          { name: "file", title: "PDF Document File", type: "file" },
+          { name: "displayOrder", title: "Display Order", type: "number" },
+        ],
+      },
+      {
         name: "nirfReport",
         title: "NIRF Reports",
         type: "document",

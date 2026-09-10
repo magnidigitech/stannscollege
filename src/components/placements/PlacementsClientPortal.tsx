@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { staticPlacementSections } from "./staticData";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 const navigationGroups = [
   {
@@ -1192,25 +1193,18 @@ export default function PlacementsClientPortal({
   }
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC]">
-      {/* Premium Header */}
-      <div className="relative bg-[#004225] overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-900/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
-        </div>
-        <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-12 py-10 lg:py-12">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black text-white font-outfit tracking-tight mb-3 max-w-4xl leading-[1.15] animate-slideUp">
-            Placements & Industry Linkages
-          </h1>
-          <p className="text-emerald-100/80 text-xs md:text-sm max-w-2xl font-medium leading-relaxed animate-slideUp">
-            Empowering students with career-ready skillsets, dynamic placement opportunities, robust industry tie-ups, and global collaborations.
-          </p>
-        </div>
-      </div>
+    <main className="min-h-screen bg-[#F8FAFC] select-none animate-fadeIn">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Placements &amp; Industry Linkages" />
 
       {/* Main Content Layout */}
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 lg:py-12">
+        {/* Sub-text Box */}
+        <SubtextBox 
+          subtext="Empowering students with career-ready skillsets, dynamic placement opportunities, robust industry tie-ups, and global collaborations."
+          className="mb-8"
+        />
+
         <div className="flex flex-col lg:flex-row gap-8">
 
           {/* Mobile Floating Drawer Trigger */}

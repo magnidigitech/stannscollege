@@ -23,6 +23,31 @@ import { NirfReports } from "@/components/about/statutory-affiliations-recogniti
 import { NaacCertificates } from "@/components/about/statutory-affiliations-recognitions/NaacCertificates";
 import { AisheCertifications } from "@/components/about/statutory-affiliations-recognitions/AisheCertifications";
 import { Ugc2f } from "@/components/about/statutory-affiliations-recognitions/Ugc2f";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+
+const aboutSubtexts: Record<string, string> = {
+  "basic-institutional-information": "Official profiles, legal mandates, and recognized affiliations of St. Ann's College for Women.",
+  "history-of-the-college": "A distinguished legacy of higher education, empowerment, and holistic values since 1997.",
+  "vision-mission-and-core-values": "Guiding principles, aspirational horizons, and enduring values of St. Ann's College for Women.",
+  "institutional-awards-recognitions": "Honors, recognitions, and accolades celebrating institutional excellence.",
+  "student-laurels": "Exemplary triumphs and distinguished achievements of our scholars in state, national, and international arenas.",
+  "institutional-distinctiveness": "Pioneering women empowerment through holistic education, character formation, and social transformation.",
+  "head-of-the-institution": "Leadership and administrative guidance steering St. Ann's College for Women towards excellence.",
+  "legacy-of-leadership": "Honoring the visionary leaders whose dedication and wisdom shaped our institutional heritage.",
+  "apsche-orders": "Statutory state government orders and higher education council approvals.",
+  "anu-affiliation-orders-ug-pg": "Official affiliation orders for Undergraduate and Postgraduate programs from Acharya Nagarjuna University.",
+  "aicte-approvals": "All India Council for Technical Education (AICTE) Extension of Approval (EoA) documents.",
+  "ugc-2f": "University Grants Commission 2(f) and 12(B) statutory recognition certificates.",
+  "aishe-certificates": "All India Survey on Higher Education (AISHE) MHRD statutory certificates.",
+  "naac-accreditation": "National Assessment and Accreditation Council (NAAC) Grade A+ accreditation records.",
+  "nirf": "National Institutional Ranking Framework (NIRF) annual data reports.",
+  "governing-body": "Constitution, members, and meeting resolutions of the Governing Body.",
+  "organogram": "Institutional governance structure and administrative hierarchy.",
+  "key-functionaries-iqac": "Administrative leadership, statutory officers, and IQAC coordinating team.",
+  "statutory-non-statutory-committees": "Statutory and non-statutory committees ensuring effective institutional governance.",
+  "institutional-policies": "Official policy documents governing academics, research, admissions, and administration.",
+  "code-of-conduct": "Professional ethics, behavioural guidelines, and code of conduct for faculty, staff, and students."
+};
 
 const categoryMapping: Record<string, string> = {
   "the-institution": "I. The Institution",
@@ -154,9 +179,15 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
   // Dynamic 2-column Grid Layout for Sections to maximize right-hand empty space
   // Dynamic Grid Layout for Sections with Sidebar
   if (catSlug && itemSlug) {
+    const pageTitle = itemsMapping[itemSlug] || activeItem || "About Us";
+    const pageSubtext = aboutSubtexts[itemSlug] || "St. Ann’s College for Women, Gorantla, Guntur, established in 1997, is committed to higher educational distinction, moral integrity, academic rigor, and the holistic empowerment of young women.";
+
     return (
-      <div className="bg-slate-50/40 min-h-screen py-12 select-none animate-fadeIn">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
+      <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn">
+        {/* 1. Heading 1 Notch Attached to Top Nav */}
+        <Heading1Notch title="About Us" />
+
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
             {/* Desktop Sidebar with All Pages */}
@@ -167,6 +198,8 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
             {/* Individual Section Content */}
             <div className="lg:col-span-9 mb-16 flex flex-col justify-between">
               <div>
+                {/* Sub-text Box */}
+                <SubtextBox subtext={pageSubtext} className="mb-8" />
                 <div>
                   {catSlug === "the-institution" && (
                     <>

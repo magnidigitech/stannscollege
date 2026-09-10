@@ -4,6 +4,7 @@ import React, { use } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Lightbulb, Phone, Mail, ArrowRight, ShieldCheck, BookOpen } from "lucide-react";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Component Imports
 import { ResearchInnovationLanding } from "@/components/research-innovation/ResearchInnovationLanding";
@@ -78,27 +79,23 @@ export default function ResearchInnovationPage({ params }: PageProps) {
     }
   };
 
+  // Determine dynamic title for Notch
+  let pageTitle = "Research & Innovation";
+  if (currentSlug !== "landing") {
+    for (const group of navigationStructure) {
+      const found = group.items.find(it => it.slug === currentSlug);
+      if (found) {
+        pageTitle = found.text;
+        break;
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Research &amp; Innovation" />
 
-      {/* Top Breadcrumb Header */}
-      <div className="bg-white border-b border-slate-200/70 py-5 px-4 sm:px-6 lg:px-12 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs w-full">
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
-              <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
-              <span className="text-slate-350">/</span>
-              <Link href="/research-innovation" className="hover:text-[#002147] hover:underline transition-all">Research & Innovation</Link>
-              <span className="text-slate-350">/</span>
-              <span className="text-[#002147]">
-                {currentSlug === "landing" 
-                  ? "Overview" 
-                  : currentSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Main Content Container */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
@@ -158,6 +155,11 @@ export default function ResearchInnovationPage({ params }: PageProps) {
 
           {/* B. Right Dynamic Component Content */}
           <main className={currentSlug === "landing" ? "lg:col-span-12 xl:col-span-12" : "lg:col-span-9 xl:col-span-9"}>
+            {/* Sub-text Box */}
+            <SubtextBox 
+              subtext="Fostering an ecosystem of intellectual inquiry, funded research projects, patent filings, institutional incubation, and entrepreneurial ventures aligned with national development goals." 
+              className="mb-8"
+            />
             <div className={currentSlug === "landing" ? "" : "bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 lg:p-12 shadow-sm min-h-[500px]"}>
               {renderContent()}
             </div>

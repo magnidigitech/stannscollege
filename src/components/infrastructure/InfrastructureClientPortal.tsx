@@ -30,6 +30,7 @@ import {
   TableProperties
 } from "lucide-react";
 import { staticInfrastructureSections } from "./staticData";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Category Tabs Mapping
 const tabs = [
@@ -530,36 +531,29 @@ export default function InfrastructureClientPortal({
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-16 font-sans min-h-screen bg-[#fafcfb]/50 w-full">
+    <div className="font-sans min-h-screen bg-[#fafcfb]/50 w-full select-none animate-fadeIn">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Infrastructure" />
 
-      {/* Modern Elite Emerald Header Banner */}
-      <div className="bg-gradient-to-br from-[#004225] to-[#0b5f36] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-2xl mb-8 select-none animate-fadeIn">
-        <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-          <Building2 className="h-[500px] w-[500px]" />
-        </div>
-        <div className="relative z-10 flex flex-col gap-2 animate-fadeIn">
-          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full w-fit text-emerald-50">
-            <Layers className="h-3.5 w-3.5 text-emerald-200" /> Campus & Academic Assets
-          </span>
-          <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
-            World-Class Infrastructure
-          </h1>
-          <p className="text-emerald-50/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
-            Step inside our ultra-modern 25+ acre green campus hosting digitised classroom pods, scientific labs, holistic residencies, and lush sustainable initiatives.
-          </p>
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
+        {/* Sub-text Box */}
+        <SubtextBox 
+          subtext="Step inside our ultra-modern 25+ acre green campus hosting digitised classroom pods, scientific labs, holistic residencies, and lush sustainable initiatives."
+          className="mb-8"
+        />
 
-          {/* If inside a specific segment, provide a quick Return button back to standard Overview Page */}
-          {!isOverview && (
+        {/* If inside a specific segment, provide a quick Return button back to standard Overview Page */}
+        {!isOverview && (
+          <div className="mb-8">
             <Link
               href="/infrastructure"
-              className="mt-4 flex items-center gap-2 font-bold text-sm text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 w-fit px-6 py-3 rounded-xl transition-all active:scale-95"
+              className="inline-flex items-center gap-2 font-bold text-sm text-[#004225] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-xs"
             >
               <ChevronLeft className="h-4 w-4" />
-              Back to Grid Overview
+              Back to Infrastructure Overview
             </Link>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
 
       {/* -------------------- RENDER CASE 1: DEDICATED LAUNCHPAD DASHBOARD (OVERVIEW) -------------------- */}
       {isOverview ? (

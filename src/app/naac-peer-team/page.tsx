@@ -8,6 +8,7 @@ import {
   Film, AlertCircle, FileText, ArrowLeft, Loader2
 } from "lucide-react";
 import { getNaacPeerTeam } from "@/lib/sanity";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Interfaces
 interface GalleryImage {
@@ -139,31 +140,12 @@ export default function NaacPeerTeamPage() {
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white pb-20">
       
-      {/* 1. Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] py-16 px-6 sm:px-12 text-white shadow-xl">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <Link href="/" className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-1 text-xs font-bold text-indigo-150 transition-all select-none">
-                <ArrowLeft className="h-3.5 w-3.5" /> Back to Home
-              </Link>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 px-3.5 py-1 text-xs font-bold text-emerald-250 tracking-wider uppercase">
-                <ShieldCheck className="h-3.5 w-3.5" /> NAAC PEER TEAM
-              </span>
-            </div>
-            <h1 className="mt-5 font-outfit text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight select-none">
-              {title}
-            </h1>
-            <p className="mt-4 text-indigo-100/80 text-sm md:text-base max-w-4xl font-normal leading-relaxed">
-              {description}
-            </p>
-          </div>
-          <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
-            <Award className="h-10 w-10 animate-pulse" />
-          </span>
-        </div>
-      </div>
+      {/* 1. Heading 1 Banner */}
+      <Heading1Notch title="IQAC, Quality Assurance &amp; Accreditation">
+        <SubtextBox>
+          {description}
+        </SubtextBox>
+      </Heading1Notch>
 
       {/* 2. Interactive Navigation Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">

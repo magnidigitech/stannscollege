@@ -24,6 +24,7 @@ import {
   X,
   ChevronLeft
 } from "lucide-react";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 import { staticSupportSections } from "./staticData";
 
 // Definition of the structural groupings and configurations for URL slugs
@@ -613,23 +614,19 @@ export default function StudentSupportClientPortal({
   }, []);
 
   return (
-    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pt-4 md:pt-6 pb-8 md:pb-16 font-sans w-full">
-      
-      {/* Beautiful Main Prestigous Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#053d79] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-xl mb-8 select-none">
-        <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-          <Users className="h-[300px] w-[300px]" />
-        </div>
-        <div className="relative z-10 flex flex-col gap-2 animate-fadeIn">
-          <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
-            Student Support Services
-          </h1>
-          <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
-            Enabling transformative growth through specialized guidance committees, counseling frameworks, merit recognition pathways, and dynamic extension camps.
-          </p>
-        </div>
+    <div className="font-sans w-full select-none animate-fadeIn">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Student Support Services" />
+
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-10 w-full">
+        {/* Sub-text Box */}
+        <SubtextBox 
+          subtext="Enabling transformative growth through specialized guidance committees, counseling frameworks, merit recognition pathways, and dynamic extension camps."
+          className="mb-8"
+        />
       </div>
 
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pb-8 sm:pb-12 w-full">
       {/* Mobile Menu Selector for smaller screen viewports */}
       <div className="md:hidden mb-6 relative select-none">
         <button 
@@ -884,6 +881,7 @@ export default function StudentSupportClientPortal({
 
         </div>
       </div>
+    </div>
     </div>
   );
 }

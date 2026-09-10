@@ -5,7 +5,7 @@ import {
   Palette, Check, RotateCcw, Copy, X, Sliders, Sparkles,
   Building, Compass, Heading, Bookmark, BookmarkPlus,
   Pipette, CheckCircle2, ArrowRight, Trash2, Clock, BookOpen,
-  Type, SlidersHorizontal, Layers, Paintbrush, Shield
+  Type, SlidersHorizontal, Layers, Paintbrush
 } from "lucide-react";
 
 // --- Color Conversion Helpers ---
@@ -112,7 +112,6 @@ export interface SavedColorSetup {
   name: string;
   createdAt: string;
   logoBar: string;
-  crestBoxColor?: string;
   logoBoxColor?: string;
   topNav: string;
   level1: string;
@@ -123,8 +122,26 @@ export interface SavedColorSetup {
   headerSubColor?: string;
   headerAccentColor?: string;
   headerAddressColor?: string;
+  headerLine1Color?: string;
+  headerLine2Color?: string;
+  headerLine3Color?: string;
+  headerLine4Color?: string;
+  headerLine5Color?: string;
+  headerLine6Color?: string;
   topNavLinkColor?: string;
   topNavRow2Color?: string;
+  sec1Color?: string;
+  sec2Color?: string;
+  sec3Color?: string;
+  sec4Color?: string;
+  sec5Color?: string;
+  sec6Color?: string;
+  secDisclosuresColor?: string;
+  secRtiColor?: string;
+  sectionContainerBg?: string;
+  cardAltBg?: string;
+  cardMainBg?: string;
+  subtextBg?: string;
 }
 
 export interface ReadyMadeOption {
@@ -132,7 +149,6 @@ export interface ReadyMadeOption {
   name: string;
   desc: string;
   logoBar: string;
-  crestBoxColor?: string;
   logoBoxColor?: string;
   topNav: string;
   level1: string;
@@ -143,8 +159,26 @@ export interface ReadyMadeOption {
   headerSubColor?: string;
   headerAccentColor?: string;
   headerAddressColor?: string;
+  headerLine1Color?: string;
+  headerLine2Color?: string;
+  headerLine3Color?: string;
+  headerLine4Color?: string;
+  headerLine5Color?: string;
+  headerLine6Color?: string;
   topNavLinkColor?: string;
   topNavRow2Color?: string;
+  sec1Color?: string;
+  sec2Color?: string;
+  sec3Color?: string;
+  sec4Color?: string;
+  sec5Color?: string;
+  sec6Color?: string;
+  secDisclosuresColor?: string;
+  secRtiColor?: string;
+  sectionContainerBg?: string;
+  cardAltBg?: string;
+  cardMainBg?: string;
+  subtextBg?: string;
 }
 
 const READY_MADE_OPTIONS: ReadyMadeOption[] = [
@@ -640,7 +674,6 @@ export default function ColorPaletteCustomizer() {
 
   // States for 5 distinct sections
   const [logoBarColor, setLogoBarColor] = useState<string>("#002147");
-  const [crestBoxColor, setCrestBoxColor] = useState<string>("#ffffff");
   const [logoBoxColor, setLogoBoxColor] = useState<string>("#ffffff");
   const [topNavColor, setTopNavColor] = useState<string>("#002147");
   const [level1Color, setLevel1Color] = useState<string>("linear-gradient(to right, #002b36, #043d4d, #084c61)");
@@ -648,18 +681,48 @@ export default function ColorPaletteCustomizer() {
   const [sidebarColor, setSidebarColor] = useState<string>("#1e40af");
   const [sidebarBgColor, setSidebarBgColor] = useState<string>("#eaeff5");
 
-  // Logo sub-modes: Background vs Crest Box vs Logos Box vs Masthead Typography
-  const [logoSubMode, setLogoSubMode] = useState<"background" | "crest" | "box" | "typography">("background");
+  // Logo sub-modes: Background vs Masthead Typography
+  const [logoSubMode, setLogoSubMode] = useState<"background" | "typography">("background");
   const [headerTitleColor, setHeaderTitleColor] = useState<string>("#002b49");
   const [headerSubColor, setHeaderSubColor] = useState<string>("#1e3a8a");
   const [headerAccentColor, setHeaderAccentColor] = useState<string>("#991b1b");
   const [headerAddressColor, setHeaderAddressColor] = useState<string>("#334155");
   const [headerColorSync, setHeaderColorSync] = useState<"all" | "individual">("all");
 
+  // Individual 6 Lines Colors (College Name Line + 5 Lines Below)
+  const [headerLine1Color, setHeaderLine1Color] = useState<string>("#002b49");
+  const [headerLine2Color, setHeaderLine2Color] = useState<string>("#1e3a8a");
+  const [headerLine3Color, setHeaderLine3Color] = useState<string>("#dc2626");
+  const [headerLine4Color, setHeaderLine4Color] = useState<string>("#dc2626");
+  const [headerLine5Color, setHeaderLine5Color] = useState<string>("#0284c7");
+  const [headerLine6Color, setHeaderLine6Color] = useState<string>("#475569");
+
   // Nav sub-modes: Background vs Menu Links
   const [navSubMode, setNavSubMode] = useState<"background" | "links">("background");
   const [topNavLinkColor, setTopNavLinkColor] = useState<string>("#ffffff");
-  const [topNavRow2Color, setTopNavRow2Color] = useState<string>("#e2e8f0");
+  const [topNavRow2Color, setTopNavRow2Color] = useState<string>("#ffffff");
+  const [navLinkSync, setNavLinkSync] = useState<"all" | "individual">("all");
+
+  // Section 4 sub-modes: Global vs Respective Sections vs Containers & Cards
+  const [level2SubMode, setLevel2SubMode] = useState<"global" | "respective" | "containers">("global");
+  const [selectedSectionKey, setSelectedSectionKey] = useState<string>("sec1");
+  const [selectedContainerTarget, setSelectedContainerTarget] = useState<"container" | "cardAlt" | "cardMain" | "subtext">("container");
+
+  // Respective Section Header Colors (empty means fallback to level2Color)
+  const [sec1Color, setSec1Color] = useState<string>("");
+  const [sec2Color, setSec2Color] = useState<string>("");
+  const [sec3Color, setSec3Color] = useState<string>("");
+  const [sec4Color, setSec4Color] = useState<string>("");
+  const [sec5Color, setSec5Color] = useState<string>("");
+  const [sec6Color, setSec6Color] = useState<string>("");
+  const [secDisclosuresColor, setSecDisclosuresColor] = useState<string>("");
+  const [secRtiColor, setSecRtiColor] = useState<string>("");
+
+  // Containers, Cards & Subtext Box
+  const [sectionContainerBg, setSectionContainerBg] = useState<string>("#eaeff5");
+  const [cardAltBg, setCardAltBg] = useState<string>("#e8f1fd");
+  const [cardMainBg, setCardMainBg] = useState<string>("#ffffff");
+  const [subtextBg, setSubtextBg] = useState<string>("#ffffff");
 
   // Sidebar sub-mode
   const [sidebarColorMode, setSidebarColorMode] = useState<"accent" | "background">("accent");
@@ -672,7 +735,6 @@ export default function ColorPaletteCustomizer() {
   useEffect(() => {
     try {
       const savedLogo = localStorage.getItem("theme_logoBarColor");
-      const savedCrestBoxBg = localStorage.getItem("theme_crestBoxColor");
       const savedBoxBg = localStorage.getItem("theme_logoBoxColor");
       const savedNav = localStorage.getItem("theme_topNavColor");
       const savedL1 = localStorage.getItem("theme_level1Color");
@@ -684,13 +746,33 @@ export default function ColorPaletteCustomizer() {
       const savedSubCol = localStorage.getItem("theme_headerSubColor");
       const savedAccentCol = localStorage.getItem("theme_headerAccentColor");
       const savedAddressCol = localStorage.getItem("theme_headerAddressColor");
+      const hl1 = localStorage.getItem("theme_headerLine1Color");
+      const hl2 = localStorage.getItem("theme_headerLine2Color");
+      const hl3 = localStorage.getItem("theme_headerLine3Color");
+      const hl4 = localStorage.getItem("theme_headerLine4Color");
+      const hl5 = localStorage.getItem("theme_headerLine5Color");
+      const hl6 = localStorage.getItem("theme_headerLine6Color");
+
       const savedLinkCol = localStorage.getItem("theme_topNavLinkColor");
       const savedRow2Col = localStorage.getItem("theme_topNavRow2Color");
+      const savedNavSync = localStorage.getItem("theme_navLinkSync");
+
+      const s1 = localStorage.getItem("theme_sec1Color");
+      const s2 = localStorage.getItem("theme_sec2Color");
+      const s3 = localStorage.getItem("theme_sec3Color");
+      const s4 = localStorage.getItem("theme_sec4Color");
+      const s5 = localStorage.getItem("theme_sec5Color");
+      const s6 = localStorage.getItem("theme_sec6Color");
+      const sDisc = localStorage.getItem("theme_secDisclosuresColor");
+      const sRti = localStorage.getItem("theme_secRtiColor");
+      const sContainer = localStorage.getItem("theme_sectionContainerBg");
+      const sCardAlt = localStorage.getItem("theme_cardAltBg");
+      const sCardMain = localStorage.getItem("theme_cardMainBg");
+      const sSubtext = localStorage.getItem("theme_subtextBg");
 
       const savedList = localStorage.getItem("theme_savedColorSetups");
 
       if (savedLogo) setLogoBarColor(savedLogo);
-      if (savedCrestBoxBg) setCrestBoxColor(savedCrestBoxBg);
       if (savedBoxBg) setLogoBoxColor(savedBoxBg);
       if (savedNav) setTopNavColor(savedNav);
       if (savedL1) setLevel1Color(savedL1);
@@ -702,8 +784,28 @@ export default function ColorPaletteCustomizer() {
       if (savedSubCol) setHeaderSubColor(savedSubCol);
       if (savedAccentCol) setHeaderAccentColor(savedAccentCol);
       if (savedAddressCol) setHeaderAddressColor(savedAddressCol);
+      if (hl1) setHeaderLine1Color(hl1);
+      if (hl2) setHeaderLine2Color(hl2);
+      if (hl3) setHeaderLine3Color(hl3);
+      if (hl4) setHeaderLine4Color(hl4);
+      if (hl5) setHeaderLine5Color(hl5);
+      if (hl6) setHeaderLine6Color(hl6);
       if (savedLinkCol) setTopNavLinkColor(savedLinkCol);
       if (savedRow2Col) setTopNavRow2Color(savedRow2Col);
+      if (savedNavSync === "all" || savedNavSync === "individual") setNavLinkSync(savedNavSync);
+
+      if (s1) setSec1Color(s1);
+      if (s2) setSec2Color(s2);
+      if (s3) setSec3Color(s3);
+      if (s4) setSec4Color(s4);
+      if (s5) setSec5Color(s5);
+      if (s6) setSec6Color(s6);
+      if (sDisc) setSecDisclosuresColor(sDisc);
+      if (sRti) setSecRtiColor(sRti);
+      if (sContainer) setSectionContainerBg(sContainer);
+      if (sCardAlt) setCardAltBg(sCardAlt);
+      if (sCardMain) setCardMainBg(sCardMain);
+      if (sSubtext) setSubtextBg(sSubtext);
 
       if (savedList) {
         const parsed = JSON.parse(savedList);
@@ -742,12 +844,7 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--logo-bar-border", isLogoLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.1)");
     root.style.setProperty("--logo-bar-icon-bg", isLogoLight ? "rgba(0,33,71,0.06)" : "rgba(255,255,255,0.1)");
 
-    // 1b. Crest Box variables
-    root.style.setProperty("--crest-box-bg", crestBoxColor);
-    const isCrestBoxLight = isLightColor(crestBoxColor);
-    root.style.setProperty("--crest-box-border", isCrestBoxLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)");
-
-    // 1c. Logos Box variables
+    // 1b. Logos Box variables
     root.style.setProperty("--logo-box-bg", logoBoxColor);
     const isBoxLight = isLightColor(logoBoxColor);
     root.style.setProperty("--logo-box-border", isBoxLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)");
@@ -761,11 +858,18 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--header-accent-color", headerAccentColor);
     root.style.setProperty("--header-address-color", headerAddressColor);
 
+    root.style.setProperty("--header-line1-color", headerLine1Color || headerTitleColor);
+    root.style.setProperty("--header-line2-color", headerLine2Color || headerSubColor);
+    root.style.setProperty("--header-line3-color", headerLine3Color || headerAccentColor);
+    root.style.setProperty("--header-line4-color", headerLine4Color || headerAccentColor);
+    root.style.setProperty("--header-line5-color", headerLine5Color || headerSubColor);
+    root.style.setProperty("--header-line6-color", headerLine6Color || headerAddressColor);
+
     // 2. Top Nav Bar variables
     root.style.setProperty("--topnav-bg", topNavColor);
     const isNavLight = isLightColor(topNavColor);
     root.style.setProperty("--topnav-link-color", topNavLinkColor || (isNavLight ? "#0f172a" : "#ffffff"));
-    root.style.setProperty("--topnav-row2-color", topNavRow2Color || (isNavLight ? "#334155" : "#e2e8f0"));
+    root.style.setProperty("--topnav-row2-color", topNavRow2Color || topNavLinkColor || (isNavLight ? "#334155" : "#ffffff"));
     root.style.setProperty("--topnav-divider", isNavLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)");
     root.style.setProperty("--topnav-border", isNavLight ? "rgba(0,0,0,0.1)" : "#001730");
     root.style.setProperty("--topnav-chevron", isNavLight ? "#64748b" : "#94a3b8");
@@ -777,12 +881,67 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--level1-breadcrumb", isL1Light ? "#475569" : "rgba(153, 246, 228, 0.85)");
     root.style.setProperty("--level1-border", isL1Light ? "rgba(0,0,0,0.08)" : "rgba(4, 43, 54, 0.4)");
 
-    // 4. Heading Level 2 variables
+    // 4. Heading Level 2 Global variables
     root.style.setProperty("--level2-bg", level2Color);
     const isL2Light = isLightColor(level2Color);
     root.style.setProperty("--level2-title", isL2Light ? "#002147" : "#ffffff");
     root.style.setProperty("--level2-subtitle", isL2Light ? "#334155" : "rgba(219, 234, 254, 0.9)");
     root.style.setProperty("--level2-border", isL2Light ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    // Respective Sections Variables
+    const effSec1 = sec1Color || level2Color;
+    root.style.setProperty("--sec1-bg", effSec1);
+    root.style.setProperty("--sec1-title", isLightColor(effSec1) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec1-subtitle", isLightColor(effSec1) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec1-border", isLightColor(effSec1) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    const effSec2 = sec2Color || level2Color;
+    root.style.setProperty("--sec2-bg", effSec2);
+    root.style.setProperty("--sec2-title", isLightColor(effSec2) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec2-subtitle", isLightColor(effSec2) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec2-border", isLightColor(effSec2) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    const effSec3 = sec3Color || level2Color;
+    root.style.setProperty("--sec3-bg", effSec3);
+    root.style.setProperty("--sec3-title", isLightColor(effSec3) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec3-subtitle", isLightColor(effSec3) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec3-border", isLightColor(effSec3) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    const effSec4 = sec4Color || level2Color;
+    root.style.setProperty("--sec4-bg", effSec4);
+    root.style.setProperty("--sec4-title", isLightColor(effSec4) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec4-subtitle", isLightColor(effSec4) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec4-border", isLightColor(effSec4) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    const effSec5 = sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)";
+    root.style.setProperty("--sec5-bg", effSec5);
+    root.style.setProperty("--sec5-title", isLightColor(effSec5) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec5-subtitle", isLightColor(effSec5) ? "#334155" : "#f1f5f9");
+    root.style.setProperty("--sec5-border", isLightColor(effSec5) ? "rgba(0,0,0,0.1)" : "rgba(255, 153, 51, 0.5)");
+
+    const effSec6 = sec6Color || level2Color;
+    root.style.setProperty("--sec6-bg", effSec6);
+    root.style.setProperty("--sec6-title", isLightColor(effSec6) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec6-subtitle", isLightColor(effSec6) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec6-border", isLightColor(effSec6) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    const effDisc = secDisclosuresColor || level2Color;
+    root.style.setProperty("--sec-disclosures-bg", effDisc);
+    root.style.setProperty("--sec-disclosures-title", isLightColor(effDisc) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec-disclosures-subtitle", isLightColor(effDisc) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec-disclosures-border", isLightColor(effDisc) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    const effRti = secRtiColor || level2Color;
+    root.style.setProperty("--sec-rti-bg", effRti);
+    root.style.setProperty("--sec-rti-title", isLightColor(effRti) ? "#002147" : "#ffffff");
+    root.style.setProperty("--sec-rti-subtitle", isLightColor(effRti) ? "#334155" : "rgba(219, 234, 254, 0.9)");
+    root.style.setProperty("--sec-rti-border", isLightColor(effRti) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
+
+    // Containers, Cards & Subtext Variables
+    root.style.setProperty("--section-container-bg", sectionContainerBg);
+    root.style.setProperty("--card-alt-bg", cardAltBg);
+    root.style.setProperty("--card-main-bg", cardMainBg);
+    root.style.setProperty("--subtext-bg", subtextBg);
 
     // 5. Side Nav Bar variables
     root.style.setProperty("--sidebar-bg", sidebarColor);
@@ -794,7 +953,6 @@ export default function ColorPaletteCustomizer() {
     // Store in localStorage
     try {
       localStorage.setItem("theme_logoBarColor", logoBarColor);
-      localStorage.setItem("theme_crestBoxColor", crestBoxColor);
       localStorage.setItem("theme_logoBoxColor", logoBoxColor);
       localStorage.setItem("theme_topNavColor", topNavColor);
       localStorage.setItem("theme_level1Color", level1Color);
@@ -806,8 +964,28 @@ export default function ColorPaletteCustomizer() {
       localStorage.setItem("theme_headerSubColor", headerSubColor);
       localStorage.setItem("theme_headerAccentColor", headerAccentColor);
       localStorage.setItem("theme_headerAddressColor", headerAddressColor);
+      localStorage.setItem("theme_headerLine1Color", headerLine1Color);
+      localStorage.setItem("theme_headerLine2Color", headerLine2Color);
+      localStorage.setItem("theme_headerLine3Color", headerLine3Color);
+      localStorage.setItem("theme_headerLine4Color", headerLine4Color);
+      localStorage.setItem("theme_headerLine5Color", headerLine5Color);
+      localStorage.setItem("theme_headerLine6Color", headerLine6Color);
       localStorage.setItem("theme_topNavLinkColor", topNavLinkColor);
       localStorage.setItem("theme_topNavRow2Color", topNavRow2Color);
+      localStorage.setItem("theme_navLinkSync", navLinkSync);
+
+      localStorage.setItem("theme_sec1Color", sec1Color);
+      localStorage.setItem("theme_sec2Color", sec2Color);
+      localStorage.setItem("theme_sec3Color", sec3Color);
+      localStorage.setItem("theme_sec4Color", sec4Color);
+      localStorage.setItem("theme_sec5Color", sec5Color);
+      localStorage.setItem("theme_sec6Color", sec6Color);
+      localStorage.setItem("theme_secDisclosuresColor", secDisclosuresColor);
+      localStorage.setItem("theme_secRtiColor", secRtiColor);
+      localStorage.setItem("theme_sectionContainerBg", sectionContainerBg);
+      localStorage.setItem("theme_cardAltBg", cardAltBg);
+      localStorage.setItem("theme_cardMainBg", cardMainBg);
+      localStorage.setItem("theme_subtextBg", subtextBg);
     } catch (e) {
       // Ignore
     }
@@ -822,10 +1000,15 @@ export default function ColorPaletteCustomizer() {
               headerSubColor,
               headerAccentColor,
               headerAddressColor,
+              headerLine1Color,
+              headerLine2Color,
+              headerLine3Color,
+              headerLine4Color,
+              headerLine5Color,
+              headerLine6Color,
               topNavLinkColor,
               topNavRow2Color,
               logoBarColor,
-              crestBoxColor,
               logoBoxColor,
               topNavColor
             }
@@ -834,18 +1017,36 @@ export default function ColorPaletteCustomizer() {
       }, 0);
     }
   }, [
-    logoBarColor, crestBoxColor, logoBoxColor, topNavColor, level1Color, level2Color,
+    logoBarColor, logoBoxColor, topNavColor, level1Color, level2Color,
     sidebarColor, sidebarBgColor, headerTitleColor, headerSubColor,
-    headerAccentColor, headerAddressColor, topNavLinkColor, topNavRow2Color
+    headerAccentColor, headerAddressColor, headerLine1Color, headerLine2Color,
+    headerLine3Color, headerLine4Color, headerLine5Color, headerLine6Color,
+    topNavLinkColor, topNavRow2Color, navLinkSync, sec1Color, sec2Color,
+    sec3Color, sec4Color, sec5Color, sec6Color, secDisclosuresColor,
+    secRtiColor, sectionContainerBg, cardAltBg, cardMainBg, subtextBg
   ]);
 
   // Handle Unified Typography Color Change
   const handleUnifiedTitleColorChange = (c: string) => {
     setHeaderTitleColor(c);
+    setHeaderLine1Color(c);
     if (headerColorSync === "all") {
       setHeaderSubColor(c);
       setHeaderAccentColor(c);
       setHeaderAddressColor(c);
+      setHeaderLine2Color(c);
+      setHeaderLine3Color(c);
+      setHeaderLine4Color(c);
+      setHeaderLine5Color(c);
+      setHeaderLine6Color(c);
+    }
+  };
+
+  // Handle Top Nav Link Color Change
+  const handleNavLinksColorChange = (newColor: string) => {
+    setTopNavLinkColor(newColor);
+    if (navLinkSync === "all") {
+      setTopNavRow2Color(newColor);
     }
   };
 
@@ -861,7 +1062,6 @@ export default function ColorPaletteCustomizer() {
       name: nameToUse,
       createdAt: timeString,
       logoBar: logoBarColor,
-      crestBoxColor,
       logoBoxColor,
       topNav: topNavColor,
       level1: level1Color,
@@ -872,8 +1072,26 @@ export default function ColorPaletteCustomizer() {
       headerSubColor,
       headerAccentColor,
       headerAddressColor,
+      headerLine1Color,
+      headerLine2Color,
+      headerLine3Color,
+      headerLine4Color,
+      headerLine5Color,
+      headerLine6Color,
       topNavLinkColor,
-      topNavRow2Color
+      topNavRow2Color,
+      sec1Color,
+      sec2Color,
+      sec3Color,
+      sec4Color,
+      sec5Color,
+      sec6Color,
+      secDisclosuresColor,
+      secRtiColor,
+      sectionContainerBg,
+      cardAltBg,
+      cardMainBg,
+      subtextBg
     };
 
     const updated = [newSetup, ...savedSetups];
@@ -892,7 +1110,6 @@ export default function ColorPaletteCustomizer() {
   // Restore/Apply a Saved Version
   const handleApplySavedSetup = (setup: SavedColorSetup) => {
     setLogoBarColor(setup.logoBar);
-    if (setup.crestBoxColor) setCrestBoxColor(setup.crestBoxColor);
     if (setup.logoBoxColor) setLogoBoxColor(setup.logoBoxColor);
     setTopNavColor(setup.topNav);
     setLevel1Color(setup.level1);
@@ -904,8 +1121,27 @@ export default function ColorPaletteCustomizer() {
     if (setup.headerSubColor) setHeaderSubColor(setup.headerSubColor);
     if (setup.headerAccentColor) setHeaderAccentColor(setup.headerAccentColor);
     if (setup.headerAddressColor) setHeaderAddressColor(setup.headerAddressColor);
+    if (setup.headerLine1Color) setHeaderLine1Color(setup.headerLine1Color);
+    if (setup.headerLine2Color) setHeaderLine2Color(setup.headerLine2Color);
+    if (setup.headerLine3Color) setHeaderLine3Color(setup.headerLine3Color);
+    if (setup.headerLine4Color) setHeaderLine4Color(setup.headerLine4Color);
+    if (setup.headerLine5Color) setHeaderLine5Color(setup.headerLine5Color);
+    if (setup.headerLine6Color) setHeaderLine6Color(setup.headerLine6Color);
     if (setup.topNavLinkColor) setTopNavLinkColor(setup.topNavLinkColor);
     if (setup.topNavRow2Color) setTopNavRow2Color(setup.topNavRow2Color);
+
+    if (setup.sec1Color !== undefined) setSec1Color(setup.sec1Color);
+    if (setup.sec2Color !== undefined) setSec2Color(setup.sec2Color);
+    if (setup.sec3Color !== undefined) setSec3Color(setup.sec3Color);
+    if (setup.sec4Color !== undefined) setSec4Color(setup.sec4Color);
+    if (setup.sec5Color !== undefined) setSec5Color(setup.sec5Color);
+    if (setup.sec6Color !== undefined) setSec6Color(setup.sec6Color);
+    if (setup.secDisclosuresColor !== undefined) setSecDisclosuresColor(setup.secDisclosuresColor);
+    if (setup.secRtiColor !== undefined) setSecRtiColor(setup.secRtiColor);
+    if (setup.sectionContainerBg) setSectionContainerBg(setup.sectionContainerBg);
+    if (setup.cardAltBg) setCardAltBg(setup.cardAltBg);
+    if (setup.cardMainBg) setCardMainBg(setup.cardMainBg);
+    if (setup.subtextBg) setSubtextBg(setup.subtextBg);
 
     setSaveToast(`Applied "${setup.name}"!`);
     setTimeout(() => setSaveToast(null), 2000);
@@ -925,7 +1161,6 @@ export default function ColorPaletteCustomizer() {
 
   const handleReset = () => {
     setLogoBarColor("#002147");
-    setCrestBoxColor("#ffffff");
     setLogoBoxColor("#ffffff");
     setTopNavColor("#002147");
     setLevel1Color("linear-gradient(to right, #002b36, #043d4d, #084c61)");
@@ -937,13 +1172,33 @@ export default function ColorPaletteCustomizer() {
     setHeaderSubColor("#bfdbfe");
     setHeaderAccentColor("#93c5fd");
     setHeaderAddressColor("#cbd5e1");
+    setHeaderLine1Color("#002b49");
+    setHeaderLine2Color("#1e3a8a");
+    setHeaderLine3Color("#dc2626");
+    setHeaderLine4Color("#dc2626");
+    setHeaderLine5Color("#0284c7");
+    setHeaderLine6Color("#475569");
     setTopNavLinkColor("#ffffff");
-    setTopNavRow2Color("#e2e8f0");
+    setTopNavRow2Color("#ffffff");
+    setNavLinkSync("all");
+
+    setSec1Color("");
+    setSec2Color("");
+    setSec3Color("");
+    setSec4Color("");
+    setSec5Color("");
+    setSec6Color("");
+    setSecDisclosuresColor("");
+    setSecRtiColor("");
+
+    setSectionContainerBg("#eaeff5");
+    setCardAltBg("#e8f1fd");
+    setCardMainBg("#ffffff");
+    setSubtextBg("#ffffff");
   };
 
   const handleApplyReadyMade = (option: ReadyMadeOption) => {
     setLogoBarColor(option.logoBar);
-    setCrestBoxColor(option.crestBoxColor || "#ffffff");
     setLogoBoxColor(option.logoBoxColor || "#ffffff");
     setTopNavColor(option.topNav);
     setLevel1Color(option.level1);
@@ -957,13 +1212,25 @@ export default function ColorPaletteCustomizer() {
     if (option.headerAddressColor) setHeaderAddressColor(option.headerAddressColor);
     if (option.topNavLinkColor) setTopNavLinkColor(option.topNavLinkColor);
     if (option.topNavRow2Color) setTopNavRow2Color(option.topNavRow2Color);
+
+    if (option.sec1Color !== undefined) setSec1Color(option.sec1Color);
+    if (option.sec2Color !== undefined) setSec2Color(option.sec2Color);
+    if (option.sec3Color !== undefined) setSec3Color(option.sec3Color);
+    if (option.sec4Color !== undefined) setSec4Color(option.sec4Color);
+    if (option.sec5Color !== undefined) setSec5Color(option.sec5Color);
+    if (option.sec6Color !== undefined) setSec6Color(option.sec6Color);
+    if (option.secDisclosuresColor !== undefined) setSecDisclosuresColor(option.secDisclosuresColor);
+    if (option.secRtiColor !== undefined) setSecRtiColor(option.secRtiColor);
+    if (option.sectionContainerBg) setSectionContainerBg(option.sectionContainerBg);
+    if (option.cardAltBg) setCardAltBg(option.cardAltBg);
+    if (option.cardMainBg) setCardMainBg(option.cardMainBg);
+    if (option.subtextBg) setSubtextBg(option.subtextBg);
   };
 
   const handleCopyCodes = () => {
     const config = JSON.stringify(
       {
         logoBarBackground: logoBarColor,
-        crestBoxBackground: crestBoxColor,
         logosBoxBackground: logoBoxColor,
         mastheadTypography: {
           titleColor: headerTitleColor,
@@ -978,6 +1245,22 @@ export default function ColorPaletteCustomizer() {
         },
         level1HeroBanner: level1Color,
         level2SectionBanner: level2Color,
+        respectiveSectionBanners: {
+          sec1_performanceIndicators: sec1Color || level2Color,
+          sec2_planDocuments: sec2Color || level2Color,
+          sec3_strategicPriorities: sec3Color || level2Color,
+          sec4_stakeholderFeedback: sec4Color || level2Color,
+          sec5_vision2047: sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)",
+          sec6_referenceLinks: sec6Color || level2Color,
+          secDisclosures_mandatoryDisclosures: secDisclosuresColor || level2Color,
+          secRti_rightToInformation: secRtiColor || level2Color,
+        },
+        containersAndCards: {
+          sectionContainerBg,
+          cardAltBg,
+          cardMainBg,
+          subtextBg
+        },
         sidebarAccent: sidebarColor,
         sidebarContainerBg: sidebarBgColor
       },
@@ -1272,58 +1555,34 @@ export default function ColorPaletteCustomizer() {
                   </div>
 
                   {/* ======================================================== */}
-                  {/* SECTION 1: LOGO BAR (BACKGROUND VS CREST VS LOGOS BOX)    */}
+                  {/* SECTION 1: LOGO BAR (BACKGROUND VS LOGOS BOX VS TYPO)     */}
                   {/* ======================================================== */}
                   {selectedElement === "logo" && (
                     <div className="flex flex-col gap-4">
                       {/* Sub-mode switcher */}
-                      <div className="grid grid-cols-4 gap-1.5 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                      <div className="flex items-center gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
                         <button
                           onClick={() => setLogoSubMode("background")}
-                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
                             logoSubMode === "background"
                               ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
                               : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
                           }`}
                         >
-                          <Paintbrush className="h-3.5 w-3.5 shrink-0" />
-                          <span className="truncate">Bar BG</span>
-                        </button>
-
-                        <button
-                          onClick={() => setLogoSubMode("crest")}
-                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
-                            logoSubMode === "crest"
-                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
-                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
-                          }`}
-                        >
-                          <Shield className="h-3.5 w-3.5 shrink-0" />
-                          <span className="truncate">Crest Box</span>
-                        </button>
-
-                        <button
-                          onClick={() => setLogoSubMode("box")}
-                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
-                            logoSubMode === "box"
-                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
-                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
-                          }`}
-                        >
-                          <Layers className="h-3.5 w-3.5 shrink-0" />
-                          <span className="truncate">Logos Box</span>
+                          <Paintbrush className="h-3.5 w-3.5" />
+                          <span>Logo Bar Background</span>
                         </button>
 
                         <button
                           onClick={() => setLogoSubMode("typography")}
-                          className={`py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                          className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
                             logoSubMode === "typography"
                               ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
                               : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
                           }`}
                         >
-                          <Type className="h-3.5 w-3.5 shrink-0" />
-                          <span className="truncate">Typography</span>
+                          <Type className="h-3.5 w-3.5" />
+                          <span>Text Mode Typography</span>
                         </button>
                       </div>
 
@@ -1368,213 +1627,6 @@ export default function ColorPaletteCustomizer() {
                                   <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
                                 </button>
                               ))}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* 2. College Crest Box Background */}
-                      {logoSubMode === "crest" && (
-                        <div className="flex flex-col gap-3">
-                          <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
-                            <span className="font-black flex items-center gap-1 text-purple-900">
-                              <Shield className="h-4 w-4" /> Left Crest Logo Box Background
-                            </span>
-                            <p className="text-[11px] text-purple-800 font-medium">
-                              Controls the background color of the college crest logo box on the left.
-                            </p>
-                          </div>
-
-                          <ImageStyleColorPicker
-                            currentColor={crestBoxColor}
-                            onColorChange={(c) => setCrestBoxColor(c)}
-                            supportsGradient={false}
-                          />
-
-                          {/* Quick Swatches for Crest Box */}
-                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                              Quick Crest Box Presets:
-                            </span>
-                            <div className="grid grid-cols-4 gap-2">
-                              {[
-                                { name: "Pure White", hex: "#ffffff" },
-                                { name: "Off White", hex: "#f8fafc" },
-                                { name: "Soft Cream", hex: "#fffbeb" },
-                                { name: "Ice Blue", hex: "#f0f9ff" },
-                                { name: "Pale Mint", hex: "#f0fdf4" },
-                                { name: "Light Lavender", hex: "#f5f3ff" },
-                                { name: "Midnight Navy", hex: "#002147" },
-                                { name: "Slate Dark", hex: "#0f172a" },
-                              ].map((p) => (
-                                <button
-                                  key={p.hex}
-                                  onClick={() => setCrestBoxColor(p.hex)}
-                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
-                                    crestBoxColor.toLowerCase() === p.hex.toLowerCase()
-                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
-                                      : "border-slate-200 bg-white hover:bg-slate-50"
-                                  }`}
-                                >
-                                  <span
-                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
-                                    style={{ backgroundColor: p.hex }}
-                                  />
-                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Match Side Logos Box Button */}
-                          <button
-                            onClick={() => setCrestBoxColor(logoBoxColor)}
-                            className="p-3 rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50/60 hover:bg-purple-100 text-purple-900 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2"
-                          >
-                            <Layers className="h-4 w-4 text-purple-600" />
-                            <span>Match Side Logos Box Color ({logoBoxColor})</span>
-                          </button>
-
-                          {/* Live Mini Preview */}
-                          <div className="p-3.5 bg-slate-100 border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                              Crest Box Live Preview (on Current Logo Bar):
-                            </span>
-                            <div
-                              className="p-3.5 rounded-2xl flex items-center justify-between border transition-all duration-200"
-                              style={{ backgroundColor: logoBarColor }}
-                            >
-                              <div
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl border shadow-xs transition-all duration-200"
-                                style={{
-                                  backgroundColor: crestBoxColor,
-                                  borderColor: isLightColor(crestBoxColor) ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)"
-                                }}
-                              >
-                                <img
-                                  src="/images/Stanns_CLG_Website_Logo_without_background.png"
-                                  alt="Preview Crest"
-                                  className="h-9 w-auto object-contain"
-                                />
-                                <span className="text-xs font-black" style={{ color: isLightColor(crestBoxColor) ? "#002147" : "#ffffff" }}>
-                                  St. Ann&apos;s Crest
-                                </span>
-                              </div>
-                              <span
-                                className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border"
-                                style={{
-                                  backgroundColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.1)",
-                                  color: isLightColor(logoBarColor) ? "#0f172a" : "#ffffff",
-                                  borderColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)"
-                                }}
-                              >
-                                {crestBoxColor}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* 3. Logos Box Background */}
-                      {logoSubMode === "box" && (
-                        <div className="flex flex-col gap-3">
-                          <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
-                            <span className="font-black flex items-center gap-1 text-purple-900">
-                              <Layers className="h-4 w-4" /> Logos Box Background Color
-                            </span>
-                            <p className="text-[11px] text-purple-800 font-medium">
-                              Controls the background color of the logos container box in the top logo bar.
-                            </p>
-                          </div>
-
-                          <ImageStyleColorPicker
-                            currentColor={logoBoxColor}
-                            onColorChange={(c) => setLogoBoxColor(c)}
-                            supportsGradient={false}
-                          />
-
-                          {/* Quick Swatches for Logos Box */}
-                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                              Quick Logos Box Presets:
-                            </span>
-                            <div className="grid grid-cols-4 gap-2">
-                              {[
-                                { name: "Pure White", hex: "#ffffff" },
-                                { name: "Off White", hex: "#f8fafc" },
-                                { name: "Soft Cream", hex: "#fffbeb" },
-                                { name: "Ice Blue", hex: "#f0f9ff" },
-                                { name: "Pale Mint", hex: "#f0fdf4" },
-                                { name: "Light Lavender", hex: "#f5f3ff" },
-                                { name: "Midnight Navy", hex: "#002147" },
-                                { name: "Slate Dark", hex: "#0f172a" },
-                              ].map((p) => (
-                                <button
-                                  key={p.hex}
-                                  onClick={() => setLogoBoxColor(p.hex)}
-                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
-                                    logoBoxColor.toLowerCase() === p.hex.toLowerCase()
-                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
-                                      : "border-slate-200 bg-white hover:bg-slate-50"
-                                  }`}
-                                >
-                                  <span
-                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
-                                    style={{ backgroundColor: p.hex }}
-                                  />
-                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Match Crest Box Button */}
-                          <button
-                            onClick={() => setLogoBoxColor(crestBoxColor)}
-                            className="p-3 rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50/60 hover:bg-purple-100 text-purple-900 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2"
-                          >
-                            <Shield className="h-4 w-4 text-purple-600" />
-                            <span>Match Left Crest Box Color ({crestBoxColor})</span>
-                          </button>
-
-                          {/* Live Mini Preview */}
-                          <div className="p-3.5 bg-slate-100 border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                              Box Live Preview (on Current Logo Bar):
-                            </span>
-                            <div
-                              className="p-3.5 rounded-2xl flex items-center justify-between border transition-all duration-200"
-                              style={{ backgroundColor: logoBarColor }}
-                            >
-                              <div
-                                className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border shadow-xs transition-all duration-200"
-                                style={{
-                                  backgroundColor: logoBoxColor,
-                                  borderColor: isLightColor(logoBoxColor) ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)"
-                                }}
-                              >
-                                <span className="text-[11px] font-black" style={{ color: isLightColor(logoBoxColor) ? "#d97706" : "#fbbf24" }}>
-                                  29+ YRS
-                                </span>
-                                <span className="h-3.5 w-px" style={{ backgroundColor: isLightColor(logoBoxColor) ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.2)" }} />
-                                <span className="text-[11px] font-bold" style={{ color: isLightColor(logoBoxColor) ? "#334155" : "#f1f5f9" }}>
-                                  NAAC &apos;A&apos;
-                                </span>
-                                <span className="h-3.5 w-px" style={{ backgroundColor: isLightColor(logoBoxColor) ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.2)" }} />
-                                <span className="text-[11px] font-black" style={{ color: isLightColor(logoBoxColor) ? "#1e3a8a" : "#93c5fd" }}>
-                                  AICTE
-                                </span>
-                              </div>
-                              <span
-                                className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border"
-                                style={{
-                                  backgroundColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.1)",
-                                  color: isLightColor(logoBarColor) ? "#0f172a" : "#ffffff",
-                                  borderColor: isLightColor(logoBarColor) ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)"
-                                }}
-                              >
-                                {logoBoxColor}
-                              </span>
                             </div>
                           </div>
                         </div>
@@ -1626,89 +1678,111 @@ export default function ColorPaletteCustomizer() {
                             </div>
                           ) : (
                             <div className="flex flex-col gap-3">
-                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
-                                <div className="flex items-center justify-between">
-                                  <label className="text-xs font-black text-slate-800">1. College Name (Title Line)</label>
-                                  <span className="font-mono text-xs font-bold text-slate-600">{headerTitleColor}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <input
-                                    type="color"
-                                    value={headerTitleColor}
-                                    onChange={(e) => setHeaderTitleColor(e.target.value)}
-                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
-                                  />
-                                  <input
-                                    type="text"
-                                    value={headerTitleColor}
-                                    onChange={(e) => setHeaderTitleColor(e.target.value)}
-                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
-                                  />
-                                </div>
-                              </div>
+                              {[
+                                {
+                                  num: 1,
+                                  title: "1. College Name (Title Line)",
+                                  text: "ST. ANN’S COLLEGE FOR WOMEN",
+                                  color: headerLine1Color,
+                                  setColor: (c: string) => { setHeaderLine1Color(c); setHeaderTitleColor(c); },
+                                  swatches: ["#002b49", "#ffffff", "#0f172a", "#1e3a8a", "#dc2626", "#0284c7", "#475569", "#d97706"]
+                                },
+                                {
+                                  num: 2,
+                                  title: "2. Society Name (Run by Line)",
+                                  text: "Run by The Society of St Anne",
+                                  color: headerLine2Color,
+                                  setColor: (c: string) => { setHeaderLine2Color(c); setHeaderSubColor(c); },
+                                  swatches: ["#1e3a8a", "#2563eb", "#002b49", "#ffffff", "#dc2626", "#0284c7", "#475569", "#d97706"]
+                                },
+                                {
+                                  num: 3,
+                                  title: "3. University Affiliation & AICTE",
+                                  text: "Affiliated to Acharya Nagarjuna University, Approved by AICTE",
+                                  color: headerLine3Color,
+                                  setColor: (c: string) => { setHeaderLine3Color(c); setHeaderAccentColor(c); },
+                                  swatches: ["#dc2626", "#991b1b", "#ea580c", "#1e3a8a", "#002b49", "#ffffff", "#0284c7", "#475569"]
+                                },
+                                {
+                                  num: 4,
+                                  title: "4. UGC Act Recognition 2(f)",
+                                  text: "Recognized under Section 2(f) of the UGC Act, 1956, New Delhi.",
+                                  color: headerLine4Color,
+                                  setColor: (c: string) => { setHeaderLine4Color(c); },
+                                  swatches: ["#dc2626", "#ea580c", "#991b1b", "#1e3a8a", "#002b49", "#ffffff", "#0284c7", "#475569"]
+                                },
+                                {
+                                  num: 5,
+                                  title: "5. NAAC Accreditation Grade",
+                                  text: "Accredited by NAAC with ‘A’ Grade in the First Cycle",
+                                  color: headerLine5Color,
+                                  setColor: (c: string) => { setHeaderLine5Color(c); },
+                                  swatches: ["#0284c7", "#0369a1", "#1d4ed8", "#1e3a8a", "#059669", "#d97706", "#ffffff", "#475569"]
+                                },
+                                {
+                                  num: 6,
+                                  title: "6. Campus Address & Location",
+                                  text: "Amaravathi Road, Gorantla, Guntur–34, Andhra Pradesh, India.",
+                                  color: headerLine6Color,
+                                  setColor: (c: string) => { setHeaderLine6Color(c); setHeaderAddressColor(c); },
+                                  swatches: ["#475569", "#002b49", "#0f172a", "#334155", "#64748b", "#94a3b8", "#ffffff", "#0284c7"]
+                                }
+                              ].map((line) => (
+                                <div key={line.num} className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2 shadow-2xs hover:border-slate-300 transition-all">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <span className="flex h-5 w-5 items-center justify-center rounded-md bg-slate-900 text-white font-black text-[10px] shrink-0">
+                                        {line.num}
+                                      </span>
+                                      <label className="text-xs font-black text-slate-800 truncate">{line.title}</label>
+                                    </div>
+                                    <span className="h-5 w-6 rounded-md border border-slate-300 shadow-2xs shrink-0" style={{ backgroundColor: line.color }} />
+                                  </div>
 
-                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
-                                <div className="flex items-center justify-between">
-                                  <label className="text-xs font-black text-slate-800">2. Society Name (Sub Line)</label>
-                                  <span className="font-mono text-xs font-bold text-slate-600">{headerSubColor}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <input
-                                    type="color"
-                                    value={headerSubColor}
-                                    onChange={(e) => setHeaderSubColor(e.target.value)}
-                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
-                                  />
-                                  <input
-                                    type="text"
-                                    value={headerSubColor}
-                                    onChange={(e) => setHeaderSubColor(e.target.value)}
-                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
-                                  />
-                                </div>
-                              </div>
+                                  {/* Line text preview */}
+                                  <div
+                                    className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-bold truncate select-none shadow-inner bg-slate-50"
+                                    style={{ color: line.color }}
+                                  >
+                                    {line.text}
+                                  </div>
 
-                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
-                                <div className="flex items-center justify-between">
-                                  <label className="text-xs font-black text-slate-800">3. Affiliation &amp; Accreditation (Accent Lines)</label>
-                                  <span className="font-mono text-xs font-bold text-slate-600">{headerAccentColor}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <input
-                                    type="color"
-                                    value={headerAccentColor}
-                                    onChange={(e) => setHeaderAccentColor(e.target.value)}
-                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
-                                  />
-                                  <input
-                                    type="text"
-                                    value={headerAccentColor}
-                                    onChange={(e) => setHeaderAccentColor(e.target.value)}
-                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
-                                  />
-                                </div>
-                              </div>
+                                  {/* Color Inputs */}
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="color"
+                                      value={line.color}
+                                      onChange={(e) => line.setColor(e.target.value)}
+                                      className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300 shrink-0 p-0.5 bg-white"
+                                    />
+                                    <input
+                                      type="text"
+                                      value={line.color}
+                                      onChange={(e) => line.setColor(e.target.value)}
+                                      className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
+                                    />
+                                  </div>
 
-                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl flex flex-col gap-2">
-                                <div className="flex items-center justify-between">
-                                  <label className="text-xs font-black text-slate-800">4. Address &amp; Pin Code (Bottom Line)</label>
-                                  <span className="font-mono text-xs font-bold text-slate-600">{headerAddressColor}</span>
+                                  {/* Quick swatches */}
+                                  <div className="flex items-center gap-1.5 pt-0.5">
+                                    <span className="text-[9px] font-black uppercase text-slate-400 mr-0.5">Quick:</span>
+                                    {line.swatches.map((swatch) => (
+                                      <button
+                                        key={swatch}
+                                        type="button"
+                                        onClick={() => line.setColor(swatch)}
+                                        className={`h-5 w-5 rounded-md border transition-all cursor-pointer ${
+                                          line.color.toLowerCase() === swatch.toLowerCase()
+                                            ? "ring-2 ring-purple-500 scale-110 border-slate-900"
+                                            : "border-slate-300 hover:scale-105"
+                                        }`}
+                                        style={{ backgroundColor: swatch }}
+                                        title={swatch}
+                                      />
+                                    ))}
+                                  </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                  <input
-                                    type="color"
-                                    value={headerAddressColor}
-                                    onChange={(e) => setHeaderAddressColor(e.target.value)}
-                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
-                                  />
-                                  <input
-                                    type="text"
-                                    value={headerAddressColor}
-                                    onChange={(e) => setHeaderAddressColor(e.target.value)}
-                                    className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
-                                  />
-                                </div>
-                              </div>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -1794,73 +1868,120 @@ export default function ColorPaletteCustomizer() {
                       ) : (
                         /* Menu Links and Sub-Row Colors */
                         <div className="flex flex-col gap-4">
-                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-3">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <label className="text-xs font-black text-slate-900">Primary Nav Links Color (Row 1)</label>
-                                <p className="text-[11px] text-slate-500">Main menu items like About Us, Academics, Admissions</p>
-                              </div>
-                              <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs" style={{ backgroundColor: topNavLinkColor }} />
-                            </div>
-
-                            <ImageStyleColorPicker
-                              currentColor={topNavLinkColor}
-                              onColorChange={(c) => setTopNavLinkColor(c)}
-                              supportsGradient={false}
-                            />
-
-                            {/* Quick Link Presets */}
-                            <div className="grid grid-cols-4 gap-2 pt-1 border-t border-slate-200">
-                              {[
-                                { name: "Pure White", hex: "#ffffff" },
-                                { name: "Soft Slate", hex: "#e2e8f0" },
-                                { name: "Pale Gold", hex: "#fef08a" },
-                                { name: "Ice Cyan", hex: "#67e8f9" },
-                                { name: "Dark Slate", hex: "#0f172a" },
-                                { name: "Midnight Navy", hex: "#002147" },
-                                { name: "Amber Gold", hex: "#f59e0b" },
-                                { name: "Mint Light", hex: "#a7f3d0" },
-                              ].map((p) => (
-                                <button
-                                  key={p.hex}
-                                  onClick={() => setTopNavLinkColor(p.hex)}
-                                  className={`p-1.5 rounded-lg border-2 text-left flex items-center gap-1.5 transition-all cursor-pointer ${
-                                    topNavLinkColor.toLowerCase() === p.hex.toLowerCase()
-                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs"
-                                      : "border-slate-200 bg-white hover:bg-slate-50"
-                                  }`}
-                                >
-                                  <span className="h-3 w-3 rounded-full border border-slate-300 shrink-0" style={{ backgroundColor: p.hex }} />
-                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
-                                </button>
-                              ))}
-                            </div>
+                          {/* Sync Mode Toggle */}
+                          <div className="flex items-center gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setNavLinkSync("all");
+                                setTopNavRow2Color(topNavLinkColor);
+                              }}
+                              className={`flex-1 py-2 px-2 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
+                                navLinkSync === "all"
+                                  ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                                  : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                              }`}
+                            >
+                              All Nav Links (Row 1 &amp; 2 Unified)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setNavLinkSync("individual")}
+                              className={`flex-1 py-2 px-2 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
+                                navLinkSync === "individual"
+                                  ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                                  : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                              }`}
+                            >
+                              Row 1 &amp; Row 2 Separately
+                            </button>
                           </div>
 
-                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2.5">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <label className="text-xs font-black text-slate-900">Secondary Nav Links Color (Row 2)</label>
-                                <p className="text-[11px] text-slate-500">Sub-links bar like NIRF, NAAC, Placements, Examination</p>
+                          {navLinkSync === "all" ? (
+                            <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-3">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <label className="text-xs font-black text-slate-900">All Top Nav Links Color</label>
+                                  <p className="text-[11px] text-slate-500">Simultaneously updates Row 1 (Core Menu) and Row 2 (Utility &amp; Compliance Bar)</p>
+                                </div>
+                                <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs shrink-0" style={{ backgroundColor: topNavLinkColor }} />
                               </div>
-                              <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs" style={{ backgroundColor: topNavRow2Color }} />
-                            </div>
 
-                            <div className="flex items-center gap-2">
-                              <input
-                                type="color"
-                                value={topNavRow2Color}
-                                onChange={(e) => setTopNavRow2Color(e.target.value)}
-                                className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300"
+                              <ImageStyleColorPicker
+                                currentColor={topNavLinkColor}
+                                onColorChange={handleNavLinksColorChange}
+                                supportsGradient={false}
                               />
-                              <input
-                                type="text"
-                                value={topNavRow2Color}
-                                onChange={(e) => setTopNavRow2Color(e.target.value)}
-                                className="flex-1 px-3 py-1.5 text-xs font-mono font-bold bg-slate-100 border border-slate-300 rounded-lg uppercase"
-                              />
+
+                              {/* Quick Link Presets */}
+                              <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-200">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                  Quick Link Text Presets:
+                                </span>
+                                <div className="grid grid-cols-4 gap-2">
+                                  {[
+                                    { name: "Pure White", hex: "#ffffff" },
+                                    { name: "Soft Slate", hex: "#e2e8f0" },
+                                    { name: "Pale Gold", hex: "#fef08a" },
+                                    { name: "Ice Cyan", hex: "#67e8f9" },
+                                    { name: "Dark Slate", hex: "#0f172a" },
+                                    { name: "Midnight Navy", hex: "#002147" },
+                                    { name: "Amber Gold", hex: "#f59e0b" },
+                                    { name: "Mint Light", hex: "#a7f3d0" },
+                                  ].map((p) => (
+                                    <button
+                                      key={p.hex}
+                                      type="button"
+                                      onClick={() => handleNavLinksColorChange(p.hex)}
+                                      className={`p-1.5 rounded-lg border-2 text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                                        topNavLinkColor.toLowerCase() === p.hex.toLowerCase()
+                                          ? "border-purple-600 bg-purple-50 font-black shadow-xs"
+                                          : "border-slate-200 bg-white hover:bg-slate-50"
+                                      }`}
+                                    >
+                                      <span className="h-3 w-3 rounded-full border border-slate-300 shrink-0" style={{ backgroundColor: p.hex }} />
+                                      <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            /* Individual rows */
+                            <div className="flex flex-col gap-4">
+                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-3">
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <label className="text-xs font-black text-slate-900">Primary Nav Links Color (Row 1)</label>
+                                    <p className="text-[11px] text-slate-500">Home, About Us, Academics, Admissions, etc.</p>
+                                  </div>
+                                  <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs shrink-0" style={{ backgroundColor: topNavLinkColor }} />
+                                </div>
+
+                                <ImageStyleColorPicker
+                                  currentColor={topNavLinkColor}
+                                  onColorChange={(c) => setTopNavLinkColor(c)}
+                                  supportsGradient={false}
+                                />
+                              </div>
+
+                              <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-3">
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <label className="text-xs font-black text-slate-900">Secondary Nav Links Color (Row 2)</label>
+                                    <p className="text-[11px] text-slate-500">Research &amp; Innovation, Alumni, IQAC, Disclosures, etc.</p>
+                                  </div>
+                                  <span className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs shrink-0" style={{ backgroundColor: topNavRow2Color }} />
+                                </div>
+
+                                <ImageStyleColorPicker
+                                  currentColor={topNavRow2Color}
+                                  onColorChange={(c) => setTopNavRow2Color(c)}
+                                  supportsGradient={false}
+                                />
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -1880,15 +2001,445 @@ export default function ColorPaletteCustomizer() {
                   )}
 
                   {/* ======================================================== */}
-                  {/* SECTION 4: HEADING 2 (SECTION BANNERS)                   */}
+                  {/* SECTION 4: HEADING 2 / SECTIONS                          */}
                   {/* ======================================================== */}
                   {selectedElement === "level2" && (
-                    <div className="flex flex-col gap-3">
-                      <ImageStyleColorPicker
-                        currentColor={level2Color}
-                        onColorChange={(c) => setLevel2Color(c)}
-                        supportsGradient={false}
-                      />
+                    <div className="flex flex-col gap-4">
+                      {/* Sub-mode switcher */}
+                      <div className="flex items-center gap-1.5 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                        <button
+                          type="button"
+                          onClick={() => setLevel2SubMode("global")}
+                          className={`flex-1 py-2 px-1 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
+                            level2SubMode === "global"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          Global Banner
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLevel2SubMode("respective")}
+                          className={`flex-1 py-2 px-1 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
+                            level2SubMode === "respective"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          Respective Sections
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLevel2SubMode("containers")}
+                          className={`flex-1 py-2 px-1 text-center rounded-xl text-xs font-black transition-all cursor-pointer ${
+                            level2SubMode === "containers"
+                              ? "bg-slate-950 text-white shadow-md border-2 border-purple-500 ring-2 ring-purple-500/20"
+                              : "bg-white text-slate-700 border-2 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          Containers &amp; Cards
+                        </button>
+                      </div>
+
+                      {/* 1. Global Section Banner */}
+                      {level2SubMode === "global" && (
+                        <div className="flex flex-col gap-3">
+                          <div className="p-3 bg-purple-50/90 border-2 border-purple-200 rounded-2xl text-xs text-purple-950 flex flex-col gap-1">
+                            <span className="font-black text-purple-900">
+                              Global Section Header Tone
+                            </span>
+                            <p className="text-[11px] text-purple-800 font-medium">
+                              Applies to all section banners by default unless customized in Respective Sections.
+                            </p>
+                          </div>
+
+                          <ImageStyleColorPicker
+                            currentColor={level2Color}
+                            onColorChange={(c) => setLevel2Color(c)}
+                            supportsGradient={false}
+                          />
+
+                          {/* Quick Swatches for Level 2 */}
+                          <div className="p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs flex flex-col gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              Quick Banner Presets:
+                            </span>
+                            <div className="grid grid-cols-4 gap-2">
+                              {[
+                                { name: "Midnight Navy", hex: "#002147" },
+                                { name: "Deep Teal", hex: "#043d4d" },
+                                { name: "Oxford Blue", hex: "#1e3a8a" },
+                                { name: "Royal Indigo", hex: "#312e81" },
+                                { name: "Dark Slate", hex: "#0f172a" },
+                                { name: "Emerald Forest", hex: "#064e3b" },
+                                { name: "Crimson Maroon", hex: "#581c1c" },
+                                { name: "Charcoal Dark", hex: "#18181b" },
+                              ].map((p) => (
+                                <button
+                                  key={p.hex}
+                                  type="button"
+                                  onClick={() => setLevel2Color(p.hex)}
+                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                    level2Color.toLowerCase() === p.hex.toLowerCase()
+                                      ? "border-purple-600 bg-purple-50 font-black shadow-xs ring-2 ring-purple-500/20"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0"
+                                    style={{ backgroundColor: p.hex }}
+                                  />
+                                  <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Sync to all button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSec1Color(level2Color);
+                              setSec2Color(level2Color);
+                              setSec3Color(level2Color);
+                              setSec4Color(level2Color);
+                              setSec5Color(level2Color);
+                              setSec6Color(level2Color);
+                              setSecDisclosuresColor(level2Color);
+                              setSecRtiColor(level2Color);
+                              setSaveToast("Applied global color to all respective sections!");
+                              setTimeout(() => setSaveToast(null), 2500);
+                            }}
+                            className="w-full py-2.5 px-3 rounded-xl bg-slate-950 text-white font-bold text-xs hover:bg-purple-700 transition-all cursor-pointer text-center shadow-xs flex items-center justify-center gap-2"
+                          >
+                            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                            <span>Apply Global Color to All 8 Respective Sections</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* 2. Respective Sections */}
+                      {level2SubMode === "respective" && (
+                        <div className="flex flex-col gap-4">
+                          <div className="p-3 bg-indigo-50/90 border-2 border-indigo-200 rounded-2xl text-xs text-indigo-950 flex flex-col gap-1">
+                            <span className="font-black text-indigo-900">
+                              Respective Section Color Studio
+                            </span>
+                            <p className="text-[11px] text-indigo-800 font-medium">
+                              Select any section below to assign its individual banner color independently.
+                            </p>
+                          </div>
+
+                          {/* Section Pills Grid */}
+                          <div className="flex flex-col gap-1.5">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-600 px-1">
+                              Choose Section to Customize:
+                            </span>
+                            <div className="grid grid-cols-2 gap-2">
+                              {[
+                                { key: "sec1", num: "1", label: "Performance Indicators", color: sec1Color || level2Color },
+                                { key: "sec2", num: "2", label: "Plan Documents", color: sec2Color || level2Color },
+                                { key: "sec3", num: "3", label: "Strategic Priorities", color: sec3Color || level2Color },
+                                { key: "sec4", num: "4", label: "Stakeholder Feedback", color: sec4Color || level2Color },
+                                { key: "sec5", num: "5", label: "Vision 2047 (Viksit)", color: sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)" },
+                                { key: "sec6", num: "6", label: "Reference Links", color: sec6Color || level2Color },
+                                { key: "secDisclosures", num: "7", label: "Mandatory Disclosures", color: secDisclosuresColor || level2Color },
+                                { key: "secRti", num: "8", label: "Right to Information (RTI)", color: secRtiColor || level2Color },
+                              ].map((sec) => (
+                                <button
+                                  key={sec.key}
+                                  type="button"
+                                  onClick={() => setSelectedSectionKey(sec.key)}
+                                  className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                    selectedSectionKey === sec.key
+                                      ? "border-purple-600 bg-purple-50/90 font-black shadow-md ring-2 ring-purple-500/20"
+                                      : "border-slate-200 bg-white hover:bg-slate-50"
+                                  }`}
+                                >
+                                  <span
+                                    className="h-4 w-4 rounded-full border border-slate-300 shrink-0 shadow-2xs"
+                                    style={{ background: sec.color }}
+                                  />
+                                  <div className="flex flex-col min-w-0 flex-1">
+                                    <span className="text-[11px] font-black truncate text-slate-900 leading-tight">
+                                      {sec.num}. {sec.label}
+                                    </span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Active Section Editor */}
+                          {(() => {
+                            const sectionMap: Record<string, {
+                              title: string;
+                              desc: string;
+                              color: string;
+                              setColor: (c: string) => void;
+                              supportsGrad: boolean;
+                            }> = {
+                              sec1: {
+                                title: "Section 1: Institutional Performance Indicators",
+                                desc: "Academic, Research, Societal & Impact Metrics tracking institutional progression.",
+                                color: sec1Color || level2Color,
+                                setColor: (c) => setSec1Color(c),
+                                supportsGrad: true
+                              },
+                              sec2: {
+                                title: "Section 2: Strategic Plan Documents",
+                                desc: "Annual deployment plan reports, PDF downloads & flipbook preview.",
+                                color: sec2Color || level2Color,
+                                setColor: (c) => setSec2Color(c),
+                                supportsGrad: true
+                              },
+                              sec3: {
+                                title: "Section 3: Strategic Priorities – Next Five Years",
+                                desc: "Academic, Infrastructure, Financial and Global Goal priority targets.",
+                                color: sec3Color || level2Color,
+                                setColor: (c) => setSec3Color(c),
+                                supportsGrad: true
+                              },
+                              sec4: {
+                                title: "Section 4: Stakeholder Engagement & Feedback",
+                                desc: "Student, Faculty, Parent and Alumni feedback mechanisms.",
+                                color: sec4Color || level2Color,
+                                setColor: (c) => setSec4Color(c),
+                                supportsGrad: true
+                              },
+                              sec5: {
+                                title: "Section 5: Vision for 2047: Viksit Bharat & Swarna Andhra",
+                                desc: "National & State roadmaps, signature initiatives and future aspirations.",
+                                color: sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)",
+                                setColor: (c) => setSec5Color(c),
+                                supportsGrad: true
+                              },
+                              sec6: {
+                                title: "Section 6: Reference Resource Links",
+                                desc: "Viksit Bharat @2047 and Swarna Andhra @2047 national portal links.",
+                                color: sec6Color || level2Color,
+                                setColor: (c) => setSec6Color(c),
+                                supportsGrad: true
+                              },
+                              secDisclosures: {
+                                title: "Section 7: Statutory Compliance & Mandatory Disclosures",
+                                desc: "Mandatory regulatory disclosures, AICTE, NAAC & University compliance documents.",
+                                color: secDisclosuresColor || level2Color,
+                                setColor: (c) => setSecDisclosuresColor(c),
+                                supportsGrad: true
+                              },
+                              secRti: {
+                                title: "Section 8: Right to Information (RTI)",
+                                desc: "Statutory governance framework, designated appellate authorities & RTI documents.",
+                                color: secRtiColor || level2Color,
+                                setColor: (c) => setSecRtiColor(c),
+                                supportsGrad: true
+                              }
+                            };
+
+                            const activeSec = sectionMap[selectedSectionKey] || sectionMap.sec1;
+
+                            return (
+                              <div className="flex flex-col gap-3 p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                                  <div>
+                                    <h5 className="font-outfit font-black text-xs text-slate-900 leading-tight">
+                                      {activeSec.title}
+                                    </h5>
+                                    <p className="text-[10px] text-slate-500 mt-0.5">{activeSec.desc}</p>
+                                  </div>
+                                  <span
+                                    className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs shrink-0"
+                                    style={{ background: activeSec.color }}
+                                  />
+                                </div>
+
+                                <ImageStyleColorPicker
+                                  currentColor={activeSec.color}
+                                  onColorChange={(c) => activeSec.setColor(c)}
+                                  supportsGradient={activeSec.supportsGrad}
+                                />
+
+                                {/* Quick section presets */}
+                                <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-slate-200">
+                                  {[
+                                    { name: "Midnight Navy", hex: "#002147" },
+                                    { name: "Deep Teal", hex: "#043d4d" },
+                                    { name: "Oxford Blue", hex: "#1e3a8a" },
+                                    { name: "Royal Indigo", hex: "#312e81" },
+                                    { name: "Dark Slate", hex: "#0f172a" },
+                                    { name: "Emerald Forest", hex: "#064e3b" },
+                                    { name: "Crimson Maroon", hex: "#581c1c" },
+                                    { name: "Amber Saffron", hex: "#d97706" },
+                                  ].map((p) => (
+                                    <button
+                                      key={p.hex}
+                                      type="button"
+                                      onClick={() => activeSec.setColor(p.hex)}
+                                      className={`p-1.5 rounded-lg border-2 text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                                        activeSec.color.toLowerCase() === p.hex.toLowerCase()
+                                          ? "border-purple-600 bg-purple-50 font-bold shadow-xs"
+                                          : "border-slate-200 bg-white hover:bg-slate-50"
+                                      }`}
+                                    >
+                                      <span className="h-3 w-3 rounded-full border border-slate-300 shrink-0" style={{ backgroundColor: p.hex }} />
+                                      <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                    </button>
+                                  ))}
+                                </div>
+
+                                {/* Reset button */}
+                                <div className="flex items-center justify-between pt-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => activeSec.setColor(level2Color)}
+                                    className="text-[11px] font-bold text-slate-600 hover:text-purple-700 underline cursor-pointer"
+                                  >
+                                    Reset this Section to Global Color ({level2Color})
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      )}
+
+                      {/* 3. Containers, Cards & Subtext */}
+                      {level2SubMode === "containers" && (
+                        <div className="flex flex-col gap-4">
+                          <div className="p-3 bg-emerald-50/90 border-2 border-emerald-200 rounded-2xl text-xs text-emerald-950 flex flex-col gap-1">
+                            <span className="font-black text-emerald-900">
+                              Section Containers, Cards &amp; Subtext
+                            </span>
+                            <p className="text-[11px] text-emerald-800 font-medium">
+                              Customize the surrounding section container box, alternating card tones, and subtext quote box.
+                            </p>
+                          </div>
+
+                          {/* Element selector tabs */}
+                          <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-300/80">
+                            {[
+                              { key: "container" as const, label: "Section Container BG", color: sectionContainerBg },
+                              { key: "cardAlt" as const, label: "Alternating Cards (Blue)", color: cardAltBg },
+                              { key: "cardMain" as const, label: "Primary Cards (White)", color: cardMainBg },
+                              { key: "subtext" as const, label: "Subtext Quote Box", color: subtextBg },
+                            ].map((item) => (
+                              <button
+                                key={item.key}
+                                type="button"
+                                onClick={() => setSelectedContainerTarget(item.key)}
+                                className={`p-2 rounded-xl border-2 text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                  selectedContainerTarget === item.key
+                                    ? "border-purple-600 bg-purple-50/90 font-black shadow-md ring-2 ring-purple-500/20"
+                                    : "border-slate-200 bg-white hover:bg-slate-50"
+                                }`}
+                              >
+                                <span
+                                  className="h-3.5 w-3.5 rounded-full border border-slate-300 shrink-0 shadow-2xs"
+                                  style={{ backgroundColor: item.color }}
+                                />
+                                <span className="text-[11px] font-black truncate text-slate-900">{item.label}</span>
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Container Target Editor */}
+                          {(() => {
+                            const configMap = {
+                              container: {
+                                label: "Section Container Background",
+                                desc: "Outer rounded canvas behind all cards in each section.",
+                                color: sectionContainerBg,
+                                setColor: (c: string) => setSectionContainerBg(c),
+                                defaultColor: "#eaeff5"
+                              },
+                              cardAlt: {
+                                label: "Alternating Cards Background",
+                                desc: "Soft ice-blue tone used for alternating cards.",
+                                color: cardAltBg,
+                                setColor: (c: string) => setCardAltBg(c),
+                                defaultColor: "#e8f1fd"
+                              },
+                              cardMain: {
+                                label: "Primary Cards Background",
+                                desc: "Base background for white cards and container elements.",
+                                color: cardMainBg,
+                                setColor: (c: string) => setCardMainBg(c),
+                                defaultColor: "#ffffff"
+                              },
+                              subtext: {
+                                label: "Subtext Quote Box Background",
+                                desc: "The institutional quote card positioned above Section 1.",
+                                color: subtextBg,
+                                setColor: (c: string) => setSubtextBg(c),
+                                defaultColor: "#ffffff"
+                              }
+                            };
+
+                            const activeTarget = configMap[selectedContainerTarget];
+
+                            return (
+                              <div className="flex flex-col gap-3 p-3.5 bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                  <div>
+                                    <h5 className="font-outfit font-black text-xs text-slate-900">{activeTarget.label}</h5>
+                                    <p className="text-[10px] text-slate-500">{activeTarget.desc}</p>
+                                  </div>
+                                  <span
+                                    className="h-6 w-8 rounded-md border border-slate-300 shadow-2xs shrink-0"
+                                    style={{ backgroundColor: activeTarget.color }}
+                                  />
+                                </div>
+
+                                <ImageStyleColorPicker
+                                  currentColor={activeTarget.color}
+                                  onColorChange={(c) => activeTarget.setColor(c)}
+                                  supportsGradient={false}
+                                />
+
+                                {/* Quick Presets */}
+                                <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-slate-200">
+                                  {[
+                                    { name: "Pearl Slate", hex: "#eaeff5" },
+                                    { name: "Soft Ice Blue", hex: "#e8f1fd" },
+                                    { name: "Pure White", hex: "#ffffff" },
+                                    { name: "Off White", hex: "#f8fafc" },
+                                    { name: "Cool Slate", hex: "#f1f5f9" },
+                                    { name: "Mint Light", hex: "#f0fdf4" },
+                                    { name: "Lavender", hex: "#faf5ff" },
+                                    { name: "Warm Amber", hex: "#fffbeb" },
+                                  ].map((p) => (
+                                    <button
+                                      key={p.hex}
+                                      type="button"
+                                      onClick={() => activeTarget.setColor(p.hex)}
+                                      className={`p-1.5 rounded-lg border-2 text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                                        activeTarget.color.toLowerCase() === p.hex.toLowerCase()
+                                          ? "border-purple-600 bg-purple-50 font-bold shadow-xs"
+                                          : "border-slate-200 bg-white hover:bg-slate-50"
+                                      }`}
+                                    >
+                                      <span className="h-3 w-3 rounded-full border border-slate-300 shrink-0" style={{ backgroundColor: p.hex }} />
+                                      <span className="text-[10px] truncate text-slate-800 font-bold">{p.name}</span>
+                                    </button>
+                                  ))}
+                                </div>
+
+                                <div className="flex items-center justify-between pt-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => activeTarget.setColor(activeTarget.defaultColor)}
+                                    className="text-[11px] font-bold text-slate-600 hover:text-purple-700 underline cursor-pointer"
+                                  >
+                                    Reset to Default ({activeTarget.defaultColor})
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      )}
                     </div>
                   )}
 

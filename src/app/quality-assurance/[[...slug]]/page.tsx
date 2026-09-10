@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ClipboardCheck, ShieldCheck, Award, Target, FileText, MessageSquare, BarChart, Image as ImageIcon, Phone, ArrowRight, BookOpen, Mail } from "lucide-react";
 import { ContentRenderer } from "@/components/quality-assurance/ContentRenderer";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 const navigationStructure = [
   {
@@ -49,48 +50,12 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* 1. Full-Width Bleed Heading 1 Banner (Attached to Top Nav, Edge-to-Edge with Zero Gaps) */}
-      <div
-        className="w-full text-white px-4 sm:px-6 lg:px-12 relative overflow-hidden transition-all duration-200 border-b shadow-md"
-        style={{
-          background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
-          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
-          paddingTop: "var(--level1-padding-y, 44px)",
-          paddingBottom: "var(--level1-padding-y, 44px)"
-        }}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-        <div 
-          className="max-w-[1600px] mx-auto relative z-10 flex flex-col w-full"
-          style={{
-            alignItems: "var(--level1-align-items, center)",
-            textAlign: "var(--level1-text-align, center)" as any,
-            gap: "var(--level1-gap, 12px)"
-          }}
-        >
-          <h1
-            className="tracking-tight leading-tight transition-all duration-200 font-black"
-            style={{ 
-              color: "var(--level1-title, #ffffff)",
-              fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
-              fontSize: "var(--level1-title-size, 38px)",
-              textAlign: "inherit"
-            }}
-          >
-            Internal Quality Assurance Cell (IQAC)
-          </h1>
-          <p 
-            className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/15 pt-3 px-2 sm:px-4"
-            style={{
-              fontSize: "var(--level1-sub-size, 14px)",
-              maxWidth: "var(--level1-sub-max-width, 56rem)",
-              textAlign: "inherit"
-            }}
-          >
-            Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
-          </p>
-        </div>
-      </div>
+      {/* 1. Heading 1 Banner */}
+      <Heading1Notch title="Internal Quality Assurance Cell (IQAC)">
+        <SubtextBox>
+          Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
+        </SubtextBox>
+      </Heading1Notch>
 
       {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
       <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">

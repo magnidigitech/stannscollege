@@ -23,6 +23,7 @@ import {
   Activity
 } from "lucide-react";
 import { staticFacultyMembers, staticFacultySections, FacultyMember } from "./staticData";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 import { PortableText } from "@portabletext/react";
 
 // Mappings and Configurations for URL slugs
@@ -583,25 +584,16 @@ export default function FacultyClientPortal({
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-16 font-sans w-full">
-      
-      {/* Page Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#053d79] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-xl mb-8">
-        <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-          <Users className="h-[500px] w-[500px]" />
-        </div>
-        <div className="relative z-10 flex flex-col gap-2">
-          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full w-fit text-blue-100">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse text-yellow-300" /> Core Intellectual Pillars
-          </span>
-          <h1 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-none">
-            Faculty & Staff
-          </h1>
-          <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-1 max-w-3xl leading-relaxed">
-            An accomplished assembly of educators, researchers, and administrative specialists fostering empowerment and transforming ambitions into reality.
-          </p>
-        </div>
-      </div>
+    <div className="font-sans w-full select-none animate-fadeIn">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Faculty" />
+
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
+        {/* Sub-text Box */}
+        <SubtextBox 
+          subtext="An accomplished assembly of educators, researchers, and administrative specialists fostering empowerment and transforming ambitions into reality."
+          className="mb-8"
+        />
 
       {/* Interactive Mobile Selector */}
       <div className="md:hidden mb-6 relative">

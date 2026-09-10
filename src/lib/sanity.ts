@@ -1157,6 +1157,38 @@ export async function getHomeGalleries() {
   return [];
 }
 
-
-
-
+export async function getRtiDocuments() {
+  try {
+    const query = `*[_type == "rtiDocument" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      tag,
+      badge,
+      description,
+      displayOrder,
+      "fileUrl": file.asset->url
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.length > 0) return data;
+  } catch (err) {
+    console.error("Sanity fetch error (getRtiDocuments):", err);
+  }
+  return [
+    {
+      id: "rti-act-2005",
+      title: "Official Gazette / Government Notification – Right to Information Act, 2005",
+      tag: "STATUTORY ACT",
+      badge: "ACT NO. 22 OF 2005",
+      description: "The complete Right to Information Act, 2005 enacted by the Parliament of India, setting out the practical regime of right to information for citizens to secure access to information under the control of public authorities.",
+      fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/32a3d5b540315384535c90682d86a0b23c71d808.pdf"
+    },
+    {
+      id: "rti-office-order",
+      title: "RTI Committee / Authority Constitution Order",
+      tag: "INSTITUTIONAL ORDER",
+      badge: "OFFICE ORDER",
+      description: "Official administrative office order of St. Ann's College for Women designating the First Appellate Authority, Public Information Officer (PIO), and Assistant PIO to ensure adherence to statutory disclosure standards.",
+      fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/cd25e5f7d45a56b103d932b451c31b914238be8b.pdf"
+    }
+  ];
+}

@@ -606,7 +606,7 @@ export default function Navigation() {
             <Link href="/about/the-institution/basic-institutional-information" className="hover:opacity-85 select-none font-bold text-inherit">
               About Us
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "about" && (
               <div
@@ -661,7 +661,7 @@ export default function Navigation() {
             <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:opacity-85 select-none font-bold text-inherit">
               Academics
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "academics" && (
               <div
@@ -765,7 +765,7 @@ export default function Navigation() {
             <Link href="/admissions/policy-process" className="hover:opacity-85 select-none font-bold text-inherit">
               Admissions
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "admissions" && (
               <div
@@ -857,7 +857,7 @@ export default function Navigation() {
             <Link href="/faculty/teaching-staff" className="hover:opacity-85 select-none font-bold text-inherit">
               Faculty
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "faculty" && (
               <div
@@ -903,7 +903,7 @@ export default function Navigation() {
             <Link href="/student-support/mentor-mentee" className="hover:opacity-85 select-none font-bold text-inherit">
               Student Support Services
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "support" && (
               <div
@@ -949,7 +949,7 @@ export default function Navigation() {
             <Link href="/placements" className="hover:opacity-85 select-none font-bold text-inherit">
               Placements & Industry Linkages
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "placements" && (
               <div
@@ -995,7 +995,7 @@ export default function Navigation() {
         className="hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 z-20"
         style={{
           borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
-          color: "var(--topnav-row2-color, var(--topnav-link-color, #e2e8f0))",
+          color: "var(--topnav-row2-color, var(--topnav-link-color, #ffffff))",
           fontFamily: "var(--topnav-font-family, inherit)",
           fontSize: "var(--topnav-font-size, 13px)",
           fontWeight: "var(--topnav-font-weight, 700)",
@@ -1023,7 +1023,7 @@ export default function Navigation() {
             <Link href="/research-innovation" className="hover:opacity-85 select-none font-bold text-inherit">
               Research & Innovation
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "research" && (
               <div
@@ -1070,7 +1070,7 @@ export default function Navigation() {
             <Link href="/alumni" className="hover:opacity-85 select-none font-bold text-inherit">
               Alumni
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "alumni" && (
               <div
@@ -1114,9 +1114,9 @@ export default function Navigation() {
             onMouseLeave={handleMouseLeave}
           >
             <Link href="/quality-assurance" className="hover:opacity-85 select-none font-bold text-inherit">
-              IQAC, Quality Assurance & Accreditation
+              Quality Assurance & Accreditation
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "iqac" && (
               <div
@@ -1162,7 +1162,7 @@ export default function Navigation() {
             <Link href="/mandatory-disclosures" className="hover:opacity-85 select-none font-bold text-inherit">
               Mandatory Disclosures & Compliance
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "mandatory" && (
               <div
@@ -1208,7 +1208,7 @@ export default function Navigation() {
             <Link href="/strategic-plans-and-future-directions" className="hover:opacity-85 select-none font-bold text-inherit">
               Strategic Plans & Future Directions
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "strategic" && (
               <div
@@ -1254,7 +1254,7 @@ export default function Navigation() {
             <Link href="/contact" className="hover:opacity-85 select-none font-bold text-inherit">
               Contact Us
             </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
 
             {activeMenu === "contact" && (
               <div

@@ -22,6 +22,7 @@ import { NirfReports } from "@/components/about/statutory-affiliations-recogniti
 import { NaacCertificates } from "@/components/about/statutory-affiliations-recognitions/NaacCertificates";
 import { AisheCertifications } from "@/components/about/statutory-affiliations-recognitions/AisheCertifications";
 import { Ugc2f } from "@/components/about/statutory-affiliations-recognitions/Ugc2f";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 interface AboutClientFallbackProps {
   apscheOrdersList: any[];
@@ -142,20 +143,16 @@ export default function AboutClientFallback({
   };
 
   return (
-    <div className="bg-slate-50/50 min-h-screen py-16 md:py-20 select-none font-sans">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-        {/* Banner Section */}
-        <div className="max-w-4xl text-left mb-16">
-          <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100/80 px-4 py-1.5 text-xs font-bold text-indigo-700 uppercase tracking-wider shadow-sm select-none">
-            <Sparkles className="h-3.5 w-3.5 text-indigo-600 animate-pulse" /> Continuous Excellence
-          </span>
-          <h1 className="mt-6 font-outfit text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl leading-[1.1] md:leading-[1.1]">
-            About St. Ann&apos;s College
-          </h1>
-          <p className="mt-4 font-sans text-base md:text-lg text-slate-600 leading-relaxed max-w-3xl font-normal">
-            Explore our heritage, regulatory details, and administrative structures across three core pillars. Click any individual page to view full details instantly in a popup view.
-          </p>
-        </div>
+    <div className="bg-slate-50/50 min-h-screen select-none font-sans">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="About Us" />
+
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
+        {/* Sub-text Box */}
+        <SubtextBox 
+          subtext="St. Ann’s College for Women, Gorantla, Guntur, established in 1997, is committed to higher educational distinction, moral integrity, academic rigor, and the holistic empowerment of young women." 
+          className="mb-8"
+        />
 
         {/* Banner image for About page */}
         <div className="relative w-full h-[320px] md:h-[450px] mb-16 rounded-3xl overflow-hidden border border-slate-200/80 shadow-md select-none">

@@ -7,6 +7,7 @@ import { GraduationCap, Sparkles, Phone, Mail, ArrowRight } from "lucide-react";
 
 // Fallback
 import AcademicsClientFallback from "@/components/academics/AcademicsClientFallback";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Component Imports
 import { UndergraduateProgrammes } from "@/components/academics/academic-programmes/UndergraduateProgrammes";
@@ -225,9 +226,28 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     return <AcademicsClientFallback />;
   };
 
+  // Determine page title and subtext
+  let pageTitle = "Academics";
+  const pageSubtext = "Providing career-oriented, research-infused undergraduate, postgraduate, and professional curricula designed to foster intellectual growth, global competency, and ethical leadership.";
+
+  if (isAllDeptsRoot) {
+    pageTitle = "Academic Departments";
+  } else if (itemSlug) {
+    for (const group of navigationStructure) {
+      const found = group.items.find(it => it.slug === itemSlug);
+      if (found) {
+        pageTitle = found.text.replace(/^\d+\.\s*/, "");
+        break;
+      }
+    }
+  }
+
   return (
-    <div className="bg-slate-50/40 min-h-screen py-12 select-none animate-fadeIn font-sans">
-      <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12">
+    <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn font-sans">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Academics" />
+
+      <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12 py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
           
           {/* Left Navigation Sidebar for Desktop */}
@@ -282,7 +302,10 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
           </div>
 
           {/* Main Dynamic Right Component */}
-          <div className="lg:col-span-9 mb-16 flex flex-col gap-10">
+          <div className="lg:col-span-9 mb-16 flex flex-col gap-8">
+            {/* Sub-text Box */}
+            <SubtextBox subtext={pageSubtext} />
+
             <div className="flex flex-col gap-6">
               {renderMainContent()}
             </div>

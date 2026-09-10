@@ -5,6 +5,7 @@ import {
   GraduationCap, BookOpen, Building, Award, Lightbulb, Settings, LineChart,
   ChevronRight, X, Sparkles, CheckCircle
 } from "lucide-react";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Individual Component Imports
 import { UndergraduateProgrammes } from "./academic-programmes/UndergraduateProgrammes";
@@ -160,21 +161,16 @@ export default function AcademicsClientFallback() {
   };
 
   return (
-    <div className="bg-slate-50/50 min-h-screen py-16 md:py-24 select-none font-sans">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
+    <div className="bg-slate-50/50 min-h-screen select-none font-sans">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Academics" />
 
-        {/* Header Panel */}
-        <div className="max-w-4xl text-left mb-16">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#002147]/5 border border-[#002147]/10 px-4 py-1.5 text-xs font-black text-[#002147] uppercase tracking-wider shadow-sm">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse text-[#002147]" /> Continuous Development
-          </span>
-          <h1 className="mt-6 font-outfit text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl leading-[1.1]">
-            Academics
-          </h1>
-          <p className="mt-4 font-sans text-base md:text-lg text-slate-600 leading-relaxed max-w-3xl font-normal">
-            Robust education ecosystems mapping curriculum frameworks, outcomes assessment, specialized 14 departments and comprehensive ICT pedagogical delivery mechanisms. Click any item to preview inside immediate view.
-          </p>
-        </div>
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
+        {/* Sub-text Box */}
+        <SubtextBox 
+          subtext="Robust education ecosystems mapping curriculum frameworks, outcomes assessment, specialized 14 departments and comprehensive ICT pedagogical delivery mechanisms." 
+          className="mb-8"
+        />
 
         {/* Banner Image Area */}
         <div className="relative w-full h-[320px] md:h-[400px] mb-16 rounded-[2rem] overflow-hidden border border-slate-200/80 shadow-lg">

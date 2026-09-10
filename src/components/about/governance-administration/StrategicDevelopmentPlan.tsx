@@ -8,6 +8,7 @@ import {
   Flame, Activity, Award, HeartHandshake, TrendingUp, Coins, Sparkles, Quote
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 import { getStrategicPlan } from "@/lib/sanity";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 
@@ -471,41 +472,11 @@ export function StrategicDevelopmentPlan() {
 
   return (
     <div className="flex flex-col font-sans select-none animate-fadeIn w-full">
-      {/* 1. Full-Width Bleed Heading 1 Banner (Attached to Top Nav, Edge-to-Edge with Zero Gaps) */}
-      <div
-        className="w-full text-white px-4 sm:px-6 lg:px-12 relative overflow-hidden transition-all duration-200 border-b shadow-md"
-        style={{
-          background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
-          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
-          paddingTop: "var(--level1-padding-y, 44px)",
-          paddingBottom: "var(--level1-padding-y, 44px)"
-        }}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-        <div 
-          className="max-w-[1600px] mx-auto relative z-10 flex flex-col w-full"
-          style={{
-            alignItems: "var(--level1-align-items, center)",
-            textAlign: "var(--level1-text-align, center)" as any,
-            gap: "var(--level1-gap, 12px)"
-          }}
-        >
-          <h1
-            className="tracking-tight leading-tight transition-all duration-200 font-black"
-            style={{ 
-              color: "var(--level1-title, #ffffff)",
-              fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
-              fontSize: "var(--level1-title-size, 38px)",
-              textAlign: "inherit"
-            }}
-          >
-            {data.title}
-          </h1>
-        </div>
-      </div>
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Strategic Plans &amp; Future Directions" />
 
       {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
-      <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
+      <div className="max-w-[1600px] mx-auto pt-6 sm:pt-8 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
         {/* Left: About Navigation Sidebar */}
         <aside className="lg:col-span-3">
@@ -522,44 +493,47 @@ export function StrategicDevelopmentPlan() {
         <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
           <div className="flex flex-col gap-4">
             {/* Sub-text Box */}
-            <div className="relative overflow-hidden bg-white border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm">
-              <Quote className="absolute right-6 top-6 h-12 w-12 text-slate-300 pointer-events-none" />
-              <p className="text-slate-700 text-sm sm:text-base md:text-[1.05rem] leading-relaxed font-normal pr-10 sm:pr-14 relative z-10">
-                St. Ann’s College for Women, Guntur, envisions a transformative future rooted in academic excellence, innovation, women empowerment, social responsibility, and nation-building. Guided by the values of the Congregation of the Sisters of St. Ann and aligned with the aspirations of Viksit Bharat @2047 and Swarna Andhra @2047, the institution is committed to nurturing globally competent, ethically grounded, and socially responsible women leaders.
-              </p>
-            </div>
+            <SubtextBox subtext={data.executiveSummary || defaultPlanData.executiveSummary} />
 
             {/* Section 1: Institutional Performance Indicators */}
-            <section id="performance-indicators" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+            <section
+              id="performance-indicators"
+              className="scroll-mt-28 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+              style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+            >
             {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
-            backgroundColor: "var(--level2-bg, #002147)",
-            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+            backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
+            borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
           }}
         >
           <div className="flex items-center gap-3">
             <GraduationCap className="h-6 w-6 text-indigo-300 shrink-0" />
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-              style={{ color: "var(--level2-title, #ffffff)" }}
+              style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
             >
               Institutional Performance Indicators
             </h2>
           </div>
           <p
             className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+            style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
           >
             Academic, Research, Societal &amp; Impact Metrics tracking institutional progression.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Indicator Card 1 - Color A (Pure White) */}
-            <div id="sec-academic-indicators" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+            <div
+              id="sec-academic-indicators"
+              className="scroll-mt-32 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+              style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+            >
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
                   <GraduationCap className="h-5 w-5" />
@@ -579,7 +553,11 @@ export function StrategicDevelopmentPlan() {
             </div>
 
             {/* Indicator Card 2 - Color B (Soft Ice Blue) */}
-            <div id="sec-research-indicators" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+            <div
+              id="sec-research-indicators"
+              className="scroll-mt-32 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+              style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+            >
               <div className="flex items-center gap-3 border-b border-blue-200/60 pb-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
                   <Flame className="h-5 w-5" />
@@ -599,7 +577,11 @@ export function StrategicDevelopmentPlan() {
             </div>
 
             {/* Indicator Card 3 - Color B (Soft Ice Blue, checkerboard) */}
-            <div id="sec-societal-indicators" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+            <div
+              id="sec-societal-indicators"
+              className="scroll-mt-32 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+              style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+            >
               <div className="flex items-center gap-3 border-b border-blue-200/60 pb-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
                   <Activity className="h-5 w-5" />
@@ -619,7 +601,11 @@ export function StrategicDevelopmentPlan() {
             </div>
 
             {/* Indicator Card 4 - Color A (Pure White, checkerboard) */}
-            <div id="sec-excellence-indicators" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+            <div
+              id="sec-excellence-indicators"
+              className="scroll-mt-32 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+              style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+            >
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
                   <Award className="h-5 w-5" />
@@ -643,13 +629,17 @@ export function StrategicDevelopmentPlan() {
     </div>
 
       {/* Section 2: Strategic Plan Documents */}
-      <section id="plan-documents" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section
+        id="plan-documents"
+        className="scroll-mt-28 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+        style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+      >
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
-            backgroundColor: "var(--level2-bg, #002147)",
-            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+            backgroundColor: "var(--sec2-bg, var(--level2-bg, #002147))",
+            borderColor: "var(--sec2-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
           }}
         >
           <div className="flex items-center gap-3.5">
@@ -658,27 +648,27 @@ export function StrategicDevelopmentPlan() {
             </span>
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-              style={{ color: "var(--level2-title, #ffffff)" }}
+              style={{ color: "var(--sec2-title, var(--level2-title, #ffffff))" }}
             >
               Strategic Plan Documents
             </h2>
           </div>
           <p
             className="text-sm font-medium mt-1.5 sm:pl-14.5 transition-colors duration-200"
-            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+            style={{ color: "var(--sec2-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
           >
             Official institutional frameworks and annual deployment plan reports available for online flipbook preview and direct download.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {documentsList.map((doc, idx) => {
               const cardId = idx === 0 ? "sec-plan-years" : idx === 1 ? "sec-plan-2025-26" : "sec-plan-2024-25";
               const isBlue = idx % 2 === 1;
               const cardBg = isBlue
-                ? "bg-[#e8f1fd] border-2 border-blue-200/90"
-                : "bg-white border-2 border-slate-200/90";
+                ? "border-2 border-blue-200/90"
+                : "border-2 border-slate-200/90";
               const titleColor = isBlue ? "text-blue-700 group-hover:text-blue-900" : "text-blue-600 group-hover:text-blue-700";
               const iconStyle = isBlue
                 ? "bg-white border border-blue-200/80 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white"
@@ -698,6 +688,7 @@ export function StrategicDevelopmentPlan() {
                   key={idx}
                   id={cardId}
                   className={`${cardBg} scroll-mt-32 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group relative overflow-hidden select-none`}
+                  style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                 >
                   <div className="flex items-start gap-4">
                     <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${iconStyle} transition-all duration-300`}>
@@ -750,36 +741,44 @@ export function StrategicDevelopmentPlan() {
       </section>
 
       {/* Section 3: Strategic Priorities – Next Five Years */}
-      <section id="strategic-priorities" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section
+        id="strategic-priorities"
+        className="scroll-mt-28 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+        style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+      >
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
-            backgroundColor: "var(--level2-bg, #002147)",
-            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+            backgroundColor: "var(--sec3-bg, var(--level2-bg, #002147))",
+            borderColor: "var(--sec3-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
           }}
         >
           <div className="flex items-center gap-3">
             <Milestone className="h-6 w-6 text-indigo-300 shrink-0" />
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-              style={{ color: "var(--level2-title, #ffffff)" }}
+              style={{ color: "var(--sec3-title, var(--level2-title, #ffffff))" }}
             >
               Strategic Priorities – Next Five Years
             </h2>
           </div>
           <p
             className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+            style={{ color: "var(--sec3-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
           >
             Target development parameters across four primary institutional categories (2026–2031).
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Priority Card 1 - Color A (Pure White) */}
-            <div id="sec-priority-academic" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+            <div
+              id="sec-priority-academic"
+              className="scroll-mt-32 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all"
+              style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+            >
               <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Academic Priorities</h4>
               <ul className="flex flex-col gap-2">
                 {academicPriorities.map((item, i) => (
@@ -791,7 +790,11 @@ export function StrategicDevelopmentPlan() {
               </ul>
             </div>
             {/* Priority Card 2 - Color B (Soft Ice Blue) */}
-            <div id="sec-priority-infra" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+            <div
+              id="sec-priority-infra"
+              className="scroll-mt-32 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all"
+              style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+            >
               <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider border-b border-blue-200/60 pb-2">Infrastructure Priorities</h4>
               <ul className="flex flex-col gap-2">
                 {infraPriorities.map((item, i) => (
@@ -803,7 +806,11 @@ export function StrategicDevelopmentPlan() {
               </ul>
             </div>
             {/* Priority Card 3 - Color B (Soft Ice Blue, checkerboard) */}
-            <div id="sec-priority-financial" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+            <div
+              id="sec-priority-financial"
+              className="scroll-mt-32 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all"
+              style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+            >
               <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider border-b border-blue-200/60 pb-2">Financial Priorities</h4>
               <ul className="flex flex-col gap-2">
                 {financialPriorities.map((item, i) => (
@@ -815,7 +822,11 @@ export function StrategicDevelopmentPlan() {
               </ul>
             </div>
             {/* Priority Card 4 - Color A (Pure White, checkerboard) */}
-            <div id="sec-priority-global" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all">
+            <div
+              id="sec-priority-global"
+              className="scroll-mt-32 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col gap-3.5 hover:shadow-md transition-all"
+              style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+            >
               <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider border-b border-slate-100 pb-2">Global Goals &amp; International</h4>
               <ul className="flex flex-col gap-2">
                 {globalPriorities.map((item, i) => (
@@ -831,13 +842,17 @@ export function StrategicDevelopmentPlan() {
       </section>
 
       {/* Section 4: Stakeholder Engagement & Feedback Mechanisms */}
-      <section id="stakeholder-engagement" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section
+        id="stakeholder-engagement"
+        className="scroll-mt-28 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+        style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+      >
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
-            backgroundColor: "var(--level2-bg, #002147)",
-            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+            backgroundColor: "var(--sec4-bg, var(--level2-bg, #002147))",
+            borderColor: "var(--sec4-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
           }}
         >
           <div className="flex items-center gap-3.5">
@@ -846,23 +861,27 @@ export function StrategicDevelopmentPlan() {
             </span>
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-              style={{ color: "var(--level2-title, #ffffff)" }}
+              style={{ color: "var(--sec4-title, var(--level2-title, #ffffff))" }}
             >
               Stakeholder Engagement &amp; Feedback Mechanisms
             </h2>
           </div>
           <p
             className="text-sm font-medium mt-1.5 sm:pl-14.5 transition-colors duration-200"
-            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+            style={{ color: "var(--sec4-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
           >
             St. Ann’s College values the active participation of all stakeholders in institutional development and decision-making.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1: Student - Color A (Pure White) */}
-            <div id="sec-feedback-student" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            <div
+              id="sec-feedback-student"
+              className="scroll-mt-32 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"
+              style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+            >
               <div className="flex flex-col gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all">
                   <Users className="h-5 w-5" />
@@ -889,7 +908,11 @@ export function StrategicDevelopmentPlan() {
             </div>
 
             {/* Card 2: Faculty - Color B (Soft Ice Blue) */}
-            <div id="sec-feedback-faculty" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            <div
+              id="sec-feedback-faculty"
+              className="scroll-mt-32 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"
+              style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+            >
               <div className="flex flex-col gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all shadow-2xs">
                   <Building className="h-5 w-5" />
@@ -914,7 +937,11 @@ export function StrategicDevelopmentPlan() {
             </div>
 
             {/* Card 3: Parent - Color B (Soft Ice Blue, checkerboard) */}
-            <div id="sec-feedback-parent" className="scroll-mt-32 bg-[#e8f1fd] border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            <div
+              id="sec-feedback-parent"
+              className="scroll-mt-32 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"
+              style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+            >
               <div className="flex flex-col gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all shadow-2xs">
                   <HeartHandshake className="h-5 w-5" />
@@ -939,7 +966,11 @@ export function StrategicDevelopmentPlan() {
             </div>
 
             {/* Card 4: Alumni - Color A (Pure White, checkerboard) */}
-            <div id="sec-feedback-alumni" className="scroll-mt-32 bg-white border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            <div
+              id="sec-feedback-alumni"
+              className="scroll-mt-32 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"
+              style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+            >
               <div className="flex flex-col gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all">
                   <Globe className="h-5 w-5" />
@@ -976,7 +1007,12 @@ export function StrategicDevelopmentPlan() {
         </div>
 
         {/* Full-Width Section Header Banner (Thought of India / Tricolor Identity) */}
-        <div className="bg-gradient-to-r from-[#001730] via-[#002147] to-[#001a35] text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full relative z-10 border-b-4 border-b-[#FF9933]">
+        <div
+          className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full relative z-10 border-b-4 border-b-[#FF9933] transition-colors duration-200"
+          style={{
+            background: "var(--sec5-bg, linear-gradient(to right, #001730, #002147, #001a35))"
+          }}
+        >
           <div className="flex items-center gap-3.5">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px] shrink-0 shadow-md">
               <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-[#002147]">
@@ -995,13 +1031,19 @@ export function StrategicDevelopmentPlan() {
                 <span className="text-slate-400">•</span>
                 <span className="text-[11px] font-black uppercase tracking-widest text-emerald-400">Thought of India</span>
               </div>
-              <h2 className="font-outfit font-black text-xl sm:text-2xl md:text-3xl text-white tracking-tight">
+              <h2
+                className="font-outfit font-black text-xl sm:text-2xl md:text-3xl tracking-tight transition-colors duration-200"
+                style={{ color: "var(--sec5-title, #ffffff)" }}
+              >
                 Vision for 2047: <span className="text-[#FF9933]">Viksit Bharat</span> <span className="text-slate-200">&amp;</span> <span className="text-emerald-400">Swarna Andhra</span>
               </h2>
             </div>
           </div>
 
-          <p className="text-slate-100 text-sm md:text-base font-normal leading-relaxed mt-4 text-justify pl-0 sm:pl-15">
+          <p
+            className="text-sm md:text-base font-normal leading-relaxed mt-4 text-justify pl-0 sm:pl-15 transition-colors duration-200"
+            style={{ color: "var(--sec5-subtitle, #f1f5f9)" }}
+          >
             St. Ann’s College for Women, Guntur envisions becoming a center of excellence in women’s higher education by contributing meaningfully to the national vision of <strong className="text-[#FF9933] font-bold">Viksit Bharat @2047</strong> and the state vision of <strong className="text-emerald-400 font-bold">Swarna Andhra @2047</strong>. The institution is committed to empowering young women through quality education, innovation, leadership, sustainability, and social responsibility.
           </p>
         </div>
@@ -1200,33 +1242,37 @@ export function StrategicDevelopmentPlan() {
       </section>
 
       {/* Section 6: Reference Resource Links */}
-      <section id="resource-links" className="scroll-mt-28 bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
+      <section
+        id="resource-links"
+        className="scroll-mt-28 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+        style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+      >
         {/* Full-Width Section Header Banner */}
         <div
           className="text-white px-6 py-2 sm:px-8 sm:py-2.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
           style={{
-            backgroundColor: "var(--level2-bg, #002147)",
-            borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
+            backgroundColor: "var(--sec6-bg, var(--level2-bg, #002147))",
+            borderColor: "var(--sec6-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
           }}
         >
           <div className="flex items-center gap-3">
             <Globe className="h-6 w-6 text-indigo-300 shrink-0" />
             <h2
               className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-              style={{ color: "var(--level2-title, #ffffff)" }}
+              style={{ color: "var(--sec6-title, var(--level2-title, #ffffff))" }}
             >
               Reference Resource Links
             </h2>
           </div>
           <p
             className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-            style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+            style={{ color: "var(--sec6-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
           >
             National &amp; State portal alignments supporting developed India (Viksit Bharat) and Swarna Andhra roadmaps.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 md:p-10 space-y-8 bg-[#eaeff5]">
+        <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
           {/* Viksit Bharat links */}
           <div id="sec-resource-national" className="scroll-mt-32 flex flex-col gap-4">
             <h5 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
@@ -1236,8 +1282,8 @@ export function StrategicDevelopmentPlan() {
               {externalResources.viksit.map((portal, index) => {
                 const isBlue = index % 2 === 1;
                 const cardBg = isBlue
-                  ? "bg-[#e8f1fd] border-2 border-blue-200/90"
-                  : "bg-white border-2 border-slate-200/90";
+                  ? "border-2 border-blue-200/90"
+                  : "border-2 border-slate-200/90";
                 const titleHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
                 const linkHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
 
@@ -1248,6 +1294,7 @@ export function StrategicDevelopmentPlan() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${cardBg} rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-lg hover:scale-[1.02] transition-all group`}
+                    style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex flex-col gap-1.5">
@@ -1277,8 +1324,8 @@ export function StrategicDevelopmentPlan() {
               {externalResources.swarna.map((portal, index) => {
                 const isBlue = index % 2 === 1;
                 const cardBg = isBlue
-                  ? "bg-[#e8f1fd] border-2 border-blue-200/90"
-                  : "bg-white border-2 border-slate-200/90";
+                  ? "border-2 border-blue-200/90"
+                  : "border-2 border-slate-200/90";
                 const titleHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
                 const linkHover = isBlue ? "group-hover:text-blue-800" : "group-hover:text-blue-600";
 
@@ -1289,6 +1336,7 @@ export function StrategicDevelopmentPlan() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${cardBg} rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-lg hover:scale-[1.02] transition-all group`}
+                    style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex flex-col gap-1.5">

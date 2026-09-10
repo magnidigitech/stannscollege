@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FileText, ShieldCheck, Download, Eye, X, BookOpen, AlertCircle, CheckCircle, GraduationCap, Scale, Users, Users2, FileSpreadsheet } from "lucide-react";
+import { FileText, ShieldCheck, Download, Eye, X, BookOpen, AlertCircle, CheckCircle, GraduationCap, Scale, Users, Users2, FileSpreadsheet, Phone } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
 
 interface DisclosureItem {
   id: string;
@@ -12,6 +13,23 @@ interface DisclosureItem {
   year: string;
   description: string;
   fileUrl?: string;
+}
+
+interface RtiMember {
+  sNo: number;
+  name: string;
+  designation: string;
+  role: string;
+  mobile: string;
+}
+
+interface RtiDocument {
+  id: string;
+  title: string;
+  tag: string;
+  badge: string;
+  description: string;
+  fileUrl: string;
 }
 
 export default function MandatoryDisclosuresPage() {
@@ -24,7 +42,65 @@ export default function MandatoryDisclosuresPage() {
     { id: "ugc", name: "UGC Status", icon: Scale },
     { id: "anu", name: "ANU Affiliations", icon: GraduationCap },
     { id: "committees", name: "Statutory Committees", icon: Users2 },
-    { id: "policies", name: "Compliance Policies", icon: FileText }
+    { id: "policies", name: "Compliance Policies", icon: FileText },
+    { id: "rti", name: "Right to Information (RTI)", icon: BookOpen }
+  ];
+
+  const rtiCommittee: RtiMember[] = [
+    {
+      sNo: 1,
+      name: "Dr. Sr. Fatima Rani P",
+      designation: "Correspondent",
+      role: "Chairperson / First Appellate Authority",
+      mobile: "8978012987"
+    },
+    {
+      sNo: 2,
+      name: "Sr. Sandhya Thumma",
+      designation: "Principal",
+      role: "Member",
+      mobile: "9347238194"
+    },
+    {
+      sNo: 3,
+      name: "Mr. G. Bala Show Reddy",
+      designation: "Physical Director",
+      role: "Nodal Officer / Public Information Officer (PIO)",
+      mobile: "9959085038"
+    },
+    {
+      sNo: 4,
+      name: "Mrs. R. Sharon Rose",
+      designation: "Vice Principal & IQAC Coordinator",
+      role: "Member",
+      mobile: "9948686170"
+    },
+    {
+      sNo: 5,
+      name: "Sr. Margaret Priyanka",
+      designation: "Administrator",
+      role: "Member / Asst. Public Information Officer (PIO)",
+      mobile: "7981468359"
+    }
+  ];
+
+  const rtiDocuments: RtiDocument[] = [
+    {
+      id: "rti-act-2005",
+      title: "Official Gazette / Government Notification – Right to Information Act, 2005",
+      tag: "STATUTORY ACT",
+      badge: "ACT NO. 22 OF 2005",
+      description: "The complete Right to Information Act, 2005 enacted by the Parliament of India, setting out the practical regime of right to information for citizens to secure access to information under the control of public authorities.",
+      fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/32a3d5b540315384535c90682d86a0b23c71d808.pdf"
+    },
+    {
+      id: "rti-office-order",
+      title: "RTI Committee / Authority Constitution Order",
+      tag: "INSTITUTIONAL ORDER",
+      badge: "OFFICE ORDER",
+      description: "Official administrative office order of St. Ann's College for Women designating the First Appellate Authority, Public Information Officer (PIO), and Assistant PIO to ensure adherence to statutory disclosure standards.",
+      fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/cd25e5f7d45a56b103d932b451c31b914238be8b.pdf"
+    }
   ];
 
   const disclosures: DisclosureItem[] = [
@@ -136,6 +212,11 @@ export default function MandatoryDisclosuresPage() {
       title: "Institutional Compliance & Governance Policies",
       subtitle: "Statutory policies, Code of Conduct handbooks, green campus charters, and ethical governance standards",
       icon: FileText
+    },
+    rti: {
+      title: "Right to Information (RTI)",
+      subtitle: "Statutory compliance framework, designated appellate authorities, public information officers, and official documentation under the RTI Act, 2005",
+      icon: Scale
     }
   };
 
@@ -144,7 +225,8 @@ export default function MandatoryDisclosuresPage() {
     { id: "ugc", name: "UGC Status", icon: Scale, count: disclosures.filter(d => d.category === "ugc").length },
     { id: "anu", name: "ANU Affiliations", icon: GraduationCap, count: disclosures.filter(d => d.category === "anu").length },
     { id: "committees", name: "Statutory Committees", icon: Users2, count: disclosures.filter(d => d.category === "committees").length },
-    { id: "policies", name: "Compliance Policies", icon: FileText, count: disclosures.filter(d => d.category === "policies").length }
+    { id: "policies", name: "Compliance Policies", icon: FileText, count: disclosures.filter(d => d.category === "policies").length },
+    { id: "rti", name: "Right to Information (RTI)", icon: Scale, count: rtiDocuments.length }
   ];
 
   const filteredDisclosures = selectedCategory === "all"
@@ -156,48 +238,12 @@ export default function MandatoryDisclosuresPage() {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* 1. Full-Width Bleed Heading 1 Banner (Attached to Top Nav, Edge-to-Edge with Zero Gaps) */}
-      <div
-        className="w-full text-white px-4 sm:px-6 lg:px-12 relative overflow-hidden transition-all duration-200 border-b shadow-md"
-        style={{
-          background: "var(--level1-bg, linear-gradient(to bottom right, #001730, #002147, #0d3b66))",
-          borderColor: "var(--level1-border, rgba(49, 46, 129, 0.2))",
-          paddingTop: "var(--level1-padding-y, 44px)",
-          paddingBottom: "var(--level1-padding-y, 44px)"
-        }}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)] pointer-events-none"></div>
-        <div 
-          className="max-w-[1600px] mx-auto relative z-10 flex flex-col w-full"
-          style={{
-            alignItems: "var(--level1-align-items, center)",
-            textAlign: "var(--level1-text-align, center)" as any,
-            gap: "var(--level1-gap, 12px)"
-          }}
-        >
-          <h1
-            className="tracking-tight leading-tight transition-all duration-200 font-black"
-            style={{ 
-              color: "var(--level1-title, #ffffff)",
-              fontFamily: "var(--level1-font-family, var(--font-outfit, inherit))",
-              fontSize: "var(--level1-title-size, 38px)",
-              textAlign: "inherit"
-            }}
-          >
-            Mandatory Disclosures &amp; Statutory Compliance
-          </h1>
-          <p 
-            className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/15 pt-3 px-2 sm:px-4"
-            style={{
-              fontSize: "var(--level1-sub-size, 14px)",
-              maxWidth: "var(--level1-sub-max-width, 56rem)",
-              textAlign: "inherit"
-            }}
-          >
-            In absolute compliance with the statutory regulations of AICTE, UGC, and Acharya Nagarjuna University, St. Ann&apos;s College for Women makes all essential governance charters, committee rosters, and approval certificates accessible below.
-          </p>
-        </div>
-      </div>
+      {/* 1. Heading 1 Banner */}
+      <Heading1Notch title="Mandatory Disclosures &amp; Statutory Compliance">
+        <SubtextBox>
+          In absolute compliance with the statutory regulations of AICTE, UGC, and Acharya Nagarjuna University, St. Ann&apos;s College for Women makes all essential governance charters, committee rosters, and approval certificates accessible below.
+        </SubtextBox>
+      </Heading1Notch>
 
       {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
       <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
@@ -341,98 +387,310 @@ export default function MandatoryDisclosuresPage() {
 
           {/* Right: Data Elements Section with Strategic Plans Level 2 Banner */}
           <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
-            <section className="bg-[#eaeff5] border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm">
-              {/* Heading Level 2 Banner (matching Strategic Plans style) */}
-              <div
-                className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
-                style={{
-                  backgroundColor: "var(--level2-bg, #002147)",
-                  borderColor: "var(--level2-border, rgba(49, 46, 129, 0.2))"
-                }}
+            {/* Section 1: Statutory Compliance & Mandatory Disclosures (visible for all or statutory filters) */}
+            {selectedCategory !== "rti" && (
+              <section
+                className="border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+                style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
               >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <ActiveIcon className="h-6 w-6 text-indigo-300 shrink-0" />
-                    <h2
-                      className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                      style={{ color: "var(--level2-title, #ffffff)" }}
-                    >
-                      {activeCategoryInfo.title}
-                    </h2>
-                  </div>
-                  <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-black tracking-wide bg-white/15 text-white border border-white/20">
-                    {filteredDisclosures.length} Document{filteredDisclosures.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-                <p
-                  className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                  style={{ color: "var(--level2-subtitle, rgba(219, 234, 254, 0.9))" }}
+                {/* Heading Level 2 Banner (matching Strategic Plans style) */}
+                <div
+                  className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                  style={{
+                    backgroundColor: "var(--sec-disclosures-bg, var(--level2-bg, #002147))",
+                    borderColor: "var(--sec-disclosures-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
+                  }}
                 >
-                  {activeCategoryInfo.subtitle}
-                </p>
-              </div>
-
-              {/* Document Cards with Alternating Colors (Pure White & Soft Ice Blue) */}
-              <div className="p-6 sm:p-8 md:p-10 space-y-6 bg-[#eaeff5]">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredDisclosures.map((item, index) => {
-                    // Alternating 2-column checkerboard colors: 0=White, 1=IceBlue, 2=IceBlue, 3=White
-                    const isEvenRow = Math.floor(index / 2) % 2 === 0;
-                    const isEvenCol = index % 2 === 0;
-                    const isIceBlue = isEvenRow ? !isEvenCol : isEvenCol;
-
-                    return (
-                      <div
-                        key={item.id}
-                        className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between ${
-                          isIceBlue
-                            ? "bg-[#e8f1fd] border-2 border-blue-200/90 hover:border-blue-300"
-                            : "bg-white border-2 border-slate-200/90 hover:border-indigo-200"
-                        }`}
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <ActiveIcon className="h-6 w-6 text-indigo-300 shrink-0" />
+                      <h2
+                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                        style={{ color: "var(--sec-disclosures-title, var(--level2-title, #ffffff))" }}
                       >
-                        <div>
-                          <div className="flex items-center justify-between gap-2 mb-3">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-blue-700 border border-blue-100">
-                              {item.category}
-                            </span>
-                            <span className="text-[10px] font-bold text-slate-500">
-                              AY {item.year}
-                            </span>
+                        {activeCategoryInfo.title}
+                      </h2>
+                    </div>
+                    <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-black tracking-wide bg-white/15 text-white border border-white/20">
+                      {filteredDisclosures.length} Document{filteredDisclosures.length !== 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  <p
+                    className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                    style={{ color: "var(--sec-disclosures-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                  >
+                    {activeCategoryInfo.subtitle}
+                  </p>
+                </div>
+
+                {/* Document Cards with Alternating Colors (Pure White & Soft Ice Blue) */}
+                <div className="p-6 sm:p-8 md:p-10 space-y-6 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {filteredDisclosures.map((item, index) => {
+                      // Alternating 2-column checkerboard colors: 0=White, 1=IceBlue, 2=IceBlue, 3=White
+                      const isEvenRow = Math.floor(index / 2) % 2 === 0;
+                      const isEvenCol = index % 2 === 0;
+                      const isIceBlue = isEvenRow ? !isEvenCol : isEvenCol;
+
+                      return (
+                        <div
+                          key={item.id}
+                          className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between ${
+                            isIceBlue
+                              ? "border-2 border-blue-200/90 hover:border-blue-300"
+                              : "border-2 border-slate-200/90 hover:border-indigo-200"
+                          }`}
+                          style={{ backgroundColor: isIceBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div>
+                            <div className="flex items-center justify-between gap-2 mb-3">
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-blue-700 border border-blue-100">
+                                {item.category}
+                              </span>
+                              <span className="text-[10px] font-bold text-slate-500">
+                                AY {item.year}
+                              </span>
+                            </div>
+                            <h4
+                              className={`font-outfit text-base sm:text-lg font-black leading-snug transition-colors ${
+                                isIceBlue ? "text-blue-900" : "text-slate-900"
+                              }`}
+                            >
+                              {item.title}
+                            </h4>
+                            <p className="text-xs text-slate-600 font-medium leading-relaxed mt-2.5">
+                              {item.description}
+                            </p>
                           </div>
-                          <h4
-                            className={`font-outfit text-base sm:text-lg font-black leading-snug transition-colors ${
-                              isIceBlue ? "text-blue-900" : "text-slate-900"
-                            }`}
-                          >
-                            {item.title}
-                          </h4>
-                          <p className="text-xs text-slate-600 font-medium leading-relaxed mt-2.5">
-                            {item.description}
+
+                          <div className="flex items-center gap-3 mt-6 border-t border-slate-200/60 pt-4">
+                            <button
+                              onClick={() => setSelectedPdf(item.fileUrl || "/documents/placeholder.pdf")}
+                              className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-bold text-white transition-all active:scale-95 shadow-xs select-none"
+                            >
+                              <Eye className="h-4 w-4" /> View PDF
+                            </button>
+                            <a
+                              href={item.fileUrl || "#"}
+                              download
+                              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-700 transition-all active:scale-95 select-none shadow-2xs"
+                              title="Download Document"
+                            >
+                              <Download className="h-4 w-4" />
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Section 2: Right to Information (RTI) Section (Under All Disclosures or when RTI is selected) */}
+            {(selectedCategory === "all" || selectedCategory === "rti") && (
+              <section
+                id="rti"
+                className="border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+                style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+              >
+                {/* Heading Level 2 Banner */}
+                <div
+                  className="text-white px-6 py-6 sm:px-8 sm:py-6 md:px-10 md:py-7 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                  style={{
+                    backgroundColor: "var(--sec-rti-bg, var(--level2-bg, #002147))",
+                    borderColor: "var(--sec-rti-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
+                  }}
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <Scale className="h-6 w-6 text-indigo-300 shrink-0" />
+                      <h2
+                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                        style={{ color: "var(--sec-rti-title, var(--level2-title, #ffffff))" }}
+                      >
+                        Right to Information (RTI)
+                      </h2>
+                    </div>
+                    <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-black tracking-wide bg-white/15 text-white border border-white/20">
+                      {rtiDocuments.length} Official Documents
+                    </span>
+                  </div>
+                  <p
+                    className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                    style={{ color: "var(--sec-rti-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                  >
+                    Statutory compliance framework, designated appellate authorities, public information officers, and official documentation under the RTI Act, 2005
+                  </p>
+                </div>
+
+                <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
+                  {/* Institutional Commitment Card */}
+                  <div className="bg-white border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
+                    <div className="flex items-start gap-4">
+                      <div className="h-10 w-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-700 shrink-0 mt-1">
+                        <ShieldCheck className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 space-y-3">
+                        <h3 className="font-outfit text-base sm:text-lg font-black text-slate-900">
+                          Institutional Commitment &amp; Statutory Governance
+                        </h3>
+                        <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-normal">
+                          St. Ann’s College for Women is committed to transparency, accountability and good governance in its academic and administrative functioning. The Institution facilitates access to relevant information in accordance with the applicable provisions of the Right to Information Act, 2005 and the directions of the competent authorities.
+                        </p>
+                        <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
+                          The College has constituted/designated the appropriate RTI Committee/Authorities to facilitate the handling of RTI-related matters and to ensure that requests for information are dealt with in accordance with the prescribed procedures.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RTI Committee / Authorities Table Card */}
+                  <div className="bg-white border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/80">
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100/70 text-blue-800 shrink-0">
+                          <Users className="h-4 w-4" />
+                        </span>
+                        <div>
+                          <h3 className="font-outfit text-base sm:text-lg font-black text-slate-900">
+                            RTI Committee / Authorities
+                          </h3>
+                          <p className="text-xs text-slate-500 font-medium">
+                            Designated authorities for processing information requests and statutory appeals under the RTI Act, 2005
                           </p>
                         </div>
-
-                        <div className="flex items-center gap-3 mt-6 border-t border-slate-200/60 pt-4">
-                          <button
-                            onClick={() => setSelectedPdf(item.fileUrl || "/documents/placeholder.pdf")}
-                            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-bold text-white transition-all active:scale-95 shadow-xs select-none"
-                          >
-                            <Eye className="h-4 w-4" /> View PDF
-                          </button>
-                          <a
-                            href={item.fileUrl || "#"}
-                            download
-                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-700 transition-all active:scale-95 select-none shadow-2xs"
-                            title="Download Document"
-                          >
-                            <Download className="h-4 w-4" />
-                          </a>
-                        </div>
                       </div>
-                    );
-                  })}
+                      <span className="self-start sm:self-center px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        {rtiCommittee.length} Designated Members
+                      </span>
+                    </div>
+
+                    {/* Responsive Table */}
+                    <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-2xs">
+                      <table className="w-full text-left border-collapse min-w-[620px]">
+                        <thead>
+                          <tr className="bg-slate-100/80 text-slate-700 text-xs font-black uppercase tracking-wider border-b border-slate-200">
+                            <th className="py-3.5 px-4 text-center w-16">S. No.</th>
+                            <th className="py-3.5 px-4">Name</th>
+                            <th className="py-3.5 px-4">Designation</th>
+                            <th className="py-3.5 px-4">Role in RTI Committee</th>
+                            <th className="py-3.5 px-4 text-right">Mobile No</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200/80 text-xs sm:text-sm">
+                          {rtiCommittee.map((member) => (
+                            <tr key={member.sNo} className="hover:bg-blue-50/40 transition-colors">
+                              <td className="py-3.5 px-4 text-center font-bold text-slate-500">
+                                {member.sNo}
+                              </td>
+                              <td className="py-3.5 px-4 font-bold text-slate-900">
+                                {member.name}
+                              </td>
+                              <td className="py-3.5 px-4 font-medium text-slate-700">
+                                {member.designation}
+                              </td>
+                              <td className="py-3.5 px-4 font-semibold">
+                                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
+                                  member.role.includes("First Appellate")
+                                    ? "bg-purple-100 text-purple-800 border border-purple-200"
+                                    : member.role.includes("PIO") || member.role.includes("Nodal Officer")
+                                    ? "bg-blue-100 text-blue-800 border border-blue-200"
+                                    : "bg-slate-100 text-slate-700 border border-slate-200"
+                                }`}>
+                                  {member.role}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 text-right font-medium">
+                                <a
+                                  href={`tel:${member.mobile}`}
+                                  className="inline-flex items-center gap-1.5 font-bold text-blue-700 hover:text-blue-900 hover:underline bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg border border-blue-200/70 transition-colors select-none"
+                                >
+                                  <Phone className="h-3.5 w-3.5" />
+                                  {member.mobile}
+                                </a>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* RTI Information & Official Documents */}
+                  <div>
+                    <div className="flex items-center gap-3 mb-5">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100/70 text-blue-800 shrink-0">
+                        <FileSpreadsheet className="h-4 w-4" />
+                      </span>
+                      <div>
+                        <h3 className="font-outfit text-base sm:text-lg font-black text-slate-900">
+                          RTI Information &amp; Official Documents
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium">
+                          The following official documents are made available for reference and download:
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {rtiDocuments.map((doc, idx) => {
+                        const isIceBlue = idx % 2 === 1;
+
+                        return (
+                          <div
+                            key={doc.id}
+                            className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between ${
+                              isIceBlue
+                                ? "bg-[#e8f1fd] border-2 border-blue-200/90 hover:border-blue-300"
+                                : "bg-white border-2 border-slate-200/90 hover:border-indigo-200"
+                            }`}
+                          >
+                            <div>
+                              <div className="flex items-center justify-between gap-2 mb-3">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-blue-700 border border-blue-100">
+                                  {doc.tag}
+                                </span>
+                                <span className="text-[10px] font-bold text-slate-500">
+                                  {doc.badge}
+                                </span>
+                              </div>
+                              <h4
+                                className={`font-outfit text-base sm:text-lg font-black leading-snug transition-colors ${
+                                  isIceBlue ? "text-blue-900" : "text-slate-900"
+                                }`}
+                              >
+                                {doc.title}
+                              </h4>
+                              <p className="text-xs text-slate-600 font-medium leading-relaxed mt-2.5">
+                                {doc.description}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center gap-3 mt-6 border-t border-slate-200/60 pt-4">
+                              <button
+                                onClick={() => setSelectedPdf(doc.fileUrl)}
+                                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-bold text-white transition-all active:scale-95 shadow-xs select-none"
+                              >
+                                <Eye className="h-4 w-4" /> View PDF
+                              </button>
+                              <a
+                                href={doc.fileUrl}
+                                download
+                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-700 transition-all active:scale-95 select-none shadow-2xs"
+                                title="Download Document"
+                              >
+                                <Download className="h-4 w-4" />
+                              </a>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             {/* Compliance Contact Board */}
             <div className="bg-white border-2 border-slate-200/90 p-6 md:p-8 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">

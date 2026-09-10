@@ -232,8 +232,6 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     };
   }, [isOpen, fileUrl]);
 
-  if (!isOpen) return null;
-
   // Flipbook sheet parameters
   const totalPages = renderedPages.length;
   const numSheets = totalPages > 0 ? Math.ceil((totalPages - 1) / 2) + 1 : 0;
@@ -422,6 +420,8 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     setZoom(1);
     setPanOffset({ x: 0, y: 0 });
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 md:p-4 bg-slate-950/75 backdrop-blur-md animate-fadeIn">

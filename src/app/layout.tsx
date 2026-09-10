@@ -89,7 +89,7 @@ export default function RootLayout({
         />
 
 
-        {/* Announcement Bar - Rendered only on Home Page in its original position */}
+        {/* Top Announcement Bar - Rendered across all pages */}
         <AnnouncementBar />
 
         {/* Top bar with College Logo, Accreditations & Apply Now */}

@@ -13,6 +13,27 @@ import { FeeStructure } from "@/components/admissions/FeeStructure";
 import { ScholarshipsFreeships } from "@/components/admissions/ScholarshipsFreeships";
 import { StudentHandbook } from "@/components/admissions/StudentHandbook";
 import { AdmissionStatistics } from "@/components/admissions/AdmissionStatistics";
+import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+
+const admissionsTitles: Record<string, string> = {
+  "policy-process": "Admission Policy & Process",
+  "prospectus-brochures": "Prospectus & Brochures",
+  "eligibility-criteria": "Eligibility Criteria",
+  "fee-structure": "Fee Structure",
+  "scholarships-freeships": "Scholarships & Freeships",
+  "student-handbook": "Student Handbook",
+  "admission-statistics": "Admission Statistics"
+};
+
+const admissionsSubtexts: Record<string, string> = {
+  "policy-process": "Transparent, merit-based admission guidelines ensuring access to quality education for women.",
+  "prospectus-brochures": "Official prospectus, program brochures, and institutional course handbooks.",
+  "eligibility-criteria": "Prerequisite qualifications, subject combinations, and academic eligibility requirements.",
+  "fee-structure": "Approved fee structure for undergraduate and postgraduate programs of study.",
+  "scholarships-freeships": "Government welfare scholarships, institutional freeships, and fee concessions.",
+  "student-handbook": "Code of conduct, campus guidelines, academic regulations, and student rights handbook.",
+  "admission-statistics": "Year-wise admission trends, quota distributions, and student diversity metrics."
+};
 
 const navigationStructure = [
   {
@@ -77,29 +98,9 @@ export default function AdmissionsPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
+      {/* 1. Heading 1 Notch Attached to Top Nav */}
+      <Heading1Notch title="Admissions" />
 
-      {/* Top Breadcrumb Header */}
-      <div className="bg-white border-b border-slate-200/70 py-5 px-6 sticky top-0 z-30 backdrop-blur-md bg-white/95 transition-all shadow-xs">
-        <div className="max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest text-[#002147]/65 font-sans">
-              <Link href="/" className="hover:text-[#002147] hover:underline transition-all">Home</Link>
-              <span className="text-slate-350">/</span>
-              <Link href="/admissions" className="hover:text-[#002147] hover:underline transition-all">Admissions</Link>
-              <span className="text-slate-350">/</span>
-              <span className="text-[#002147]">{currentSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}</span>
-            </div>
-          </div>
-
-          {/* Quick Access Support Badge */}
-          <div className="hidden sm:flex items-center gap-3 text-xs font-black uppercase tracking-widest text-[#002147]">
-            <div className="flex items-center gap-1.5 bg-[#002147]/5 px-3.5 py-1.5 rounded-full border border-[#002147]/10 shadow-xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-              Admission Help Desk Open
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Main Content Container */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
@@ -174,6 +175,11 @@ export default function AdmissionsPage({ params }: PageProps) {
 
           {/* B. Right Dynamic Component Content */}
           <main className="lg:col-span-9 xl:col-span-9 min-h-[500px]">
+            {/* Sub-text Box */}
+            <SubtextBox 
+              subtext={admissionsSubtexts[currentSlug] || "Committed to inclusive, merit-based admissions with transparent guidelines, comprehensive scholarships, and dedicated student support for aspiring women scholars."} 
+              className="mb-8"
+            />
             {renderContent()}
           </main>
 
