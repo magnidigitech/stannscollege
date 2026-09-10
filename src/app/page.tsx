@@ -319,7 +319,6 @@ const UpcomingBadge = () => (
 export default function HomePage() {
   // Hero Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [heroSlides, setHeroSlides] = useState<any[]>(defaultSlides);
 
   // Dynamic Sanity Data States
@@ -390,14 +389,14 @@ export default function HomePage() {
     loadData();
   }, []);
 
-  // Auto transition hero slides every 6 seconds
+  // Auto transition hero slides continuously one by one every 4.5 seconds
   useEffect(() => {
-    if (isHovered || heroSlides.length <= 1) return;
-    const interval = setInterval(() => {
+    if (heroSlides.length <= 1) return;
+    const timer = setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [isHovered, heroSlides.length]);
+    }, 4500);
+    return () => clearTimeout(timer);
+  }, [currentSlide, heroSlides.length]);
 
   const handlePrevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
@@ -456,26 +455,17 @@ export default function HomePage() {
         ref={sectionRef}
         style={{ height: bannerHeight }}
         className="relative w-full min-h-[340px] bg-slate-950 overflow-hidden select-none"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="relative w-full h-full">
           {heroSlides.map((slide, index) => {
             const isActive = index === currentSlide;
             const slideImg = (
-              <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-                {/* Full-bleed blurred version of the same image filling all background gaps warmly */}
-                <img
-                  src={slide.imageUrl}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover blur-3xl scale-125 brightness-100 saturate-125 pointer-events-none"
-                />
-                {/* Sharp full banner image displayed completely without any cropping */}
+              <div className="relative w-full h-full overflow-hidden">
+                {/* Full-bleed banner image filling the banner container completely with no top cropping */}
                 <img
                   src={slide.imageUrl}
                   alt={slide.title || `St. Ann's College Banner ${index + 1}`}
-                  className="relative z-10 w-full h-full object-contain drop-shadow-[0_10px_35px_rgba(0,0,0,0.35)]"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
             );
@@ -515,20 +505,6 @@ export default function HomePage() {
             >
               <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
-
-            {/* Slide Indicators */}
-            <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
-              {heroSlides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentSlide(i)}
-                  className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    i === currentSlide ? "w-6 sm:w-8 bg-indigo-500" : "w-2 sm:w-2.5 bg-white/50 hover:bg-white/80"
-                  }`}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
           </>
         )}
       </section>
@@ -1231,7 +1207,7 @@ export default function HomePage() {
           ---------------------------------------------------- */}
       <aside
         aria-label="Social Media Channels"
-        className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5 select-none items-start"
+        className="fixed left-0 top-[60%] -translate-y-1/2 z-30 flex flex-col gap-1.5 select-none items-start"
       >
         {socialMediaButtons.map((btn) => (
           <a
