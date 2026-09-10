@@ -862,5 +862,6 @@ export default function InfrastructureClientPortal({
       )}
 
     </div>
-  );
+  </div>
+);
 }

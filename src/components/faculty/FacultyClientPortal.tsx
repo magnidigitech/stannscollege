@@ -1049,5 +1049,6 @@ export default function FacultyClientPortal({
 
       </div>
     </div>
-  );
+  </div>
+);
 }
