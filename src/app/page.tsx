@@ -1192,12 +1192,17 @@ export default function HomePage() {
                 <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
                   Submit your online application enquiry now to reserve counseling support from our Help Desk.
                 </p>
-                <Link
-                  href="/admissions/policy-process"
-                  className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2"
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
+                    }
+                  }}
+                  className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2 cursor-pointer transition-colors"
                 >
                   Start Application <ArrowRight className="h-3 w-3" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>

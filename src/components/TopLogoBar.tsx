@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { AdmissionEnquiryModal } from "./admissions/AdmissionEnquiryModal";
 
 export function TopLogoBar() {
   const [headerMode, setHeaderMode] = useState<"image_v1" | "image_v2" | "text">("image_v2");
+  const [isAdmissionModalOpen, setIsAdmissionModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -25,8 +27,16 @@ export function TopLogoBar() {
       }
     };
 
+    const handleOpenEnquiry = () => {
+      setIsAdmissionModalOpen(true);
+    };
+
     window.addEventListener("headerCustomizerUpdate", handleUpdate);
-    return () => window.removeEventListener("headerCustomizerUpdate", handleUpdate);
+    window.addEventListener("open-admission-enquiry", handleOpenEnquiry);
+    return () => {
+      window.removeEventListener("headerCustomizerUpdate", handleUpdate);
+      window.removeEventListener("open-admission-enquiry", handleOpenEnquiry);
+    };
   }, []);
 
   return (
@@ -260,13 +270,14 @@ export function TopLogoBar() {
 
           {/* Apply Now button with AISHE Code below */}
           <div className="flex flex-col items-center justify-center gap-1 shrink-0 py-1">
-            <Link
-              href="/admissions/policy-process"
-              className="flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 px-4 sm:px-5 py-2 font-bold text-white text-xs hover:shadow-lg hover:shadow-emerald-500/25 transition-all active:scale-95 duration-300 hover:-translate-y-0.5 group/btn select-none shrink-0 border border-emerald-400/30 shadow-xs"
+            <button
+              type="button"
+              onClick={() => setIsAdmissionModalOpen(true)}
+              className="flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 px-4 sm:px-5 py-2 font-bold text-white text-xs hover:shadow-lg hover:shadow-emerald-500/25 transition-all active:scale-95 duration-300 hover:-translate-y-0.5 group/btn select-none shrink-0 border border-emerald-400/30 shadow-xs cursor-pointer"
             >
               <span>Apply Now</span>
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
-            </Link>
+            </button>
             <span className="text-[10px] sm:text-[10.5px] font-bold text-slate-500 tracking-tight select-none">
               AISHE Code: <span className="text-slate-700 font-extrabold">C-39493</span>
             </span>
@@ -274,6 +285,12 @@ export function TopLogoBar() {
         </div>
 
       </div>
+
+      {/* Admission Enquiry Questionnaire Popup Modal */}
+      <AdmissionEnquiryModal
+        isOpen={isAdmissionModalOpen}
+        onClose={() => setIsAdmissionModalOpen(false)}
+      />
     </div>
   );
 }

@@ -1778,13 +1778,18 @@ export default function Navigation() {
 
             {/* Apply Now in mobile drawer footer */}
             <div className="p-5 border-t border-slate-100 bg-slate-50/40 shrink-0 flex flex-col gap-2.5">
-              <Link
-                href="/admissions/policy-process"
-                onClick={() => setMobileOpen(false)}
-                className="w-full flex items-center justify-center gap-2 rounded-full bg-[#002147] hover:bg-[#003875] px-6 py-3 font-bold text-white text-xs tracking-wider uppercase hover:shadow-xl hover:shadow-[#002147]/20 transition-all duration-300"
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-500 px-6 py-3 font-bold text-white text-xs tracking-wider uppercase hover:shadow-xl hover:shadow-emerald-600/20 transition-all duration-300 cursor-pointer border border-emerald-400/30"
               >
                 Apply Now <ArrowRight className="h-4 w-4" />
-              </Link>
+              </button>
             </div>
 
           </div>
