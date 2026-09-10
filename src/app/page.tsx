@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Sparkles,
   ArrowRight,
@@ -21,6 +21,14 @@ import {
   ExternalLink,
   Newspaper,
   X,
+  Calendar,
+  FileText,
+  Mail,
+  FileEdit,
+  Bell,
+  Clock,
+  Download,
+  Info,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -28,7 +36,16 @@ import {
   getNewsletters,
   getHomeBanners,
   getHomeGalleries,
+  getEvents,
+  getNotices,
 } from "@/lib/sanity";
+import {
+  getEventLifecycle,
+  getEventDocuments,
+  getEventTimestamp,
+  fallbackEventsHistory,
+  EventDocument,
+} from "@/lib/events";
 
 // Components
 import CollegeMagazinesSection, { MagazineItem } from "@/components/home/CollegeMagazinesSection";
@@ -226,6 +243,79 @@ const socialMediaButtons = [
   },
 ];
 
+// Default Events & Activities (Matching Image 1)
+const defaultEventsList = [
+  {
+    day: "31st",
+    monthYear: "July 2026",
+    title: "Depts. Of Microbiology and Biochemistry organizes session on science communcation- Beyond Beakers & Books.",
+    link: "/events",
+  },
+  {
+    day: "24th",
+    monthYear: "July 2026",
+    title: "One Day Workshop on Understanding Gender in Everyday Life: POSH Act Awareness for Peer Leaders.",
+    link: "/events",
+  },
+  {
+    day: "14th",
+    monthYear: "July 2026",
+    title: "Department of Botany is conducting Haritha haram - The plantation program.",
+    link: "/events",
+  },
+  {
+    day: "12th",
+    monthYear: "August 2026",
+    title: "One day Online Workshop on National Remote Sensing Day – 2026",
+    link: "/events",
+  },
+  {
+    day: "8th",
+    monthYear: "June 2028",
+    title: "The School of Informatics, IQAC & IDPC present a Faculty Workshop on AI Ethics and Governance by Fr. Dr. M. Xavier Rex SJ, exploring responsible and ethical use of AI in academia.",
+    link: "/events",
+  },
+];
+
+// Default Notices (Matching Image 1)
+const defaultNoticesList = [
+  { title: "U.G CIA-II Timetable September 2026", link: "/mandatory-disclosures" },
+  { title: "P.G. – R25 Time Table Semester- III (Regular) CIA – I September 2026", link: "/mandatory-disclosures" },
+  { title: "U.G – CIA-I Timetable ( R26 Batch) I year", link: "/mandatory-disclosures" },
+  { title: "UG CIA-I Timetable R24 & R25 AUG-2026", link: "/mandatory-disclosures" },
+  { title: "R-26 Batch 1st year Orientation and Commencement of Classes.", link: "/mandatory-disclosures" },
+  { title: "P.G ESE- Semester II (Regular) /Semester I(Backlog) Time Table (Regular/ Backlog)", link: "/mandatory-disclosures" },
+  { title: "P.G ESE- Semester IV (Regular) Semester III(Backlog) Time Table June/ July 2026.", link: "/mandatory-disclosures" },
+  { title: "PG-R25 Semester II (Regular) CIA – II Time Table June 2026", link: "/mandatory-disclosures" },
+  { title: "Japanese Summer Immersion Program organised in collaboration with Na Ra JAPAN HUB & IKIGAI Club under International Relations Centre", link: "/mandatory-disclosures" },
+  { title: "P.G. – R24 Semester- IV (Regular) CIA – I Time Table April-2026", link: "/mandatory-disclosures" },
+];
+
+// Client-approved Starburst NEW badge matching the official circulars / events layout
+const StarburstNewBadge = () => (
+  <span className="relative inline-flex items-center justify-center shrink-0 w-5 h-5 sm:w-5.5 sm:h-5.5 select-none my-0.5 animate-pulse">
+    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.18)]">
+      <polygon
+        points="50,0 61,24 85,15 79,40 100,50 79,60 85,85 61,76 50,100 39,76 15,85 21,60 0,50 21,40 15,15 39,24"
+        fill="#FFE600"
+        stroke="#EAB308"
+        strokeWidth="3"
+      />
+    </svg>
+    <span className="absolute font-black text-[6.5px] sm:text-[7px] text-[#DC2626] tracking-tighter leading-none font-sans scale-90">
+      NEW
+    </span>
+  </span>
+);
+
+// Dynamic Upcoming Badge: Shown till the end of the event date
+const UpcomingBadge = () => (
+  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8.5px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs shrink-0 select-none my-0.5">
+    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+    Upcoming
+  </span>
+);
+
 export default function HomePage() {
   // Hero Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -236,9 +326,40 @@ export default function HomePage() {
   const [magazines, setMagazines] = useState<MagazineItem[]>([]);
   const [newsletters, setNewsletters] = useState<NewsletterItem[]>([]);
   const [galleries, setGalleries] = useState<HomeGalleryDoc[]>([]);
+  const [sanityEvents, setSanityEvents] = useState<any[]>(fallbackEventsHistory);
+  const [sanityNotices, setSanityNotices] = useState<any[]>([]);
 
   // Right Side Drawer / Modal State for Magazine & Chronicle
   const [activeRightDrawer, setActiveRightDrawer] = useState<"magazine" | "chronicle" | null>(null);
+
+  // Document popup modal for events with documents and details
+  const [activeDocModal, setActiveDocModal] = useState<{
+    eventTitle: string;
+    eventDate?: string;
+    organizer?: string;
+    description?: string;
+    documents: EventDocument[];
+  } | null>(null);
+
+  // In-app PDF Viewer Modal state (opens PDF in a popup modal, not in another tab)
+  const [viewingPdfModal, setViewingPdfModal] = useState<{
+    title: string;
+    url: string;
+  } | null>(null);
+
+  // Handler for clicking event details / documents: Always open the contents modal
+  const handleEventDocClick = (item: any) => {
+    const docs = getEventDocuments(item);
+
+    // Open the contents even if only one PDF
+    setActiveDocModal({
+      eventTitle: item.title,
+      eventDate: item.date || item.eventDate,
+      organizer: item.organizer,
+      description: item.description,
+      documents: docs,
+    });
+  };
 
   // Active Tab State
   const [activeTab, setActiveTab] = useState("philosophy");
@@ -247,17 +368,21 @@ export default function HomePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [magsData, newsData, bannersData, galleryData] = await Promise.all([
+        const [magsData, newsData, bannersData, galleryData, eventsData, noticesData] = await Promise.all([
           getCollegeMagazines(),
           getNewsletters(),
           getHomeBanners(),
           getHomeGalleries(),
+          getEvents(),
+          getNotices(),
         ]);
 
         if (magsData && magsData.length > 0) setMagazines(magsData);
         if (newsData && newsData.length > 0) setNewsletters(newsData);
         if (bannersData && bannersData.length > 0) setHeroSlides(bannersData);
         if (galleryData && galleryData.length > 0) setGalleries(galleryData);
+        if (eventsData && eventsData.length > 0) setSanityEvents(eventsData);
+        if (noticesData && noticesData.length > 0) setSanityNotices(noticesData);
       } catch (err) {
         console.error("Error loading home page Sanity data:", err);
       }
@@ -282,7 +407,45 @@ export default function HomePage() {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
-  const activeSlide = heroSlides[currentSlide] || heroSlides[0];
+  // Dynamically calculate hero banner height so it fills the screen down to the screen edge
+  const sectionRef = useRef<HTMLElement>(null);
+  const [bannerHeight, setBannerHeight] = useState<string>("calc(100vh - 220px)");
+
+  useEffect(() => {
+    const updateBannerHeight = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const sectionTop = rect.top + window.scrollY;
+        const availableHeight = Math.max(340, window.innerHeight - sectionTop);
+        setBannerHeight(`${availableHeight}px`);
+      }
+    };
+
+    updateBannerHeight();
+    window.addEventListener("resize", updateBannerHeight);
+    const timer1 = setTimeout(updateBannerHeight, 150);
+    const timer2 = setTimeout(updateBannerHeight, 600);
+
+    return () => {
+      window.removeEventListener("resize", updateBannerHeight);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
+
+  // Segregate Events & Activities into 2 parts:
+  // Visible events filtered by startDate
+  const visibleEvents = sanityEvents.filter((item) => getEventLifecycle(item).isVisible);
+
+  // Upper part: Other / Conducted events whose event date is crossed (latest date first, oldest last)
+  const otherEvents = visibleEvents
+    .filter((item) => getEventLifecycle(item).status !== "upcoming")
+    .sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+
+  // Bottom part: Upcoming events & activities (oldest date first)
+  const upcomingEvents = visibleEvents
+    .filter((item) => getEventLifecycle(item).status === "upcoming")
+    .sort((a, b) => getEventTimestamp(a) - getEventTimestamp(b));
 
   return (
     <div className="flex flex-col w-full bg-slate-50/30 overflow-x-hidden selection:bg-[#002147]/10 selection:text-[#002147]">
@@ -290,7 +453,9 @@ export default function HomePage() {
           1. HERO SLIDER SECTION (Visual Wow Factor)
           ---------------------------------------------------- */}
       <section
-        className="relative w-full h-[55vh] sm:h-[65vh] md:h-[75vh] lg:h-[80vh] max-h-[720px] bg-slate-950 overflow-hidden select-none"
+        ref={sectionRef}
+        style={{ height: bannerHeight }}
+        className="relative w-full min-h-[340px] bg-slate-950 overflow-hidden select-none"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -298,11 +463,21 @@ export default function HomePage() {
           {heroSlides.map((slide, index) => {
             const isActive = index === currentSlide;
             const slideImg = (
-              <img
-                src={slide.imageUrl}
-                alt={slide.title || `St. Ann's College Banner ${index + 1}`}
-                className="w-full h-full object-cover object-top"
-              />
+              <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                {/* Full-bleed blurred version of the same image filling all background gaps warmly */}
+                <img
+                  src={slide.imageUrl}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover blur-3xl scale-125 brightness-100 saturate-125 pointer-events-none"
+                />
+                {/* Sharp full banner image displayed completely without any cropping */}
+                <img
+                  src={slide.imageUrl}
+                  alt={slide.title || `St. Ann's College Banner ${index + 1}`}
+                  className="relative z-10 w-full h-full object-contain drop-shadow-[0_10px_35px_rgba(0,0,0,0.35)]"
+                />
+              </div>
             );
             return (
               <div
@@ -328,27 +503,27 @@ export default function HomePage() {
           <>
             <button
               onClick={handlePrevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
               aria-label="Previous Slide"
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
             <button
               onClick={handleNextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
               aria-label="Next Slide"
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
 
             {/* Slide Indicators */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-md border border-white/10 shadow-lg">
+            <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
               {heroSlides.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentSlide(i)}
-                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    i === currentSlide ? "w-8 bg-indigo-500" : "w-2.5 bg-white/50 hover:bg-white/80"
+                  className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    i === currentSlide ? "w-6 sm:w-8 bg-indigo-500" : "w-2 sm:w-2.5 bg-white/50 hover:bg-white/80"
                   }`}
                   aria-label={`Go to slide ${i + 1}`}
                 />
@@ -358,116 +533,346 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ----------------------------------------------------
-          2. ACTIVE HERO BANNER SPOTLIGHT / HIGHLIGHTS STRIP
-          (Compact bar with main headline and action buttons)
-          ---------------------------------------------------- */}
-      {activeSlide && (
-        <section className="w-full bg-[#001733] border-y border-indigo-950/80 py-4 sm:py-5 select-none text-white relative overflow-hidden shadow-md">
-          {/* Subtle background ambient glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-transparent to-transparent pointer-events-none" />
 
-          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative z-10">
-            <div
-              key={currentSlide}
-              className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 transition-all duration-500 ease-out"
-            >
-              {/* Main Headline Text in Big Size */}
-              <h2 className="flex-1 font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
-                {activeSlide.title}
-              </h2>
-
-              {/* Action Buttons at the Right */}
-              <div className="shrink-0 flex flex-wrap items-center gap-3">
-                {(activeSlide.cta1Text || activeSlide.cta1Link) && (
-                  <Link
-                    href={activeSlide.cta1Link || "/admissions/policy-process"}
-                    className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-xl shadow-indigo-950/50 hover:from-indigo-500 hover:to-indigo-600 active:scale-95 transition-all duration-300"
-                  >
-                    {activeSlide.cta1Text || "Explore Programme"}{" "}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                )}
-
-                {(activeSlide.cta2Text || activeSlide.cta2Link) && (
-                  <Link
-                    href={activeSlide.cta2Link || "/about/the-institution/basic-institutional-information"}
-                    className="flex items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-bold text-white hover:text-white active:scale-95 transition-all duration-300"
-                  >
-                    {activeSlide.cta2Text || "Learn More"}
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
 
       {/* ----------------------------------------------------
-          6. PRINCIPAL'S WELCOME & EMBLEM SPOTLIGHT
+          6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
           ---------------------------------------------------- */}
-      <section className="py-16 bg-white border-y border-slate-200/50 select-none">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 flex flex-col items-center">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-3xl rotate-3 scale-95 group-hover:rotate-1 group-hover:scale-100 transition-transform duration-500 blur-sm opacity-20 pointer-events-none" />
-                <div className="relative overflow-hidden rounded-3xl bg-slate-100 border border-slate-200/60 p-4 shadow-md max-w-xs md:max-w-sm flex flex-col items-center">
-                  <div className="h-72 w-64 bg-[#002147]/5 rounded-2xl flex items-center justify-center border border-slate-200/40 relative group overflow-hidden">
-                    <img
-                      src="/images/principal.jpg"
-                      alt="Dr. Sr. Sandhya Thumma"
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+      {/* ----------------------------------------------------
+          6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
+          ---------------------------------------------------- */}
+      <section className="py-14 sm:py-20 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-y border-slate-200/90 select-none relative overflow-hidden">
+        {/* Subtle atmospheric ambient glows */}
+        <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
+            
+            {/* BOX 1: Events & Activities */}
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+              {/* Premium Gradient Header */}
+              <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white p-5 sm:p-6 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
+                <div className="flex items-center gap-3.5 relative z-10">
+                  <div className="h-10 w-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
+                    <Calendar className="h-5 w-5 text-sky-300" />
                   </div>
-                  <div className="mt-4 text-center">
-                    <h3 className="font-outfit text-lg font-black text-slate-800 leading-tight">
-                      Dr. Sr. Sandhya Thumma
+                  <div>
+                    <h3 className="font-outfit text-lg sm:text-xl font-black tracking-tight text-white leading-tight">
+                      Events &amp; Activities
                     </h3>
-                    <p className="text-xs font-bold text-indigo-600 tracking-wider uppercase mt-1">
-                      Principal, St. Ann&apos;s College
-                    </p>
-                    <p className="font-sans text-[11px] font-semibold text-slate-400 mt-0.5">
-                      MBA, M.Com, M.Ed, Ph.D.
+                    <p className="text-[11px] font-medium text-sky-200/80 mt-0.5">
+                      Campus workshops &amp; symposiums
                     </p>
                   </div>
                 </div>
+                <span className="relative z-10 px-3 py-1 rounded-full text-[10px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-sky-200 uppercase tracking-widest flex items-center gap-1.5 shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Upcoming
+                </span>
+              </div>
+
+              {/* Two Segregated Sections: Conducted Events (Upper) & Upcoming Events (Bottom) */}
+              {visibleEvents.length > 0 ? (
+                <div className="flex-1 flex flex-col min-h-0 bg-white">
+                  {/* ── 1. UPPER PART: Conducted Events & Activities (with View Circular / Report) ── */}
+                  <div className="flex-1 flex flex-col min-h-0">
+                    <div className="px-3.5 py-1.5 bg-slate-100/90 border-b border-slate-200/80 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-700 shrink-0" />
+                        <span className="font-outfit text-[11px] font-black text-slate-800 tracking-wider uppercase">
+                          Conducted Events &amp; Activities
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-slate-200 text-slate-700">
+                        {otherEvents.length} Recorded
+                      </span>
+                    </div>
+
+                    {/* Scroller 1: Conducted Events */}
+                    <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
+                      {otherEvents.length > 0 ? (
+                        otherEvents.map((item, idx) => {
+                          const lifecycle = getEventLifecycle(item);
+                          return (
+                            <div
+                              key={item._id || idx}
+                              className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-indigo-50/40 transition-colors group/item"
+                            >
+                              {/* Dynamic Badge: Starburst NEW for 3 days post-event */}
+                              <div className="shrink-0 flex items-center justify-center min-w-[24px]">
+                                {lifecycle.status === "new" ? (
+                                  <StarburstNewBadge />
+                                ) : null}
+                              </div>
+
+                              <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
+
+                              <div className="flex-1 min-w-0">
+                                <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                                  <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
+                                    {item.title}
+                                  </span>
+                                  {item.date && (
+                                    <span className="text-slate-600 font-normal"> ({item.date})</span>
+                                  )}
+                                  {" "}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEventDocClick(item)}
+                                    className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-indigo-50 hover:bg-[#002147] text-[#002147] hover:text-white border border-indigo-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
+                                    title="Click for more"
+                                  >
+                                    <FileText className="h-3 w-3 shrink-0 text-indigo-600 group-hover/btn:text-white transition-colors" />
+                                    <span>Click for more</span>
+                                  </button>
+                                </div>
+                                {item.organizer && (
+                                  <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
+                                    Organized by: {item.organizer}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p className="text-xs text-slate-400 p-4 text-center">No past events recorded</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ── 2. BOTTOM PART: Upcoming Events & Activities ── */}
+                  <div className="flex-1 flex flex-col min-h-0 border-t-2 border-slate-200">
+                    <div className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-50/90 to-teal-50/80 border-b border-emerald-100 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                        <span className="font-outfit text-[11px] font-black text-emerald-950 tracking-wider uppercase">
+                          Upcoming Events &amp; Activities
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-extrabold px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        {upcomingEvents.length} Scheduled
+                      </span>
+                    </div>
+
+                    {/* Scroller 2: Upcoming Events */}
+                    <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
+                      {upcomingEvents.length > 0 ? (
+                        upcomingEvents.map((item, idx) => {
+                          return (
+                            <div
+                              key={item._id || idx}
+                              className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-emerald-50/30 transition-colors group/item"
+                            >
+                              <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
+
+                              <div className="flex-1 min-w-0">
+                                <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                                  <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
+                                    {item.title}
+                                  </span>
+                                  {item.date && (
+                                    <span className="text-slate-600 font-normal"> ({item.date})</span>
+                                  )}
+                                  {" "}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEventDocClick(item)}
+                                    className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-emerald-50 hover:bg-[#002147] text-emerald-800 hover:text-white border border-emerald-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
+                                    title="Click for more"
+                                  >
+                                    <FileText className="h-3 w-3 shrink-0 text-emerald-600 group-hover/btn:text-white transition-colors" />
+                                    <span>Click for more</span>
+                                  </button>
+                                </div>
+                                {item.organizer && (
+                                  <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
+                                    Organized by: {item.organizer}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p className="text-xs text-slate-400 p-4 text-center">No upcoming events scheduled</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Coming Soon State */
+                <div className="flex-1 flex flex-col items-center justify-center p-8 sm:p-10 text-center bg-slate-50/40 min-h-[340px]">
+                  <div className="h-16 w-16 rounded-3xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-4 shadow-sm">
+                    <Calendar className="h-7 w-7 text-indigo-600 animate-pulse" />
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-100/80 text-indigo-800 border border-indigo-200/80 mb-2">
+                    <Sparkles className="h-3 w-3 text-indigo-600" /> Coming Soon
+                  </span>
+                  <h4 className="font-outfit text-base sm:text-lg font-bold text-slate-800">
+                    Events Calendar Being Scheduled
+                  </h4>
+                  <p className="text-xs text-slate-500 max-w-xs mt-1.5 leading-relaxed">
+                    Upcoming academic conferences, student workshops, and cultural galas will be posted here directly via Sanity.
+                  </p>
+                </div>
+              )}
+
+              {/* Bottom Modern Button */}
+              <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-center">
+                <Link
+                  href="/events"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-gradient-to-r from-[#002147] to-[#0a3d78] hover:from-[#002d5f] hover:to-[#0f4d96] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#002147]/15 transition-all duration-300 active:scale-98 group/btn"
+                >
+                  <span>More Events &amp; Activities</span>
+                  <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
               </div>
             </div>
 
-            <div className="lg:col-span-7 flex flex-col items-start gap-4">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
-                <Quote className="h-3.5 w-3.5 text-indigo-500" /> Welcome Address
-              </span>
+            {/* BOX 2: Principal Profile & Leadership Message */}
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-5 sm:p-6 justify-between group">
+              <div>
+                {/* Header Badge */}
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-8 w-8 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-xs">
+                      <Quote className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <h3 className="font-outfit text-base sm:text-lg font-black text-slate-900 leading-none">
+                      Principal&apos;s Desk
+                    </h3>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200/70 uppercase tracking-wider">
+                    Leadership
+                  </span>
+                </div>
 
-              <h2 className="font-outfit text-3xl md:text-4xl font-black text-slate-800 tracking-tight leading-tight">
-                Transforming Potential into Power
-              </h2>
+                {/* Framed Photo with subtle glow */}
+                <div className="w-full rounded-2xl overflow-hidden border border-slate-200/80 shadow-md aspect-[16/10] bg-slate-100 relative group/photo mt-4">
+                  <img
+                    src="/images/principal.jpg"
+                    alt="Dr. Sr. Sandhya Thumma"
+                    className="w-full h-full object-cover object-top group-hover/photo:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#002147]/40 via-transparent to-transparent opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300" />
+                </div>
 
-              <p className="font-sans text-sm md:text-base text-slate-600 leading-relaxed font-normal mt-2">
-                &quot;Welcome to a premier academic community where we don&apos;t just teach—we transform. At St. Ann’s College for Women, Gorantla, we recognize that the future belongs to those who prepare for it.&quot;
-              </p>
+                {/* Name & Credentials */}
+                <div className="text-center mt-4">
+                  <h4 className="font-outfit text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                    Dr. Sr. Sandhya Thumma
+                  </h4>
+                  <p className="text-xs font-bold text-indigo-600 tracking-wider uppercase mt-1">
+                    Principal, St. Ann&apos;s College
+                  </p>
+                  <p className="font-sans text-[11px] font-semibold text-slate-400 mt-0.5">
+                    MBA, M.Com, M.Ed, Ph.D.
+                  </p>
+                </div>
 
-              <p className="font-sans text-sm md:text-base text-slate-600 leading-relaxed font-normal">
-                Our vision is to ensure our institution remains at the forefront of higher education. Under the guidance of the Society of St. Anne, we balance professional modern curriculum, robust lab infrastructures, and spiritual core ethics to build the female leaders of tomorrow. We are deeply committed to character, academic competence, and compassion.
-              </p>
+                {/* Message Box with Watermark Quote */}
+                <div className="mt-4 p-4 rounded-2xl bg-slate-50/90 border border-slate-100 relative overflow-hidden">
+                  <Quote className="absolute -top-1 -right-1 h-12 w-12 text-indigo-100/50 pointer-events-none" />
+                  <div className="flex items-center gap-1.5 mb-1.5 text-[#002147] relative z-10">
+                    <FileText className="h-3.5 w-3.5 text-indigo-600" />
+                    <span className="font-outfit text-xs font-black uppercase tracking-wider text-indigo-900">
+                      Welcome Message
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal relative z-10">
+                    &ldquo;Dear Students, Faculty, and Visitors, It is with great pleasure and enthusiasm that I welcome you to our Degree and PG College for Women&apos;s website.&rdquo;
+                  </p>
+                </div>
+              </div>
 
-              <div className="flex items-center gap-4 mt-4 select-none">
+              {/* Bottom Button */}
+              <div className="mt-4 pt-2">
                 <Link
                   href="/about/the-institution/head-of-the-institution"
-                  className="flex items-center gap-2 rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white px-5 py-3.5 text-sm font-bold shadow-md transition-all duration-300 active:scale-95"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-gradient-to-r from-[#002147] to-[#0a3d78] hover:from-[#002d5f] hover:to-[#0f4d96] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#002147]/15 transition-all duration-300 active:scale-98 group/btn"
                 >
-                  Read Full Message <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/about/the-institution/vision-mission-and-core-values"
-                  className="flex items-center gap-1 text-slate-600 hover:text-[#002147] text-sm font-semibold transition-colors duration-200"
-                >
-                  Our Vision & Mission
+                  <span>Read Full Welcome Message</span>
+                  <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
+
+            {/* BOX 3: Notices */}
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+              {/* Premium Gradient Header */}
+              <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white p-5 sm:p-6 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
+                <div className="flex items-center gap-3.5 relative z-10">
+                  <div className="h-10 w-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
+                    <Bell className="h-5 w-5 text-rose-300" />
+                  </div>
+                  <div>
+                    <h3 className="font-outfit text-lg sm:text-xl font-black tracking-tight text-white leading-tight">
+                      Notice Board
+                    </h3>
+                    <p className="text-[11px] font-medium text-rose-200/80 mt-0.5">
+                      Academic timetables &amp; circulars
+                    </p>
+                  </div>
+                </div>
+                <span className="relative z-10 px-3 py-1 rounded-full text-[10px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-rose-200 uppercase tracking-widest flex items-center gap-1.5 shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-rose-400 animate-ping" />
+                  Active
+                </span>
+              </div>
+
+              {/* Items List matching client requested format */}
+              {(sanityNotices.length > 0 ? sanityNotices : defaultNoticesList).length > 0 ? (
+                <div className="flex-1 divide-y divide-slate-200 overflow-y-auto max-h-[460px] p-2 bg-white">
+                  {(sanityNotices.length > 0 ? sanityNotices : defaultNoticesList).map((item, idx) => (
+                    <Link
+                      key={item._id || idx}
+                      href={item.pdfUrl || item.fileUrl || "/notices"}
+                      target={item.pdfUrl || item.fileUrl ? "_blank" : undefined}
+                      className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item cursor-pointer"
+                    >
+                      <StarburstNewBadge />
+                      <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-rose-700 transition-colors" />
+                      <p className="flex-1 text-xs sm:text-[13px] font-medium text-slate-800 group-hover/item:text-slate-900 leading-snug transition-colors">
+                        {item.title}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                /* Coming Soon State */
+                <div className="flex-1 flex flex-col items-center justify-center p-8 sm:p-10 text-center bg-slate-50/40 min-h-[340px]">
+                  <div className="h-16 w-16 rounded-3xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 mb-4 shadow-sm">
+                    <Bell className="h-7 w-7 text-rose-600 animate-pulse" />
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-100/80 text-rose-800 border border-rose-200/80 mb-2">
+                    <Sparkles className="h-3 w-3 text-rose-600" /> Coming Soon
+                  </span>
+                  <h4 className="font-outfit text-base sm:text-lg font-bold text-slate-800">
+                    Official Circulars Being Published
+                  </h4>
+                  <p className="text-xs text-slate-500 max-w-xs mt-1.5 leading-relaxed">
+                    University examination schedules, timetables, and academic circulars will be published here directly via Sanity.
+                  </p>
+                </div>
+              )}
+
+              {/* Bottom Modern Button */}
+              <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-center">
+                <Link
+                  href="/notices"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-gradient-to-r from-[#002147] to-[#0a3d78] hover:from-[#002d5f] hover:to-[#0f4d96] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#002147]/15 transition-all duration-300 active:scale-98 group/btn"
+                >
+                  <span>More Notices &amp; Circulars</span>
+                  <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -940,6 +1345,209 @@ export default function HomePage() {
               ) : (
                 <NewslettersSection newsletters={newsletters} />
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ----------------------------------------------------
+          DOCUMENT POPUP MODAL (For Events & Activities)
+          When 1 doc: opens directly in new tab.
+          When >1 doc: popup showing list of documents.
+          ---------------------------------------------------- */}
+      {activeDocModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
+          {/* Backdrop click to close */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setActiveDocModal(null)}
+          />
+
+          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-scaleUp">
+            {/* Modal Top Header */}
+            <div className="flex items-center justify-between px-6 py-5 bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                  <FileText className="h-5 w-5 text-sky-300" />
+                </div>
+                <div>
+                  <h3 className="font-outfit text-base sm:text-lg font-bold leading-tight">
+                    Event Documents &amp; Details
+                  </h3>
+                  <p className="text-[11px] text-sky-200/80 mt-0.5">
+                    St. Ann&apos;s College for Women
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveDocModal(null)}
+                className="h-9 w-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer border border-white/10"
+                aria-label="Close modal"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto bg-slate-50/50">
+              {/* Event Info Card */}
+              <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs">
+                <h4 className="font-outfit text-base font-bold text-slate-900 leading-snug">
+                  {activeDocModal.eventTitle}
+                </h4>
+                <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-600">
+                  {activeDocModal.eventDate && (
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
+                      <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                      {activeDocModal.eventDate}
+                    </span>
+                  )}
+                  {activeDocModal.organizer && (
+                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100">
+                      <Users className="h-3.5 w-3.5 text-indigo-500" />
+                      {activeDocModal.organizer}
+                    </span>
+                  )}
+                </div>
+
+                {/* Styled Event Overview / Description Callout */}
+                {activeDocModal.description && (
+                  <div className="mt-3.5 pt-3 border-t border-slate-100">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                      <Info className="h-3 w-3 text-indigo-500" />
+                      <span>Event Overview</span>
+                    </div>
+                    <div className="bg-slate-50/90 rounded-xl p-3 border border-slate-200/70 border-l-4 border-l-[#002147] text-xs text-slate-700 leading-relaxed shadow-2xs">
+                      {activeDocModal.description}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Documents List */}
+              <div>
+                <h5 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-2.5 flex items-center justify-between">
+                  <span>Available Documents ({activeDocModal.documents.length})</span>
+                  <span className="text-[10px] font-bold text-indigo-600 lowercase tracking-normal">
+                    Click to view / download
+                  </span>
+                </h5>
+
+                {activeDocModal.documents.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {activeDocModal.documents.map((doc, idx) => (
+                      <button
+                        type="button"
+                        key={idx}
+                        onClick={() =>
+                          setViewingPdfModal({
+                            title: doc.title || doc.originalFilename || `Event Document ${idx + 1}`,
+                            url: doc.url,
+                          })
+                        }
+                        className="w-full text-left flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-indigo-50/60 border border-slate-200 hover:border-indigo-300 shadow-2xs hover:shadow-md transition-all group/doc cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 pr-3">
+                          <div className="h-10 w-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center shrink-0 group-hover/doc:bg-rose-100 transition-colors">
+                            <FileText className="h-5 w-5 text-rose-600" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/doc:text-[#002147] truncate">
+                              {doc.title || `Document ${idx + 1}`}
+                            </p>
+                            <p className="text-[11px] text-slate-400">
+                              {doc.originalFilename || "Click to view PDF document"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 group-hover/doc:bg-[#002147] text-white font-bold text-xs shadow-xs transition-colors">
+                          <span>View PDF</span>
+                          <FileText className="h-3.5 w-3.5" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl p-6 border border-slate-200 text-center">
+                    <FileText className="h-10 w-10 text-slate-300 mx-auto mb-2" />
+                    <p className="text-xs font-bold text-slate-700">No Documents Attached Yet</p>
+                    <p className="text-[11px] text-slate-500 mt-1 max-w-xs mx-auto">
+                      The official circular and brochure for this event will be published shortly by the organizing department.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-3.5 bg-slate-100 border-t border-slate-200 flex justify-end">
+              <button
+                onClick={() => setActiveDocModal(null)}
+                className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ----------------------------------------------------
+          IN-APP PDF VIEWER MODAL (Opens PDF in modal, not new tab)
+          ---------------------------------------------------- */}
+      {viewingPdfModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          {/* Backdrop click to close */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setViewingPdfModal(null)}
+          />
+
+          <div className="relative z-10 w-full max-w-5xl h-[90vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-scaleUp">
+            {/* Top Header */}
+            <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white shrink-0">
+              <div className="flex items-center gap-3 min-w-0 pr-4">
+                <div className="h-9 w-9 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
+                  <FileText className="h-4 w-4 text-sky-300" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-outfit text-sm sm:text-base font-bold truncate">
+                    {viewingPdfModal.title}
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-sky-200/80">
+                    St. Ann&apos;s College for Women • PDF Viewer
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={viewingPdfModal.url}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors border border-white/15"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>Download</span>
+                </a>
+                <button
+                  onClick={() => setViewingPdfModal(null)}
+                  className="h-9 w-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer border border-white/10"
+                  aria-label="Close PDF Viewer"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* PDF Viewer Body with Iframe */}
+            <div className="flex-1 w-full h-full bg-slate-100 relative">
+              <iframe
+                src={`${viewingPdfModal.url}#toolbar=1&navpanes=0`}
+                className="w-full h-full border-0"
+                title={viewingPdfModal.title}
+              />
             </div>
           </div>
         </div>

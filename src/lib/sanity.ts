@@ -41,48 +41,49 @@ export async function getFaculty() {
 
 export async function getEvents() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "event"] | order(date desc)`);
+    const data = await sanityClient.fetch(`*[_type == "event" && !(_id in path("drafts.**"))] | order(displayOrder asc, eventDate asc, date desc) {
+      _id,
+      title,
+      startDate,
+      eventDate,
+      eventEndDate,
+      date,
+      organizer,
+      location,
+      description,
+      isNew,
+      displayOrder,
+      "pdfUrl": pdfFile.asset->url,
+      "documents": documents[]{
+        "title": title,
+        "url": asset->url,
+        "originalFilename": asset->originalFilename
+      }
+    }`);
     if (data && data.length > 0) return data;
   } catch (err) {
     console.error("Sanity fetch error (events):", err);
   }
-  return [
-    {
-      title: "Annual Sports Meet 2026",
-      date: "May 12, 2026",
-      location: "Main Campus Grounds",
-      description: "A grand celebration of athleticism, teamwork, and dynamic talent across all departments.",
-    },
-    {
-      title: "Silver Jubilee Convocation",
-      date: "May 28, 2026",
-      location: "Auditorium",
-      description: "Graduation ceremony for the outgoing cohort with distinguished guests and alumni.",
-    },
-  ];
+  return [];
 }
 
 export async function getNotices() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "notice"] | order(_createdAt desc)`);
+    const data = await sanityClient.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(date desc, _createdAt desc) {
+      _id,
+      title,
+      date,
+      category,
+      description,
+      isNew,
+      displayOrder,
+      "pdfUrl": pdfFile.asset->url
+    }`);
     if (data && data.length > 0) return data;
   } catch (err) {
     console.error("Sanity fetch error (notices):", err);
   }
-  return [
-    {
-      title: "Admissions Extended for UG & PG",
-      date: "May 01, 2026",
-      description: "Due to high demand, the deadline for submitting online inquiry forms has been extended.",
-      category: "Admissions",
-    },
-    {
-      title: "Hostel Fee Revision Notice",
-      date: "April 29, 2026",
-      description: "Details regarding the new fee structure for the 2026-2027 academic year are now available.",
-      category: "Hostel",
-    },
-  ];
+  return [];
 }
 
 export async function getAffiliations() {

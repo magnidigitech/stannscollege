@@ -36,7 +36,7 @@ export function TopLogoBar() {
       style={{
         backgroundColor: "var(--logo-bar-bg, #ffffff)",
         borderColor: "var(--logo-bar-border, #e2e8f0)",
-        paddingTop: "var(--logo-bar-padding-y, 0px)",
+        paddingTop: "calc(var(--logo-bar-padding-y, 0px) + 12px)",
         paddingBottom: "var(--logo-bar-padding-y, 0px)"
       }}
     >

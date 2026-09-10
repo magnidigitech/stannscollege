@@ -119,3 +119,14 @@
     animation: none;
   }
 }
+
+/* Disable button focus outline rectangles on navigation items */
+#main-header button,
+#main-header button:focus,
+#main-header button:focus-visible,
+#main-header button:active,
+#main-header [role="button"] {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}

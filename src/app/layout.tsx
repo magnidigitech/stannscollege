@@ -92,20 +92,25 @@ export default function RootLayout({
         {/* Top Announcement Bar - Rendered across all pages */}
         <AnnouncementBar />
 
-        {/* Top bar with College Logo, Accreditations & Apply Now */}
-        <TopLogoBar />
-
-        {/* Sticky Header below top bar for navigation (dynamic height to support dual row) */}
+        {/* Sticky Header: Logo Bar + Navigation (stays fixed together at the top on scroll) */}
         <header
           id="main-header"
-          className="sticky top-0 z-50 border-b shadow-md select-none transition-colors duration-200"
-          style={{
-            backgroundColor: "var(--topnav-bg, #002147)",
-            borderColor: "var(--topnav-border, #001730)"
-          }}
+          className="sticky top-0 z-50 shadow-md select-none transition-colors duration-200"
         >
-          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative">
-            <Navigation />
+          {/* Top bar with College Logo, Accreditations & Apply Now */}
+          <TopLogoBar />
+
+          {/* Navigation Bar below top logo bar */}
+          <div
+            className="w-full border-b select-none transition-colors duration-200"
+            style={{
+              backgroundColor: "var(--topnav-bg, #002147)",
+              borderColor: "var(--topnav-border, #001730)"
+            }}
+          >
+            <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative">
+              <Navigation />
+            </div>
           </div>
         </header>
 

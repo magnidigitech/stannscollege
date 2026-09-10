@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   ChevronDown,
   GraduationCap,
@@ -36,27 +36,37 @@ export function toSlug(text: string) {
 }
 
 export default function Navigation() {
-  // Premium Unified Desktop Hover State with Millisecond Delay
+  // Desktop Menu Click Toggle State (toggles open/close on click instead of hover)
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [timeoutId, setTimeoutId] = useState<any>(null);
+  const navContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseEnter = (menuName: string) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-    setActiveMenu(menuName);
+  const toggleMenu = (menuName: string) => {
+    setActiveMenu((prev) => (prev === menuName ? null : menuName));
   };
 
-  const handleMouseLeave = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    const id = setTimeout(() => {
-      setActiveMenu(null);
-    }, 500); // Buttery-smooth 150ms transition tolerance
-    setTimeoutId(id);
-  };
+  // Close dropdown on outside click or escape key
+  useEffect(() => {
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = e.target as Node;
+      // If the clicked target was unmounted/detached during React re-render, ignore
+      if (!target || !document.body.contains(target)) return;
+
+      if (navContainerRef.current && !navContainerRef.current.contains(target)) {
+        setActiveMenu(null);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveMenu(null);
+      }
+    };
+    document.addEventListener("click", handleDocumentClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   // Mobile Drawer & Accordion States
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -564,7 +574,7 @@ export default function Navigation() {
   };
 
   return (
-    <div className="w-full flex flex-col font-sans select-none relative">
+    <div ref={navContainerRef} className="w-full flex flex-col font-sans select-none relative">
 
       {/* ============================================================== */}
       {/* DESKTOP HEADER LAYOUT (Two Custom Single-Line Rows)            */}
@@ -593,27 +603,34 @@ export default function Navigation() {
         >
 
           {/* 1. Home */}
-          <Link href="/" className="hover:opacity-80 transition-all duration-200 whitespace-nowrap text-inherit">
+          <Link href="/" onClick={() => setActiveMenu(null)} className="hover:opacity-80 transition-all duration-200 whitespace-nowrap text-inherit font-bold">
             Home
           </Link>
 
           {/* 2. About Us */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("about")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/about/the-institution/basic-institutional-information" className="hover:opacity-85 select-none font-bold text-inherit">
-              About Us
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("about");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "about"}
+            >
+              <span>About Us</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "about" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("about")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {aboutCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -653,22 +670,29 @@ export default function Navigation() {
           </div>
 
           {/* 3. Academics */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("academics")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:opacity-85 select-none font-bold text-inherit">
-              Academics
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("academics");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "academics"}
+            >
+              <span>Academics</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "academics" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[75vh] overflow-y-auto animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("academics")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
 
                 {/* Column 1: I and II */}
@@ -757,22 +781,29 @@ export default function Navigation() {
           </div>
 
           {/* 4. Admissions */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("admissions")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/admissions/policy-process" className="hover:opacity-85 select-none font-bold text-inherit">
-              Admissions
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("admissions");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "admissions"}
+            >
+              <span>Admissions</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "admissions" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("admissions")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {admissionsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -803,22 +834,29 @@ export default function Navigation() {
           </div>
 
           {/* 5. Infrastructure */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("infra")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/infrastructure" className="hover:opacity-85 select-none font-bold text-inherit">
-              Infrastructure
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("infra");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "infra"}
+            >
+              <span>Infrastructure</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+            </button>
 
             {activeMenu === "infra" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("infra")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {infraCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -849,22 +887,29 @@ export default function Navigation() {
           </div>
 
           {/* 6. Faculty */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("faculty")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/faculty/teaching-staff" className="hover:opacity-85 select-none font-bold text-inherit">
-              Faculty
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("faculty");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "faculty"}
+            >
+              <span>Faculty</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "faculty" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("faculty")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {facultyCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -895,22 +940,29 @@ export default function Navigation() {
           </div>
 
           {/* 7. Student Support Services */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("support")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/student-support/mentor-mentee" className="hover:opacity-85 select-none font-bold text-inherit">
-              Student Support Services
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("support");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "support"}
+            >
+              <span>Student Support Services</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "support" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("support")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {supportCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -941,22 +993,29 @@ export default function Navigation() {
           </div>
 
           {/* 8. Placements & Industry Linkages */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("placements")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/placements" className="hover:opacity-85 select-none font-bold text-inherit">
-              Placements & Industry Linkages
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("placements");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "placements"}
+            >
+              <span>Placements & Industry Linkages</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "placements" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn max-h-[75vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("placements")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {placementsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -992,7 +1051,7 @@ export default function Navigation() {
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
       <div
-        className="hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 z-20"
+        className={`hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 ${activeMenu && ['research','alumni','iqac','mandatory','strategic','contact'].includes(activeMenu) ? 'z-40' : 'z-20'}`}
         style={{
           borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
           color: "var(--topnav-row2-color, var(--topnav-link-color, #ffffff))",
@@ -1015,22 +1074,29 @@ export default function Navigation() {
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("research")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/research-innovation" className="hover:opacity-85 select-none font-bold text-inherit">
-              Research & Innovation
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("research");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "research"}
+            >
+              <span>Research & Innovation</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "research" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("research")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {researchCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -1062,22 +1128,29 @@ export default function Navigation() {
 
 
           {/* 10. Alumni */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("alumni")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/alumni" className="hover:opacity-85 select-none font-bold text-inherit">
-              Alumni
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("alumni");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "alumni"}
+            >
+              <span>Alumni</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "alumni" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("alumni")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {alumniCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -1108,22 +1181,29 @@ export default function Navigation() {
           </div>
 
           {/* 11. IQAC, Quality Assurance & Accreditation */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("iqac")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/quality-assurance" className="hover:opacity-85 select-none font-bold text-inherit">
-              Quality Assurance & Accreditation
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("iqac");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "iqac"}
+            >
+              <span>Quality Assurance & Accreditation</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "iqac" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("iqac")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {iqacCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -1154,22 +1234,29 @@ export default function Navigation() {
           </div>
 
           {/* 12. Mandatory Disclosures & Compliance */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("mandatory")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/mandatory-disclosures" className="hover:opacity-85 select-none font-bold text-inherit">
-              Mandatory Disclosures & Compliance
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("mandatory");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "mandatory"}
+            >
+              <span>Mandatory Disclosures & Compliance</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "mandatory" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("mandatory")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {mandatoryCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -1200,22 +1287,29 @@ export default function Navigation() {
           </div>
 
           {/* 13. Strategic Plans & Future Directions */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("strategic")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/strategic-plans-and-future-directions" className="hover:opacity-85 select-none font-bold text-inherit">
-              Strategic Plans & Future Directions
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("strategic");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "strategic"}
+            >
+              <span>Strategic Plans & Future Directions</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "strategic" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("strategic")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {strategicCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
@@ -1246,22 +1340,29 @@ export default function Navigation() {
           </div>
 
           {/* 14. Contact Us */}
-          <div
-            className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap"
-            onMouseEnter={() => handleMouseEnter("contact")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href="/contact" className="hover:opacity-85 select-none font-bold text-inherit">
-              Contact Us
-            </Link>
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                toggleMenu("contact");
+              }}
+              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              aria-expanded={activeMenu === "contact"}
+            >
+              <span>Contact Us</span>
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+            </button>
 
             {activeMenu === "contact" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("contact")}
-                onMouseLeave={handleMouseLeave}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                }}
               >
                 {contactCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
