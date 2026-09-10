@@ -43,23 +43,15 @@ const UG_PROGRAMMES = [
 
 const PG_PROGRAMMES = ["MCA", "MBA"];
 
-const QUALIFICATION_OPTIONS = [
-  "Intermediate / 12th (MPC)",
-  "Intermediate / 12th (BiPC)",
-  "Intermediate / 12th (CEC)",
-  "Intermediate / 12th (MEC)",
-  "Intermediate / 12th (Other / Vocational)",
-  "Degree",
-];
 
 const PASSING_YEARS = [
-  "2026 (Appearing / Passed)",
+  "2026",
   "2025",
   "2024",
   "2023",
   "2022",
   "2021",
-  "2020 or Earlier",
+  "2020 or earlier",
 ];
 
 const INFO_OPTIONS = [
@@ -483,16 +475,16 @@ export function AdmissionEnquiryModal({ isOpen, onClose }: AdmissionEnquiryModal
                         onChange={(e) => setHighestQualification(e.target.value)}
                         className="w-full px-3.5 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#002147] focus:bg-white transition-all font-medium cursor-pointer"
                       >
-                        <option value="">[ Select Qualification ]</option>
+                        <option value="">Select Qualification</option>
                         <optgroup label="Intermediate / 12th">
-                          <option value="Intermediate / 12th - MPC">Intermediate / 12th — MPC</option>
-                          <option value="Intermediate / 12th - BiPC">Intermediate / 12th — BiPC</option>
-                          <option value="Intermediate / 12th - CEC">Intermediate / 12th — CEC</option>
-                          <option value="Intermediate / 12th - MEC">Intermediate / 12th — MEC</option>
-                          <option value="Intermediate / 12th - Other/Vocational">Intermediate / 12th — Other / Vocational</option>
+                          <option value="Intermediate (MPC)">MPC</option>
+                          <option value="Intermediate (BiPC)">BiPC</option>
+                          <option value="Intermediate (CEC)">CEC</option>
+                          <option value="Intermediate (MEC)">MEC</option>
+                          <option value="Intermediate (Other / Vocational)">Other / Vocational</option>
                         </optgroup>
-                        <optgroup label="Undergraduate / Higher">
-                          <option value="Degree">Degree / Graduation</option>
+                        <optgroup label="Higher Education">
+                          <option value="Degree">Degree</option>
                         </optgroup>
                       </select>
                     </div>
@@ -509,7 +501,7 @@ export function AdmissionEnquiryModal({ isOpen, onClose }: AdmissionEnquiryModal
                         onChange={(e) => setYearOfPassing(e.target.value)}
                         className="w-full px-3.5 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#002147] focus:bg-white transition-all font-medium cursor-pointer"
                       >
-                        <option value="">[ Select Passing Year ]</option>
+                        <option value="">Select Year of Passing</option>
                         {PASSING_YEARS.map((yr) => (
                           <option key={yr} value={yr}>
                             {yr}
@@ -585,7 +577,7 @@ export function AdmissionEnquiryModal({ isOpen, onClose }: AdmissionEnquiryModal
                     onChange={(e) => setProgrammeInterested(e.target.value)}
                     className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#002147] focus:bg-white transition-all font-medium cursor-pointer"
                   >
-                    <option value="">[ Select Programme ▼ ]</option>
+                    <option value="">Select Programme</option>
                     {currentProgrammes.map((prog) => (
                       <option key={prog} value={prog}>
                         {prog}
