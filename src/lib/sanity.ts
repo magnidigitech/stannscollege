@@ -53,6 +53,7 @@ export async function getEvents() {
       description,
       isNew,
       displayOrder,
+      "bannerUrl": coalesce(banner.asset->url, image.asset->url, null),
       "pdfUrl": pdfFile.asset->url,
       "documents": documents[]{
         "title": title,

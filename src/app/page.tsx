@@ -334,6 +334,7 @@ export default function HomePage() {
   // Document popup modal for events with documents and details
   const [activeDocModal, setActiveDocModal] = useState<{
     eventTitle: string;
+    bannerUrl?: string;
     eventDate?: string;
     organizer?: string;
     description?: string;
@@ -353,6 +354,7 @@ export default function HomePage() {
     // Open the contents even if only one PDF
     setActiveDocModal({
       eventTitle: item.title,
+      bannerUrl: item.bannerUrl || item.imageUrl || item.banner || item.image || "/images/infrastructure/campus-buildings/img-1.jpg",
       eventDate: item.date || item.eventDate,
       organizer: item.organizer,
       description: item.description,
@@ -518,7 +520,7 @@ export default function HomePage() {
       {/* ----------------------------------------------------
           6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
           ---------------------------------------------------- */}
-      <section className="py-14 sm:py-20 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-y border-slate-200/90 select-none relative overflow-hidden">
+      <section className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden">
         {/* Subtle atmospheric ambient glows */}
         <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -528,24 +530,24 @@ export default function HomePage() {
             
             {/* BOX 1: Events & Activities */}
             <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
-              {/* Premium Gradient Header */}
-              <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white p-5 sm:p-6 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
+              {/* Compact Sleek Header */}
+              <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
-                <div className="flex items-center gap-3.5 relative z-10">
-                  <div className="h-10 w-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
-                    <Calendar className="h-5 w-5 text-sky-300" />
+                <div className="flex items-center gap-2.5 relative z-10 min-w-0">
+                  <div className="h-7 w-7 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner shrink-0">
+                    <Calendar className="h-3.5 w-3.5 text-sky-300" />
                   </div>
-                  <div>
-                    <h3 className="font-outfit text-lg sm:text-xl font-black tracking-tight text-white leading-tight">
+                  <div className="min-w-0">
+                    <h3 className="font-outfit text-sm sm:text-base font-black tracking-tight text-white leading-tight truncate">
                       Events &amp; Activities
                     </h3>
-                    <p className="text-[11px] font-medium text-sky-200/80 mt-0.5">
+                    <p className="text-[10px] font-medium text-sky-200/80 leading-none mt-0.5 truncate">
                       Campus workshops &amp; symposiums
                     </p>
                   </div>
                 </div>
-                <span className="relative z-10 px-3 py-1 rounded-full text-[10px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-sky-200 uppercase tracking-widest flex items-center gap-1.5 shadow-xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="relative z-10 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-sky-200 uppercase tracking-widest flex items-center gap-1 shadow-xs shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Upcoming
                 </span>
               </div>
@@ -710,19 +712,19 @@ export default function HomePage() {
             </div>
 
             {/* BOX 2: Principal Profile & Leadership Message */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-5 sm:p-6 justify-between group">
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group">
               <div>
                 {/* Header Badge */}
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="h-8 w-8 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-xs">
-                      <Quote className="h-4 w-4 text-amber-600" />
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <div className="h-7 w-7 rounded-lg bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-xs">
+                      <Quote className="h-3.5 w-3.5 text-amber-600" />
                     </div>
-                    <h3 className="font-outfit text-base sm:text-lg font-black text-slate-900 leading-none">
+                    <h3 className="font-outfit text-sm sm:text-base font-black text-slate-900 leading-none">
                       Principal&apos;s Desk
                     </h3>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200/70 uppercase tracking-wider">
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200/70 uppercase tracking-wider">
                     Leadership
                   </span>
                 </div>
@@ -779,24 +781,24 @@ export default function HomePage() {
 
             {/* BOX 3: Notices */}
             <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
-              {/* Premium Gradient Header */}
-              <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white p-5 sm:p-6 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
+              {/* Compact Sleek Header */}
+              <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
-                <div className="flex items-center gap-3.5 relative z-10">
-                  <div className="h-10 w-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
-                    <Bell className="h-5 w-5 text-rose-300" />
+                <div className="flex items-center gap-2.5 relative z-10 min-w-0">
+                  <div className="h-7 w-7 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner shrink-0">
+                    <Bell className="h-3.5 w-3.5 text-rose-300" />
                   </div>
-                  <div>
-                    <h3 className="font-outfit text-lg sm:text-xl font-black tracking-tight text-white leading-tight">
+                  <div className="min-w-0">
+                    <h3 className="font-outfit text-sm sm:text-base font-black tracking-tight text-white leading-tight truncate">
                       Notice Board
                     </h3>
-                    <p className="text-[11px] font-medium text-rose-200/80 mt-0.5">
+                    <p className="text-[10px] font-medium text-rose-200/80 leading-none mt-0.5 truncate">
                       Academic timetables &amp; circulars
                     </p>
                   </div>
                 </div>
-                <span className="relative z-10 px-3 py-1 rounded-full text-[10px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-rose-200 uppercase tracking-widest flex items-center gap-1.5 shadow-xs">
-                  <span className="w-2 h-2 rounded-full bg-rose-400 animate-ping" />
+                <span className="relative z-10 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-rose-200 uppercase tracking-widest flex items-center gap-1 shadow-xs shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping" />
                   Active
                 </span>
               </div>
@@ -1366,29 +1368,43 @@ export default function HomePage() {
 
             {/* Modal Body */}
             <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto bg-slate-50/50">
-              {/* Event Info Card */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs">
-                <h4 className="font-outfit text-base font-bold text-slate-900 leading-snug">
+              {/* Event Info Card: Order = event name -> banner -> tags -> Description -> files */}
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
+                {/* 1. Event Name */}
+                <h4 className="font-outfit text-lg sm:text-xl font-bold text-slate-900 leading-snug">
                   {activeDocModal.eventTitle}
                 </h4>
-                <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-600">
+
+                {/* 2. Banner */}
+                {activeDocModal.bannerUrl && (
+                  <div className="w-full rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs bg-slate-100">
+                    <img
+                      src={activeDocModal.bannerUrl}
+                      alt={activeDocModal.eventTitle}
+                      className="w-full h-auto max-h-72 object-cover object-center rounded-2xl"
+                    />
+                  </div>
+                )}
+
+                {/* 3. Tags which are already present */}
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
                   {activeDocModal.eventDate && (
-                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md">
                       <Calendar className="h-3.5 w-3.5 text-slate-500" />
                       {activeDocModal.eventDate}
                     </span>
                   )}
                   {activeDocModal.organizer && (
-                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100">
+                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
                       <Users className="h-3.5 w-3.5 text-indigo-500" />
                       {activeDocModal.organizer}
                     </span>
                   )}
                 </div>
 
-                {/* Styled Event Overview / Description Callout */}
+                {/* 4. Description */}
                 {activeDocModal.description && (
-                  <div className="mt-3.5 pt-3 border-t border-slate-100">
+                  <div className="pt-2 border-t border-slate-100">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                       <Info className="h-3 w-3 text-indigo-500" />
                       <span>Event Overview</span>

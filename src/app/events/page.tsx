@@ -37,6 +37,7 @@ export default function EventsPage() {
   // Document popup modal for events with documents and details
   const [activeDocModal, setActiveDocModal] = useState<{
     eventTitle: string;
+    bannerUrl?: string;
     eventDate?: string;
     organizer?: string;
     description?: string;
@@ -56,6 +57,7 @@ export default function EventsPage() {
     // Open the contents even if only one PDF
     setActiveDocModal({
       eventTitle: item.title,
+      bannerUrl: item.bannerUrl || item.imageUrl || item.banner || item.image || "/images/infrastructure/campus-buildings/img-1.jpg",
       eventDate: item.date || item.eventDate,
       organizer: item.organizer,
       description: item.description,
@@ -472,29 +474,43 @@ export default function EventsPage() {
 
             {/* Modal Body */}
             <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto bg-slate-50/50">
-              {/* Event Info Card */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs">
-                <h4 className="font-outfit text-base font-bold text-slate-900 leading-snug">
+              {/* Event Info Card: Order = event name -> banner -> tags -> Description -> files */}
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
+                {/* 1. Event Name */}
+                <h4 className="font-outfit text-lg sm:text-xl font-bold text-slate-900 leading-snug">
                   {activeDocModal.eventTitle}
                 </h4>
-                <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-600">
+
+                {/* 2. Banner */}
+                {activeDocModal.bannerUrl && (
+                  <div className="w-full rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs bg-slate-100">
+                    <img
+                      src={activeDocModal.bannerUrl}
+                      alt={activeDocModal.eventTitle}
+                      className="w-full h-auto max-h-72 object-cover object-center rounded-2xl"
+                    />
+                  </div>
+                )}
+
+                {/* 3. Tags which are already present */}
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
                   {activeDocModal.eventDate && (
-                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md">
                       <Calendar className="h-3.5 w-3.5 text-slate-500" />
                       {activeDocModal.eventDate}
                     </span>
                   )}
                   {activeDocModal.organizer && (
-                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100">
+                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
                       <Users className="h-3.5 w-3.5 text-indigo-500" />
                       {activeDocModal.organizer}
                     </span>
                   )}
                 </div>
 
-                {/* Styled Event Overview / Description Callout */}
+                {/* 4. Description */}
                 {activeDocModal.description && (
-                  <div className="mt-3.5 pt-3 border-t border-slate-100">
+                  <div className="pt-2 border-t border-slate-100">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                       <Info className="h-3 w-3 text-indigo-500" />
                       <span>Event Overview</span>

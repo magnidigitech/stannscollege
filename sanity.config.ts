@@ -131,6 +131,13 @@ export default defineConfig({
           { name: "eventDate", title: "2) Event Date (Date when the event takes place)", type: "date" },
           { name: "eventEndDate", title: "Event End Date (Optional - if multi-day event)", type: "date" },
           { name: "date", title: "Event Date Display Text (e.g. 1–7 September 2026)", type: "string" },
+          {
+            name: "banner",
+            title: "Event Banner / Poster Image",
+            type: "image",
+            options: { hotspot: true },
+            description: "Upload event flyer, banner, or promotional graphic displayed in the event details popup."
+          },
           { name: "organizer", title: "Organized by / Department", type: "string" },
           { name: "location", title: "Location / Venue", type: "string" },
           { name: "description", title: "Event Description", type: "text" },
