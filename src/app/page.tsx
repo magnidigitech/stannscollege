@@ -328,8 +328,8 @@ export default function HomePage() {
   const [sanityEvents, setSanityEvents] = useState<any[]>(fallbackEventsHistory);
   const [sanityNotices, setSanityNotices] = useState<any[]>([]);
 
-  // Right Side Drawer / Modal State for Magazine & Chronicle
-  const [activeRightDrawer, setActiveRightDrawer] = useState<"magazine" | "chronicle" | null>(null);
+  // Right Side Drawer / Modal State for Degree Pathways, Magazine & Monthly Newsletter
+  const [activeRightDrawer, setActiveRightDrawer] = useState<"pathways" | "magazine" | "newsletter" | null>(null);
 
   // Document popup modal for events with documents and details
   const [activeDocModal, setActiveDocModal] = useState<{
@@ -969,105 +969,6 @@ export default function HomePage() {
       </section>
 
       {/* ----------------------------------------------------
-          9. ACADEMIC PROGRAMS NAVIGATION
-          ---------------------------------------------------- */}
-      <section className="py-12 bg-white border-y border-slate-200/50 select-none">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-          <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
-              <BookOpen className="h-3.5 w-3.5 text-indigo-500" /> Academic Tracks
-            </span>
-            <h2 className="font-outfit text-3xl font-black text-slate-800 tracking-tight leading-none">
-              Explore Our Degree Pathways
-            </h2>
-            <p className="font-sans text-xs md:text-sm text-slate-400 font-semibold">
-              Select program formats designed to accelerate career growth & research aspirations.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-            <div className="bg-gradient-to-br from-slate-50 via-white to-slate-50/50 border border-slate-200/60 rounded-3xl p-6 md:p-8 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1 rounded bg-blue-50 border border-blue-100 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase tracking-wider">
-                    UG Honours
-                  </span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white border border-slate-200/50 text-[#002147] shadow-sm">
-                    <GraduationCap className="h-4 w-4" />
-                  </span>
-                </div>
-                <h3 className="font-outfit text-xl font-black text-slate-800 leading-snug">
-                  Undergraduate Programmes
-                </h3>
-                <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-normal">
-                  Excellent 3-Year Honours programmes under Acharya Nagarjuna University, Guntur. Combining robust foundational courses, electives, and mandatory internship workloads in:
-                </p>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-semibold text-slate-600 mt-2">
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.Com Honours
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.Sc Honours
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> BCA (Comp Apps)
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.A. Honours
-                  </span>
-                </div>
-              </div>
-              <Link
-                href="/academics/academic-programmes/undergraduate-programmes"
-                className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white font-sans font-bold text-xs py-3.5 px-4 shadow-sm transition-all duration-300"
-              >
-                View UG Syllabus & Details <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-
-            <div className="bg-gradient-to-br from-slate-50 via-white to-slate-50/50 border border-slate-200/60 rounded-3xl p-6 md:p-8 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1 rounded bg-purple-50 border border-purple-100 px-2 py-0.5 text-[10px] font-black text-purple-600 uppercase tracking-wider">
-                    PG Professional
-                  </span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white border border-slate-200/50 text-[#002147] shadow-sm">
-                    <Target className="h-4 w-4" />
-                  </span>
-                </div>
-                <h3 className="font-outfit text-xl font-black text-slate-800 leading-snug">
-                  Postgraduate Programmes
-                </h3>
-                <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-normal">
-                  Highly acclaimed professional PG programs approved by AICTE, New Delhi. Rigorous laboratory models, industrial internship interfaces, and seminars:
-                </p>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-semibold text-slate-600 mt-2">
-                  <span className="flex items-center gap-1.5 font-bold text-[#002147]">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> MCA (Comp Apps)
-                  </span>
-                  <span className="flex items-center gap-1.5 font-bold text-[#002147]">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> MBA (Management)
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> Advanced Coding Lab
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> Case Study Seminars
-                  </span>
-                </div>
-              </div>
-              <Link
-                href="/academics/academic-programmes/postgraduate-programmes"
-                className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white font-sans font-bold text-xs py-3.5 px-4 shadow-sm transition-all duration-300"
-              >
-                View PG Syllabus & Intake <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------
           10. PLACEMENTS SPOTLIGHT
           ---------------------------------------------------- */}
       <section className="py-16 select-none bg-slate-50/20">
@@ -1234,44 +1135,58 @@ export default function HomePage() {
       </aside>
 
       {/* ----------------------------------------------------
-          FIXED RIGHT NOTCH BUTTONS: College Magazine & St. Ann's Chronicle
-          (Compact vertical orientation, fixed at middle-lower screen, persistent on scroll)
+          FIXED RIGHT NOTCH BUTTONS: Degree Pathways, College Magazine & Monthly News Letter
+          (Ultra-compact vertical orientation, positioned safely below top navigation)
           ---------------------------------------------------- */}
       <aside
-        aria-label="Publications & Periodicals"
-        className="fixed right-0 top-[56%] -translate-y-1/2 z-30 flex flex-col gap-2 select-none items-end"
+        aria-label="Academic & Publication Shortcuts"
+        className="fixed right-0 top-[60%] -translate-y-1/2 z-30 flex flex-col gap-1.5 select-none items-end"
       >
-        {/* College Annual Magazine Vertical Notch */}
+        {/* 1. Explore Degree Pathways Vertical Notch */}
+        <button
+          onClick={() => setActiveRightDrawer("pathways")}
+          className="group flex flex-col items-center gap-1 bg-gradient-to-b from-[#001730] to-[#002147] hover:from-blue-950 hover:to-blue-800 text-white px-1.5 py-2 rounded-l-xl border-l-2 border-y border-blue-400/40 shadow-lg shadow-blue-950/50 transition-all duration-300 transform translate-x-0.5 hover:translate-x-0 cursor-pointer"
+          title="Explore Degree Pathways"
+        >
+          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-blue-500/20 group-hover:bg-blue-500 text-blue-300 group-hover:text-white transition-all shrink-0 border border-blue-400/30 shadow-2xs">
+            <GraduationCap className="h-3 w-3" />
+          </div>
+          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-bold text-[9px] tracking-wider uppercase text-white group-hover:text-blue-200 transition-colors py-0.5 select-none whitespace-nowrap">
+            Pathways
+          </span>
+        </button>
+
+        {/* 2. College Annual Magazine Vertical Notch */}
         <button
           onClick={() => setActiveRightDrawer("magazine")}
-          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#002147] hover:from-indigo-900 hover:to-indigo-700 text-white px-1.5 py-2.5 rounded-l-xl border-l-2 border-y border-indigo-400/40 shadow-xl shadow-indigo-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
+          className="group flex flex-col items-center gap-1 bg-gradient-to-b from-[#001730] to-[#1e1b4b] hover:from-indigo-950 hover:to-indigo-800 text-white px-1.5 py-2 rounded-l-xl border-l-2 border-y border-indigo-400/40 shadow-lg shadow-indigo-950/50 transition-all duration-300 transform translate-x-0.5 hover:translate-x-0 cursor-pointer"
           title="College Annual Magazine"
         >
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-500/20 group-hover:bg-indigo-500 text-indigo-300 group-hover:text-white transition-all shrink-0 border border-indigo-400/30 shadow-2xs">
-            <BookOpen className="h-3.5 w-3.5" />
+          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-indigo-500/20 group-hover:bg-indigo-500 text-indigo-300 group-hover:text-white transition-all shrink-0 border border-indigo-400/30 shadow-2xs">
+            <BookOpen className="h-3 w-3" />
           </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-black text-[10px] tracking-wider uppercase text-white group-hover:text-indigo-200 transition-colors py-0.5 select-none whitespace-nowrap">
+          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-bold text-[9px] tracking-wider uppercase text-white group-hover:text-indigo-200 transition-colors py-0.5 select-none whitespace-nowrap">
             Magazine
           </span>
         </button>
 
-        {/* The St. Ann's Chronicle Vertical Notch */}
+        {/* 3. Monthly News Letter Vertical Notch */}
         <button
-          onClick={() => setActiveRightDrawer("chronicle")}
-          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#00382b] hover:from-emerald-950 hover:to-emerald-700 text-white px-1.5 py-2.5 rounded-l-xl border-l-2 border-y border-emerald-400/40 shadow-xl shadow-emerald-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
-          title="The St. Ann's Chronicle"
+          onClick={() => setActiveRightDrawer("newsletter")}
+          className="group flex flex-col items-center gap-1 bg-gradient-to-b from-[#001730] to-[#00382b] hover:from-emerald-950 hover:to-emerald-800 text-white px-1.5 py-2 rounded-l-xl border-l-2 border-y border-emerald-400/40 shadow-lg shadow-emerald-950/50 transition-all duration-300 transform translate-x-0.5 hover:translate-x-0 cursor-pointer"
+          title="Monthly News Letter"
         >
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-white transition-all shrink-0 border border-emerald-400/30 shadow-2xs">
-            <Newspaper className="h-3.5 w-3.5" />
+          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-emerald-500/20 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-white transition-all shrink-0 border border-emerald-400/30 shadow-2xs">
+            <Newspaper className="h-3 w-3" />
           </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-black text-[10px] tracking-wider uppercase text-white group-hover:text-emerald-200 transition-colors py-0.5 select-none whitespace-nowrap">
-            Chronicle
+          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-bold text-[9px] tracking-wider uppercase text-white group-hover:text-emerald-200 transition-colors py-0.5 select-none whitespace-nowrap">
+            News Letter
           </span>
         </button>
       </aside>
 
       {/* ----------------------------------------------------
-          MODAL VIEWER FOR MAGAZINE & CHRONICLE
+          MODAL VIEWER FOR DEGREE PATHWAYS, MAGAZINE & MONTHLY NEWS LETTER
           ---------------------------------------------------- */}
       {activeRightDrawer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
@@ -1285,8 +1200,19 @@ export default function HomePage() {
           <div className="relative z-10 w-full max-w-6xl max-h-[92vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200">
             {/* Modal Top Header with Switcher and Close Button */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#001730] text-white border-b border-indigo-950 select-none">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="flex bg-white/10 rounded-xl p-1 border border-white/15">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div className="flex flex-wrap bg-white/10 rounded-xl p-1 border border-white/15 gap-1">
+                  <button
+                    onClick={() => setActiveRightDrawer("pathways")}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                      activeRightDrawer === "pathways"
+                        ? "bg-blue-600 text-white shadow-md"
+                        : "text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    <GraduationCap className="h-3.5 w-3.5 shrink-0" />
+                    <span>Degree Pathways</span>
+                  </button>
                   <button
                     onClick={() => setActiveRightDrawer("magazine")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
@@ -1299,22 +1225,22 @@ export default function HomePage() {
                     <span>College Annual Magazine</span>
                   </button>
                   <button
-                    onClick={() => setActiveRightDrawer("chronicle")}
+                    onClick={() => setActiveRightDrawer("newsletter")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                      activeRightDrawer === "chronicle"
+                      activeRightDrawer === "newsletter"
                         ? "bg-emerald-600 text-white shadow-md"
                         : "text-slate-300 hover:text-white"
                     }`}
                   >
                     <Newspaper className="h-3.5 w-3.5 shrink-0" />
-                    <span>The St. Ann&apos;s Chronicle</span>
+                    <span>Monthly News Letter</span>
                   </button>
                 </div>
               </div>
 
               <button
                 onClick={() => setActiveRightDrawer(null)}
-                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/10 shrink-0"
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/10 shrink-0 ml-2"
                 aria-label="Close modal"
               >
                 <X className="h-4 w-4" />
@@ -1323,9 +1249,111 @@ export default function HomePage() {
 
             {/* Modal Scrollable Body */}
             <div className="flex-1 overflow-y-auto bg-slate-50/50">
-              {activeRightDrawer === "magazine" ? (
+              {activeRightDrawer === "pathways" && (
+                <div className="p-6 sm:p-10 max-w-[1400px] mx-auto animate-fadeIn">
+                  <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-3 mb-8">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
+                      <BookOpen className="h-3.5 w-3.5 text-indigo-500" /> Academic Tracks
+                    </span>
+                    <h2 className="font-outfit text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
+                      Explore Our Degree Pathways
+                    </h2>
+                    <p className="font-sans text-xs md:text-sm text-slate-500 font-semibold">
+                      Select program formats designed to accelerate career growth &amp; research aspirations.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                    {/* Undergraduate Programmes Card */}
+                    <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1 rounded bg-blue-50 border border-blue-100 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase tracking-wider">
+                            UG Honours
+                          </span>
+                          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/50 text-[#002147] shadow-2xs">
+                            <GraduationCap className="h-4 w-4" />
+                          </span>
+                        </div>
+                        <h3 className="font-outfit text-xl font-black text-slate-800 leading-snug">
+                          Undergraduate Programmes
+                        </h3>
+                        <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-normal">
+                          Excellent 3-Year Honours programmes under Acharya Nagarjuna University, Guntur. Combining robust foundational courses, electives, and mandatory internship workloads in:
+                        </p>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-semibold text-slate-600 mt-2">
+                          <span className="flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.Com Honours
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.Sc Honours
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> BCA (Comp Apps)
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.A. Honours
+                          </span>
+                        </div>
+                      </div>
+                      <Link
+                        href="/academics/academic-programmes/undergraduate-programmes"
+                        onClick={() => setActiveRightDrawer(null)}
+                        className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white font-sans font-bold text-xs py-3.5 px-4 shadow-sm transition-all duration-300"
+                      >
+                        View UG Syllabus &amp; Details <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+
+                    {/* Postgraduate Programmes Card */}
+                    <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1 rounded bg-purple-50 border border-purple-100 px-2 py-0.5 text-[10px] font-black text-purple-600 uppercase tracking-wider">
+                            PG Professional
+                          </span>
+                          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/50 text-[#002147] shadow-2xs">
+                            <Target className="h-4 w-4" />
+                          </span>
+                        </div>
+                        <h3 className="font-outfit text-xl font-black text-slate-800 leading-snug">
+                          Postgraduate Programmes
+                        </h3>
+                        <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-normal">
+                          Highly acclaimed professional PG programs approved by AICTE, New Delhi. Rigorous laboratory models, industrial internship interfaces, and seminars:
+                        </p>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-semibold text-slate-600 mt-2">
+                          <span className="flex items-center gap-1.5 font-bold text-[#002147]">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> MCA (Comp Apps)
+                          </span>
+                          <span className="flex items-center gap-1.5 font-bold text-[#002147]">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> MBA (Management)
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> Advanced Coding Lab
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> Case Study Seminars
+                          </span>
+                        </div>
+                      </div>
+                      <Link
+                        href="/academics/academic-programmes/postgraduate-programmes"
+                        onClick={() => setActiveRightDrawer(null)}
+                        className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white font-sans font-bold text-xs py-3.5 px-4 shadow-sm transition-all duration-300"
+                      >
+                        View PG Syllabus &amp; Intake <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeRightDrawer === "magazine" && (
                 <CollegeMagazinesSection magazines={magazines} />
-              ) : (
+              )}
+
+              {activeRightDrawer === "newsletter" && (
                 <NewslettersSection newsletters={newsletters} />
               )}
             </div>

@@ -91,10 +91,10 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
               <Newspaper className="h-3.5 w-3.5 text-[#002147]" /> Monthly Publications
             </span>
             <h2 className="font-outfit text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002147] tracking-tight">
-              The St. Ann&apos;s Chronicle
+              Monthly News Letter
             </h2>
             <p className="font-sans text-xs sm:text-sm text-slate-500 font-normal max-w-xl mt-1.5 leading-relaxed">
-              Official monthly bulletins documenting campus happenings, academic seminars, departmental workshops, and student accolades.
+              Official monthly newsletters documenting campus happenings, academic seminars, departmental workshops, and student accolades.
             </p>
           </div>
 
