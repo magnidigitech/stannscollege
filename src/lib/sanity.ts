@@ -70,7 +70,7 @@ export async function getEvents() {
 
 export async function getNotices() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(date desc, _createdAt desc) {
+    const data = await sanityClient.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(displayOrder asc, date desc, _createdAt desc) {
       _id,
       title,
       date,
@@ -78,7 +78,18 @@ export async function getNotices() {
       description,
       isNew,
       displayOrder,
-      "pdfUrl": pdfFile.asset->url
+      linkUrl,
+      linkLabel,
+      links[] {
+        title,
+        url
+      },
+      "pdfUrl": pdfFile.asset->url,
+      documents[] {
+        title,
+        "url": asset->url,
+        "originalFilename": asset->originalFilename
+      }
     }`);
     if (data && data.length > 0) return data;
   } catch (err) {
@@ -624,6 +635,8 @@ export async function getStrategicPlan() {
       facultyFeedbackFormUrl,
       parentFeedbackFormUrl,
       alumniFeedbackFormUrl,
+      communityFeedbackFormUrl,
+      employerFeedbackFormUrl,
       documents[] {
         title,
         "fileUrl": file.asset->url,

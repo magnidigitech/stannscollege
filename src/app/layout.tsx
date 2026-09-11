@@ -6,8 +6,8 @@ import Script from "next/script";
 import Navigation from "@/components/Navigation";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { TopLogoBar } from "@/components/TopLogoBar";
-import ColorPaletteCustomizer from "@/components/ColorPaletteCustomizer";
-import HeaderNavCustomizer from "@/components/HeaderNavCustomizer";
+import { CustomizationProvider } from "@/components/CustomizationProvider";
+import { FooterLastUpdated } from "@/components/FooterLastUpdated";
 import { Award, Sparkles, Bell, ArrowRight } from "lucide-react";
 
 const inter = Inter({
@@ -39,6 +39,25 @@ export default function RootLayout({
         <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
+        <Script
+          id="customization-preload"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var c = localStorage.getItem('stanns_customization_cache');
+                if (c) {
+                  var p = JSON.parse(c);
+                  var lb = p['logo-bar'] && p['logo-bar'].sections && p['logo-bar'].sections[0];
+                  if (lb && lb.colors) {
+                    var bg = lb.colors.logoBarColor || (lb.colors.bgColor !== '#ffffff' ? lb.colors.bgColor : null);
+                    if (bg) document.documentElement.style.setProperty('--logo-bar-bg', bg);
+                  }
+                }
+              } catch(e) {}
+            `,
+          }}
+        />
       </head>
       <body className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col justify-between selection:bg-indigo-50 selection:text-indigo-900" suppressHydrationWarning>
         <Script
@@ -89,6 +108,7 @@ export default function RootLayout({
         />
 
 
+        <CustomizationProvider>
         {/* Top Announcement Bar - Rendered across all pages */}
         <AnnouncementBar />
 
@@ -104,11 +124,11 @@ export default function RootLayout({
           <div
             className="w-full border-b select-none transition-colors duration-200"
             style={{
-              backgroundColor: "var(--topnav-bg, #002147)",
-              borderColor: "var(--topnav-border, #001730)"
+              backgroundColor: "#007c74",
+              borderColor: "#00625c"
             }}
           >
-            <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative">
+            <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full relative">
               <Navigation />
             </div>
           </div>
@@ -118,12 +138,12 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer id="main-footer" className="bg-slate-950 text-slate-400 py-16 border-t border-slate-900 selection:bg-indigo-500/20 selection:text-indigo-200">
-          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-10">
+        <footer id="main-footer" className="bg-slate-950 text-slate-400 py-8 sm:py-10 border-t border-slate-900 selection:bg-indigo-500/20 selection:text-indigo-200">
+          <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 md:gap-10">
               
               {/* Column 1: Info & Contact (4/12 width) */}
-              <div className="md:col-span-4 flex flex-col gap-6">
+              <div className="md:col-span-4 flex flex-col gap-4">
                 <Link href="/" className="flex items-center gap-3.5 group select-none">
                   <img
                     src="/images/collegelogo.png"
@@ -131,34 +151,34 @@ export default function RootLayout({
                     className="h-12 w-auto object-contain bg-white p-1.5 rounded-xl shadow-lg group-hover:scale-105 transition-all duration-300 select-none"
                   />
                   <div className="flex flex-col">
-                    <span className="font-outfit text-white font-black tracking-tight text-sm md:text-base uppercase leading-tight">
+                    <span className="font-outfit text-white font-black tracking-tight text-base md:text-lg uppercase leading-tight">
                       St. Ann&apos;s College for Women
                     </span>
-                    <span className="font-sans text-[11px] font-semibold text-slate-400">
+                    <span className="font-sans text-xs sm:text-sm font-semibold text-slate-400">
                       Run by the Society of St Anne
                     </span>
                   </div>
                 </Link>
-                <p className="text-slate-400 font-sans text-xs md:text-sm max-w-sm leading-relaxed">
+                <p className="text-slate-300 font-sans text-sm md:text-base max-w-sm leading-relaxed">
                   Dedicated to shaping visionaries and cultivating top-notch academic excellence since our inception. Fostering future female leaders of the modern world.
                 </p>
-                <div className="flex flex-col gap-2.5 text-xs text-slate-400 font-sans border-t border-slate-900 pt-4">
+                <div className="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-300 font-sans border-t border-slate-900 pt-4">
                   <p className="leading-relaxed">
-                    <strong>Address:</strong> Gorantla, Guntur - 522034, Andhra Pradesh, India.
+                    <strong className="text-white font-semibold">Address:</strong> Gorantla, Guntur - 522034, Andhra Pradesh, India.
                   </p>
                   <p>
-                    <strong>Email:</strong> <a href="mailto:principal@stannscollege.ac.in" className="hover:text-emerald-400 transition-colors">principal@stannscollege.ac.in</a>
+                    <strong className="text-white font-semibold">Email:</strong> <a href="mailto:principal@stannscollege.ac.in" className="hover:text-emerald-400 transition-colors">principal@stannscollege.ac.in</a>
                   </p>
                   <p>
-                    <strong>Call:</strong> <a href="tel:08632236470" className="hover:text-emerald-400 transition-colors">0863-2236470</a> | <a href="tel:7382104655" className="hover:text-emerald-400 transition-colors">7382104655</a>
+                    <strong className="text-white font-semibold">Call:</strong> <a href="tel:08632236470" className="hover:text-emerald-400 transition-colors">0863-2236470</a> | <a href="tel:7382104655" className="hover:text-emerald-400 transition-colors">7382104655</a>
                   </p>
                 </div>
               </div>
 
               {/* Column 2: The Institution (2/12 width) */}
               <div className="md:col-span-2 flex flex-col gap-4">
-                <h4 className="font-outfit text-white font-bold text-xs uppercase tracking-wider border-b border-slate-900 pb-2">The Institution</h4>
-                <div className="flex flex-col gap-2.5 text-xs">
+                <h4 className="font-outfit text-white font-extrabold text-sm uppercase tracking-wider border-b border-slate-900 pb-2">The Institution</h4>
+                <div className="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-300">
                   <Link href="/about/the-institution/history-of-the-college" className="hover:text-emerald-400 transition-colors duration-150">History of College</Link>
                   <Link href="/about/the-institution/vision-mission-and-core-values" className="hover:text-emerald-400 transition-colors duration-150">Vision & Mission</Link>
                   <Link href="/about/governance-administration/governing-body" className="hover:text-emerald-400 transition-colors duration-150">Governing Body</Link>
@@ -170,8 +190,8 @@ export default function RootLayout({
 
               {/* Column 3: Statutory & Compliance (3/12 width) */}
               <div className="md:col-span-3 flex flex-col gap-4">
-                <h4 className="font-outfit text-white font-bold text-xs uppercase tracking-wider border-b border-slate-900 pb-2">Statutory & Compliance</h4>
-                <div className="flex flex-col gap-2.5 text-xs">
+                <h4 className="font-outfit text-white font-extrabold text-sm uppercase tracking-wider border-b border-slate-900 pb-2">Statutory & Compliance</h4>
+                <div className="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-300">
                   <Link href="/about/statutory-affiliations-recognitions/apsche-orders" className="hover:text-emerald-400 transition-colors duration-150">APSCHE Orders</Link>
                   <Link href="/about/statutory-affiliations-recognitions/anu-affiliation-orders-ug-pg" className="hover:text-emerald-400 transition-colors duration-150">ANU Affiliation Orders</Link>
                   <Link href="/about/statutory-affiliations-recognitions/aicte-approvals" className="hover:text-emerald-400 transition-colors duration-150">AICTE Approvals</Link>
@@ -184,8 +204,8 @@ export default function RootLayout({
 
               {/* Column 4: Academics & Support (3/12 width) */}
               <div className="md:col-span-3 flex flex-col gap-4">
-                <h4 className="font-outfit text-white font-bold text-xs uppercase tracking-wider border-b border-slate-900 pb-2">Academics & Support</h4>
-                <div className="flex flex-col gap-2.5 text-xs">
+                <h4 className="font-outfit text-white font-extrabold text-sm uppercase tracking-wider border-b border-slate-900 pb-2">Academics & Support</h4>
+                <div className="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-300">
                   <Link href="/academics/academic-programmes/undergraduate-programmes" className="hover:text-emerald-400 transition-colors duration-150">UG Programmes</Link>
                   <Link href="/academics/academic-programmes/postgraduate-programmes" className="hover:text-emerald-400 transition-colors duration-150">PG Programmes</Link>
                   <Link href="/academics/departments" className="hover:text-emerald-400 transition-colors duration-150">Academic Departments</Link>
@@ -199,22 +219,22 @@ export default function RootLayout({
 
             </div>
 
-            <div className="mt-16 pt-8 border-t border-slate-900/60 text-center text-xs text-slate-600 font-sans select-none tracking-wide flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span>© {new Date().getFullYear()} St. Ann&apos;s College for Women, Gorantla. All rights reserved.</span>
-              <div className="flex items-center gap-4 text-slate-500">
-                <Link href="/mandatory-disclosures" className="hover:text-slate-350 transition-colors">Mandatory Disclosures</Link>
+            <div className="mt-8 sm:mt-10 pt-4 sm:pt-5 border-t border-slate-900/60 text-center text-xs sm:text-sm text-slate-400 font-sans select-none tracking-wide flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+                <span>© {new Date().getFullYear()} St. Ann&apos;s College for Women, Gorantla. All rights reserved.</span>
+                <span className="hidden sm:inline text-slate-700">•</span>
+                <FooterLastUpdated />
+              </div>
+              <div className="flex items-center gap-4 text-slate-400">
+                <Link href="/mandatory-disclosures" className="hover:text-slate-200 transition-colors">Mandatory Disclosures</Link>
                 <span>|</span>
-                <Link href="/about/governance-administration/code-of-conduct" className="hover:text-slate-350 transition-colors">Code of Conduct</Link>
+                <Link href="/about/governance-administration/code-of-conduct" className="hover:text-slate-200 transition-colors">Code of Conduct</Link>
               </div>
             </div>
           </div>
         </footer>
 
-        {/* Live Color Palette Customizer Drawer & Controls */}
-        <ColorPaletteCustomizer />
-
-        {/* Live Header & Navigation Studio Customizer Drawer & Controls */}
-        <HeaderNavCustomizer />
+        </CustomizationProvider>
       </body>
     </html>
   );

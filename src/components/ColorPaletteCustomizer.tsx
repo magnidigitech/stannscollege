@@ -798,7 +798,15 @@ export default function ColorPaletteCustomizer() {
       if (s2) setSec2Color(s2);
       if (s3) setSec3Color(s3);
       if (s4) setSec4Color(s4);
-      if (s5) setSec5Color(s5);
+      if (s5) {
+        if (s5 === "linear-gradient(to right, #001730, #002147, #001a35)") {
+          const defaultSec5 = "linear-gradient(135deg, #FFD8B2 0%, #FFEEDD 16%, #FFFFFF 40%, #FFFFFF 60%, #DCF5DF 84%, #B6ECC0 100%)";
+          setSec5Color(defaultSec5);
+          localStorage.setItem("theme_sec5Color", defaultSec5);
+        } else {
+          setSec5Color(s5);
+        }
+      }
       if (s6) setSec6Color(s6);
       if (sDisc) setSecDisclosuresColor(sDisc);
       if (sRti) setSecRtiColor(sRti);
@@ -913,10 +921,10 @@ export default function ColorPaletteCustomizer() {
     root.style.setProperty("--sec4-subtitle", isLightColor(effSec4) ? "#334155" : "rgba(219, 234, 254, 0.9)");
     root.style.setProperty("--sec4-border", isLightColor(effSec4) ? "rgba(0,0,0,0.1)" : "rgba(49, 46, 129, 0.2)");
 
-    const effSec5 = sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)";
+    const effSec5 = sec5Color || "linear-gradient(135deg, #FFD8B2 0%, #FFEEDD 16%, #FFFFFF 40%, #FFFFFF 60%, #DCF5DF 84%, #B6ECC0 100%)";
     root.style.setProperty("--sec5-bg", effSec5);
     root.style.setProperty("--sec5-title", isLightColor(effSec5) ? "#002147" : "#ffffff");
-    root.style.setProperty("--sec5-subtitle", isLightColor(effSec5) ? "#334155" : "#f1f5f9");
+    root.style.setProperty("--sec5-subtitle", isLightColor(effSec5) ? "#1e293b" : "#f1f5f9");
     root.style.setProperty("--sec5-border", isLightColor(effSec5) ? "rgba(0,0,0,0.1)" : "rgba(255, 153, 51, 0.5)");
 
     const effSec6 = sec6Color || level2Color;
@@ -1250,7 +1258,7 @@ export default function ColorPaletteCustomizer() {
           sec2_planDocuments: sec2Color || level2Color,
           sec3_strategicPriorities: sec3Color || level2Color,
           sec4_stakeholderFeedback: sec4Color || level2Color,
-          sec5_vision2047: sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)",
+          sec5_vision2047: sec5Color || "linear-gradient(135deg, #FFD8B2 0%, #FFEEDD 16%, #FFFFFF 40%, #FFFFFF 60%, #DCF5DF 84%, #B6ECC0 100%)",
           sec6_referenceLinks: sec6Color || level2Color,
           secDisclosures_mandatoryDisclosures: secDisclosuresColor || level2Color,
           secRti_rightToInformation: secRtiColor || level2Color,
@@ -2142,7 +2150,7 @@ export default function ColorPaletteCustomizer() {
                                 { key: "sec2", num: "2", label: "Plan Documents", color: sec2Color || level2Color },
                                 { key: "sec3", num: "3", label: "Strategic Priorities", color: sec3Color || level2Color },
                                 { key: "sec4", num: "4", label: "Stakeholder Feedback", color: sec4Color || level2Color },
-                                { key: "sec5", num: "5", label: "Vision 2047 (Viksit)", color: sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)" },
+                                { key: "sec5", num: "5", label: "Vision 2047 (Viksit)", color: sec5Color || "linear-gradient(135deg, #FFD8B2 0%, #FFEEDD 16%, #FFFFFF 40%, #FFFFFF 60%, #DCF5DF 84%, #B6ECC0 100%)" },
                                 { key: "sec6", num: "6", label: "Reference Links", color: sec6Color || level2Color },
                                 { key: "secDisclosures", num: "7", label: "Mandatory Disclosures", color: secDisclosuresColor || level2Color },
                                 { key: "secRti", num: "8", label: "Right to Information (RTI)", color: secRtiColor || level2Color },
@@ -2211,7 +2219,7 @@ export default function ColorPaletteCustomizer() {
                               sec5: {
                                 title: "Section 5: Vision for 2047: Viksit Bharat & Swarna Andhra",
                                 desc: "National & State roadmaps, signature initiatives and future aspirations.",
-                                color: sec5Color || "linear-gradient(to right, #001730, #002147, #001a35)",
+                                color: sec5Color || "linear-gradient(135deg, #FFD8B2 0%, #FFEEDD 16%, #FFFFFF 40%, #FFFFFF 60%, #DCF5DF 84%, #B6ECC0 100%)",
                                 setColor: (c) => setSec5Color(c),
                                 supportsGrad: true
                               },

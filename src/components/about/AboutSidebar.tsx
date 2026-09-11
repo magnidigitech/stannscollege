@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { BookOpen, ChevronRight } from "lucide-react";
 
@@ -8,6 +8,8 @@ export interface SidebarItem {
   text: string;
   slug?: string;
   id?: string;
+  isSubItem?: boolean;
+  textColor?: string;
 }
 
 export interface SidebarCategory {
@@ -83,10 +85,25 @@ export default function AboutSidebar({
 }: AboutSidebarProps) {
   const activeCategories = categories || ABOUT_CATEGORIES;
 
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const header = document.getElementById("main-header");
+      if (header) {
+        document.documentElement.style.setProperty("--main-header-height", `${header.offsetHeight}px`);
+      }
+    };
+
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+    return () => window.removeEventListener("resize", updateHeaderHeight);
+  }, []);
+
   return (
     <aside
-      className="flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-130px)] overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+      className="flex flex-col gap-6 sticky select-none h-fit overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
       style={{
+        top: "calc(var(--main-header-height, 185px) + 16px)",
+        maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px)",
         backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
         scrollbarWidth: "none",
         msOverflowStyle: "none"
@@ -170,15 +187,25 @@ export default function AboutSidebar({
                     ? "/strategic-plans-and-future-directions"
                     : `/about/${cat.catSlug}/${item.slug}`;
 
+                const subItemClasses = item.isSubItem
+                  ? "pl-6 py-1.5 text-xs"
+                  : "py-2.5 px-3 text-xs md:text-sm";
+
+                const inactiveColorClass = item.textColor
+                  ? `${item.textColor} hover:brightness-125 hover:bg-white/80 hover:translate-x-1.5 font-medium`
+                  : item.isSubItem
+                  ? "text-rose-600 hover:text-rose-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
+                  : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold";
+
                 return (
                   <Link
                     key={item.id || item.slug || item.text}
                     href={href}
                     onClick={handleClick}
-                    className={`group font-sans text-xs md:text-sm py-2.5 px-3 rounded-xl transition-all duration-200 flex items-center justify-between select-none ${
+                    className={`group font-sans rounded-xl transition-all duration-200 flex items-center justify-between select-none ${subItemClasses} ${
                       isItemActive
                         ? "font-bold shadow-xs"
-                        : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
+                        : inactiveColorClass
                     }`}
                     style={
                       isItemActive

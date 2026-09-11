@@ -188,7 +188,37 @@ export default defineConfig({
             },
           },
           { name: "description", title: "Notice Description / Summary", type: "text" },
+          { name: "linkUrl", title: "Primary Web Link / Portal URL (e.g. https://cap.apcfss.in)", type: "url" },
+          { name: "linkLabel", title: "Web Link Button Label (e.g. APCFSS Portal)", type: "string" },
+          {
+            name: "links",
+            title: "Additional Links & Portals",
+            type: "array",
+            of: [
+              {
+                type: "object",
+                fields: [
+                  { name: "title", title: "Link Title / Label", type: "string" },
+                  { name: "url", title: "URL / Web Address", type: "url" },
+                ],
+              },
+            ],
+          },
           { name: "pdfFile", title: "Notice PDF File (Official Circular)", type: "file" },
+          {
+            name: "documents",
+            title: "Additional Documents / PDFs",
+            type: "array",
+            of: [
+              {
+                type: "file",
+                fields: [
+                  { name: "title", title: "Document Title / Description", type: "string" },
+                  { name: "url", title: "Direct Document URL (Optional)", type: "url" },
+                ],
+              },
+            ],
+          },
           { name: "isNew", title: "Mark as New (Blinking Badge)", type: "boolean", initialValue: true },
           { name: "displayOrder", title: "Display Order", type: "number" },
         ],

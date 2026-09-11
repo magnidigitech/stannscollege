@@ -51,6 +51,8 @@ import {
 import CollegeMagazinesSection, { MagazineItem } from "@/components/home/CollegeMagazinesSection";
 import NewslettersSection, { NewsletterItem } from "@/components/home/NewslettersSection";
 import HomePhotoGallery, { HomeGalleryDoc } from "@/components/home/HomePhotoGallery";
+import TopRecruitersSection from "@/components/home/TopRecruitersSection";
+import { useCustomization } from "@/components/CustomizationProvider";
 
 // Default Fallback Hero Slides
 const defaultSlides = [
@@ -277,19 +279,92 @@ const defaultEventsList = [
   },
 ];
 
-// Default Notices (Matching Image 1)
+// Official Notices (Extracted from NOTICES (1).docx)
 const defaultNoticesList = [
-  { title: "U.G CIA-II Timetable September 2026", link: "/mandatory-disclosures" },
-  { title: "P.G. – R25 Time Table Semester- III (Regular) CIA – I September 2026", link: "/mandatory-disclosures" },
-  { title: "U.G – CIA-I Timetable ( R26 Batch) I year", link: "/mandatory-disclosures" },
-  { title: "UG CIA-I Timetable R24 & R25 AUG-2026", link: "/mandatory-disclosures" },
-  { title: "R-26 Batch 1st year Orientation and Commencement of Classes.", link: "/mandatory-disclosures" },
-  { title: "P.G ESE- Semester II (Regular) /Semester I(Backlog) Time Table (Regular/ Backlog)", link: "/mandatory-disclosures" },
-  { title: "P.G ESE- Semester IV (Regular) Semester III(Backlog) Time Table June/ July 2026.", link: "/mandatory-disclosures" },
-  { title: "PG-R25 Semester II (Regular) CIA – II Time Table June 2026", link: "/mandatory-disclosures" },
-  { title: "Japanese Summer Immersion Program organised in collaboration with Na Ra JAPAN HUB & IKIGAI Club under International Relations Centre", link: "/mandatory-disclosures" },
-  { title: "P.G. – R24 Semester- IV (Regular) CIA – I Time Table April-2026", link: "/mandatory-disclosures" },
+  {
+    _id: "notice-ug-phase1-allotment-sep-2026",
+    title: "UG I Year – Phase I Seat Allotment",
+    date: "7 September 2026",
+    category: "admissions",
+    description:
+      "UG I Year Phase I Seat Allotment was released by the concerned Higher Education authorities. Students allotted seats at St. Ann’s College for Women are advised to complete the prescribed admission and registration formalities within the notified schedule.",
+    linkUrl: "https://cap.apcfss.in",
+    linkLabel: "APCFSS Portal (https://cap.apcfss.in)",
+    links: [
+      {
+        title: "APCFSS Portal (https://cap.apcfss.in)",
+        url: "https://cap.apcfss.in",
+      },
+    ],
+  },
+  {
+    _id: "notice-mca-mba-seat-allotment-sep-2026",
+    title: "MCA & MBA – Seat Allotment",
+    date: "9 September 2026",
+    category: "admissions",
+    description:
+      "MCA & MBA seat allotment was released through AP ICET Admissions. Candidates allotted seats at St. Ann’s College for Women, Gorantla, Guntur (College Code: AANG) are advised to complete the required admission formalities.",
+    linkUrl: "https://cets.apsche.ap.gov.in",
+    linkLabel: "AP ICET Admissions Portal",
+    links: [
+      {
+        title: "AP ICET Admissions Portal",
+        url: "https://cets.apsche.ap.gov.in",
+      },
+    ],
+  },
+  {
+    _id: "notice-commencement-mca-mba-classes-sep-2026",
+    title: "Commencement of MCA & MBA Classes",
+    date: "16 September 2026",
+    category: "academic",
+    description:
+      "Classes for MCA & MBA First Year – Batch Y27 will commence from 16 September 2026. Students are requested to report to the College on time and attend classes regularly.",
+  },
+  {
+    _id: "notice-nypunyam-portal-registration-sep-2026",
+    title: "UG & PG Student Registration – Nypunyam Portal",
+    date: "11 September 2026",
+    category: "academic",
+    description:
+      "All UG & PG students are required to complete their Nypunyam Portal registration and resume-related formalities on or before 20 September 2026, as per the instructions issued by Commissioner of Higher Education (CHE), Acharya Nagarjuna University (ANU), APSSDC and other concerned authorities.\n\nStudents who complete the registration process are required to complete/update their Resume Templates in the Nypunyam Portal as per the prescribed instructions.\n\n📌 Registration & Resume Completion Deadline: 20 September 2026\n\nStudents are advised to regularly check the College Website and Official Notices for further instructions and updates.",
+    linkUrl: "https://nypunyam.apssdc.in",
+    linkLabel: "Nypunyam Portal (APSSDC)",
+    links: [
+      {
+        title: "Nypunyam Portal (APSSDC)",
+        url: "https://nypunyam.apssdc.in",
+      },
+    ],
+  },
 ];
+
+// Helper: Returns true only if the notice was published within 2 weeks (14 days)
+function isNoticeNew(dateStr?: string): boolean {
+  if (!dateStr) return false;
+
+  let noticeTime = Date.parse(dateStr);
+  if (isNaN(noticeTime)) {
+    const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/i, "$1").trim();
+    noticeTime = Date.parse(cleaned);
+  }
+
+  if (isNaN(noticeTime)) {
+    const parts = dateStr.match(/(\d{1,2})[-/ ]([A-Za-z]+|\d{1,2})[-/ ](\d{4})/);
+    if (parts) {
+      noticeTime = Date.parse(`${parts[2]} ${parts[1]}, ${parts[3]}`);
+    }
+  }
+
+  if (isNaN(noticeTime)) return false;
+
+  const now = Date.now();
+  const diffMs = now - noticeTime;
+  const twoWeeksMs = 14 * 24 * 60 * 60 * 1000;
+
+  // Shown for 2 weeks from the date of publishing
+  return diffMs <= twoWeeksMs && diffMs >= -twoWeeksMs;
+}
 
 // Client-approved Starburst NEW badge matching the official circulars / events layout
 const StarburstNewBadge = () => (
@@ -317,6 +392,16 @@ const UpcomingBadge = () => (
 );
 
 export default function HomePage() {
+  // Live Customization from Admin Panel
+  const { getSectionConfig } = useCustomization();
+  const heroConfig = getSectionConfig("home", "hero-slider");
+  const highlightsConfig = getSectionConfig("home", "three-column-highlights");
+  const whyConfig = getSectionConfig("home", "why-choose") || getSectionConfig("home", "academic-programs");
+  const facilitiesConfig = getSectionConfig("home", "campus-facilities") || getSectionConfig("home", "campus-life");
+  const magsConfig = getSectionConfig("home", "magazines-newsletters");
+  const galleryConfig = getSectionConfig("home", "photo-gallery");
+  const mandatesConfig = getSectionConfig("home", "mandates-compliance") || getSectionConfig("home", "bottom-actions");
+
   // Hero Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
   const [heroSlides, setHeroSlides] = useState<any[]>(defaultSlides);
@@ -338,7 +423,18 @@ export default function HomePage() {
     eventDate?: string;
     organizer?: string;
     description?: string;
+    links?: { title: string; url: string }[];
     documents: EventDocument[];
+  } | null>(null);
+
+  // Notice popup modal for notice board items with details, links and pdfs
+  const [activeNoticeModal, setActiveNoticeModal] = useState<{
+    title: string;
+    date?: string;
+    category?: string;
+    description?: string;
+    links: { title: string; url: string }[];
+    documents: { title: string; url: string; originalFilename?: string }[];
   } | null>(null);
 
   // In-app PDF Viewer Modal state (opens PDF in a popup modal, not in another tab)
@@ -350,15 +446,83 @@ export default function HomePage() {
   // Handler for clicking event details / documents: Always open the contents modal
   const handleEventDocClick = (item: any) => {
     const docs = getEventDocuments(item);
+    const links: { title: string; url: string }[] = [];
+    if (item.link || item.eventUrl || item.registrationLink) {
+      links.push({
+        title: item.linkLabel || "Event Registration / Portal Link",
+        url: item.link || item.eventUrl || item.registrationLink,
+      });
+    }
+    if (Array.isArray(item.links)) {
+      item.links.forEach((l: any) => {
+        if (l?.url && !links.some((existing) => existing.url === l.url)) {
+          links.push({
+            title: l.title || l.url,
+            url: l.url,
+          });
+        }
+      });
+    }
 
-    // Open the contents even if only one PDF
+    // Open the contents modal
     setActiveDocModal({
       eventTitle: item.title,
       bannerUrl: item.bannerUrl || item.imageUrl || item.banner || item.image || "/images/infrastructure/campus-buildings/img-1.jpg",
       eventDate: item.date || item.eventDate,
       organizer: item.organizer,
       description: item.description,
+      links,
       documents: docs,
+    });
+  };
+
+  // Handler for clicking notice details: Opens the notice popup modal with full details, links and pdfs
+  const handleNoticeClick = (item: any) => {
+    const links: { title: string; url: string }[] = [];
+    if (item.linkUrl) {
+      links.push({
+        title: item.linkLabel || item.linkUrl,
+        url: item.linkUrl,
+      });
+    }
+    if (Array.isArray(item.links)) {
+      item.links.forEach((l: any) => {
+        if (l?.url && !links.some((existing) => existing.url === l.url)) {
+          links.push({
+            title: l.title || l.url,
+            url: l.url,
+          });
+        }
+      });
+    }
+
+    const documents: { title: string; url: string; originalFilename?: string }[] = [];
+    if (item.pdfUrl) {
+      documents.push({
+        title: item.pdfTitle || "Official Circular (PDF)",
+        url: item.pdfUrl,
+        originalFilename: "Official_Circular.pdf",
+      });
+    }
+    if (Array.isArray(item.documents)) {
+      item.documents.forEach((d: any) => {
+        if (d?.url && !documents.some((existing) => existing.url === d.url)) {
+          documents.push({
+            title: d.title || d.originalFilename || "Notice Document",
+            url: d.url,
+            originalFilename: d.originalFilename,
+          });
+        }
+      });
+    }
+
+    setActiveNoticeModal({
+      title: item.title,
+      date: item.date,
+      category: item.category,
+      description: item.description,
+      links,
+      documents,
     });
   };
 
@@ -453,63 +617,72 @@ export default function HomePage() {
       {/* ----------------------------------------------------
           1. HERO SLIDER SECTION (Visual Wow Factor)
           ---------------------------------------------------- */}
-      <section
-        ref={sectionRef}
-        style={{ height: bannerHeight }}
-        className="relative w-full min-h-[340px] bg-slate-950 overflow-hidden select-none"
-      >
-        <div className="relative w-full h-full">
-          {heroSlides.map((slide, index) => {
-            const isActive = index === currentSlide;
-            const slideImg = (
-              <div className="relative w-full h-full overflow-hidden">
-                {/* Full-bleed banner image filling the banner container completely with no top cropping */}
-                <img
-                  src={slide.imageUrl}
-                  alt={slide.title || `St. Ann's College Banner ${index + 1}`}
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-            );
-            return (
-              <div
-                key={slide._id || index}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                  isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                }`}
+      {heroConfig?.layout?.visible !== false && (
+        <section
+          ref={sectionRef}
+          style={{
+            height: bannerHeight,
+            background: heroConfig?.colors?.isGradient && heroConfig?.colors?.bgGradient
+              ? heroConfig.colors.bgGradient
+              : (heroConfig?.colors?.bgColor || undefined),
+            paddingTop: heroConfig?.layout?.paddingY === "compact" ? "4px" : heroConfig?.layout?.paddingY === "spacious" ? "16px" : heroConfig?.layout?.paddingY === "extra" ? "32px" : undefined,
+            paddingBottom: heroConfig?.layout?.paddingY === "compact" ? "4px" : heroConfig?.layout?.paddingY === "spacious" ? "16px" : heroConfig?.layout?.paddingY === "extra" ? "32px" : undefined,
+          }}
+          className="relative w-full min-h-[340px] bg-slate-950 overflow-hidden select-none transition-colors duration-300"
+        >
+          <div className="relative w-full h-full">
+            {heroSlides.map((slide, index) => {
+              const isActive = index === currentSlide;
+              const slideImg = (
+                <div className="relative w-full h-full overflow-hidden">
+                  {/* Full-bleed banner image filling the banner container completely with no top cropping */}
+                  <img
+                    src={slide.imageUrl}
+                    alt={slide.title || `St. Ann's College Banner ${index + 1}`}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+              );
+              return (
+                <div
+                  key={slide._id || index}
+                  className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                    isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                  }`}
+                >
+                  {slide.cta1Link ? (
+                    <Link href={slide.cta1Link} className="block w-full h-full">
+                      {slideImg}
+                    </Link>
+                  ) : (
+                    slideImg
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Carousel Slider Controls */}
+          {heroSlides.length > 1 && (
+            <>
+              <button
+                onClick={handlePrevSlide}
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
+                aria-label="Previous Slide"
               >
-                {slide.cta1Link ? (
-                  <Link href={slide.cta1Link} className="block w-full h-full">
-                    {slideImg}
-                  </Link>
-                ) : (
-                  slideImg
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Carousel Slider Controls */}
-        {heroSlides.length > 1 && (
-          <>
-            <button
-              onClick={handlePrevSlide}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
-              aria-label="Previous Slide"
-            >
-              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
-            </button>
-            <button
-              onClick={handleNextSlide}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
-              aria-label="Next Slide"
-            >
-              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
-            </button>
-          </>
-        )}
-      </section>
+                <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+              <button
+                onClick={handleNextSlide}
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md text-white transition-all active:scale-95 shadow-lg cursor-pointer"
+                aria-label="Next Slide"
+              >
+                <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+            </>
+          )}
+        </section>
+      )}
 
 
 
@@ -517,19 +690,33 @@ export default function HomePage() {
       {/* ----------------------------------------------------
           6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
           ---------------------------------------------------- */}
-      {/* ----------------------------------------------------
-          6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
-          ---------------------------------------------------- */}
-      <section className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden">
-        {/* Subtle atmospheric ambient glows */}
-        <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+      {highlightsConfig?.layout?.visible !== false && (
+        <section
+          style={{
+            background: highlightsConfig?.colors?.isGradient && highlightsConfig?.colors?.bgGradient
+              ? highlightsConfig.colors.bgGradient
+              : (highlightsConfig?.colors?.bgColor || undefined),
+            borderBottomColor: highlightsConfig?.colors?.borderColor || undefined,
+            paddingTop: highlightsConfig?.layout?.paddingY === "compact" ? "8px" : highlightsConfig?.layout?.paddingY === "spacious" ? "36px" : highlightsConfig?.layout?.paddingY === "extra" ? "56px" : undefined,
+            paddingBottom: highlightsConfig?.layout?.paddingY === "compact" ? "20px" : highlightsConfig?.layout?.paddingY === "spacious" ? "56px" : highlightsConfig?.layout?.paddingY === "extra" ? "80px" : undefined,
+          }}
+          className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden transition-colors duration-300"
+        >
+          {/* Subtle atmospheric ambient glows */}
+          <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
-            
-            {/* BOX 1: Events & Activities */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+          <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
+              
+              {/* BOX 1: Events & Activities */}
+              <div
+                style={{
+                  backgroundColor: highlightsConfig?.colors?.cardBg || undefined,
+                  borderColor: highlightsConfig?.colors?.borderColor || undefined,
+                }}
+                className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group"
+              >
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -712,7 +899,13 @@ export default function HomePage() {
             </div>
 
             {/* BOX 2: Principal Profile & Leadership Message */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group">
+            <div
+              style={{
+                backgroundColor: highlightsConfig?.colors?.cardBg || undefined,
+                borderColor: highlightsConfig?.colors?.borderColor || undefined,
+              }}
+              className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group"
+            >
               <div>
                 {/* Header Badge */}
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -780,7 +973,13 @@ export default function HomePage() {
             </div>
 
             {/* BOX 3: Notices */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+            <div
+              style={{
+                backgroundColor: highlightsConfig?.colors?.cardBg || undefined,
+                borderColor: highlightsConfig?.colors?.borderColor || undefined,
+              }}
+              className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group"
+            >
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -807,18 +1006,38 @@ export default function HomePage() {
               {(sanityNotices.length > 0 ? sanityNotices : defaultNoticesList).length > 0 ? (
                 <div className="flex-1 divide-y divide-slate-200 overflow-y-auto max-h-[460px] p-2 bg-white">
                   {(sanityNotices.length > 0 ? sanityNotices : defaultNoticesList).map((item, idx) => (
-                    <Link
+                    <div
                       key={item._id || idx}
-                      href={item.pdfUrl || item.fileUrl || "/notices"}
-                      target={item.pdfUrl || item.fileUrl ? "_blank" : undefined}
-                      className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item cursor-pointer"
+                      className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
                     >
-                      <StarburstNewBadge />
-                      <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-rose-700 transition-colors" />
-                      <p className="flex-1 text-xs sm:text-[13px] font-medium text-slate-800 group-hover/item:text-slate-900 leading-snug transition-colors">
-                        {item.title}
-                      </p>
-                    </Link>
+                      <div className="shrink-0 flex items-center justify-center min-w-[22px]">
+                        {isNoticeNew(item.date) && <StarburstNewBadge />}
+                      </div>
+                      <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                          <span
+                            onClick={() => handleNoticeClick(item)}
+                            className="font-semibold text-slate-900 hover:text-[#002147] transition-colors cursor-pointer"
+                          >
+                            {item.title}
+                          </span>
+                          {item.date && (
+                            <span className="text-slate-600 font-normal"> ({item.date})</span>
+                          )}
+                          {" "}
+                          <button
+                            type="button"
+                            onClick={() => handleNoticeClick(item)}
+                            className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-rose-50 hover:bg-[#002147] text-rose-800 hover:text-white border border-rose-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
+                            title="Click for more"
+                          >
+                            <FileText className="h-3 w-3 shrink-0 text-rose-600 group-hover/btn:text-white transition-colors" />
+                            <span>Click for more</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               ) : (
@@ -854,261 +1073,109 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ----------------------------------------------------
           7. DYNAMIC CAMPUS PHOTO GALLERY
           ---------------------------------------------------- */}
-      {galleries.length > 0 && <HomePhotoGallery galleries={galleries} />}
+      {galleryConfig?.layout?.visible !== false && galleries.length > 0 && (
+        <div
+          style={{
+            background: galleryConfig?.colors?.isGradient && galleryConfig?.colors?.bgGradient
+              ? galleryConfig.colors.bgGradient
+              : (galleryConfig?.colors?.bgColor || undefined),
+          }}
+          className="transition-colors duration-300"
+        >
+          <HomePhotoGallery galleries={galleries} />
+        </div>
+      )}
 
       {/* ----------------------------------------------------
-          8. INTERACTIVE WHY CHOOSE ST. ANN'S SECTION
+          8. TOP RECRUITERS & CORPORATE PLACEMENT PARTNERS (FLOATING LTR)
           ---------------------------------------------------- */}
-      <section className="py-16 select-none bg-slate-50/20">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-          <div className="text-center max-w-2xl mx-auto flex flex-col items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
-              <Sparkles className="h-3.5 w-3.5 text-indigo-500 animate-pulse" /> Institution Pillars
-            </span>
-            <h2 className="font-outfit text-3xl sm:text-4xl font-black text-slate-800 tracking-tight leading-tight">
-              Why Elite Students Choose St. Ann&apos;s
-            </h2>
-            <p className="font-sans text-xs md:text-sm text-slate-400 font-semibold max-w-md">
-              A curriculum crafted for real-world excellence, personal mentoring, and industry pathways.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-12 items-start">
-            <div className="lg:col-span-4 flex flex-col gap-3">
-              {whyTabs.map((tab) => {
-                const isSelected = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-4 p-4 text-left rounded-2xl border transition-all duration-300 ${
-                      isSelected
-                        ? "bg-[#002147] border-[#002147] text-white shadow-lg"
-                        : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700"
-                    }`}
-                  >
-                    <span
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
-                        isSelected
-                          ? "bg-white/10 border-white/20 text-white"
-                          : "bg-indigo-50 border-indigo-100 text-indigo-600"
-                      }`}
-                    >
-                      <tab.icon className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h4 className="font-outfit text-sm font-black leading-none tracking-tight">
-                        {tab.title}
-                      </h4>
-                      <p
-                        className={`font-sans text-[11px] font-medium mt-1 leading-none ${
-                          isSelected ? "text-indigo-200" : "text-slate-400"
-                        }`}
-                      >
-                        Explore details
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="lg:col-span-8">
-              {whyTabs.map((tab) => {
-                if (tab.id !== activeTab) return null;
-                return (
-                  <div
-                    key={tab.id}
-                    className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden transition-all duration-500 animate-fadeIn"
-                  >
-                    <div
-                      className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${tab.bgGradient} blur-3xl rounded-full pointer-events-none`}
-                    />
-                    <div className="relative z-10 flex flex-col gap-5">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/50 text-[#002147] shadow-inner">
-                          <tab.icon className="h-5 w-5" />
-                        </span>
-                        <h3 className="font-outfit text-xl md:text-2xl font-black text-slate-800 tracking-tight leading-none">
-                          {tab.heading}
-                        </h3>
-                      </div>
-
-                      <p className="font-sans text-sm md:text-base text-slate-600 leading-relaxed">
-                        {tab.text}
-                      </p>
-
-                      <div className="h-px bg-slate-100 my-2" />
-
-                      <div className="flex flex-col gap-3">
-                        <span className="text-xs font-black text-[#002147] uppercase tracking-wider">
-                          Key Features
-                        </span>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {tab.bulletPoints.map((bp, i) => (
-                            <div key={i} className="flex items-start gap-2.5">
-                              <CheckCircle2 className="h-4 w-4 text-indigo-600 mt-0.5 shrink-0" />
-                              <span className="font-sans text-xs md:text-sm font-semibold text-slate-600 leading-snug">
-                                {bp}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------
-          10. PLACEMENTS SPOTLIGHT
-          ---------------------------------------------------- */}
-      <section className="py-16 select-none bg-slate-50/20">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-5 flex flex-col items-start gap-4">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
-                <Briefcase className="h-3.5 w-3.5 text-indigo-500" /> Career Milestones
-              </span>
-
-              <h2 className="font-outfit text-3xl md:text-4xl font-black text-slate-800 tracking-tight leading-tight">
-                Top Recruiters & Placement Records
-              </h2>
-
-              <p className="font-sans text-xs md:text-sm text-slate-400 font-semibold">
-                Building pathways with industry giants. Over a decade of successful placement drives.
-              </p>
-
-              <p className="font-sans text-sm md:text-base text-slate-600 leading-relaxed font-normal">
-                Our Training and Placement Cell works relentlessly to groom student cohorts through professional corporate bootcamps. Students secure roles in leading MNC software firms, taxation agencies, and financial entities.
-              </p>
-
-              <div className="h-px bg-slate-200 w-full my-2" />
-
-              <div className="flex flex-col gap-2 font-sans text-xs font-semibold text-slate-600">
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Training in Aptitude & Quantitative skills
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Technical coding mock interviews (Java, C, Python)
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Soft-skill grooming & presentation mock drills
-                </span>
-              </div>
-
-              <Link
-                href="/placements/training-placements"
-                className="mt-4 flex items-center gap-2 rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white px-5 py-3.5 text-sm font-bold shadow-md transition-all active:scale-95 duration-300"
-              >
-                More Placement Reports <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-indigo-500/10 rounded-3xl rotate-2 blur-sm pointer-events-none" />
-                <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200/60 p-4 md:p-6 shadow-md flex flex-col gap-4">
-                  <span className="text-xs font-black text-indigo-600 uppercase tracking-widest leading-none">
-                    Performance Graph Highlight
-                  </span>
-
-                  <div className="bg-slate-50 border border-slate-200/50 rounded-2xl p-2 relative overflow-hidden flex items-center justify-center min-h-[220px]">
-                    <img
-                      src="/images/placements/Placements Statistics 2024-2025.png"
-                      alt="St Ann's Placement Statistics Graph"
-                      className="max-h-[300px] w-auto object-contain rounded-xl hover:scale-105 transition-transform duration-300 select-none"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs text-slate-400 font-sans font-semibold border-t border-slate-100 pt-3">
-                    <span>Recruitment Cycle: 2024–2025</span>
-                    <span className="text-indigo-600 font-bold flex items-center gap-1">
-                      100% Placement Support <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {facilitiesConfig?.layout?.visible !== false && (
+        <TopRecruitersSection customConfig={facilitiesConfig} />
+      )}
 
       {/* ----------------------------------------------------
           11. BOTTOM ACTION & MAP
           ---------------------------------------------------- */}
-      <section className="py-12 bg-slate-900 text-white select-none">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">
-                <Target className="h-5 w-5" />
-              </span>
-              <div>
-                <h4 className="font-outfit text-sm font-black uppercase tracking-wider text-indigo-300 leading-none">
-                  Official Mandates
-                </h4>
-                <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
-                  We are highly committed to NAAC guidelines & compliance regulations for higher educational institutions.
-                </p>
-                <Link
-                  href="/naac-peer-team"
-                  className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2"
-                >
-                  NAAC Peer Team Visit <ArrowRight className="h-3 w-3" />
-                </Link>
+      {mandatesConfig?.layout?.visible !== false && (
+        <section
+          style={{
+            background: mandatesConfig?.colors?.isGradient && mandatesConfig?.colors?.bgGradient
+              ? mandatesConfig.colors.bgGradient
+              : (mandatesConfig?.colors?.bgColor || undefined),
+            paddingTop: mandatesConfig?.layout?.paddingY === "compact" ? "20px" : mandatesConfig?.layout?.paddingY === "spacious" ? "48px" : mandatesConfig?.layout?.paddingY === "extra" ? "64px" : undefined,
+            paddingBottom: mandatesConfig?.layout?.paddingY === "compact" ? "20px" : mandatesConfig?.layout?.paddingY === "spacious" ? "48px" : mandatesConfig?.layout?.paddingY === "extra" ? "64px" : undefined,
+          }}
+          className="py-12 bg-slate-900 text-white select-none transition-colors duration-300"
+        >
+          <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+              <div className="flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">
+                  <Target className="h-5 w-5" />
+                </span>
+                <div>
+                  <h4 className="font-outfit text-sm font-black uppercase tracking-wider text-indigo-300 leading-none">
+                    Official Mandates
+                  </h4>
+                  <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
+                    We are highly committed to NAAC guidelines &amp; compliance regulations for higher educational institutions.
+                  </p>
+                  <Link
+                    href="/naac-peer-team"
+                    className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2"
+                  >
+                    NAAC Peer Team Visit <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">
-                <Building className="h-5 w-5" />
-              </span>
-              <div>
-                <h4 className="font-outfit text-sm font-black uppercase tracking-wider text-indigo-300 leading-none">
-                  Campus Admissions
-                </h4>
-                <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
-                  Direct convener & management seats for UG Honours and AICTE approved PG (MCA & MBA) programmes.
-                </p>
+              <div className="flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">
+                  <Building className="h-5 w-5" />
+                </span>
+                <div>
+                  <h4 className="font-outfit text-sm font-black uppercase tracking-wider text-indigo-300 leading-none">
+                    Campus Admissions
+                  </h4>
+                  <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
+                    Direct convener &amp; management seats for UG Honours and AICTE approved PG (MCA &amp; MBA) programmes.
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">
-                <ExternalLink className="h-5 w-5" />
-              </span>
-              <div>
-                <h4 className="font-outfit text-sm font-black uppercase tracking-wider text-indigo-300 leading-none">
-                  Apply Today
-                </h4>
-                <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
-                  Submit your online application enquiry now to reserve counseling support from our Help Desk.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (typeof window !== "undefined") {
-                      window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
-                    }
-                  }}
-                  className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2 cursor-pointer transition-colors"
-                >
-                  Start Application <ArrowRight className="h-3 w-3" />
-                </button>
+              <div className="flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-indigo-300">
+                  <ExternalLink className="h-5 w-5" />
+                </span>
+                <div>
+                  <h4 className="font-outfit text-sm font-black uppercase tracking-wider text-indigo-300 leading-none">
+                    Apply Today
+                  </h4>
+                  <p className="font-sans text-xs text-slate-400 mt-2 font-medium">
+                    Submit your online application enquiry now to reserve counseling support from our Help Desk.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (typeof window !== "undefined") {
+                        window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
+                      }
+                    }}
+                    className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold mt-2 cursor-pointer transition-colors"
+                  >
+                    Start Application <ArrowRight className="h-3 w-3" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       {/* ----------------------------------------------------
           FIXED LEFT NOTCH BUTTONS: Social Media Channels
           (Fixed at middle of screen, persistent on scroll)
@@ -1140,18 +1207,18 @@ export default function HomePage() {
           ---------------------------------------------------- */}
       <aside
         aria-label="Academic & Publication Shortcuts"
-        className="fixed right-0 top-[60%] -translate-y-1/2 z-30 flex flex-col gap-1.5 select-none items-end"
+        className="fixed right-0 top-[65%] -translate-y-1/2 z-30 flex flex-col gap-2 select-none items-end"
       >
         {/* 1. Explore Degree Pathways Vertical Notch */}
         <button
           onClick={() => setActiveRightDrawer("pathways")}
-          className="group flex flex-col items-center gap-1 bg-gradient-to-b from-[#001730] to-[#002147] hover:from-blue-950 hover:to-blue-800 text-white px-1.5 py-2 rounded-l-xl border-l-2 border-y border-blue-400/40 shadow-lg shadow-blue-950/50 transition-all duration-300 transform translate-x-0.5 hover:translate-x-0 cursor-pointer"
+          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#002147] hover:from-blue-950 hover:to-blue-800 text-white px-2.5 py-3 rounded-l-2xl border-l-[3px] border-y border-blue-400/50 shadow-xl shadow-blue-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
           title="Explore Degree Pathways"
         >
-          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-blue-500/20 group-hover:bg-blue-500 text-blue-300 group-hover:text-white transition-all shrink-0 border border-blue-400/30 shadow-2xs">
-            <GraduationCap className="h-3 w-3" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/25 group-hover:bg-blue-500 text-blue-300 group-hover:text-white transition-all shrink-0 border border-blue-400/40 shadow-xs">
+            <GraduationCap className="h-4 w-4" />
           </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-bold text-[9px] tracking-wider uppercase text-white group-hover:text-blue-200 transition-colors py-0.5 select-none whitespace-nowrap">
+          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-extrabold text-[11px] tracking-wider uppercase text-white group-hover:text-blue-200 transition-colors py-1 select-none whitespace-nowrap">
             Pathways
           </span>
         </button>
@@ -1159,13 +1226,13 @@ export default function HomePage() {
         {/* 2. College Annual Magazine Vertical Notch */}
         <button
           onClick={() => setActiveRightDrawer("magazine")}
-          className="group flex flex-col items-center gap-1 bg-gradient-to-b from-[#001730] to-[#1e1b4b] hover:from-indigo-950 hover:to-indigo-800 text-white px-1.5 py-2 rounded-l-xl border-l-2 border-y border-indigo-400/40 shadow-lg shadow-indigo-950/50 transition-all duration-300 transform translate-x-0.5 hover:translate-x-0 cursor-pointer"
+          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#1e1b4b] hover:from-indigo-950 hover:to-indigo-800 text-white px-2.5 py-3 rounded-l-2xl border-l-[3px] border-y border-indigo-400/50 shadow-xl shadow-indigo-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
           title="College Annual Magazine"
         >
-          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-indigo-500/20 group-hover:bg-indigo-500 text-indigo-300 group-hover:text-white transition-all shrink-0 border border-indigo-400/30 shadow-2xs">
-            <BookOpen className="h-3 w-3" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/25 group-hover:bg-indigo-500 text-indigo-300 group-hover:text-white transition-all shrink-0 border border-indigo-400/40 shadow-xs">
+            <BookOpen className="h-4 w-4" />
           </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-bold text-[9px] tracking-wider uppercase text-white group-hover:text-indigo-200 transition-colors py-0.5 select-none whitespace-nowrap">
+          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-extrabold text-[11px] tracking-wider uppercase text-white group-hover:text-indigo-200 transition-colors py-1 select-none whitespace-nowrap">
             Magazine
           </span>
         </button>
@@ -1173,13 +1240,13 @@ export default function HomePage() {
         {/* 3. Monthly News Letter Vertical Notch */}
         <button
           onClick={() => setActiveRightDrawer("newsletter")}
-          className="group flex flex-col items-center gap-1 bg-gradient-to-b from-[#001730] to-[#00382b] hover:from-emerald-950 hover:to-emerald-800 text-white px-1.5 py-2 rounded-l-xl border-l-2 border-y border-emerald-400/40 shadow-lg shadow-emerald-950/50 transition-all duration-300 transform translate-x-0.5 hover:translate-x-0 cursor-pointer"
+          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#00382b] hover:from-emerald-950 hover:to-emerald-800 text-white px-2.5 py-3 rounded-l-2xl border-l-[3px] border-y border-emerald-400/50 shadow-xl shadow-emerald-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
           title="Monthly News Letter"
         >
-          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-emerald-500/20 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-white transition-all shrink-0 border border-emerald-400/30 shadow-2xs">
-            <Newspaper className="h-3 w-3" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/25 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-white transition-all shrink-0 border border-emerald-400/40 shadow-xs">
+            <Newspaper className="h-4 w-4" />
           </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-bold text-[9px] tracking-wider uppercase text-white group-hover:text-emerald-200 transition-colors py-0.5 select-none whitespace-nowrap">
+          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-extrabold text-[11px] tracking-wider uppercase text-white group-hover:text-emerald-200 transition-colors py-1 select-none whitespace-nowrap">
             News Letter
           </span>
         </button>
@@ -1449,6 +1516,50 @@ export default function HomePage() {
                 )}
               </div>
 
+              {/* Links List for Event */}
+              {activeDocModal.links && activeDocModal.links.length > 0 && (
+                <div>
+                  <h5 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-2.5 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <ExternalLink className="h-3.5 w-3.5 text-sky-600" />
+                      <span>Event Registration &amp; Official Links ({activeDocModal.links.length})</span>
+                    </span>
+                    <span className="text-[10px] font-bold text-sky-600 lowercase tracking-normal">
+                      Click to open link
+                    </span>
+                  </h5>
+                  <div className="space-y-2">
+                    {activeDocModal.links.map((link, idx) => (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full text-left flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 shadow-2xs hover:shadow-md transition-all group/link cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 pr-3">
+                          <div className="h-10 w-10 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center shrink-0 group-hover/link:bg-sky-100 transition-colors">
+                            <ExternalLink className="h-5 w-5 text-sky-600" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/link:text-[#002147] truncate">
+                              {link.title || link.url}
+                            </p>
+                            <p className="text-[11px] text-sky-600 underline font-mono truncate">
+                              {link.url}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] group-hover/link:bg-sky-700 text-white font-bold text-xs shadow-xs transition-colors">
+                          <span>Visit Link</span>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Documents List */}
               <div>
                 <h5 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-2.5 flex items-center justify-between">
@@ -1508,6 +1619,211 @@ export default function HomePage() {
             <div className="px-6 py-3.5 bg-slate-100 border-t border-slate-200 flex justify-end">
               <button
                 onClick={() => setActiveDocModal(null)}
+                className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ----------------------------------------------------
+          NOTICE DETAILS & DOCUMENTS POPUP MODAL (Notice Board)
+          ---------------------------------------------------- */}
+      {activeNoticeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
+          {/* Backdrop click to close */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setActiveNoticeModal(null)}
+          />
+
+          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-scaleUp">
+            {/* Modal Top Header */}
+            <div className="flex items-center justify-between px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white">
+              <div className="flex items-center gap-2.5">
+                <div className="h-7 w-7 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
+                  <Bell className="h-3.5 w-3.5 text-rose-300" />
+                </div>
+                <div>
+                  <h3 className="font-outfit text-sm sm:text-base font-bold leading-tight">
+                    Notice Details &amp; Circular
+                  </h3>
+                  <p className="text-[10px] sm:text-[10.5px] text-sky-200/80 leading-tight">
+                    St. Ann&apos;s College for Women • Official Notice Board
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveNoticeModal(null)}
+                className="h-7 w-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer border border-white/10 shrink-0"
+                aria-label="Close modal"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto bg-slate-50/50">
+              {/* Notice Info Card */}
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
+                {/* 1. Notice Title */}
+                <h4 className="font-outfit text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+                  {activeNoticeModal.title}
+                </h4>
+
+                {/* 2. Tags: Date, Category, 2-Week NEW badge */}
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                  {isNoticeNew(activeNoticeModal.date) && <StarburstNewBadge />}
+                  {activeNoticeModal.date && (
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200/60">
+                      <Calendar className="h-3.5 w-3.5 text-rose-600" />
+                      {activeNoticeModal.date}
+                    </span>
+                  )}
+                  {activeNoticeModal.category && (
+                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 uppercase tracking-wider text-[10px]">
+                      {activeNoticeModal.category.replace(/-/g, " ")}
+                    </span>
+                  )}
+                </div>
+
+                {/* 3. Description / Notice Content */}
+                {activeNoticeModal.description && (
+                  <div className="pt-2 border-t border-slate-100">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                      <Info className="h-3 w-3 text-indigo-500" />
+                      <span>Official Notice Announcement</span>
+                    </div>
+                    <div className="bg-slate-50/90 rounded-xl p-3 border border-slate-200/70 border-l-4 border-l-[#002147] text-xs sm:text-[13px] text-slate-700 leading-relaxed shadow-2xs whitespace-pre-line">
+                      {activeNoticeModal.description}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* ── SECTION FOR LINKS ── */}
+              {activeNoticeModal.links && activeNoticeModal.links.length > 0 && (
+                <div>
+                  <h5 className="text-xs font-black uppercase tracking-wider text-slate-600 mb-2.5 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <ExternalLink className="h-3.5 w-3.5 text-sky-600" />
+                      <span>Official Links &amp; Portals ({activeNoticeModal.links.length})</span>
+                    </span>
+                    <span className="text-[10px] font-bold text-sky-600 lowercase tracking-normal">
+                      Click to visit portal
+                    </span>
+                  </h5>
+
+                  <div className="space-y-2">
+                    {activeNoticeModal.links.map((link, idx) => (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full text-left flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 shadow-2xs hover:shadow-md transition-all group/link cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 pr-3">
+                          <div className="h-10 w-10 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center shrink-0 group-hover/link:bg-sky-100 transition-colors">
+                            <ExternalLink className="h-5 w-5 text-sky-600" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/link:text-[#002147] truncate">
+                              {link.title || link.url}
+                            </p>
+                            <p className="text-[11px] text-sky-600 underline font-mono truncate">
+                              {link.url}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] group-hover/link:bg-sky-700 text-white font-bold text-xs shadow-xs transition-colors">
+                          <span>Open Link</span>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── SECTION FOR DOCUMENTS & PDFS ── */}
+              <div>
+                <h5 className="text-xs font-black uppercase tracking-wider text-slate-600 mb-2.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <FileText className="h-3.5 w-3.5 text-rose-600" />
+                    <span>Attached Circulars &amp; PDFs ({activeNoticeModal.documents.length})</span>
+                  </span>
+                  <span className="text-[10px] font-bold text-rose-600 lowercase tracking-normal">
+                    Click to view / download
+                  </span>
+                </h5>
+
+                {activeNoticeModal.documents.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {activeNoticeModal.documents.map((doc, idx) => (
+                      <div
+                        key={idx}
+                        className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-rose-50/40 border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-md transition-all group/doc"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 pr-3">
+                          <div className="h-10 w-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center shrink-0 group-hover/doc:bg-rose-100 transition-colors">
+                            <FileText className="h-5 w-5 text-rose-600" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/doc:text-[#002147] truncate">
+                              {doc.title || `Document ${idx + 1}`}
+                            </p>
+                            <p className="text-[11px] text-slate-400">
+                              {doc.originalFilename || "Click to view PDF document"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="shrink-0 flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setViewingPdfModal({
+                                title: doc.title || "Notice Document PDF",
+                                url: doc.url,
+                              })
+                            }
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-[#002147] text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+                          >
+                            <span>View PDF</span>
+                            <FileText className="h-3.5 w-3.5" />
+                          </button>
+                          <a
+                            href={doc.url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200"
+                            title="Download PDF"
+                          >
+                            <Download className="h-4 w-4" />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl p-5 border border-slate-200 text-center">
+                    <FileText className="h-9 w-9 text-slate-300 mx-auto mb-1.5" />
+                    <p className="text-xs font-bold text-slate-700">Digital Announcement</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5 max-w-xs mx-auto">
+                      Official circular published online. No downloadable PDF attachment required.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-3.5 bg-slate-100 border-t border-slate-200 flex justify-end">
+              <button
+                onClick={() => setActiveNoticeModal(null)}
                 className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
               >
                 Close

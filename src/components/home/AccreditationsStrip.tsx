@@ -91,7 +91,7 @@ export default function AccreditationsStrip() {
 
   return (
     <section className="w-full bg-[#001733] border-y border-indigo-950 py-8 select-none text-white">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
+      <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col gap-6">
           {/* Header Strip */}
           <div className="flex items-center justify-between border-b border-indigo-900/50 pb-4">

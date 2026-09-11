@@ -35,6 +35,41 @@ export function toSlug(text: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+function DropdownHeaderBanner({
+  title,
+  href,
+  buttonText,
+  icon: Icon,
+  onNavigate,
+}: {
+  title: string;
+  href: string;
+  buttonText: string;
+  icon: React.ComponentType<{ className?: string }>;
+  onNavigate: () => void;
+}) {
+  return (
+    <div className="col-span-full flex items-center justify-between pb-3.5 mb-2 border-b border-slate-100">
+      <div className="flex items-center gap-2">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+          <Icon className="h-3.5 w-3.5" />
+        </span>
+        <span className="font-outfit font-black text-xs md:text-sm text-slate-800 tracking-tight">
+          {title}
+        </span>
+      </div>
+      <Link
+        href={href}
+        onClick={onNavigate}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold transition-all shadow-xs hover:shadow group/btn"
+      >
+        <span>{buttonText}</span>
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5" />
+      </Link>
+    </div>
+  );
+}
+
 export default function Navigation() {
   // Desktop Menu Click Toggle State (toggles open/close on click instead of hover)
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -582,14 +617,14 @@ export default function Navigation() {
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
       <div
-        className="hidden md:flex items-center justify-between text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 z-30"
+        className="hidden md:flex items-center justify-between text-[16px] lg:text-[18px] xl:text-[20px] font-bold relative w-full transition-all duration-200 z-30"
         style={{
           color: "var(--topnav-link-color, #ffffff)",
-          fontFamily: "var(--topnav-font-family, inherit)",
-          fontSize: "var(--topnav-font-size, 13px)",
-          fontWeight: "var(--topnav-font-weight, 700)",
-          paddingTop: "var(--topnav-padding-y, 12px)",
-          paddingBottom: "var(--topnav-padding-y, 12px)"
+          fontFamily: "inherit",
+          fontSize: "20px",
+          fontWeight: 700,
+          paddingTop: "var(--topnav-padding-y, 4px)",
+          paddingBottom: "var(--topnav-padding-y, 4px)"
         }}
       >
         <nav
@@ -608,7 +643,15 @@ export default function Navigation() {
           </Link>
 
           {/* 2. About Us */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/about"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit About Us Page"
+            >
+              About Us
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -616,11 +659,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("about");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "about"}
+              aria-label="Toggle About Us menu"
+              title="Open About Us Menu"
             >
-              <span>About Us</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "about" && (
@@ -632,6 +676,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="About Us"
+                  href="/about"
+                  buttonText="Visit About Us Main Page"
+                  icon={Building}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {aboutCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -670,7 +721,15 @@ export default function Navigation() {
           </div>
 
           {/* 3. Academics */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/academics"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Academics Page"
+            >
+              Academics
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -678,11 +737,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("academics");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "academics"}
+              aria-label="Toggle Academics menu"
+              title="Open Academics Menu"
             >
-              <span>Academics</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "academics" && (
@@ -694,6 +754,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Academic Programmes & Departments"
+                  href="/academics"
+                  buttonText="Visit Academics Main Page"
+                  icon={GraduationCap}
+                  onNavigate={() => setActiveMenu(null)}
+                />
 
                 {/* Column 1: I and II */}
                 <div className="md:col-span-4 flex flex-col gap-6">
@@ -781,7 +848,15 @@ export default function Navigation() {
           </div>
 
           {/* 4. Admissions */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/admissions"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Admissions Page"
+            >
+              Admissions
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -789,11 +864,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("admissions");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "admissions"}
+              aria-label="Toggle Admissions menu"
+              title="Open Admissions Menu"
             >
-              <span>Admissions</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "admissions" && (
@@ -805,6 +881,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Admissions & Enrolment Portal"
+                  href="/admissions"
+                  buttonText="Visit Admissions Main Page"
+                  icon={BookOpen}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {admissionsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -834,7 +917,15 @@ export default function Navigation() {
           </div>
 
           {/* 5. Infrastructure */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/infrastructure"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Infrastructure Page"
+            >
+              Infrastructure
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -842,11 +933,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("infra");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "infra"}
+              aria-label="Toggle Infrastructure menu"
+              title="Open Infrastructure Menu"
             >
-              <span>Infrastructure</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 text-blue-300' : 'text-slate-300'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "infra" && (
@@ -858,6 +950,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Campus Infrastructure & Facilities"
+                  href="/infrastructure"
+                  buttonText="Visit Infrastructure Main Page"
+                  icon={Building}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {infraCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -887,7 +986,15 @@ export default function Navigation() {
           </div>
 
           {/* 6. Faculty */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/faculty"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Faculty Page"
+            >
+              Faculty
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -895,11 +1002,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("faculty");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "faculty"}
+              aria-label="Toggle Faculty menu"
+              title="Open Faculty Menu"
             >
-              <span>Faculty</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "faculty" && (
@@ -911,6 +1019,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Faculty & Academic Staff Directory"
+                  href="/faculty"
+                  buttonText="Visit Faculty Main Page"
+                  icon={Users}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {facultyCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -940,7 +1055,15 @@ export default function Navigation() {
           </div>
 
           {/* 7. Student Support Services */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/student-support"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Student Support Page"
+            >
+              Student Support Services
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -948,11 +1071,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("support");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "support"}
+              aria-label="Toggle Student Support menu"
+              title="Open Student Support Menu"
             >
-              <span>Student Support Services</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "support" && (
@@ -964,6 +1088,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Student Support & Services Portal"
+                  href="/student-support"
+                  buttonText="Visit Student Support Main Page"
+                  icon={HeartHandshake}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {supportCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -993,7 +1124,15 @@ export default function Navigation() {
           </div>
 
           {/* 8. Placements & Industry Linkages */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/placements"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Placements Page"
+            >
+              Placements & Industry Linkages
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1001,11 +1140,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("placements");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "placements"}
+              aria-label="Toggle Placements menu"
+              title="Open Placements Menu"
             >
-              <span>Placements & Industry Linkages</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "placements" && (
@@ -1017,6 +1157,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Training, Placements & Industry Linkages"
+                  href="/placements"
+                  buttonText="Visit Placements Main Page"
+                  icon={Briefcase}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {placementsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1051,15 +1198,15 @@ export default function Navigation() {
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
       <div
-        className={`hidden md:flex items-center justify-between border-t text-xs lg:text-[13px] font-bold relative w-full transition-all duration-200 ${activeMenu && ['research','alumni','iqac','mandatory','strategic','contact'].includes(activeMenu) ? 'z-40' : 'z-20'}`}
+        className={`hidden md:flex items-center justify-between border-t text-[16px] lg:text-[18px] xl:text-[20px] font-bold relative w-full transition-all duration-200 ${activeMenu && ['research','alumni','iqac','mandatory','strategic','contact'].includes(activeMenu) ? 'z-40' : 'z-20'}`}
         style={{
           borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
           color: "var(--topnav-row2-color, var(--topnav-link-color, #ffffff))",
-          fontFamily: "var(--topnav-font-family, inherit)",
-          fontSize: "var(--topnav-font-size, 13px)",
-          fontWeight: "var(--topnav-font-weight, 700)",
-          paddingTop: "calc(var(--topnav-padding-y, 12px) * 0.8)",
-          paddingBottom: "calc(var(--topnav-padding-y, 12px) * 0.8)"
+          fontFamily: "inherit",
+          fontSize: "20px",
+          fontWeight: 700,
+          paddingTop: "calc(var(--topnav-padding-y, 4px) * 0.75)",
+          paddingBottom: "calc(var(--topnav-padding-y, 4px) * 0.75)"
         }}
       >
         <nav
@@ -1074,7 +1221,15 @@ export default function Navigation() {
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/research-innovation"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Research & Innovation Page"
+            >
+              Research & Innovation
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1082,11 +1237,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("research");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "research"}
+              aria-label="Toggle Research & Innovation menu"
+              title="Open Research & Innovation Menu"
             >
-              <span>Research & Innovation</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "research" && (
@@ -1098,6 +1254,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Research & Innovation Wing"
+                  href="/research-innovation"
+                  buttonText="Visit Research Main Page"
+                  icon={Lightbulb}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {researchCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1128,7 +1291,15 @@ export default function Navigation() {
 
 
           {/* 10. Alumni */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/alumni"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Alumni Page"
+            >
+              Alumni
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1136,11 +1307,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("alumni");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "alumni"}
+              aria-label="Toggle Alumni menu"
+              title="Open Alumni Menu"
             >
-              <span>Alumni</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "alumni" && (
@@ -1152,6 +1324,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Alumni Association & Network"
+                  href="/alumni"
+                  buttonText="Visit Alumni Main Page"
+                  icon={Users}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {alumniCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1181,7 +1360,15 @@ export default function Navigation() {
           </div>
 
           {/* 11. IQAC, Quality Assurance & Accreditation */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/quality-assurance"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Quality Assurance Page"
+            >
+              Quality Assurance & Accreditation
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1189,11 +1376,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("iqac");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "iqac"}
+              aria-label="Toggle Quality Assurance menu"
+              title="Open Quality Assurance Menu"
             >
-              <span>Quality Assurance & Accreditation</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "iqac" && (
@@ -1205,6 +1393,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Internal Quality Assurance Cell (IQAC)"
+                  href="/quality-assurance"
+                  buttonText="Visit IQAC Main Page"
+                  icon={ShieldCheck}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {iqacCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1234,7 +1429,15 @@ export default function Navigation() {
           </div>
 
           {/* 12. Mandatory Disclosures & Compliance */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/mandatory-disclosures"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Mandatory Disclosures Page"
+            >
+              Mandatory Disclosures & Compliance
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1242,11 +1445,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("mandatory");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "mandatory"}
+              aria-label="Toggle Mandatory Disclosures menu"
+              title="Open Mandatory Disclosures Menu"
             >
-              <span>Mandatory Disclosures & Compliance</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "mandatory" && (
@@ -1258,6 +1462,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Mandatory Disclosures & Regulatory Compliance"
+                  href="/mandatory-disclosures"
+                  buttonText="Visit Disclosures Main Page"
+                  icon={ShieldCheck}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {mandatoryCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1287,7 +1498,15 @@ export default function Navigation() {
           </div>
 
           {/* 13. Strategic Plans & Future Directions */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/strategic-plans-and-future-directions"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Strategic Plans Page"
+            >
+              Strategic Plans & Future Directions
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1295,11 +1514,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("strategic");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "strategic"}
+              aria-label="Toggle Strategic Plans menu"
+              title="Open Strategic Plans Menu"
             >
-              <span>Strategic Plans & Future Directions</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "strategic" && (
@@ -1311,6 +1531,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Institutional Strategic Plans & Future Directions"
+                  href="/strategic-plans-and-future-directions"
+                  buttonText="Visit Strategic Plans Main Page"
+                  icon={LineChart}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {strategicCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1340,7 +1567,15 @@ export default function Navigation() {
           </div>
 
           {/* 14. Contact Us */}
-          <div className="flex items-center">
+          <div className="flex items-center group/nav">
+            <Link
+              href="/contact"
+              onClick={() => setActiveMenu(null)}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              title="Visit Contact Us Page"
+            >
+              Contact Us
+            </Link>
             <button
               type="button"
               onClick={(e) => {
@@ -1348,11 +1583,12 @@ export default function Navigation() {
                 e.nativeEvent.stopImmediatePropagation();
                 toggleMenu("contact");
               }}
-              className="flex items-center gap-1 cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none ring-0"
+              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
               aria-expanded={activeMenu === "contact"}
+              aria-label="Toggle Contact Us menu"
+              title="Open Contact Us Menu"
             >
-              <span>Contact Us</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 opacity-100' : 'opacity-65'}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
             </button>
 
             {activeMenu === "contact" && (
@@ -1364,6 +1600,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Contact Us & Campus Location"
+                  href="/contact"
+                  buttonText="Visit Contact Page"
+                  icon={Phone}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {contactCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1459,6 +1702,14 @@ export default function Navigation() {
                 </button>
                 {mAbout && (
                   <div className="flex flex-col gap-4 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/about"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit About Us Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {aboutCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-2">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider border-b border-slate-50 pb-1">{cat.title}</span>
@@ -1497,6 +1748,14 @@ export default function Navigation() {
                 </button>
                 {mAcademics && (
                   <div className="flex flex-col gap-4 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/academics"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Academics Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     <div className="flex flex-col gap-2">
                       <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Academic Programmes</span>
                       {academicsCol1[0].items.map((item, idx) => (
@@ -1532,6 +1791,14 @@ export default function Navigation() {
                 </button>
                 {mAdmissions && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/admissions"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Admissions Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {admissionsCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
@@ -1555,6 +1822,14 @@ export default function Navigation() {
                 </button>
                 {mInfra && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/infrastructure"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Infrastructure Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {infraCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
@@ -1578,6 +1853,14 @@ export default function Navigation() {
                 </button>
                 {mFaculty && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/faculty"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Faculty Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {facultyCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
@@ -1601,6 +1884,14 @@ export default function Navigation() {
                 </button>
                 {mSupport && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/student-support"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Student Support Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {supportCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
@@ -1624,6 +1915,14 @@ export default function Navigation() {
                 </button>
                 {mPlacements && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/placements"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Placements Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {placementsCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
@@ -1647,6 +1946,14 @@ export default function Navigation() {
                 </button>
                 {mResearch && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/research-innovation"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Research Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {researchCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
@@ -1670,6 +1977,14 @@ export default function Navigation() {
                 </button>
                 {mAlumni && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/alumni"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Alumni Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {alumniCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
@@ -1693,6 +2008,14 @@ export default function Navigation() {
                 </button>
                 {mIqac && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/quality-assurance"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit IQAC Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {iqacCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
@@ -1716,6 +2039,14 @@ export default function Navigation() {
                 </button>
                 {mMandatory && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/mandatory-disclosures"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Disclosures Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {mandatoryCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
@@ -1739,6 +2070,14 @@ export default function Navigation() {
                 </button>
                 {mStrategic && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/strategic-plans-and-future-directions"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Strategic Plans Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {strategicCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
@@ -1762,6 +2101,14 @@ export default function Navigation() {
                 </button>
                 {mContact && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/contact"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Contact Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {contactCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>

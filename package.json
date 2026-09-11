@@ -6,7 +6,9 @@
     "node": ">=20.0.0"
   },
   "scripts": {
+    "predev": "node scripts/generate-build-info.js",
     "dev": "next dev --webpack",
+    "prebuild": "node scripts/generate-build-info.js",
     "build": "prisma generate && next build --webpack",
     "start": "next start",
     "lint": "eslint"

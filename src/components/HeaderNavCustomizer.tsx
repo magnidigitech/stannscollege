@@ -150,7 +150,7 @@ const DEFAULT_CONFIG: HeaderNavConfig = {
   headerLine6Color: "#475569",
 
   topnavFontFamily: "var(--font-inter, sans-serif)",
-  topnavFontSize: 13,
+  topnavFontSize: 18,
   topnavFontWeight: "700",
   topnavSpacing: 20,
   topnavPaddingY: 12,
@@ -282,10 +282,10 @@ export function HeaderNavCustomizer() {
     if (cfg.headerLine5Color) root.style.setProperty("--header-line5-color", cfg.headerLine5Color);
     if (cfg.headerLine6Color) root.style.setProperty("--header-line6-color", cfg.headerLine6Color);
 
-    // Navigation Layout Variables
-    root.style.setProperty("--topnav-font-family", cfg.topnavFontFamily);
-    root.style.setProperty("--topnav-font-size", `${cfg.topnavFontSize}px`);
-    root.style.setProperty("--topnav-font-weight", cfg.topnavFontWeight);
+    // Navigation Layout Variables (Typography permanently fixed in code at 20px Bold)
+    root.style.removeProperty("--topnav-font-family");
+    root.style.removeProperty("--topnav-font-size");
+    root.style.removeProperty("--topnav-font-weight");
     root.style.setProperty("--topnav-spacing", `${cfg.topnavSpacing}px`);
     root.style.setProperty("--topnav-padding-y", `${cfg.topnavPaddingY}px`);
 
@@ -930,18 +930,12 @@ export function HeaderNavCustomizer() {
                                     headerLine3Size: 11,
                                     headerLine4Size: 11,
                                     headerLine5Size: 11,
-                                    headerLine6Size: 10.5,
-                                    headerLine1Color: "#002b49",
-                                    headerLine2Color: "#1e3a8a",
-                                    headerLine3Color: "#dc2626",
-                                    headerLine4Color: "#dc2626",
-                                    headerLine5Color: "#0284c7",
-                                    headerLine6Color: "#475569"
+                                    headerLine6Size: 13,
                                   });
                                 }}
                                 className="text-[10px] font-bold text-slate-500 hover:text-slate-800 underline cursor-pointer"
                               >
-                                Reset Lines
+                                Reset Font Sizes
                               </button>
                             </div>
                           </div>
@@ -959,9 +953,9 @@ export function HeaderNavCustomizer() {
                               step: 1,
                               defaultSize: 21,
                               currentSize: config.headerLine1Size ?? config.headerTitleSize ?? 21,
-                              currentColor: config.headerLine1Color || "#002b49",
-                              badge: "Main College Title",
-                              swatches: ["#002b49", "#ffffff", "#0f172a", "#1e3a8a", "#dc2626", "#0284c7", "#475569", "#d97706"]
+                              currentColor: "#ffffff",
+                              badge: "Main College Title (Fixed: #ffffff)",
+                              swatches: ["#ffffff"]
                             },
                             {
                               num: 2,
@@ -974,9 +968,9 @@ export function HeaderNavCustomizer() {
                               step: 0.5,
                               defaultSize: 11,
                               currentSize: config.headerLine2Size ?? config.headerSubSize ?? 11,
-                              currentColor: config.headerLine2Color || "#1e3a8a",
-                              badge: "Run by Line",
-                              swatches: ["#1e3a8a", "#2563eb", "#002b49", "#ffffff", "#dc2626", "#0284c7", "#475569", "#d97706"]
+                              currentColor: "#e2ff94",
+                              badge: "Run by Line (Fixed: #e2ff94)",
+                              swatches: ["#e2ff94"]
                             },
                             {
                               num: 3,
@@ -989,9 +983,9 @@ export function HeaderNavCustomizer() {
                               step: 0.5,
                               defaultSize: 11,
                               currentSize: config.headerLine3Size ?? config.headerSubSize ?? 11,
-                              currentColor: config.headerLine3Color || "#dc2626",
-                              badge: "Affiliation & Approval",
-                              swatches: ["#dc2626", "#991b1b", "#ea580c", "#1e3a8a", "#002b49", "#ffffff", "#0284c7", "#475569"]
+                              currentColor: "#e2ff94",
+                              badge: "Affiliation & Approval (Fixed: #e2ff94)",
+                              swatches: ["#e2ff94"]
                             },
                             {
                               num: 4,
@@ -1004,9 +998,9 @@ export function HeaderNavCustomizer() {
                               step: 0.5,
                               defaultSize: 11,
                               currentSize: config.headerLine4Size ?? config.headerSubSize ?? 11,
-                              currentColor: config.headerLine4Color || "#dc2626",
-                              badge: "UGC 2(f) Act",
-                              swatches: ["#dc2626", "#ea580c", "#991b1b", "#1e3a8a", "#002b49", "#ffffff", "#0284c7", "#475569"]
+                              currentColor: "#e2ff94",
+                              badge: "UGC 2(f) Act (Fixed: #e2ff94)",
+                              swatches: ["#e2ff94"]
                             },
                             {
                               num: 5,
@@ -1019,24 +1013,24 @@ export function HeaderNavCustomizer() {
                               step: 0.5,
                               defaultSize: 11,
                               currentSize: config.headerLine5Size ?? config.headerSubSize ?? 11,
-                              currentColor: config.headerLine5Color || "#0284c7",
-                              badge: "NAAC ‘A’ Grade",
-                              swatches: ["#0284c7", "#0369a1", "#1d4ed8", "#1e3a8a", "#059669", "#d97706", "#ffffff", "#475569"]
+                              currentColor: "#e2ff94",
+                              badge: "NAAC ‘A’ Grade (Fixed: #e2ff94)",
+                              swatches: ["#e2ff94"]
                             },
                             {
                               num: 6,
                               label: "Campus Address (Line 6)",
-                              text: "Amaravathi Road, Gorantla, Guntur–34, Andhra Pradesh, India.",
+                              text: "Amaravathi Road, Gorantla, Guntur–522034, Andhra Pradesh, India.",
                               sizeKey: "headerLine6Size" as const,
                               colorKey: "headerLine6Color" as const,
-                              min: 8,
-                              max: 22,
+                              min: 9,
+                              max: 24,
                               step: 0.5,
-                              defaultSize: 10.5,
-                              currentSize: config.headerLine6Size ?? 10.5,
-                              currentColor: config.headerLine6Color || "#475569",
-                              badge: "Location & PIN",
-                              swatches: ["#475569", "#002b49", "#0f172a", "#334155", "#64748b", "#94a3b8", "#ffffff", "#0284c7"]
+                              defaultSize: 13,
+                              currentSize: config.headerLine6Size ?? 13,
+                              currentColor: "#ffffff",
+                              badge: "Location & Address (Focused)",
+                              swatches: ["#ffffff"]
                             }
                           ].map((line) => (
                             <div
@@ -1102,50 +1096,12 @@ export function HeaderNavCustomizer() {
                                 />
                               </div>
 
-                              {/* Color Controls: Native Picker + Hex Text + Swatches */}
-                              <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-200/80">
-                                <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
-                                  <span>Text Color:</span>
-                                  <span className="font-mono text-[10px] uppercase text-slate-500 font-bold">
-                                    {line.currentColor}
-                                  </span>
-                                </div>
-                                
-                                <div className="flex items-center gap-2">
-                                  <input
-                                    type="color"
-                                    value={line.currentColor}
-                                    onChange={(e) => updateConfig({ [line.colorKey]: e.target.value } as any)}
-                                    className="h-8 w-10 rounded-lg cursor-pointer border border-slate-300 shrink-0 p-0.5 bg-white"
-                                  />
-                                  <input
-                                    type="text"
-                                    value={line.currentColor}
-                                    onChange={(e) => updateConfig({ [line.colorKey]: e.target.value } as any)}
-                                    className="flex-1 px-2.5 py-1.5 text-xs font-mono font-bold bg-white border border-slate-300 rounded-lg uppercase text-slate-800"
-                                  />
-                                </div>
-
-                                {/* Quick swatches */}
-                                <div className="flex items-center gap-1.5 pt-0.5">
-                                  <span className="text-[9px] font-black uppercase text-slate-400 mr-0.5">
-                                    Quick:
-                                  </span>
-                                  {line.swatches.map((swatch) => (
-                                    <button
-                                      key={swatch}
-                                      type="button"
-                                      onClick={() => updateConfig({ [line.colorKey]: swatch } as any)}
-                                      className={`h-5 w-5 rounded-md border transition-all cursor-pointer ${
-                                        line.currentColor.toLowerCase() === swatch.toLowerCase()
-                                          ? "ring-2 ring-emerald-500 scale-110 border-slate-900"
-                                          : "border-slate-300 hover:scale-105"
-                                      }`}
-                                      style={{ backgroundColor: swatch }}
-                                      title={swatch}
-                                    />
-                                  ))}
-                                </div>
+                              {/* Fixed Color Indicator (Colors fixed in code) */}
+                              <div className="flex items-center justify-between pt-1 border-t border-slate-200/80 text-[10px] text-slate-500 font-semibold">
+                                <span>Text Color:</span>
+                                <span className="font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">
+                                  {line.currentColor} (Fixed in code)
+                                </span>
                               </div>
                             </div>
                           ))}
@@ -2481,60 +2437,16 @@ export function HeaderNavCustomizer() {
                     </span>
                   </div>
 
-                  {/* 1. Font Family */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-700">Navigation Font Family:</label>
-                    <select
-                      value={config.topnavFontFamily}
-                      onChange={(e) => updateConfig({ topnavFontFamily: e.target.value })}
-                      className="px-3 py-2 text-xs bg-white border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-600 font-semibold cursor-pointer shadow-2xs"
-                    >
-                      {FONT_OPTIONS.map((f, i) => (
-                        <option key={i} value={f.value}>{f.label}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* 2. Font Size Slider */}
-                  <div className="flex flex-col gap-1.5 p-3.5 rounded-2xl bg-white border-2 border-slate-200 shadow-xs">
-                    <div className="flex items-center justify-between text-xs font-bold text-slate-800">
-                      <span>Menu Links Font Size:</span>
-                      <span className="font-mono text-emerald-900 bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 rounded-lg font-black text-xs">
-                        {config.topnavFontSize}px
-                      </span>
+                  {/* Top Nav Typography Notice (Fixed in code) */}
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-start gap-3">
+                    <div className="p-2 rounded-xl bg-emerald-600 text-white shrink-0 mt-0.5">
+                      <CheckCircle2 className="h-4 w-4" />
                     </div>
-                    <input
-                      type="range"
-                      min="11"
-                      max="16"
-                      value={config.topnavFontSize}
-                      onChange={(e) => updateConfig({ topnavFontSize: Number(e.target.value) })}
-                      className="w-full accent-emerald-600 cursor-pointer"
-                    />
-                    <div className="flex justify-between text-[10px] text-slate-400 font-bold">
-                      <span>11px</span>
-                      <span>Default 13px</span>
-                      <span>16px (Large)</span>
-                    </div>
-                  </div>
-
-                  {/* 3. Font Weight Selector */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-700">Font Weight (Boldness):</label>
-                    <div className="grid grid-cols-4 gap-1.5">
-                      {WEIGHT_OPTIONS.map((w, i) => (
-                        <button
-                          key={i}
-                          onClick={() => updateConfig({ topnavFontWeight: w.value })}
-                          className={`py-2 px-2 rounded-xl text-[11px] transition-all cursor-pointer ${
-                            config.topnavFontWeight === w.value
-                              ? "bg-slate-950 text-white font-black shadow-xs ring-2 ring-emerald-500/20"
-                              : "bg-white border-2 border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold"
-                          }`}
-                        >
-                          {w.label.split(" ")[0]}
-                        </button>
-                      ))}
+                    <div>
+                      <h4 className="text-xs font-bold text-emerald-950 uppercase tracking-wider">Top Nav Typography Fixed in Code</h4>
+                      <p className="text-xs text-emerald-800 mt-1 leading-relaxed">
+                        Top navigation font is permanently hardcoded in code at <strong>20px (Bold)</strong>. Customizer font controls have been retired.
+                      </p>
                     </div>
                   </div>
 

@@ -51,11 +51,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
       {/* 1. Heading 1 Banner */}
-      <Heading1Notch title="Internal Quality Assurance Cell (IQAC)">
-        <SubtextBox>
-          Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
-        </SubtextBox>
-      </Heading1Notch>
+      <Heading1Notch title="Internal Quality Assurance Cell (IQAC)" />
 
       {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
       <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
@@ -64,8 +60,10 @@ export default function QualityAssurancePage({ params }: PageProps) {
           {/* Left: Redesigned Collegiate Sidebar */}
           <aside className="lg:col-span-3">
             <div
-              className="sticky top-24 flex flex-col gap-6 select-none h-fit max-h-[calc(100vh-130px)] overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+              className="sticky select-none h-fit overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-6"
               style={{
+                top: "calc(var(--main-header-height, 185px) + 16px)",
+                maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px)",
                 backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
                 scrollbarWidth: "none",
                 msOverflowStyle: "none"
@@ -190,6 +188,9 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
           {/* Right: Dynamic Component Content */}
           <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
+            <SubtextBox>
+              Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
+            </SubtextBox>
             <ContentRenderer slug={currentSlug} />
           </main>
 

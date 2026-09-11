@@ -23,6 +23,7 @@
   --input: 220 13% 91%;
   --ring: 224 71.4% 4.1%;
   --radius: 0.75rem;
+  --main-header-height: 185px;
 }
 
 .no-layout #top-announcement-bar,
@@ -59,6 +60,62 @@
 }
 
 .animate-announcement-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Left-to-Right Floating Marquee for Corporate Recruiters */
+@keyframes marquee-ltr {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-ltr {
+  display: inline-flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: marquee-ltr var(--recruiter-speed, 35s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-ltr:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-ltr-staggered {
+  display: inline-flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: marquee-ltr var(--recruiter-speed, 42s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-ltr-staggered:hover {
+  animation-play-state: paused;
+}
+
+/* Right-to-Left Floating Marquee for Corporate Recruiters (Opposite Direction) */
+@keyframes marquee-rtl {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-rtl {
+  display: inline-flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: marquee-rtl var(--recruiter-speed, 35s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl:hover {
   animation-play-state: paused;
 }
 

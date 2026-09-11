@@ -83,7 +83,7 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
 
   return (
     <section className="py-14 bg-white border-b border-slate-200/80 select-none">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 w-full">
+      <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div>

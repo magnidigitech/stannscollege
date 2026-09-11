@@ -77,7 +77,7 @@ export function Heading1Notch({ title, className = "", children }: Heading1Notch
             {title}
           </h1>
           {children && (
-            <p
+            <div
               className="text-blue-100/90 leading-relaxed font-semibold border-t border-white/15 pt-3 px-2 sm:px-4"
               style={{
                 fontSize: "var(--level1-sub-size, 14px)",
@@ -86,7 +86,7 @@ export function Heading1Notch({ title, className = "", children }: Heading1Notch
               }}
             >
               {children}
-            </p>
+            </div>
           )}
         </div>
       </div>
@@ -125,9 +125,9 @@ export function SubtextBox({ subtext, className = "", children }: SubtextBoxProp
       style={{ backgroundColor: "var(--subtext-bg, #ffffff)" }}
     >
       <Quote className="absolute right-6 top-6 h-12 w-12 text-slate-300 pointer-events-none" />
-      <p className="text-slate-700 text-sm sm:text-base md:text-[1.05rem] leading-relaxed font-normal pr-10 sm:pr-14 relative z-10">
+      <div className="text-slate-700 text-sm sm:text-base md:text-[1.05rem] leading-relaxed font-normal pr-10 sm:pr-14 relative z-10">
         {content}
-      </p>
+      </div>
     </div>
   );
 }

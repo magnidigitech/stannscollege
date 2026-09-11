@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Bell, Phone, Sparkles } from "lucide-react";
+import { useCustomization } from "@/components/CustomizationProvider";
 
 export interface AnnouncementConfig {
   announcementVisible?: boolean;
@@ -38,6 +39,8 @@ const DEFAULT_ANNOUNCEMENT_CONFIG: AnnouncementConfig = {
 };
 
 export function AnnouncementBar() {
+  const { getSectionConfig } = useCustomization();
+  const tickerSec = getSectionConfig("announcement-bar", "announcement-ticker");
   const [config, setConfig] = useState<AnnouncementConfig>(DEFAULT_ANNOUNCEMENT_CONFIG);
 
   // Sync from localStorage and listen to real-time customizer events
@@ -97,13 +100,34 @@ export function AnnouncementBar() {
   }, []);
 
   // If explicitly hidden via customizer
-  if (config.announcementVisible === false) {
+  if (config.announcementVisible === false || (tickerSec && !tickerSec.layout.visible)) {
     return null;
   }
 
+  const effectiveBg = tickerSec?.colors?.isGradient && tickerSec?.colors?.bgGradient
+    ? tickerSec.colors.bgGradient
+    : tickerSec?.colors?.bgColor || config.announcementBg || "var(--announcement-bg, #020617)";
+  const effectiveBadgeBg = tickerSec?.colors?.badgeBg || config.announcementBadgeBg || "var(--announcement-badge-bg, #dc2626)";
+  const effectiveBadgeTextColor = tickerSec?.colors?.badgeTextColor || config.announcementBadgeTextColor || "var(--announcement-badge-color, #ffffff)";
+  const effectiveTextColor = tickerSec?.colors?.textColor || config.announcementTextColor || "var(--announcement-text, #e2e8f0)";
+  const effectiveBorderColor = tickerSec?.colors?.borderColor || "rgba(255, 255, 255, 0.08)";
+  const effectiveAccentColor = tickerSec?.colors?.accentColor || "#38bdf8";
+
+  const effectiveBlinkStyle = tickerSec?.layout?.announcementBlinkStyle || config.announcementBlinkStyle || "blink";
+  const effectiveBadgeText = tickerSec?.layout?.announcementBadgeText || config.announcementBadgeText || "ANNOUNCEMENTS";
+  const effectiveHeight = tickerSec?.layout?.announcementHeight || config.announcementHeight || 40;
+  const effectiveFontSize = tickerSec?.layout?.announcementFontSize || config.announcementFontSize || 12;
+  const effectiveSpeed = tickerSec?.layout?.announcementSpeed || config.announcementSpeed || 32;
+  const effectiveShowContact = tickerSec?.layout?.announcementShowContact !== undefined 
+    ? tickerSec.layout.announcementShowContact 
+    : (config.announcementShowContact !== false);
+  const effectivePhone1 = tickerSec?.layout?.announcementPhone1 || config.announcementPhone1 || "0863-2236470";
+  const effectivePhone2 = tickerSec?.layout?.announcementPhone2 || config.announcementPhone2 || "7382104655";
+  const customText = (tickerSec?.layout?.announcementCustomText || config.announcementCustomText || "").trim();
+
   // Animation class based on chosen blinking style
   const getBadgeAnimationClass = () => {
-    switch (config.announcementBlinkStyle) {
+    switch (effectiveBlinkStyle) {
       case "rapid":
         return "animate-announcement-badge-rapid ring-2 ring-red-400/80 shadow-lg shadow-red-500/30";
       case "glow":
@@ -116,19 +140,17 @@ export function AnnouncementBar() {
     }
   };
 
-  const customText = config.announcementCustomText?.trim();
-
   return (
     <div
       id="top-announcement-bar"
       className="w-full border-b overflow-hidden select-none transition-colors duration-200 z-40 relative"
       style={{
-        backgroundColor: config.announcementBg || "var(--announcement-bg, #020617)",
-        borderColor: "rgba(255, 255, 255, 0.08)",
-        height: `${config.announcementHeight || 40}px`
+        background: effectiveBg,
+        borderColor: effectiveBorderColor,
+        height: `${effectiveHeight}px`
       }}
     >
-      <div className="mx-auto max-w-[1600px] px-3 sm:px-6 lg:px-12 w-full h-full flex items-center justify-between text-xs font-semibold gap-3 sm:gap-6">
+      <div className="mx-auto max-w-[1780px] px-3 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between text-xs font-semibold gap-3 sm:gap-6">
         
         {/* Left: Live Scrolling Announcement Ticker */}
         <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 overflow-hidden h-full">
@@ -138,8 +160,8 @@ export function AnnouncementBar() {
             id="announcements-badge-box"
             className={`flex items-center gap-1.5 sm:gap-2 rounded-lg px-2.5 sm:px-3 py-1 font-extrabold tracking-wider uppercase text-[10px] sm:text-[11px] shrink-0 z-10 transition-all cursor-pointer select-none ${getBadgeAnimationClass()}`}
             style={{
-              backgroundColor: config.announcementBadgeBg || "var(--announcement-badge-bg, #dc2626)",
-              color: config.announcementBadgeTextColor || "var(--announcement-badge-color, #ffffff)"
+              backgroundColor: effectiveBadgeBg,
+              color: effectiveBadgeTextColor
             }}
             title="Click to view latest announcements & updates"
           >
@@ -154,7 +176,7 @@ export function AnnouncementBar() {
 
             {/* Badge Text */}
             <span className="font-outfit tracking-wide drop-shadow-xs font-black">
-              {config.announcementBadgeText || "ANNOUNCEMENTS"}
+              {effectiveBadgeText}
             </span>
           </div>
 
@@ -166,9 +188,9 @@ export function AnnouncementBar() {
             <div
               className="animate-announcement-marquee flex items-center font-medium"
               style={{
-                animationDuration: `${config.announcementSpeed || 32}s`,
-                color: config.announcementTextColor || "var(--announcement-text-color, #e2e8f0)",
-                fontSize: `${config.announcementFontSize || 12}px`
+                animationDuration: `${effectiveSpeed}s`,
+                color: effectiveTextColor,
+                fontSize: `${effectiveFontSize}px`
               }}
             >
               {/* Content Block 1 */}
@@ -228,24 +250,24 @@ export function AnnouncementBar() {
         </div>
 
         {/* Right: Clickable Phone Numbers (Optional) */}
-        {config.announcementShowContact !== false && (
+        {effectiveShowContact && (
           <div className="flex items-center gap-1.5 sm:gap-2 text-slate-300 shrink-0 text-[11px] sm:text-xs">
             <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400 shrink-0 animate-pulse" />
             <span className="text-slate-400 font-medium hidden md:inline">Call Us:</span>
             <a
-              href={`tel:${(config.announcementPhone1 || "08632236470").replace(/[^0-9]/g, "")}`}
+              href={`tel:${effectivePhone1.replace(/[^0-9]/g, "")}`}
               className="text-slate-200 hover:text-amber-400 font-semibold transition-colors hover:underline tracking-tight"
-              title={`Click to call ${config.announcementPhone1 || "0863-2236470"}`}
+              title={`Click to call ${effectivePhone1}`}
             >
-              {config.announcementPhone1 || "0863-2236470"}
+              {effectivePhone1}
             </a>
             <span className="text-slate-600 font-normal">|</span>
             <a
-              href={`tel:${(config.announcementPhone2 || "7382104655").replace(/[^0-9]/g, "")}`}
+              href={`tel:${effectivePhone2.replace(/[^0-9]/g, "")}`}
               className="text-slate-200 hover:text-amber-400 font-semibold transition-colors hover:underline tracking-tight"
-              title={`Click to call ${config.announcementPhone2 || "7382104655"}`}
+              title={`Click to call ${effectivePhone2}`}
             >
-              {config.announcementPhone2 || "7382104655"}
+              {effectivePhone2}
             </a>
           </div>
         )}

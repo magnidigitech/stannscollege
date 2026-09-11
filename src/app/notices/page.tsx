@@ -17,103 +17,88 @@ import {
 } from "lucide-react";
 import { getNotices } from "@/lib/sanity";
 
-// Initial fallback sample history if Sanity hasn't had items entered yet
+function isNoticeNew(dateStr?: string): boolean {
+  if (!dateStr) return false;
+
+  let noticeTime = Date.parse(dateStr);
+  if (isNaN(noticeTime)) {
+    const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/i, "$1").trim();
+    noticeTime = Date.parse(cleaned);
+  }
+
+  if (isNaN(noticeTime)) {
+    const parts = dateStr.match(/(\d{1,2})[-/ ]([A-Za-z]+|\d{1,2})[-/ ](\d{4})/);
+    if (parts) {
+      noticeTime = Date.parse(`${parts[2]} ${parts[1]}, ${parts[3]}`);
+    }
+  }
+
+  if (isNaN(noticeTime)) return false;
+
+  const now = Date.now();
+  const diffMs = now - noticeTime;
+  const twoWeeksMs = 14 * 24 * 60 * 60 * 1000;
+
+  return diffMs <= twoWeeksMs && diffMs >= -twoWeeksMs;
+}
+
+// Official Notices (Extracted from NOTICES (1).docx)
 const fallbackNoticesHistory = [
   {
-    _id: "not-1",
-    title: "U.G CIA-II Timetable September 2026",
-    date: "September 08, 2026",
-    category: "examinations",
-    description: "Continuous Internal Assessment (CIA-II) schedule for all second and third-year Undergraduate degree candidates.",
-    isNew: true,
-  },
-  {
-    _id: "not-2",
-    title: "P.G. – R25 Time Table Semester- III (Regular) CIA – I September 2026",
-    date: "September 05, 2026",
-    category: "examinations",
-    description: "Official examination schedule for MCA and MBA Semester-III students under R25 curriculum regulations.",
-    isNew: true,
-  },
-  {
-    _id: "not-3",
-    title: "U.G – CIA-I Timetable ( R26 Batch) I year",
-    date: "September 02, 2026",
-    category: "examinations",
-    description: "First Continuous Internal Assessment time table for newly admitted 2026-2027 batch undergraduate students.",
-    isNew: true,
-  },
-  {
-    _id: "not-4",
-    title: "UG CIA-I Timetable R24 & R25 AUG-2026",
-    date: "August 25, 2026",
-    category: "examinations",
-    description: "Schedule of examinations for intermediate semester cohorts across Science, Commerce, and Arts faculties.",
-    isNew: true,
-  },
-  {
-    _id: "not-5",
-    title: "R-26 Batch 1st year Orientation and Commencement of Classes.",
-    date: "August 18, 2026",
-    category: "academic",
-    description: "Welcome orientation program details, mentor-mentee allocations, and lecture timetable commencement for incoming freshers.",
-    isNew: true,
-  },
-  {
-    _id: "not-6",
-    title: "P.G ESE- Semester II (Regular) /Semester I(Backlog) Time Table (Regular/ Backlog)",
-    date: "July 20, 2026",
-    category: "examinations",
-    description: "End Semester Examination (ESE) datesheet for postgraduate students, including regular candidates and backlog paper submissions.",
-    isNew: false,
-  },
-  {
-    _id: "not-7",
-    title: "P.G ESE- Semester IV (Regular) Semester III(Backlog) Time Table June/ July 2026.",
-    date: "June 28, 2026",
-    category: "examinations",
-    description: "Final semester theory and viva-voce examination notification approved by the Controller of Examinations.",
-    isNew: false,
-  },
-  {
-    _id: "not-8",
-    title: "PG-R25 Semester II (Regular) CIA – II Time Table June 2026",
-    date: "June 12, 2026",
-    category: "examinations",
-    description: "Second internal assessment schedule for second-semester postgraduate classes.",
-    isNew: false,
-  },
-  {
-    _id: "not-9",
-    title: "Japanese Summer Immersion Program organised in collaboration with Na Ra JAPAN HUB & IKIGAI Club under International Relations Centre",
-    date: "May 30, 2026",
-    category: "general",
-    description: "Special language training, cross-cultural exposure, and corporate internship pathway program in Japan for pre-final year students.",
-    isNew: false,
-  },
-  {
-    _id: "not-10",
-    title: "P.G. – R24 Semester- IV (Regular) CIA – I Time Table April-2026",
-    date: "April 15, 2026",
-    category: "examinations",
-    description: "Pre-final assessment schedule and project evaluation dates for postgraduate faculties.",
-    isNew: false,
-  },
-  {
-    _id: "not-11",
-    title: "Admissions Extended for UG & PG Programmes 2026-27",
-    date: "May 01, 2026",
+    _id: "notice-ug-phase1-allotment-sep-2026",
+    title: "UG I Year – Phase I Seat Allotment",
+    date: "7 September 2026",
     category: "admissions",
-    description: "Due to high demand, the deadline for submitting online inquiry forms and merit counseling registration has been extended.",
-    isNew: false,
+    description:
+      "UG I Year Phase I Seat Allotment was released by the concerned Higher Education authorities. Students allotted seats at St. Ann’s College for Women are advised to complete the prescribed admission and registration formalities within the notified schedule.",
+    linkUrl: "https://cap.apcfss.in",
+    linkLabel: "APCFSS Portal (https://cap.apcfss.in)",
+    links: [
+      {
+        title: "APCFSS Portal (https://cap.apcfss.in)",
+        url: "https://cap.apcfss.in",
+      },
+    ],
   },
   {
-    _id: "not-12",
-    title: "Hostel Fee Revision & Room Allotment Circular",
-    date: "April 29, 2026",
-    category: "student-support",
-    description: "Details regarding accommodation fee structures and hostel admission schedule for the upcoming academic calendar.",
-    isNew: false,
+    _id: "notice-mca-mba-seat-allotment-sep-2026",
+    title: "MCA & MBA – Seat Allotment",
+    date: "9 September 2026",
+    category: "admissions",
+    description:
+      "MCA & MBA seat allotment was released through AP ICET Admissions. Candidates allotted seats at St. Ann’s College for Women, Gorantla, Guntur (College Code: AANG) are advised to complete the required admission formalities.",
+    linkUrl: "https://cets.apsche.ap.gov.in",
+    linkLabel: "AP ICET Admissions Portal",
+    links: [
+      {
+        title: "AP ICET Admissions Portal",
+        url: "https://cets.apsche.ap.gov.in",
+      },
+    ],
+  },
+  {
+    _id: "notice-commencement-mca-mba-classes-sep-2026",
+    title: "Commencement of MCA & MBA Classes",
+    date: "16 September 2026",
+    category: "academic",
+    description:
+      "Classes for MCA & MBA First Year – Batch Y27 will commence from 16 September 2026. Students are requested to report to the College on time and attend classes regularly.",
+  },
+  {
+    _id: "notice-nypunyam-portal-registration-sep-2026",
+    title: "UG & PG Student Registration – Nypunyam Portal",
+    date: "11 September 2026",
+    category: "academic",
+    description:
+      "All UG & PG students are required to complete their Nypunyam Portal registration and resume-related formalities on or before 20 September 2026, as per the instructions issued by Commissioner of Higher Education (CHE), Acharya Nagarjuna University (ANU), APSSDC and other concerned authorities.\n\nStudents who complete the registration process are required to complete/update their Resume Templates in the Nypunyam Portal as per the prescribed instructions.\n\n📌 Registration & Resume Completion Deadline: 20 September 2026\n\nStudents are advised to regularly check the College Website and Official Notices for further instructions and updates.",
+    linkUrl: "https://nypunyam.apssdc.in",
+    linkLabel: "Nypunyam Portal (APSSDC)",
+    links: [
+      {
+        title: "Nypunyam Portal (APSSDC)",
+        url: "https://nypunyam.apssdc.in",
+      },
+    ],
   },
 ];
 
@@ -127,8 +112,8 @@ const categories = [
 ];
 
 export default function NoticesPage() {
-  const [notices, setNotices] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [notices, setNotices] = useState<any[]>(fallbackNoticesHistory);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -250,9 +235,9 @@ export default function NoticesPage() {
                   className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-all duration-200 group"
                 >
                   <div className="flex items-start gap-3.5 flex-1 min-w-0">
-                    {/* Icon or New Badge */}
+                    {/* Icon or New Badge: strictly for 2 weeks from date of publishing */}
                     <div className="shrink-0 mt-0.5">
-                      {n.isNew ? (
+                      {isNoticeNew(n.date) ? (
                         <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200 flex items-center gap-1 shadow-2xs">
                           <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                           NEW
@@ -268,12 +253,12 @@ export default function NoticesPage() {
                       <div className="flex flex-wrap items-center gap-2 mb-1.5">
                         {n.category && (
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 uppercase tracking-wider">
-                            {n.category}
+                            {n.category.replace(/-/g, " ")}
                           </span>
                         )}
                         {n.date && (
-                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-400">
-                            <Calendar className="h-3 w-3" />
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
+                            <Calendar className="h-3 w-3 text-rose-600" />
                             {n.date}
                           </span>
                         )}
@@ -284,31 +269,69 @@ export default function NoticesPage() {
                       </h2>
 
                       {n.description && (
-                        <p className="font-sans text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">
+                        <p className="font-sans text-xs text-slate-600 mt-1 leading-relaxed whitespace-pre-line">
                           {n.description}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Right Action: Download PDF or View */}
-                  {(n.pdfUrl || n.fileUrl) ? (
-                    <a
-                      href={n.pdfUrl || n.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-[#002147] font-bold text-xs shadow-xs transition-all active:scale-95 group/btn"
-                    >
-                      <FileText className="h-4 w-4 text-indigo-600" />
-                      <span>Download Circular (PDF)</span>
-                      <Download className="h-3.5 w-3.5 text-indigo-600 group-hover/btn:translate-y-0.5 transition-transform" />
-                    </a>
-                  ) : (
-                    <div className="shrink-0 flex items-center gap-1.5 text-xs font-bold text-slate-400 group-hover:text-[#002147] transition-colors">
-                      <span>View Notice</span>
-                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  )}
+                  {/* Right Action: Web Links or Download PDF */}
+                  <div className="shrink-0 flex flex-wrap items-center gap-2">
+                    {/* Render all links if array exists, else single fallback */}
+                    {Array.isArray(n.links) && n.links.length > 0 ? (
+                      n.links.map((link: any, lIdx: number) => (
+                        <a
+                          key={link._key || lIdx}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-sky-50 hover:bg-[#002147] border border-sky-200 hover:border-[#002147] text-[#002147] hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 group/btn"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5 text-sky-600 group-hover/btn:text-white transition-colors" />
+                          <span>{link.title || "Visit Portal"}</span>
+                        </a>
+                      ))
+                    ) : n.linkUrl ? (
+                      <a
+                        href={n.linkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-sky-50 hover:bg-[#002147] border border-sky-200 hover:border-[#002147] text-[#002147] hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 group/btn"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5 text-sky-600 group-hover/btn:text-white transition-colors" />
+                        <span>{n.linkLabel || "Visit Portal"}</span>
+                      </a>
+                    ) : null}
+
+                    {/* Render all documents if array exists, else single fallback */}
+                    {Array.isArray(n.documents) && n.documents.length > 0 ? (
+                      n.documents.map((doc: any, dIdx: number) => (
+                        <a
+                          key={doc._key || dIdx}
+                          href={doc.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-[#002147] border border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 group/btn"
+                        >
+                          <FileText className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
+                          <span>{doc.title || "Download Circular"}</span>
+                          <Download className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
+                        </a>
+                      ))
+                    ) : (n.pdfUrl || n.fileUrl) ? (
+                      <a
+                        href={n.pdfUrl || n.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-[#002147] border border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 group/btn"
+                      >
+                        <FileText className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
+                        <span>Download Circular</span>
+                        <Download className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
+                      </a>
+                    ) : null}
+                  </div>
                 </div>
               ))}
             </div>
