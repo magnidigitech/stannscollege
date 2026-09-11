@@ -128,11 +128,56 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { credential, sanityToken } = body;
+    const { credential, sanityToken, password } = body;
+
+    // 1. Authenticate with Admin Passkey / Password via environment variable
+    if (password) {
+      const allowedPasswords = [
+        process.env.ADMIN_PASSWORD,
+        process.env.SANITY_WRITE_TOKEN,
+      ].filter(Boolean) as string[];
+
+      if (allowedPasswords.length > 0 && allowedPasswords.includes(password.trim())) {
+        const sessionUser = {
+          id: "admin-passkey-user",
+          email: "admin@stannscollege.ac.in",
+          name: "College Administrator",
+          role: "administrator",
+        };
+        const sessionToken = createAdminSessionToken(sessionUser, 7);
+        const isProduction = process.env.NODE_ENV === "production";
+        const response = NextResponse.json({
+          success: true,
+          user: {
+            email: sessionUser.email,
+            name: sessionUser.name,
+            role: sessionUser.role,
+          },
+        });
+        response.cookies.set({
+          name: COOKIE_NAME,
+          value: sessionToken,
+          httpOnly: true,
+          secure: isProduction,
+          sameSite: "lax",
+          maxAge: 7 * 24 * 60 * 60,
+          path: "/",
+        });
+        return response;
+      } else {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Invalid Admin Passkey. Please verify your administrator password and try again.",
+          },
+          { status: 401 }
+        );
+      }
+    }
 
     let verifiedUser: { email: string; name?: string } | null = null;
 
-    // 1. Authenticate with Google ID token
+    // 2. Authenticate with Google ID token
     if (credential) {
       verifiedUser = await verifyGoogleIdToken(credential);
       if (!verifiedUser) {
@@ -145,7 +190,7 @@ export async function POST(req: NextRequest) {
         );
       }
     }
-    // 2. Authenticate with Sanity Google Session token
+    // 3. Authenticate with Sanity Google Session token
     else if (sanityToken) {
       verifiedUser = await verifySanitySessionToken(sanityToken);
       if (!verifiedUser) {
@@ -161,7 +206,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Security Requirement: You must log in through Google. Manual email entry is not permitted.",
+          error: "Authentication required: Please provide an Admin Passkey or sign in with Google.",
         },
         { status: 400 }
       );
