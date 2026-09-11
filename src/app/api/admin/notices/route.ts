@@ -18,11 +18,9 @@ function getSanityClient() {
 }
 
 function checkAdminAuth(req: NextRequest): boolean {
-  if (process.env.NODE_ENV === "development") {
-    return true; // Allow smooth development/local workflows
-  }
   const token = req.cookies.get(COOKIE_NAME)?.value;
-  const session = verifyAdminSessionToken(token || "");
+  if (!token) return false;
+  const session = verifyAdminSessionToken(token);
   return !!session;
 }
 

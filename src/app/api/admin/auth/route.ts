@@ -80,34 +80,41 @@ async function verifySanitySessionToken(token: string): Promise<{ email: string;
 export async function GET(req: NextRequest) {
   const token = req.cookies.get(COOKIE_NAME)?.value;
   if (!token) {
-    if (process.env.NODE_ENV !== "production") {
-      return NextResponse.json({
-        authenticated: true,
-        user: {
-          email: "admin@stannscollege.ac.in",
-          name: "Administrator (Dev)",
-          role: "administrator",
-        },
-      });
-    }
-    return NextResponse.json({ authenticated: false }, { status: 200 });
+    return NextResponse.json(
+      { authenticated: false },
+      {
+        status: 200,
+        headers: { "Cache-Control": "no-store, max-age=0" },
+      }
+    );
   }
 
   const session = verifyAdminSessionToken(token);
   if (!session) {
-    const response = NextResponse.json({ authenticated: false }, { status: 200 });
+    const response = NextResponse.json(
+      { authenticated: false },
+      {
+        status: 200,
+        headers: { "Cache-Control": "no-store, max-age=0" },
+      }
+    );
     response.cookies.delete(COOKIE_NAME);
     return response;
   }
 
-  return NextResponse.json({
-    authenticated: true,
-    user: {
-      email: session.email,
-      name: session.name,
-      role: session.role,
+  return NextResponse.json(
+    {
+      authenticated: true,
+      user: {
+        email: session.email,
+        name: session.name,
+        role: session.role,
+      },
     },
-  });
+    {
+      headers: { "Cache-Control": "no-store, max-age=0" },
+    }
+  );
 }
 
 /**
@@ -217,13 +224,20 @@ export async function POST(req: NextRequest) {
  * Logs the admin out by clearing the session cookie.
  */
 export async function DELETE() {
-  const response = NextResponse.json({ success: true, message: "Logged out successfully" });
+  const response = NextResponse.json(
+    { success: true, message: "Logged out successfully" },
+    {
+      headers: { "Cache-Control": "no-store, max-age=0" },
+    }
+  );
   response.cookies.set({
     name: COOKIE_NAME,
     value: "",
     httpOnly: true,
+    expires: new Date(0),
     maxAge: 0,
     path: "/",
   });
+  response.cookies.delete(COOKIE_NAME);
   return response;
 }

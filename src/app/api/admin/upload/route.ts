@@ -5,9 +5,6 @@ import { verifyAdminSessionToken } from "@/lib/admin-auth";
 const COOKIE_NAME = "stanns_admin_session";
 
 function checkAdminAuth(req: NextRequest): boolean {
-  if (process.env.NODE_ENV !== "production") {
-    return true;
-  }
   const token = req.cookies.get(COOKIE_NAME)?.value;
   if (!token) return false;
   return verifyAdminSessionToken(token) !== null;

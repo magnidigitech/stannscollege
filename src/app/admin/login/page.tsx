@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
     async function initAuth() {
       try {
         // A. Check existing admin session
-        const res = await fetch("/api/admin/auth");
+        const res = await fetch("/api/admin/auth", { cache: "no-store" });
         const data = await res.json();
         if (data.authenticated) {
           router.replace("/admin");

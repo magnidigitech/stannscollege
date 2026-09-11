@@ -92,7 +92,7 @@ export default function AdminPage() {
   useEffect(() => {
     async function verifyAuth() {
       try {
-        const res = await fetch("/api/admin/auth");
+        const res = await fetch("/api/admin/auth", { cache: "no-store" });
         const data = await res.json();
         if (!data.authenticated) {
           router.replace("/admin/login");
@@ -180,9 +180,10 @@ export default function AdminPage() {
   const handleLogout = async () => {
     try {
       await fetch("/api/admin/auth", { method: "DELETE" });
-      router.replace("/admin/login");
     } catch (err) {
-      router.replace("/admin/login");
+      console.error("Logout error:", err);
+    } finally {
+      window.location.href = "/admin/login";
     }
   };
 
