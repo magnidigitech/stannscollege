@@ -52,7 +52,6 @@ import CollegeMagazinesSection, { MagazineItem } from "@/components/home/College
 import NewslettersSection, { NewsletterItem } from "@/components/home/NewslettersSection";
 import HomePhotoGallery, { HomeGalleryDoc } from "@/components/home/HomePhotoGallery";
 import TopRecruitersSection from "@/components/home/TopRecruitersSection";
-import { useCustomization } from "@/components/CustomizationProvider";
 
 // Default Fallback Hero Slides
 const defaultSlides = [
@@ -392,16 +391,6 @@ const UpcomingBadge = () => (
 );
 
 export default function HomePage() {
-  // Live Customization from Admin Panel
-  const { getSectionConfig } = useCustomization();
-  const heroConfig = getSectionConfig("home", "hero-slider");
-  const highlightsConfig = getSectionConfig("home", "three-column-highlights");
-  const whyConfig = getSectionConfig("home", "why-choose") || getSectionConfig("home", "academic-programs");
-  const facilitiesConfig = getSectionConfig("home", "campus-facilities") || getSectionConfig("home", "campus-life");
-  const magsConfig = getSectionConfig("home", "magazines-newsletters");
-  const galleryConfig = getSectionConfig("home", "photo-gallery");
-  const mandatesConfig = getSectionConfig("home", "mandates-compliance") || getSectionConfig("home", "bottom-actions");
-
   // Hero Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
   const [heroSlides, setHeroSlides] = useState<any[]>(defaultSlides);
@@ -617,19 +606,11 @@ export default function HomePage() {
       {/* ----------------------------------------------------
           1. HERO SLIDER SECTION (Visual Wow Factor)
           ---------------------------------------------------- */}
-      {heroConfig?.layout?.visible !== false && (
-        <section
-          ref={sectionRef}
-          style={{
-            height: bannerHeight,
-            background: heroConfig?.colors?.isGradient && heroConfig?.colors?.bgGradient
-              ? heroConfig.colors.bgGradient
-              : (heroConfig?.colors?.bgColor || undefined),
-            paddingTop: heroConfig?.layout?.paddingY === "compact" ? "4px" : heroConfig?.layout?.paddingY === "spacious" ? "16px" : heroConfig?.layout?.paddingY === "extra" ? "32px" : undefined,
-            paddingBottom: heroConfig?.layout?.paddingY === "compact" ? "4px" : heroConfig?.layout?.paddingY === "spacious" ? "16px" : heroConfig?.layout?.paddingY === "extra" ? "32px" : undefined,
-          }}
-          className="relative w-full min-h-[340px] bg-slate-950 overflow-hidden select-none transition-colors duration-300"
-        >
+      <section
+        ref={sectionRef}
+        style={{ height: bannerHeight }}
+        className="relative w-full min-h-[340px] bg-slate-950 overflow-hidden select-none transition-colors duration-300"
+      >
           <div className="relative w-full h-full">
             {heroSlides.map((slide, index) => {
               const isActive = index === currentSlide;
@@ -682,41 +663,20 @@ export default function HomePage() {
             </>
           )}
         </section>
-      )}
-
-
-
 
       {/* ----------------------------------------------------
           6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
           ---------------------------------------------------- */}
-      {highlightsConfig?.layout?.visible !== false && (
-        <section
-          style={{
-            background: highlightsConfig?.colors?.isGradient && highlightsConfig?.colors?.bgGradient
-              ? highlightsConfig.colors.bgGradient
-              : (highlightsConfig?.colors?.bgColor || undefined),
-            borderBottomColor: highlightsConfig?.colors?.borderColor || undefined,
-            paddingTop: highlightsConfig?.layout?.paddingY === "compact" ? "8px" : highlightsConfig?.layout?.paddingY === "spacious" ? "36px" : highlightsConfig?.layout?.paddingY === "extra" ? "56px" : undefined,
-            paddingBottom: highlightsConfig?.layout?.paddingY === "compact" ? "20px" : highlightsConfig?.layout?.paddingY === "spacious" ? "56px" : highlightsConfig?.layout?.paddingY === "extra" ? "80px" : undefined,
-          }}
-          className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden transition-colors duration-300"
-        >
-          {/* Subtle atmospheric ambient glows */}
-          <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+      <section className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden transition-colors duration-300">
+        {/* Subtle atmospheric ambient glows */}
+        <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
-              
-              {/* BOX 1: Events & Activities */}
-              <div
-                style={{
-                  backgroundColor: highlightsConfig?.colors?.cardBg || undefined,
-                  borderColor: highlightsConfig?.colors?.borderColor || undefined,
-                }}
-                className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group"
-              >
+        <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
+            
+            {/* BOX 1: Events & Activities */}
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -899,13 +859,7 @@ export default function HomePage() {
             </div>
 
             {/* BOX 2: Principal Profile & Leadership Message */}
-            <div
-              style={{
-                backgroundColor: highlightsConfig?.colors?.cardBg || undefined,
-                borderColor: highlightsConfig?.colors?.borderColor || undefined,
-              }}
-              className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group"
-            >
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group">
               <div>
                 {/* Header Badge */}
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -973,13 +927,7 @@ export default function HomePage() {
             </div>
 
             {/* BOX 3: Notices */}
-            <div
-              style={{
-                backgroundColor: highlightsConfig?.colors?.cardBg || undefined,
-                borderColor: highlightsConfig?.colors?.borderColor || undefined,
-              }}
-              className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group"
-            >
+            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -1073,20 +1021,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      )}
 
       {/* ----------------------------------------------------
           7. DYNAMIC CAMPUS PHOTO GALLERY
           ---------------------------------------------------- */}
-      {galleryConfig?.layout?.visible !== false && galleries.length > 0 && (
-        <div
-          style={{
-            background: galleryConfig?.colors?.isGradient && galleryConfig?.colors?.bgGradient
-              ? galleryConfig.colors.bgGradient
-              : (galleryConfig?.colors?.bgColor || undefined),
-          }}
-          className="transition-colors duration-300"
-        >
+      {galleries.length > 0 && (
+        <div className="transition-colors duration-300">
           <HomePhotoGallery galleries={galleries} />
         </div>
       )}
@@ -1094,24 +1034,12 @@ export default function HomePage() {
       {/* ----------------------------------------------------
           8. TOP RECRUITERS & CORPORATE PLACEMENT PARTNERS (FLOATING LTR)
           ---------------------------------------------------- */}
-      {facilitiesConfig?.layout?.visible !== false && (
-        <TopRecruitersSection customConfig={facilitiesConfig} />
-      )}
+      <TopRecruitersSection />
 
       {/* ----------------------------------------------------
           11. BOTTOM ACTION & MAP
           ---------------------------------------------------- */}
-      {mandatesConfig?.layout?.visible !== false && (
-        <section
-          style={{
-            background: mandatesConfig?.colors?.isGradient && mandatesConfig?.colors?.bgGradient
-              ? mandatesConfig.colors.bgGradient
-              : (mandatesConfig?.colors?.bgColor || undefined),
-            paddingTop: mandatesConfig?.layout?.paddingY === "compact" ? "20px" : mandatesConfig?.layout?.paddingY === "spacious" ? "48px" : mandatesConfig?.layout?.paddingY === "extra" ? "64px" : undefined,
-            paddingBottom: mandatesConfig?.layout?.paddingY === "compact" ? "20px" : mandatesConfig?.layout?.paddingY === "spacious" ? "48px" : mandatesConfig?.layout?.paddingY === "extra" ? "64px" : undefined,
-          }}
-          className="py-12 bg-slate-900 text-white select-none transition-colors duration-300"
-        >
+      <section className="py-12 bg-slate-900 text-white select-none transition-colors duration-300">
           <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
               <div className="flex items-start gap-4">
@@ -1175,7 +1103,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-      )}
       {/* ----------------------------------------------------
           FIXED LEFT NOTCH BUTTONS: Social Media Channels
           (Fixed at middle of screen, persistent on scroll)
