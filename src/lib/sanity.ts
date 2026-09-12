@@ -638,8 +638,10 @@ export async function getStrategicPlan() {
       communityFeedbackFormUrl,
       employerFeedbackFormUrl,
       documents[] {
+        _key,
         title,
-        "fileUrl": file.asset->url,
+        "fileUrl": coalesce(file.asset->url, fileUrl),
+        "assetId": file.asset->_id,
         googleFormUrl
       }
     }`;

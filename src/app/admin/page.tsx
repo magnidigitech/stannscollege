@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import EventsManager from "@/components/admin/EventsManager";
 import NoticesManager from "@/components/admin/NoticesManager";
 import { StrategicPlanFeedbackManager } from "@/components/admin/StrategicPlanFeedbackManager";
+import { StrategicDocumentsManager } from "@/components/admin/StrategicDocumentsManager";
 import {
   Calendar,
   Bell,
   Compass,
+  FileText,
   LogOut,
   ExternalLink,
   Sparkles,
@@ -42,6 +44,14 @@ const ADMIN_MODULES = [
     icon: Bell,
     description: "Publish official college circulars, notifications, examination alerts, admissions updates, and downloadable PDFs.",
     component: NoticesManager,
+  },
+  {
+    id: "strategic-documents",
+    label: "Strategic Documents & Reports",
+    badge: "Sanity PDF Archive",
+    icon: FileText,
+    description: "Upload, manage, reorder, and update official institutional strategic framework documents and annual deployment plan PDFs.",
+    component: StrategicDocumentsManager,
   },
   {
     id: "strategic-plans",
