@@ -23,7 +23,7 @@ import { NirfReports } from "@/components/about/statutory-affiliations-recogniti
 import { NaacCertificates } from "@/components/about/statutory-affiliations-recognitions/NaacCertificates";
 import { AisheCertifications } from "@/components/about/statutory-affiliations-recognitions/AisheCertifications";
 import { Ugc2f } from "@/components/about/statutory-affiliations-recognitions/Ugc2f";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 const aboutSubtexts: Record<string, string> = {
   "basic-institutional-information": "Official profiles, legal mandates, and recognized affiliations of St. Ann's College for Women.",
@@ -184,9 +184,6 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
 
     return (
       <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn">
-        {/* 1. Heading 1 Notch Attached to Top Nav */}
-        <Heading1Notch title="About Us" />
-
         <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 

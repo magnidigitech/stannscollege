@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FileText, ShieldCheck, Download, Eye, X, BookOpen, AlertCircle, CheckCircle, GraduationCap, Scale, Users, Users2, FileSpreadsheet, Phone } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 interface DisclosureItem {
   id: string;
@@ -238,9 +238,6 @@ export default function MandatoryDisclosuresPage() {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* 1. Heading 1 Banner */}
-      <Heading1Notch title="Mandatory Disclosures &amp; Statutory Compliance" />
-
       {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
       <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
@@ -259,25 +256,25 @@ export default function MandatoryDisclosuresPage() {
             >
               {/* Sidebar Heading Banner */}
               <div
-                className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-sm border transition-colors duration-200 shrink-0"
+                className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3.5 shadow-sm border transition-colors duration-200 shrink-0"
                 style={{
                   background: "var(--sidebar-bg, #1e40af)",
                   borderColor: "var(--sidebar-border, rgba(30, 64, 175, 0.3))",
                   color: "var(--sidebar-text, #ffffff)"
                 }}
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs">
-                  <BookOpen className="h-4 w-4" />
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs shadow-inner">
+                  <BookOpen className="h-4.5 w-4.5" />
                 </span>
                 <div className="flex flex-col min-w-0">
-                  <span
-                    className="font-outfit text-xs font-black uppercase tracking-wider truncate"
+                  <h1
+                    className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider truncate leading-tight"
                     style={{ color: "var(--sidebar-text, #ffffff)" }}
                   >
-                    MANDATORY DISCLOSURES
-                  </span>
+                    Mandatory Disclosures
+                  </h1>
                   <span
-                    className="text-[10px] opacity-85 font-medium truncate"
+                    className="text-[10px] sm:text-[11px] opacity-85 font-medium truncate mt-0.5"
                     style={{ color: "var(--sidebar-text, #ffffff)" }}
                   >
                     Statutory Compliance Directory

@@ -5,7 +5,7 @@ import {
   GraduationCap, BookOpen, Building, Award, Lightbulb, Settings, LineChart,
   ChevronRight, X, Sparkles, CheckCircle
 } from "lucide-react";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Individual Component Imports
 import { UndergraduateProgrammes } from "./academic-programmes/UndergraduateProgrammes";
@@ -162,9 +162,6 @@ export default function AcademicsClientFallback() {
 
   return (
     <div className="bg-slate-50/50 min-h-screen select-none font-sans">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Academics" />
-
       <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
         {/* Sub-text Box */}
         <SubtextBox 

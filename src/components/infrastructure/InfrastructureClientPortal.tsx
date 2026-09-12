@@ -30,7 +30,7 @@ import {
   TableProperties
 } from "lucide-react";
 import { staticInfrastructureSections } from "./staticData";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Category Tabs Mapping
 const tabs = [
@@ -532,9 +532,6 @@ export default function InfrastructureClientPortal({
 
   return (
     <div className="font-sans min-h-screen bg-[#fafcfb]/50 w-full select-none animate-fadeIn">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Infrastructure" />
-
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
         {/* Sub-text Box */}
         <SubtextBox 
@@ -694,6 +691,13 @@ export default function InfrastructureClientPortal({
             {/* Sidebar Selectors Panel for Desktop (Floating scroll window) */}
             <div className="hidden md:flex flex-col gap-6 sticky top-24 select-none">
               <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-5 shadow-sm hover:shadow-md transition-all flex flex-col gap-4 max-h-[80vh] overflow-y-auto no-scrollbar">
+                
+                <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 px-2">
+                  <h1 className="font-outfit text-xl font-black text-[#004225] tracking-tight">Infrastructure</h1>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                    Campus &amp; Facilities
+                  </span>
+                </div>
 
                 {/* Back to Overview Hub link button */}
                 <Link

@@ -8,7 +8,7 @@ import {
   Film, AlertCircle, FileText, ArrowLeft, Loader2
 } from "lucide-react";
 import { getNaacPeerTeam } from "@/lib/sanity";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Interfaces
 interface GalleryImage {
@@ -139,12 +139,16 @@ export default function NaacPeerTeamPage() {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white pb-20">
-      
-      {/* 1. Heading 1 Banner */}
-      <Heading1Notch title="IQAC, Quality Assurance &amp; Accreditation" />
-
       {/* 2. Interactive Navigation Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="border-b border-slate-200 pb-4 mb-6">
+          <h1 className="font-outfit text-2xl md:text-3xl font-black text-[#002147] tracking-tight">
+            IQAC, Quality Assurance &amp; Accreditation
+          </h1>
+          <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
+            NAAC Peer Team Visit Documentation, Gallery &amp; Records
+          </p>
+        </div>
         <SubtextBox className="mb-6">{description}</SubtextBox>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 border-b border-slate-200 pb-6">
           <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 gap-1 w-full sm:w-auto">

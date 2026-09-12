@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { staticPlacementSections } from "./staticData";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 const navigationGroups = [
   {
@@ -1194,9 +1194,6 @@ export default function PlacementsClientPortal({
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] select-none animate-fadeIn">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Placements &amp; Industry Linkages" />
-
       {/* Main Content Layout */}
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 lg:py-12">
         {/* Sub-text Box */}
@@ -1288,7 +1285,14 @@ export default function PlacementsClientPortal({
           {/* Desktop Left Accordion Sidebar Navigation */}
           <div className="hidden lg:block w-80 shrink-0">
             <div className="sticky top-28 bg-white rounded-2xl p-4 md:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-200/50 backdrop-blur-xl max-h-[calc(100vh-140px)] flex flex-col">
-              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">Navigation Hub</h3>
+              <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 mb-3 px-2">
+                <h1 className="font-outfit text-lg md:text-xl font-black text-[#004225] tracking-tight leading-tight">
+                  Placements &amp; Linkages
+                </h1>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                  Career &amp; Industry Hub
+                </span>
+              </div>
               <div className="space-y-3 overflow-y-auto pr-1 flex-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
                 {navigationGroups.map((group) => {
                   const Icon = group.icon;

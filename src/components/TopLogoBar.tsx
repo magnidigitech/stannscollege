@@ -76,47 +76,31 @@ export function TopLogoBar() {
             {/* Divider Line */}
             <div className="h-11 w-px bg-white/20 hidden sm:block shrink-0" />
 
-            {/* NAAC 'A' Accreditation with Side Text */}
+            {/* NAAC 'A' Accreditation Logo */}
             <div
-              className="flex items-center gap-2 group cursor-default h-full py-0 shrink-0"
+              className="flex items-center group cursor-default h-full py-0 shrink-0"
               title="Accredited by NAAC with 'A' Grade in the first cycle"
             >
               <img
                 src="/images/naac_logo_clean.png?v=full_v5"
                 alt="NAAC 'A' Grade"
-                className="h-[82px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[84px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
-              <div className="flex flex-col text-left leading-tight shrink-0">
-                <span className="text-xs sm:text-[13px] font-black text-amber-400 tracking-tight">
-                  NAAC &apos;A&apos;
-                </span>
-                <span className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-wide text-slate-200">
-                  Accreditation
-                </span>
-              </div>
             </div>
 
             {/* Divider Line */}
             <div className="h-11 w-px bg-white/20 hidden sm:block shrink-0" />
 
-            {/* AICTE Approved with Side Text */}
+            {/* AICTE Approved Logo */}
             <div
-              className="hidden sm:flex items-center gap-2 group cursor-default h-full py-0 shrink-0"
+              className="hidden sm:flex items-center group cursor-default h-full py-0 shrink-0"
               title="Approved by All India Council for Technical Education (AICTE), New Delhi for MCA & MBA"
             >
               <img
                 src="/images/AICTE_Logo.png?v=full_v5"
                 alt="AICTE Approved"
-                className="h-[82px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[84px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
-              <div className="flex flex-col text-left leading-tight shrink-0">
-                <span className="text-xs sm:text-[13px] font-black tracking-tight text-sky-300">
-                  AICTE
-                </span>
-                <span className="text-[9.5px] sm:text-[11px] font-bold uppercase tracking-wide text-slate-200">
-                  Approved
-                </span>
-              </div>
             </div>
           </div>
 

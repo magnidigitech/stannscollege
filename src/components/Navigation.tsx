@@ -257,30 +257,55 @@ export default function Navigation() {
 
   const strategicCategories = [
     {
-      title: "I. Strategic Framework",
+      title: "1. Performance Indicators",
+      fullTitle: "1. Institutional Performance Indicators",
       icon: GraduationCap,
+      href: "/strategic-plans-and-future-directions#performance-indicators",
       items: [
-        { text: "Overview & Executive Summary", href: "/strategic-plans-and-future-directions" },
-        { text: "Institutional Performance Indicators", href: "/strategic-plans-and-future-directions#indicators" },
-        { text: "Strategic Priorities – Next 5 Years", href: "/strategic-plans-and-future-directions#priorities" },
+        { text: "a. Academic Performance Indicators", href: "/strategic-plans-and-future-directions#sec-academic-indicators" },
+        { text: "b. Research & Innovation Indicators", href: "/strategic-plans-and-future-directions#sec-research-indicators" },
+        { text: "c. Societal Impact Indicators", href: "/strategic-plans-and-future-directions#sec-societal-indicators" },
+        { text: "d. Institutional Excellence Indicators", href: "/strategic-plans-and-future-directions#sec-excellence-indicators" },
       ]
     },
     {
-      title: "II. Deployment Plans & Reports",
+      title: "2. Strategic Priorities",
+      fullTitle: "2. Strategic Priorities – 2026–2031",
       icon: LineChart,
+      href: "/strategic-plans-and-future-directions#strategic-priorities",
       items: [
-        { text: "Strategic Framework (2024–2030)", href: "/strategic-plans-and-future-directions#documents" },
-        { text: "Annual Deployment Plan 2025–2026", href: "/strategic-plans-and-future-directions#documents" },
-        { text: "Annual Deployment Plan 2024–2025", href: "/strategic-plans-and-future-directions#documents" },
+        { text: "a. Academic Priorities", href: "/strategic-plans-and-future-directions#sec-priority-academic" },
+        { text: "b. Infrastructure Priorities", href: "/strategic-plans-and-future-directions#sec-priority-infra" },
+        { text: "c. Financial Priorities", href: "/strategic-plans-and-future-directions#sec-priority-financial" },
+        { text: "d. Global Goals & Internationalization", href: "/strategic-plans-and-future-directions#sec-priority-global" },
+        { text: "e. Strategic Documents", href: "/strategic-plans-and-future-directions#sec-strategic-documents" },
       ]
     },
     {
-      title: "III. Vision 2047 & Engagement",
-      icon: Flag,
+      title: "3. Stakeholder Engagement",
+      fullTitle: "3. Stakeholder Engagement & Feedback",
+      icon: Users,
+      href: "/strategic-plans-and-future-directions#stakeholder-engagement",
       items: [
-        { text: "Vision 2047: Viksit Bharat & Swarna Andhra", href: "/strategic-plans-and-future-directions#vision-2047" },
-        { text: "Stakeholder Feedback Mechanisms", href: "/strategic-plans-and-future-directions#stakeholder-feedback" },
-        { text: "National & State Resource Links", href: "/strategic-plans-and-future-directions#resources" },
+        { text: "a. Student Feedback", href: "/strategic-plans-and-future-directions#sec-feedback-student" },
+        { text: "b. Faculty Engagement", href: "/strategic-plans-and-future-directions#sec-feedback-faculty" },
+        { text: "c. Parent Feedback", href: "/strategic-plans-and-future-directions#sec-feedback-parent" },
+        { text: "d. Alumni Engagement", href: "/strategic-plans-and-future-directions#sec-feedback-alumni" },
+        { text: "e. Community Feedback", href: "/strategic-plans-and-future-directions#sec-feedback-community" },
+        { text: "f. Employers Feedback", href: "/strategic-plans-and-future-directions#sec-feedback-employers" },
+      ]
+    },
+    {
+      title: "4. Vision for 2047",
+      fullTitle: "4. Vision for 2047: Viksit Bharat & Swarna Andhra",
+      icon: Flag,
+      href: "/strategic-plans-and-future-directions#vision-2047",
+      items: [
+        { text: "a. Our Commitment", href: "/strategic-plans-and-future-directions#sec-vision-commitments" },
+        { text: "b. Strategic Focus Areas", href: "/strategic-plans-and-future-directions#sec-vision-focus" },
+        { text: "c. Vision 2047-Signature Initiatives", href: "/strategic-plans-and-future-directions#sec-vision-initiatives" },
+        { text: "d. Our Vision for the Future", href: "/strategic-plans-and-future-directions#sec-vision-swarna" },
+        { text: "e. Reference Resource Links", href: "/strategic-plans-and-future-directions#sec-reference-resources" },
       ]
     }
   ];
@@ -632,12 +657,12 @@ export default function Navigation() {
       <div
         className="hidden md:flex items-center justify-between text-[13px] lg:text-[14px] xl:text-[15px] font-medium relative w-full transition-all duration-200 z-30"
         style={{
-          color: "var(--topnav-link-color, #ffffff)",
+          color: "#ffffff",
           fontFamily: "inherit",
           fontSize: "15px",
-          fontWeight: 500,
-          paddingTop: "var(--topnav-padding-y, 4px)",
-          paddingBottom: "var(--topnav-padding-y, 4px)"
+          fontWeight: 600,
+          paddingTop: "var(--topnav-padding-y, 5px)",
+          paddingBottom: "var(--topnav-padding-y, 5px)"
         }}
       >
         <nav
@@ -1439,7 +1464,7 @@ export default function Navigation() {
 
             {activeMenu === "strategic" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("strategic")}
                 onMouseLeave={handleMouseLeave}
@@ -1448,22 +1473,19 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Institutional Strategic Plans & Future Directions"
-                  href="/strategic-plans-and-future-directions"
-                  buttonText="Visit Strategic Plans Main Page"
-                  icon={LineChart}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {strategicCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
                         <cat.icon className="h-4 w-4" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
-                      </h4>
+                      <Link
+                        href={cat.href}
+                        onClick={() => setActiveMenu(null)}
+                        className="font-outfit font-black text-slate-800 text-sm leading-tight hover:text-[#002147] transition-colors"
+                      >
+                        {cat.fullTitle || cat.title}
+                      </Link>
                     </div>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
@@ -1483,66 +1505,15 @@ export default function Navigation() {
             )}
           </div>
 
-          {/* 14. Contact Us */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("contact")}
-            onMouseLeave={handleMouseLeave}
+          {/* 14. Contact Us (Direct Link) */}
+          <Link
+            href="/contact"
+            onClick={() => setActiveMenu(null)}
+            className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
+            title="Visit Contact Us Page"
           >
-            <Link
-              href="/contact"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Contact Us Page"
-            >
-              Contact Us
-            </Link>
-
-            {activeMenu === "contact" && (
-              <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
-                style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("contact")}
-                onMouseLeave={handleMouseLeave}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.nativeEvent.stopImmediatePropagation();
-                }}
-              >
-                <DropdownHeaderBanner
-                  title="Contact Us & Campus Location"
-                  href="/contact"
-                  buttonText="Visit Contact Page"
-                  icon={Phone}
-                  onNavigate={() => setActiveMenu(null)}
-                />
-                {contactCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
-                      </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
-                      </h4>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      {cat.items.map((item, idx) => (
-                        <Link
-                          key={idx}
-                          href={item.href}
-                          onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
-                        >
-                          {item.text}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+            Contact Us
+          </Link>
 
         </nav>
       </div>
@@ -1553,20 +1524,18 @@ export default function Navigation() {
 
       {/* Mobile Top Header (Visible only on mobile screens when sticky nav is active) */}
       <div
-        className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 px-4 transition-colors duration-200"
-        style={{ backgroundColor: "var(--topnav-bg, #002147)" }}
+        className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 px-4 transition-colors duration-200 border-b border-white/10"
+        style={{ backgroundColor: "#001738" }}
       >
         <Link
           href="/"
-          className="font-outfit font-black text-base uppercase tracking-tight leading-none"
-          style={{ color: "var(--topnav-link-color, #ffffff)" }}
+          className="font-outfit font-black text-base uppercase tracking-tight leading-none text-white"
         >
           St. Ann&apos;s College
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all cursor-pointer"
-          style={{ color: "var(--topnav-link-color, #ffffff)" }}
+          className="p-2.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all cursor-pointer text-white"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -1979,17 +1948,15 @@ export default function Navigation() {
                 </button>
                 {mStrategic && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/strategic-plans-and-future-directions"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Strategic Plans Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
                     {strategicCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
                           <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
                         ))}
@@ -1999,35 +1966,16 @@ export default function Navigation() {
                 )}
               </div>
 
-              {/* 14. Contact Us Accordion */}
+              {/* 14. Contact Us (Direct Link) */}
               <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMContact(!mContact)}
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileOpen(false)}
                   className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
                 >
                   <span>14. Contact Us</span>
-                  {mContact ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mContact && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/contact"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Contact Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {contactCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  <ArrowRight className="h-4 w-4 text-slate-400" />
+                </Link>
               </div>
 
             </div>

@@ -23,7 +23,7 @@ import {
   Activity
 } from "lucide-react";
 import { staticFacultyMembers, staticFacultySections, FacultyMember } from "./staticData";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 import { PortableText } from "@portabletext/react";
 
 // Mappings and Configurations for URL slugs
@@ -585,9 +585,6 @@ export default function FacultyClientPortal({
 
   return (
     <div className="font-sans w-full select-none animate-fadeIn">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Faculty" />
-
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
         {/* Sub-text Box */}
         <SubtextBox 
@@ -631,10 +628,13 @@ export default function FacultyClientPortal({
         <div className="hidden md:flex flex-col gap-6 sticky top-24 select-none">
           
           {/* Glassmorphic Pillar Indicator Wrapper */}
-          <div className="bg-white border border-slate-200/70 rounded-[2rem] p-4 shadow-sm hover:shadow-md transition-all flex flex-col gap-1.5">
-            <span className="text-[10px] uppercase tracking-widest font-black text-slate-400 px-4 pt-2 pb-1 inline-block">
-              Faculty Sections
-            </span>
+          <div className="bg-white border border-slate-200/70 rounded-[2rem] p-4 shadow-sm hover:shadow-md transition-all flex flex-col gap-2">
+            <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 px-3 pt-1">
+              <h1 className="font-outfit text-xl font-black text-[#002147] tracking-tight">Faculty</h1>
+              <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                Directory &amp; Portals
+              </span>
+            </div>
             {tabs.map((t) => {
               const isActive = activeSlug === t.slug;
               return (

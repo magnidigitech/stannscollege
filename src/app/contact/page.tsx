@@ -119,7 +119,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-slate-50/50 font-sans pb-20 select-none">
 
       {/* 1. HERO BANNER HEADER */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#001730] via-[#002147] to-[#0d3b66] text-white pt-12 pb-20 px-6 select-none">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#001730] via-[#002147] to-[#0d3b66] text-white pt-4 pb-8 sm:pt-6 sm:pb-10 px-4 sm:px-6 select-none">
         {/* Subtle Engineering Grid Pattern Overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_20%,#000_70%,transparent_100%)] pointer-events-none" />
 
@@ -129,20 +129,17 @@ export default function ContactPage() {
         <div className="absolute -right-16 -top-16 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl" />
 
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full text-center relative z-10">
-          {/* <span className="inline-flex items-center gap-2 bg-indigo-500/15 border border-indigo-400/25 rounded-full px-4.5 py-1.5 text-xs font-black text-indigo-300 uppercase tracking-widest mb-4 backdrop-blur-md shadow-xs">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse text-indigo-300" /> Connect with St. Ann&apos;s
-          </span> */}
-          <h1 className="font-outfit text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none mb-6">
+          <h1 className="font-outfit text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-2">
             Get In Touch
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-slate-300 font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-xl mx-auto leading-relaxed">
             Have questions about admissions, academic programs, or campus life? Reach out to our dedicated administrative office or send an instant message below.
           </p>
         </div>
       </section>
 
       {/* 2. DIRECT CONTACT CHANNELS (GRID) */}
-      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full -mt-10 relative z-20">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full -mt-4 sm:-mt-6 relative z-20 mb-8 sm:mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
           {/* Card 1: Postal Location (Full Solid Emerald) */}
@@ -151,8 +148,8 @@ export default function ContactPage() {
               <div className="h-12 w-12 rounded-2xl bg-white border border-emerald-200 flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-110 transition-transform duration-300 shadow-xs">
                 <MapPin className="h-6 w-6" />
               </div>
-              <h3 className="font-outfit font-black text-slate-800 text-lg mb-2">College Campus</h3>
-              <p className="text-slate-600 text-xs font-bold leading-relaxed">
+              <h3 className="font-outfit font-black text-slate-800 text-xl mb-3">College Campus</h3>
+              <p className="text-slate-700 text-[13.5px] sm:text-[14px] font-bold leading-relaxed">
                 St. Ann&apos;s College for Women<br />
                 D. No: 10 – 209 / 2,<br />
                 Amaravathi Road, Gorantla,<br />
@@ -164,9 +161,9 @@ export default function ContactPage() {
               href="https://maps.google.com/?q=St.Ann's+College+for+Women+Gorantla+Guntur"
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 hover:text-emerald-800 select-none group/btn"
+              className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-emerald-700 hover:text-emerald-800 select-none group/btn"
             >
-              Get Directions <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+              Get Directions <ArrowRight className="h-4 w-4 transform group-hover/btn:translate-x-0.5 transition-transform" />
             </a>
           </div>
 
@@ -176,15 +173,15 @@ export default function ContactPage() {
               <div className="h-12 w-12 rounded-2xl bg-white border border-blue-200 flex items-center justify-center text-blue-600 mb-5 group-hover:scale-110 transition-transform duration-300 shadow-xs">
                 <Phone className="h-6 w-6" />
               </div>
-              <h3 className="font-outfit font-black text-slate-800 text-lg mb-2">Communications</h3>
-              <div className="flex flex-col gap-2">
+              <h3 className="font-outfit font-black text-slate-800 text-xl mb-3">Communications</h3>
+              <div className="flex flex-col gap-2.5">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Landline Office</span>
-                  <a href="tel:08632236470" className="text-slate-700 text-xs font-bold hover:text-blue-600 transition-colors">0863-2236470</a>
+                  <span className="text-[11px] uppercase font-bold text-slate-500 block">Landline Office</span>
+                  <a href="tel:08632236470" className="text-slate-800 text-sm sm:text-[15px] font-bold hover:text-blue-600 transition-colors">0863-2236470</a>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Mobile Admissions</span>
-                  <div className="flex flex-col text-xs font-bold text-slate-700">
+                  <span className="text-[11px] uppercase font-bold text-slate-500 block">Mobile Admissions</span>
+                  <div className="flex flex-col text-sm sm:text-[15px] font-bold text-slate-800 gap-0.5">
                     <a href="tel:7382104655" className="hover:text-blue-600 transition-colors">7382104655</a>
                     <a href="tel:8500656134" className="hover:text-blue-600 transition-colors">8500656134</a>
                   </div>
@@ -194,9 +191,9 @@ export default function ContactPage() {
             <button
               type="button"
               onClick={() => setPhoneModalOpen(true)}
-              className="mt-6 inline-flex items-center gap-1.5 text-xs font-black text-blue-700 hover:text-blue-800 select-none group/btn text-left cursor-pointer"
+              className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-blue-700 hover:text-blue-800 select-none group/btn text-left cursor-pointer"
             >
-              Call Admissions <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+              Call Admissions <ArrowRight className="h-4 w-4 transform group-hover/btn:translate-x-0.5 transition-transform" />
             </button>
           </div>
 
@@ -206,24 +203,24 @@ export default function ContactPage() {
               <div className="h-12 w-12 rounded-2xl bg-white border border-amber-200 flex items-center justify-center text-amber-600 mb-5 group-hover:scale-110 transition-transform duration-300 shadow-xs">
                 <Mail className="h-6 w-6" />
               </div>
-              <h3 className="font-outfit font-black text-slate-800 text-lg mb-2">Email Desk</h3>
+              <h3 className="font-outfit font-black text-slate-800 text-xl mb-3">Email Desk</h3>
               <div className="flex flex-col gap-2.5">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Official Inquiry</span>
+                  <span className="text-[11px] uppercase font-bold text-slate-500 block">Official Inquiry</span>
                   <button
                     type="button"
                     onClick={() => setEmailModalOpen(true)}
-                    className="text-slate-700 text-xs font-bold hover:text-amber-700 transition-colors break-all text-left cursor-pointer"
+                    className="text-slate-800 text-[13.5px] sm:text-[14px] font-bold hover:text-amber-700 transition-colors break-all text-left cursor-pointer"
                   >
                     st_anns_coll@yahoo.co.in
                   </button>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Alternate Contact</span>
+                  <span className="text-[11px] uppercase font-bold text-slate-500 block">Alternate Contact</span>
                   <button
                     type="button"
                     onClick={() => setEmailModalOpen(true)}
-                    className="text-slate-700 text-xs font-bold hover:text-amber-700 transition-colors break-all text-left cursor-pointer"
+                    className="text-slate-800 text-[13.5px] sm:text-[14px] font-bold hover:text-amber-700 transition-colors break-all text-left cursor-pointer"
                   >
                     stannscollegegnt@gmail.com
                   </button>
@@ -233,9 +230,9 @@ export default function ContactPage() {
             <button
               type="button"
               onClick={() => setEmailModalOpen(true)}
-              className="mt-5 inline-flex items-center gap-1.5 text-xs font-black text-amber-700 hover:text-amber-800 select-none group/btn text-left cursor-pointer"
+              className="mt-5 inline-flex items-center gap-1.5 text-sm font-black text-amber-700 hover:text-amber-800 select-none group/btn text-left cursor-pointer"
             >
-              Send Email <ArrowRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
+              Send Email <ArrowRight className="h-4 w-4 transform group-hover/btn:translate-x-0.5 transition-transform" />
             </button>
           </div>
 
@@ -245,10 +242,10 @@ export default function ContactPage() {
               <div className="h-12 w-12 rounded-2xl bg-white border border-indigo-200 flex items-center justify-center text-[#002147] mb-5 group-hover:scale-110 transition-transform duration-300 shadow-xs">
                 <Globe className="h-6 w-6" />
               </div>
-              <h3 className="font-outfit font-black text-slate-800 text-lg mb-2">Social Ecosystem</h3>
-              <p className="text-slate-600 text-xs font-bold leading-normal mb-3">
+              <h3 className="font-outfit font-black text-slate-800 text-xl mb-3">Social Ecosystem</h3>
+              <p className="text-slate-700 text-[13.5px] sm:text-[14px] font-bold leading-normal mb-3">
                 Official Website:<br />
-                <a href="https://www.stannscollegeforwomen.ac.in" target="_blank" rel="noreferrer" className="text-indigo-700 hover:underline">www.stannscollegeforwomen.ac.in</a>
+                <a href="https://www.stannscollegeforwomen.ac.in" target="_blank" rel="noreferrer" className="text-indigo-700 hover:underline font-bold">www.stannscollegeforwomen.ac.in</a>
               </p>
               <div className="flex flex-wrap gap-2.5 mt-2">
                 <a

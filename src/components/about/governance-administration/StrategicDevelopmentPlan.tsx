@@ -5,10 +5,10 @@ import {
   FileText, Eye, Shield, BookOpen, GraduationCap, Users, Laptop,
   Briefcase, Leaf, ShieldCheck, ArrowRight, Milestone, Download,
   ExternalLink, Globe, CheckCircle2, MessageSquare, Building, Scale,
-  Flame, Activity, Award, HeartHandshake, TrendingUp, Coins, Sparkles, Quote, Network
+  Flame, Activity, Award, HeartHandshake, TrendingUp, Coins, Sparkles, Quote, Network, X
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 import { getStrategicPlan } from "@/lib/sanity";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 
@@ -43,7 +43,7 @@ const defaultPlanData: StrategicPlanData = {
   employerFeedbackFormUrl: "https://www.google.com",
   documents: [
     {
-      title: "Strategic Five-Year Plan 2026–2031",
+      title: "Institutional Strategic Framework 2024-2030 (Years Plan)",
       fileUrl: "/documents/Institutional Strategic Framework  2024-2030.pdf",
       googleFormUrl: "https://www.google.com"
     },
@@ -54,6 +54,16 @@ const defaultPlanData: StrategicPlanData = {
     },
     {
       title: "Annual Deployment Plan 2024–2025",
+      fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
+      googleFormUrl: "https://www.google.com"
+    },
+    {
+      title: "Annual Deployment Plan 2023–2024",
+      fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
+      googleFormUrl: "https://www.google.com"
+    },
+    {
+      title: "Annual Deployment Plan 2022–2023",
       fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
       googleFormUrl: "https://www.google.com"
     }
@@ -368,6 +378,20 @@ export function StrategicDevelopmentPlan() {
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [selectedFileTitle, setSelectedFileTitle] = useState("");
   const [activeSectionId, setActiveSectionId] = useState<string>("performance-indicators");
+  const [isAllDocsModalOpen, setIsAllDocsModalOpen] = useState(false);
+  const [docSearchQuery, setDocSearchQuery] = useState("");
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsAllDocsModalOpen(false);
+      }
+    };
+    if (isAllDocsModalOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isAllDocsModalOpen]);
 
   useEffect(() => {
     const allIds = [
@@ -467,20 +491,21 @@ export function StrategicDevelopmentPlan() {
   };
 
   const documentsList = data.documents || defaultPlanData.documents || [];
+  const displayedDocs = documentsList.slice(0, 3);
+  const filteredAllDocs = documentsList.filter((doc) =>
+    doc.title.toLowerCase().includes(docSearchQuery.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col font-sans select-none animate-fadeIn w-full">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Strategic Plans &amp; Future Directions" />
-
-      {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
+      {/* Main Content Container (Sidebar on Left, Data Elements on Right) */}
       <div className="max-w-[1600px] mx-auto pt-6 sm:pt-8 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
         {/* Left: About Navigation Sidebar */}
         <aside className="lg:col-span-3">
           <AboutSidebar
             categories={STRATEGIC_PLAN_CATEGORIES}
-            bannerTitle="STRATEGIC PLAN"
+            bannerTitle="Strategic Plans & Future Directions"
             bannerSubtitle="Sections on this Page"
             activeId={activeSectionId}
             onItemClick={(id) => setActiveSectionId(id)}
@@ -491,7 +516,26 @@ export function StrategicDevelopmentPlan() {
         <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
           <div className="flex flex-col gap-4">
             {/* Sub-text Box */}
-            <SubtextBox subtext={data.executiveSummary || defaultPlanData.executiveSummary} />
+            <SubtextBox>
+              {data.executiveSummary && !data.executiveSummary.includes("envisions a transformative future") ? (
+                <div style={{ color: "var(--sidebar-bg, #1e40af)" }} className="font-medium">
+                  {data.executiveSummary}
+                </div>
+              ) : (
+                <p style={{ color: "var(--sidebar-bg, #1e40af)" }} className="font-medium">
+                  <mark style={{ color: "var(--sidebar-bg, #1e40af)" }} className="bg-amber-100/75 font-extrabold text-[1.15em] px-1.5 py-0.5 rounded not-italic">
+                    St. Ann’s College for Women, Guntur
+                  </mark>, envisions a transformative future rooted in academic excellence, innovation, women empowerment, social responsibility, and nation-building. Guided by the values of the Congregation of the Sisters of St. Ann and aligned with the aspirations of{" "}
+                  <mark style={{ color: "var(--sidebar-bg, #1e40af)" }} className="bg-amber-100/75 font-extrabold text-[1.15em] px-1.5 py-0.5 rounded not-italic">
+                    Viksit Bharat @2047
+                  </mark>{" "}
+                  and{" "}
+                  <mark style={{ color: "var(--sidebar-bg, #1e40af)" }} className="bg-amber-100/75 font-extrabold text-[1.15em] px-1.5 py-0.5 rounded not-italic">
+                    Swarna Andhra @2047
+                  </mark>, the institution is committed to nurturing globally competent, ethically grounded, and socially responsible women leaders.
+                </p>
+              )}
+            </SubtextBox>
 
             {/* Section 1: Institutional Performance Indicators (Unchanged) */}
             <section
@@ -753,13 +797,22 @@ export function StrategicDevelopmentPlan() {
                       </p>
                     </div>
                   </div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider bg-white border border-slate-200 text-slate-600 px-3 py-1 rounded-full shadow-2xs">
-                    3 PDF Reports
-                  </span>
+                  <div className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => setIsAllDocsModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#002147] hover:bg-[#003366] px-4 py-1.5 rounded-full transition-all shadow-xs hover:shadow hover:scale-105 active:scale-95 cursor-pointer select-none"
+                      title="View all strategic plans & annual deployment documents"
+                    >
+                      <FileText className="h-3.5 w-3.5 text-amber-300" />
+                      <span>View All</span>
+                      <ExternalLink className="h-3 w-3 opacity-80" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {documentsList.map((doc, idx) => {
+                  {displayedDocs.map((doc, idx) => {
                     const cardId = idx === 0 ? "sec-plan-years" : idx === 1 ? "sec-plan-2025-26" : "sec-plan-2024-25";
                     const isBlue = idx % 2 === 1;
                     const cardBg = isBlue
@@ -1424,6 +1477,161 @@ export function StrategicDevelopmentPlan() {
         </main>
       </div>
       </div>
+
+      {/* All Strategic Documents Modal Popup */}
+      {isAllDocsModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-xs select-none animate-fadeIn"
+          onClick={() => setIsAllDocsModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl max-h-[88vh] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#002147] text-white px-6 py-5 sm:px-8 flex items-center justify-between gap-4 border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-3.5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 border border-white/15 text-amber-300 shadow-xs shrink-0">
+                  <FileText className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-outfit font-black text-lg sm:text-xl text-white tracking-tight">
+                      All Strategic Plans &amp; Deployment Documents
+                    </h3>
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full shadow-2xs hidden sm:inline-block">
+                      {documentsList.length} Total
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300 font-medium mt-0.5">
+                    Complete archive of institutional framework plans and annual deployment reports.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAllDocsModalOpen(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                title="Close popup"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Quick Search / Filter Bar */}
+            {documentsList.length > 3 && (
+              <div className="p-4 bg-slate-50 border-b border-slate-200 shrink-0 flex items-center justify-between gap-3">
+                <input
+                  type="text"
+                  placeholder="Search documents by title, year..."
+                  value={docSearchQuery}
+                  onChange={(e) => setDocSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2 text-xs sm:text-sm font-semibold bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
+                />
+                {docSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setDocSearchQuery("")}
+                    className="text-xs font-bold text-slate-500 hover:text-slate-800 shrink-0 cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Modal Scrollable Content: All PDFs */}
+            <div className="p-6 sm:p-8 overflow-y-auto max-h-[58vh] bg-slate-50/50">
+              {filteredAllDocs.length === 0 ? (
+                <div className="text-center py-12 text-slate-400 font-semibold text-sm">
+                  No documents found matching &ldquo;{docSearchQuery}&rdquo;
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {filteredAllDocs.map((doc, idx) => {
+                    const isBlue = idx % 2 === 1;
+                    return (
+                      <div
+                        key={idx}
+                        className={`rounded-2xl p-5 border-2 ${
+                          isBlue ? "bg-[#e8f1fd] border-blue-200/90" : "bg-white border-slate-200/90"
+                        } shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4`}
+                      >
+                        <div className="flex items-start gap-3.5">
+                          <span
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+                              isBlue
+                                ? "bg-white border border-blue-200/80 text-blue-700"
+                                : "bg-blue-50 border border-blue-100/60 text-blue-600"
+                            } font-bold`}
+                          >
+                            <FileText className="h-5 w-5" />
+                          </span>
+                          <div className="flex flex-col gap-1 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
+                                Document #{idx + 1}
+                              </span>
+                              {idx < 3 && (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+                                  Latest
+                                </span>
+                              )}
+                            </div>
+                            <h4
+                              className={`font-outfit font-extrabold text-sm sm:text-base leading-snug ${
+                                isBlue ? "text-blue-900" : "text-slate-900"
+                              }`}
+                            >
+                              {doc.title}
+                            </h4>
+                            <p className="text-slate-500 text-[11px] font-semibold">
+                              Official PDF Report Document
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 pt-3 border-t border-slate-200/80 mt-1">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenPdf(doc.fileUrl, doc.title)}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#002147] bg-white hover:bg-[#002147] hover:text-white border border-slate-200/90 py-2 rounded-xl transition-all shadow-2xs cursor-pointer"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            <span>View PDF</span>
+                          </button>
+                          <a
+                            href={doc.fileUrl}
+                            download
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 py-2 rounded-xl transition-all shadow-2xs cursor-pointer"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            <span>Download</span>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-white px-6 py-4 border-t border-slate-200 flex items-center justify-between shrink-0">
+              <span className="text-xs font-bold text-slate-500">
+                Showing {filteredAllDocs.length} of {documentsList.length} documents
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsAllDocsModalOpen(false)}
+                className="px-5 py-2 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Flipbook Modal Reader */}
       {selectedFileUrl && (

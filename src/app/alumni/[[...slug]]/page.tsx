@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Users, Phone, Mail, ArrowRight, ShieldCheck, BookOpen, GraduationCap } from "lucide-react";
 import { ContentRenderer } from "@/components/alumni/ContentRenderer";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Component Imports
 import { AlumniHome } from "@/components/alumni/AlumniHome";
@@ -90,10 +90,6 @@ export default function AlumniPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Alumni" />
-
-
       {/* Main Content Container */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -104,8 +100,9 @@ export default function AlumniPage({ params }: PageProps) {
 
               {/* Navigation Box */}
               <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
-                <div className="flex flex-col gap-1 border-b border-slate-100 pb-5 mb-6">
-                  <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Alumni</h3>
+                <div className="flex flex-col gap-1 border-b border-slate-100 pb-4 mb-5">
+                  <h1 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Alumni</h1>
+                  <span className="text-[11px] uppercase font-bold tracking-widest text-slate-400">Network &amp; Engagement</span>
                 </div>
 
                 <nav className="flex flex-col gap-8 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">

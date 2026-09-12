@@ -24,7 +24,7 @@ import {
   X,
   ChevronLeft
 } from "lucide-react";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 import { staticSupportSections } from "./staticData";
 
 // Definition of the structural groupings and configurations for URL slugs
@@ -615,9 +615,6 @@ export default function StudentSupportClientPortal({
 
   return (
     <div className="font-sans w-full select-none animate-fadeIn">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Student Support Services" />
-
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-10 w-full">
         {/* Sub-text Box */}
         <SubtextBox 
@@ -667,6 +664,15 @@ export default function StudentSupportClientPortal({
         {/* High-Fidelity Desktop Sticky Sidebar Menu */}
         <div className="hidden md:flex flex-col gap-6 sticky top-24 select-none">
           <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-5 shadow-sm hover:shadow-md transition-all flex flex-col gap-4 max-h-[80vh] overflow-y-auto no-scrollbar">
+            
+            <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 px-2">
+              <h1 className="font-outfit text-lg md:text-xl font-black text-[#002147] tracking-tight leading-tight">
+                Student Support
+              </h1>
+              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                Services &amp; Committees
+              </span>
+            </div>
             
             {Object.entries(tabGroups).map(([grp, items]) => (
               <div key={grp} className="flex flex-col gap-1.5">

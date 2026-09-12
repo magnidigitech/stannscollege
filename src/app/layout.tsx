@@ -122,10 +122,10 @@ export default function RootLayout({
 
           {/* Navigation Bar below top logo bar */}
           <div
-            className="w-full border-b select-none transition-colors duration-200"
+            className="w-full border-b border-t select-none transition-colors duration-200"
             style={{
-              backgroundColor: "#007c74",
-              borderColor: "#00625c"
+              backgroundColor: "#001738",
+              borderColor: "rgba(255, 255, 255, 0.12)"
             }}
           >
             <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full relative">

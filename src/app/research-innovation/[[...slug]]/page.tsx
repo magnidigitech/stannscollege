@@ -4,7 +4,7 @@ import React, { use } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Lightbulb, Phone, Mail, ArrowRight, ShieldCheck, BookOpen } from "lucide-react";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Component Imports
 import { ResearchInnovationLanding } from "@/components/research-innovation/ResearchInnovationLanding";
@@ -93,10 +93,6 @@ export default function ResearchInnovationPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Research &amp; Innovation" />
-
-
       {/* Main Content Container */}
       <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -108,10 +104,11 @@ export default function ResearchInnovationPage({ params }: PageProps) {
 
                 {/* Navigation Box */}
                 <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
-                  <div className="flex flex-col gap-1 border-b border-slate-100 pb-5 mb-6">
+                  <div className="flex flex-col gap-1 border-b border-slate-100 pb-4 mb-5">
                     <Link href="/research-innovation" className="hover:opacity-80 transition-opacity">
-                      <h3 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Research & Innovation</h3>
+                      <h1 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Research &amp; Innovation</h1>
                     </Link>
+                    <span className="text-[11px] uppercase font-bold tracking-widest text-slate-400">Research &amp; IPR Hub</span>
                   </div>
 
                   <nav className="flex flex-col gap-8">

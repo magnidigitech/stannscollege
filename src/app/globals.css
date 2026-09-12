@@ -123,22 +123,22 @@
   0%, 100% {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
   }
   50% {
-    opacity: 0.88;
-    transform: scale(1.03);
-    box-shadow: 0 0 15px 3px rgba(239, 68, 68, 0.7);
+    opacity: 0.92;
+    transform: scale(1.02);
+    box-shadow: 0 0 14px 3px rgba(245, 158, 11, 0.6);
   }
 }
 
 @keyframes announcement-badge-pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
     filter: brightness(1);
   }
   50% {
-    box-shadow: 0 0 16px 4px rgba(59, 130, 246, 0.85);
+    box-shadow: 0 0 16px 4px rgba(245, 158, 11, 0.85);
     filter: brightness(1.2);
   }
 }
@@ -175,6 +175,19 @@
   .animate-announcement-badge-rapid {
     animation: none;
   }
+}
+
+/* Top Nav Links Hover Accent */
+#main-header nav > a,
+#main-header nav > div > a {
+  transition: color 0.18s ease-in-out, opacity 0.18s ease-in-out, transform 0.18s ease-in-out;
+}
+
+#main-header nav > a:hover,
+#main-header nav > div > a:hover,
+#main-header nav > div:hover > a {
+  color: #fde047 !important; /* Elegant golden accent on hover */
+  text-shadow: 0 0 12px rgba(253, 224, 71, 0.35);
 }
 
 /* Disable button focus outline rectangles on navigation items */

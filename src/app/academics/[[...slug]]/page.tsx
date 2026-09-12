@@ -5,9 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GraduationCap, Sparkles, Phone, Mail, ArrowRight } from "lucide-react";
 
-// Fallback
 import AcademicsClientFallback from "@/components/academics/AcademicsClientFallback";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Component Imports
 import { UndergraduateProgrammes } from "@/components/academics/academic-programmes/UndergraduateProgrammes";
@@ -244,18 +243,25 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
   return (
     <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn font-sans">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="Academics" />
-
       <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12 py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
           
           {/* Left Navigation Sidebar for Desktop */}
           <div className="lg:col-span-3 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-[2rem] shadow-sm pr-3">
-            <span className="inline-flex items-center gap-1.5 font-outfit text-[11px] font-black text-[#002147] uppercase tracking-widest px-2 pb-2 border-b border-slate-100">
-              Academic Modules
-            </span>
-            <div className="flex flex-col gap-6 mt-2">
+            <div className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3.5 shadow-sm bg-[#002147] border border-[#002147]/20 shrink-0">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs shadow-inner">
+                <GraduationCap className="h-5 w-5" />
+              </span>
+              <div className="flex flex-col min-w-0">
+                <h1 className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider text-white truncate leading-tight">
+                  Academics
+                </h1>
+                <span className="text-[10px] sm:text-[11px] text-blue-100/80 font-medium truncate mt-0.5">
+                  Academic Modules &amp; Programs
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-6 mt-1">
               {navigationStructure.map((group) => (
                 <div key={group.catSlug} className="flex flex-col gap-1.5">
                   {group.catSlug === "departments" ? (

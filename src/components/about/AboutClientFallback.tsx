@@ -22,7 +22,7 @@ import { NirfReports } from "@/components/about/statutory-affiliations-recogniti
 import { NaacCertificates } from "@/components/about/statutory-affiliations-recognitions/NaacCertificates";
 import { AisheCertifications } from "@/components/about/statutory-affiliations-recognitions/AisheCertifications";
 import { Ugc2f } from "@/components/about/statutory-affiliations-recognitions/Ugc2f";
-import { Heading1Notch, SubtextBox } from "@/components/ui/Heading1Notch";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 interface AboutClientFallbackProps {
   apscheOrdersList: any[];
@@ -144,9 +144,6 @@ export default function AboutClientFallback({
 
   return (
     <div className="bg-slate-50/50 min-h-screen select-none font-sans">
-      {/* 1. Heading 1 Notch Attached to Top Nav */}
-      <Heading1Notch title="About Us" />
-
       <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
         {/* Sub-text Box */}
         <SubtextBox 
