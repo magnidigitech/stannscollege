@@ -7,11 +7,13 @@ import EventsManager from "@/components/admin/EventsManager";
 import NoticesManager from "@/components/admin/NoticesManager";
 import { StrategicPlanFeedbackManager } from "@/components/admin/StrategicPlanFeedbackManager";
 import { StrategicDocumentsManager } from "@/components/admin/StrategicDocumentsManager";
+import { HeroBannersManager } from "@/components/admin/HeroBannersManager";
 import {
   Calendar,
   Bell,
   Compass,
   FileText,
+  Image as ImageIcon,
   LogOut,
   ExternalLink,
   Sparkles,
@@ -29,6 +31,14 @@ interface AdminUser {
 }
 
 const ADMIN_MODULES = [
+  {
+    id: "hero-banners",
+    label: "Home Hero Banners",
+    badge: "16:6 Live Slider",
+    icon: ImageIcon,
+    description: "Manage, reorder, preview, and upload 16:6 widescreen homepage hero banners directly synced to Sanity.",
+    component: HeroBannersManager,
+  },
   {
     id: "events-management",
     label: "Events & Activities",

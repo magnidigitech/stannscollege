@@ -1136,14 +1136,10 @@ export async function getHomeBanners() {
     const query = `*[_type == "homeBanner" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
       _id,
       title,
-      tagline,
-      desc,
-      cta1Text,
-      cta1Link,
-      cta2Text,
-      cta2Link,
       displayOrder,
-      "imageUrl": image.asset->url
+      "linkUrl": coalesce(linkUrl, cta1Link, null),
+      "imageUrl": image.asset->url,
+      "assetId": image.asset._ref
     }`;
     const data = await sanityClient.fetch(query);
     if (data && data.length > 0) return data;

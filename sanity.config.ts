@@ -627,15 +627,16 @@ export default defineConfig({
         title: "Home Hero Banners",
         type: "document",
         fields: [
-          { name: "title", title: "Banner Title", type: "string" },
-          { name: "tagline", title: "Tagline / Subheading", type: "string" },
-          { name: "desc", title: "Description", type: "text" },
-          { name: "image", title: "Banner Image", type: "image", options: { hotspot: true } },
-          { name: "cta1Text", title: "CTA 1 Button Text", type: "string" },
-          { name: "cta1Link", title: "CTA 1 Link URL", type: "string" },
-          { name: "cta2Text", title: "CTA 2 Button Text", type: "string" },
-          { name: "cta2Link", title: "CTA 2 Link URL", type: "string" },
-          { name: "displayOrder", title: "Display Order", type: "number" }
+          { name: "title", title: "Banner Title / Label (For Admin & Alt Text)", type: "string" },
+          {
+            name: "image",
+            title: "Banner Image (Recommended 16:6 Ratio / 2048x768)",
+            type: "image",
+            options: { hotspot: true },
+            validation: (Rule: any) => Rule.required().error("Banner image is required")
+          },
+          { name: "linkUrl", title: "Click Link URL (Optional - leaves slide static if empty)", type: "string" },
+          { name: "displayOrder", title: "Display Order (Sequence 1, 2, 3...)", type: "number" }
         ]
       },
       {

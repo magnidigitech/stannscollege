@@ -516,7 +516,7 @@ export function StrategicDevelopmentPlan() {
         <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
           <div className="flex flex-col gap-4">
             {/* Sub-text Box */}
-            <SubtextBox>
+            <SubtextBox variant="tricolor" icon="ashoka-chakra">
               {data.executiveSummary && !data.executiveSummary.includes("envisions a transformative future") ? (
                 <div style={{ color: "var(--sidebar-bg, #1e40af)" }} className="font-medium">
                   {data.executiveSummary}
