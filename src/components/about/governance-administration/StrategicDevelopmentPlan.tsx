@@ -15,7 +15,6 @@ import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 interface StrategicPlanDocument {
   title: string;
   fileUrl: string;
-  googleFormUrl?: string;
 }
 
 interface StrategicPlanData {
@@ -45,27 +44,22 @@ const defaultPlanData: StrategicPlanData = {
     {
       title: "Institutional Strategic Framework 2024-2030 (Years Plan)",
       fileUrl: "/documents/Institutional Strategic Framework  2024-2030.pdf",
-      googleFormUrl: "https://www.google.com"
     },
     {
       title: "Annual Deployment Plan 2025–2026",
       fileUrl: "/documents/Annual Plan Deployment Report  2025-2026.pdf",
-      googleFormUrl: "https://www.google.com"
     },
     {
       title: "Annual Deployment Plan 2024–2025",
       fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
-      googleFormUrl: "https://www.google.com"
     },
     {
       title: "Annual Deployment Plan 2023–2024",
       fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
-      googleFormUrl: "https://www.google.com"
     },
     {
       title: "Annual Deployment Plan 2022–2023",
       fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
-      googleFormUrl: "https://www.google.com"
     }
   ]
 };

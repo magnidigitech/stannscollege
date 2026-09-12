@@ -6,10 +6,10 @@ let buildDate = new Date();
 
 try {
   // Check if working tree has uncommitted modifications
-  const status = execSync('git status --porcelain', { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
+  const status = execSync('git status --porcelain', { timeout: 3000, stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
   if (!status) {
     // Clean repo, use the latest commit timestamp
-    const gitDate = execSync('git log -1 --format=%cI', { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
+    const gitDate = execSync('git log -1 --format=%cI', { timeout: 3000, stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
     if (gitDate) {
       const parsed = new Date(gitDate);
       if (!isNaN(parsed.getTime())) {

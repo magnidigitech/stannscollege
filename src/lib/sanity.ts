@@ -641,8 +641,7 @@ export async function getStrategicPlan() {
         _key,
         title,
         "fileUrl": coalesce(file.asset->url, fileUrl),
-        "assetId": file.asset->_id,
-        googleFormUrl
+        "assetId": file.asset->_id
       }
     }`;
     const data = await sanityClient.fetch(query);

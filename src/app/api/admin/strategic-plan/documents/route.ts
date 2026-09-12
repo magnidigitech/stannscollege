@@ -12,31 +12,26 @@ const DEFAULT_DOCUMENTS = [
     _key: "doc_default_1",
     title: "Institutional Strategic Framework 2024-2030 (Years Plan)",
     fileUrl: "/documents/Institutional Strategic Framework  2024-2030.pdf",
-    googleFormUrl: "https://www.google.com"
   },
   {
     _key: "doc_default_2",
     title: "Annual Deployment Plan 2025–2026",
     fileUrl: "/documents/Annual Plan Deployment Report  2025-2026.pdf",
-    googleFormUrl: "https://www.google.com"
   },
   {
     _key: "doc_default_3",
     title: "Annual Deployment Plan 2024–2025",
     fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
-    googleFormUrl: "https://www.google.com"
   },
   {
     _key: "doc_default_4",
     title: "Annual Deployment Plan 2023–2024",
     fileUrl: "/documents/Annual Plan Deployment Report  2024-2025.pdf",
-    googleFormUrl: "https://www.google.com"
   },
   {
     _key: "doc_default_5",
     title: "Institutional Strategic Framework 2018–2023",
     fileUrl: "/documents/Institutional Strategic Framework  2024-2030.pdf",
-    googleFormUrl: "https://www.google.com"
   }
 ];
 
@@ -73,8 +68,7 @@ export async function GET() {
           _key,
           title,
           "fileUrl": coalesce(file.asset->url, fileUrl),
-          "assetId": file.asset->_id,
-          googleFormUrl
+          "assetId": file.asset->_id
         }
       }`
     );
@@ -135,7 +129,6 @@ export async function POST(req: NextRequest) {
       const docObj: any = {
         _key: d._key || `doc_${Date.now()}_${idx}`,
         title: (d.title || "Untitled Document").trim(),
-        googleFormUrl: (d.googleFormUrl || "").trim() || "https://www.google.com",
         fileUrl: (d.fileUrl || "").trim(),
       };
 

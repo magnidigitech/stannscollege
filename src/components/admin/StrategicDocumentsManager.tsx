@@ -29,7 +29,6 @@ export interface StrategicDocumentItem {
   title: string;
   fileUrl: string;
   assetId?: string;
-  googleFormUrl?: string;
   isUploading?: boolean;
 }
 
@@ -148,7 +147,6 @@ export function StrategicDocumentsManager() {
       _key: `doc_${Date.now()}`,
       title: "",
       fileUrl: "",
-      googleFormUrl: "https://www.google.com",
     });
     setIsEditingExisting(false);
     setEditIndex(null);
@@ -460,11 +458,6 @@ export function StrategicDocumentsManager() {
                         <span className="truncate max-w-xs sm:max-w-md" title={doc.fileUrl}>
                           📄 {doc.fileUrl}
                         </span>
-                        {doc.googleFormUrl && doc.googleFormUrl !== "https://www.google.com" && (
-                          <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                            <LinkIcon className="h-3 w-3" /> Form Linked
-                          </span>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -633,20 +626,6 @@ export function StrategicDocumentsManager() {
                     className="w-full px-3.5 py-2 text-xs font-semibold bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
                   />
                 </div>
-              </div>
-
-              {/* Optional Feedback URL */}
-              <div>
-                <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5">
-                  Feedback Google Form URL (Optional)
-                </label>
-                <input
-                  type="text"
-                  placeholder="https://forms.gle/..."
-                  value={editingDoc.googleFormUrl || ""}
-                  onChange={(e) => setEditingDoc({ ...editingDoc, googleFormUrl: e.target.value })}
-                  className="w-full px-3.5 py-2.5 text-xs font-semibold bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
-                />
               </div>
             </div>
 
