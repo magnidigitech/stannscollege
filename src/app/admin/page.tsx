@@ -88,21 +88,32 @@ export default function AdminPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  // 1. Verify Authentication
+  // 1. Verify Authentication & Tab Session
   useEffect(() => {
+    // Check if the current browser tab has an active admin session
+    const isTabActive = typeof window !== "undefined" && sessionStorage.getItem("stanns_admin_tab_active") === "1";
+    if (!isTabActive) {
+      // Tab was closed or opened anew without logging in on this tab!
+      // Invalidate cookie on server and redirect to /admin/login immediately
+      window.location.replace("/admin/login");
+      fetch("/api/admin/auth", { method: "DELETE" }).catch(() => {});
+      return;
+    }
+
     async function verifyAuth() {
       try {
         const res = await fetch("/api/admin/auth", { cache: "no-store" });
         const data = await res.json();
         if (!data.authenticated) {
-          router.replace("/admin/login");
+          sessionStorage.removeItem("stanns_admin_tab_active");
+          window.location.replace("/admin/login");
           return;
         }
         setUser(data.user);
-      } catch (err) {
-        router.replace("/admin/login");
-      } finally {
         setAuthLoading(false);
+      } catch (err) {
+        sessionStorage.removeItem("stanns_admin_tab_active");
+        window.location.replace("/admin/login");
       }
     }
     verifyAuth();
@@ -179,17 +190,29 @@ export default function AdminPage() {
   // Logout
   const handleLogout = async () => {
     try {
+      sessionStorage.removeItem("stanns_admin_tab_active");
       await fetch("/api/admin/auth", { method: "DELETE" });
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
-      window.location.href = "/admin/login";
+      window.location.replace("/admin/login");
     }
   };
 
-  if (authLoading) {
+  if (authLoading || !user) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (typeof window !== 'undefined' && sessionStorage.getItem('stanns_admin_tab_active') !== '1') {
+                  window.location.replace('/admin/login');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
         <div className="flex flex-col items-center gap-3 text-white">
           <div className="w-9 h-9 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-sm font-medium text-slate-300">Loading Admin Portal...</span>

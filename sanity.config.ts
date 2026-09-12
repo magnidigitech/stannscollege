@@ -10,6 +10,71 @@ export default defineConfig({
   schema: {
     types: [
       {
+        name: "adminUser",
+        title: "Administrator Account",
+        type: "document",
+        fields: [
+          {
+            name: "username",
+            title: "Username (Login ID)",
+            type: "string",
+            validation: (Rule: any) => Rule.required(),
+          },
+          {
+            name: "password",
+            title: "Password",
+            type: "string",
+            description: "Administrator password used to log in at /admin/login",
+            validation: (Rule: any) => Rule.required(),
+          },
+          {
+            name: "name",
+            title: "Full Name / Display Name",
+            type: "string",
+            initialValue: "College Administrator",
+          },
+          {
+            name: "role",
+            title: "Role / Permissions",
+            type: "string",
+            initialValue: "Super Admin",
+            options: {
+              list: [
+                { title: "Super Admin", value: "Super Admin" },
+                { title: "Content Manager", value: "Content Manager" },
+                { title: "Office Staff", value: "Office Staff" },
+              ],
+            },
+          },
+          {
+            name: "isActive",
+            title: "Account Active",
+            type: "boolean",
+            description: "Toggle off to disable this admin account without deleting it",
+            initialValue: true,
+          },
+          {
+            name: "notes",
+            title: "Notes / Description",
+            type: "text",
+            rows: 2,
+          },
+        ],
+        preview: {
+          select: {
+            title: "username",
+            subtitle: "role",
+            isActive: "isActive",
+          },
+          prepare({ title, subtitle, isActive }: any) {
+            return {
+              title: title || "Unnamed Admin",
+              subtitle: `${subtitle || "Admin"} • ${isActive === false ? "Disabled" : "Active"}`,
+            };
+          },
+        },
+      },
+      {
         name: "facultyMember",
         title: "Faculty Member",
         type: "document",

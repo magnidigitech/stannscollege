@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import {
-  ChevronDown,
   GraduationCap,
   Users,
   Building,
@@ -71,12 +70,26 @@ function DropdownHeaderBanner({
 }
 
 export default function Navigation() {
-  // Desktop Menu Click Toggle State (toggles open/close on click instead of hover)
+  // Desktop Menu Hover State with debounce
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const toggleMenu = (menuName: string) => {
-    setActiveMenu((prev) => (prev === menuName ? null : menuName));
+  const handleMouseEnter = (menuName: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setActiveMenu(menuName);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 180);
   };
 
   // Close dropdown on outside click or escape key
@@ -617,20 +630,20 @@ export default function Navigation() {
 
       {/* Row 1: Core Navigation (Home, About Us, Academics, etc.) */}
       <div
-        className="hidden md:flex items-center justify-between text-[16px] lg:text-[18px] xl:text-[20px] font-bold relative w-full transition-all duration-200 z-30"
+        className="hidden md:flex items-center justify-between text-[13px] lg:text-[14px] xl:text-[15px] font-medium relative w-full transition-all duration-200 z-30"
         style={{
           color: "var(--topnav-link-color, #ffffff)",
           fontFamily: "inherit",
-          fontSize: "20px",
-          fontWeight: 700,
+          fontSize: "15px",
+          fontWeight: 500,
           paddingTop: "var(--topnav-padding-y, 4px)",
           paddingBottom: "var(--topnav-padding-y, 4px)"
         }}
       >
         <nav
-          className="flex items-center justify-between w-full text-inherit"
+          className="flex items-center justify-between w-full max-w-[1460px] mx-auto text-inherit"
           style={{
-            gap: "var(--topnav-spacing, 20px)",
+            gap: "var(--topnav-spacing, 14px)",
             fontFamily: "inherit",
             fontSize: "inherit",
             fontWeight: "inherit"
@@ -638,39 +651,31 @@ export default function Navigation() {
         >
 
           {/* 1. Home */}
-          <Link href="/" onClick={() => setActiveMenu(null)} className="hover:opacity-80 transition-all duration-200 whitespace-nowrap text-inherit font-bold">
+          <Link href="/" onClick={() => setActiveMenu(null)} className="hover:opacity-80 transition-all duration-200 whitespace-nowrap text-inherit font-medium">
             Home
           </Link>
 
           {/* 2. About Us */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("about")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/about"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit About Us Page"
             >
               About Us
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("about");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "about"}
-              aria-label="Toggle About Us menu"
-              title="Open About Us Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "about" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "about" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("about")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -721,34 +726,26 @@ export default function Navigation() {
           </div>
 
           {/* 3. Academics */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("academics")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/academics"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Academics Page"
             >
               Academics
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("academics");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "academics"}
-              aria-label="Toggle Academics menu"
-              title="Open Academics Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "academics" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "academics" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[75vh] overflow-y-auto animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("academics")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -848,34 +845,26 @@ export default function Navigation() {
           </div>
 
           {/* 4. Admissions */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("admissions")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/admissions"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Admissions Page"
             >
               Admissions
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("admissions");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "admissions"}
-              aria-label="Toggle Admissions menu"
-              title="Open Admissions Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "admissions" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "admissions" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("admissions")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -917,34 +906,26 @@ export default function Navigation() {
           </div>
 
           {/* 5. Infrastructure */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("infra")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/infrastructure"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Infrastructure Page"
             >
               Infrastructure
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("infra");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "infra"}
-              aria-label="Toggle Infrastructure menu"
-              title="Open Infrastructure Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "infra" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "infra" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("infra")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -986,34 +967,26 @@ export default function Navigation() {
           </div>
 
           {/* 6. Faculty */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("faculty")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/faculty"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Faculty Page"
             >
               Faculty
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("faculty");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "faculty"}
-              aria-label="Toggle Faculty menu"
-              title="Open Faculty Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "faculty" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "faculty" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("faculty")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1055,34 +1028,26 @@ export default function Navigation() {
           </div>
 
           {/* 7. Student Support Services */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("support")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/student-support"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Student Support Page"
             >
               Student Support Services
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("support");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "support"}
-              aria-label="Toggle Student Support menu"
-              title="Open Student Support Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "support" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "support" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("support")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1124,34 +1089,26 @@ export default function Navigation() {
           </div>
 
           {/* 8. Placements & Industry Linkages */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("placements")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/placements"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Placements Page"
             >
               Placements & Industry Linkages
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("placements");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "placements"}
-              aria-label="Toggle Placements menu"
-              title="Open Placements Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "placements" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "placements" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn max-h-[75vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("placements")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1198,21 +1155,21 @@ export default function Navigation() {
       {/* Row 2: Compliance, Research, & Utility Bar */}
       {/* Contains: Alumni, IQAC, Mandatory Disclosures, Research & Innovation, Strategic Plans, Contact */}
       <div
-        className={`hidden md:flex items-center justify-between border-t text-[16px] lg:text-[18px] xl:text-[20px] font-bold relative w-full transition-all duration-200 ${activeMenu && ['research','alumni','iqac','mandatory','strategic','contact'].includes(activeMenu) ? 'z-40' : 'z-20'}`}
+        className={`hidden md:flex items-center justify-between border-t text-[13px] lg:text-[14px] xl:text-[15px] font-medium relative w-full transition-all duration-200 ${activeMenu && ['research','alumni','iqac','mandatory','strategic','contact'].includes(activeMenu) ? 'z-40' : 'z-20'}`}
         style={{
           borderColor: "var(--topnav-divider, rgba(255, 255, 255, 0.15))",
           color: "var(--topnav-row2-color, var(--topnav-link-color, #ffffff))",
           fontFamily: "inherit",
-          fontSize: "20px",
-          fontWeight: 700,
+          fontSize: "15px",
+          fontWeight: 500,
           paddingTop: "calc(var(--topnav-padding-y, 4px) * 0.75)",
           paddingBottom: "calc(var(--topnav-padding-y, 4px) * 0.75)"
         }}
       >
         <nav
-          className="flex items-center justify-between w-full text-inherit"
+          className="flex items-center justify-between w-full max-w-[1460px] mx-auto text-inherit"
           style={{
-            gap: "var(--topnav-spacing, 20px)",
+            gap: "var(--topnav-spacing, 14px)",
             fontFamily: "inherit",
             fontSize: "inherit",
             fontWeight: "inherit"
@@ -1221,34 +1178,26 @@ export default function Navigation() {
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("research")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/research-innovation"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Research & Innovation Page"
             >
               Research & Innovation
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("research");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "research"}
-              aria-label="Toggle Research & Innovation menu"
-              title="Open Research & Innovation Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "research" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "research" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("research")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1291,34 +1240,26 @@ export default function Navigation() {
 
 
           {/* 10. Alumni */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("alumni")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/alumni"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Alumni Page"
             >
               Alumni
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("alumni");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "alumni"}
-              aria-label="Toggle Alumni menu"
-              title="Open Alumni Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "alumni" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "alumni" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("alumni")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1360,34 +1301,26 @@ export default function Navigation() {
           </div>
 
           {/* 11. IQAC, Quality Assurance & Accreditation */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("iqac")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/quality-assurance"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Quality Assurance Page"
             >
               Quality Assurance & Accreditation
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("iqac");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "iqac"}
-              aria-label="Toggle Quality Assurance menu"
-              title="Open Quality Assurance Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "iqac" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "iqac" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("iqac")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1429,34 +1362,26 @@ export default function Navigation() {
           </div>
 
           {/* 12. Mandatory Disclosures & Compliance */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("mandatory")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/mandatory-disclosures"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Mandatory Disclosures Page"
             >
               Mandatory Disclosures & Compliance
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("mandatory");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "mandatory"}
-              aria-label="Toggle Mandatory Disclosures menu"
-              title="Open Mandatory Disclosures Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "mandatory" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "mandatory" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("mandatory")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1498,34 +1423,26 @@ export default function Navigation() {
           </div>
 
           {/* 13. Strategic Plans & Future Directions */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("strategic")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/strategic-plans-and-future-directions"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Strategic Plans Page"
             >
               Strategic Plans & Future Directions
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("strategic");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "strategic"}
-              aria-label="Toggle Strategic Plans menu"
-              title="Open Strategic Plans Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "strategic" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "strategic" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("strategic")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1567,34 +1484,26 @@ export default function Navigation() {
           </div>
 
           {/* 14. Contact Us */}
-          <div className="flex items-center group/nav">
+          <div
+            className="flex items-center group/nav"
+            onMouseEnter={() => handleMouseEnter("contact")}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/contact"
               onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-bold outline-none"
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
               title="Visit Contact Us Page"
             >
               Contact Us
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-                toggleMenu("contact");
-              }}
-              className="p-1 -mr-1 ml-0.5 rounded hover:bg-white/15 cursor-pointer text-inherit transition-all duration-200 select-none outline-none focus:outline-none"
-              aria-expanded={activeMenu === "contact"}
-              aria-label="Toggle Contact Us menu"
-              title="Open Contact Us Menu"
-            >
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === "contact" ? 'rotate-180 opacity-100 text-blue-300' : 'opacity-65 group-hover/nav:opacity-100'}`} />
-            </button>
 
             {activeMenu === "contact" && (
               <div
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
+                onMouseEnter={() => handleMouseEnter("contact")}
+                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
