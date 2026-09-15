@@ -30,12 +30,57 @@ import {
   Flame,
   Award,
   Activity,
-  Coins
+  Coins,
+  X
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { getMandatoryDisclosures, DEFAULT_MANDATORY_DISCLOSURES } from "@/lib/sanity";
+
+// Direct file resolvers for ANU and AISHE so local files are always served reliably
+const KNOWN_ANU_MAP: Record<string, string> = {
+  "ug_2025–2026": "/documents/affiliations/ANU_UG_Affiliation_2025-2026.pdf",
+  "ug_2025-2026": "/documents/affiliations/ANU_UG_Affiliation_2025-2026.pdf",
+  "ug_2024–2025": "/documents/affiliations/ANU_UG_Affiliation_2024-2025.pdf",
+  "ug_2024-2025": "/documents/affiliations/ANU_UG_Affiliation_2024-2025.pdf",
+  "ug_2023–2024": "/documents/affiliations/ANU_UG_Affiliation_2023-2024.pdf",
+  "ug_2023-2024": "/documents/affiliations/ANU_UG_Affiliation_2023-2024.pdf",
+  "pg_2025–2026": "/documents/affiliations/ANU_PG_Affiliation_2025-2026.pdf",
+  "pg_2025-2026": "/documents/affiliations/ANU_PG_Affiliation_2025-2026.pdf",
+  "pg_2024–2025": "/documents/affiliations/ANU_PG_Affiliation_2024-2025.pdf",
+  "pg_2024-2025": "/documents/affiliations/ANU_PG_Affiliation_2024-2025.pdf",
+  "pg_2023–2024": "/documents/affiliations/ANU_PG_Affiliation_2023-2024.pdf",
+  "pg_2023-2024": "/documents/affiliations/ANU_PG_Affiliation_2023-2024.pdf",
+};
+
+const resolveAnuUrl = (prog: string, yr: string, currentUrl?: string) => {
+  if (currentUrl && currentUrl !== "/documents/DefaultFile_1.pdf" && currentUrl.trim() !== "") {
+    return currentUrl;
+  }
+  const key = `${prog.toLowerCase()}_${yr.trim()}`;
+  return KNOWN_ANU_MAP[key] || currentUrl || "/documents/DefaultFile_1.pdf";
+};
+
+const KNOWN_AISHE_MAP: Record<string, string> = {
+  "2024–2025": "/documents/aishe/AISHE_Certificate_2024-2025.pdf",
+  "2024-2025": "/documents/aishe/AISHE_Certificate_2024-2025.pdf",
+  "2023–2024": "/documents/aishe/AISHE_Certificate_2023-2024.pdf",
+  "2023-2024": "/documents/aishe/AISHE_Certificate_2023-2024.pdf",
+  "2022–2023": "/documents/aishe/AISHE_Certificate_2022-2023.pdf",
+  "2022-2023": "/documents/aishe/AISHE_Certificate_2022-2023.pdf",
+  "2021–2022": "/documents/aishe/AISHE_Certificate_2021-2022.pdf",
+  "2021-2022": "/documents/aishe/AISHE_Certificate_2021-2022.pdf",
+  "2020–2021": "/documents/aishe/AISHE_Certificate_2020-2021.pdf",
+  "2020-2021": "/documents/aishe/AISHE_Certificate_2020-2021.pdf",
+};
+
+const resolveAisheUrl = (yr: string, currentUrl?: string) => {
+  if (currentUrl && currentUrl !== "/documents/DefaultFile_1.pdf" && currentUrl.trim() !== "") {
+    return currentUrl;
+  }
+  return KNOWN_AISHE_MAP[yr.trim()] || currentUrl || "/documents/DefaultFile_1.pdf";
+};
 
 // Sidebar categories matching Mandatory Disclosures Content list.pdf (A to H)
 const MANDATORY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
@@ -137,6 +182,23 @@ export default function MandatoryDisclosuresPage() {
   const [previewPdf, setPreviewPdf] = useState<{ url: string; title: string } | null>(null);
   const [anuTab, setAnuTab] = useState<"ug" | "pg">("ug");
 
+  // State for "View All" ANU Modal popup
+  const [isAnuModalOpen, setIsAnuModalOpen] = useState(false);
+  const [anuSearchQuery, setAnuSearchQuery] = useState("");
+  const [anuModalFilter, setAnuModalFilter] = useState<"all" | "ug" | "pg">("all");
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsAnuModalOpen(false);
+      }
+    };
+    if (isAnuModalOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isAnuModalOpen]);
+
   useEffect(() => {
     getMandatoryDisclosures()
       .then((res) => {
@@ -217,8 +279,24 @@ export default function MandatoryDisclosuresPage() {
     });
   };
 
-  const ugAnu = (data.anuAffiliations || []).filter((item: any) => item.programmeType?.toLowerCase() === "ug");
-  const pgAnu = (data.anuAffiliations || []).filter((item: any) => item.programmeType?.toLowerCase() === "pg");
+  const rawAnu = data.anuAffiliations || DEFAULT_MANDATORY_DISCLOSURES.anuAffiliations || [];
+  const ugAnu = rawAnu.filter((item: any) => item.programmeType?.toLowerCase() === "ug");
+  const pgAnu = rawAnu.filter((item: any) => item.programmeType?.toLowerCase() === "pg");
+
+  // The active list on page and only the latest 3 items displayed on the main cards
+  const currentAnuList = anuTab === "ug" ? ugAnu : pgAnu;
+  const displayedAnu = currentAnuList.slice(0, 3);
+
+  // All ANU items for modal filter & search
+  const allModalAnu = rawAnu.filter((item: any) => {
+    const matchesFilter =
+      anuModalFilter === "all" || item.programmeType?.toLowerCase() === anuModalFilter;
+    const matchesSearch =
+      anuSearchQuery === "" ||
+      (item.year && item.year.toLowerCase().includes(anuSearchQuery.toLowerCase())) ||
+      (item.title && item.title.toLowerCase().includes(anuSearchQuery.toLowerCase()));
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
@@ -372,13 +450,13 @@ export default function MandatoryDisclosuresPage() {
                       </div>
                     </div>
 
-                    {/* A.3 ANU Affiliation Orders - UG & PG */}
+                    {/* A.3 ANU Affiliation Orders - UG & PG (Shows only latest 3 + View All modal) */}
                     <div
                       id="sec-anu-affiliations"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
                       style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-3">
                         <div className="flex items-center gap-3">
                           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
                             <Building className="h-5 w-5" />
@@ -391,54 +469,95 @@ export default function MandatoryDisclosuresPage() {
                           </div>
                         </div>
 
-                        {/* UG / PG Switch */}
-                        <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold shrink-0">
+                        {/* Controls: UG/PG Toggle + View All Button */}
+                        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                          {/* UG / PG Switch */}
+                          <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
+                            <button
+                              onClick={() => setAnuTab("ug")}
+                              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                                anuTab === "ug" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                              }`}
+                            >
+                              Undergraduate (UG)
+                            </button>
+                            <button
+                              onClick={() => setAnuTab("pg")}
+                              className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                                anuTab === "pg" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                              }`}
+                            >
+                              Postgraduate (PG)
+                            </button>
+                          </div>
+
+                          {/* View All Button */}
                           <button
-                            onClick={() => setAnuTab("ug")}
-                            className={`px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
-                              anuTab === "ug" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
-                            }`}
+                            type="button"
+                            onClick={() => {
+                              setAnuModalFilter(anuTab);
+                              setIsAnuModalOpen(true);
+                            }}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#002147] hover:bg-[#003366] px-4 py-2 rounded-xl transition-all shadow-xs hover:shadow hover:scale-105 active:scale-95 cursor-pointer select-none"
+                            title="View all ANU affiliation orders & archive"
                           >
-                            Undergraduate (UG)
-                          </button>
-                          <button
-                            onClick={() => setAnuTab("pg")}
-                            className={`px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
-                              anuTab === "pg" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
-                            }`}
-                          >
-                            Postgraduate (PG)
+                            <FileText className="h-3.5 w-3.5 text-amber-300" />
+                            <span>View All ({currentAnuList.length})</span>
+                            <ExternalLink className="h-3 w-3 opacity-80" />
                           </button>
                         </div>
                       </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed">
-                        The institution is affiliated to Acharya Nagarjuna University. Relevant affiliation orders and documents relating to Undergraduate and Postgraduate programmes are provided below for reference.
-                      </p>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <p className="text-slate-600 text-sm font-medium leading-relaxed">
+                          Displaying latest 3 academic years for {anuTab.toUpperCase()} programmes. Use <strong>View All</strong> to explore older years and complete archive.
+                        </p>
+                      </div>
 
+                      {/* Displaying ONLY Latest 3 Cards on Main Page */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {(anuTab === "ug" ? ugAnu : pgAnu).map((item: any, idx: number) => (
-                          <div
-                            key={item._key || idx}
-                            className="border-2 border-slate-200/80 rounded-2xl p-4.5 hover:border-blue-300 hover:shadow-xs transition-all flex flex-col justify-between gap-3 bg-slate-50/50"
-                          >
-                            <div className="flex items-start gap-3">
-                              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100/70 text-blue-800 font-bold text-xs shrink-0">
-                                <GraduationCap className="h-4.5 w-4.5" />
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <p className="font-extrabold text-sm text-slate-900">{item.year}</p>
-                                <p className="text-xs text-slate-500 font-medium truncate mt-0.5">{item.title || `${anuTab.toUpperCase()} Affiliation Order`}</p>
+                        {displayedAnu.map((item: any, idx: number) => {
+                          const resolvedUrl = resolveAnuUrl(item.programmeType || anuTab, item.year, item.fileUrl);
+                          return (
+                            <div
+                              key={item._key || idx}
+                              className="border-2 border-slate-200/80 rounded-2xl p-5 hover:border-blue-400 hover:shadow-md transition-all flex flex-col justify-between gap-3.5 bg-slate-50/60 group"
+                            >
+                              <div className="flex items-start gap-3.5">
+                                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100/70 text-blue-800 font-bold text-xs shrink-0 group-hover:bg-[#002147] group-hover:text-white transition-colors">
+                                  <GraduationCap className="h-5 w-5" />
+                                </span>
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-extrabold text-base text-slate-900">{item.year}</p>
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+                                      Latest
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
+                                    {item.title || `${anuTab.toUpperCase()} Affiliation Order`}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-200/80">
+                                <button
+                                  onClick={() => openPdf(resolvedUrl, `${anuTab.toUpperCase()} Affiliation Order - ${item.year}`)}
+                                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-700 bg-white hover:bg-[#002147] hover:text-white rounded-xl border border-slate-200/80 transition-all cursor-pointer shadow-2xs"
+                                >
+                                  <Eye className="h-3.5 w-3.5" /> View PDF
+                                </button>
+                                <a
+                                  href={resolvedUrl}
+                                  download
+                                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 rounded-xl border border-slate-200/80 transition-all cursor-pointer shadow-2xs"
+                                >
+                                  <Download className="h-3.5 w-3.5" /> Download
+                                </a>
                               </div>
                             </div>
-                            <button
-                              onClick={() => openPdf(item.fileUrl, `${anuTab.toUpperCase()} Affiliation Order - ${item.year}`)}
-                              className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-700 bg-white hover:bg-[#002147] hover:text-white rounded-xl border border-slate-200/80 transition-all cursor-pointer shadow-2xs"
-                            >
-                              <Eye className="h-3.5 w-3.5" /> View PDF
-                            </button>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -634,7 +753,7 @@ export default function MandatoryDisclosuresPage() {
                       </div>
                     </div>
 
-                    {/* A.7 AISHE Certificates & Reports */}
+                    {/* A.7 AISHE Certificates & Reports (Updated with real files) */}
                     <div
                       id="sec-aishe-reports"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -666,22 +785,35 @@ export default function MandatoryDisclosuresPage() {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
-                            {(data.aisheReports || []).map((row: any, idx: number) => (
-                              <tr key={row._key || idx} className="hover:bg-blue-50/50 transition-colors">
-                                <td className="py-3.5 px-6 font-bold text-slate-900">{row.sNo || idx + 1}</td>
-                                <td className="py-3.5 px-6 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
-                                <td className="py-3.5 px-6">{row.title || "AISHE Certificate / Report"}</td>
-                                <td className="py-3.5 px-6 text-right whitespace-nowrap">
-                                  <button
-                                    onClick={() => openPdf(row.fileUrl, `AISHE Certificate - ${row.year}`)}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
-                                  >
-                                    <Eye className="h-3.5 w-3.5" />
-                                    <span>View PDF</span>
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
+                            {(data.aisheReports || []).map((row: any, idx: number) => {
+                              const resolvedUrl = resolveAisheUrl(row.year, row.fileUrl);
+                              return (
+                                <tr key={row._key || idx} className="hover:bg-blue-50/50 transition-colors">
+                                  <td className="py-3.5 px-6 font-bold text-slate-900">{row.sNo || idx + 1}</td>
+                                  <td className="py-3.5 px-6 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                                  <td className="py-3.5 px-6 font-semibold text-slate-800">{row.title || "AISHE Certificate / Report"}</td>
+                                  <td className="py-3.5 px-6 text-right whitespace-nowrap">
+                                    <div className="inline-flex items-center gap-2">
+                                      <button
+                                        onClick={() => openPdf(resolvedUrl, `AISHE Certificate - ${row.year}`)}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
+                                      >
+                                        <Eye className="h-3.5 w-3.5" />
+                                        <span>View PDF</span>
+                                      </button>
+                                      <a
+                                        href={resolvedUrl}
+                                        download
+                                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-50 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition-all border border-slate-200 cursor-pointer"
+                                        title="Download Certificate"
+                                      >
+                                        <Download className="h-3.5 w-3.5" />
+                                      </a>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </table>
                       </div>
@@ -1444,7 +1576,187 @@ export default function MandatoryDisclosuresPage() {
         </div>
       </div>
 
-      {/* PDF Viewer Modal */}
+      {/* ============================================================ */}
+      {/* All ANU Affiliation Orders & Archive Modal Popup             */}
+      {/* ============================================================ */}
+      {isAnuModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-xs select-none animate-fadeIn"
+          onClick={() => setIsAnuModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl max-h-[88vh] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#002147] text-white px-6 py-5 sm:px-8 flex items-center justify-between gap-4 border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-3.5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 border border-white/15 text-amber-300 shadow-xs shrink-0">
+                  <Building className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-outfit font-black text-lg sm:text-xl text-white tracking-tight">
+                      ANU Affiliation Orders &amp; Archives
+                    </h3>
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-full shadow-2xs">
+                      {rawAnu.length} Total Orders
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300 font-medium mt-0.5">
+                    Complete multi-year archive of Undergraduate (UG) and Postgraduate (PG) affiliation orders.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAnuModalOpen(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                title="Close popup"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="p-4 bg-slate-50 border-b border-slate-200 shrink-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              {/* Programme Category Switch */}
+              <div className="inline-flex p-1 bg-white rounded-xl border border-slate-200 text-xs font-bold shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setAnuModalFilter("all")}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    anuModalFilter === "all" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  All Orders ({rawAnu.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAnuModalFilter("ug")}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    anuModalFilter === "ug" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Undergraduate ({ugAnu.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAnuModalFilter("pg")}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    anuModalFilter === "pg" ? "bg-[#002147] text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Postgraduate ({pgAnu.length})
+                </button>
+              </div>
+
+              {/* Search Bar */}
+              <div className="flex items-center gap-2 flex-1 max-w-sm">
+                <input
+                  type="text"
+                  placeholder="Search by academic year..."
+                  value={anuSearchQuery}
+                  onChange={(e) => setAnuSearchQuery(e.target.value)}
+                  className="w-full px-3.5 py-1.5 text-xs sm:text-sm font-semibold bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
+                />
+                {anuSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setAnuSearchQuery("")}
+                    className="text-xs font-bold text-slate-500 hover:text-slate-800 shrink-0 cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Modal Scrollable Content: All ANU PDFs */}
+            <div className="p-6 sm:p-8 overflow-y-auto max-h-[58vh] bg-slate-50/50">
+              {allModalAnu.length === 0 ? (
+                <div className="text-center py-12 text-slate-400 font-semibold text-sm">
+                  No affiliation orders found matching &ldquo;{anuSearchQuery}&rdquo;
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {allModalAnu.map((item: any, idx: number) => {
+                    const isUG = item.programmeType?.toLowerCase() === "ug";
+                    const resolvedUrl = resolveAnuUrl(item.programmeType || "ug", item.year, item.fileUrl);
+                    const isRecent = idx < 3;
+
+                    return (
+                      <div
+                        key={item._key || idx}
+                        className="rounded-2xl p-5 border-2 bg-white border-slate-200/90 hover:border-blue-300 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group"
+                      >
+                        <div className="flex items-start gap-3.5">
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-700 font-bold group-hover:bg-[#002147] group-hover:text-white transition-colors">
+                            <GraduationCap className="h-5 w-5" />
+                          </span>
+                          <div className="flex flex-col gap-1 flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                                isUG ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+                              }`}>
+                                {isUG ? "UG Programme" : "PG Programme"}
+                              </span>
+                              {isRecent ? (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+                                  Recent Active Order
+                                </span>
+                              ) : (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                                  Archive Order
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="font-outfit text-slate-900 group-hover:text-blue-700 font-extrabold text-base transition-colors leading-snug">
+                              {item.year} - {item.title || `${isUG ? "UG" : "PG"} Affiliation Order`}
+                            </h4>
+                            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">
+                              Acharya Nagarjuna University Order
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100">
+                          <button
+                            onClick={() => openPdf(resolvedUrl, `${isUG ? "UG" : "PG"} Affiliation Order - ${item.year}`)}
+                            className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-[#002147] hover:text-white border border-blue-100/80 px-3 py-2 rounded-xl transition-all cursor-pointer shadow-2xs"
+                          >
+                            <Eye className="h-3.5 w-3.5" /> View PDF
+                          </button>
+                          <a
+                            href={resolvedUrl}
+                            download
+                            className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 px-3 py-2 rounded-xl transition-all cursor-pointer shadow-2xs"
+                          >
+                            <Download className="h-3.5 w-3.5" /> Download
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 bg-slate-100/80 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600 font-medium">
+              <span>St. Ann’s College for Women • ANU Affiliation Registry</span>
+              <button
+                onClick={() => setIsAnuModalOpen(false)}
+                className="px-4 py-1.5 bg-[#002147] text-white rounded-lg font-bold text-xs hover:bg-[#003366] transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PDF Flipbook Viewer Modal */}
       {previewPdf && (
         <FilePreviewModal
           isOpen={!!previewPdf}
