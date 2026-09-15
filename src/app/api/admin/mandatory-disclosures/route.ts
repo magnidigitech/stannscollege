@@ -45,6 +45,15 @@ export async function GET(req: NextRequest) {
       title,
       lastUpdated,
       verifiedBy,
+      mandatoryDisclosureDocs[] {
+        _key,
+        sNo,
+        title,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl),
+        "assetId": file.asset->_id
+      },
       aicteApprovals[] {
         _key,
         year,
@@ -116,12 +125,17 @@ export async function GET(req: NextRequest) {
       },
       financialDocuments[] {
         _key,
+        sNo,
         code,
         title,
         description,
         redirectUrl,
+        btnLabel,
         "fileUrl": coalesce(file.asset->url, fileUrl),
-        "assetId": file.asset->_id
+        "assetId": file.asset->_id,
+        secondBtnLabel,
+        "secondFileUrl": coalesce(secondFile.asset->url, secondFileUrl),
+        "secondAssetId": secondFile.asset->_id
       },
       annualReports[] {
         _key,
@@ -262,7 +276,17 @@ export async function POST(req: NextRequest) {
             }
           };
         }
+        if (item.secondAssetId) {
+          cleaned.secondFile = {
+            _type: "file",
+            asset: {
+              _type: "reference",
+              _ref: item.secondAssetId,
+            }
+          };
+        }
         delete cleaned.assetId;
+        delete cleaned.secondAssetId;
         return cleaned;
       });
     };
@@ -273,6 +297,7 @@ export async function POST(req: NextRequest) {
       title: body.title || "Mandatory Disclosures & Compliance",
       lastUpdated: body.lastUpdated || new Date().toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }),
       verifiedBy: body.verifiedBy || "Principal / IQAC Coordinator",
+      mandatoryDisclosureDocs: cleanArrayWithFile(body.mandatoryDisclosureDocs),
       aicteApprovals: cleanArrayWithFile(body.aicteApprovals),
       ugcDocuments: cleanArrayWithFile(body.ugcDocuments),
       cceOrders: cleanArrayWithFile(body.cceOrders),

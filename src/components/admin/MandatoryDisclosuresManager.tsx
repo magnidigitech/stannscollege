@@ -41,7 +41,7 @@ export function MandatoryDisclosuresManager() {
   const [activeTab, setActiveTab] = useState<"A" | "B" | "C" | "D" | "E" | "F" | "G" | "H">("A");
 
   // Sub-filter for Tab A (Statutory & Regulatory)
-  const [tabASub, setTabASub] = useState<"aicte" | "ugc" | "cce" | "apsche" | "anu" | "aishe" | "nirf">("aicte");
+  const [tabASub, setTabASub] = useState<"mandatory" | "aicte" | "ugc" | "cce" | "apsche" | "anu" | "aishe" | "nirf">("mandatory");
   // ANU sub-tab
   const [anuFilter, setAnuFilter] = useState<"ug" | "pg">("ug");
 
@@ -120,7 +120,7 @@ export function MandatoryDisclosuresManager() {
         setEditingItem((prev: any) => ({
           ...prev,
           [fieldName]: json.url,
-          assetId: json.assetId,
+          [fieldName === "secondFileUrl" ? "secondAssetId" : "assetId"]: json.assetId,
         }));
       } else {
         alert(json.error || "Failed to upload PDF file to Sanity.");
@@ -313,13 +313,14 @@ export function MandatoryDisclosuresManager() {
           {/* Sub-tab navigation for Tab A */}
           <div className="flex flex-wrap items-center gap-2 bg-slate-100/80 p-2 rounded-2xl border border-slate-200/70 text-xs">
             {[
-              { id: "aicte", label: "1. AICTE Approvals", count: data.aicteApprovals?.length || 0 },
-              { id: "ugc", label: "2. UGC Recognition", count: data.ugcDocuments?.length || 0 },
-              { id: "cce", label: "3. CCE Orders (Table A)", count: data.cceOrders?.length || 0 },
-              { id: "apsche", label: "4. APSCHE Orders (Table B)", count: data.apscheOrders?.length || 0 },
-              { id: "anu", label: "5. ANU Affiliations (UG/PG)", count: data.anuAffiliations?.length || 0 },
-              { id: "aishe", label: "6. AISHE Reports", count: data.aisheReports?.length || 0 },
-              { id: "nirf", label: "7. NIRF Submissions", count: data.nirfSubmissions?.length || 0 },
+              { id: "mandatory", label: "1. Mandatory Disclosure", count: data.mandatoryDisclosureDocs?.length || 0 },
+              { id: "aicte", label: "2. AICTE Approvals", count: data.aicteApprovals?.length || 0 },
+              { id: "ugc", label: "3. UGC Recognition", count: data.ugcDocuments?.length || 0 },
+              { id: "cce", label: "4. CCE Orders (Table A)", count: data.cceOrders?.length || 0 },
+              { id: "apsche", label: "5. APSCHE Orders (Table B)", count: data.apscheOrders?.length || 0 },
+              { id: "anu", label: "6. ANU Affiliations (UG/PG)", count: data.anuAffiliations?.length || 0 },
+              { id: "aishe", label: "7. AISHE Reports", count: data.aisheReports?.length || 0 },
+              { id: "nirf", label: "8. NIRF Submissions", count: data.nirfSubmissions?.length || 0 },
             ].map((sub) => (
               <button
                 key={sub.id}
@@ -339,6 +340,35 @@ export function MandatoryDisclosuresManager() {
               </button>
             ))}
           </div>
+
+          {/* Mandatory Disclosure Documents Table */}
+          {tabASub === "mandatory" && (
+            <TableSectionCard
+              title="Mandatory Disclosure Documents"
+              subtitle="Official prescribed institutional disclosure documents (displayed in Section A.1 on public page)"
+              onAdd={() => openAddModal("mandatoryDisclosureDocs", { sNo: (data.mandatoryDisclosureDocs?.length || 0) + 1, title: "New Document", description: "", fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={data.mandatoryDisclosureDocs || []}
+                columns={["S.No", "Document Title", "PDF Document", "Redirect Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap text-center">{row.sNo || idx + 1}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("mandatoryDisclosureDocs", idx, row)} onDelete={() => handleDeleteItem("mandatoryDisclosureDocs", idx)} />
+                    </td>
+                  </tr>
+                )}
+              />
+            </TableSectionCard>
+          )}
 
           {/* AICTE Table */}
           {tabASub === "aicte" && (
@@ -721,31 +751,44 @@ export function MandatoryDisclosuresManager() {
       {/* TAB E: Financial Transparency                            */}
       {/* ========================================================= */}
       {activeTab === "E" && (
-        <CardGridSection
+        <TableSectionCard
           title="Section E: Financial Transparency Documents & Policy Portals"
-          subtitle="Annual budgets, audit statements, fee regulations, AFRC orders, and procurement policies"
-          onAdd={() => openAddModal("financialDocuments", { code: "finance", title: "New Financial Document", description: "Financial disclosure details.", fileUrl: "", redirectUrl: "" })}
+          subtitle="Annual budgets, audit statements, fee regulations, AFRC orders, procurement policies, and related financial disclosures"
+          onAdd={() => openAddModal("financialDocuments", { sNo: (data.financialDocuments?.length || 0) + 1, code: "finance", title: "New Financial Document", btnLabel: "", description: "Financial disclosure details.", fileUrl: "", secondFileUrl: "", secondBtnLabel: "", redirectUrl: "" })}
         >
-          {(data.financialDocuments || []).map((doc: any, idx: number) => (
-            <div key={doc._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    {doc.code || "FINANCE"}
-                  </span>
+          <DataTable
+            items={data.financialDocuments || []}
+            columns={["S.No", "Title", "Primary PDF", "Second PDF", "Redirect Link", "Actions"]}
+            renderRow={(doc, idx) => (
+              <tr key={doc._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap text-center">{doc.sNo || idx + 1}</td>
+                <td className="py-3 px-4">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-outfit font-extrabold text-sm text-slate-900">{doc.title}</span>
+                    {doc.btnLabel && <span className="text-[10px] text-slate-500 italic">Button: {doc.btnLabel}</span>}
+                    {doc.description && <span className="text-xs text-slate-500 line-clamp-2">{doc.description}</span>}
+                  </div>
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  <PdfBadge url={doc.fileUrl} onPreview={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} />
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  {doc.secondFileUrl ? (
+                    <PdfBadge url={doc.secondFileUrl} label={doc.secondBtnLabel || "2nd PDF"} onPreview={() => setPreviewPdf({ url: doc.secondFileUrl, title: doc.secondBtnLabel || doc.title })} />
+                  ) : (
+                    <span className="text-xs text-slate-400">—</span>
+                  )}
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  <LinkBadge url={doc.redirectUrl} />
+                </td>
+                <td className="py-3 px-4 text-right whitespace-nowrap">
                   <ActionButtons onEdit={() => openEditModal("financialDocuments", idx, doc)} onDelete={() => handleDeleteItem("financialDocuments", idx)} />
-                </div>
-                <h4 className="font-outfit font-extrabold text-sm text-slate-900">{doc.title}</h4>
-                <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{doc.description}</p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
-                <PdfBadge url={doc.fileUrl} onPreview={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} />
-                <LinkBadge url={doc.redirectUrl} />
-              </div>
-            </div>
-          ))}
-        </CardGridSection>
+                </td>
+              </tr>
+            )}
+          />
+        </TableSectionCard>
       )}
 
       {/* ========================================================= */}
@@ -1063,6 +1106,60 @@ export function MandatoryDisclosuresManager() {
                       onChange={(e) => setEditingItem({ ...editingItem, fileUrl: e.target.value })}
                       placeholder="/documents/... or https://cdn.sanity.io/..."
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Button Label (for financial documents) */}
+              {editingItem.btnLabel !== undefined && (
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Primary Button Label</label>
+                  <input
+                    type="text"
+                    value={editingItem.btnLabel || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, btnLabel: e.target.value })}
+                    placeholder="e.g. Annual Budget, Fee Structure..."
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs"
+                  />
+                </div>
+              )}
+
+              {/* Second File Upload / URL (for financial documents) */}
+              {editingItem.secondFileUrl !== undefined && (
+                <div className="bg-amber-50/60 p-3 rounded-2xl border border-amber-200 flex flex-col gap-2">
+                  <div className="flex items-center gap-1.5 text-amber-800 font-bold text-[11px] uppercase tracking-wider">
+                    <FileText className="h-3.5 w-3.5 text-amber-700" />
+                    <span>Second PDF Document (Optional)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-bold transition-all shrink-0">
+                      <Upload className="h-3.5 w-3.5" />
+                      <span>{isUploading ? "Uploading..." : "Upload 2nd PDF"}</span>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "secondFileUrl")}
+                        disabled={isUploading}
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      value={editingItem.secondFileUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, secondFileUrl: e.target.value })}
+                      placeholder="/documents/... or https://cdn.sanity.io/..."
+                      className="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl focus:outline-none focus:border-amber-600 text-xs font-mono"
+                    />
+                  </div>
+                  <div className="mt-1">
+                    <label className="block text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-0.5">Second Button Label</label>
+                    <input
+                      type="text"
+                      value={editingItem.secondBtnLabel || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, secondBtnLabel: e.target.value })}
+                      placeholder="e.g. Balance Sheet, Audit Report..."
+                      className="w-full px-2 py-1.5 bg-white border border-amber-200 rounded-lg focus:outline-none focus:border-amber-600 text-xs"
                     />
                   </div>
                 </div>

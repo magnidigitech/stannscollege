@@ -1212,6 +1212,13 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
   title: "Mandatory Disclosures & Compliance",
   lastUpdated: "15 September 2026",
   verifiedBy: "Principal / IQAC Coordinator",
+  mandatoryDisclosureDocs: [
+    { _key: "md_1", sNo: 1, title: "Mandatory Disclosure", description: "Official prescribed mandatory institutional disclosure", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
+    { _key: "md_2", sNo: 2, title: "Institutional Profile", description: "Comprehensive profile, history, and statutory status of the institution", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
+    { _key: "md_3", sNo: 3, title: "Programme Details", description: "Academic programmes, curriculum, and course structures", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
+    { _key: "md_4", sNo: 4, title: "Approved Intake / Sanctioned Strength", description: "Statutory approved intake capacity and student strength", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
+    { _key: "md_5", sNo: 5, title: "Faculty and Infrastructure Details", description: "Faculty directory, campus infrastructure, and laboratory facilities", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
+  ],
   aicteApprovals: [
     { _key: "aicte_1", year: "2026–2027", title: "AICTE Extension of Approval (EoA) 2026-2027", fileUrl: "/documents/aicte/AICTE_Approval_2026-2027.pdf" },
     { _key: "aicte_2", year: "2025–2026", title: "AICTE Extension of Approval (EoA) 2025-2026", fileUrl: "/documents/aicte/AICTE_Approval_2025-2026.pdf" },
@@ -1270,17 +1277,17 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
     { _key: "reg_other", code: "other", title: "Other Statutory / Regulatory Compliance", description: "Other compliance documents, declarations and information required by competent government, statutory and regulatory authorities are provided wherever applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
   ],
   financialDocuments: [
-    { _key: "fin_budget", code: "budget", title: "Annual Budget", description: "The annual budget reflects the institution's financial planning and allocation of resources towards academic, administrative, infrastructure, student welfare and other institutional activities.", fileUrl: "/documents/policies/Annual_Budget.pdf" },
-    { _key: "fin_audit", code: "audit", title: "Audited Financial Statements", description: "Audited financial statements and relevant financial records are maintained in accordance with applicable accounting and statutory requirements.", fileUrl: "/documents/DefaultFile_1.pdf" },
-    { _key: "fin_income", code: "income", title: "Financial Resources / Sources of Income", description: "Relevant information regarding the institution's financial resources and applicable sources of income is maintained and disclosed wherever required.", fileUrl: "/documents/DefaultFile_1.pdf" },
-    { _key: "fin_corpus", code: "corpus", title: "Endowment & Corpus Funds", description: "Details relating to endowment and corpus funds, wherever applicable, are maintained in accordance with institutional financial procedures.", fileUrl: "/documents/DefaultFile_1.pdf" },
-    { _key: "fin_utilization", code: "utilization", title: "Utilization Certificates", description: "Relevant Utilization Certificates relating to grants or funds received from competent authorities are maintained and provided wherever applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
-    { _key: "fin_policy", code: "finance_policy", title: "Finance Policy", description: "The institution follows appropriate financial procedures relating to budgeting, expenditure, accounting, financial control and resource management.", fileUrl: "/documents/policies/Financial_Management_Policy.pdf" },
-    { _key: "fin_procurement", code: "procurement", title: "Purchase & Procurement Policy", description: "The institution follows transparent and appropriate procedures for the purchase and procurement of goods, services, equipment and other institutional requirements.", fileUrl: "/documents/policies/Purchase_Procurement_Policy_SOP.pdf" },
-    { _key: "fin_infra", code: "infrastructure_policy", title: "Infrastructure Development and Augmentation Policy", description: "Policy framework governing institutional infrastructure planning, development, physical expansion, modernization, and resource augmentation.", fileUrl: "/documents/policies/Infrastructure_Development_Augmentation_Policy.pdf" },
-    { _key: "fin_fee", code: "fee_structure", title: "Approved Fee Structure", description: "Applicable approved fee structures provided for the information of students and stakeholders.", fileUrl: "/documents/DefaultFile_1.pdf" },
-    { _key: "fin_afrc", code: "afrc_orders", title: "AFRC Orders", description: "Relevant AFRC orders and governmental regulatory fee notifications.", fileUrl: "/documents/DefaultFile_1.pdf" },
-    { _key: "fin_scholarship", code: "scholarship", title: "Scholarship Details", description: "Information regarding scholarships, fee reimbursement, financial assistance and student support schemes available through Government and statutory bodies.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_budget", sNo: 1, code: "budget", title: "Annual Budget", btnLabel: "Annual Budget", description: "The annual budget reflects the institution's financial planning and allocation of resources towards academic, administrative, infrastructure, student welfare and other institutional activities.", fileUrl: "/documents/policies/Annual_Budget.pdf" },
+    { _key: "fin_audit", sNo: 2, code: "audit", title: "Audited Financial Statements", btnLabel: "Audited Financial Statements", description: "Audited financial statements and relevant financial records are maintained in accordance with applicable accounting and statutory requirements.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_income", sNo: 3, code: "income", title: "Financial Resources / Sources of Income", btnLabel: "Financial Resources", description: "Relevant information regarding the institution's financial resources and applicable sources of income is maintained and disclosed wherever required.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_corpus", sNo: 4, code: "corpus", title: "Endowment & Corpus Funds", btnLabel: "Endowment & Corpus Funds", description: "Details relating to endowment and corpus funds, wherever applicable, are maintained in accordance with institutional financial procedures.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_utilization", sNo: 5, code: "utilization", title: "Utilization Certificates", btnLabel: "Utilization Certificates", description: "Relevant Utilization Certificates relating to grants or funds received from competent authorities are maintained and provided wherever applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_policy", sNo: 6, code: "finance_policy", title: "Finance Policy", btnLabel: "Finance Policy", description: "The institution follows appropriate financial procedures relating to budgeting, expenditure, accounting, financial control and resource management.", fileUrl: "/documents/policies/Financial_Management_Policy.pdf" },
+    { _key: "fin_procurement", sNo: 7, code: "procurement", title: "Purchase & Procurement Policy", btnLabel: "Purchase & Procurement Policy", description: "The institution follows transparent and appropriate procedures for the purchase and procurement of goods, services, equipment and other institutional requirements.", fileUrl: "/documents/policies/Purchase_Procurement_Policy_SOP.pdf" },
+    { _key: "fin_infra", sNo: 8, code: "infrastructure_policy", title: "Infrastructure Development and Augmentation Policy", btnLabel: "Infrastructure Policy", description: "Policy framework governing institutional infrastructure planning, development, physical expansion, modernization, and resource augmentation.", fileUrl: "/documents/policies/Infrastructure_Development_Augmentation_Policy.pdf" },
+    { _key: "fin_fee", sNo: 9, code: "fee_structure", title: "Approved Fee Structure", btnLabel: "Fee Structure", description: "Applicable approved fee structures provided for the information of students and stakeholders.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_afrc", sNo: 10, code: "afrc_orders", title: "AFRC Orders", btnLabel: "AFRC Orders", description: "Relevant AFRC orders and governmental regulatory fee notifications.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_scholarship", sNo: 11, code: "scholarship", title: "Scholarship Details", btnLabel: "Scholarship Details", description: "Information regarding scholarships, fee reimbursement, financial assistance and student support schemes available through Government and statutory bodies.", fileUrl: "/documents/DefaultFile_1.pdf" },
   ],
   annualReports: [
     { _key: "ar_1", year: "2025–2026", title: "Annual Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
@@ -1336,6 +1343,14 @@ export async function getMandatoryDisclosures() {
       title,
       lastUpdated,
       verifiedBy,
+      mandatoryDisclosureDocs[] {
+        _key,
+        sNo,
+        title,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
       aicteApprovals[] {
         _key,
         year,
@@ -1400,11 +1415,15 @@ export async function getMandatoryDisclosures() {
       },
       financialDocuments[] {
         _key,
+        sNo,
         code,
         title,
         description,
         redirectUrl,
-        "fileUrl": coalesce(file.asset->url, fileUrl)
+        btnLabel,
+        "fileUrl": coalesce(file.asset->url, fileUrl),
+        secondBtnLabel,
+        "secondFileUrl": coalesce(secondFile.asset->url, secondFileUrl)
       },
       annualReports[] {
         _key,
@@ -1467,6 +1486,7 @@ export async function getMandatoryDisclosures() {
       return {
         ...DEFAULT_MANDATORY_DISCLOSURES,
         ...data,
+        mandatoryDisclosureDocs: data.mandatoryDisclosureDocs?.length ? data.mandatoryDisclosureDocs : DEFAULT_MANDATORY_DISCLOSURES.mandatoryDisclosureDocs,
         aicteApprovals: data.aicteApprovals?.length ? data.aicteApprovals : DEFAULT_MANDATORY_DISCLOSURES.aicteApprovals,
         ugcDocuments: data.ugcDocuments?.length ? data.ugcDocuments : DEFAULT_MANDATORY_DISCLOSURES.ugcDocuments,
         cceOrders: data.cceOrders?.length ? data.cceOrders : DEFAULT_MANDATORY_DISCLOSURES.cceOrders,

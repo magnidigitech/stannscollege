@@ -138,10 +138,17 @@ const MANDATORY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     title: "E. Financial Transparency",
     sectionId: "sec-financial",
     items: [
-      { text: "1. Audited Statements & Balance Sheets", id: "sec-financial-audited" },
-      { text: "2. Budget Allocation & Utilization", id: "sec-financial-budget" },
-      { text: "3. Fee Structure & AFRC Compliance", id: "sec-financial-fees" },
-      { text: "4. Scholarships & Student Aid", id: "sec-financial-scholarships" },
+      { text: "1. Annual Budget", id: "sec-financial-budget" },
+      { text: "2. Audited Financial Statements", id: "sec-financial-audit" },
+      { text: "3. Financial Resources / Sources of Income", id: "sec-financial-income" },
+      { text: "4. Endowment & Corpus Funds", id: "sec-financial-corpus" },
+      { text: "5. Utilization Certificates", id: "sec-financial-utilization" },
+      { text: "6. Finance Policy", id: "sec-financial-finance_policy" },
+      { text: "7. Purchase & Procurement Policy", id: "sec-financial-procurement" },
+      { text: "8. Infrastructure Development Policy", id: "sec-financial-infrastructure_policy" },
+      { text: "9. Approved Fee Structure", id: "sec-financial-fee_structure" },
+      { text: "10. AFRC Orders", id: "sec-financial-afrc_orders" },
+      { text: "11. Scholarship Details", id: "sec-financial-scholarship" },
     ]
   },
   {
@@ -235,10 +242,17 @@ export default function MandatoryDisclosuresPage() {
       "sec-welfare-counseling",
       "sec-welfare-eoc",
       "sec-financial",
-      "sec-financial-audited",
       "sec-financial-budget",
-      "sec-financial-fees",
-      "sec-financial-scholarships",
+      "sec-financial-audit",
+      "sec-financial-income",
+      "sec-financial-corpus",
+      "sec-financial-utilization",
+      "sec-financial-finance_policy",
+      "sec-financial-procurement",
+      "sec-financial-infrastructure_policy",
+      "sec-financial-fee_structure",
+      "sec-financial-afrc_orders",
+      "sec-financial-scholarship",
       "sec-governance",
       "sec-gov-structure",
       "sec-gov-policies",
@@ -373,42 +387,38 @@ export default function MandatoryDisclosuresPage() {
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
                       style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                            <FileText className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              1. Mandatory Disclosure
-                            </h4>
-                            <p className="text-xs text-slate-500 font-medium">Official prescribed institutional disclosure document</p>
-                          </div>
+                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                          <FileText className="h-5 w-5" />
+                        </span>
+                        <div>
+                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                            1. Mandatory Disclosure
+                          </h4>
+                          <p className="text-xs text-slate-500 font-medium">Official prescribed institutional disclosure document</p>
                         </div>
-                        <button
-                          onClick={() => openPdf("/documents/DefaultFile_1.pdf", "Official Mandatory Disclosure")}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-[#1e40af] hover:text-white border border-blue-100/80 px-4 py-2.5 rounded-xl transition-all duration-200 cursor-pointer shrink-0"
-                        >
-                          <Eye className="h-4 w-4" /> View Prescribed PDF
-                        </button>
                       </div>
                       <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
                         The institution publishes the prescribed Mandatory Disclosure containing essential information relating to the institution, management, academic programmes, approved intake, faculty, infrastructure, facilities and other relevant institutional particulars.
                       </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-2">
-                        {[
-                          "Mandatory Disclosure Document",
-                          "Institutional Profile",
-                          "Programme Details & Curricula",
-                          "Approved Intake / Sanctioned Strength",
-                          "Faculty & Infrastructure Details",
-                          "Campus Facilities & Governance"
-                        ].map((item, idx) => (
-                          <div key={idx} className="flex items-center gap-2.5 bg-slate-50/80 px-3.5 py-2.5 rounded-xl border border-slate-200/80 text-xs font-semibold text-slate-700">
-                            <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                            <span className="truncate">{item}</span>
-                          </div>
-                        ))}
+
+                      <div className="flex flex-col gap-1">
+                        <h5 className="font-outfit font-extrabold text-sm text-slate-900 uppercase tracking-wide">Documents / Information:</h5>
+                        <div className="flex flex-col gap-2 mt-1">
+                          {(data.mandatoryDisclosureDocs || []).map((doc: any, idx: number) => (
+                            <div key={doc._key || idx} className="flex items-center gap-3 bg-slate-50/80 px-4 py-3 rounded-xl border border-slate-200/80">
+                              <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                              <span className="text-xs font-semibold text-slate-700 flex-1 truncate">{doc.title}</span>
+                              <button
+                                onClick={() => openPdf(doc.fileUrl, doc.title)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#002147] hover:bg-blue-900 text-white rounded-lg text-[11px] font-bold transition-all cursor-pointer shrink-0"
+                              >
+                                <Eye className="h-3 w-3" />
+                                <span>View PDF</span>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
@@ -1342,53 +1352,60 @@ export default function MandatoryDisclosuresPage() {
                     </p>
                   </div>
 
-                  <div className="p-6 sm:p-8 md:p-10 space-y-6 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
+                  <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     <p className="text-slate-600 text-sm font-medium leading-relaxed">
                       The institution is committed to maintaining financial accountability, proper financial management and transparency in accordance with applicable rules and institutional procedures.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="flex flex-col gap-6">
                       {(data.financialDocuments || []).map((doc: any, idx: number) => {
-                        const isBlue = idx % 2 === 1;
-                        const cardId = idx === 0 ? "sec-financial-audited" : idx === 1 ? "sec-financial-budget" : idx === 2 ? "sec-financial-fees" : "sec-financial-scholarships";
+                        const sNo = doc.sNo || idx + 1;
                         return (
                           <div
                             key={doc._key || idx}
-                            id={cardId}
-                            className={`scroll-mt-52 border-2 ${isBlue ? "border-blue-200/90" : "border-slate-200/90"} rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group`}
-                            style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
+                            id={`sec-financial-${doc.code || idx}`}
+                            className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-3"
+                            style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                           >
-                            <div className="flex flex-col gap-2">
-                              <span className="text-[10px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-100/60 px-2 py-0.5 rounded w-fit">
-                                {doc.code?.replace("_", " ").toUpperCase()}
-                              </span>
-                              <h5 className="font-outfit font-extrabold text-sm text-slate-900 group-hover:text-blue-700 transition-colors">
-                                {doc.title}
-                              </h5>
-                              <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">
+                            <h4 className="font-outfit font-extrabold text-sm md:text-base text-slate-900">
+                              {sNo}. {doc.title}
+                            </h4>
+                            {doc.description && (
+                              <p className="text-slate-600 text-sm leading-relaxed">
                                 {doc.description}
                               </p>
-                            </div>
-
-                            <div className="flex flex-wrap items-center gap-2">
-                              <button
-                                onClick={() => openPdf(doc.fileUrl, doc.title)}
-                                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all w-fit cursor-pointer shadow-2xs"
-                              >
-                                <Eye className="h-3.5 w-3.5" />
-                                <span>View PDF</span>
-                              </button>
-                              {doc.redirectUrl && (
-                                <a
-                                  href={doc.redirectUrl}
-                                  target={doc.redirectUrl.startsWith("http") ? "_blank" : "_self"}
-                                  rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-blue-50 text-blue-700 rounded-xl text-xs font-bold transition-all w-fit border border-blue-200"
+                            )}
+                            <div className="flex flex-col gap-1.5 pt-1">
+                              <span className="text-xs font-black text-red-600 uppercase tracking-wider">PDF View:</span>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <button
+                                  onClick={() => openPdf(doc.fileUrl, doc.title)}
+                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer"
                                 >
-                                  <ExternalLink className="h-3.5 w-3.5" />
-                                  <span>Portal Link</span>
-                                </a>
-                              )}
+                                  <FileText className="h-3.5 w-3.5 text-emerald-600" />
+                                  <span className="underline">{doc.btnLabel || doc.title} – View PDF</span>
+                                </button>
+                                {doc.secondFileUrl && (
+                                  <button
+                                    onClick={() => openPdf(doc.secondFileUrl, doc.secondBtnLabel || doc.title)}
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer"
+                                  >
+                                    <FileText className="h-3.5 w-3.5 text-emerald-600" />
+                                    <span className="underline">{doc.secondBtnLabel || "Additional Document"} – View PDF</span>
+                                  </button>
+                                )}
+                                {doc.redirectUrl && (
+                                  <a
+                                    href={doc.redirectUrl}
+                                    target={doc.redirectUrl.startsWith("http") ? "_blank" : "_self"}
+                                    rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                                    className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 cursor-pointer"
+                                  >
+                                    <ExternalLink className="h-3 w-3" />
+                                    <span className="underline">Portal Link</span>
+                                  </a>
+                                )}
+                              </div>
                             </div>
                           </div>
                         );
