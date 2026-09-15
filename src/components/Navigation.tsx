@@ -22,7 +22,12 @@ import {
   Plus,
   Minus,
   Phone,
-  MapPin
+  MapPin,
+  FileCheck,
+  Scale,
+  Landmark,
+  BarChart3,
+  Archive
 } from "lucide-react";
 
 export function toSlug(text: string) {
@@ -227,30 +232,109 @@ export default function Navigation() {
 
   const mandatoryCategories = [
     {
-      title: "I. Statutory Approvals & Status",
+      title: "A. Statutory & Regulatory",
+      fullTitle: "A. Statutory & Regulatory Information",
       icon: ShieldCheck,
+      href: "/mandatory-disclosures#sec-statutory",
       items: [
-        { text: "All Mandatory Disclosures", href: "/mandatory-disclosures" },
-        { text: "AICTE Extension of Approval (EoA)", href: "/mandatory-disclosures?category=aicte" },
-        { text: "UGC 2(f) & 12(B) Recognition", href: "/mandatory-disclosures?category=ugc" },
-        { text: "ANU Affiliation Orders", href: "/mandatory-disclosures?category=anu" },
+        { text: "Mandatory Disclosure", href: "/mandatory-disclosures#sec-mandatory-disclosure" },
+        { text: "Institutional Profile & Programme Details", href: "/mandatory-disclosures#sec-institutional-profile" },
+        { text: "ANU Affiliation Orders – UG & PG", href: "/mandatory-disclosures#sec-anu-affiliations" },
+        { text: "AICTE Approval / EoA Documents", href: "/mandatory-disclosures#sec-aicte-approval" },
+        { text: "UGC Section 2(f) Recognition", href: "/mandatory-disclosures#sec-ugc-recognition" },
+        { text: "APSCHE Orders & Communications", href: "/mandatory-disclosures#sec-apsche-orders" },
+        { text: "AISHE Certificates & Reports", href: "/mandatory-disclosures#sec-aishe-reports" },
+        { text: "NIRF Submission & Reports", href: "/mandatory-disclosures#sec-nirf-reports" },
       ]
     },
     {
-      title: "II. Statutory Committees",
-      icon: Users,
+      title: "B. Regulatory Compliance",
+      fullTitle: "B. Regulatory Compliance",
+      icon: FileCheck,
+      href: "/mandatory-disclosures#sec-compliance",
       items: [
-        { text: "Governing Body Constitution", href: "/mandatory-disclosures?category=committees" },
-        { text: "Anti-Ragging Committee & SOPs", href: "/mandatory-disclosures?category=committees" },
-        { text: "Internal Complaints Committee (ICC)", href: "/mandatory-disclosures?category=committees" },
+        { text: "AICTE Compliance", href: "/mandatory-disclosures#sec-compliance" },
+        { text: "UGC Compliance", href: "/mandatory-disclosures#sec-compliance" },
+        { text: "APSCHE Compliance", href: "/mandatory-disclosures#sec-compliance" },
+        { text: "Other Statutory Compliance", href: "/mandatory-disclosures#sec-compliance" },
       ]
     },
     {
-      title: "III. Compliance Policies",
+      title: "C. Right to Information (RTI)",
+      fullTitle: "C. Right to Information (RTI)",
       icon: BookOpen,
+      href: "/mandatory-disclosures#sec-rti",
       items: [
-        { text: "Code of Conduct & Ethics Handbook", href: "/mandatory-disclosures?category=policies" },
-        { text: "Institutional Policies Compendium", href: "/mandatory-disclosures?category=policies" },
+        { text: "RTI Act & Institutional Information", href: "/mandatory-disclosures#sec-rti" },
+        { text: "RTI Committee / Authorities", href: "/mandatory-disclosures#sec-rti" },
+        { text: "RTI Gazette & Constitution Orders", href: "/mandatory-disclosures#sec-rti" },
+      ]
+    },
+    {
+      title: "D. Student Welfare & Safety",
+      fullTitle: "D. Student Welfare, Safety & Grievance Redressal",
+      icon: Users,
+      href: "/mandatory-disclosures#sec-student-welfare",
+      items: [
+        { text: "Anti-Ragging Policy & Committee", href: "/student-support/anti-ragging-cell" },
+        { text: "Grievance Redressal Cell", href: "/student-support/grievance-redressal-cell" },
+        { text: "Internal Complaints Committee (ICC)", href: "/student-support/internal-complaints-committee" },
+        { text: "Women Empowerment & Campus Safety", href: "/student-support/women-empowerment-cell" },
+        { text: "SC/ST & Equal Opportunity Cell", href: "/student-support/sc-st-minority-cell" },
+        { text: "Student Counselling & Support", href: "/student-support/counseling-centre" },
+      ]
+    },
+    {
+      title: "E. Financial Transparency",
+      fullTitle: "E. Financial Transparency",
+      icon: Scale,
+      href: "/mandatory-disclosures#sec-financial",
+      items: [
+        { text: "Annual Budget", href: "/mandatory-disclosures#sec-financial" },
+        { text: "Audited Financial Statements", href: "/mandatory-disclosures#sec-financial" },
+        { text: "Sources of Income & Corpus Funds", href: "/mandatory-disclosures#sec-financial" },
+        { text: "Utilization Certificates", href: "/mandatory-disclosures#sec-financial" },
+        { text: "Finance & Procurement Policies", href: "/mandatory-disclosures#sec-financial" },
+        { text: "Approved Fee Structure / AFRC Orders", href: "/mandatory-disclosures#sec-financial" },
+        { text: "Scholarship Details", href: "/mandatory-disclosures#sec-financial" },
+      ]
+    },
+    {
+      title: "F. Governance & Policies",
+      fullTitle: "F. Governance & Institutional Policies",
+      icon: Landmark,
+      href: "/mandatory-disclosures#sec-governance",
+      items: [
+        { text: "Governance Structure", href: "/about/governance-administration" },
+        { text: "Institutional Policies", href: "/about/policies" },
+        { text: "Code of Conduct", href: "/about/code-of-conduct" },
+        { text: "Administrative & Service Policies", href: "/about/service-rules" },
+        { text: "Academic Policies", href: "/academics/academic-regulations" },
+        { text: "Student Policies", href: "/student-support/student-charter" },
+      ]
+    },
+    {
+      title: "G. Institutional Reports & Data",
+      fullTitle: "G. Institutional Reports & Data",
+      icon: BarChart3,
+      href: "/mandatory-disclosures#sec-reports",
+      items: [
+        { text: "Annual Reports", href: "/mandatory-disclosures#sec-reports" },
+        { text: "Institutional Data & Statistics", href: "/mandatory-disclosures#sec-reports" },
+        { text: "Other Statutory Reports", href: "/mandatory-disclosures#sec-reports" },
+      ]
+    },
+    {
+      title: "H. Disclosure Archives",
+      fullTitle: "H. Disclosure Archives",
+      icon: Archive,
+      href: "/mandatory-disclosures#sec-archives",
+      items: [
+        { text: "Previous Mandatory Disclosures", href: "/mandatory-disclosures#sec-archives" },
+        { text: "Previous Compliance Documents", href: "/mandatory-disclosures#sec-archives" },
+        { text: "Previous Annual Reports", href: "/mandatory-disclosures#sec-archives" },
+        { text: "Previous Statutory Reports", href: "/mandatory-disclosures#sec-archives" },
+        { text: "Archived Policies & Historical Disclosures", href: "/mandatory-disclosures#sec-archives" },
       ]
     }
   ];
@@ -1403,7 +1487,7 @@ export default function Navigation() {
 
             {activeMenu === "mandatory" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("mandatory")}
                 onMouseLeave={handleMouseLeave}
@@ -1412,22 +1496,28 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Mandatory Disclosures & Regulatory Compliance"
-                  href="/mandatory-disclosures"
-                  buttonText="Visit Disclosures Main Page"
-                  icon={ShieldCheck}
-                  onNavigate={() => setActiveMenu(null)}
-                />
+                <div className="col-span-full">
+                  <DropdownHeaderBanner
+                    title="Mandatory Disclosures & Regulatory Compliance"
+                    href="/mandatory-disclosures"
+                    buttonText="Visit Disclosures Main Page"
+                    icon={ShieldCheck}
+                    onNavigate={() => setActiveMenu(null)}
+                  />
+                </div>
                 {mandatoryCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
                         <cat.icon className="h-4 w-4" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
-                      </h4>
+                      <Link
+                        href={cat.href}
+                        onClick={() => setActiveMenu(null)}
+                        className="font-outfit font-black text-slate-800 text-sm leading-tight hover:text-[#002147] transition-colors"
+                      >
+                        {cat.fullTitle || cat.title}
+                      </Link>
                     </div>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (

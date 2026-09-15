@@ -2540,6 +2540,205 @@ export default defineConfig({
           }
         }
       },
+      {
+        name: "mandatoryDisclosures",
+        title: "Mandatory Disclosures & Compliance",
+        type: "document",
+        fields: [
+          { name: "title", title: "Page Title", type: "string", initialValue: "Mandatory Disclosures & Compliance" },
+          { name: "lastUpdated", title: "Last Updated Date", type: "string" },
+          { name: "verifiedBy", title: "Verified By", type: "string", initialValue: "Principal / IQAC Coordinator" },
+          {
+            name: "aicteApprovals",
+            title: "AICTE Approvals (Year-wise Table)",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "title", title: "Document Title", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "ugcDocuments",
+            title: "UGC Recognition Documents",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "sNo", title: "S.No", type: "number" },
+                { name: "title", title: "Document Title", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "cceOrders",
+            title: "CCE Orders & Proceedings (Table A)",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "title", title: "Document / Communication", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "apscheOrders",
+            title: "APSCHE Orders & Communications (Table B)",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "title", title: "Document / Communication", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "anuAffiliations",
+            title: "ANU Affiliation Orders (UG & PG)",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "programmeType", title: "Programme Type (UG / PG)", type: "string" },
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "title", title: "Title", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "aisheReports",
+            title: "AISHE Certificates & Reports",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "sNo", title: "S.No", type: "number" },
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "title", title: "Document Title", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "nirfSubmissions",
+            title: "NIRF Submissions & Reports",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "collegeDataUrl", title: "College Data PDF URL", type: "string" },
+                { name: "managementDataUrl", title: "Management Data PDF URL", type: "string" },
+                { name: "overallDataUrl", title: "Overall Data PDF URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "regulatoryComplianceDocs",
+            title: "Regulatory Compliance Documents",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "code", title: "Code (aicte / ugc / apsche / other)", type: "string" },
+                { name: "title", title: "Title", type: "string" },
+                { name: "description", title: "Description", type: "text" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "financialDocuments",
+            title: "Financial Transparency Documents",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "code", title: "Code / Key", type: "string" },
+                { name: "title", title: "Title", type: "string" },
+                { name: "description", title: "Description", type: "text" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "annualReports",
+            title: "Year-wise Annual Reports",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "title", title: "Title", type: "string" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "disclosureArchives",
+            title: "Disclosure Archives (Historical Table)",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "year", title: "Academic Year", type: "string" },
+                { name: "mandatoryDisclosuresUrl", title: "Mandatory Disclosures PDF URL", type: "string" },
+                { name: "complianceDocumentsUrl", title: "Compliance Documents PDF URL", type: "string" },
+                { name: "annualReportUrl", title: "Annual Report PDF URL", type: "string" },
+                { name: "statutoryReportsUrl", title: "Statutory Reports PDF URL", type: "string" },
+                { name: "policiesUrl", title: "Policies PDF URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "rtiMembers",
+            title: "RTI Committee Members",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "sNo", title: "S.No", type: "number" },
+                { name: "name", title: "Name", type: "string" },
+                { name: "designation", title: "Designation", type: "string" },
+                { name: "role", title: "Role in RTI Committee", type: "string" },
+                { name: "mobile", title: "Mobile No", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "rtiDocuments",
+            title: "RTI Official Documents",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "title", title: "Title", type: "string" },
+                { name: "description", title: "Description", type: "text" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+        ]
+      },
     ],
   },
 });

@@ -8,6 +8,7 @@ import NoticesManager from "@/components/admin/NoticesManager";
 import { StrategicPlanFeedbackManager } from "@/components/admin/StrategicPlanFeedbackManager";
 import { StrategicDocumentsManager } from "@/components/admin/StrategicDocumentsManager";
 import { HeroBannersManager } from "@/components/admin/HeroBannersManager";
+import { MandatoryDisclosuresManager } from "@/components/admin/MandatoryDisclosuresManager";
 import {
   Calendar,
   Bell,
@@ -54,6 +55,14 @@ const ADMIN_MODULES = [
     icon: Bell,
     description: "Publish official college circulars, notifications, examination alerts, admissions updates, and downloadable PDFs.",
     component: NoticesManager,
+  },
+  {
+    id: "mandatory-disclosures",
+    label: "Mandatory Disclosures & Compliance",
+    badge: "Live Regulatory Tables & PDFs",
+    icon: ShieldCheck,
+    description: "Manage, update, and upload official statutory tables, AICTE/APSCHE orders, AISHE/NIRF reports, and RTI records.",
+    component: MandatoryDisclosuresManager,
   },
   {
     id: "strategic-documents",

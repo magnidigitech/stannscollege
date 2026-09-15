@@ -1204,3 +1204,229 @@ export async function getRtiDocuments() {
     }
   ];
 }
+
+/**
+ * Default fallback data matching Mandatory Disclosures Content & Data PDFs
+ */
+export const DEFAULT_MANDATORY_DISCLOSURES = {
+  title: "Mandatory Disclosures & Compliance",
+  lastUpdated: "15 September 2026",
+  verifiedBy: "Principal / IQAC Coordinator",
+  aicteApprovals: [
+    { _key: "aicte_1", year: "2026–2027", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aicte_2", year: "2025–2026", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aicte_3", year: "2024–2025", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aicte_4", year: "2023–2024", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aicte_5", year: "2022–2023", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aicte_6", year: "2021–2022", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aicte_7", year: "Previous Years", title: "AICTE Approval / EoA Documents", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  ugcDocuments: [
+    { _key: "ugc_1", sNo: 1, title: "UGC Section 2(f) Recognition Order", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  cceOrders: [
+    { _key: "cce_1", year: "2026–2027", title: "CCE Orders / Proceedings / Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  apscheOrders: [
+    { _key: "apsche_1", year: "2025–2026", title: "APSCHE Orders / Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "apsche_2", year: "2024–2025", title: "APSCHE Orders / Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "apsche_3", year: "2023–2024", title: "APSCHE Orders / Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "apsche_4", year: "2022–2023", title: "APSCHE Orders / Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "apsche_5", year: "2021–2022", title: "APSCHE Orders / Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "apsche_6", year: "Previous Years", title: "APSCHE Orders & Communications", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  anuAffiliations: [
+    { _key: "anu_ug_1", programmeType: "ug", year: "2026–2027", title: "UG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_ug_2", programmeType: "ug", year: "2025–2026", title: "UG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_ug_3", programmeType: "ug", year: "2024–2025", title: "UG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_ug_4", programmeType: "ug", year: "2023–2024", title: "UG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_ug_5", programmeType: "ug", year: "2022–2023", title: "UG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_ug_6", programmeType: "ug", year: "Previous Years", title: "UG Affiliation Orders Archive", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_pg_1", programmeType: "pg", year: "2026–2027", title: "PG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_pg_2", programmeType: "pg", year: "2025–2026", title: "PG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_pg_3", programmeType: "pg", year: "2024–2025", title: "PG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_pg_4", programmeType: "pg", year: "2023–2024", title: "PG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_pg_5", programmeType: "pg", year: "2022–2023", title: "PG Affiliation Orders", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "anu_pg_6", programmeType: "pg", year: "Previous Years", title: "PG Affiliation Orders Archive", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  aisheReports: [
+    { _key: "aishe_1", sNo: 1, year: "2025–2026", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aishe_2", sNo: 2, year: "2024–2025", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aishe_3", sNo: 3, year: "2023–2024", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aishe_4", sNo: 4, year: "2022–2023", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aishe_5", sNo: 5, year: "2021–2022", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "aishe_6", sNo: 6, year: "2020–2021", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  nirfSubmissions: [
+    { _key: "nirf_1", year: "2025–26", collegeDataUrl: "/documents/DefaultFile_1.pdf", managementDataUrl: "/documents/DefaultFile_1.pdf", overallDataUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "nirf_2", year: "2024–25", collegeDataUrl: "/documents/DefaultFile_1.pdf", managementDataUrl: "/documents/DefaultFile_1.pdf", overallDataUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "nirf_3", year: "2023–24", collegeDataUrl: "/documents/DefaultFile_1.pdf", managementDataUrl: "/documents/DefaultFile_1.pdf", overallDataUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "nirf_4", year: "2022–2023", collegeDataUrl: "/documents/DefaultFile_1.pdf", managementDataUrl: "/documents/DefaultFile_1.pdf", overallDataUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "nirf_5", year: "2021–2022", collegeDataUrl: "/documents/DefaultFile_1.pdf", managementDataUrl: "/documents/DefaultFile_1.pdf", overallDataUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  regulatoryComplianceDocs: [
+    { _key: "reg_aicte", code: "aicte", title: "AICTE Compliance", description: "Relevant compliance information and documents relating to AICTE requirements are provided wherever applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "reg_ugc", code: "ugc", title: "UGC Compliance", description: "Applicable UGC regulations, guidelines, declarations and compliance-related information are maintained and made available for reference.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "reg_apsche", code: "apsche", title: "APSCHE Compliance", description: "Relevant APSCHE-related compliance information, orders and institutional submissions are provided as applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "reg_other", code: "other", title: "Other Statutory / Regulatory Compliance", description: "Other compliance documents, declarations and information required by competent government, statutory and regulatory authorities are provided wherever applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  financialDocuments: [
+    { _key: "fin_budget", code: "budget", title: "Annual Budget", description: "The annual budget reflects the institution's financial planning and allocation of resources towards academic, administrative, infrastructure, student welfare and other institutional activities.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_audit", code: "audit", title: "Audited Financial Statements", description: "Audited financial statements and relevant financial records are maintained in accordance with applicable accounting and statutory requirements.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_income", code: "income", title: "Financial Resources / Sources of Income", description: "Relevant information regarding the institution's financial resources and applicable sources of income is maintained and disclosed wherever required.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_corpus", code: "corpus", title: "Endowment & Corpus Funds", description: "Details relating to endowment and corpus funds, wherever applicable, are maintained in accordance with institutional financial procedures.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_utilization", code: "utilization", title: "Utilization Certificates", description: "Relevant Utilization Certificates relating to grants or funds received from competent authorities are maintained and provided wherever applicable.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_policy", code: "finance_policy", title: "Finance Policy", description: "The institution follows appropriate financial procedures relating to budgeting, expenditure, accounting, financial control and resource management.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_procurement", code: "procurement", title: "Purchase & Procurement Policy", description: "The institution follows transparent and appropriate procedures for the purchase and procurement of goods, services, equipment and other institutional requirements.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_fee", code: "fee_structure", title: "Approved Fee Structure", description: "Applicable approved fee structures provided for the information of students and stakeholders.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_afrc", code: "afrc_orders", title: "AFRC Orders", description: "Relevant AFRC orders and governmental regulatory fee notifications.", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "fin_scholarship", code: "scholarship", title: "Scholarship Details", description: "Information regarding scholarships, fee reimbursement, financial assistance and student support schemes available through Government and statutory bodies.", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  annualReports: [
+    { _key: "ar_1", year: "2025–2026", title: "Annual Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "ar_2", year: "2024–2025", title: "Annual Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "ar_3", year: "2023–2024", title: "Annual Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "ar_4", year: "2022–2023", title: "Annual Report 2022–2023", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "ar_5", year: "2021–2022", title: "Annual Report 2021–2022", fileUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  disclosureArchives: [
+    { _key: "arc_1", year: "2025–2026", mandatoryDisclosuresUrl: "/documents/DefaultFile_1.pdf", complianceDocumentsUrl: "/documents/DefaultFile_1.pdf", annualReportUrl: "/documents/DefaultFile_1.pdf", statutoryReportsUrl: "/documents/DefaultFile_1.pdf", policiesUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "arc_2", year: "2024–2025", mandatoryDisclosuresUrl: "/documents/DefaultFile_1.pdf", complianceDocumentsUrl: "/documents/DefaultFile_1.pdf", annualReportUrl: "/documents/DefaultFile_1.pdf", statutoryReportsUrl: "/documents/DefaultFile_1.pdf", policiesUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "arc_3", year: "2023–2024", mandatoryDisclosuresUrl: "/documents/DefaultFile_1.pdf", complianceDocumentsUrl: "/documents/DefaultFile_1.pdf", annualReportUrl: "/documents/DefaultFile_1.pdf", statutoryReportsUrl: "/documents/DefaultFile_1.pdf", policiesUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "arc_4", year: "2022–2023", mandatoryDisclosuresUrl: "/documents/DefaultFile_1.pdf", complianceDocumentsUrl: "/documents/DefaultFile_1.pdf", annualReportUrl: "/documents/DefaultFile_1.pdf", statutoryReportsUrl: "/documents/DefaultFile_1.pdf", policiesUrl: "/documents/DefaultFile_1.pdf" },
+    { _key: "arc_5", year: "2021–2022", mandatoryDisclosuresUrl: "/documents/DefaultFile_1.pdf", complianceDocumentsUrl: "/documents/DefaultFile_1.pdf", annualReportUrl: "/documents/DefaultFile_1.pdf", statutoryReportsUrl: "/documents/DefaultFile_1.pdf", policiesUrl: "/documents/DefaultFile_1.pdf" },
+  ],
+  rtiMembers: [
+    { _key: "rti_1", sNo: 1, name: "Dr. Sr. Fatima Rani P", designation: "Correspondent", role: "Chairperson / First Appellate Authority", mobile: "8978012987" },
+    { _key: "rti_2", sNo: 2, name: "Sr. Sandhya Thumma", designation: "Principal", role: "Member", mobile: "9347238194" },
+    { _key: "rti_3", sNo: 3, name: "Mr. G. Bala Show Reddy", designation: "Physical Director", role: "Nodal Officer / Public Information Officer (PIO)", mobile: "9959085038" },
+    { _key: "rti_4", sNo: 4, name: "Mrs. R. Sharon Rose", designation: "Vice Principal & IQAC Coordinator", role: "Member", mobile: "9948686170" },
+    { _key: "rti_5", sNo: 5, name: "Sr. Margaret Priyanka", designation: "Administrator", role: "Member / Asst. Public Information Officer (PIO)", mobile: "7981468359" },
+  ],
+  rtiDocuments: [
+    { _key: "rti_doc_1", title: "Official Gazette / Government Notification – Right to Information Act, 2005", description: "The complete Right to Information Act, 2005 enacted by the Parliament of India, setting out the practical regime of right to information for citizens to secure access to information under the control of public authorities.", fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/32a3d5b540315384535c90682d86a0b23c71d808.pdf" },
+    { _key: "rti_doc_2", title: "RTI Committee / Authority Constitution Order", description: "Official administrative office order of St. Ann's College for Women designating the First Appellate Authority, Public Information Officer (PIO), and Assistant PIO to ensure adherence to statutory disclosure standards.", fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/cd25e5f7d45a56b103d932b451c31b914238be8b.pdf" },
+  ]
+};
+
+export async function getMandatoryDisclosures() {
+  try {
+    const query = `*[_type == "mandatoryDisclosures" && !(_id in path("drafts.**"))][0] {
+      _id,
+      title,
+      lastUpdated,
+      verifiedBy,
+      aicteApprovals[] {
+        _key,
+        year,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      ugcDocuments[] {
+        _key,
+        sNo,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      cceOrders[] {
+        _key,
+        year,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      apscheOrders[] {
+        _key,
+        year,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      anuAffiliations[] {
+        _key,
+        programmeType,
+        year,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      aisheReports[] {
+        _key,
+        sNo,
+        year,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      nirfSubmissions[] {
+        _key,
+        year,
+        collegeDataUrl,
+        managementDataUrl,
+        overallDataUrl
+      },
+      regulatoryComplianceDocs[] {
+        _key,
+        code,
+        title,
+        description,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      financialDocuments[] {
+        _key,
+        code,
+        title,
+        description,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      annualReports[] {
+        _key,
+        year,
+        title,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      disclosureArchives[] {
+        _key,
+        year,
+        mandatoryDisclosuresUrl,
+        complianceDocumentsUrl,
+        annualReportUrl,
+        statutoryReportsUrl,
+        policiesUrl
+      },
+      rtiMembers[] {
+        _key,
+        sNo,
+        name,
+        designation,
+        role,
+        mobile
+      },
+      rtiDocuments[] {
+        _key,
+        title,
+        description,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      }
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data) {
+      return {
+        ...DEFAULT_MANDATORY_DISCLOSURES,
+        ...data,
+        aicteApprovals: data.aicteApprovals?.length ? data.aicteApprovals : DEFAULT_MANDATORY_DISCLOSURES.aicteApprovals,
+        ugcDocuments: data.ugcDocuments?.length ? data.ugcDocuments : DEFAULT_MANDATORY_DISCLOSURES.ugcDocuments,
+        cceOrders: data.cceOrders?.length ? data.cceOrders : DEFAULT_MANDATORY_DISCLOSURES.cceOrders,
+        apscheOrders: data.apscheOrders?.length ? data.apscheOrders : DEFAULT_MANDATORY_DISCLOSURES.apscheOrders,
+        anuAffiliations: data.anuAffiliations?.length ? data.anuAffiliations : DEFAULT_MANDATORY_DISCLOSURES.anuAffiliations,
+        aisheReports: data.aisheReports?.length ? data.aisheReports : DEFAULT_MANDATORY_DISCLOSURES.aisheReports,
+        nirfSubmissions: data.nirfSubmissions?.length ? data.nirfSubmissions : DEFAULT_MANDATORY_DISCLOSURES.nirfSubmissions,
+        regulatoryComplianceDocs: data.regulatoryComplianceDocs?.length ? data.regulatoryComplianceDocs : DEFAULT_MANDATORY_DISCLOSURES.regulatoryComplianceDocs,
+        financialDocuments: data.financialDocuments?.length ? data.financialDocuments : DEFAULT_MANDATORY_DISCLOSURES.financialDocuments,
+        annualReports: data.annualReports?.length ? data.annualReports : DEFAULT_MANDATORY_DISCLOSURES.annualReports,
+        disclosureArchives: data.disclosureArchives?.length ? data.disclosureArchives : DEFAULT_MANDATORY_DISCLOSURES.disclosureArchives,
+        rtiMembers: data.rtiMembers?.length ? data.rtiMembers : DEFAULT_MANDATORY_DISCLOSURES.rtiMembers,
+        rtiDocuments: data.rtiDocuments?.length ? data.rtiDocuments : DEFAULT_MANDATORY_DISCLOSURES.rtiDocuments,
+      };
+    }
+  } catch (err) {
+    console.error("Sanity fetch error (getMandatoryDisclosures):", err);
+  }
+  return DEFAULT_MANDATORY_DISCLOSURES;
+}
