@@ -45,6 +45,7 @@ public/videos/
 
 # Local migration caches
 scripts/sanity-upload-cache.json
+scripts/disclosures-upload-cache.json
 
 # Scratch script directory
 scratch/
@@ -81,6 +82,7 @@ Home page/
 Website Herobanner Images 2026/
 Affilliations UG-PG/
 AISHE(MHRD) Certificate/
+pppp/
 
 # Root level reference assets and PDFs
 /*.pdf

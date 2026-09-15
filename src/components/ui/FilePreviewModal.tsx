@@ -11,7 +11,8 @@ import {
   ZoomIn,
   ZoomOut,
   RotateCcw,
-  Hand
+  Hand,
+  BookOpen
 } from "lucide-react";
 
 interface FilePreviewModalProps {
@@ -455,17 +456,32 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
               <Download className="h-4 w-4 shrink-0" />
               <span className="hidden sm:inline">Download</span>
             </a>
-            <a
-              href={fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-9 px-2.5 sm:px-3 items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all hover:scale-105 active:scale-95 duration-200 text-xs font-bold font-sans whitespace-nowrap"
-              title="Standard PDF View (Opens document in new tab)"
-            >
-              <ExternalLink className="h-4 w-4 shrink-0" />
-              <span className="hidden sm:inline">Standard PDF View</span>
-              <span className="sm:hidden">Standard PDF</span>
-            </a>
+            {isPdf && (
+              <button
+                type="button"
+                onClick={() => setUseFallback((prev) => !prev)}
+                className={`flex h-9 px-2.5 sm:px-3 items-center gap-1.5 rounded-xl text-white backdrop-blur-md border transition-all hover:scale-105 active:scale-95 duration-200 text-xs font-bold font-sans whitespace-nowrap cursor-pointer ${
+                  useFallback
+                    ? "bg-indigo-600 hover:bg-indigo-700 border-indigo-500 shadow-md text-white"
+                    : "bg-white/10 hover:bg-white/20 border-white/10"
+                }`}
+                title={useFallback ? "Switch to Interactive Flipbook Reader" : "Switch to Standard Browser PDF View"}
+              >
+                {useFallback ? (
+                  <>
+                    <BookOpen className="h-4 w-4 shrink-0 text-amber-300" />
+                    <span className="hidden sm:inline">Flipbook View</span>
+                    <span className="sm:hidden">Flipbook</span>
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink className="h-4 w-4 shrink-0" />
+                    <span className="hidden sm:inline">Standard PDF View</span>
+                    <span className="sm:hidden">Standard PDF</span>
+                  </>
+                )}
+              </button>
+            )}
             <button
               onClick={onClose}
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all hover:scale-105 active:scale-95 duration-200"
@@ -707,95 +723,114 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
         {/* ========================================================= */}
         {/* 3. OPTIONS BAR (PERMANENTLY PINNED AT THE BOTTOM)         */}
         {/* ========================================================= */}
-        <div className="bg-[#0b0f13] px-3 sm:px-6 py-2.5 text-white flex flex-wrap items-center justify-between gap-2 border-t border-slate-800 shrink-0 z-30 shadow-2xl font-sans">
-          
-          {/* Left: Page Navigator */}
-          <div className="flex items-center gap-1.5 md:gap-2">
+        {isPdf && useFallback ? (
+          <div className="bg-[#0b0f13] px-4 sm:px-6 py-2.5 text-slate-400 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-800 shrink-0 z-30 shadow-2xl font-sans">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-indigo-400 animate-pulse shrink-0" />
+              <span className="font-semibold text-slate-300 text-xs sm:text-sm">
+                Standard PDF Viewer active — scroll, zoom, and print using the viewer controls above
+              </span>
+            </div>
             <button
-              onClick={handlePrev}
-              disabled={currentPage === 0}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
-              title="Previous Page (Left Arrow)"
+              type="button"
+              onClick={() => setUseFallback(false)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all border border-indigo-500 shadow-xs cursor-pointer w-fit"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
-            </button>
-            <span className="text-[11px] md:text-xs font-bold text-slate-300 tracking-wider px-1.5 whitespace-nowrap min-w-[75px] text-center">
-              {totalPages > 0 
-                ? (currentPage === 0 ? "Cover (1)" : `${currentPage * 2} - ${Math.min(currentPage * 2 + 1, totalPages)}`) + ` / ${totalPages}`
-                : "Page 1 of 1"
-              }
-            </span>
-            <button
-              onClick={handleNext}
-              disabled={currentPage === numSheets - 1}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
-              title="Next Page (Right Arrow)"
-            >
-              <ArrowRight className="h-3.5 w-3.5" />
+              <BookOpen className="h-3.5 w-3.5 text-amber-300" />
+              <span>Switch to Flipbook</span>
             </button>
           </div>
-
-          {/* Center: Zoom Controls */}
-          <div className="flex items-center gap-1.5 md:gap-2">
-            <button
-              onClick={handleZoomOut}
-              disabled={zoom <= 1}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
-              title="Zoom Out (-)"
-            >
-              <ZoomOut className="h-3.5 w-3.5" />
-            </button>
+        ) : (
+          <div className="bg-[#0b0f13] px-3 sm:px-6 py-2.5 text-white flex flex-wrap items-center justify-between gap-2 border-t border-slate-800 shrink-0 z-30 shadow-2xl font-sans">
             
-            <button
-              onClick={handleCycleZoom}
-              className="px-2.5 h-8 flex items-center justify-center rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold tracking-tight transition-all active:scale-95 cursor-pointer"
-              title="Click to cycle zoom (100% -> 150% -> 200% -> 250% -> 100%)"
-            >
-              {Math.round(zoom * 100)}%
-            </button>
-
-            <button
-              onClick={handleZoomIn}
-              disabled={zoom >= 3}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
-              title="Zoom In (+)"
-            >
-              <ZoomIn className="h-3.5 w-3.5" />
-            </button>
-
-            <button
-              onClick={handleResetZoom}
-              disabled={zoom === 1 && panOffset.x === 0 && panOffset.y === 0}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
-              title="Reset Zoom & Pan (0 / R)"
-            >
-              <RotateCcw className="h-3.5 w-3.5" />
-            </button>
-          </div>
-
-          {/* Right: Drag to Pan Indicator */}
-          <div className="flex items-center gap-2">
-            <div
-              className={`flex items-center gap-1.5 px-3 h-8 rounded-xl border text-xs font-bold transition-all ${
-                zoom > 1
-                  ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30 shadow-xs"
-                  : "bg-white/5 text-slate-400 border-white/10"
-              }`}
-              title="Click and drag to pan across the document when zoomed in"
-            >
-              <Hand className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Drag to Pan</span>
-              <span className="sm:hidden">Drag</span>
+            {/* Left: Page Navigator */}
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <button
+                onClick={handlePrev}
+                disabled={currentPage === 0}
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                title="Previous Page (Left Arrow)"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+              </button>
+              <span className="text-[11px] md:text-xs font-bold text-slate-300 tracking-wider px-1.5 whitespace-nowrap min-w-[75px] text-center">
+                {totalPages > 0 
+                  ? (currentPage === 0 ? "Cover (1)" : `${currentPage * 2} - ${Math.min(currentPage * 2 + 1, totalPages)}`) + ` / ${totalPages}`
+                  : "Page 1 of 1"
+                }
+              </span>
+              <button
+                onClick={handleNext}
+                disabled={currentPage === numSheets - 1}
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                title="Next Page (Right Arrow)"
+              >
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
             </div>
 
-            {zoom > 1 && (
-              <span className="text-[11px] font-semibold text-slate-400 hidden lg:inline">
-                • Click & drag to move
-              </span>
-            )}
-          </div>
+            {/* Center: Zoom Controls */}
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <button
+                onClick={handleZoomOut}
+                disabled={zoom <= 1}
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                title="Zoom Out (-)"
+              >
+                <ZoomOut className="h-3.5 w-3.5" />
+              </button>
+              
+              <button
+                onClick={handleCycleZoom}
+                className="px-2.5 h-8 flex items-center justify-center rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold tracking-tight transition-all active:scale-95 cursor-pointer"
+                title="Click to cycle zoom (100% -> 150% -> 200% -> 250% -> 100%)"
+              >
+                {Math.round(zoom * 100)}%
+              </button>
 
-        </div>
+              <button
+                onClick={handleZoomIn}
+                disabled={zoom >= 3}
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                title="Zoom In (+)"
+              >
+                <ZoomIn className="h-3.5 w-3.5" />
+              </button>
+
+              <button
+                onClick={handleResetZoom}
+                disabled={zoom === 1 && panOffset.x === 0 && panOffset.y === 0}
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 disabled:bg-slate-800/40 disabled:text-slate-600 text-white backdrop-blur border border-white/10 transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                title="Reset Zoom & Pan (0 / R)"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            {/* Right: Drag to Pan Indicator */}
+            <div className="flex items-center gap-2">
+              <div
+                className={`flex items-center gap-1.5 px-3 h-8 rounded-xl border text-xs font-bold transition-all ${
+                  zoom > 1
+                    ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30 shadow-xs"
+                    : "bg-white/5 text-slate-400 border-white/10"
+                }`}
+                title="Click and drag to pan across the document when zoomed in"
+              >
+                <Hand className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Drag to Pan</span>
+                <span className="sm:hidden">Drag</span>
+              </div>
+
+              {zoom > 1 && (
+                <span className="text-[11px] font-semibold text-slate-400 hidden lg:inline">
+                  • Click & drag to move
+                </span>
+              )}
+            </div>
+
+          </div>
+        )}
 
       </div>
     </div>
