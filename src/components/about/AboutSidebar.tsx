@@ -100,18 +100,16 @@ export default function AboutSidebar({
 
   return (
     <aside
-      className="flex flex-col gap-6 sticky select-none h-fit overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+      className="flex flex-col sticky select-none h-fit overflow-hidden border-2 border-slate-200/90 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
       style={{
         top: "calc(var(--main-header-height, 185px) + 16px)",
         maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px)",
-        backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none"
+        backgroundColor: "var(--sidebar-container-bg, #eaeff5)"
       }}
     >
-      {/* Sidebar Top Banner Header - Scrolls naturally with content */}
+      {/* Sidebar Top Banner Header - Fixed flush to top & sides with no gap */}
       <div
-        className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3.5 shadow-sm border transition-colors duration-200 shrink-0"
+        className="text-white px-4.5 sm:px-5 py-3.5 sm:py-4 flex items-center gap-3.5 shadow-sm border-b transition-colors duration-200 shrink-0 w-full"
         style={{
           background: "var(--sidebar-bg, #1e40af)",
           borderColor: "var(--sidebar-border, rgba(30, 64, 175, 0.3))",
@@ -121,15 +119,15 @@ export default function AboutSidebar({
         <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs shadow-inner">
           <BookOpen className="h-4.5 w-4.5" />
         </span>
-        <div className="flex flex-col min-w-0">
+        <div className="flex flex-col min-w-0 flex-1">
           <h1
-            className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider truncate leading-tight"
+            className="font-outfit text-xs sm:text-sm font-black uppercase tracking-wider leading-snug break-words"
             style={{ color: "var(--sidebar-text, #ffffff)" }}
           >
             {bannerTitle}
           </h1>
           <span
-            className="text-[10px] sm:text-[11px] opacity-85 font-medium truncate mt-0.5"
+            className="text-[10px] sm:text-[11px] opacity-85 font-medium mt-0.5 break-words"
             style={{ color: "var(--sidebar-text, #ffffff)" }}
           >
             {bannerSubtitle}
@@ -137,8 +135,15 @@ export default function AboutSidebar({
         </div>
       </div>
 
-      {/* Category Groups */}
-      <div className="flex flex-col gap-6">
+      {/* Category Groups - Inner scrollable content */}
+      <div
+        className="flex flex-col gap-6 p-4 sm:p-5 overflow-y-auto no-scrollbar"
+        style={{
+          maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px - 72px)",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none"
+        }}
+      >
         {activeCategories.map((cat) => (
           <div key={cat.catSlug} className="flex flex-col gap-2">
             <div
