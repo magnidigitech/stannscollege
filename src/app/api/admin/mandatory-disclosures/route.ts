@@ -49,6 +49,7 @@ export async function GET(req: NextRequest) {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -56,6 +57,7 @@ export async function GET(req: NextRequest) {
         _key,
         sNo,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -63,6 +65,7 @@ export async function GET(req: NextRequest) {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -70,6 +73,7 @@ export async function GET(req: NextRequest) {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -78,6 +82,7 @@ export async function GET(req: NextRequest) {
         programmeType,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -86,6 +91,7 @@ export async function GET(req: NextRequest) {
         sNo,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -93,14 +99,18 @@ export async function GET(req: NextRequest) {
         _key,
         year,
         collegeDataUrl,
+        collegeRedirectUrl,
         managementDataUrl,
-        overallDataUrl
+        managementRedirectUrl,
+        overallDataUrl,
+        overallRedirectUrl
       },
       regulatoryComplianceDocs[] {
         _key,
         code,
         title,
         description,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -109,6 +119,7 @@ export async function GET(req: NextRequest) {
         code,
         title,
         description,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -116,6 +127,7 @@ export async function GET(req: NextRequest) {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
@@ -139,6 +151,31 @@ export async function GET(req: NextRequest) {
       rtiDocuments[] {
         _key,
         title,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl),
+        "assetId": file.asset->_id
+      },
+      studentWelfareCards[] {
+        _key,
+        title,
+        href,
+        description,
+        "fileUrl": coalesce(file.asset->url, fileUrl),
+        "assetId": file.asset->_id
+      },
+      governanceCards[] {
+        _key,
+        title,
+        href,
+        description,
+        "fileUrl": coalesce(file.asset->url, fileUrl),
+        "assetId": file.asset->_id
+      },
+      dataStatsCards[] {
+        _key,
+        title,
+        href,
         description,
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
@@ -165,15 +202,21 @@ export async function GET(req: NextRequest) {
           disclosureArchives: data.disclosureArchives?.length ? data.disclosureArchives : DEFAULT_MANDATORY_DISCLOSURES.disclosureArchives,
           rtiMembers: data.rtiMembers?.length ? data.rtiMembers : DEFAULT_MANDATORY_DISCLOSURES.rtiMembers,
           rtiDocuments: data.rtiDocuments?.length ? data.rtiDocuments : DEFAULT_MANDATORY_DISCLOSURES.rtiDocuments,
+          studentWelfareCards: data.studentWelfareCards?.length ? data.studentWelfareCards : (DEFAULT_MANDATORY_DISCLOSURES as any).studentWelfareCards,
+          governanceCards: data.governanceCards?.length ? data.governanceCards : (DEFAULT_MANDATORY_DISCLOSURES as any).governanceCards,
+          dataStatsCards: data.dataStatsCards?.length ? data.dataStatsCards : (DEFAULT_MANDATORY_DISCLOSURES as any).dataStatsCards,
         }
       });
     }
 
-    return NextResponse.json({ success: true, data: DEFAULT_MANDATORY_DISCLOSURES });
+    return NextResponse.json({
+      success: true,
+      data: DEFAULT_MANDATORY_DISCLOSURES,
+    });
   } catch (err: any) {
     console.error("Error fetching mandatory disclosures in admin API:", err);
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to load records from Sanity." },
+      { success: false, error: err.message || "Failed to fetch from Sanity." },
       { status: 500 }
     );
   }
@@ -240,8 +283,11 @@ export async function POST(req: NextRequest) {
         _key: d._key || `nirf_${Date.now()}_${idx}`,
         year: d.year || "",
         collegeDataUrl: d.collegeDataUrl || "",
+        collegeRedirectUrl: d.collegeRedirectUrl || "",
         managementDataUrl: d.managementDataUrl || "",
+        managementRedirectUrl: d.managementRedirectUrl || "",
         overallDataUrl: d.overallDataUrl || "",
+        overallRedirectUrl: d.overallRedirectUrl || "",
       })) : [],
       regulatoryComplianceDocs: cleanArrayWithFile(body.regulatoryComplianceDocs),
       financialDocuments: cleanArrayWithFile(body.financialDocuments),
@@ -264,6 +310,9 @@ export async function POST(req: NextRequest) {
         mobile: m.mobile || "",
       })) : [],
       rtiDocuments: cleanArrayWithFile(body.rtiDocuments),
+      studentWelfareCards: cleanArrayWithFile(body.studentWelfareCards),
+      governanceCards: cleanArrayWithFile(body.governanceCards),
+      dataStatsCards: cleanArrayWithFile(body.dataStatsCards),
     };
 
     const result = await client.createOrReplace(docToSave);

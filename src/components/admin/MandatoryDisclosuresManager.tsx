@@ -3,27 +3,30 @@
 import React, { useState, useEffect } from "react";
 import {
   ShieldCheck,
-  FileText,
+  Building2,
+  BarChart3,
+  Scale,
+  Users,
+  Archive,
+  Save,
+  RefreshCw,
   Plus,
   Trash2,
   Edit2,
+  FileText,
   Upload,
+  Eye,
   Check,
   AlertCircle,
-  RefreshCw,
-  Eye,
   Loader2,
-  Save,
-  Users2,
-  Building,
-  GraduationCap,
-  Calendar,
-  Layers,
-  Phone,
-  Scale,
+  ExternalLink,
+  ChevronRight,
+  Link2,
+  HeartHandshake,
+  Coins,
   Landmark,
-  Archive,
-  BarChart3
+  FileCheck2,
+  Phone,
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
@@ -34,12 +37,15 @@ export function MandatoryDisclosuresManager() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Active sub-tab
-  const [activeTab, setActiveTab] = useState<
-    "aicte_anu" | "cce_apsche" | "aishe_nirf" | "compliance_finance" | "rti" | "reports_archives"
-  >("aicte_anu");
+  // Active Tab from A to H
+  const [activeTab, setActiveTab] = useState<"A" | "B" | "C" | "D" | "E" | "F" | "G" | "H">("A");
 
-  // Modal State for generic Table Item (Year, Title, FileUrl, AssetId)
+  // Sub-filter for Tab A (Statutory & Regulatory)
+  const [tabASub, setTabASub] = useState<"aicte" | "ugc" | "cce" | "apsche" | "anu" | "aishe" | "nirf">("aicte");
+  // ANU sub-tab
+  const [anuFilter, setAnuFilter] = useState<"ug" | "pg">("ug");
+
+  // Modal State for generic Table / Card Item
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<string>("");
   const [editingItem, setEditingItem] = useState<any>(null);
@@ -90,7 +96,7 @@ export function MandatoryDisclosuresManager() {
         setError(json.error || "Failed to save records in Sanity.");
       }
     } catch (err: any) {
-      setError(err.message || "Failed to save records.");
+      setError(err.message || "Network error while saving.");
     } finally {
       setSaving(false);
     }
@@ -126,104 +132,107 @@ export function MandatoryDisclosuresManager() {
     }
   };
 
-  // Generic Add Item to array
+  // Open modal to add item
   const openAddModal = (type: string, initialFields: any) => {
     setModalType(type);
-    setEditingItem({ _key: `key_${Date.now()}`, ...initialFields });
     setEditIndex(null);
+    setEditingItem({
+      _key: `${type}_${Date.now()}`,
+      ...initialFields,
+    });
     setModalOpen(true);
   };
 
-  // Generic Edit Item in array
-  const openEditModal = (type: string, item: any, index: number) => {
+  // Open modal to edit item
+  const openEditModal = (type: string, index: number, item: any) => {
     setModalType(type);
-    setEditingItem({ ...item });
     setEditIndex(index);
+    setEditingItem({ ...item });
     setModalOpen(true);
   };
 
-  // Generic Save from Modal into data state
+  // Save Modal
   const handleSaveModal = () => {
-    if (!editingItem || !modalType) return;
-    setData((prev: any) => {
-      const currentList = Array.isArray(prev[modalType]) ? [...prev[modalType]] : [];
-      if (editIndex !== null) {
-        currentList[editIndex] = editingItem;
-      } else {
-        currentList.push(editingItem);
-      }
-      return { ...prev, [modalType]: currentList };
+    if (!data || !modalType || !editingItem) return;
+    const updatedArray = [...(data[modalType] || [])];
+    if (editIndex !== null && editIndex >= 0) {
+      updatedArray[editIndex] = editingItem;
+    } else {
+      updatedArray.push(editingItem);
+    }
+    setData({
+      ...data,
+      [modalType]: updatedArray,
     });
     setModalOpen(false);
     setEditingItem(null);
     setEditIndex(null);
   };
 
-  // Generic Delete Item from array
+  // Delete item
   const handleDeleteItem = (type: string, index: number) => {
-    if (!confirm("Are you sure you want to remove this record? (Remember to click 'Save Changes' to apply to live site)")) return;
-    setData((prev: any) => {
-      const currentList = Array.isArray(prev[type]) ? [...prev[type]] : [];
-      currentList.splice(index, 1);
-      return { ...prev, [type]: currentList };
+    if (!window.confirm("Are you sure you want to delete this record?")) return;
+    const updatedArray = [...(data[modalType || type] || [])];
+    updatedArray.splice(index, 1);
+    setData({
+      ...data,
+      [type]: updatedArray,
     });
   };
 
+  const TABS = [
+    { id: "A", letter: "A", label: "Statutory & Regulatory", icon: ShieldCheck, count: (data?.aicteApprovals?.length || 0) + (data?.anuAffiliations?.length || 0) },
+    { id: "B", letter: "B", label: "Regulatory Compliance", icon: Scale, count: data?.regulatoryComplianceDocs?.length || 0 },
+    { id: "C", letter: "C", label: "Right to Information", icon: Users, count: (data?.rtiMembers?.length || 0) + (data?.rtiDocuments?.length || 0) },
+    { id: "D", letter: "D", label: "Student Welfare & Grievance", icon: HeartHandshake, count: data?.studentWelfareCards?.length || 6 },
+    { id: "E", letter: "E", label: "Financial Transparency", icon: Coins, count: data?.financialDocuments?.length || 0 },
+    { id: "F", letter: "F", label: "Governance & Policies", icon: Landmark, count: data?.governanceCards?.length || 6 },
+    { id: "G", letter: "G", label: "Reports & Data", icon: BarChart3, count: (data?.annualReports?.length || 0) + (data?.dataStatsCards?.length || 2) },
+    { id: "H", letter: "H", label: "Disclosure Archives", icon: Archive, count: data?.disclosureArchives?.length || 0 },
+  ];
+
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center p-16 text-slate-500 gap-3">
-        <Loader2 className="h-8 w-8 animate-spin text-[#002147]" />
-        <p className="text-sm font-semibold">Loading Mandatory Disclosures from Sanity CMS...</p>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="p-8 text-center text-red-600 bg-red-50 rounded-2xl border border-red-200">
-        <p className="font-bold">Error loading disclosures:</p>
-        <p className="text-xs mt-1">{error || "No data received."}</p>
-        <button onClick={fetchData} className="mt-4 px-4 py-2 bg-[#002147] text-white rounded-xl text-xs font-bold">
-          Retry
-        </button>
+      <div className="flex flex-col items-center justify-center p-16 bg-white rounded-3xl border border-slate-200/80 shadow-xs">
+        <Loader2 className="h-10 w-10 text-blue-800 animate-spin" />
+        <span className="mt-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
+          Loading Live Sanity Records...
+        </span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-6 max-w-7xl mx-auto pb-12">
-      {/* Top Header & Save Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs">
-        <div>
+    <div className="flex flex-col gap-5 max-w-7xl mx-auto pb-12 font-sans">
+      
+      {/* ── TOP ACTION BAR (REPLACES DUPLICATE HEADER BOX) ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white px-5 py-3.5 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100/70 text-blue-900 font-bold">
-              <ShieldCheck className="h-4 w-4" />
-            </span>
-            <span className="text-[11px] font-black uppercase tracking-wider text-blue-800">
-              Live Sanity Data Sync
+            <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-bold text-slate-800">
+              Sanity Singleton Document: <span className="font-mono text-[11px] text-blue-700 font-extrabold">mandatory-disclosures-singleton</span>
             </span>
           </div>
-          <h2 className="font-outfit text-2xl font-black text-[#002147] mt-1">
-            Mandatory Disclosures & Compliance Manager
-          </h2>
-          <p className="text-slate-500 text-xs mt-0.5">
-            Add, edit, or delete year-wise regulatory tables, accreditation PDFs, RTI committee members, and audit reports.
-          </p>
+          <span className="text-slate-300 hidden md:inline">|</span>
+          <span className="text-[11px] text-slate-500 font-medium hidden md:inline">
+            Last updated: <strong className="text-slate-700">{data?.lastUpdated || "Live"}</strong>
+          </span>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={fetchData}
-            className="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all text-xs font-bold flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all text-xs font-bold flex items-center gap-1.5 cursor-pointer"
             title="Reload from Sanity"
           >
-            <RefreshCw className="h-4 w-4" />
-            <span className="hidden sm:inline">Refresh</span>
+            <RefreshCw className="h-3.5 w-3.5" />
+            <span>Refresh</span>
           </button>
           <button
             onClick={handleSaveToSanity}
             disabled={saving}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all shadow-xs ${
+            className={`px-4 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
               saveSuccess
                 ? "bg-emerald-600 text-white"
                 : "bg-[#002147] hover:bg-blue-900 text-white"
@@ -231,17 +240,17 @@ export function MandatoryDisclosuresManager() {
           >
             {saving ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 <span>Saving to Sanity...</span>
               </>
             ) : saveSuccess ? (
               <>
-                <Check className="h-4 w-4" />
+                <Check className="h-3.5 w-3.5" />
                 <span>Saved & Published!</span>
               </>
             ) : (
               <>
-                <Save className="h-4 w-4" />
+                <Save className="h-3.5 w-3.5" />
                 <span>Save Changes to Sanity</span>
               </>
             )}
@@ -259,761 +268,682 @@ export function MandatoryDisclosuresManager() {
       {saveSuccess && (
         <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl flex items-center gap-3 text-xs">
           <Check className="h-4 w-4 shrink-0" />
-          <span>All Mandatory Disclosures updates successfully synced with Sanity CMS!</span>
+          <span>All Mandatory Disclosures and compliance documents have been published to Sanity CDN!</span>
         </div>
       )}
 
-      {/* Section Sub-Navigation Tabs */}
-      <div className="flex flex-wrap gap-2 p-1.5 bg-slate-200/70 rounded-2xl border border-slate-300/60">
-        {[
-          { id: "aicte_anu", label: "1. AICTE & ANU Affiliations", icon: ShieldCheck },
-          { id: "cce_apsche", label: "2. CCE & APSCHE Orders", icon: Landmark },
-          { id: "aishe_nirf", label: "3. AISHE & NIRF Reports", icon: BarChart3 },
-          { id: "compliance_finance", label: "4. Compliance & Finance", icon: Scale },
-          { id: "rti", label: "5. RTI Committee & Docs", icon: Users2 },
-          { id: "reports_archives", label: "6. Annual Reports & Archives", icon: Archive },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              activeTab === tab.id
-                ? "bg-white text-[#002147] shadow-xs"
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
-            }`}
-          >
-            <tab.icon className="h-3.5 w-3.5" />
-            <span>{tab.label}</span>
-          </button>
-        ))}
+      {/* ── CLEAN TAB SECTIONING: A TO H ── */}
+      <div className="bg-white p-2 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5">
+          {TABS.map((tab) => {
+            const isActive = activeTab === tab.id;
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex flex-col items-center justify-center text-center p-2.5 rounded-xl transition-all cursor-pointer border ${
+                  isActive
+                    ? "bg-[#002147] text-white border-[#002147] shadow-xs scale-[1.01]"
+                    : "bg-slate-50/70 hover:bg-slate-100 text-slate-700 border-transparent hover:border-slate-200"
+                }`}
+              >
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${
+                    isActive ? "bg-amber-400 text-slate-900" : "bg-slate-200 text-slate-700"
+                  }`}>
+                    {tab.letter}
+                  </span>
+                  <Icon className={`h-3.5 w-3.5 ${isActive ? "text-amber-300" : "text-blue-700"}`} />
+                </div>
+                <span className="text-[11px] font-extrabold leading-tight line-clamp-2">
+                  {tab.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* ================================================================ */}
-      {/* TAB 1: AICTE, UGC, & ANU Affiliations                            */}
-      {/* ================================================================ */}
-      {activeTab === "aicte_anu" && (
-        <div className="flex flex-col gap-8">
-          {/* AICTE Approvals Table */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  AICTE Approvals (Extension of Approval - EoA)
-                </h3>
-                <p className="text-slate-500 text-xs">Year-wise Technical Education approval orders</p>
-              </div>
+      {/* ========================================================= */}
+      {/* TAB A: Statutory & Regulatory                            */}
+      {/* ========================================================= */}
+      {activeTab === "A" && (
+        <div className="flex flex-col gap-4">
+          {/* Sub-tab navigation for Tab A */}
+          <div className="flex flex-wrap items-center gap-2 bg-slate-100/80 p-2 rounded-2xl border border-slate-200/70 text-xs">
+            {[
+              { id: "aicte", label: "1. AICTE Approvals", count: data.aicteApprovals?.length || 0 },
+              { id: "ugc", label: "2. UGC Recognition", count: data.ugcDocuments?.length || 0 },
+              { id: "cce", label: "3. CCE Orders (Table A)", count: data.cceOrders?.length || 0 },
+              { id: "apsche", label: "4. APSCHE Orders (Table B)", count: data.apscheOrders?.length || 0 },
+              { id: "anu", label: "5. ANU Affiliations (UG/PG)", count: data.anuAffiliations?.length || 0 },
+              { id: "aishe", label: "6. AISHE Reports", count: data.aisheReports?.length || 0 },
+              { id: "nirf", label: "7. NIRF Submissions", count: data.nirfSubmissions?.length || 0 },
+            ].map((sub) => (
               <button
-                onClick={() => openAddModal("aicteApprovals", { year: "2026–2027", title: "AICTE Approval / EoA", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
+                key={sub.id}
+                onClick={() => setTabASub(sub.id as any)}
+                className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  tabASub === sub.id
+                    ? "bg-[#002147] text-white shadow-xs"
+                    : "bg-white text-slate-700 hover:bg-slate-200/60 border border-slate-200/60"
+                }`}
               >
-                <Plus className="h-3.5 w-3.5" /> Add Academic Year Row
+                <span>{sub.label}</span>
+                <span className={`px-1.5 py-0.2 rounded-md text-[10px] font-black ${
+                  tabASub === sub.id ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                }`}>
+                  {sub.count}
+                </span>
               </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Document Title</th>
-                    <th className="py-2.5 px-4">PDF URL / File</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.aicteApprovals || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">{row.title}</td>
-                      <td className="py-2.5 px-4 text-slate-500 max-w-xs truncate">{row.fileUrl}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg" title="Preview PDF">
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => openEditModal("aicteApprovals", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg" title="Edit row">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("aicteApprovals", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg" title="Delete row">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            ))}
           </div>
 
-          {/* ANU Affiliation Orders (UG & PG) */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  ANU Affiliation Orders (UG & PG)
-                </h3>
-                <p className="text-slate-500 text-xs">University affiliation orders categorized by UG and PG</p>
-              </div>
-              <button
-                onClick={() => openAddModal("anuAffiliations", { programmeType: "ug", year: "2026–2027", title: "UG Affiliation Order", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add Affiliation Order
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Level</th>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Title</th>
-                    <th className="py-2.5 px-4">PDF URL</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
+          {/* AICTE Table */}
+          {tabASub === "aicte" && (
+            <TableSectionCard
+              title="AICTE Extension of Approval (EoA) Documents"
+              subtitle="Year-wise AICTE approval letters with PDF files and optional portal redirect links"
+              onAdd={() => openAddModal("aicteApprovals", { year: "2026–2027", title: "AICTE Approval / EoA", fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={data.aicteApprovals || []}
+                columns={["Year", "Document Title", "PDF Document", "Redirecting Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("aicteApprovals", idx, row)} onDelete={() => handleDeleteItem("aicteApprovals", idx)} />
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.anuAffiliations || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${row.programmeType?.toLowerCase() === "ug" ? "bg-emerald-100 text-emerald-800" : "bg-purple-100 text-purple-800"}`}>
-                          {row.programmeType?.toUpperCase() || "UG"}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">{row.title}</td>
-                      <td className="py-2.5 px-4 text-slate-500 max-w-xs truncate">{row.fileUrl}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg">
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => openEditModal("anuAffiliations", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("anuAffiliations", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
+                )}
+              />
+            </TableSectionCard>
+          )}
 
-      {/* ================================================================ */}
-      {/* TAB 2: CCE & APSCHE Orders                                       */}
-      {/* ================================================================ */}
-      {activeTab === "cce_apsche" && (
-        <div className="flex flex-col gap-8">
-          {/* CCE Orders Table */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  Commissionerate of Collegiate Education (CCE / CHE) Orders
-                </h3>
-                <p className="text-slate-500 text-xs">Orders, communications, and proceedings from CCE AP</p>
-              </div>
-              <button
-                onClick={() => openAddModal("cceOrders", { year: "2026–2027", title: "CCE Orders / Proceedings", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add CCE Order Row
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Document / Communication</th>
-                    <th className="py-2.5 px-4">PDF URL</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
+          {/* UGC Table */}
+          {tabASub === "ugc" && (
+            <TableSectionCard
+              title="UGC Recognition Documents"
+              subtitle="UGC Section 2(f) and 12(B) recognition orders and notifications"
+              onAdd={() => openAddModal("ugcDocuments", { sNo: (data.ugcDocuments?.length || 0) + 1, title: "UGC Recognition Order", fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={data.ugcDocuments || []}
+                columns={["S.No", "Document Title", "PDF Document", "Redirecting Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 w-16">{row.sNo || idx + 1}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("ugcDocuments", idx, row)} onDelete={() => handleDeleteItem("ugcDocuments", idx)} />
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.cceOrders || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">{row.title}</td>
-                      <td className="py-2.5 px-4 text-slate-500 max-w-xs truncate">{row.fileUrl}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg">
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => openEditModal("cceOrders", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("cceOrders", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                )}
+              />
+            </TableSectionCard>
+          )}
 
-          {/* APSCHE Orders Table */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  APSCHE Orders & Communications
-                </h3>
-                <p className="text-slate-500 text-xs">State council higher education orders and communications</p>
-              </div>
-              <button
-                onClick={() => openAddModal("apscheOrders", { year: "2025–2026", title: "APSCHE Orders / Communications", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add APSCHE Order Row
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Document / Communication</th>
-                    <th className="py-2.5 px-4">PDF URL</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
+          {/* CCE Table */}
+          {tabASub === "cce" && (
+            <TableSectionCard
+              title="CCE Orders & Proceedings (Table A)"
+              subtitle="Commissionerate of Collegiate Education proceedings, staff, and sanction orders"
+              onAdd={() => openAddModal("cceOrders", { year: "2025–2026", title: "CCE Order / Proceedings", fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={data.cceOrders || []}
+                columns={["Year", "Document / Communication", "PDF Document", "Redirecting Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("cceOrders", idx, row)} onDelete={() => handleDeleteItem("cceOrders", idx)} />
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.apscheOrders || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">{row.title}</td>
-                      <td className="py-2.5 px-4 text-slate-500 max-w-xs truncate">{row.fileUrl}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg">
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => openEditModal("apscheOrders", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("apscheOrders", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
+                )}
+              />
+            </TableSectionCard>
+          )}
 
-      {/* ================================================================ */}
-      {/* TAB 3: AISHE & NIRF Reports                                      */}
-      {/* ================================================================ */}
-      {activeTab === "aishe_nirf" && (
-        <div className="flex flex-col gap-8">
-          {/* AISHE Reports */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  AISHE Certificates & Reports
-                </h3>
-                <p className="text-slate-500 text-xs">All-India Survey on Higher Education submissions</p>
-              </div>
-              <button
-                onClick={() => openAddModal("aisheReports", { sNo: (data.aisheReports?.length || 0) + 1, year: "2025–2026", title: "AISHE Certificate / Report", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add AISHE Row
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4 w-16">S. No.</th>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Document Title</th>
-                    <th className="py-2.5 px-4">PDF URL</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
+          {/* APSCHE Table */}
+          {tabASub === "apsche" && (
+            <TableSectionCard
+              title="APSCHE Orders & Communications (Table B)"
+              subtitle="Andhra Pradesh State Council of Higher Education orders, fee directives, and admissions approvals"
+              onAdd={() => openAddModal("apscheOrders", { year: "2025–2026", title: "APSCHE Order / Communication", fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={data.apscheOrders || []}
+                columns={["Year", "Document / Communication", "PDF Document", "Redirecting Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("apscheOrders", idx, row)} onDelete={() => handleDeleteItem("apscheOrders", idx)} />
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.aisheReports || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.sNo || idx + 1}</td>
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">{row.title}</td>
-                      <td className="py-2.5 px-4 text-slate-500 max-w-xs truncate">{row.fileUrl}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg">
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => openEditModal("aisheReports", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("aisheReports", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                )}
+              />
+            </TableSectionCard>
+          )}
 
-          {/* NIRF Submissions Table (3 PDFs per row) */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  NIRF Submissions (College, Management & Overall Data)
-                </h3>
-                <p className="text-slate-500 text-xs">National Institutional Ranking Framework data uploads</p>
-              </div>
-              <button
-                onClick={() => openAddModal("nirfSubmissions", { year: "2026–27", collegeDataUrl: "/documents/DefaultFile_1.pdf", managementDataUrl: "/documents/DefaultFile_1.pdf", overallDataUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add NIRF Academic Year
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">College Data PDF</th>
-                    <th className="py-2.5 px-4">Management Data PDF</th>
-                    <th className="py-2.5 px-4">Overall Data PDF</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.nirfSubmissions || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.collegeDataUrl, title: `NIRF ${row.year} - College Data` })} className="text-blue-700 hover:underline flex items-center gap-1">
-                          <Eye className="h-3 w-3" /> View College Data
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.managementDataUrl, title: `NIRF ${row.year} - Management Data` })} className="text-indigo-700 hover:underline flex items-center gap-1">
-                          <Eye className="h-3 w-3" /> View Mgmt Data
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.overallDataUrl, title: `NIRF ${row.year} - Overall Data` })} className="text-emerald-700 hover:underline flex items-center gap-1">
-                          <Eye className="h-3 w-3" /> View Overall Data
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => openEditModal("nirfSubmissions", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("nirfSubmissions", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ================================================================ */}
-      {/* TAB 4: Regulatory Compliance & Financial Transparency            */}
-      {/* ================================================================ */}
-      {activeTab === "compliance_finance" && (
-        <div className="flex flex-col gap-8">
-          {/* Financial Transparency Documents */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  Financial Transparency Documents (Budgets, Audits, Policies, Fee Structure)
-                </h3>
-                <p className="text-slate-500 text-xs">Manage financial statements, AFRC fee orders, and scholarship documents</p>
-              </div>
-              <button
-                onClick={() => openAddModal("financialDocuments", { code: "custom", title: "Financial Document", description: "Official financial declaration document", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add Document
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(data.financialDocuments || []).map((doc: any, idx: number) => (
-                <div key={doc._key || idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-between gap-3">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded">
-                        {doc.code}
+          {/* ANU Affiliations */}
+          {tabASub === "anu" && (
+            <TableSectionCard
+              title="Acharya Nagarjuna University (ANU) Affiliations"
+              subtitle="Permanent & temporary affiliation orders for UG & PG programmes"
+              extraControls={
+                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+                  <button
+                    onClick={() => setAnuFilter("ug")}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold cursor-pointer transition-all ${
+                      anuFilter === "ug" ? "bg-white text-blue-900 shadow-xs" : "text-slate-600"
+                    }`}
+                  >
+                    UG Programmes
+                  </button>
+                  <button
+                    onClick={() => setAnuFilter("pg")}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold cursor-pointer transition-all ${
+                      anuFilter === "pg" ? "bg-white text-blue-900 shadow-xs" : "text-slate-600"
+                    }`}
+                  >
+                    PG Programmes
+                  </button>
+                </div>
+              }
+              onAdd={() => openAddModal("anuAffiliations", { programmeType: anuFilter, year: "2025–2026", title: `${anuFilter.toUpperCase()} Affiliation Order`, fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={(data.anuAffiliations || []).filter((item: any) => (item.programmeType || "ug").toLowerCase() === anuFilter)}
+                columns={["Programme", "Academic Year", "Order Title", "PDF Document", "Redirecting Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-blue-100 text-blue-800">
+                        {row.programmeType?.toUpperCase() || "UG"}
                       </span>
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} className="p-1 hover:bg-slate-200 text-slate-600 rounded">
-                          <Eye className="h-3.5 w-3.5" />
-                        </button>
-                        <button onClick={() => openEditModal("financialDocuments", doc, idx)} className="p-1 hover:bg-blue-100 text-blue-700 rounded">
-                          <Edit2 className="h-3.5 w-3.5" />
-                        </button>
-                        <button onClick={() => handleDeleteItem("financialDocuments", idx)} className="p-1 hover:bg-red-100 text-red-600 rounded">
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                    <h4 className="font-extrabold text-sm text-slate-900 mt-2">{doc.title}</h4>
-                    <p className="text-slate-600 text-xs mt-1 line-clamp-2">{doc.description}</p>
-                  </div>
-                  <div className="text-[11px] text-slate-500 font-mono truncate bg-white px-2.5 py-1 rounded-lg border border-slate-200">
-                    {doc.fileUrl}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                    </td>
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons
+                        onEdit={() => {
+                          const realIdx = (data.anuAffiliations || []).indexOf(row);
+                          openEditModal("anuAffiliations", realIdx, row);
+                        }}
+                        onDelete={() => {
+                          const realIdx = (data.anuAffiliations || []).indexOf(row);
+                          handleDeleteItem("anuAffiliations", realIdx);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                )}
+              />
+            </TableSectionCard>
+          )}
 
-          {/* Regulatory Compliance Documents */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  Regulatory Compliance Documents
-                </h3>
-                <p className="text-slate-500 text-xs">AICTE, UGC, APSCHE, and other compliance records</p>
-              </div>
-              <button
-                onClick={() => openAddModal("regulatoryComplianceDocs", { code: "other", title: "Compliance Document", description: "Statutory compliance disclosure", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add Compliance Doc
-              </button>
-            </div>
+          {/* AISHE Table */}
+          {tabASub === "aishe" && (
+            <TableSectionCard
+              title="AISHE Certificates & Reports"
+              subtitle="All India Survey on Higher Education (Ministry of Education, MHRD) Certificates"
+              onAdd={() => openAddModal("aisheReports", { sNo: (data.aisheReports?.length || 0) + 1, year: "2024–2025", title: "AISHE Certificate", fileUrl: "", redirectUrl: "" })}
+            >
+              <DataTable
+                items={data.aisheReports || []}
+                columns={["S.No", "Year", "Certificate Title", "PDF Document", "Redirecting Link", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 w-16">{row.sNo || idx + 1}</td>
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                    <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <LinkBadge url={row.redirectUrl} />
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("aisheReports", idx, row)} onDelete={() => handleDeleteItem("aisheReports", idx)} />
+                    </td>
+                  </tr>
+                )}
+              />
+            </TableSectionCard>
+          )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(data.regulatoryComplianceDocs || []).map((doc: any, idx: number) => (
-                <div key={doc._key || idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-between gap-3">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded">
-                        {doc.code}
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} className="p-1 hover:bg-slate-200 text-slate-600 rounded">
-                          <Eye className="h-3.5 w-3.5" />
-                        </button>
-                        <button onClick={() => openEditModal("regulatoryComplianceDocs", doc, idx)} className="p-1 hover:bg-blue-100 text-blue-700 rounded">
-                          <Edit2 className="h-3.5 w-3.5" />
-                        </button>
-                        <button onClick={() => handleDeleteItem("regulatoryComplianceDocs", idx)} className="p-1 hover:bg-red-100 text-red-600 rounded">
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
+          {/* NIRF Table */}
+          {tabASub === "nirf" && (
+            <TableSectionCard
+              title="NIRF Submissions & Data Reports"
+              subtitle="National Institutional Ranking Framework data uploads (College, Management, Overall)"
+              onAdd={() => openAddModal("nirfSubmissions", { year: "2025–2026", collegeDataUrl: "", collegeRedirectUrl: "", managementDataUrl: "", managementRedirectUrl: "", overallDataUrl: "", overallRedirectUrl: "" })}
+            >
+              <DataTable
+                items={data.nirfSubmissions || []}
+                columns={["Academic Year", "College Data", "Management Data", "Overall Data", "Actions"]}
+                renderRow={(row, idx) => (
+                  <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                    <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-1">
+                        <PdfBadge url={row.collegeDataUrl} label="College PDF" onPreview={() => setPreviewPdf({ url: row.collegeDataUrl, title: `NIRF ${row.year} - College Data` })} />
+                        {row.collegeRedirectUrl && <LinkBadge url={row.collegeRedirectUrl} />}
                       </div>
-                    </div>
-                    <h4 className="font-extrabold text-sm text-slate-900 mt-2">{doc.title}</h4>
-                    <p className="text-slate-600 text-xs mt-1 line-clamp-2">{doc.description}</p>
-                  </div>
-                  <div className="text-[11px] text-slate-500 font-mono truncate bg-white px-2.5 py-1 rounded-lg border border-slate-200">
-                    {doc.fileUrl}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-1">
+                        <PdfBadge url={row.managementDataUrl} label="Management PDF" onPreview={() => setPreviewPdf({ url: row.managementDataUrl, title: `NIRF ${row.year} - Management Data` })} />
+                        {row.managementRedirectUrl && <LinkBadge url={row.managementRedirectUrl} />}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-1">
+                        <PdfBadge url={row.overallDataUrl} label="Overall PDF" onPreview={() => setPreviewPdf({ url: row.overallDataUrl, title: `NIRF ${row.year} - Overall Data` })} />
+                        {row.overallRedirectUrl && <LinkBadge url={row.overallRedirectUrl} />}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("nirfSubmissions", idx, row)} onDelete={() => handleDeleteItem("nirfSubmissions", idx)} />
+                    </td>
+                  </tr>
+                )}
+              />
+            </TableSectionCard>
+          )}
         </div>
       )}
 
-      {/* ================================================================ */}
-      {/* TAB 5: RTI Committee & Documents                                 */}
-      {/* ================================================================ */}
-      {activeTab === "rti" && (
-        <div className="flex flex-col gap-8">
-          {/* RTI Committee Table */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  RTI Committee Members & Authorities
-                </h3>
-                <p className="text-slate-500 text-xs">Designated Public Information Officers (PIO) and Appellate Authority</p>
-              </div>
-              <button
-                onClick={() => openAddModal("rtiMembers", { sNo: (data.rtiMembers?.length || 0) + 1, name: "", designation: "", role: "Member", mobile: "" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add RTI Authority
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4 w-14">S. No.</th>
-                    <th className="py-2.5 px-4">Name</th>
-                    <th className="py-2.5 px-4">Designation</th>
-                    <th className="py-2.5 px-4">Role in RTI Committee</th>
-                    <th className="py-2.5 px-4">Mobile No</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.rtiMembers || []).map((mem: any, idx: number) => (
-                    <tr key={mem._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{mem.sNo || idx + 1}</td>
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{mem.name}</td>
-                      <td className="py-2.5 px-4">{mem.designation}</td>
-                      <td className="py-2.5 px-4">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200">
-                          {mem.role}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-4 font-mono font-bold text-slate-700">{mem.mobile}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => openEditModal("rtiMembers", mem, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("rtiMembers", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* RTI Documents */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  RTI Official Documents & Office Orders
-                </h3>
-                <p className="text-slate-500 text-xs">Government Gazette notification and college constitution orders</p>
-              </div>
-              <button
-                onClick={() => openAddModal("rtiDocuments", { title: "RTI Document", description: "Official RTI notification", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add RTI Document
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(data.rtiDocuments || []).map((doc: any, idx: number) => (
-                <div key={doc._key || idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-between gap-3">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-extrabold text-sm text-slate-900">{doc.title}</h4>
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} className="p-1 hover:bg-slate-200 text-slate-600 rounded">
-                          <Eye className="h-3.5 w-3.5" />
-                        </button>
-                        <button onClick={() => openEditModal("rtiDocuments", doc, idx)} className="p-1 hover:bg-blue-100 text-blue-700 rounded">
-                          <Edit2 className="h-3.5 w-3.5" />
-                        </button>
-                        <button onClick={() => handleDeleteItem("rtiDocuments", idx)} className="p-1 hover:bg-red-100 text-red-600 rounded">
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                    <p className="text-slate-600 text-xs mt-1">{doc.description}</p>
-                  </div>
-                  <div className="text-[11px] text-slate-500 font-mono truncate bg-white px-2.5 py-1 rounded-lg border border-slate-200">
-                    {doc.fileUrl}
-                  </div>
+      {/* ========================================================= */}
+      {/* TAB B: Regulatory Compliance                             */}
+      {/* ========================================================= */}
+      {activeTab === "B" && (
+        <CardGridSection
+          title="Section B: Regulatory Compliance Documents & Portals"
+          subtitle="Statutory AICTE, UGC, APSCHE, and other state/central government compliance declarations"
+          onAdd={() => openAddModal("regulatoryComplianceDocs", { code: "compliance", title: "New Compliance Declaration", description: "Statutory compliance disclosure description.", fileUrl: "", redirectUrl: "" })}
+        >
+          {(data.regulatoryComplianceDocs || []).map((doc: any, idx: number) => (
+            <div key={doc._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200">
+                    {doc.code || "COMPLIANCE"}
+                  </span>
+                  <ActionButtons onEdit={() => openEditModal("regulatoryComplianceDocs", idx, doc)} onDelete={() => handleDeleteItem("regulatoryComplianceDocs", idx)} />
                 </div>
-              ))}
+                <h4 className="font-outfit font-extrabold text-sm text-slate-900">{doc.title}</h4>
+                <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{doc.description}</p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
+                <PdfBadge url={doc.fileUrl} onPreview={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} />
+                <LinkBadge url={doc.redirectUrl} />
+              </div>
             </div>
-          </div>
+          ))}
+        </CardGridSection>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB C: Right to Information (RTI)                        */}
+      {/* ========================================================= */}
+      {activeTab === "C" && (
+        <div className="flex flex-col gap-6">
+          {/* RTI Committee Members */}
+          <TableSectionCard
+            title="1. RTI Committee Members & Designated Authorities"
+            subtitle="Designated First Appellate Authority, Public Information Officer (PIO), and Assistant PIO"
+            onAdd={() => openAddModal("rtiMembers", { sNo: (data.rtiMembers?.length || 0) + 1, name: "", designation: "", role: "Member", mobile: "" })}
+          >
+            <DataTable
+              items={data.rtiMembers || []}
+              columns={["S.No", "Name", "Designation", "Role in RTI Committee", "Mobile Contact", "Actions"]}
+              renderRow={(mem, idx) => (
+                <tr key={mem._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                  <td className="py-3 px-4 font-bold text-slate-900 w-16">{mem.sNo || idx + 1}</td>
+                  <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{mem.name}</td>
+                  <td className="py-3 px-4 text-slate-600">{mem.designation}</td>
+                  <td className="py-3 px-4">
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-900 border border-blue-200">
+                      {mem.role}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 font-mono text-slate-800 font-bold whitespace-nowrap">{mem.mobile}</td>
+                  <td className="py-3 px-4 text-right whitespace-nowrap">
+                    <ActionButtons onEdit={() => openEditModal("rtiMembers", idx, mem)} onDelete={() => handleDeleteItem("rtiMembers", idx)} />
+                  </td>
+                </tr>
+              )}
+            />
+          </TableSectionCard>
+
+          {/* RTI Guidelines & Official Documents */}
+          <CardGridSection
+            title="2. RTI Act Guidelines & Statutory Notifications"
+            subtitle="Official gazettes, RTI Act 2005 documents, and institution constitution orders"
+            onAdd={() => openAddModal("rtiDocuments", { title: "New RTI Document", description: "Official statutory RTI order.", fileUrl: "", redirectUrl: "" })}
+          >
+            {(data.rtiDocuments || []).map((doc: any, idx: number) => (
+              <div key={doc._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-black uppercase text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">RTI DOC</span>
+                    <ActionButtons onEdit={() => openEditModal("rtiDocuments", idx, doc)} onDelete={() => handleDeleteItem("rtiDocuments", idx)} />
+                  </div>
+                  <h4 className="font-outfit font-extrabold text-sm text-slate-900">{doc.title}</h4>
+                  <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{doc.description}</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
+                  <PdfBadge url={doc.fileUrl} onPreview={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} />
+                  <LinkBadge url={doc.redirectUrl} />
+                </div>
+              </div>
+            ))}
+          </CardGridSection>
         </div>
       )}
 
-      {/* ================================================================ */}
-      {/* TAB 6: Annual Reports & Disclosure Archives                      */}
-      {/* ================================================================ */}
-      {activeTab === "reports_archives" && (
-        <div className="flex flex-col gap-8">
-          {/* Year-wise Annual Reports */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  Year-wise Annual Reports
-                </h3>
-                <p className="text-slate-500 text-xs">Official institutional annual reports by academic session</p>
+      {/* ========================================================= */}
+      {/* TAB D: Student Welfare & Grievance                       */}
+      {/* ========================================================= */}
+      {activeTab === "D" && (
+        <CardGridSection
+          title="Section D: Student Welfare, Safety & Grievance Redressal Cells"
+          subtitle="Statutory student-support cells, internal committees, and direct redirecting portal links"
+          onAdd={() => openAddModal("studentWelfareCards", { title: "New Welfare Cell", href: "/student-support/", description: "Cell description and functions.", fileUrl: "" })}
+        >
+          {(data.studentWelfareCards || []).map((card: any, idx: number) => (
+            <div key={card._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-800 border border-rose-200">
+                    WELFARE CELL
+                  </span>
+                  <ActionButtons onEdit={() => openEditModal("studentWelfareCards", idx, card)} onDelete={() => handleDeleteItem("studentWelfareCards", idx)} />
+                </div>
+                <h4 className="font-outfit font-extrabold text-sm text-slate-900">{card.title}</h4>
+                <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{card.description}</p>
               </div>
-              <button
-                onClick={() => openAddModal("annualReports", { year: "2026–2027", title: "Annual Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add Annual Report
-              </button>
-            </div>
 
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Report Title</th>
-                    <th className="py-2.5 px-4">PDF URL</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.annualReports || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">{row.title}</td>
-                      <td className="py-2.5 px-4 text-slate-500 max-w-xs truncate">{row.fileUrl}</td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg">
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => openEditModal("annualReports", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("annualReports", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Disclosure Archives (Multi-Column) */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-outfit font-black text-slate-900 text-lg">
-                  Historical Disclosure Archives (6-Column Record)
-                </h3>
-                <p className="text-slate-500 text-xs">Past years' mandatory disclosures, compliance docs, annual reports, statutory reports, and policies</p>
+              <div className="flex flex-col gap-2 pt-3 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 text-xs font-mono text-blue-700 bg-blue-50/80 px-2 py-1 rounded-lg">
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{card.href || "No link assigned"}</span>
+                </div>
+                {card.fileUrl && (
+                  <PdfBadge url={card.fileUrl} label="Attached Policy PDF" onPreview={() => setPreviewPdf({ url: card.fileUrl, title: card.title })} />
+                )}
               </div>
-              <button
-                onClick={() => openAddModal("disclosureArchives", {
-                  year: "2026–2027",
-                  mandatoryDisclosuresUrl: "/documents/DefaultFile_1.pdf",
-                  complianceDocumentsUrl: "/documents/DefaultFile_1.pdf",
-                  annualReportUrl: "/documents/DefaultFile_1.pdf",
-                  statutoryReportsUrl: "/documents/DefaultFile_1.pdf",
-                  policiesUrl: "/documents/DefaultFile_1.pdf"
-                })}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl text-xs font-bold transition-all"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add Archive Year Row
-              </button>
             </div>
+          ))}
+        </CardGridSection>
+      )}
 
-            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#002147] text-white uppercase text-[11px] font-extrabold">
-                  <tr>
-                    <th className="py-2.5 px-4">Academic Year</th>
-                    <th className="py-2.5 px-4">Mandatory Disclosures</th>
-                    <th className="py-2.5 px-4">Compliance Docs</th>
-                    <th className="py-2.5 px-4">Annual Report</th>
-                    <th className="py-2.5 px-4">Statutory Reports</th>
-                    <th className="py-2.5 px-4">Policies</th>
-                    <th className="py-2.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {(data.disclosureArchives || []).map((row: any, idx: number) => (
-                    <tr key={row._key || idx} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{row.year}</td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.mandatoryDisclosuresUrl, title: `Archive ${row.year} - Disclosures` })} className="text-blue-700 hover:underline">
-                          View
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.complianceDocumentsUrl, title: `Archive ${row.year} - Compliance` })} className="text-blue-700 hover:underline">
-                          View
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.annualReportUrl, title: `Archive ${row.year} - Annual Report` })} className="text-blue-700 hover:underline">
-                          View
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.statutoryReportsUrl, title: `Archive ${row.year} - Statutory Reports` })} className="text-blue-700 hover:underline">
-                          View
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4">
-                        <button onClick={() => setPreviewPdf({ url: row.policiesUrl, title: `Archive ${row.year} - Policies` })} className="text-blue-700 hover:underline">
-                          View
-                        </button>
-                      </td>
-                      <td className="py-2.5 px-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-1">
-                          <button onClick={() => openEditModal("disclosureArchives", row, idx)} className="p-1.5 hover:bg-blue-50 text-blue-700 rounded-lg">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button onClick={() => handleDeleteItem("disclosureArchives", idx)} className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg">
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      {/* ========================================================= */}
+      {/* TAB E: Financial Transparency                            */}
+      {/* ========================================================= */}
+      {activeTab === "E" && (
+        <CardGridSection
+          title="Section E: Financial Transparency Documents & Policy Portals"
+          subtitle="Annual budgets, audit statements, fee regulations, AFRC orders, and procurement policies"
+          onAdd={() => openAddModal("financialDocuments", { code: "finance", title: "New Financial Document", description: "Financial disclosure details.", fileUrl: "", redirectUrl: "" })}
+        >
+          {(data.financialDocuments || []).map((doc: any, idx: number) => (
+            <div key={doc._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    {doc.code || "FINANCE"}
+                  </span>
+                  <ActionButtons onEdit={() => openEditModal("financialDocuments", idx, doc)} onDelete={() => handleDeleteItem("financialDocuments", idx)} />
+                </div>
+                <h4 className="font-outfit font-extrabold text-sm text-slate-900">{doc.title}</h4>
+                <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{doc.description}</p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
+                <PdfBadge url={doc.fileUrl} onPreview={() => setPreviewPdf({ url: doc.fileUrl, title: doc.title })} />
+                <LinkBadge url={doc.redirectUrl} />
+              </div>
             </div>
-          </div>
+          ))}
+        </CardGridSection>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB F: Governance & Policies                             */}
+      {/* ========================================================= */}
+      {activeTab === "F" && (
+        <CardGridSection
+          title="Section F: Governance Structure & Institutional Policies"
+          subtitle="Administrative organogram, code of conduct, academic regulations, service rules, and charters"
+          onAdd={() => openAddModal("governanceCards", { title: "New Governance Policy", href: "/about/policies", description: "Policy scope and directives.", fileUrl: "" })}
+        >
+          {(data.governanceCards || []).map((card: any, idx: number) => (
+            <div key={card._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-indigo-50 text-indigo-800 border border-indigo-200">
+                    GOVERNANCE
+                  </span>
+                  <ActionButtons onEdit={() => openEditModal("governanceCards", idx, card)} onDelete={() => handleDeleteItem("governanceCards", idx)} />
+                </div>
+                <h4 className="font-outfit font-extrabold text-sm text-slate-900">{card.title}</h4>
+                <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{card.description}</p>
+              </div>
+
+              <div className="flex flex-col gap-2 pt-3 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 text-xs font-mono text-blue-700 bg-blue-50/80 px-2 py-1 rounded-lg">
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{card.href || "No link assigned"}</span>
+                </div>
+                {card.fileUrl && (
+                  <PdfBadge url={card.fileUrl} label="Policy Document PDF" onPreview={() => setPreviewPdf({ url: card.fileUrl, title: card.title })} />
+                )}
+              </div>
+            </div>
+          ))}
+        </CardGridSection>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB G: Institutional Reports & Data                      */}
+      {/* ========================================================= */}
+      {activeTab === "G" && (
+        <div className="flex flex-col gap-6">
+          {/* Annual Reports */}
+          <TableSectionCard
+            title="1. Year-wise Annual Reports"
+            subtitle="Official institutional annual reports with PDF downloads and web view links"
+            onAdd={() => openAddModal("annualReports", { year: "2025–2026", title: "Annual Report 2025–2026", fileUrl: "", redirectUrl: "" })}
+          >
+            <DataTable
+              items={data.annualReports || []}
+              columns={["Academic Year", "Report Title", "PDF Document", "Redirecting Link", "Actions"]}
+              renderRow={(row, idx) => (
+                <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100">
+                  <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                  <td className="py-3 px-4 text-slate-700 font-medium">{row.title}</td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <PdfBadge url={row.fileUrl} onPreview={() => setPreviewPdf({ url: row.fileUrl, title: row.title })} />
+                  </td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <LinkBadge url={row.redirectUrl} />
+                  </td>
+                  <td className="py-3 px-4 text-right whitespace-nowrap">
+                    <ActionButtons onEdit={() => openEditModal("annualReports", idx, row)} onDelete={() => handleDeleteItem("annualReports", idx)} />
+                  </td>
+                </tr>
+              )}
+            />
+          </TableSectionCard>
+
+          {/* Institutional Statistics Cards */}
+          <CardGridSection
+            title="2. Institutional Statistics & Academic Performance Links"
+            subtitle="Enrollment figures, academic results, gold medallist lists, and demographic records"
+            onAdd={() => openAddModal("dataStatsCards", { title: "New Statistics Card", href: "/academics/", description: "Data and metrics overview.", fileUrl: "" })}
+          >
+            {(data.dataStatsCards || []).map((card: any, idx: number) => (
+              <div key={card._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-teal-50 text-teal-800 border border-teal-200">
+                      DATA / STATS
+                    </span>
+                    <ActionButtons onEdit={() => openEditModal("dataStatsCards", idx, card)} onDelete={() => handleDeleteItem("dataStatsCards", idx)} />
+                  </div>
+                  <h4 className="font-outfit font-extrabold text-sm text-slate-900">{card.title}</h4>
+                  <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{card.description}</p>
+                </div>
+
+                <div className="flex flex-col gap-2 pt-3 border-t border-slate-100">
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-blue-700 bg-blue-50/80 px-2 py-1 rounded-lg">
+                    <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{card.href || "No link assigned"}</span>
+                  </div>
+                  {card.fileUrl && (
+                    <PdfBadge url={card.fileUrl} label="Data Sheet PDF" onPreview={() => setPreviewPdf({ url: card.fileUrl, title: card.title })} />
+                  )}
+                </div>
+              </div>
+            ))}
+          </CardGridSection>
         </div>
       )}
 
-      {/* ================================================================ */}
-      {/* GENERIC EDIT / ADD MODAL                                         */}
-      {/* ================================================================ */}
-      {modalOpen && editingItem && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-slate-200 shadow-2xl flex flex-col gap-4 animate-scaleUp max-h-[90vh] overflow-y-auto">
-            <h3 className="font-outfit font-black text-lg text-[#002147]">
-              {editIndex !== null ? "Edit Record" : "Add New Record"}
+      {/* ========================================================= */}
+      {/* TAB H: Disclosure Archives & Sign-off                    */}
+      {/* ========================================================= */}
+      {activeTab === "H" && (
+        <div className="flex flex-col gap-6">
+          {/* Archives Table */}
+          <TableSectionCard
+            title="1. Historic Disclosure Archives Matrix"
+            subtitle="Previous years comprehensive disclosures, compliance documents, statutory audits, and policies"
+            onAdd={() => openAddModal("disclosureArchives", { year: "2025–2026", mandatoryDisclosuresUrl: "", complianceDocumentsUrl: "", annualReportUrl: "", statutoryReportsUrl: "", policiesUrl: "" })}
+          >
+            <DataTable
+              items={data.disclosureArchives || []}
+              columns={["Year", "Mandatory Disclosures", "Compliance Docs", "Annual Report", "Statutory Reports", "Policies", "Actions"]}
+              renderRow={(row, idx) => (
+                <tr key={row._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100 text-xs">
+                  <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <PdfBadge url={row.mandatoryDisclosuresUrl} label="Disclosures" onPreview={() => setPreviewPdf({ url: row.mandatoryDisclosuresUrl, title: `Archive ${row.year} - Disclosures` })} />
+                  </td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <PdfBadge url={row.complianceDocumentsUrl} label="Compliance" onPreview={() => setPreviewPdf({ url: row.complianceDocumentsUrl, title: `Archive ${row.year} - Compliance` })} />
+                  </td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <PdfBadge url={row.annualReportUrl} label="Annual Report" onPreview={() => setPreviewPdf({ url: row.annualReportUrl, title: `Archive ${row.year} - Report` })} />
+                  </td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <PdfBadge url={row.statutoryReportsUrl} label="Statutory" onPreview={() => setPreviewPdf({ url: row.statutoryReportsUrl, title: `Archive ${row.year} - Statutory` })} />
+                  </td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <PdfBadge url={row.policiesUrl} label="Policies" onPreview={() => setPreviewPdf({ url: row.policiesUrl, title: `Archive ${row.year} - Policies` })} />
+                  </td>
+                  <td className="py-3 px-4 text-right whitespace-nowrap">
+                    <ActionButtons onEdit={() => openEditModal("disclosureArchives", idx, row)} onDelete={() => handleDeleteItem("disclosureArchives", idx)} />
+                  </td>
+                </tr>
+              )}
+            />
+          </TableSectionCard>
+
+          {/* Periodic Verification Metadata */}
+          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs">
+            <h3 className="font-outfit text-base font-extrabold text-[#002147] mb-1">
+              2. Periodic Verification Sign-off & Page Metadata
             </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Authorized institutional certification signature and latest review date shown on public pages
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Verified By (Authority)</label>
+                <input
+                  type="text"
+                  value={data.verifiedBy || ""}
+                  onChange={(e) => setData({ ...data, verifiedBy: e.target.value })}
+                  placeholder="Principal / IQAC Coordinator"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#002147]"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Last Updated Date</label>
+                <input
+                  type="text"
+                  value={data.lastUpdated || ""}
+                  onChange={(e) => setData({ ...data, lastUpdated: e.target.value })}
+                  placeholder="15 September 2026"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#002147]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-            <div className="flex flex-col gap-3.5 text-xs font-semibold text-slate-700">
-              {/* Year input if exists */}
+      {/* ========================================================= */}
+      {/* EDIT / ADD MODAL                                          */}
+      {/* ========================================================= */}
+      {modalOpen && editingItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-outfit text-lg font-black text-[#002147]">
+                {editIndex !== null ? "Edit Record" : "Add New Record"}
+              </h3>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3 text-xs">
+              {/* Year */}
               {editingItem.year !== undefined && (
                 <div>
                   <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Academic Year</label>
@@ -1021,59 +951,169 @@ export function MandatoryDisclosuresManager() {
                     type="text"
                     value={editingItem.year || ""}
                     onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
-                    placeholder="e.g. 2026–2027"
+                    placeholder="2025–2026"
                     className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
                   />
                 </div>
               )}
 
-              {/* Title input if exists */}
+              {/* S.No */}
+              {editingItem.sNo !== undefined && (
+                <div>
+                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Serial Number</label>
+                  <input
+                    type="number"
+                    value={editingItem.sNo || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, sNo: Number(e.target.value) })}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                  />
+                </div>
+              )}
+
+              {/* Title */}
               {editingItem.title !== undefined && (
                 <div>
-                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Document Title / Name</label>
+                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Title / Name</label>
                   <input
                     type="text"
                     value={editingItem.title || ""}
                     onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
-                    placeholder="e.g. Extension of Approval (EoA)"
+                    placeholder="Document or Policy Title"
                     className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
                   />
                 </div>
               )}
 
-              {/* Programme Type if ANU */}
-              {editingItem.programmeType !== undefined && (
+              {/* Code */}
+              {editingItem.code !== undefined && (
                 <div>
-                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Programme Level (UG or PG)</label>
-                  <select
-                    value={editingItem.programmeType || "ug"}
-                    onChange={(e) => setEditingItem({ ...editingItem, programmeType: e.target.value })}
+                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Category Code / Key</label>
+                  <input
+                    type="text"
+                    value={editingItem.code || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, code: e.target.value })}
+                    placeholder="e.g. aicte / budget / ugc"
                     className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
-                  >
-                    <option value="ug">Undergraduate (UG)</option>
-                    <option value="pg">Postgraduate (PG)</option>
-                  </select>
+                  />
                 </div>
               )}
 
-              {/* Description if exists */}
+              {/* Description */}
               {editingItem.description !== undefined && (
                 <div>
-                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Description</label>
+                  <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Description / Scope</label>
                   <textarea
                     rows={3}
                     value={editingItem.description || ""}
                     onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+                    placeholder="Brief description or purpose..."
                     className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
                   />
                 </div>
               )}
 
-              {/* RTI Specific: Name, Designation, Role, Mobile */}
-              {editingItem.name !== undefined && (
+              {/* Redirecting Link (href or redirectUrl) */}
+              {editingItem.name === undefined && editingItem.mandatoryDisclosuresUrl === undefined && editingItem.collegeDataUrl === undefined && (
+                <div className="bg-blue-50/50 p-3 rounded-2xl border border-blue-100 flex flex-col gap-1.5">
+                  <div className="flex items-center gap-1.5 text-blue-900 font-bold text-[11px] uppercase tracking-wider">
+                    <ExternalLink className="h-3.5 w-3.5 text-blue-700" />
+                    <span>Redirecting Link (Web Page / Portal URL)</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={editingItem.redirectUrl || editingItem.href || ""}
+                    onChange={(e) => {
+                      if (editingItem.href !== undefined) {
+                        setEditingItem({ ...editingItem, href: e.target.value });
+                      } else {
+                        setEditingItem({ ...editingItem, redirectUrl: e.target.value });
+                      }
+                    }}
+                    placeholder="/student-support/... or https://..."
+                    className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
+                  />
+                  <p className="text-[10px] text-slate-500">
+                    Entering a link enables direct redirection to this internal portal page or external authority website.
+                  </p>
+                </div>
+              )}
+
+              {/* Standard PDF File Upload / URL */}
+              {editingItem.name === undefined && editingItem.mandatoryDisclosuresUrl === undefined && editingItem.collegeDataUrl === undefined && (
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex flex-col gap-2">
+                  <div className="flex items-center gap-1.5 text-slate-700 font-bold text-[11px] uppercase tracking-wider">
+                    <FileText className="h-3.5 w-3.5 text-blue-700" />
+                    <span>PDF Document File / URL</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shrink-0">
+                      <Upload className="h-3.5 w-3.5" />
+                      <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "fileUrl")}
+                        disabled={isUploading}
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      value={editingItem.fileUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, fileUrl: e.target.value })}
+                      placeholder="/documents/... or https://cdn.sanity.io/..."
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* NIRF Specific: 3 PDFs and 3 Redirect Links */}
+              {editingItem.collegeDataUrl !== undefined && (
+                <div className="flex flex-col gap-3 pt-2 border-t border-slate-200">
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+                    <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">College Data (PDF & Link)</label>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <label className="cursor-pointer px-2.5 py-1.5 bg-[#002147] text-white text-xs font-bold rounded-lg shrink-0">
+                        Upload
+                        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "collegeDataUrl")} />
+                      </label>
+                      <input type="text" placeholder="PDF URL" value={editingItem.collegeDataUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, collegeDataUrl: e.target.value })} className="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-mono" />
+                    </div>
+                    <input type="text" placeholder="Optional College Redirect URL (e.g. https://...)" value={editingItem.collegeRedirectUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, collegeRedirectUrl: e.target.value })} className="w-full px-2 py-1.5 border border-blue-200 rounded-lg text-xs font-mono bg-blue-50/50" />
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+                    <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Management Data (PDF & Link)</label>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <label className="cursor-pointer px-2.5 py-1.5 bg-[#002147] text-white text-xs font-bold rounded-lg shrink-0">
+                        Upload
+                        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "managementDataUrl")} />
+                      </label>
+                      <input type="text" placeholder="PDF URL" value={editingItem.managementDataUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, managementDataUrl: e.target.value })} className="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-mono" />
+                    </div>
+                    <input type="text" placeholder="Optional Management Redirect URL (e.g. https://...)" value={editingItem.managementRedirectUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, managementRedirectUrl: e.target.value })} className="w-full px-2 py-1.5 border border-blue-200 rounded-lg text-xs font-mono bg-blue-50/50" />
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+                    <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Overall Data (PDF & Link)</label>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <label className="cursor-pointer px-2.5 py-1.5 bg-[#002147] text-white text-xs font-bold rounded-lg shrink-0">
+                        Upload
+                        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "overallDataUrl")} />
+                      </label>
+                      <input type="text" placeholder="PDF URL" value={editingItem.overallDataUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, overallDataUrl: e.target.value })} className="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-mono" />
+                    </div>
+                    <input type="text" placeholder="Optional Overall Redirect URL (e.g. https://...)" value={editingItem.overallRedirectUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, overallRedirectUrl: e.target.value })} className="w-full px-2 py-1.5 border border-blue-200 rounded-lg text-xs font-mono bg-blue-50/50" />
+                  </div>
+                </div>
+              )}
+
+              {/* RTI Member Fields */}
+              {editingItem.name !== undefined && editingItem.designation !== undefined && (
                 <>
                   <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Official Name</label>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Officer Name</label>
                     <input
                       type="text"
                       value={editingItem.name || ""}
@@ -1091,12 +1131,11 @@ export function MandatoryDisclosuresManager() {
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">RTI Role</label>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Role in RTI Committee</label>
                     <input
                       type="text"
                       value={editingItem.role || ""}
                       onChange={(e) => setEditingItem({ ...editingItem, role: e.target.value })}
-                      placeholder="e.g. Public Information Officer (PIO)"
                       className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
                     />
                   </div>
@@ -1112,93 +1151,30 @@ export function MandatoryDisclosuresManager() {
                 </>
               )}
 
-              {/* Standard PDF File Upload / URL */}
-              {editingItem.fileUrl !== undefined && (
-                <div className="flex flex-col gap-2 pt-2 border-t border-slate-200">
-                  <label className="block text-slate-600 font-bold uppercase text-[10px]">Attach PDF Document</label>
-                  <div className="flex items-center gap-3">
-                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-all shrink-0">
-                      <Upload className="h-3.5 w-3.5 text-blue-700" />
-                      <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
-                      <input
-                        type="file"
-                        accept="application/pdf"
-                        className="hidden"
-                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "fileUrl")}
-                        disabled={isUploading}
-                      />
-                    </label>
-                    <input
-                      type="text"
-                      value={editingItem.fileUrl || ""}
-                      onChange={(e) => setEditingItem({ ...editingItem, fileUrl: e.target.value })}
-                      placeholder="/documents/... or https://cdn.sanity.io/..."
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* NIRF Specific: 3 PDFs */}
-              {editingItem.collegeDataUrl !== undefined && (
-                <div className="flex flex-col gap-3 pt-2 border-t border-slate-200">
-                  <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">College Data PDF URL</label>
-                    <div className="flex items-center gap-2">
-                      <label className="cursor-pointer px-2.5 py-1.5 bg-slate-100 text-xs font-bold rounded-lg shrink-0">
-                        Upload
-                        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "collegeDataUrl")} />
-                      </label>
-                      <input type="text" value={editingItem.collegeDataUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, collegeDataUrl: e.target.value })} className="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Management Data PDF URL</label>
-                    <div className="flex items-center gap-2">
-                      <label className="cursor-pointer px-2.5 py-1.5 bg-slate-100 text-xs font-bold rounded-lg shrink-0">
-                        Upload
-                        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "managementDataUrl")} />
-                      </label>
-                      <input type="text" value={editingItem.managementDataUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, managementDataUrl: e.target.value })} className="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Overall Data PDF URL</label>
-                    <div className="flex items-center gap-2">
-                      <label className="cursor-pointer px-2.5 py-1.5 bg-slate-100 text-xs font-bold rounded-lg shrink-0">
-                        Upload
-                        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "overallDataUrl")} />
-                      </label>
-                      <input type="text" value={editingItem.overallDataUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, overallDataUrl: e.target.value })} className="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs" />
-                    </div>
-                  </div>
-                </div>
-              )}
-
               {/* Archive Specific: 5 URLs */}
               {editingItem.mandatoryDisclosuresUrl !== undefined && (
                 <div className="flex flex-col gap-2 pt-2 border-t border-slate-200">
                   <span className="text-[10px] font-black uppercase text-slate-500">Archive URLs</span>
-                  <input type="text" placeholder="Mandatory Disclosures PDF URL" value={editingItem.mandatoryDisclosuresUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, mandatoryDisclosuresUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg" />
-                  <input type="text" placeholder="Compliance Documents PDF URL" value={editingItem.complianceDocumentsUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, complianceDocumentsUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg" />
-                  <input type="text" placeholder="Annual Report PDF URL" value={editingItem.annualReportUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, annualReportUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg" />
-                  <input type="text" placeholder="Statutory Reports PDF URL" value={editingItem.statutoryReportsUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, statutoryReportsUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg" />
-                  <input type="text" placeholder="Policies PDF URL" value={editingItem.policiesUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, policiesUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg" />
+                  <input type="text" placeholder="Mandatory Disclosures PDF / Link URL" value={editingItem.mandatoryDisclosuresUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, mandatoryDisclosuresUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg font-mono text-xs" />
+                  <input type="text" placeholder="Compliance Documents PDF / Link URL" value={editingItem.complianceDocumentsUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, complianceDocumentsUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg font-mono text-xs" />
+                  <input type="text" placeholder="Annual Report PDF / Link URL" value={editingItem.annualReportUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, annualReportUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg font-mono text-xs" />
+                  <input type="text" placeholder="Statutory Reports PDF / Link URL" value={editingItem.statutoryReportsUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, statutoryReportsUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg font-mono text-xs" />
+                  <input type="text" placeholder="Policies PDF / Link URL" value={editingItem.policiesUrl || ""} onChange={(e) => setEditingItem({ ...editingItem, policiesUrl: e.target.value })} className="px-2 py-1.5 border rounded-lg font-mono text-xs" />
                 </div>
               )}
             </div>
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
               <button
                 onClick={() => setModalOpen(false)}
-                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold"
+                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveModal}
-                className="px-5 py-2 rounded-xl bg-[#002147] hover:bg-blue-900 text-white text-xs font-bold shadow-xs"
+                className="px-5 py-2 rounded-xl bg-[#002147] hover:bg-blue-900 text-white text-xs font-bold shadow-xs cursor-pointer"
               >
                 Done
               </button>
@@ -1217,5 +1193,146 @@ export function MandatoryDisclosuresManager() {
         />
       )}
     </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Sub-components for clean rendering
+// ─────────────────────────────────────────────────────────────
+
+function TableSectionCard({ title, subtitle, extraControls, onAdd, children }: any) {
+  return (
+    <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50">
+        <div>
+          <h3 className="font-outfit font-black text-slate-900 text-base">{title}</h3>
+          <p className="text-slate-500 text-xs mt-0.5">{subtitle}</p>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {extraControls}
+          {onAdd && (
+            <button
+              onClick={onAdd}
+              className="px-3.5 py-1.5 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add Record</span>
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="overflow-x-auto">{children}</div>
+    </div>
+  );
+}
+
+function CardGridSection({ title, subtitle, onAdd, children }: any) {
+  return (
+    <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <h3 className="font-outfit font-black text-slate-900 text-base">{title}</h3>
+          <p className="text-slate-500 text-xs mt-0.5">{subtitle}</p>
+        </div>
+        {onAdd && (
+          <button
+            onClick={onAdd}
+            className="px-3.5 py-1.5 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer w-fit"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            <span>Add Card</span>
+          </button>
+        )}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function DataTable({ items, columns, renderRow }: { items: any[]; columns: string[]; renderRow: (item: any, idx: number) => React.ReactNode }) {
+  if (!items || items.length === 0) {
+    return (
+      <div className="p-8 text-center text-slate-400 text-xs font-medium">
+        No records found. Click &quot;Add Record&quot; to create one.
+      </div>
+    );
+  }
+  return (
+    <table className="w-full text-left text-xs border-collapse">
+      <thead>
+        <tr className="bg-slate-100/70 border-b border-slate-200/80 text-slate-700 font-extrabold uppercase text-[10px] tracking-wider">
+          {columns.map((c, i) => (
+            <th key={i} className={`py-3 px-4 ${i === columns.length - 1 ? "text-right" : ""}`}>
+              {c}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-slate-100 font-medium">{items.map(renderRow)}</tbody>
+    </table>
+  );
+}
+
+function ActionButtons({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
+  return (
+    <div className="inline-flex items-center gap-1">
+      <button
+        onClick={onEdit}
+        className="p-1.5 rounded-lg text-blue-700 hover:bg-blue-100/70 transition-all cursor-pointer"
+        title="Edit Record"
+      >
+        <Edit2 className="h-3.5 w-3.5" />
+      </button>
+      <button
+        onClick={onDelete}
+        className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-100/70 transition-all cursor-pointer"
+        title="Delete Record"
+      >
+        <Trash2 className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
+
+function PdfBadge({ url, label = "View PDF", onPreview }: { url?: string; label?: string; onPreview: () => void }) {
+  if (!url || url.trim() === "") {
+    return (
+      <span className="inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+        <FileText className="h-3 w-3" /> None
+      </span>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={onPreview}
+      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white border border-blue-200/80 text-[11px] font-bold transition-all cursor-pointer w-fit"
+    >
+      <Eye className="h-3 w-3" />
+      <span>{label}</span>
+    </button>
+  );
+}
+
+function LinkBadge({ url }: { url?: string }) {
+  if (!url || url.trim() === "") {
+    return (
+      <span className="inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+        <Link2 className="h-3 w-3" /> None
+      </span>
+    );
+  }
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white border border-emerald-200/80 text-[11px] font-bold transition-all cursor-pointer w-fit"
+    >
+      <ExternalLink className="h-3 w-3" />
+      <span className="truncate max-w-[120px]">Redirect Link</span>
+    </a>
   );
 }

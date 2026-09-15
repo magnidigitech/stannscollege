@@ -1306,6 +1306,26 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
   rtiDocuments: [
     { _key: "rti_doc_1", title: "Official Gazette / Government Notification – Right to Information Act, 2005", description: "The complete Right to Information Act, 2005 enacted by the Parliament of India, setting out the practical regime of right to information for citizens to secure access to information under the control of public authorities.", fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/32a3d5b540315384535c90682d86a0b23c71d808.pdf" },
     { _key: "rti_doc_2", title: "RTI Committee / Authority Constitution Order", description: "Official administrative office order of St. Ann's College for Women designating the First Appellate Authority, Public Information Officer (PIO), and Assistant PIO to ensure adherence to statutory disclosure standards.", fileUrl: "https://cdn.sanity.io/files/fhjwqub5/production/cd25e5f7d45a56b103d932b451c31b914238be8b.pdf" },
+  ],
+  studentWelfareCards: [
+    { _key: "swc_1", title: "Anti-Ragging Policy & Committee", href: "/student-support/anti-ragging-cell", description: "Proactive campus measures, anti-ragging squad, undertaking forms, and emergency reporting cell.", fileUrl: "" },
+    { _key: "swc_2", title: "Grievance Redressal Cell", href: "/student-support/grievance-redressal-cell", description: "Statutory student mechanism for lodging and addressing academic and non-academic grievances.", fileUrl: "" },
+    { _key: "swc_3", title: "Internal Complaints Committee (ICC)", href: "/student-support/internal-complaints-committee", description: "Statutory mechanism as per POSH Act, 2013 ensuring a safe, respectful environment.", fileUrl: "" },
+    { _key: "swc_4", title: "Women Empowerment & Safety", href: "/student-support/women-empowerment-cell", description: "Dedicated cell fostering female leadership, safety guidelines, and gender sensitization programmes.", fileUrl: "" },
+    { _key: "swc_5", title: "Student Counselling & Support", href: "/student-support/counseling-centre", description: "Professional psychological, emotional, and academic counselling support for all students.", fileUrl: "" },
+    { _key: "swc_6", title: "EOC / SC / ST / Minority Cell", href: "/student-support/sc-st-minority-cell", description: "Ensuring social equity, statutory scholarships, and institutional assistance for underprivileged groups.", fileUrl: "" },
+  ],
+  governanceCards: [
+    { _key: "gov_1", title: "Governance Structure & Organogram", href: "/about/governance-administration", description: "Comprehensive administrative organogram, leadership hierarchy, and academic council frameworks.", fileUrl: "" },
+    { _key: "gov_2", title: "Institutional Policies Compendium", href: "/about/policies", description: "Official compendium of institutional statutes, operational procedures, and governance mandates.", fileUrl: "" },
+    { _key: "gov_3", title: "Code of Conduct & Ethics", href: "/about/code-of-conduct", description: "Professional, student, and faculty ethical standards, code of conduct, and disciplinary policies.", fileUrl: "" },
+    { _key: "gov_4", title: "Administrative & Service Policies", href: "/about/service-rules", description: "Staff service rules, administrative welfare policies, recruitment regulations, and service norms.", fileUrl: "" },
+    { _key: "gov_5", title: "Academic Policies & Regulations", href: "/academics/academic-regulations", description: "CBCS examination regulations, curriculum guidelines, attendance standards, and academic credits.", fileUrl: "" },
+    { _key: "gov_6", title: "Student Charter & Conduct Policies", href: "/student-support/student-charter", description: "Institutional commitments, student privileges, responsibilities, and code of citizenship.", fileUrl: "" },
+  ],
+  dataStatsCards: [
+    { _key: "ds_1", title: "Students Enrolment & Demographic Profile", href: "/academics/programmes", description: "Detailed intake capacity, current student strength, demographic diversity, and gender ratio data.", fileUrl: "" },
+    { _key: "ds_2", title: "Examination Results & Academic Performance", href: "/academics/academic-calendar", description: "Pass percentages, university gold medallists, merit ranks, and progression statistics.", fileUrl: "" },
   ]
 };
 
@@ -1320,24 +1340,28 @@ export async function getMandatoryDisclosures() {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       ugcDocuments[] {
         _key,
         sNo,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       cceOrders[] {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       apscheOrders[] {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       anuAffiliations[] {
@@ -1345,6 +1369,7 @@ export async function getMandatoryDisclosures() {
         programmeType,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       aisheReports[] {
@@ -1352,20 +1377,25 @@ export async function getMandatoryDisclosures() {
         sNo,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       nirfSubmissions[] {
         _key,
         year,
         collegeDataUrl,
+        collegeRedirectUrl,
         managementDataUrl,
-        overallDataUrl
+        managementRedirectUrl,
+        overallDataUrl,
+        overallRedirectUrl
       },
       regulatoryComplianceDocs[] {
         _key,
         code,
         title,
         description,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       financialDocuments[] {
@@ -1373,12 +1403,14 @@ export async function getMandatoryDisclosures() {
         code,
         title,
         description,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       annualReports[] {
         _key,
         year,
         title,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       },
       disclosureArchives[] {
@@ -1402,6 +1434,31 @@ export async function getMandatoryDisclosures() {
         _key,
         title,
         description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      studentWelfareCards[] {
+        _key,
+        title,
+        href,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      governanceCards[] {
+        _key,
+        title,
+        href,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      dataStatsCards[] {
+        _key,
+        title,
+        href,
+        description,
+        redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
       }
     }`;
@@ -1423,10 +1480,14 @@ export async function getMandatoryDisclosures() {
         disclosureArchives: data.disclosureArchives?.length ? data.disclosureArchives : DEFAULT_MANDATORY_DISCLOSURES.disclosureArchives,
         rtiMembers: data.rtiMembers?.length ? data.rtiMembers : DEFAULT_MANDATORY_DISCLOSURES.rtiMembers,
         rtiDocuments: data.rtiDocuments?.length ? data.rtiDocuments : DEFAULT_MANDATORY_DISCLOSURES.rtiDocuments,
+        studentWelfareCards: data.studentWelfareCards?.length ? data.studentWelfareCards : (DEFAULT_MANDATORY_DISCLOSURES as any).studentWelfareCards,
+        governanceCards: data.governanceCards?.length ? data.governanceCards : (DEFAULT_MANDATORY_DISCLOSURES as any).governanceCards,
+        dataStatsCards: data.dataStatsCards?.length ? data.dataStatsCards : (DEFAULT_MANDATORY_DISCLOSURES as any).dataStatsCards,
       };
     }
+    return DEFAULT_MANDATORY_DISCLOSURES;
   } catch (err) {
     console.error("Sanity fetch error (getMandatoryDisclosures):", err);
+    return DEFAULT_MANDATORY_DISCLOSURES;
   }
-  return DEFAULT_MANDATORY_DISCLOSURES;
 }

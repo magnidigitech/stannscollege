@@ -597,13 +597,27 @@ export default function MandatoryDisclosuresPage() {
                                 <td className="py-3.5 px-6 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
                                 <td className="py-3.5 px-6">{row.title || "AICTE Approval / EoA"}</td>
                                 <td className="py-3.5 px-6 text-right whitespace-nowrap">
-                                  <button
-                                    onClick={() => openPdf(row.fileUrl, `AICTE Approval - ${row.year}`)}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
-                                  >
-                                    <Eye className="h-3.5 w-3.5" />
-                                    <span>{row.year === "Previous Years" ? "View Archive" : "View PDF"}</span>
-                                  </button>
+                                  <div className="inline-flex items-center justify-end gap-1.5">
+                                    <button
+                                      onClick={() => openPdf(row.fileUrl, `AICTE Approval - ${row.year}`)}
+                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
+                                    >
+                                      <Eye className="h-3.5 w-3.5" />
+                                      <span>{row.year === "Previous Years" ? "View Archive" : "View PDF"}</span>
+                                    </button>
+                                    {row.redirectUrl && (
+                                      <a
+                                        href={row.redirectUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white rounded-xl font-bold text-xs transition-all border border-emerald-200 cursor-pointer"
+                                        title="Open Portal Link"
+                                      >
+                                        <ExternalLink className="h-3.5 w-3.5" />
+                                        <span>Portal</span>
+                                      </a>
+                                    )}
+                                  </div>
                                 </td>
                               </tr>
                             ))}
@@ -648,13 +662,27 @@ export default function MandatoryDisclosuresPage() {
                                 <td className="py-3.5 px-6 font-bold text-slate-900">{row.sNo || idx + 1}</td>
                                 <td className="py-3.5 px-6 font-semibold text-slate-800">{row.title || "UGC Section 2(f) Recognition Order"}</td>
                                 <td className="py-3.5 px-6 text-right whitespace-nowrap">
-                                  <button
-                                    onClick={() => openPdf(row.fileUrl, row.title || "UGC Recognition Document")}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
-                                  >
-                                    <Eye className="h-3.5 w-3.5" />
-                                    <span>View PDF</span>
-                                  </button>
+                                  <div className="inline-flex items-center justify-end gap-1.5">
+                                    <button
+                                      onClick={() => openPdf(row.fileUrl, row.title || "UGC Recognition Document")}
+                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
+                                    >
+                                      <Eye className="h-3.5 w-3.5" />
+                                      <span>View PDF</span>
+                                    </button>
+                                    {row.redirectUrl && (
+                                      <a
+                                        href={row.redirectUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white rounded-xl font-bold text-xs transition-all border border-emerald-200 cursor-pointer"
+                                        title="Open Portal Link"
+                                      >
+                                        <ExternalLink className="h-3.5 w-3.5" />
+                                        <span>Portal</span>
+                                      </a>
+                                    )}
+                                  </div>
                                 </td>
                               </tr>
                             ))}
@@ -703,13 +731,27 @@ export default function MandatoryDisclosuresPage() {
                                 <tr key={row._key || idx} className="hover:bg-slate-50 transition-colors">
                                   <td className="py-3 px-6 font-bold text-slate-900">{row.year}</td>
                                   <td className="py-3 px-6">{row.title || "CCE Orders / Proceedings / Communications"}</td>
-                                  <td className="py-3 px-6 text-right">
-                                    <button
-                                      onClick={() => openPdf(row.fileUrl, `CCE Communication - ${row.year}`)}
-                                      className="px-3 py-1 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100 cursor-pointer"
-                                    >
-                                      View PDF
-                                    </button>
+                                  <td className="py-3 px-6 text-right whitespace-nowrap">
+                                    <div className="inline-flex items-center justify-end gap-1.5">
+                                      <button
+                                        onClick={() => openPdf(row.fileUrl, `CCE Communication - ${row.year}`)}
+                                        className="px-3 py-1 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100 cursor-pointer inline-flex items-center gap-1"
+                                      >
+                                        <Eye className="h-3 w-3" />
+                                        <span>View PDF</span>
+                                      </button>
+                                      {row.redirectUrl && (
+                                        <a
+                                          href={row.redirectUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="px-2.5 py-1 bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white rounded-lg font-bold text-xs transition-all border border-emerald-200 cursor-pointer inline-flex items-center gap-1"
+                                        >
+                                          <ExternalLink className="h-3 w-3" />
+                                          <span>Portal</span>
+                                        </a>
+                                      )}
+                                    </div>
                                   </td>
                                 </tr>
                               ))}
@@ -737,13 +779,27 @@ export default function MandatoryDisclosuresPage() {
                                 <tr key={row._key || idx} className="hover:bg-slate-50 transition-colors">
                                   <td className="py-3 px-6 font-bold text-slate-900">{row.year}</td>
                                   <td className="py-3 px-6">{row.title || "APSCHE Orders / Communications"}</td>
-                                  <td className="py-3 px-6 text-right">
-                                    <button
-                                      onClick={() => openPdf(row.fileUrl, `APSCHE Order - ${row.year}`)}
-                                      className="px-3 py-1 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100 cursor-pointer"
-                                    >
-                                      {row.year === "Previous Years" ? "View Archive" : "View PDF"}
-                                    </button>
+                                  <td className="py-3 px-6 text-right whitespace-nowrap">
+                                    <div className="inline-flex items-center justify-end gap-1.5">
+                                      <button
+                                        onClick={() => openPdf(row.fileUrl, `APSCHE Order - ${row.year}`)}
+                                        className="px-3 py-1 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100 cursor-pointer inline-flex items-center gap-1"
+                                      >
+                                        <Eye className="h-3 w-3" />
+                                        <span>{row.year === "Previous Years" ? "View Archive" : "View PDF"}</span>
+                                      </button>
+                                      {row.redirectUrl && (
+                                        <a
+                                          href={row.redirectUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="px-2.5 py-1 bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white rounded-lg font-bold text-xs transition-all border border-emerald-200 cursor-pointer inline-flex items-center gap-1"
+                                        >
+                                          <ExternalLink className="h-3 w-3" />
+                                          <span>Portal</span>
+                                        </a>
+                                      )}
+                                    </div>
                                   </td>
                                 </tr>
                               ))}
@@ -854,29 +910,65 @@ export default function MandatoryDisclosuresPage() {
                             {(data.nirfSubmissions || []).map((row: any, idx: number) => (
                               <tr key={row._key || idx} className="hover:bg-blue-50/50 transition-colors">
                                 <td className="py-3.5 px-6 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
-                                <td className="py-3.5 px-6 text-center">
-                                  <button
-                                    onClick={() => openPdf(row.collegeDataUrl, `NIRF ${row.year} - College Data`)}
-                                    className="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-[#002147] hover:text-white rounded-xl border border-blue-100 transition-all cursor-pointer"
-                                  >
-                                    View College PDF
-                                  </button>
+                                <td className="py-3.5 px-6 text-center whitespace-nowrap">
+                                  <div className="inline-flex flex-col items-center gap-1">
+                                    <button
+                                      onClick={() => openPdf(row.collegeDataUrl, `NIRF ${row.year} - College Data`)}
+                                      className="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-[#002147] hover:text-white rounded-xl border border-blue-100 transition-all cursor-pointer"
+                                    >
+                                      View College PDF
+                                    </button>
+                                    {row.collegeRedirectUrl && (
+                                      <a
+                                        href={row.collegeRedirectUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white rounded-md border border-emerald-200"
+                                      >
+                                        <ExternalLink className="h-2.5 w-2.5" /> Portal
+                                      </a>
+                                    )}
+                                  </div>
                                 </td>
-                                <td className="py-3.5 px-6 text-center">
-                                  <button
-                                    onClick={() => openPdf(row.managementDataUrl, `NIRF ${row.year} - Management Data`)}
-                                    className="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-[#002147] hover:text-white rounded-xl border border-indigo-100 transition-all cursor-pointer"
-                                  >
-                                    View Management PDF
-                                  </button>
+                                <td className="py-3.5 px-6 text-center whitespace-nowrap">
+                                  <div className="inline-flex flex-col items-center gap-1">
+                                    <button
+                                      onClick={() => openPdf(row.managementDataUrl, `NIRF ${row.year} - Management Data`)}
+                                      className="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-[#002147] hover:text-white rounded-xl border border-indigo-100 transition-all cursor-pointer"
+                                    >
+                                      View Management PDF
+                                    </button>
+                                    {row.managementRedirectUrl && (
+                                      <a
+                                        href={row.managementRedirectUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white rounded-md border border-emerald-200"
+                                      >
+                                        <ExternalLink className="h-2.5 w-2.5" /> Portal
+                                      </a>
+                                    )}
+                                  </div>
                                 </td>
-                                <td className="py-3.5 px-6 text-center">
-                                  <button
-                                    onClick={() => openPdf(row.overallDataUrl, `NIRF ${row.year} - Overall Data`)}
-                                    className="px-3 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-[#002147] hover:text-white rounded-xl border border-emerald-100 transition-all cursor-pointer"
-                                  >
-                                    View Overall PDF
-                                  </button>
+                                <td className="py-3.5 px-6 text-center whitespace-nowrap">
+                                  <div className="inline-flex flex-col items-center gap-1">
+                                    <button
+                                      onClick={() => openPdf(row.overallDataUrl, `NIRF ${row.year} - Overall Data`)}
+                                      className="px-3 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-[#002147] hover:text-white rounded-xl border border-emerald-100 transition-all cursor-pointer"
+                                    >
+                                      View Overall PDF
+                                    </button>
+                                    {row.overallRedirectUrl && (
+                                      <a
+                                        href={row.overallRedirectUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white rounded-md border border-emerald-200"
+                                      >
+                                        <ExternalLink className="h-2.5 w-2.5" /> Portal
+                                      </a>
+                                    )}
+                                  </div>
                                 </td>
                               </tr>
                             ))}
@@ -948,12 +1040,24 @@ export default function MandatoryDisclosuresPage() {
                               </p>
                             </div>
 
-                            <button
-                              onClick={() => openPdf(doc.fileUrl, doc.title)}
-                              className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-blue-700 bg-white hover:bg-[#002147] hover:text-white border border-slate-200/80 px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-2xs w-fit"
-                            >
-                              <Eye className="h-4 w-4" /> View PDF
-                            </button>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <button
+                                onClick={() => openPdf(doc.fileUrl, doc.title)}
+                                className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-blue-700 bg-white hover:bg-[#002147] hover:text-white border border-slate-200/80 px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-2xs w-fit"
+                              >
+                                <Eye className="h-4 w-4" /> View PDF
+                              </button>
+                              {doc.redirectUrl && (
+                                <a
+                                  href={doc.redirectUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white border border-emerald-200 px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-2xs w-fit"
+                                >
+                                  <ExternalLink className="h-4 w-4" /> Visit Portal
+                                </a>
+                              )}
+                            </div>
                           </div>
                         );
                       })}
@@ -1085,13 +1189,26 @@ export default function MandatoryDisclosuresPage() {
                                 {doc.description}
                               </p>
                             </div>
-                            <button
-                              onClick={() => openPdf(doc.fileUrl, doc.title)}
-                              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all w-fit cursor-pointer shadow-2xs"
-                            >
-                              <Eye className="h-3.5 w-3.5" />
-                              <span>View PDF</span>
-                            </button>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <button
+                                onClick={() => openPdf(doc.fileUrl, doc.title)}
+                                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all w-fit cursor-pointer shadow-2xs"
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                                <span>View PDF</span>
+                              </button>
+                              {doc.redirectUrl && (
+                                <a
+                                  href={doc.redirectUrl}
+                                  target={doc.redirectUrl.startsWith("http") ? "_blank" : "_self"}
+                                  rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-blue-50 text-blue-700 rounded-xl text-xs font-bold transition-all w-fit border border-blue-200"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                  <span>Portal Link</span>
+                                </a>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -1138,20 +1255,21 @@ export default function MandatoryDisclosuresPage() {
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {[
+                      {((data.studentWelfareCards && data.studentWelfareCards.length > 0) ? data.studentWelfareCards : [
                         { id: "sec-welfare-antiragging", title: "Anti-Ragging Policy & Committee", href: "/student-support/anti-ragging-cell" },
                         { id: "sec-welfare-grievance", title: "Grievance Redressal Cell", href: "/student-support/grievance-redressal-cell" },
                         { id: "sec-welfare-icc", title: "Internal Complaints Committee (ICC)", href: "/student-support/internal-complaints-committee" },
                         { id: "sec-welfare-women", title: "Women Empowerment & Safety", href: "/student-support/women-empowerment-cell" },
                         { id: "sec-welfare-counseling", title: "Student Counselling & Support", href: "/student-support/counseling-centre" },
                         { id: "sec-welfare-eoc", title: "EOC / SC / ST / Minority Cell", href: "/student-support/sc-st-minority-cell" },
-                      ].map((item, idx) => {
+                      ]).map((item: any, idx: number) => {
                         const isBlue = idx % 2 === 1;
+                        const targetHref = item.href || item.redirectUrl || "#";
+                        const isExternal = targetHref.startsWith("http");
                         return (
-                          <Link
-                            key={idx}
+                          <div
+                            key={item._key || idx}
                             id={item.id}
-                            href={item.href}
                             className={`scroll-mt-52 border-2 ${isBlue ? "border-blue-200/90" : "border-slate-200/90"} p-5 rounded-2xl hover:shadow-md transition-all flex flex-col justify-between gap-3 group`}
                             style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                           >
@@ -1163,11 +1281,29 @@ export default function MandatoryDisclosuresPage() {
                                 {item.title}
                               </h5>
                             </div>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 group-hover:translate-x-1 transition-transform w-fit">
-                              <span>Access Portal</span>
-                              <ChevronRight className="h-3.5 w-3.5" />
-                            </span>
-                          </Link>
+                            <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+                              {targetHref !== "#" && (
+                                <Link
+                                  href={targetHref}
+                                  target={isExternal ? "_blank" : undefined}
+                                  rel={isExternal ? "noopener noreferrer" : undefined}
+                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors"
+                                >
+                                  <span>Access Portal</span>
+                                  {isExternal ? <ExternalLink className="h-3 w-3" /> : <ChevronRight className="h-3.5 w-3.5" />}
+                                </Link>
+                              )}
+                              {item.fileUrl && (
+                                <button
+                                  onClick={() => openPdf(item.fileUrl, item.title)}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#002147] hover:bg-blue-900 text-white rounded-lg text-[11px] font-bold transition-all ml-auto cursor-pointer"
+                                >
+                                  <Eye className="h-3 w-3" />
+                                  <span>PDF</span>
+                                </button>
+                              )}
+                            </div>
+                          </div>
                         );
                       })}
                     </div>
@@ -1234,13 +1370,26 @@ export default function MandatoryDisclosuresPage() {
                               </p>
                             </div>
 
-                            <button
-                              onClick={() => openPdf(doc.fileUrl, doc.title)}
-                              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all w-fit cursor-pointer shadow-2xs"
-                            >
-                              <Eye className="h-3.5 w-3.5" />
-                              <span>View PDF</span>
-                            </button>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <button
+                                onClick={() => openPdf(doc.fileUrl, doc.title)}
+                                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all w-fit cursor-pointer shadow-2xs"
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                                <span>View PDF</span>
+                              </button>
+                              {doc.redirectUrl && (
+                                <a
+                                  href={doc.redirectUrl}
+                                  target={doc.redirectUrl.startsWith("http") ? "_blank" : "_self"}
+                                  rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-blue-50 text-blue-700 rounded-xl text-xs font-bold transition-all w-fit border border-blue-200"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                  <span>Portal Link</span>
+                                </a>
+                              )}
+                            </div>
                           </div>
                         );
                       })}
@@ -1286,20 +1435,21 @@ export default function MandatoryDisclosuresPage() {
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {[
+                      {((data.governanceCards && data.governanceCards.length > 0) ? data.governanceCards : [
                         { id: "sec-gov-structure", title: "Governance Structure & Organogram", href: "/about/governance-administration" },
                         { id: "sec-gov-policies", title: "Institutional Policies Compendium", href: "/about/policies" },
                         { id: "sec-gov-code", title: "Code of Conduct & Ethics", href: "/about/code-of-conduct" },
                         { id: "sec-gov-admin", title: "Administrative & Service Policies", href: "/about/service-rules" },
                         { id: "sec-gov-academic", title: "Academic Policies & Regulations", href: "/academics/academic-regulations" },
                         { id: "sec-gov-charter", title: "Student Charter & Conduct Policies", href: "/student-support/student-charter" },
-                      ].map((item, idx) => {
+                      ]).map((item: any, idx: number) => {
                         const isBlue = idx % 2 === 1;
+                        const targetHref = item.href || item.redirectUrl || "#";
+                        const isExternal = targetHref.startsWith("http");
                         return (
-                          <Link
-                            key={idx}
+                          <div
+                            key={item._key || idx}
                             id={item.id}
-                            href={item.href}
                             className={`scroll-mt-52 border-2 ${isBlue ? "border-blue-200/90" : "border-slate-200/90"} p-5 rounded-2xl hover:shadow-md transition-all flex flex-col justify-between gap-3 group`}
                             style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                           >
@@ -1311,11 +1461,29 @@ export default function MandatoryDisclosuresPage() {
                                 {item.title}
                               </h5>
                             </div>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 group-hover:translate-x-1 transition-transform w-fit">
-                              <span>View Details</span>
-                              <ChevronRight className="h-3.5 w-3.5" />
-                            </span>
-                          </Link>
+                            <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+                              {targetHref !== "#" && (
+                                <Link
+                                  href={targetHref}
+                                  target={isExternal ? "_blank" : undefined}
+                                  rel={isExternal ? "noopener noreferrer" : undefined}
+                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors"
+                                >
+                                  <span>View Details</span>
+                                  {isExternal ? <ExternalLink className="h-3 w-3" /> : <ChevronRight className="h-3.5 w-3.5" />}
+                                </Link>
+                              )}
+                              {item.fileUrl && (
+                                <button
+                                  onClick={() => openPdf(item.fileUrl, item.title)}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#002147] hover:bg-blue-900 text-white rounded-lg text-[11px] font-bold transition-all ml-auto cursor-pointer"
+                                >
+                                  <Eye className="h-3 w-3" />
+                                  <span>PDF</span>
+                                </button>
+                              )}
+                            </div>
+                          </div>
                         );
                       })}
                     </div>
@@ -1371,7 +1539,7 @@ export default function MandatoryDisclosuresPage() {
                             <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-xs font-extrabold">
                               <th className="py-3.5 px-6">Academic Year</th>
                               <th className="py-3.5 px-6">Report Title</th>
-                              <th className="py-3.5 px-6 text-right">View PDF</th>
+                              <th className="py-3.5 px-6 text-right">Actions</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
@@ -1380,13 +1548,26 @@ export default function MandatoryDisclosuresPage() {
                                 <td className="py-3.5 px-6 font-bold text-slate-900 whitespace-nowrap">{row.year}</td>
                                 <td className="py-3.5 px-6">{row.title || `Annual Report ${row.year}`}</td>
                                 <td className="py-3.5 px-6 text-right whitespace-nowrap">
-                                  <button
-                                    onClick={() => openPdf(row.fileUrl, `Annual Report - ${row.year}`)}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
-                                  >
-                                    <Eye className="h-3.5 w-3.5" />
-                                    <span>View PDF</span>
-                                  </button>
+                                  <div className="inline-flex items-center gap-2 justify-end">
+                                    <button
+                                      onClick={() => openPdf(row.fileUrl, `Annual Report - ${row.year}`)}
+                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/70 cursor-pointer"
+                                    >
+                                      <Eye className="h-3.5 w-3.5" />
+                                      <span>View PDF</span>
+                                    </button>
+                                    {row.redirectUrl && (
+                                      <a
+                                        href={row.redirectUrl}
+                                        target={row.redirectUrl.startsWith("http") ? "_blank" : "_self"}
+                                        rel={row.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-white text-blue-700 hover:bg-blue-50 rounded-xl font-bold text-xs transition-all border border-blue-200"
+                                      >
+                                        <ExternalLink className="h-3 w-3" />
+                                        <span>Link</span>
+                                      </a>
+                                    )}
+                                  </div>
                                 </td>
                               </tr>
                             ))}
@@ -1397,48 +1578,53 @@ export default function MandatoryDisclosuresPage() {
 
                     {/* Data & Statistics Links */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div
-                        id="sec-reports-stats"
-                        className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm flex flex-col justify-between gap-4"
-                        style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
-                      >
-                        <div>
-                          <h4 className="font-outfit font-extrabold text-base text-blue-700 uppercase tracking-wider">
-                            2. Institutional Data &amp; Statistics
-                          </h4>
-                          <p className="text-slate-600 text-sm mt-1 leading-relaxed">
-                            Access student intake, departmental statistics, faculty distributions, and academic metrics.
-                          </p>
-                        </div>
-                        <Link href="/placements" className="text-xs font-bold text-blue-700 hover:underline inline-flex items-center gap-1 cursor-pointer">
-                          <span>Explore Institutional Data &amp; Statistics</span>
-                          <ExternalLink className="h-3.5 w-3.5" />
-                        </Link>
-                      </div>
-
-                      <div
-                        id="sec-reports-statutory"
-                        className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col justify-between gap-4"
-                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                      >
-                        <div>
-                          <h4 className="font-outfit font-extrabold text-base text-blue-600 uppercase tracking-wider">
-                            3. Other Statutory Reports
-                          </h4>
-                          <p className="text-slate-600 text-sm mt-1 leading-relaxed">
-                            Periodic reviews and institutional returns submitted to competent statutory authorities.
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => openPdf("/documents/DefaultFile_1.pdf", "Other Statutory Submissions Report")}
-                          className="text-xs font-bold text-blue-700 hover:underline inline-flex items-center gap-1 w-fit cursor-pointer"
-                        >
-                          <span>View Consolidated Statutory Reports (PDF)</span>
-                          <Eye className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
+                      {((data.dataStatsCards && data.dataStatsCards.length > 0) ? data.dataStatsCards : [
+                        { id: "sec-reports-stats", title: "2. Institutional Data & Statistics", description: "Access student intake, departmental statistics, faculty distributions, and academic metrics.", href: "/placements", linkText: "Explore Institutional Data & Statistics" },
+                        { id: "sec-reports-statutory", title: "3. Other Statutory Reports", description: "Periodic reviews and institutional returns submitted to competent statutory authorities.", fileUrl: "/documents/DefaultFile_1.pdf", linkText: "View Consolidated Statutory Reports (PDF)" },
+                      ]).map((statCard: any, idx: number) => {
+                        const isAlt = idx % 2 === 0;
+                        const cardHref = statCard.href || statCard.redirectUrl;
+                        return (
+                          <div
+                            key={statCard._key || idx}
+                            id={statCard.id}
+                            className={`scroll-mt-52 border-2 ${isAlt ? "border-blue-200/90" : "border-slate-200/90"} rounded-2xl p-6 shadow-sm flex flex-col justify-between gap-4`}
+                            style={{ backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
+                          >
+                            <div>
+                              <h4 className={`font-outfit font-extrabold text-base uppercase tracking-wider ${isAlt ? "text-blue-700" : "text-blue-600"}`}>
+                                {statCard.title}
+                              </h4>
+                              <p className="text-slate-600 text-sm mt-1 leading-relaxed">
+                                {statCard.description}
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3">
+                              {cardHref && (
+                                <Link
+                                  href={cardHref}
+                                  target={cardHref.startsWith("http") ? "_blank" : undefined}
+                                  rel={cardHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                                  className="text-xs font-bold text-blue-700 hover:underline inline-flex items-center gap-1 cursor-pointer"
+                                >
+                                  <span>{statCard.linkText || "Explore Details"}</span>
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </Link>
+                              )}
+                              {statCard.fileUrl && (
+                                <button
+                                  onClick={() => openPdf(statCard.fileUrl, statCard.title)}
+                                  className="text-xs font-bold text-blue-700 hover:underline inline-flex items-center gap-1 w-fit cursor-pointer"
+                                >
+                                  <span>{statCard.linkText || "View Document (PDF)"}</span>
+                                  <Eye className="h-3.5 w-3.5" />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-
                   </div>
                 </section>
 

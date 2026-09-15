@@ -2559,6 +2559,7 @@ export default defineConfig({
                 { name: "title", title: "Document Title", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2573,6 +2574,7 @@ export default defineConfig({
                 { name: "title", title: "Document Title", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2587,6 +2589,7 @@ export default defineConfig({
                 { name: "title", title: "Document / Communication", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2601,6 +2604,7 @@ export default defineConfig({
                 { name: "title", title: "Document / Communication", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2616,6 +2620,7 @@ export default defineConfig({
                 { name: "title", title: "Title", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2631,6 +2636,7 @@ export default defineConfig({
                 { name: "title", title: "Document Title", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2643,8 +2649,11 @@ export default defineConfig({
               fields: [
                 { name: "year", title: "Academic Year", type: "string" },
                 { name: "collegeDataUrl", title: "College Data PDF URL", type: "string" },
+                { name: "collegeRedirectUrl", title: "College Redirect URL", type: "string" },
                 { name: "managementDataUrl", title: "Management Data PDF URL", type: "string" },
+                { name: "managementRedirectUrl", title: "Management Redirect URL", type: "string" },
                 { name: "overallDataUrl", title: "Overall Data PDF URL", type: "string" },
+                { name: "overallRedirectUrl", title: "Overall Redirect URL", type: "string" },
               ]
             }]
           },
@@ -2660,6 +2669,7 @@ export default defineConfig({
                 { name: "description", title: "Description", type: "text" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2675,6 +2685,7 @@ export default defineConfig({
                 { name: "description", title: "Description", type: "text" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2689,6 +2700,7 @@ export default defineConfig({
                 { name: "title", title: "Title", type: "string" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
               ]
             }]
           },
@@ -2731,6 +2743,52 @@ export default defineConfig({
               type: "object",
               fields: [
                 { name: "title", title: "Title", type: "string" },
+                { name: "description", title: "Description", type: "text" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+                { name: "redirectUrl", title: "Redirecting Link (URL)", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "studentWelfareCards",
+            title: "Student Welfare & Grievance Cards",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "title", title: "Title", type: "string" },
+                { name: "href", title: "Redirecting Link / URL", type: "string" },
+                { name: "description", title: "Description", type: "text" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "governanceCards",
+            title: "Governance & Policies Cards",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "title", title: "Title", type: "string" },
+                { name: "href", title: "Redirecting Link / URL", type: "string" },
+                { name: "description", title: "Description", type: "text" },
+                { name: "file", title: "PDF File", type: "file" },
+                { name: "fileUrl", title: "File URL", type: "string" },
+              ]
+            }]
+          },
+          {
+            name: "dataStatsCards",
+            title: "Institutional Data & Statistics Cards",
+            type: "array",
+            of: [{
+              type: "object",
+              fields: [
+                { name: "title", title: "Title", type: "string" },
+                { name: "href", title: "Redirecting Link / URL", type: "string" },
                 { name: "description", title: "Description", type: "text" },
                 { name: "file", title: "PDF File", type: "file" },
                 { name: "fileUrl", title: "File URL", type: "string" },
