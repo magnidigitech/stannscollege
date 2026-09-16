@@ -84,6 +84,7 @@ export default function AboutSidebar({
   onItemClick
 }: AboutSidebarProps) {
   const activeCategories = categories || ABOUT_CATEGORIES;
+  const [headerHeight, setHeaderHeight] = React.useState<number>(225);
 
   useEffect(() => {
     const updateHeaderHeight = () => {
@@ -91,7 +92,9 @@ export default function AboutSidebar({
       if (header) {
         const height = header.getBoundingClientRect().height || header.offsetHeight;
         if (height > 0) {
-          document.documentElement.style.setProperty("--main-header-height", `${Math.ceil(height)}px`);
+          const rounded = Math.ceil(height);
+          setHeaderHeight(rounded);
+          document.documentElement.style.setProperty("--main-header-height", `${rounded}px`);
         }
       }
     };
@@ -121,9 +124,9 @@ export default function AboutSidebar({
     const el = document.getElementById(targetId);
     if (el) {
       const header = document.getElementById("main-header");
-      const headerHeight = header ? (header.getBoundingClientRect().height || header.offsetHeight) : 225;
+      const currentHeight = header ? (header.getBoundingClientRect().height || header.offsetHeight) : headerHeight;
       const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - headerHeight - 20; // 20px buffer below sticky header
+      const offsetPosition = elementPosition - currentHeight - 20; // 20px buffer below sticky header
       
       window.scrollTo({
         top: Math.max(0, offsetPosition),
@@ -136,8 +139,8 @@ export default function AboutSidebar({
     <aside
       className="flex flex-col sticky select-none h-fit overflow-hidden border-2 border-slate-200/90 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 z-20"
       style={{
-        top: "calc(var(--main-header-height, 225px) + 16px)",
-        maxHeight: "calc(100vh - var(--main-header-height, 225px) - 32px)",
+        top: `${headerHeight + 16}px`,
+        maxHeight: `calc(100vh - ${headerHeight + 32}px)`,
         backgroundColor: "var(--sidebar-container-bg, #eaeff5)"
       }}
     >
@@ -171,9 +174,9 @@ export default function AboutSidebar({
 
       {/* Category Groups - Inner scrollable content */}
       <div
-        className="flex flex-col gap-6 p-4 sm:p-5 overflow-y-auto no-scrollbar"
+        className="flex flex-col gap-6 p-4 sm:p-5 overflow-y-auto no-scrollbar flex-1"
         style={{
-          maxHeight: "calc(100vh - var(--main-header-height, 225px) - 32px - 72px)",
+          maxHeight: `calc(100vh - ${headerHeight + 32 + 72}px)`,
           scrollbarWidth: "none",
           msOverflowStyle: "none"
         }}
