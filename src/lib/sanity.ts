@@ -1837,13 +1837,13 @@ export async function getAlumniData() {
 // ============================================================================
 
 export const DEFAULT_RESEARCH_DATA = {
-  aboutOverview: "At St. Ann’s College for Women, Gorantla, Guntur, research and innovation foster academic excellence, creativity, critical thinking and societal impact. The College encourages faculty and students to engage in research, innovative projects, interdisciplinary collaboration, publications and knowledge sharing.\n\nThrough a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives, nurturing women researchers and innovators prepared to contribute to a knowledge-driven and Viksit Bharat.\n\n“Research inspires discovery. Innovation transforms ideas into impact.”",
+  aboutOverview: "At St. Ann’s College for Women, Gorantla, Guntur, research and innovation foster academic excellence, creativity, critical thinking and societal impact. The College encourages faculty and students to engage in research, innovative projects, interdisciplinary collaboration, publications and knowledge sharing.\n\nThrough a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives, nurturing women researchers and innovators prepared to contribute to a knowledge-driven and Viksit Bharat.\n\nResearch inspires discovery. Innovation transforms ideas into impact.",
   
   researchPolicy: {
     title: "1. Research Promotion, Ethics & Funding Policy",
     tagline: "Research with Integrity • Innovation with Purpose • Knowledge for Society",
     description: "At St. Ann’s College for Women, Gorantla, Guntur, research is promoted as a key component of academic excellence, innovation, and societal development. The College encourages faculty and students to undertake meaningful, multidisciplinary, and socially relevant research.\n\nThe policy provides a framework for research promotion, ethical conduct, plagiarism prevention, intellectual property, funding, publications, and collaborations, ensuring integrity, transparency, accountability, and originality in all research activities.\n\nThe College is committed to fostering a responsible research culture that supports innovation, higher studies, women’s empowerment, and community development.",
-    policyFileUrl: "/documents/DefaultFile_1.pdf",
+    policyFileUrl: "/documents/research/1.Rsearch Promotion & Development Policy.pdf",
     redirectUrl: ""
   },
 
@@ -1880,10 +1880,10 @@ export const DEFAULT_RESEARCH_DATA = {
       "Research Grant and Fellowship Awareness"
     ],
     commitment: "St. Ann’s College for Women is committed to building a responsible, innovative, and collaborative research ecosystem that contributes to academic excellence, women’s empowerment, community development, and sustainable societal progress.\n\nResearch • Innovation • Integrity • Impact",
-    rdcPolicyFileUrl: "/documents/DefaultFile_1.pdf",
+    rdcPolicyFileUrl: "/documents/research/1.Rsearch Promotion & Development Policy.pdf",
     activityReports: [
-      { _key: "rdc_ar_1", year: "2025–2026", title: "RDC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "rdc_ar_2", year: "2024–2025", title: "RDC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "rdc_ar_1", year: "2025–2026", title: "RDC Activity Report 2025–2026", fileUrl: "/documents/research/RDC Acivity Report 2025-2026.pdf" },
+      { _key: "rdc_ar_2", year: "2024–2025", title: "RDC Activity Report 2024–2025", fileUrl: "/documents/research/RDC Acitivty Report 2024-2025.pdf" }
     ]
   },
 
@@ -1903,17 +1903,17 @@ export const DEFAULT_RESEARCH_DATA = {
     description: "St. Ann’s College for Women, Gorantla, Guntur promotes quality research and scholarly contributions by faculty members and students. The institution encourages publication of research findings in peer-reviewed, UGC-recognized, Scopus/Web of Science indexed, and other reputed journals, subject to applicable norms.",
     publications: [
       { _key: "pub_1", year: "2026–2027", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "pub_2", year: "2025–2026", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "pub_3", year: "2024–2025", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "pub_2", year: "2025–2026", facultyFileUrl: "/documents/research/Faculty Research Publications -2025-2026.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "pub_3", year: "2024–2025", facultyFileUrl: "/documents/research/Faculty Reearch Publications - 2024-2025.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
     ],
     paperPresentations: [
-      { _key: "pres_1", year: "2025–2026", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "pres_2", year: "2024–2025", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "pres_1", year: "2025–2026", facultyFileUrl: "/documents/research/Faculty Research in COnfenrece 2025-2026.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "pres_2", year: "2024–2025", facultyFileUrl: "/documents/research/Faculty Research in COnfenrece 2024-2025.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
     ],
     booksAndChapters: [
       { _key: "book_1", year: "2026–2027", title: "Faculty Journals, Books & Book Chapters 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "book_2", year: "2025–2026", title: "Faculty Journals, Books & Book Chapters 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "book_3", year: "2024–2025", title: "Faculty Journals, Books & Book Chapters 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "book_2", year: "2025–2026", title: "Faculty Journals, Books & Book Chapters 2025–2026", fileUrl: "/documents/research/Faculty Publications in Books 2025-2026.pdf" },
+      { _key: "book_3", year: "2024–2025", title: "Faculty Journals, Books & Book Chapters 2024–2025", fileUrl: "/documents/research/Faculty publications in Books 2024-2025.pdf" }
     ]
   },
 
@@ -1929,8 +1929,8 @@ export const DEFAULT_RESEARCH_DATA = {
     ],
     activitiesMatrix: [
       { _key: "act_1", year: "2026–2027", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "act_2", year: "2025–2026", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "act_3", year: "2024–2025", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "act_2", year: "2025–2026", innovationFileUrl: "/documents/research/Patents 2025-2026.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "act_3", year: "2024–2025", innovationFileUrl: "/documents/research/Patents2024-2025.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" }
     ]
   },
 
