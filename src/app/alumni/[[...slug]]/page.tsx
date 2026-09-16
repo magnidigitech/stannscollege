@@ -39,6 +39,7 @@ import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { getAlumniData, getAlumniGallery, DEFAULT_ALUMNI_DATA } from "@/lib/sanity";
+import { openPdfViewer, getCleanPdfUrl } from "@/lib/pdf-viewer";
 
 // Sidebar categories matching 10.Alumni (13-09-2026).docx (1 to 9)
 const ALUMNI_SIDEBAR_CATEGORIES: SidebarCategory[] = [
@@ -212,8 +213,7 @@ export default function AlumniPage() {
   };
 
   const openPdf = (url?: string, title?: string) => {
-    const targetUrl = url && url.trim() !== "" ? url : "/documents/alumni/Alumni_Registration_Certificate.pdf";
-    window.open(targetUrl, "_blank");
+    openPdfViewer(url, title || "Alumni Document");
   };
 
   const googleFormLink = data.googleFormUrl || "https://forms.gle/7QMzJvrAsYVT3YZd7";

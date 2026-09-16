@@ -37,6 +37,7 @@ import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { getMandatoryDisclosures, DEFAULT_MANDATORY_DISCLOSURES } from "@/lib/sanity";
+import { openPdfViewer, getCleanPdfUrl } from "@/lib/pdf-viewer";
 
 // Direct file resolvers for ANU and AISHE so local files are always served reliably
 const KNOWN_ANU_MAP: Record<string, string> = {
@@ -286,8 +287,7 @@ export default function MandatoryDisclosuresPage() {
   }, []);
 
   const openPdf = (url?: string, title?: string) => {
-    const targetUrl = url && url.trim() !== "" ? url : "/documents/DefaultFile_1.pdf";
-    window.open(targetUrl, "_blank");
+    openPdfViewer(url, title);
   };
 
   const rawAnu = data.anuAffiliations || DEFAULT_MANDATORY_DISCLOSURES.anuAffiliations || [];
@@ -577,7 +577,7 @@ export default function MandatoryDisclosuresPage() {
                                   <Eye className="h-3.5 w-3.5" /> View PDF
                                 </button>
                                 <a
-                                  href={resolvedUrl}
+                                  href={getCleanPdfUrl(resolvedUrl, `${anuTab.toUpperCase()} Affiliation Order - ${item.year}`, true)}
                                   download
                                   className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 rounded-xl border border-slate-200/80 transition-all cursor-pointer shadow-2xs"
                                 >
@@ -1950,7 +1950,7 @@ export default function MandatoryDisclosuresPage() {
                             <Eye className="h-3.5 w-3.5" /> View PDF
                           </button>
                           <a
-                            href={resolvedUrl}
+                            href={getCleanPdfUrl(resolvedUrl, `${isUG ? "UG" : "PG"} Affiliation Order - ${item.year}`, true)}
                             download
                             className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 px-3 py-2 rounded-xl transition-all cursor-pointer shadow-2xs"
                           >
