@@ -170,31 +170,32 @@ export default function Navigation() {
 
   const alumniCategories = [
     {
-      title: "I. The Association",
+      title: "I. Governance & Committees",
       icon: Users,
       items: [
-        { text: "Alumni Home", href: "/alumni" },
-        { text: "About Alumni Association", href: "/alumni/about-alumni-association" },
-        { text: "Contact Association Desk", href: "/alumni/contact-us" },
+        { text: "About Alumni Engagement", href: "/alumni#sec-about" },
+        { text: "College-Level Alumni Committee", href: "/alumni#sec-committee" },
+        { text: "Registered Alumni Association", href: "/alumni#sec-association" },
+        { text: "Alumni Contributions & Support", href: "/alumni#sec-contributions" },
       ]
     },
     {
-      title: "II. Engagement & Events",
+      title: "II. Network & Engagement",
       icon: HeartHandshake,
       items: [
-        { text: "Alumni Connect Portal", href: "/alumni/alumni-connect" },
-        { text: "Alumni Day Celebrations", href: "/alumni/alumni-day" },
-        { text: "Alumni Events & Activities", href: "/alumni/alumni-events" },
-        { text: "Re-Union Gatherings", href: "/alumni/re-union" },
+        { text: "Join the Alumni Network (Form)", href: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
+        { text: "Our Alumni – Our Pride", href: "/alumni#sec-network-pride" },
+        { text: "Voices of Our Alumni", href: "/alumni#sec-network-voices" },
+        { text: "Alumni Feedback & Connect", href: "/alumni#sec-feedback" },
       ]
     },
     {
-      title: "III. Media & Portals",
+      title: "III. Events, Media & Desk",
       icon: Trophy,
       items: [
-        { text: "Alumni Photo Gallery", href: "/alumni/gallery" },
-        { text: "Alumni Registration Form", href: "/alumni/register" },
-        { text: "Giving & Institutional Support", href: "/alumni/donate" },
+        { text: "Alumni Events & Reunions", href: "/alumni#sec-events" },
+        { text: "Alumni Photo & Media Gallery", href: "/alumni#sec-gallery" },
+        { text: "Alumni Official Contact Desk", href: "/alumni#sec-contact" },
       ]
     }
   ];

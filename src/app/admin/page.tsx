@@ -9,6 +9,7 @@ import { StrategicPlanFeedbackManager } from "@/components/admin/StrategicPlanFe
 import { StrategicDocumentsManager } from "@/components/admin/StrategicDocumentsManager";
 import { HeroBannersManager } from "@/components/admin/HeroBannersManager";
 import { MandatoryDisclosuresManager } from "@/components/admin/MandatoryDisclosuresManager";
+import { AlumniManager } from "@/components/admin/AlumniManager";
 import {
   Calendar,
   Bell,
@@ -23,6 +24,7 @@ import {
   Database,
   Globe,
   Sliders,
+  Users,
 } from "lucide-react";
 
 interface AdminUser {
@@ -55,6 +57,14 @@ const ADMIN_MODULES = [
     icon: Bell,
     description: "Publish official college circulars, notifications, examination alerts, admissions updates, and downloadable PDFs.",
     component: NoticesManager,
+  },
+  {
+    id: "alumni-management",
+    label: "Alumni Engagement & Network",
+    badge: "Live Sanity Sync",
+    icon: Users,
+    description: "Manage alumni committee, registered association, statutory documents, contributions register, pride alumni, and testimonials.",
+    component: AlumniManager,
   },
   {
     id: "mandatory-disclosures",

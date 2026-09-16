@@ -1530,3 +1530,305 @@ export async function getMandatoryDisclosures() {
     return DEFAULT_MANDATORY_DISCLOSURES;
   }
 }
+
+/**
+ * ============================================================================
+ * ALUMNI MODULE SCHEMA & DEFAULT VALUES (Matching 10.Alumni (13-09-2026).docx)
+ * ============================================================================
+ */
+export const DEFAULT_ALUMNI_DATA = {
+  title: "Alumni Engagement & Network",
+  lastUpdated: "16 September 2026",
+  googleFormUrl: "https://forms.gle/7QMzJvrAsYVT3YZd7",
+  registrationDetails: {
+    societyName: "St. Ann's College for Women Alumni Association",
+    actName: "Andhra Pradesh Societies Registration Act, 2001",
+    registrationNo: "307 of 2022",
+    registrationDate: "18 September 2022",
+  },
+  committeeMembers: [
+    { _key: "cm_1", sNo: 1, name: "Dr. Sr. Sandhya Thumma", designation: "Principal, Department of MBA", role: "Chairperson" },
+    { _key: "cm_2", sNo: 2, name: "Mrs. R. Sharon Rose", designation: "IQAC Coordinator, Department of Commerce", role: "Member" },
+    { _key: "cm_3", sNo: 3, name: "Mrs. G. Saroja", designation: "Department of Commerce", role: "Convener" },
+    { _key: "cm_4", sNo: 4, name: "Mrs. D. V. Ramanamma", designation: "President, Alumni Association", role: "Co-Convener" },
+    { _key: "cm_5", sNo: 5, name: "Mrs. B. Manasa", designation: "Secretary, Alumni Association", role: "Member" },
+    { _key: "cm_6", sNo: 6, name: "Mrs. L. Mary Anusha", designation: "Treasurer, Alumni Association", role: "Member" },
+    { _key: "cm_7", sNo: 7, name: "Miss G. Santha Kumari", designation: "Joint Secretary, Alumni Association", role: "Member" },
+    { _key: "cm_8", sNo: 8, name: "Mrs. J. Sirisha", designation: "Faculty Representative – Alumni", role: "Member" },
+    { _key: "cm_9", sNo: 9, name: "Miss V. Deepika", designation: "Faculty Representative – Alumni", role: "Member" },
+    { _key: "cm_10", sNo: 10, name: "Miss A. Sarala", designation: "Faculty Representative – Alumni", role: "Member" },
+    { _key: "cm_11", sNo: 11, name: "Student Representative", designation: "Student Representative", role: "Member" },
+  ],
+  committeeReports: [
+    { _key: "cr_1", year: "2025–2026", title: "Annual Alumni Committee Report 2025–2026", fileUrl: "/documents/alumni/Alumni_Annual_Report_2025-2026.pdf" },
+    { _key: "cr_2", year: "2024–2025", title: "Annual Alumni Committee Report 2024–2025", fileUrl: "/documents/alumni/Alumni_Annual_Report_2024-2025.pdf" },
+    { _key: "cr_3", year: "2023–2024", title: "Annual Alumni Committee Report 2023–2024", fileUrl: "/documents/alumni/Alumni_Annual_Report_2022-2023.pdf" },
+  ],
+  associationOfficeBearers: [
+    { _key: "ob_1", sNo: 1, name: "Mrs. Venkata Ramana Matte", designation: "President", occupation: "Lecturer" },
+    { _key: "ob_2", sNo: 2, name: "Mrs. Vani Gundabommu", designation: "Member", occupation: "Lecturer" },
+    { _key: "ob_3", sNo: 3, name: "Mrs. Santha Kumari Gangula", designation: "Secretary", occupation: "Lecturer" },
+    { _key: "ob_4", sNo: 4, name: "Mrs. Mary Anusha Lingareddy", designation: "Joint Secretary", occupation: "Lecturer" },
+    { _key: "ob_5", sNo: 5, name: "Mrs. Naga Ramya Sindhu Pochiraju", designation: "Treasurer", occupation: "Banker" },
+    { _key: "ob_6", sNo: 6, name: "Mrs. Anusha Dev Thotakura", designation: "Executive Member", occupation: "Faculty" },
+    { _key: "ob_7", sNo: 7, name: "Sr. Jancy Edakkalathur", designation: "Vice President", occupation: "Teacher" },
+  ],
+  statutoryDocuments: [
+    { _key: "sd_1", sNo: 1, documentTitle: "Society Registration Certificate", description: "Official Registration Certificate under AP Societies Registration Act, 2001 (Reg. No. 307 of 2022)", fileUrl: "/documents/alumni/Alumni_Registration_Certificate.pdf" },
+    { _key: "sd_2", sNo: 2, documentTitle: "Memorandum / Bye-Laws", description: "Constitution, aims, objectives and governing bylaws of the Alumni Association", fileUrl: "/documents/alumni/Alumni_MOU_Bylaws.pdf" },
+    { _key: "sd_3", sNo: 3, documentTitle: "Renewal Certificates (Year Wise)", description: "Society renewal certificate and proceedings for statutory compliance", fileUrl: "/documents/alumni/Alumni_Society_RC_2025.pdf" },
+    { _key: "sd_4", sNo: 4, documentTitle: "PAN Card", description: "Permanent Account Number of St. Ann's College for Women Alumni Association", fileUrl: "/documents/alumni/Alumni_PAN.pdf" },
+    { _key: "sd_5", sNo: 5, documentTitle: "Other Relevant Statutory Documents", description: "Consolidated statutory filings, bank declarations, and official proceedings", fileUrl: "/documents/alumni/Alumni_Other_Statutory_Documents.pdf" },
+  ],
+  contributionsRegister: [
+    {
+      _key: "contrib_1",
+      sNo: 1,
+      date: "14-08-2026",
+      alumniName: "Mrs. Sowjanya Bindu Katari",
+      programmeBatch: "I Year & II Year UG",
+      activity: "Legal Awareness and Interactive Session organized by the Anti-Ragging Committee",
+      natureOfSupport: "Professional Guidance & Legal Awareness",
+      beneficiaries: "423",
+      fileUrl: "/documents/alumni/Alumni_Legal_Awareness_14-08-2026.pdf",
+    },
+    {
+      _key: "contrib_2",
+      sNo: 2,
+      date: "25-08-2026",
+      alumniName: "Sr. Sowjanya Kumari Mandala",
+      programmeBatch: "II Year UG & PG",
+      activity: "“Empowering Young Minds: Life Skills for Personal & Professional Excellence” organized by the Student Counselling Committee",
+      natureOfSupport: "Mentoring & Guidance",
+      beneficiaries: "296",
+      fileUrl: "/documents/alumni/Alumni_Student_Counselling_25-08-2026.pdf",
+    },
+    {
+      _key: "contrib_3",
+      sNo: 3,
+      date: "09–10-09-2026",
+      alumniName: "Ms. I. Rani",
+      programmeBatch: "UG & PG",
+      activity: "Two-Day Skill Development & Career Readiness Workshop – “Empowering Her: Grooming, Confidence & Entrepreneurial Skills” organized by the Women Empowerment Cell (WEC)",
+      natureOfSupport: "Skill Development & Career Guidance",
+      beneficiaries: "105",
+      fileUrl: "/documents/alumni/Alumni_WEC_Workshop_09-09-2026.pdf",
+    },
+  ],
+  prideAlumni: [
+    {
+      _key: "pride_1",
+      name: "Mrs. Sowjanya Bindu Katari",
+      programmeBatch: "B.Com – 2004–2007",
+      designation: "Advocate & Legal Consultant",
+      organization: "High Court of AP",
+      achievement: "Distinguished legal practitioner conducting state-wide legal awareness & student rights workshops.",
+      photoUrl: "",
+    },
+    {
+      _key: "pride_2",
+      name: "Sr. Sowjanya Kumari Mandala",
+      programmeBatch: "B.Sc – 2006–2009",
+      designation: "Senior Counselor & Life Coach",
+      organization: "Institutional Student Welfare",
+      achievement: "Empowering young women through professional mental health advocacy and motivational leadership.",
+      photoUrl: "",
+    },
+    {
+      _key: "pride_3",
+      name: "Ms. I. Rani",
+      programmeBatch: "MBA – 2012–2014",
+      designation: "Entrepreneur & Corporate Trainer",
+      organization: "SkillEdge Solutions",
+      achievement: "Founder of women-led skill development venture training 10,000+ graduates across AP.",
+      photoUrl: "",
+    },
+  ],
+  testimonials: [
+    {
+      _key: "test_1",
+      title: "1. A Foundation for My Career",
+      quote: "My journey at St. Ann’s College for Women was a beautiful combination of learning, friendship and personal growth. The academic knowledge, discipline and confidence I gained here gave me a strong foundation for my career. I will always be grateful to my teachers for their guidance and encouragement.",
+      alumnaName: "Pravlika",
+      programmeBatch: "B.Com | 2005–2008",
+    },
+    {
+      _key: "test_2",
+      title: "2. Learning Beyond the Classroom",
+      quote: "St. Ann’s taught me that education goes beyond textbooks and examinations. Through academic activities, events, teamwork and interactions with teachers, I developed communication skills, confidence and a sense of responsibility. These experiences continue to help me in my professional life.",
+      alumnaName: "Jayanthi",
+      programmeBatch: "B.Sc | 2006–2009",
+    },
+    {
+      _key: "test_3",
+      title: "3. Teachers Who Made a Difference",
+      quote: "The encouragement and support of my teachers at St. Ann’s played an important role in shaping my career. They always motivated us to work hard, believe in ourselves and pursue our goals with determination. The values I learned here remain an important part of who I am today.",
+      alumnaName: "Anitha",
+      programmeBatch: "B.Sc | 2009–2011",
+    },
+    {
+      _key: "test_4",
+      title: "4. Confidence to Face the World",
+      quote: "My college years at St. Ann’s helped me discover my strengths and overcome my limitations. The supportive environment gave me the confidence to communicate, take responsibility and face new challenges. I proudly carry the lessons and memories of St. Ann’s wherever I go.",
+      alumnaName: "Fatima",
+      programmeBatch: "B.Sc | 2008–2011",
+    },
+    {
+      _key: "test_5",
+      title: "5. A Journey of Growth and Discovery",
+      quote: "When I joined St. Ann’s, I came with dreams and aspirations. When I graduated, I left with greater confidence, clarity and a stronger belief in myself. The opportunities provided by the College helped me grow academically, professionally and personally.",
+      alumnaName: "Sowjanya",
+      programmeBatch: "B.Sc | 2003–2006",
+    },
+    {
+      _key: "test_6",
+      title: "6. Values That Continue to Guide Me",
+      quote: "The most valuable things I received from St. Ann’s were not only academic knowledge but also values such as discipline, compassion, responsibility and perseverance. These values continue to guide me in my professional decisions and personal life.",
+      alumnaName: "Raga Sudha",
+      programmeBatch: "MCA | 2007–2011",
+    },
+    {
+      _key: "test_7",
+      title: "7. From Student to Professional",
+      quote: "My education at St. Ann’s prepared me to confidently enter the professional world. The combination of classroom learning, practical exposure and extracurricular activities helped me develop skills that I use every day in my career. I am proud to be an alumna of St. Ann’s.",
+      alumnaName: "Sowjanya",
+      programmeBatch: "MBA | 2012–2014",
+    },
+  ],
+  events: [
+    { _key: "ev_1", title: "Annual Alumni Meet 2026", date: "Upcoming / Scheduled Annually", description: "Grand annual gathering of all alumni batches celebrating institutional milestones and reconnecting alma mater bonds.", redirectUrl: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
+    { _key: "ev_2", title: "Batch Reunions & Milestone Celebrations", date: "Periodic", description: "Dedicated Silver Jubilee & decade reunion gatherings organized across departments.", redirectUrl: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
+    { _key: "ev_3", title: "Departmental Alumni Interaction Sessions", date: "Monthly", description: "Subject-specific guest lectures, curriculum feedback forums, and career guidance workshops.", redirectUrl: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
+    { _key: "ev_4", title: "Alumni Mentorship & Career Guidance Drives", date: "Ongoing", description: "Direct mentorship pairing graduating seniors with industry-experienced alumni.", redirectUrl: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
+  ],
+  galleryCategories: [
+    { _key: "gal_1", title: "Alumni Meets & Reunions", description: "Memorable glimpses of annual meets and reunion gatherings.", count: "Gallery Active" },
+    { _key: "gal_2", title: "Alumni Mentoring & Guest Talks", description: "Interactive lectures, workshops, and student mentorship sessions.", count: "Gallery Active" },
+    { _key: "gal_3", title: "Contributions & Recognitions", description: "Moments of philanthropic contributions and alumni awards.", count: "Gallery Active" },
+    { _key: "gal_4", title: "Departmental Alumni Events", description: "Department-wise student-alumni collaborative activities.", count: "Gallery Active" },
+  ],
+  contactInfo: {
+    associationName: "St. Ann's College for Women Alumni Association",
+    institution: "St. Ann's College for Women",
+    address: "Gorantla, Guntur – 522 034, Andhra Pradesh, India",
+    phone: "+91 863 2231381",
+    mobile: "+91 93472 38194",
+    email: "alumni@stannscollege.com",
+    officeHours: "Monday to Saturday: 9:00 AM – 5:00 PM",
+  }
+};
+
+export async function getAlumniData() {
+  try {
+    const query = `*[_type == "alumniPage" && !(_id in path("drafts.**"))][0] {
+      _id,
+      title,
+      lastUpdated,
+      googleFormUrl,
+      registrationDetails,
+      committeeMembers[] {
+        _key,
+        sNo,
+        name,
+        designation,
+        role
+      },
+      committeeReports[] {
+        _key,
+        year,
+        title,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      associationOfficeBearers[] {
+        _key,
+        sNo,
+        name,
+        designation,
+        occupation
+      },
+      statutoryDocuments[] {
+        _key,
+        sNo,
+        documentTitle,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      contributionsRegister[] {
+        _key,
+        sNo,
+        date,
+        alumniName,
+        programmeBatch,
+        activity,
+        natureOfSupport,
+        beneficiaries,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      prideAlumni[] {
+        _key,
+        name,
+        programmeBatch,
+        designation,
+        organization,
+        achievement,
+        "photoUrl": coalesce(photo.asset->url, photoUrl),
+        redirectUrl
+      },
+      testimonials[] {
+        _key,
+        title,
+        quote,
+        alumnaName,
+        programmeBatch
+      },
+      events[] {
+        _key,
+        title,
+        date,
+        description,
+        redirectUrl,
+        "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      galleryCategories[] {
+        _key,
+        title,
+        description,
+        count
+      },
+      contactInfo
+    }`;
+
+    const data = await sanityClient.fetch(query);
+    if (data) {
+      return {
+        ...DEFAULT_ALUMNI_DATA,
+        ...data,
+        registrationDetails: {
+          ...DEFAULT_ALUMNI_DATA.registrationDetails,
+          ...(data.registrationDetails || {}),
+        },
+        contactInfo: {
+          ...DEFAULT_ALUMNI_DATA.contactInfo,
+          ...(data.contactInfo || {}),
+        },
+        committeeMembers: data.committeeMembers?.length ? data.committeeMembers : DEFAULT_ALUMNI_DATA.committeeMembers,
+        committeeReports: data.committeeReports?.length ? data.committeeReports : DEFAULT_ALUMNI_DATA.committeeReports,
+        associationOfficeBearers: data.associationOfficeBearers?.length ? data.associationOfficeBearers : DEFAULT_ALUMNI_DATA.associationOfficeBearers,
+        statutoryDocuments: data.statutoryDocuments?.length ? data.statutoryDocuments : DEFAULT_ALUMNI_DATA.statutoryDocuments,
+        contributionsRegister: data.contributionsRegister?.length ? data.contributionsRegister : DEFAULT_ALUMNI_DATA.contributionsRegister,
+        prideAlumni: data.prideAlumni?.length ? data.prideAlumni : DEFAULT_ALUMNI_DATA.prideAlumni,
+        testimonials: data.testimonials?.length ? data.testimonials : DEFAULT_ALUMNI_DATA.testimonials,
+        events: data.events?.length ? data.events : DEFAULT_ALUMNI_DATA.events,
+        galleryCategories: data.galleryCategories?.length ? data.galleryCategories : DEFAULT_ALUMNI_DATA.galleryCategories,
+      };
+    }
+    return DEFAULT_ALUMNI_DATA;
+  } catch (err) {
+    console.error("Sanity fetch error (getAlumniData):", err);
+    return DEFAULT_ALUMNI_DATA;
+  }
+}
+
