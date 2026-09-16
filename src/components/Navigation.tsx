@@ -1446,15 +1446,6 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <div className="col-span-full">
-                  <DropdownHeaderBanner
-                    title="Alumni Association & Network"
-                    href="/alumni"
-                    buttonText="Visit Alumni Main Page"
-                    icon={Users}
-                    onNavigate={() => setActiveMenu(null)}
-                  />
-                </div>
                 {alumniCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-3">
                     <Link
@@ -1575,15 +1566,6 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <div className="col-span-full">
-                  <DropdownHeaderBanner
-                    title="Mandatory Disclosures & Regulatory Compliance"
-                    href="/mandatory-disclosures"
-                    buttonText="Visit Disclosures Main Page"
-                    icon={ShieldCheck}
-                    onNavigate={() => setActiveMenu(null)}
-                  />
-                </div>
                 {mandatoryCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
