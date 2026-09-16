@@ -441,45 +441,29 @@ export function MandatoryDisclosuresManager() {
                   />
                 </div>
 
-                {/* Programmes Redirect Link */}
-                <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-100 flex flex-col gap-3">
-                  <div className="flex items-center gap-1.5 text-blue-900 font-bold text-[11px] uppercase tracking-wider">
-                    <ExternalLink className="h-3.5 w-3.5 text-blue-700" />
-                    <span>Button 1: Academic Programmes Link</span>
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Button Label</label>
-                    <input
-                      type="text"
-                      value={data.institutionalProfile?.programmesBtnLabel || ""}
-                      onChange={(e) => setData({
-                        ...data,
-                        institutionalProfile: { ...(data.institutionalProfile || {}), programmesBtnLabel: e.target.value }
-                      })}
-                      placeholder="View All Academic Programmes"
-                      className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Redirecting Route / Link URL</label>
-                    <input
-                      type="text"
-                      value={data.institutionalProfile?.programmesLink || ""}
-                      onChange={(e) => setData({
-                        ...data,
-                        institutionalProfile: { ...(data.institutionalProfile || {}), programmesLink: e.target.value }
-                      })}
-                      placeholder="/courses or https://..."
-                      className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147] font-mono text-xs"
-                    />
-                  </div>
+                {/* Button Order Selector */}
+                <div className="p-4 bg-indigo-50/70 rounded-2xl border border-indigo-200 flex flex-col gap-2">
+                  <label className="text-indigo-950 font-bold uppercase text-[11px] tracking-wide">
+                    Button Display Position (Left to Right)
+                  </label>
+                  <select
+                    value={data.institutionalProfile?.buttonOrder || "profileFirst"}
+                    onChange={(e) => setData({
+                      ...data,
+                      institutionalProfile: { ...(data.institutionalProfile || {}), buttonOrder: e.target.value }
+                    })}
+                    className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl font-bold text-xs text-slate-800 focus:outline-none focus:border-[#002147]"
+                  >
+                    <option value="profileFirst">Left: Institutional Profile | Right: View All Academic Programmes</option>
+                    <option value="programmesFirst">Left: View All Academic Programmes | Right: Institutional Profile</option>
+                  </select>
                 </div>
 
-                {/* Sanctioned Order PDF */}
+                {/* Institutional Profile PDF */}
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col gap-3">
                   <div className="flex items-center gap-1.5 text-slate-800 font-bold text-[11px] uppercase tracking-wider">
                     <FileText className="h-3.5 w-3.5 text-blue-700" />
-                    <span>Button 2: Sanctioned Strength Order (PDF)</span>
+                    <span>Institutional Profile Document (PDF)</span>
                   </div>
                   <div>
                     <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Button Label</label>
@@ -490,7 +474,7 @@ export function MandatoryDisclosuresManager() {
                         ...data,
                         institutionalProfile: { ...(data.institutionalProfile || {}), sanctionedOrderBtnLabel: e.target.value }
                       })}
-                      placeholder="Sanctioned Strength Order (PDF)"
+                      placeholder="Institutional Profile"
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
                     />
                   </div>
@@ -522,16 +506,13 @@ export function MandatoryDisclosuresManager() {
                                     sanctionedOrderAssetId: json.assetId,
                                   }
                                 });
-                              } else {
-                                alert(json.error || "Failed to upload PDF");
                               }
-                            } catch (err: any) {
-                              alert(err.message || "Upload error");
+                            } catch (err) {
+                              console.error(err);
                             } finally {
                               setIsUploading(false);
                             }
                           }}
-                          disabled={isUploading}
                         />
                       </label>
                       <input
@@ -541,23 +522,56 @@ export function MandatoryDisclosuresManager() {
                           ...data,
                           institutionalProfile: { ...(data.institutionalProfile || {}), sanctionedOrderFileUrl: e.target.value }
                         })}
-                        placeholder="/documents/... or https://cdn.sanity.io/..."
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-mono text-xs"
+                        placeholder="/documents/..."
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:border-[#002147]"
                       />
                     </div>
                   </div>
                   {data.institutionalProfile?.sanctionedOrderFileUrl && (
-                    <div className="pt-1">
+                    <div className="mt-1">
                       <PdfBadge
                         url={data.institutionalProfile.sanctionedOrderFileUrl}
-                        label="Preview Sanctioned Order PDF"
                         onPreview={() => setPreviewPdf({
                           url: data.institutionalProfile.sanctionedOrderFileUrl,
-                          title: data.institutionalProfile.sanctionedOrderBtnLabel || "Sanctioned Strength Order"
+                          title: data.institutionalProfile.sanctionedOrderBtnLabel || "Institutional Profile"
                         })}
                       />
                     </div>
                   )}
+                </div>
+
+                {/* Programmes Redirect Link */}
+                <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-100 flex flex-col gap-3">
+                  <div className="flex items-center gap-1.5 text-blue-900 font-bold text-[11px] uppercase tracking-wider">
+                    <ExternalLink className="h-3.5 w-3.5 text-blue-700" />
+                    <span>Academic Programmes Link</span>
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Button Label</label>
+                    <input
+                      type="text"
+                      value={data.institutionalProfile?.programmesBtnLabel || ""}
+                      onChange={(e) => setData({
+                        ...data,
+                        institutionalProfile: { ...(data.institutionalProfile || {}), programmesBtnLabel: e.target.value }
+                      })}
+                      placeholder="View All Academic Programmes"
+                      className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Redirecting Route / Link URL</label>
+                    <input
+                      type="text"
+                      value={data.institutionalProfile?.programmesLink || ""}
+                      onChange={(e) => setData({
+                        ...data,
+                        institutionalProfile: { ...(data.institutionalProfile || {}), programmesLink: e.target.value }
+                      })}
+                      placeholder="/courses or https://..."
+                      className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147] font-mono text-xs"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -621,12 +635,12 @@ export function MandatoryDisclosuresManager() {
             </TableSectionCard>
           )}
 
-          {/* CCE Table */}
+          {/* CHE Table */}
           {tabASub === "cce" && (
             <TableSectionCard
-              title="CCE Orders & Proceedings (Table A)"
-              subtitle="Commissionerate of Collegiate Education proceedings, staff, and sanction orders"
-              onAdd={() => openAddModal("cceOrders", { year: "2025–2026", title: "CCE Order / Proceedings", fileUrl: "", redirectUrl: "" })}
+              title="COMMISSIONER OF HIGHER EDUCATION (CHE) Orders & Proceedings (Table A)"
+              subtitle="COMMISSIONER OF HIGHER EDUCATION proceedings, staff, and sanction orders"
+              onAdd={() => openAddModal("cceOrders", { year: "2025–2026", title: "CHE Order / Proceedings", fileUrl: "", redirectUrl: "" })}
             >
               <DataTable
                 items={data.cceOrders || []}

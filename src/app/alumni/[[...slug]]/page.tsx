@@ -213,10 +213,7 @@ export default function AlumniPage() {
 
   const openPdf = (url?: string, title?: string) => {
     const targetUrl = url && url.trim() !== "" ? url : "/documents/alumni/Alumni_Registration_Certificate.pdf";
-    setPreviewPdf({
-      url: targetUrl,
-      title: title || "Alumni Document",
-    });
+    window.open(targetUrl, "_blank");
   };
 
   const googleFormLink = data.googleFormUrl || "https://forms.gle/7QMzJvrAsYVT3YZd7";

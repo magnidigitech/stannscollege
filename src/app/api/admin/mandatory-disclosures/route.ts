@@ -316,8 +316,9 @@ export async function POST(req: NextRequest) {
         description: body.institutionalProfile.description || "",
         programmesBtnLabel: body.institutionalProfile.programmesBtnLabel || "View All Academic Programmes",
         programmesLink: body.institutionalProfile.programmesLink || "/courses",
-        sanctionedOrderBtnLabel: body.institutionalProfile.sanctionedOrderBtnLabel || "Sanctioned Strength Order (PDF)",
+        sanctionedOrderBtnLabel: body.institutionalProfile.sanctionedOrderBtnLabel || "Institutional Profile",
         sanctionedOrderFileUrl: body.institutionalProfile.sanctionedOrderFileUrl || "",
+        buttonOrder: body.institutionalProfile.buttonOrder || "profileFirst",
         ...(body.institutionalProfile.sanctionedOrderAssetId ? {
           sanctionedOrderFile: {
             _type: "file",

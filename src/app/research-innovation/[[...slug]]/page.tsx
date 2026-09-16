@@ -157,10 +157,8 @@ export default function ResearchInnovationPage() {
   }, []);
 
   const openPdfModal = (url: string, title: string) => {
-    setPreviewPdf({
-      url: url || "/documents/DefaultFile_1.pdf",
-      title: title || "Document Viewer",
-    });
+    const targetUrl = url && url.trim() !== "" ? url : "/documents/DefaultFile_1.pdf";
+    window.open(targetUrl, "_blank");
   };
 
   return (

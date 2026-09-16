@@ -94,7 +94,7 @@ const MANDATORY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
       { text: "3. ANU Affiliation Orders – UG & PG", id: "sec-anu-affiliations" },
       { text: "4. AICTE Approval / EoA Documents", id: "sec-aicte-approval" },
       { text: "5. UGC Section 2(f) Recognition", id: "sec-ugc-recognition" },
-      { text: "6. CCE & APSCHE Orders", id: "sec-apsche-orders" },
+      { text: "6. CHE & APSCHE Orders", id: "sec-apsche-orders" },
       { text: "7. AISHE Certificates & Reports", id: "sec-aishe-reports" },
       { text: "8. NIRF Submission & Reports", id: "sec-nirf-reports" },
     ]
@@ -287,10 +287,7 @@ export default function MandatoryDisclosuresPage() {
 
   const openPdf = (url?: string, title?: string) => {
     const targetUrl = url && url.trim() !== "" ? url : "/documents/DefaultFile_1.pdf";
-    setPreviewPdf({
-      url: targetUrl,
-      title: title || "Mandatory Disclosure Document"
-    });
+    window.open(targetUrl, "_blank");
   };
 
   const rawAnu = data.anuAffiliations || DEFAULT_MANDATORY_DISCLOSURES.anuAffiliations || [];
@@ -405,17 +402,16 @@ export default function MandatoryDisclosuresPage() {
                       <div className="flex flex-col gap-1">
                         <h5 className="font-outfit font-extrabold text-sm text-slate-900 uppercase tracking-wide">Documents / Information:</h5>
                         <div className="flex flex-col gap-2 mt-1">
-                          {(data.mandatoryDisclosureDocs || []).map((doc: any, idx: number) => (
+                          {(data.mandatoryDisclosureDocs || [
+                            { title: "Mandatory Disclosure" },
+                            { title: "Institutional Profile" },
+                            { title: "Programme Details" },
+                            { title: "Approved Intake / Sanctioned Strength" },
+                            { title: "Faculty and Infrastructure Details" }
+                          ]).map((doc: any, idx: number) => (
                             <div key={doc._key || idx} className="flex items-center gap-3 bg-slate-50/80 px-4 py-3 rounded-xl border border-slate-200/80">
                               <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                              <span className="text-xs font-semibold text-slate-700 flex-1 truncate">{doc.title}</span>
-                              <button
-                                onClick={() => openPdf(doc.fileUrl, doc.title)}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#002147] hover:bg-blue-900 text-white rounded-lg text-[11px] font-bold transition-all cursor-pointer shrink-0"
-                              >
-                                <Eye className="h-3 w-3" />
-                                <span>View PDF</span>
-                              </button>
+                              <span className="text-xs font-semibold text-slate-700 flex-1">{doc.title}</span>
                             </div>
                           ))}
                         </div>
@@ -445,20 +441,41 @@ export default function MandatoryDisclosuresPage() {
                         {data.institutionalProfile?.description || "This section provides comprehensive information about the institution and its academic programmes, including programme names, duration, eligibility, sanctioned intake and other relevant academic particulars."}
                       </p>
                       <div className="flex flex-wrap gap-3 pt-2">
-                        <Link
-                          href={data.institutionalProfile?.programmesLink || "/courses"}
-                          className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
-                        >
-                          <span>{data.institutionalProfile?.programmesBtnLabel || "View All Academic Programmes"}</span>
-                          <ChevronRight className="h-4 w-4" />
-                        </Link>
-                        <button
-                          onClick={() => openPdf(data.institutionalProfile?.sanctionedOrderFileUrl || "/documents/DefaultFile_1.pdf", data.institutionalProfile?.sanctionedOrderBtnLabel || "Programme Details & Sanctioned Intake")}
-                          className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
-                        >
-                          <Eye className="h-4 w-4" />
-                          <span>{data.institutionalProfile?.sanctionedOrderBtnLabel || "Sanctioned Strength Order (PDF)"}</span>
-                        </button>
+                        {data.institutionalProfile?.buttonOrder === "programmesFirst" ? (
+                          <>
+                            <Link
+                              href={data.institutionalProfile?.programmesLink || "/courses"}
+                              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                            >
+                              <span>{data.institutionalProfile?.programmesBtnLabel || "View All Academic Programmes"}</span>
+                              <ChevronRight className="h-4 w-4" />
+                            </Link>
+                            <button
+                              onClick={() => openPdf(data.institutionalProfile?.sanctionedOrderFileUrl || "/documents/DefaultFile_1.pdf", data.institutionalProfile?.sanctionedOrderBtnLabel || "Institutional Profile")}
+                              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                            >
+                              <Eye className="h-4 w-4" />
+                              <span>{data.institutionalProfile?.sanctionedOrderBtnLabel || "Institutional Profile"}</span>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => openPdf(data.institutionalProfile?.sanctionedOrderFileUrl || "/documents/DefaultFile_1.pdf", data.institutionalProfile?.sanctionedOrderBtnLabel || "Institutional Profile")}
+                              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                            >
+                              <Eye className="h-4 w-4" />
+                              <span>{data.institutionalProfile?.sanctionedOrderBtnLabel || "Institutional Profile"}</span>
+                            </button>
+                            <Link
+                              href={data.institutionalProfile?.programmesLink || "/courses"}
+                              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                            >
+                              <span>{data.institutionalProfile?.programmesBtnLabel || "View All Academic Programmes"}</span>
+                              <ChevronRight className="h-4 w-4" />
+                            </Link>
+                          </>
+                        )}
                       </div>
                     </div>
 
@@ -477,7 +494,7 @@ export default function MandatoryDisclosuresPage() {
                             <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
                               3. ANU Affiliation Orders – UG &amp; PG
                             </h4>
-                            <p className="text-xs text-slate-500 font-medium">Acharya Nagarjuna University permanent and temporary affiliation orders</p>
+                            <p className="text-xs text-slate-500 font-medium">Acharya Nagarjuna University affiliation orders</p>
                           </div>
                         </div>
 
@@ -703,7 +720,7 @@ export default function MandatoryDisclosuresPage() {
                       </div>
                     </div>
 
-                    {/* A.6 CCE & APSCHE Orders */}
+                    {/* A.6 CHE & APSCHE Orders */}
                     <div
                       id="sec-apsche-orders"
                       className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
@@ -715,19 +732,19 @@ export default function MandatoryDisclosuresPage() {
                         </span>
                         <div>
                           <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            6. CCE &amp; APSCHE Orders and Communications
+                            6. CHE &amp; APSCHE Orders and Communications
                           </h4>
-                          <p className="text-xs text-blue-600/80 font-medium">Commissionerate of Collegiate Education and AP State Council of Higher Education</p>
+                          <p className="text-xs text-blue-600/80 font-medium">COMMISSIONER OF HIGHER EDUCATION and AP State Council of Higher Education</p>
                         </div>
                       </div>
                       <p className="text-slate-600 text-sm font-medium leading-relaxed">
-                        St. Ann’s College for Women maintains relevant orders, proceedings, communications, guidelines, and notifications issued by the Commissionerate of Collegiate Education (CCE), Government of Andhra Pradesh, and the Andhra Pradesh State Council of Higher Education (APSCHE).
+                        St. Ann’s College for Women maintains relevant orders, proceedings, communications, guidelines, and notifications issued by the COMMISSIONER OF HIGHER EDUCATION (CHE), Government of Andhra Pradesh, and the Andhra Pradesh State Council of Higher Education (APSCHE).
                       </p>
 
-                      {/* Sub-table A: CCE */}
+                      {/* Sub-table A: CHE */}
                       <div className="flex flex-col gap-2.5">
                         <h5 className="font-outfit text-xs font-black uppercase tracking-wider text-slate-800">
-                          A. Commissionerate of Collegiate Education (CCE / CHE)
+                          A. COMMISSIONER OF HIGHER EDUCATION (CHE)
                         </h5>
                         <div className="overflow-x-auto rounded-2xl border-2 border-slate-200/90 bg-white shadow-xs">
                           <table className="w-full text-left border-collapse text-xs">
@@ -742,11 +759,11 @@ export default function MandatoryDisclosuresPage() {
                               {(data.cceOrders || []).map((row: any, idx: number) => (
                                 <tr key={row._key || idx} className="hover:bg-slate-50 transition-colors">
                                   <td className="py-3 px-6 font-bold text-slate-900">{row.year}</td>
-                                  <td className="py-3 px-6">{row.title || "CCE Orders / Proceedings / Communications"}</td>
+                                  <td className="py-3 px-6">{row.title || "CHE Orders / Proceedings / Communications"}</td>
                                   <td className="py-3 px-6 text-right whitespace-nowrap">
                                     <div className="inline-flex items-center justify-end gap-1.5">
                                       <button
-                                        onClick={() => openPdf(row.fileUrl, `CCE Communication - ${row.year}`)}
+                                        onClick={() => openPdf(row.fileUrl, `CHE Communication - ${row.year}`)}
                                         className="px-3 py-1 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100 cursor-pointer inline-flex items-center gap-1"
                                       >
                                         <Eye className="h-3 w-3" />

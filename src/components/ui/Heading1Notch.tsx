@@ -83,7 +83,7 @@ export function AshokaChakra({ className = "h-12 w-12", color = "#000080" }: { c
 }
 
 /**
- * Data Section (Sub-text Box) with prominent Quote watermark or Ashoka Chakra.
+ * Data Section (Sub-text Box) with premium collegiate styling or Ashoka Chakra.
  * Supports Indian Flag Tricolor palette with saffron, white, and green wash.
  */
 export function SubtextBox({
@@ -91,7 +91,7 @@ export function SubtextBox({
   className = "",
   children,
   variant = "default",
-  icon = "quote",
+  icon = "none",
 }: SubtextBoxProps) {
   const content = children ?? subtext;
   if (!content || (typeof content === "string" && !content.trim())) return null;
@@ -100,10 +100,10 @@ export function SubtextBox({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl p-6 sm:p-8 shadow-sm transition-all duration-300 ${
+      className={`relative overflow-hidden rounded-2xl p-6 sm:p-8 shadow-xs transition-all duration-300 ${
         isTricolor
           ? "border-2 border-amber-200/70"
-          : "border-2 border-slate-200/90"
+          : "border-2 border-blue-200/80"
       } ${className}`}
       style={
         isTricolor
@@ -111,7 +111,10 @@ export function SubtextBox({
               background:
                 "linear-gradient(180deg, rgba(255, 153, 51, 0.18) 0%, rgba(255, 153, 51, 0.07) 30%, rgba(255, 255, 255, 0.98) 36%, rgba(255, 255, 255, 0.98) 64%, rgba(19, 136, 8, 0.07) 70%, rgba(19, 136, 8, 0.18) 100%)",
             }
-          : { backgroundColor: "var(--subtext-bg, #ffffff)" }
+          : {
+              background:
+                "linear-gradient(135deg, #eef4fb 0%, #e6eff9 50%, #edf4fc 100%)",
+            }
       }
     >
       {/* Tricolor top accent ribbon if tricolor */}
@@ -125,10 +128,10 @@ export function SubtextBox({
           <AshokaChakra className="h-12 w-12 sm:h-14 sm:w-14" color="#000080" />
         </div>
       ) : icon === "quote" ? (
-        <Quote className="absolute right-6 top-6 h-12 w-12 text-slate-300 pointer-events-none" />
+        <Quote className="absolute right-6 top-6 h-12 w-12 text-blue-300/50 pointer-events-none" />
       ) : null}
 
-      <div className="text-slate-700 text-sm sm:text-base md:text-[1.05rem] leading-relaxed font-normal pr-12 sm:pr-20 relative z-10">
+      <div className={`text-slate-800 text-sm sm:text-base md:text-[1.05rem] leading-relaxed font-normal relative z-10 ${icon !== "none" ? "pr-12 sm:pr-20" : ""}`}>
         {content}
       </div>
     </div>

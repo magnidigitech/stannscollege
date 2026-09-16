@@ -1225,8 +1225,9 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
     description: "This section provides comprehensive information about the institution and its academic programmes, including programme names, duration, eligibility, sanctioned intake and other relevant academic particulars.",
     programmesBtnLabel: "View All Academic Programmes",
     programmesLink: "/courses",
-    sanctionedOrderBtnLabel: "Sanctioned Strength Order (PDF)",
+    sanctionedOrderBtnLabel: "Institutional Profile",
     sanctionedOrderFileUrl: "/documents/DefaultFile_1.pdf",
+    buttonOrder: "profileFirst",
   },
   aicteApprovals: [
     { _key: "aicte_1", year: "2026–2027", title: "AICTE Extension of Approval (EoA) 2026-2027", fileUrl: "/documents/aicte/AICTE_Approval_2026-2027.pdf" },
@@ -1241,7 +1242,7 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
     { _key: "ugc_1", sNo: 1, title: "UGC Section 2(f) Recognition Order & Certificate", fileUrl: "/documents/ugc/UGC_2f_Recognition_Order.pdf" },
   ],
   cceOrders: [
-    { _key: "cce_1", year: "2025–2026", title: "CCE / Collegiate Higher Education Order & Proceedings 2025-2026", fileUrl: "/documents/cce/CCE_CHE_Order_2025-2026.pdf" },
+    { _key: "cce_1", year: "2025–2026", title: "COMMISSIONER OF HIGHER EDUCATION (CHE) Order & Proceedings 2025-2026", fileUrl: "/documents/cce/CCE_CHE_Order_2025-2026.pdf" },
   ],
   apscheOrders: [
     { _key: "apsche_1", year: "2025–2026", title: "APSCHE Proceedings & Sanction Order 2025-2026", fileUrl: "/documents/apsche/APSCHE_Proceedings_2025-2026.pdf" },
