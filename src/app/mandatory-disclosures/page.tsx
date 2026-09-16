@@ -395,21 +395,43 @@ export default function MandatoryDisclosuresPage() {
                         The institution publishes the prescribed Mandatory Disclosure containing essential information relating to the institution, management, academic programmes, approved intake, faculty, infrastructure, facilities and other relevant institutional particulars.
                       </p>
 
-                      <div className="flex flex-col gap-1">
-                        <h5 className="font-outfit font-extrabold text-sm text-slate-900 uppercase tracking-wide">Documents / Information:</h5>
-                        <div className="flex flex-col gap-2 mt-1">
+                      <div className="flex flex-col gap-2 pt-1">
+                        <h5 className="font-outfit font-extrabold text-xs text-slate-900 uppercase tracking-wider">
+                          Documents / Key Institutional Particulars:
+                        </h5>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-1">
                           {(data.mandatoryDisclosureDocs || [
                             { title: "Mandatory Disclosure" },
                             { title: "Institutional Profile" },
                             { title: "Programme Details" },
                             { title: "Approved Intake / Sanctioned Strength" },
                             { title: "Faculty and Infrastructure Details" }
-                          ]).map((doc: any, idx: number) => (
-                            <div key={doc._key || idx} className="flex items-center gap-3 bg-slate-50/80 px-4 py-3 rounded-xl border border-slate-200/80">
-                              <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                              <span className="text-xs font-semibold text-slate-700 flex-1">{doc.title}</span>
-                            </div>
-                          ))}
+                          ]).map((doc: any, idx: number) => {
+                            const hasFile = Boolean(doc.fileUrl && doc.fileUrl.trim() !== "");
+                            return (
+                              <div
+                                key={doc._key || idx}
+                                onClick={() => hasFile && openPdf(doc.fileUrl, doc.title)}
+                                className={`flex items-center justify-between gap-2.5 bg-slate-50/90 hover:bg-blue-50/70 p-3 rounded-xl border border-slate-200/80 transition-all ${
+                                  hasFile ? "cursor-pointer hover:border-blue-400 hover:shadow-xs group" : "shadow-2xs"
+                                }`}
+                              >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                                    <CheckCircle2 className="h-3.5 w-3.5" />
+                                  </span>
+                                  <span className="text-xs font-bold text-slate-800 leading-snug">
+                                    {doc.title}
+                                  </span>
+                                </div>
+                                {hasFile && (
+                                  <span className="text-[11px] font-bold text-blue-700 bg-white group-hover:bg-[#002147] group-hover:text-white px-2 py-0.5 rounded-md border border-slate-200 transition-colors shrink-0 flex items-center gap-1">
+                                    <Eye className="h-3 w-3" /> View
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
