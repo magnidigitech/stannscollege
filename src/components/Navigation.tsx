@@ -32,7 +32,11 @@ import {
   MessageSquareQuote,
   Calendar,
   Image as ImageIcon,
-  ChevronRight
+  ChevronRight,
+  FlaskConical,
+  Rocket,
+  Compass,
+  Building2
 } from "lucide-react";
 
 export function toSlug(text: string) {
@@ -58,22 +62,23 @@ function DropdownHeaderBanner({
   onNavigate: () => void;
 }) {
   return (
-    <div className="col-span-full flex items-center justify-between pb-3.5 mb-2 border-b border-slate-100">
-      <div className="flex items-center gap-2">
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-          <Icon className="h-3.5 w-3.5" />
-        </span>
-        <span className="font-outfit font-black text-xs md:text-sm text-slate-800 tracking-tight">
-          {title}
-        </span>
+    <div className="col-span-full mb-2 p-4 rounded-2xl bg-gradient-to-r from-[#002147] to-blue-900 text-white flex items-center justify-between shadow-md">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-amber-300" />
+        </div>
+        <div>
+          <h3 className="font-bold text-sm tracking-tight">{title}</h3>
+          <p className="text-[11px] text-blue-200/80">Direct access to institutional frameworks, portals &amp; regulatory filings</p>
+        </div>
       </div>
       <Link
         href={href}
         onClick={onNavigate}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold transition-all shadow-xs hover:shadow group/btn"
+        className="px-4 py-2 rounded-xl bg-amber-400 text-[#002147] hover:bg-amber-300 font-bold text-xs transition-colors flex items-center gap-1.5 shadow-xs"
       >
         <span>{buttonText}</span>
-        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5" />
+        <ArrowRight className="w-3.5 h-3.5" />
       </Link>
     </div>
   );
@@ -86,17 +91,12 @@ export default function Navigation() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = (menuName: string) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setActiveMenu(menuName);
   };
 
   const handleMouseLeave = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
     }, 180);
@@ -144,31 +144,95 @@ export default function Navigation() {
 
   const researchCategories = [
     {
-      title: "I. Policy & Infrastructure",
-      icon: ShieldCheck,
+      title: "1. Research Policy & Ethics",
+      fullTitle: "1. Research Promotion, Ethics & Funding Policy",
+      icon: Scale,
+      href: "/research-innovation#sec-policy",
       items: [
-        { text: "Research Development Cell", slug: "research-development-cell" },
-        { text: "Research Infrastructure", slug: "research-infrastructure" },
-        { text: "Supervisors & Scholars", slug: "research-supervisors-scholars" },
-        { text: "Centres of Excellence", slug: "centres-of-excellence" },
+        { text: "Policy Objectives & Principles", href: "/research-innovation#sec-policy-principles" },
+        { text: "Ethics & Integrity Framework", href: "/research-innovation#sec-policy-ethics" },
+        { text: "Seed Grants & Funding Policy", href: "/research-innovation#sec-policy-doc" },
       ]
     },
     {
-      title: "II. Outputs & Grants",
+      title: "2. Research & Development Cell",
+      fullTitle: "2. Research & Development Cell (RDC)",
+      icon: FlaskConical,
+      href: "/research-innovation#sec-rdc",
+      items: [
+        { text: "About RDC & Overview", href: "/research-innovation#sec-rdc-about" },
+        { text: "Vision & Mission", href: "/research-innovation#sec-rdc-vision" },
+        { text: "Core Objectives", href: "/research-innovation#sec-rdc-objectives" },
+        { text: "Major Initiatives", href: "/research-innovation#sec-rdc-initiatives" },
+        { text: "RDC Annual Reports", href: "/research-innovation#sec-rdc-reports" },
+      ]
+    },
+    {
+      title: "3. Research Infrastructure",
+      fullTitle: "3. Research Infrastructure",
+      icon: Building2,
+      href: "/research-innovation#sec-infra",
+      items: [
+        { text: "Dedicated Research Labs", href: "/research-innovation#sec-infra" },
+        { text: "Advanced Analytical Equipment", href: "/research-innovation#sec-infra" },
+        { text: "Library & E-Resources Gateway", href: "/research-innovation#sec-infra" },
+        { text: "High-Performance ICT & Computing", href: "/research-innovation#sec-infra" },
+      ]
+    },
+    {
+      title: "4. Research Publications",
+      fullTitle: "4. Research Publications & Contributions",
       icon: BookOpen,
+      href: "/research-innovation#sec-publications",
       items: [
-        { text: "Research Publications", slug: "research-publications" },
-        { text: "Patents & Innovations", slug: "patents-innovations" },
-        { text: "Funded Projects", slug: "funded-projects" },
+        { text: "Faculty & Students Publications", href: "/research-innovation#sec-pub-faculty-students" },
+        { text: "Paper Presentations in Conferences", href: "/research-innovation#sec-pub-presentations" },
+        { text: "Journals, Books & Book Chapters", href: "/research-innovation#sec-pub-books" },
       ]
     },
     {
-      title: "III. Innovation & IPR",
+      title: "5. Patents & Innovations",
+      fullTitle: "5. Patents / Start-ups / Innovations",
       icon: Lightbulb,
+      href: "/research-innovation#sec-patents",
       items: [
-        { text: "Intellectual Property Cell", slug: "ipr-cell" },
-        { text: "Institution Innovation Cell", slug: "institution-innovation-cell" },
-        { text: "Entrepreneurship Development", slug: "entrepreneurship-development" },
+        { text: "Key Innovation Pillars", href: "/research-innovation#sec-patents-initiatives" },
+        { text: "Year-wise Innovation & IPR Milestones", href: "/research-innovation#sec-patents-years" },
+      ]
+    },
+    {
+      title: "6. IPR Cell",
+      fullTitle: "6. Intellectual Property Rights (IPR) Cell",
+      icon: ShieldCheck,
+      href: "/research-innovation#sec-ipr",
+      items: [
+        { text: "About IPR Cell (Est. 01-09-2022)", href: "/research-innovation#sec-ipr-about" },
+        { text: "IPR Objectives & Activities", href: "/research-innovation#sec-ipr-objectives" },
+        { text: "Expected Outcomes & Impact", href: "/research-innovation#sec-ipr-outcomes" },
+        { text: "IPR Annual Reports", href: "/research-innovation#sec-ipr-reports" },
+      ]
+    },
+    {
+      title: "7. ED & Start-Up Centre",
+      fullTitle: "7. ED / Innovation & Start-Up Centre",
+      icon: Rocket,
+      href: "/research-innovation#sec-edc",
+      items: [
+        { text: "Vision & Objectives", href: "/research-innovation#sec-edc-vision" },
+        { text: "Key Activities & Mentorship", href: "/research-innovation#sec-edc-activities" },
+        { text: "Women Entrepreneurship Cell", href: "/research-innovation#sec-edc-women" },
+        { text: "ED Annual Reports", href: "/research-innovation#sec-edc-reports" },
+      ]
+    },
+    {
+      title: "8. IIC & Industry Cell",
+      fullTitle: "8. Institution Innovation Council (IIC)",
+      icon: Compass,
+      href: "/research-innovation#sec-iic",
+      items: [
+        { text: "About IIC & Industry Cell", href: "/research-innovation#sec-iic-about" },
+        { text: "Objectives & Key Activities", href: "/research-innovation#sec-iic-objectives" },
+        { text: "IIC Annual Reports", href: "/research-innovation#sec-iic-reports" },
       ]
     }
   ];
@@ -1375,7 +1439,7 @@ export default function Navigation() {
 
             {activeMenu === "research" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("research")}
                 onMouseLeave={handleMouseLeave}
@@ -1384,28 +1448,25 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Research & Innovation Wing"
-                  href="/research-innovation"
-                  buttonText="Visit Research Main Page"
-                  icon={Lightbulb}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {researchCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
                         <cat.icon className="h-4 w-4" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
-                      </h4>
+                      <Link
+                        href={cat.href}
+                        onClick={() => setActiveMenu(null)}
+                        className="font-outfit font-black text-slate-800 text-sm leading-tight hover:text-[#002147] transition-colors"
+                      >
+                        {cat.fullTitle || cat.title}
+                      </Link>
                     </div>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
-                          href={`/research-innovation/${item.slug}`}
+                          href={item.href}
                           onClick={() => setActiveMenu(null)}
                           className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
                         >
@@ -1985,9 +2046,15 @@ export default function Navigation() {
                     </Link>
                     {researchCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
-                          <Link key={idx} href={`/research-innovation/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
                         ))}
                       </div>
                     ))}

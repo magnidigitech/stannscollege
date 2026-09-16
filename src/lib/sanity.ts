@@ -1832,3 +1832,400 @@ export async function getAlumniData() {
   }
 }
 
+// ============================================================================
+// RESEARCH & INNOVATION DATA MODEL & SANITY SYNC
+// ============================================================================
+
+export const DEFAULT_RESEARCH_DATA = {
+  aboutOverview: "At St. Ann’s College for Women, Gorantla, Guntur, research and innovation foster academic excellence, creativity, critical thinking and societal impact. The College encourages faculty and students to engage in research, innovative projects, interdisciplinary collaboration, publications and knowledge sharing.\n\nThrough a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives, nurturing women researchers and innovators prepared to contribute to a knowledge-driven and Viksit Bharat.\n\n“Research inspires discovery. Innovation transforms ideas into impact.”",
+  
+  researchPolicy: {
+    title: "1. Research Promotion, Ethics & Funding Policy",
+    tagline: "Research with Integrity • Innovation with Purpose • Knowledge for Society",
+    description: "At St. Ann’s College for Women, Gorantla, Guntur, research is promoted as a key component of academic excellence, innovation, and societal development. The College encourages faculty and students to undertake meaningful, multidisciplinary, and socially relevant research.\n\nThe policy provides a framework for research promotion, ethical conduct, plagiarism prevention, intellectual property, funding, publications, and collaborations, ensuring integrity, transparency, accountability, and originality in all research activities.\n\nThe College is committed to fostering a responsible research culture that supports innovation, higher studies, women’s empowerment, and community development.",
+    policyFileUrl: "/documents/DefaultFile_1.pdf",
+    redirectUrl: ""
+  },
+
+  rdc: {
+    title: "2. Research & Development Cell (RDC)",
+    description: "The Research & Development Cell (RDC) of St. Ann’s College for Women, Gorantla, Guntur promotes a vibrant culture of research, innovation, consultancy, collaboration, and academic excellence in alignment with UGC guidelines, NEP-2020, and institutional quality initiatives.\n\nThe RDC facilitates and monitors research activities, encourages ethical research practices, supports publications and funded projects, and provides opportunities for faculty and students to engage in innovative, interdisciplinary, and socially relevant research.",
+    vision: "To foster a dynamic research ecosystem that promotes innovation, knowledge creation, academic excellence, and societal transformation.",
+    mission: [
+      "Nurture research aptitude among faculty and students.",
+      "Promote innovative and socially relevant research.",
+      "Strengthen research collaborations and consultancy.",
+      "Uphold research integrity and ethical standards."
+    ],
+    objectives: [
+      "Promote quality research and publications.",
+      "Encourage funded projects, patents, and consultancy.",
+      "Facilitate interdisciplinary and collaborative research.",
+      "Organize research methodology, IPR, and publication ethics programmes.",
+      "Support research proposal preparation and funding opportunities.",
+      "Promote student research, innovation, and project-based learning.",
+      "Develop linkages with universities, industries, NGOs, and research organizations.",
+      "Maintain institutional records of research, publications, projects, patents, and collaborations."
+    ],
+    initiatives: [
+      "Research Methodology & FDP Programmes",
+      "Publication and Research Guidance",
+      "Research Ethics, Plagiarism & IPR Awareness",
+      "Seed Funding & Research Incentives",
+      "Patent and Innovation Support",
+      "Funded Project & Consultancy Guidance",
+      "Student Research & Project Activities",
+      "Interdisciplinary and Collaborative Research",
+      "Academic and Industry Collaborations",
+      "Research Grant and Fellowship Awareness"
+    ],
+    commitment: "St. Ann’s College for Women is committed to building a responsible, innovative, and collaborative research ecosystem that contributes to academic excellence, women’s empowerment, community development, and sustainable societal progress.\n\nResearch • Innovation • Integrity • Impact",
+    rdcPolicyFileUrl: "/documents/DefaultFile_1.pdf",
+    activityReports: [
+      { _key: "rdc_ar_1", year: "2025–2026", title: "RDC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "rdc_ar_2", year: "2024–2025", title: "RDC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+
+  infrastructure: {
+    description: "St. Ann’s College for Women, Gorantla, Guntur provides a supportive academic environment for research, innovation, experimentation and knowledge development. The institution utilizes its departmental laboratories, library resources, digital facilities and ICT infrastructure to facilitate faculty and student research activities.",
+    facilities: [
+      { _key: "inf_1", title: "Research Laboratories", description: "The College has departmental laboratories that support practical learning, experimentation, project work and research-oriented academic activities across Science, Computer Science and other disciplines." },
+      { _key: "inf_2", title: "Laboratory Facilities & Equipment", description: "The laboratories are equipped with essential instruments, equipment and learning resources required for practical training, student projects, demonstrations and faculty research activities." },
+      { _key: "inf_3", title: "Departmental Research Facilities", description: "Academic departments provide discipline-specific facilities that encourage faculty research, student projects, interdisciplinary learning and innovative academic practices." },
+      { _key: "inf_4", title: "Library & E-Resources", description: "The College Library provides access to a wide range of books, journals, reference materials and digital learning resources that support teaching, learning and research." },
+      { _key: "inf_5", title: "DELNET / Digital Resources", description: "The institution provides access to DELNET and digital resources, enabling students and faculty to explore scholarly literature, bibliographic databases, e-resources and academic information beyond the physical library collection." },
+      { _key: "inf_6", title: "ICT & Computational Facilities", description: "ICT-enabled classrooms, computer facilities, internet connectivity and relevant software applications support data analysis, digital research, project development, online learning and academic collaboration." }
+    ]
+  },
+
+  scholarlyContributions: {
+    description: "St. Ann’s College for Women, Gorantla, Guntur promotes quality research and scholarly contributions by faculty members and students. The institution encourages publication of research findings in peer-reviewed, UGC-recognized, Scopus/Web of Science indexed, and other reputed journals, subject to applicable norms.",
+    publications: [
+      { _key: "pub_1", year: "2026–2027", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "pub_2", year: "2025–2026", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "pub_3", year: "2024–2025", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
+    ],
+    paperPresentations: [
+      { _key: "pres_1", year: "2025–2026", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "pres_2", year: "2024–2025", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
+    ],
+    booksAndChapters: [
+      { _key: "book_1", year: "2026–2027", title: "Faculty Journals, Books & Book Chapters 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "book_2", year: "2025–2026", title: "Faculty Journals, Books & Book Chapters 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "book_3", year: "2024–2025", title: "Faculty Journals, Books & Book Chapters 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+
+  patentsAndInnovations: {
+    description: "St. Ann’s College for Women, Gorantla, Guntur promotes innovation, creativity, entrepreneurship, and problem-solving among faculty and students. The institution provides opportunities to develop innovative ideas, projects, prototypes, start-up concepts, and intellectual property.",
+    initiatives: [
+      "Innovation and Idea Presentation Programmes",
+      "Student Project Exhibitions and Project Expos",
+      "Entrepreneurship & Start-up Awareness Programmes",
+      "Patent & IPR Awareness Programmes",
+      "Innovation and Prototype Development Activities",
+      "Incubation and Entrepreneurship Support"
+    ],
+    activitiesMatrix: [
+      { _key: "act_1", year: "2026–2027", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "act_2", year: "2025–2026", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "act_3", year: "2024–2025", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+
+  iprCell: {
+    title: "6. Intellectual Property Rights (IPR) Cell",
+    constitutedDate: "1 September 2022",
+    description: "The Intellectual Property Rights (IPR) Cell of St. Ann’s College for Women, Gorantla, Guntur, was constituted on 1 September 2022 to create awareness and promote the effective protection of intellectual property among faculty and students. The Cell encourages innovation, creativity, research ethics, academic integrity, and responsible use of intellectual property.\n\nThe IPR Cell provides awareness and guidance on patents, copyrights, trademarks, designs, plagiarism prevention, and related IPR procedures. It also supports research-oriented and innovation-driven academic activities in collaboration with departments and the IQAC.",
+    objectives: [
+      "Create awareness of Intellectual Property Rights among faculty and students.",
+      "Promote innovation, creativity, and ethical research practices.",
+      "Create awareness of patents, copyrights, trademarks, and designs.",
+      "Guide faculty and students on IPR protection and filing procedures.",
+      "Promote academic integrity and prevention of plagiarism.",
+      "Encourage documentation and protection of innovative academic work."
+    ],
+    majorActivities: [
+      "IPR awareness programmes, workshops, and seminars.",
+      "Expert lectures and FDPs on patents, copyrights, and research ethics.",
+      "Awareness programmes on plagiarism and academic integrity.",
+      "Guidance on patent and copyright filing procedures.",
+      "Innovation, creativity, quiz, and poster-presentation activities.",
+      "Student project exhibitions and idea-presentation sessions.",
+      "Collaboration with IQAC, departments, experts, and academic institutions.",
+      "Maintenance of records and reports of IPR-related activities."
+    ],
+    expectedOutcomes: [
+      "Enhanced awareness of IPR and research ethics.",
+      "Greater protection of innovative and creative work.",
+      "Promotion of academic integrity and research culture.",
+      "Increased student participation in innovation and entrepreneurship.",
+      "Strengthening of institutional research and innovation practices."
+    ],
+    activityReports: [
+      { _key: "ipr_ar_1", year: "2025–2026", title: "IPR Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "ipr_ar_2", year: "2024–2025", title: "IPR Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "ipr_ar_3", year: "2023–2024", title: "IPR Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+    ],
+    policyDescription: "The institution recognizes Intellectual Property as an important component of academic, research, and innovation development. The IPR Cell facilitates awareness, documentation, protection, and ethical use of intellectual property generated through academic and research activities. Faculty and students are encouraged to protect their original work while maintaining confidentiality and adhering to institutional and ethical standards.",
+    policyFileUrl: "/documents/DefaultFile_1.pdf"
+  },
+
+  entrepreneurshipCentre: {
+    title: "7. Entrepreneurship Development / Innovation & Start-Up Centre",
+    description: "St. Ann’s College for Women, Gorantla, Guntur promotes entrepreneurship, innovation, creativity, leadership, and self-employment among students. The Entrepreneurship Development / Innovation & Start-Up Centre facilitates entrepreneurial learning, skill development, industry interaction, and awareness of start-up opportunities, contributing to employability and women empowerment.",
+    vision: "To nurture an entrepreneurial and innovation-oriented environment that empowers women students with creativity, leadership, business skills, and self-employment capabilities.",
+    objectives: [
+      "Promote entrepreneurial and innovative thinking among students.",
+      "Create awareness of start-ups, entrepreneurship, and government support schemes.",
+      "Develop leadership, communication, financial literacy, and business management skills.",
+      "Encourage innovative ideas, projects, prototypes, and business plans.",
+      "Facilitate interaction with entrepreneurs, industry experts, and professionals.",
+      "Promote women entrepreneurship and economic empowerment.",
+      "Strengthen employability through skill-based and industry-oriented learning."
+    ],
+    majorActivities: [
+      "Entrepreneurship Awareness Programmes",
+      "Workshops, seminars, and training programmes",
+      "Business idea and business-plan competitions",
+      "Skill development and employability programmes",
+      "Financial literacy and entrepreneurship awareness",
+      "Interaction with entrepreneurs and industry experts",
+      "Innovation exhibitions and entrepreneurial activities",
+      "Awareness programmes on government schemes and funding opportunities",
+      "Add-on and certificate programmes related to entrepreneurship"
+    ],
+    industryEngagement: "The Centre encourages collaboration with industries, entrepreneurs, professional bodies, and community organizations to provide practical exposure, internships, training, mentoring, and entrepreneurial learning opportunities.",
+    womenEntrepreneurship: "As a women’s institution, St. Ann’s encourages students to explore self-employment, entrepreneurship, leadership, financial independence, and innovative career pathways through skill development and entrepreneurship awareness initiatives.",
+    expectedOutcomes: [
+      "Entrepreneurial mindset and innovative thinking",
+      "Leadership and managerial competencies",
+      "Creativity and problem-solving skills",
+      "Start-up and self-employment awareness",
+      "Employability and professional skills",
+      "Confidence and economic empowerment among women students"
+    ],
+    activityReports: [
+      { _key: "ed_ar_1", year: "2025–2026", title: "ED Centre Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "ed_ar_2", year: "2024–2025", title: "ED Centre Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "ed_ar_3", year: "2023–2024", title: "ED Centre Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+    ],
+    policyDescription: "The Entrepreneurship Development / Innovation & Start-Up Policy of St. Ann’s College for Women, Gorantla, Guntur provides a framework for promoting entrepreneurship, innovation, creativity, and self-employment among students and faculty. The policy encourages entrepreneurial learning, skill development, mentoring, industry interaction, innovative idea development, and start-up awareness. It aims to create a supportive ecosystem that strengthens employability, innovation, leadership, and women entrepreneurship, in alignment with institutional quality enhancement practices.",
+    policyFileUrl: "/documents/DefaultFile_1.pdf"
+  },
+
+  iicCell: {
+    title: "8. Institution Innovation Council (IIC) / Institution–Industry Cell",
+    description: "The Institution Innovation Council (IIC) / Institution–Industry Cell of St. Ann’s College for Women, Gorantla, Guntur promotes innovation, entrepreneurship, creativity, skill development, and industry-oriented learning among students and faculty. The Cell facilitates industry interaction, expert engagement, innovative projects, start-up awareness, incubation support, and academic–industry collaboration in association with the IQAC and academic departments.",
+    objectives: [
+      "Promote innovation, creativity, and entrepreneurship",
+      "Develop problem-solving and design-thinking skills",
+      "Encourage innovative projects and prototypes",
+      "Strengthen industry–academia interaction",
+      "Promote start-up and incubation awareness",
+      "Facilitate research, consultancy, and skill development",
+      "Enhance employability and industry readiness"
+    ],
+    keyActivities: [
+      "Innovation and entrepreneurship programmes",
+      "Workshops, seminars, FDPs, and expert lectures",
+      "Hackathons, idea competitions, and project exhibitions",
+      "Industry interaction and industrial visits",
+      "Start-up and incubation awareness programmes",
+      "Skill development and employability training",
+      "Industry-oriented projects and collaborations",
+      "MoUs and collaborative initiatives"
+    ],
+    expectedOutcomes: "The Cell aims to foster an innovative and entrepreneurial mindset, enhance students' creativity, leadership, problem-solving and professional skills, and strengthen industry–academia collaboration and employability.",
+    activityReports: [
+      { _key: "iic_ar_1", year: "2025–2026", title: "IIC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "iic_ar_2", year: "2024–2025", title: "IIC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { _key: "iic_ar_3", year: "2023–2024", title: "IIC Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+    ],
+    policyDescription: "The Institution has formulated an Institution Innovation Council (IIC) Policy to foster a culture of innovation, entrepreneurship, research, creativity, and industry collaboration. The policy provides a framework for promoting innovative ideas, mentoring, prototype development, start-up awareness, industry interaction, incubation activities, and student participation in innovation-oriented programmes.",
+    policyFileUrl: "/documents/DefaultFile_1.pdf"
+  }
+};
+
+export async function getResearchData() {
+  try {
+    const query = `*[_type == "research-singleton" && !(_id in path("drafts.**"))][0] {
+      _id,
+      aboutOverview,
+      researchPolicy {
+        title,
+        tagline,
+        description,
+        redirectUrl,
+        "policyFileUrl": coalesce(policyFile.asset->url, policyFileUrl)
+      },
+      rdc {
+        title,
+        description,
+        vision,
+        mission,
+        objectives,
+        initiatives,
+        commitment,
+        "rdcPolicyFileUrl": coalesce(rdcPolicyFile.asset->url, rdcPolicyFileUrl),
+        activityReports[] {
+          _key,
+          year,
+          title,
+          redirectUrl,
+          "fileUrl": coalesce(file.asset->url, fileUrl)
+        }
+      },
+      infrastructure {
+        description,
+        facilities[] {
+          _key,
+          title,
+          description
+        }
+      },
+      scholarlyContributions {
+        description,
+        publications[] {
+          _key,
+          year,
+          redirectUrl,
+          "facultyFileUrl": coalesce(facultyFile.asset->url, facultyFileUrl),
+          "studentFileUrl": coalesce(studentFile.asset->url, studentFileUrl)
+        },
+        paperPresentations[] {
+          _key,
+          year,
+          redirectUrl,
+          "facultyFileUrl": coalesce(facultyFile.asset->url, facultyFileUrl),
+          "studentFileUrl": coalesce(studentFile.asset->url, studentFileUrl)
+        },
+        booksAndChapters[] {
+          _key,
+          year,
+          title,
+          redirectUrl,
+          "fileUrl": coalesce(file.asset->url, fileUrl)
+        }
+      },
+      patentsAndInnovations {
+        description,
+        initiatives,
+        activitiesMatrix[] {
+          _key,
+          year,
+          "innovationFileUrl": coalesce(innovationFile.asset->url, innovationFileUrl),
+          "startupFileUrl": coalesce(startupFile.asset->url, startupFileUrl),
+          "patentIprFileUrl": coalesce(patentIprFile.asset->url, patentIprFileUrl)
+        }
+      },
+      iprCell {
+        title,
+        constitutedDate,
+        description,
+        objectives,
+        majorActivities,
+        expectedOutcomes,
+        policyDescription,
+        "policyFileUrl": coalesce(policyFile.asset->url, policyFileUrl),
+        activityReports[] {
+          _key,
+          year,
+          title,
+          redirectUrl,
+          "fileUrl": coalesce(file.asset->url, fileUrl)
+        }
+      },
+      entrepreneurshipCentre {
+        title,
+        description,
+        vision,
+        objectives,
+        majorActivities,
+        industryEngagement,
+        womenEntrepreneurship,
+        expectedOutcomes,
+        policyDescription,
+        "policyFileUrl": coalesce(policyFile.asset->url, policyFileUrl),
+        activityReports[] {
+          _key,
+          year,
+          title,
+          redirectUrl,
+          "fileUrl": coalesce(file.asset->url, fileUrl)
+        }
+      },
+      iicCell {
+        title,
+        description,
+        objectives,
+        keyActivities,
+        expectedOutcomes,
+        policyDescription,
+        "policyFileUrl": coalesce(policyFile.asset->url, policyFileUrl),
+        activityReports[] {
+          _key,
+          year,
+          title,
+          redirectUrl,
+          "fileUrl": coalesce(file.asset->url, fileUrl)
+        }
+      }
+    }`;
+
+    const data = await sanityClient.fetch(query);
+    if (data) {
+      return {
+        ...DEFAULT_RESEARCH_DATA,
+        ...data,
+        researchPolicy: {
+          ...DEFAULT_RESEARCH_DATA.researchPolicy,
+          ...(data.researchPolicy || {})
+        },
+        rdc: {
+          ...DEFAULT_RESEARCH_DATA.rdc,
+          ...(data.rdc || {}),
+          activityReports: data.rdc?.activityReports?.length ? data.rdc.activityReports : DEFAULT_RESEARCH_DATA.rdc.activityReports
+        },
+        infrastructure: {
+          ...DEFAULT_RESEARCH_DATA.infrastructure,
+          ...(data.infrastructure || {}),
+          facilities: data.infrastructure?.facilities?.length ? data.infrastructure.facilities : DEFAULT_RESEARCH_DATA.infrastructure.facilities
+        },
+        scholarlyContributions: {
+          ...DEFAULT_RESEARCH_DATA.scholarlyContributions,
+          ...(data.scholarlyContributions || {}),
+          publications: data.scholarlyContributions?.publications?.length ? data.scholarlyContributions.publications : DEFAULT_RESEARCH_DATA.scholarlyContributions.publications,
+          paperPresentations: data.scholarlyContributions?.paperPresentations?.length ? data.scholarlyContributions.paperPresentations : DEFAULT_RESEARCH_DATA.scholarlyContributions.paperPresentations,
+          booksAndChapters: data.scholarlyContributions?.booksAndChapters?.length ? data.scholarlyContributions.booksAndChapters : DEFAULT_RESEARCH_DATA.scholarlyContributions.booksAndChapters
+        },
+        patentsAndInnovations: {
+          ...DEFAULT_RESEARCH_DATA.patentsAndInnovations,
+          ...(data.patentsAndInnovations || {}),
+          activitiesMatrix: data.patentsAndInnovations?.activitiesMatrix?.length ? data.patentsAndInnovations.activitiesMatrix : DEFAULT_RESEARCH_DATA.patentsAndInnovations.activitiesMatrix
+        },
+        iprCell: {
+          ...DEFAULT_RESEARCH_DATA.iprCell,
+          ...(data.iprCell || {}),
+          activityReports: data.iprCell?.activityReports?.length ? data.iprCell.activityReports : DEFAULT_RESEARCH_DATA.iprCell.activityReports
+        },
+        entrepreneurshipCentre: {
+          ...DEFAULT_RESEARCH_DATA.entrepreneurshipCentre,
+          ...(data.entrepreneurshipCentre || {}),
+          activityReports: data.entrepreneurshipCentre?.activityReports?.length ? data.entrepreneurshipCentre.activityReports : DEFAULT_RESEARCH_DATA.entrepreneurshipCentre.activityReports
+        },
+        iicCell: {
+          ...DEFAULT_RESEARCH_DATA.iicCell,
+          ...(data.iicCell || {}),
+          activityReports: data.iicCell?.activityReports?.length ? data.iicCell.activityReports : DEFAULT_RESEARCH_DATA.iicCell.activityReports
+        }
+      };
+    }
+    return DEFAULT_RESEARCH_DATA;
+  } catch (err) {
+    console.error("Sanity fetch error (getResearchData):", err);
+    return DEFAULT_RESEARCH_DATA;
+  }
+}
+

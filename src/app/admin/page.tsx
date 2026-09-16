@@ -10,6 +10,7 @@ import { StrategicDocumentsManager } from "@/components/admin/StrategicDocuments
 import { HeroBannersManager } from "@/components/admin/HeroBannersManager";
 import { MandatoryDisclosuresManager } from "@/components/admin/MandatoryDisclosuresManager";
 import { AlumniManager } from "@/components/admin/AlumniManager";
+import { ResearchManager } from "@/components/admin/ResearchManager";
 import {
   Calendar,
   Bell,
@@ -25,6 +26,7 @@ import {
   Globe,
   Sliders,
   Users,
+  FlaskConical,
 } from "lucide-react";
 
 interface AdminUser {
@@ -57,6 +59,14 @@ const ADMIN_MODULES = [
     icon: Bell,
     description: "Publish official college circulars, notifications, examination alerts, admissions updates, and downloadable PDFs.",
     component: NoticesManager,
+  },
+  {
+    id: "research-management",
+    label: "Research & Innovation",
+    badge: "Live Sanity Sync",
+    icon: FlaskConical,
+    description: "Manage RDC Cell, research policy, infrastructure, faculty publications, patents, IPR cell, ED start-up center, and IIC reports.",
+    component: ResearchManager,
   },
   {
     id: "alumni-management",
