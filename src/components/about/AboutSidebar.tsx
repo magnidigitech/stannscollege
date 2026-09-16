@@ -89,21 +89,55 @@ export default function AboutSidebar({
     const updateHeaderHeight = () => {
       const header = document.getElementById("main-header");
       if (header) {
-        document.documentElement.style.setProperty("--main-header-height", `${header.offsetHeight}px`);
+        const height = header.getBoundingClientRect().height || header.offsetHeight;
+        if (height > 0) {
+          document.documentElement.style.setProperty("--main-header-height", `${Math.ceil(height)}px`);
+        }
       }
     };
 
     updateHeaderHeight();
+
+    let observer: ResizeObserver | null = null;
+    const header = document.getElementById("main-header");
+    if (header && typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(() => {
+        updateHeaderHeight();
+      });
+      observer.observe(header);
+    }
+
     window.addEventListener("resize", updateHeaderHeight);
-    return () => window.removeEventListener("resize", updateHeaderHeight);
+    window.addEventListener("scroll", updateHeaderHeight, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      window.removeEventListener("scroll", updateHeaderHeight);
+      if (observer) observer.disconnect();
+    };
   }, []);
+
+  const scrollToTarget = (targetId: string) => {
+    const el = document.getElementById(targetId);
+    if (el) {
+      const header = document.getElementById("main-header");
+      const headerHeight = header ? (header.getBoundingClientRect().height || header.offsetHeight) : 225;
+      const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight - 20; // 20px buffer below sticky header
+      
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth"
+      });
+    }
+  };
 
   return (
     <aside
-      className="flex flex-col sticky select-none h-fit overflow-hidden border-2 border-slate-200/90 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300"
+      className="flex flex-col sticky select-none h-fit overflow-hidden border-2 border-slate-200/90 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 z-20"
       style={{
-        top: "calc(var(--main-header-height, 185px) + 16px)",
-        maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px)",
+        top: "calc(var(--main-header-height, 225px) + 16px)",
+        maxHeight: "calc(100vh - var(--main-header-height, 225px) - 32px)",
         backgroundColor: "var(--sidebar-container-bg, #eaeff5)"
       }}
     >
@@ -139,7 +173,7 @@ export default function AboutSidebar({
       <div
         className="flex flex-col gap-6 p-4 sm:p-5 overflow-y-auto no-scrollbar"
         style={{
-          maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px - 72px)",
+          maxHeight: "calc(100vh - var(--main-header-height, 225px) - 32px - 72px)",
           scrollbarWidth: "none",
           msOverflowStyle: "none"
         }}
@@ -149,8 +183,7 @@ export default function AboutSidebar({
             <div
               onClick={() => {
                 if (cat.sectionId) {
-                  const el = document.getElementById(cat.sectionId);
-                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  scrollToTarget(cat.sectionId);
                   if (onItemClick) onItemClick(cat.sectionId);
                 }
               }}
@@ -178,10 +211,7 @@ export default function AboutSidebar({
                 const handleClick = (e: React.MouseEvent) => {
                   if (item.id) {
                     e.preventDefault();
-                    const el = document.getElementById(item.id);
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
+                    scrollToTarget(item.id);
                     if (onItemClick) onItemClick(item.id);
                   }
                 };

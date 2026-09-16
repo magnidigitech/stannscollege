@@ -190,7 +190,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-policy"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
                 <div>
@@ -214,7 +214,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Tagline / Overview */}
-              <div className="p-5 bg-gradient-to-r from-blue-50/90 to-indigo-50/60 rounded-2xl border border-blue-100/80 mb-8">
+              <div id="sec-policy-principles" className="scroll-mt-56 p-5 bg-gradient-to-r from-blue-50/90 to-indigo-50/60 rounded-2xl border border-blue-100/80 mb-8">
                 <p className="text-sm sm:text-base font-semibold text-blue-950 leading-relaxed">
                   {data?.policy?.tagline ||
                     "Promoting Academic Integrity, Innovative Thinking, Rigorous Peer-Reviewed Publications & Institutional Research Grants"}
@@ -227,8 +227,8 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Key Pillars */}
-              <div id="sec-policy-principles" className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-                <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                <div id="sec-policy-ethics" className="scroll-mt-56 p-6 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
                   <div className="flex items-center gap-2.5 text-blue-900 font-bold text-sm">
                     <ShieldCheck className="w-5 h-5 text-blue-600" />
                     <span>Research Ethics &amp; Integrity</span>
@@ -270,7 +270,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Policy Download Banner */}
-              <div id="sec-policy-doc" className="p-5 rounded-2xl bg-blue-950 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div id="sec-policy-doc" className="scroll-mt-56 p-5 rounded-2xl bg-blue-950 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3.5">
                   <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                     <FileText className="w-5 h-5 text-amber-300" />
@@ -296,7 +296,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-rdc"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
                 <div>
@@ -320,7 +320,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Tagline / Overview */}
-              <div id="sec-rdc-about" className="p-5 bg-gradient-to-r from-slate-50 to-blue-50/50 rounded-2xl border border-slate-200/80 mb-8 space-y-2">
+              <div id="sec-rdc-about" className="scroll-mt-56 p-5 bg-gradient-to-r from-slate-50 to-blue-50/50 rounded-2xl border border-slate-200/80 mb-8 space-y-2">
                 <p className="text-sm sm:text-base font-semibold text-blue-950">
                   {data?.rdc?.tagline ||
                     "Catalyzing Exploratory Inquiry, Interdisciplinary Projects & Sustainable Innovation across Engineering Disciplines"}
@@ -332,7 +332,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Vision & Mission Cards */}
-              <div id="sec-rdc-vision" className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+              <div id="sec-rdc-vision" className="scroll-mt-56 grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
                 <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-900 to-indigo-950 text-white space-y-2.5 shadow-sm">
                   <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
                     <Target className="w-4 h-4" />
@@ -359,7 +359,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* 6 Core Objectives */}
-              <div id="sec-rdc-objectives" className="mb-8">
+              <div id="sec-rdc-objectives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-blue-600" />
                   <span>Key Objectives of the R&amp;D Cell</span>
@@ -384,7 +384,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* 10 Major Initiatives */}
-              <div id="sec-rdc-initiatives" className="mb-8">
+              <div id="sec-rdc-initiatives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
                   <span>Major Initiatives &amp; Research Enablers</span>
@@ -411,7 +411,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* RDC Annual Reports Table */}
-              <div id="sec-rdc-reports" className="space-y-4">
+              <div id="sec-rdc-reports" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -461,7 +461,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-infra"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="border-b border-slate-100 pb-6 mb-8">
                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
@@ -481,37 +481,45 @@ export default function ResearchInnovationPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {(data?.infrastructure?.items || [
                   {
+                    id: "sec-infra-labs",
                     title: "Dedicated Research Labs",
                     description: "Advanced departmental research laboratories equipped for exploratory experiments, prototype synthesis, and interdisciplinary investigations in emerging engineering disciplines."
                   },
                   {
+                    id: "sec-infra-equipment",
                     title: "Advanced Analytical Equipment",
                     description: "High-precision testing rigs, spectral analyzers, digital oscilloscopes, material testing machinery, and modern measurement instruments."
                   },
                   {
+                    id: "sec-infra-dept",
                     title: "Departmental Research Facilities",
                     description: "Specialized project labs for AI/ML, IoT testbeds, VLSI design tools, renewable energy setups, and structural modeling environments."
                   },
                   {
+                    id: "sec-infra-library",
                     title: "Central Library & E-Resources",
                     description: "Extensive physical collection and institutional subscriptions to IEEE Xplore, ScienceDirect, SpringerLink, UGC-CARE indexed journals, and digital archives."
                   },
                   {
+                    id: "sec-infra-delnet",
                     title: "DELNET & Digital Repository Access",
                     description: "Integrated inter-library lending network, institutional e-thesis repositories, open-access scholarly databases, and global research paper access."
                   },
                   {
+                    id: "sec-infra-ict",
                     title: "High-Performance ICT & Computing Hub",
                     description: "Modern compute clusters, GPU-powered nodes for AI computations, campus-wide high-speed fiber backbone, and dedicated cloud computing environments."
                   }
                 ]).map((fac: any, idx: number) => {
                   const icons = [Microscope, Cpu, Layers, Library, BookOpen, Compass];
                   const Icon = icons[idx % icons.length];
+                  const cardId = fac.id || (idx === 0 ? "sec-infra-labs" : idx === 1 ? "sec-infra-equipment" : idx === 3 ? "sec-infra-library" : idx === 5 ? "sec-infra-ict" : undefined);
 
                   return (
                     <div
                       key={idx}
-                      className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-blue-300 hover:shadow-sm transition-all flex flex-col justify-between"
+                      id={cardId}
+                      className="scroll-mt-56 p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-blue-300 hover:shadow-sm transition-all flex flex-col justify-between"
                     >
                       <div>
                         <div className="w-10 h-10 rounded-xl bg-blue-100/80 text-blue-800 flex items-center justify-center mb-4">
@@ -535,7 +543,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-publications"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="border-b border-slate-100 pb-6 mb-8">
                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
@@ -552,7 +560,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Table 1: Faculty & Student Publications */}
-              <div id="sec-pub-faculty-students" className="space-y-4 mb-10">
+              <div id="sec-pub-faculty-students" className="scroll-mt-56 space-y-4 mb-10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -604,7 +612,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Table 2: Paper Presentations */}
-              <div id="sec-pub-presentations" className="space-y-4 mb-10">
+              <div id="sec-pub-presentations" className="scroll-mt-56 space-y-4 mb-10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <Award className="w-5 h-5 text-amber-600" />
@@ -656,7 +664,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Table 3: Books and Book Chapters */}
-              <div id="sec-pub-books" className="space-y-4">
+              <div id="sec-pub-books" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-emerald-600" />
@@ -713,7 +721,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-patents"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
                 <div>
@@ -745,7 +753,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* 6 Major Initiatives */}
-              <div id="sec-patents-initiatives" className="mb-8">
+              <div id="sec-patents-initiatives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
                   <span>Key Innovation &amp; Incubation Pillars</span>
@@ -770,7 +778,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Year-wise Innovation & IPR Activities */}
-              <div id="sec-patents-years" className="space-y-4">
+              <div id="sec-patents-years" className="scroll-mt-56 space-y-4">
                 <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-blue-600" />
                   <span>Year-wise Innovation &amp; IPR Milestones</span>
@@ -805,7 +813,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-ipr"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
                 <div>
@@ -829,7 +837,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Tagline / Establishment Details */}
-              <div id="sec-ipr-about" className="p-5 bg-gradient-to-r from-emerald-50/70 to-teal-50/50 rounded-2xl border border-emerald-200/60 mb-8 space-y-2">
+              <div id="sec-ipr-about" className="scroll-mt-56 p-5 bg-gradient-to-r from-emerald-50/70 to-teal-50/50 rounded-2xl border border-emerald-200/60 mb-8 space-y-2">
                 <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs uppercase tracking-wider">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>Constituted on: {data?.ipr?.constitutedDate || "01-09-2022"}</span>
@@ -845,7 +853,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* 6 Objectives */}
-              <div id="sec-ipr-objectives" className="mb-8">
+              <div id="sec-ipr-objectives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Target className="w-5 h-5 text-emerald-600" />
                   <span>Key Objectives of the IPR Cell</span>
@@ -895,7 +903,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Expected Outcomes */}
-              <div id="sec-ipr-outcomes" className="p-6 bg-slate-50 rounded-2xl border border-slate-200 mb-8">
+              <div id="sec-ipr-outcomes" className="scroll-mt-56 p-6 bg-slate-50 rounded-2xl border border-slate-200 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-3 flex items-center gap-2">
                   <Award className="w-5 h-5 text-amber-500" />
                   <span>Expected Outcomes &amp; Impact</span>
@@ -917,7 +925,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* IPR Annual Reports Table */}
-              <div id="sec-ipr-reports" className="space-y-4">
+              <div id="sec-ipr-reports" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -967,7 +975,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-edc"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
                 <div>
@@ -991,7 +999,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Tagline / Vision */}
-              <div id="sec-edc-vision" className="p-5 bg-gradient-to-r from-indigo-50/70 to-blue-50/50 rounded-2xl border border-indigo-200/60 mb-8 space-y-2">
+              <div id="sec-edc-vision" className="scroll-mt-56 p-5 bg-gradient-to-r from-indigo-50/70 to-blue-50/50 rounded-2xl border border-indigo-200/60 mb-8 space-y-2">
                 <p className="text-sm sm:text-base font-semibold text-indigo-950">
                   {data?.edc?.tagline ||
                     "Nurturing Student Founders, Promoting Venture Creation & Building Resilient Social & Technological Enterprises"}
@@ -1029,7 +1037,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* 9 Key Activities */}
-              <div id="sec-edc-activities" className="mb-8">
+              <div id="sec-edc-activities" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
                   <span>Major Activities &amp; Mentorship Programs</span>
@@ -1055,7 +1063,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Women Entrepreneurship Box */}
-              <div id="sec-edc-women" className="p-6 bg-gradient-to-br from-pink-50/70 to-rose-50/50 rounded-2xl border border-pink-200/60 mb-8 space-y-2">
+              <div id="sec-edc-women" className="scroll-mt-56 p-6 bg-gradient-to-br from-pink-50/70 to-rose-50/50 rounded-2xl border border-pink-200/60 mb-8 space-y-2">
                 <div className="flex items-center gap-2 text-pink-900 font-bold text-xs uppercase tracking-wider">
                   <Users className="w-4 h-4 text-pink-600" />
                   <span>Special Initiative</span>
@@ -1067,7 +1075,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* ED Annual Reports Table */}
-              <div id="sec-edc-reports" className="space-y-4">
+              <div id="sec-edc-reports" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -1117,7 +1125,7 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-iic"
-              className="scroll-mt-36 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
                 <div>
@@ -1141,7 +1149,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Tagline / Overview */}
-              <div id="sec-iic-about" className="p-5 bg-gradient-to-r from-purple-50/70 to-indigo-50/50 rounded-2xl border border-purple-200/60 mb-8 space-y-2">
+              <div id="sec-iic-about" className="scroll-mt-56 p-5 bg-gradient-to-r from-purple-50/70 to-indigo-50/50 rounded-2xl border border-purple-200/60 mb-8 space-y-2">
                 <p className="text-sm sm:text-base font-semibold text-purple-950">
                   {data?.iic?.tagline ||
                     "Driving Institutional Innovation Ecosystem, Industry Linkages, Hackathons & Nation-Building Collaborative Projects"}
@@ -1153,7 +1161,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* 7 Objectives */}
-              <div id="sec-iic-objectives" className="mb-8">
+              <div id="sec-iic-objectives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Target className="w-5 h-5 text-purple-600" />
                   <span>Key Objectives of the IIC</span>
@@ -1204,7 +1212,7 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* IIC Annual Reports Table */}
-              <div id="sec-iic-reports" className="space-y-4">
+              <div id="sec-iic-reports" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
