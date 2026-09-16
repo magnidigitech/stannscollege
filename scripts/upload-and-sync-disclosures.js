@@ -279,67 +279,100 @@ async function run() {
     }
   ];
 
-  // 7. Financial & Policies Documents (from pppp/)
-  console.log("\n--- Processing Financial & Policy Documents from pppp/ ---");
-  const finFiles = [
+  // 7. Financial & Policies Documents
+  console.log("\n--- Processing Financial & Policy Documents ---");
+  const budgetUpload = await uploadFileToSanity(path.join(PUBLIC_DOCS, "policies", "Annual_Budget.pdf"), "Annual_Budget.pdf");
+  const finPolicyUpload = await uploadFileToSanity(path.join(PUBLIC_DOCS, "policies", "Financial_Management_Policy.pdf"), "Financial_Management_Policy.pdf");
+  const procurementUpload = await uploadFileToSanity(path.join(PUBLIC_DOCS, "policies", "Purchase_Procurement_Policy_SOP.pdf"), "Purchase_Procurement_Policy_SOP.pdf");
+
+  const financialDocuments = [
     {
+      _key: "fin_budget",
+      sNo: 1,
       code: "budget",
       title: "Annual Budget",
-      desc: "The annual budget reflects the institution's financial planning and allocation of resources towards academic, administrative, infrastructure, student welfare and other institutional activities.",
-      filename: "1.Annual Budget.pdf",
-      dest: "Annual_Budget.pdf",
+      btnLabel: "Annual Budget",
+      description: "The annual budget reflects the institution's financial planning and allocation of resources towards academic, administrative, infrastructure, student welfare and other institutional activities.",
+      fileUrl: budgetUpload.url,
+      file: { _type: "file", asset: { _type: "reference", _ref: budgetUpload.assetId } }
     },
     {
-      code: "infrastructure_policy",
-      title: "Infrastructure Development and Augmentation Policy",
-      desc: "Policy framework governing institutional infrastructure planning, development, physical expansion, modernization, and resource augmentation.",
-      filename: "5.Infrastructure Development and Augmentation Policy.pdf",
-      dest: "Infrastructure_Development_Augmentation_Policy.pdf",
+      _key: "fin_audit",
+      sNo: 2,
+      code: "audit",
+      title: "Audited Financial Statements",
+      btnLabel: "Audited Financial Statements",
+      description: "Audited financial statements and relevant financial records are maintained in accordance with applicable accounting and statutory requirements.",
+      fileUrl: "/documents/DefaultFile_1.pdf"
     },
     {
+      _key: "fin_income",
+      sNo: 3,
+      code: "income",
+      title: "Financial Resources / Sources of Income",
+      btnLabel: "Financial Resources / Sources of Income",
+      description: "Relevant information regarding the institution's financial resources and applicable sources of income is maintained and disclosed wherever required.",
+      fileUrl: "/documents/DefaultFile_1.pdf"
+    },
+    {
+      _key: "fin_corpus",
+      sNo: 4,
+      code: "corpus",
+      title: "Endowment & Corpus Funds",
+      btnLabel: "Endowment & Corpus Funds",
+      description: "Details relating to endowment and corpus funds, wherever applicable, are maintained in accordance with institutional financial procedures.",
+      fileUrl: "/documents/DefaultFile_1.pdf"
+    },
+    {
+      _key: "fin_utilization",
+      sNo: 5,
+      code: "utilization",
+      title: "Utilization Certificates",
+      btnLabel: "Utilization Certificates",
+      description: "Relevant Utilization Certificates relating to grants or funds received from competent authorities are maintained and provided wherever applicable.",
+      fileUrl: "/documents/DefaultFile_1.pdf"
+    },
+    {
+      _key: "fin_policy",
+      sNo: 6,
       code: "finance_policy",
       title: "Finance Policy",
-      desc: "The institution follows appropriate financial procedures relating to budgeting, expenditure, accounting, financial control and resource management.",
-      filename: "6..Financial Management  Policy.pdf",
-      dest: "Financial_Management_Policy.pdf",
+      btnLabel: "Finance Policy",
+      description: "The institution follows appropriate financial procedures relating to budgeting, expenditure, accounting, financial control and resource management.",
+      fileUrl: finPolicyUpload.url,
+      file: { _type: "file", asset: { _type: "reference", _ref: finPolicyUpload.assetId } }
     },
     {
+      _key: "fin_procurement",
+      sNo: 7,
       code: "procurement",
       title: "Purchase & Procurement Policy",
-      desc: "The institution follows transparent and appropriate procedures for the purchase and procurement of goods, services, equipment and other institutional requirements.",
-      filename: "7.Purchase & Procurement Policy & SOP.pdf",
-      dest: "Purchase_Procurement_Policy_SOP.pdf",
+      btnLabel: "Purchase & Procurement Policy",
+      description: "The institution follows transparent and appropriate procedures for the purchase and procurement of goods, services, equipment and other institutional requirements.",
+      fileUrl: procurementUpload.url,
+      file: { _type: "file", asset: { _type: "reference", _ref: procurementUpload.assetId } }
     },
-  ];
-
-  const financialDocuments = [];
-  for (let idx = 0; idx < finFiles.length; idx++) {
-    const item = finFiles[idx];
-    const srcPath = path.join(PPPP_DIR, item.filename);
-    const destPath = path.join(PUBLIC_DOCS, "policies", item.dest);
-    
-    if (fs.existsSync(srcPath)) {
-      fs.copyFileSync(srcPath, destPath);
-      filesToDeleteFromPppp.push(srcPath);
+    {
+      _key: "fin_fee_afrc",
+      sNo: 8,
+      code: "fee_structure",
+      title: "Approved Fee Structure / AFRC Orders",
+      btnLabel: "Approved Fee Structure",
+      secondBtnLabel: "AFRC Orders",
+      description: "Applicable approved fee structures and relevant AFRC orders are provided for the information of students and stakeholders, wherever applicable.",
+      fileUrl: "/documents/DefaultFile_1.pdf",
+      secondFileUrl: "/documents/DefaultFile_1.pdf"
+    },
+    {
+      _key: "fin_scholarship",
+      sNo: 9,
+      code: "scholarship",
+      title: "Scholarship Details",
+      btnLabel: "Scholarship Details",
+      description: "The institution facilitates and provides information regarding scholarships, fee reimbursement, financial assistance and other student support schemes available to eligible students through Government, statutory authorities and other competent agencies.\n\nRelevant scholarship-related notifications, guidelines, eligibility criteria, application procedures and supporting documents are maintained and made available for the information of students and stakeholders, wherever applicable.",
+      fileUrl: "/documents/DefaultFile_1.pdf"
     }
-    const uploadSource = fs.existsSync(destPath) ? destPath : srcPath;
-    const uploaded = await uploadFileToSanity(uploadSource, item.dest);
-
-    financialDocuments.push({
-      _key: `fin_${item.code}`,
-      code: item.code,
-      title: item.title,
-      description: item.desc,
-      file: {
-        _type: "file",
-        asset: {
-          _type: "reference",
-          _ref: uploaded.assetId,
-        },
-      },
-      fileUrl: uploaded.url,
-    });
-  }
+  ];
 
   // 8. NIRF Submissions (from pppp/)
   console.log("\n--- Processing NIRF Submissions (15 files) from pppp/ ---");

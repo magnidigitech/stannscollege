@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import fs from "fs";
 import path from "path";
 
@@ -6,22 +6,28 @@ export const dynamic = "force-dynamic";
 
 export async function GET(
   request: NextRequest,
-  context: { params: Promise<{ filename: string }> | { filename: string } }
+  context: { params: Promise<{ filename: string }> }
 ) {
   try {
-    const params = await Promise.resolve(context.params);
-    let requestedFilename = decodeURIComponent(params.filename || "document.pdf");
-    
+    let requestedFilename = "document.pdf";
+
+    if (context && context.params) {
+      const resolvedParams = await context.params;
+      if (resolvedParams?.filename) {
+        requestedFilename = decodeURIComponent(resolvedParams.filename);
+      }
+    }
+
     // Ensure filename ends with .pdf
     if (!requestedFilename.toLowerCase().endsWith(".pdf")) {
       requestedFilename += ".pdf";
     }
 
     // Clean filename for HTTP header
-    const safeFilename = requestedFilename.replace(/["\r\n]/g, "");
+    const safeFilename = requestedFilename.replace(/["\r\n]/g, "_");
 
     const searchParams = request.nextUrl.searchParams;
-    const targetUrl = searchParams.get("url") || searchParams.get("file");
+    let targetUrl = searchParams.get("url") || searchParams.get("file");
     const isDownload = searchParams.get("dl") === "1" || searchParams.get("download") === "1";
 
     const dispositionType = isDownload ? "attachment" : "inline";
@@ -31,26 +37,31 @@ export async function GET(
       "Content-Disposition",
       `${dispositionType}; filename="${safeFilename}"; filename*=UTF-8''${encodeURIComponent(safeFilename)}`
     );
-    headers.set("Cache-Control", "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800");
+    headers.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
 
     // Case 1: External URL (e.g. Sanity CDN: https://cdn.sanity.io/...)
     if (targetUrl && (targetUrl.startsWith("http://") || targetUrl.startsWith("https://"))) {
-      const response = await fetch(targetUrl, {
-        headers: {
-          Accept: "application/pdf,*/*",
-        },
-      });
+      try {
+        const response = await fetch(targetUrl, {
+          headers: {
+            Accept: "application/pdf,*/*",
+          },
+        });
 
-      if (!response.ok) {
-        console.error(`[PDF Proxy] Failed to fetch upstream PDF: ${targetUrl} (${response.status})`);
+        if (!response.ok) {
+          console.error(`[PDF Proxy] Upstream fetch failed (${response.status}) for: ${targetUrl}`);
+          return serveFallbackPdf(safeFilename, dispositionType);
+        }
+
+        const buffer = await response.arrayBuffer();
+        return new Response(buffer, {
+          status: 200,
+          headers,
+        });
+      } catch (fetchErr) {
+        console.error("[PDF Proxy] Error fetching remote PDF:", fetchErr);
         return serveFallbackPdf(safeFilename, dispositionType);
       }
-
-      const buffer = await response.arrayBuffer();
-      return new NextResponse(Buffer.from(buffer), {
-        status: 200,
-        headers,
-      });
     }
 
     // Case 2: Local file in /public/
@@ -59,10 +70,14 @@ export async function GET(
       localRelativePath = "documents/DefaultFile_1.pdf";
     }
 
+    try {
+      localRelativePath = decodeURIComponent(localRelativePath);
+    } catch {}
+
     const publicPath = path.join(process.cwd(), "public", localRelativePath);
-    if (fs.existsSync(publicPath)) {
+    if (fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
       const fileBuffer = fs.readFileSync(publicPath);
-      return new NextResponse(fileBuffer, {
+      return new Response(fileBuffer, {
         status: 200,
         headers,
       });
@@ -70,9 +85,9 @@ export async function GET(
 
     // Fallback if local file not found
     return serveFallbackPdf(safeFilename, dispositionType);
-  } catch (error) {
-    console.error("[PDF Proxy Error]:", error);
-    return new NextResponse("Internal Server Error while rendering PDF", { status: 500 });
+  } catch (error: any) {
+    console.error("[PDF Proxy Error]:", error?.message || error);
+    return serveFallbackPdf("Document.pdf", "inline");
   }
 }
 
@@ -87,8 +102,8 @@ function serveFallbackPdf(filename: string, dispositionType: string) {
 
   if (fs.existsSync(fallbackPath)) {
     const fileBuffer = fs.readFileSync(fallbackPath);
-    return new NextResponse(fileBuffer, { status: 200, headers });
+    return new Response(fileBuffer, { status: 200, headers });
   }
 
-  return new NextResponse("PDF Not Found", { status: 404 });
+  return new Response("PDF Not Found", { status: 404 });
 }

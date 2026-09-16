@@ -146,10 +146,8 @@ const MANDATORY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
       { text: "5. Utilization Certificates", id: "sec-financial-utilization" },
       { text: "6. Finance Policy", id: "sec-financial-finance_policy" },
       { text: "7. Purchase & Procurement Policy", id: "sec-financial-procurement" },
-      { text: "8. Infrastructure Development Policy", id: "sec-financial-infrastructure_policy" },
-      { text: "9. Approved Fee Structure", id: "sec-financial-fee_structure" },
-      { text: "10. AFRC Orders", id: "sec-financial-afrc_orders" },
-      { text: "11. Scholarship Details", id: "sec-financial-scholarship" },
+      { text: "8. Approved Fee Structure / AFRC Orders", id: "sec-financial-fee_structure" },
+      { text: "9. Scholarship Details", id: "sec-financial-scholarship" },
     ]
   },
   {
@@ -250,9 +248,7 @@ export default function MandatoryDisclosuresPage() {
       "sec-financial-utilization",
       "sec-financial-finance_policy",
       "sec-financial-procurement",
-      "sec-financial-infrastructure_policy",
       "sec-financial-fee_structure",
-      "sec-financial-afrc_orders",
       "sec-financial-scholarship",
       "sec-governance",
       "sec-gov-structure",
