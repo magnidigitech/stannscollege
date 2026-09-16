@@ -28,7 +28,7 @@ import {
   Scale,
   GraduationCap,
   Layers,
-  Search,
+  Quote,
 } from "lucide-react";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
@@ -38,13 +38,20 @@ import { getResearchData, DEFAULT_RESEARCH_DATA } from "@/lib/sanity";
 // Sidebar categories matching 9.Research & Innovation.docx (1 to 8)
 const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   {
+    catSlug: "sec-about",
+    title: "About Research & Innovation",
+    sectionId: "sec-about",
+    items: [
+      { text: "About Research & Innovation at St. Ann's", id: "sec-about" },
+    ],
+  },
+  {
     catSlug: "sec-policy",
     title: "1. Research Promotion, Ethics & Funding Policy",
     sectionId: "sec-policy",
     items: [
-      { text: "Policy Objectives & Principles", id: "sec-policy-principles" },
-      { text: "Ethics & Integrity Framework", id: "sec-policy-ethics" },
-      { text: "Seed Grants & Funding Policy (PDF)", id: "sec-policy-doc" },
+      { text: "Policy Framework & Commitments", id: "sec-policy" },
+      { text: "View Policy Document (PDF)", id: "sec-policy-doc" },
     ],
   },
   {
@@ -52,10 +59,11 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     title: "2. Research & Development Cell (RDC)",
     sectionId: "sec-rdc",
     items: [
-      { text: "About RDC & Overview", id: "sec-rdc-about" },
+      { text: "About RDC", id: "sec-rdc-about" },
       { text: "Vision & Mission", id: "sec-rdc-vision" },
-      { text: "Core Objectives", id: "sec-rdc-objectives" },
+      { text: "Key Objectives", id: "sec-rdc-objectives" },
       { text: "Major Initiatives", id: "sec-rdc-initiatives" },
+      { text: "Institutional Commitment", id: "sec-rdc-commitment" },
       { text: "RDC Annual Activity Reports", id: "sec-rdc-reports" },
     ],
   },
@@ -64,10 +72,12 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     title: "3. Research Infrastructure",
     sectionId: "sec-infra",
     items: [
-      { text: "Dedicated Research Labs", id: "sec-infra-labs" },
-      { text: "Advanced Analytical Equipment", id: "sec-infra-equipment" },
-      { text: "Library & E-Resources Gateway", id: "sec-infra-library" },
-      { text: "High-Performance ICT & Computing", id: "sec-infra-ict" },
+      { text: "Research Laboratories", id: "sec-infra-labs" },
+      { text: "Laboratory Facilities & Equipment", id: "sec-infra-equipment" },
+      { text: "Departmental Research Facilities", id: "sec-infra-dept" },
+      { text: "Library & E-Resources", id: "sec-infra-library" },
+      { text: "DELNET / Digital Resources", id: "sec-infra-delnet" },
+      { text: "ICT & Computational Facilities", id: "sec-infra-ict" },
     ],
   },
   {
@@ -76,7 +86,7 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     sectionId: "sec-publications",
     items: [
       { text: "Faculty & Students Publications", id: "sec-pub-faculty-students" },
-      { text: "Paper Presentations in Conferences", id: "sec-pub-presentations" },
+      { text: "Faculty & Student Paper Presentations", id: "sec-pub-presentations" },
       { text: "Journals, Books & Book Chapters", id: "sec-pub-books" },
     ],
   },
@@ -85,8 +95,8 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     title: "5. Patents / Start-ups / Innovations",
     sectionId: "sec-patents",
     items: [
-      { text: "Innovation Initiatives", id: "sec-patents-initiatives" },
-      { text: "Year-wise Innovation & IPR Activities", id: "sec-patents-years" },
+      { text: "Major Innovation Initiatives", id: "sec-patents-initiatives" },
+      { text: "Year-wise Innovation & IPR Activities", id: "sec-patents-matrix" },
     ],
   },
   {
@@ -95,9 +105,10 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     sectionId: "sec-ipr",
     items: [
       { text: "About IPR Cell (Est. 01-09-2022)", id: "sec-ipr-about" },
-      { text: "IPR Objectives & Activities", id: "sec-ipr-objectives" },
-      { text: "Expected Outcomes & Impact", id: "sec-ipr-outcomes" },
-      { text: "IPR Annual Reports", id: "sec-ipr-reports" },
+      { text: "Objectives & Major Activities", id: "sec-ipr-objectives" },
+      { text: "Expected Outcomes", id: "sec-ipr-outcomes" },
+      { text: "Annual Activity Reports", id: "sec-ipr-reports" },
+      { text: "Intellectual Property Policy", id: "sec-ipr-policy" },
     ],
   },
   {
@@ -105,10 +116,11 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     title: "7. ED / Innovation & Start-Up Centre",
     sectionId: "sec-edc",
     items: [
-      { text: "Vision & Objectives", id: "sec-edc-vision" },
-      { text: "Key Activities & Mentorship", id: "sec-edc-activities" },
-      { text: "Women Entrepreneurship Cell", id: "sec-edc-women" },
-      { text: "ED Annual Reports", id: "sec-edc-reports" },
+      { text: "About Centre & Vision", id: "sec-edc-about" },
+      { text: "Objectives & Major Activities", id: "sec-edc-objectives" },
+      { text: "Industry & Women Entrepreneurship", id: "sec-edc-women" },
+      { text: "Annual Activity Reports", id: "sec-edc-reports" },
+      { text: "ED & Start-Up Policy", id: "sec-edc-policy" },
     ],
   },
   {
@@ -116,16 +128,17 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     title: "8. Institution Innovation Council (IIC)",
     sectionId: "sec-iic",
     items: [
-      { text: "About IIC & Industry Cell", id: "sec-iic-about" },
-      { text: "Objectives & Key Activities", id: "sec-iic-objectives" },
-      { text: "IIC Annual Reports", id: "sec-iic-reports" },
+      { text: "About the Cell & Objectives", id: "sec-iic-about" },
+      { text: "Key Activities & Outcomes", id: "sec-iic-activities" },
+      { text: "Annual Activity Reports", id: "sec-iic-reports" },
+      { text: "IIC Policy", id: "sec-iic-policy" },
     ],
   },
 ];
 
 export default function ResearchInnovationPage() {
   const [data, setData] = useState<any>(DEFAULT_RESEARCH_DATA);
-  const [activeSectionId, setActiveSectionId] = useState<string>("sec-policy");
+  const [activeSectionId, setActiveSectionId] = useState<string>("sec-about");
   const [previewPdf, setPreviewPdf] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
@@ -181,9 +194,44 @@ export default function ResearchInnovationPage() {
             
             {/* Top Ashoka Chakra Subtext Box */}
             <SubtextBox
-              subtext="Fostering a vibrant ecosystem of rigorous intellectual inquiry, sponsored faculty research, high-impact scholarly publications, patent disclosures, and student entrepreneurship at St. Ann's College of Engineering & Technology."
+              subtext="At St. Ann’s College for Women, Gorantla, Guntur, research and innovation foster academic excellence, creativity, critical thinking and societal impact. Fostering a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives."
               className="mb-2 shadow-sm"
             />
+
+            {/* ========================================================= */}
+            {/* OVERVIEW SECTION: About Research & Innovation at St. Ann's */}
+            {/* ========================================================= */}
+            <section
+              id="sec-about"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-6"
+            >
+              <div className="border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <span>Institutional Overview</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
+                  About Research &amp; Innovation at St. Ann’s
+                </h2>
+              </div>
+
+              <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+                <p>
+                  At <strong className="text-slate-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong>, research and innovation foster academic excellence, creativity, critical thinking and societal impact. The College encourages faculty and students to engage in research, innovative projects, interdisciplinary collaboration, publications and knowledge sharing.
+                </p>
+                <p>
+                  Through a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives, nurturing women researchers and innovators prepared to contribute to a knowledge-driven and <strong className="text-slate-900 font-bold">Viksit Bharat</strong>.
+                </p>
+              </div>
+
+              {/* Tagline / Quote */}
+              <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-100/80 text-center shadow-xs">
+                <Quote className="w-6 h-6 text-blue-400 mx-auto mb-2 opacity-60" />
+                <p className="text-base sm:text-lg font-bold text-amber-900 italic">
+                  “Research inspires discovery. Innovation transforms ideas into impact.”
+                </p>
+              </div>
+            </section>
 
             {/* ========================================================= */}
             {/* SECTION 1: Research Promotion, Ethics & Funding Policy    */}
@@ -204,69 +252,32 @@ export default function ResearchInnovationPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => openPdfModal(data?.policy?.pdfUrl, "Research Promotion, Ethics & Funding Policy")}
+                  onClick={() => openPdfModal(data?.researchPolicy?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Research Promotion, Ethics & Funding Policy")}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] text-white hover:bg-blue-900 transition-all text-xs font-bold shadow-sm shrink-0 cursor-pointer"
                 >
                   <FileText className="w-4 h-4 text-amber-300" />
-                  <span>Research Policy (PDF)</span>
+                  <span>View PDF Research Policy</span>
                   <Eye className="w-3.5 h-3.5 text-blue-200" />
                 </button>
               </div>
 
-              {/* Tagline / Overview */}
-              <div id="sec-policy-principles" className="scroll-mt-56 p-5 bg-gradient-to-r from-blue-50/90 to-indigo-50/60 rounded-2xl border border-blue-100/80 mb-8">
-                <p className="text-sm sm:text-base font-semibold text-blue-950 leading-relaxed">
-                  {data?.policy?.tagline ||
-                    "Promoting Academic Integrity, Innovative Thinking, Rigorous Peer-Reviewed Publications & Institutional Research Grants"}
+              <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed mb-6">
+                <p>
+                  At <strong className="text-slate-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong>, research is promoted as a key component of academic excellence, innovation, and societal development. The College encourages faculty and students to undertake meaningful, multidisciplinary, and socially relevant research.
                 </p>
-                {data?.policy?.overview && (
-                  <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed">
-                    {data.policy.overview}
-                  </p>
-                )}
+                <p>
+                  The policy provides a framework for research promotion, ethical conduct, plagiarism prevention, intellectual property, funding, publications, and collaborations, ensuring integrity, transparency, accountability, and originality in all research activities.
+                </p>
+                <p>
+                  The College is committed to fostering a responsible research culture that supports innovation, higher studies, women’s empowerment, and community development.
+                </p>
               </div>
 
-              {/* Key Pillars */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-                <div id="sec-policy-ethics" className="scroll-mt-56 p-6 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-                  <div className="flex items-center gap-2.5 text-blue-900 font-bold text-sm">
-                    <ShieldCheck className="w-5 h-5 text-blue-600" />
-                    <span>Research Ethics &amp; Integrity</span>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Upholding the highest standards of academic honesty, originality, plagiarism avoidance (strict Turnitin/Urkund verification), ethical animal/human clearances, and responsible data management.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-                  <div className="flex items-center gap-2.5 text-blue-900 font-bold text-sm">
-                    <Sparkles className="w-5 h-5 text-amber-500" />
-                    <span>Seed Grants &amp; Financial Incentives</span>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Allocating institutional seed capital for faculty-led pilot investigations, interdisciplinary research projects, patent filing subsidies, and reimbursement for attending national/international symposiums.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-                  <div className="flex items-center gap-2.5 text-blue-900 font-bold text-sm">
-                    <GraduationCap className="w-5 h-5 text-emerald-600" />
-                    <span>Student Research Fellowships</span>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Empowering undergraduate and postgraduate scholars with mentored mini-projects, conference paper sponsorships, awards for high-impact journal indexing, and participation in hackathons.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-                  <div className="flex items-center gap-2.5 text-blue-900 font-bold text-sm">
-                    <FileCheck2 className="w-5 h-5 text-purple-600" />
-                    <span>Scrutiny &amp; Regulatory Compliance</span>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Institutional Research Advisory Board monitoring research compliance, grant proposal vetting, timeline milestones, and alignment with national science &amp; technology missions.
-                  </p>
-                </div>
+              {/* Tagline */}
+              <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/70 text-center mb-6">
+                <p className="text-sm sm:text-base font-bold text-amber-900">
+                  “Research with Integrity • Innovation with Purpose • Knowledge for Society”
+                </p>
               </div>
 
               {/* Policy Download Banner */}
@@ -282,11 +293,11 @@ export default function ResearchInnovationPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => openPdfModal(data?.policy?.pdfUrl, "Official Institutional Research Policy Document")}
+                  onClick={() => openPdfModal(data?.researchPolicy?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Official Institutional Research Policy Document")}
                   className="px-4 py-2 bg-amber-400 text-blue-950 hover:bg-amber-300 font-bold text-xs rounded-xl transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer shadow-sm"
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  <span>View Official PDF</span>
+                  <span>View PDF Research Policy</span>
                 </button>
               </div>
             </section>
@@ -310,24 +321,23 @@ export default function ResearchInnovationPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => openPdfModal(data?.rdc?.pdfUrl, "RDC Policy & Operating Guidelines")}
+                  onClick={() => openPdfModal(data?.rdc?.rdcPolicyFileUrl || "/documents/DefaultFile_1.pdf", "RDC Policy & Operating Guidelines")}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] text-white hover:bg-blue-900 transition-all text-xs font-bold shadow-sm shrink-0 cursor-pointer"
                 >
                   <FileText className="w-4 h-4 text-amber-300" />
-                  <span>RDC Policy (PDF)</span>
+                  <span>View PDF: RDC</span>
                   <Eye className="w-3.5 h-3.5 text-blue-200" />
                 </button>
               </div>
 
-              {/* Tagline / Overview */}
-              <div id="sec-rdc-about" className="scroll-mt-56 p-5 bg-gradient-to-r from-slate-50 to-blue-50/50 rounded-2xl border border-slate-200/80 mb-8 space-y-2">
-                <p className="text-sm sm:text-base font-semibold text-blue-950">
-                  {data?.rdc?.tagline ||
-                    "Catalyzing Exploratory Inquiry, Interdisciplinary Projects & Sustainable Innovation across Engineering Disciplines"}
+              {/* About RDC */}
+              <div id="sec-rdc-about" className="scroll-mt-56 space-y-3 mb-8 text-sm sm:text-base text-slate-700 leading-relaxed">
+                <h3 className="text-base font-bold text-[#002147]">About RDC</h3>
+                <p>
+                  The <strong className="text-slate-900 font-bold">Research &amp; Development Cell (RDC)</strong> of St. Ann’s College for Women, Gorantla, Guntur promotes a vibrant culture of research, innovation, consultancy, collaboration, and academic excellence in alignment with UGC guidelines, NEP-2020, and institutional quality initiatives.
                 </p>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {data?.rdc?.overview ||
-                    "The Research and Development (R&D) Cell at St. Ann's College of Engineering & Technology serves as the nerve center for fostering intellectual inquiry, spearheading sponsored research projects, mentoring scholarly publications, and translating academic findings into socio-economic solutions."}
+                <p>
+                  The RDC facilitates and monitors research activities, encourages ethical research practices, supports publications and funded projects, and provides opportunities for faculty and students to engage in innovative, interdisciplinary, and socially relevant research.
                 </p>
               </div>
 
@@ -338,10 +348,9 @@ export default function ResearchInnovationPage() {
                     <Target className="w-4 h-4" />
                     <span>Vision</span>
                   </div>
-                  <h3 className="font-bold text-base text-white">Our Research Vision</h3>
+                  <h4 className="font-bold text-base text-white">Our Vision</h4>
                   <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
-                    {data?.rdc?.vision ||
-                      "To emerge as a premier centre of excellence in engineering research and technological innovation, fostering cutting-edge inquiries that address contemporary global and societal challenges."}
+                    {data?.rdc?.vision || "To foster a dynamic research ecosystem that promotes innovation, knowledge creation, academic excellence, and societal transformation."}
                   </p>
                 </div>
 
@@ -350,30 +359,41 @@ export default function ResearchInnovationPage() {
                     <Rocket className="w-4 h-4" />
                     <span>Mission</span>
                   </div>
-                  <h3 className="font-bold text-base text-white">Our Research Mission</h3>
-                  <p className="text-xs sm:text-sm text-slate-200/90 leading-relaxed">
-                    {data?.rdc?.mission ||
-                      "To provide state-of-the-art infrastructure, encourage high-impact publications, facilitate external funded research, and nurture an ethical, interdisciplinary collaborative research ecosystem."}
-                  </p>
+                  <h4 className="font-bold text-base text-white">Our Mission</h4>
+                  <ul className="space-y-1.5 text-xs sm:text-sm text-slate-200/90 leading-relaxed">
+                    {(data?.rdc?.mission || [
+                      "Nurture research aptitude among faculty and students.",
+                      "Promote innovative and socially relevant research.",
+                      "Strengthen research collaborations and consultancy.",
+                      "Uphold research integrity and ethical standards."
+                    ]).map((m: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-emerald-400 font-bold">•</span>
+                        <span>{m}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
-              {/* 6 Core Objectives */}
+              {/* Key Objectives */}
               <div id="sec-rdc-objectives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                  <span>Key Objectives of the R&amp;D Cell</span>
+                  <span>Key Objectives</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {(data?.rdc?.objectives || [
-                    "Foster a vibrant and sustained research culture across all academic departments.",
-                    "Enhance high-quality publications in Scopus, Web of Science & UGC-CARE indexed journals.",
-                    "Promote interdisciplinary research initiatives addressing complex societal challenges.",
-                    "Facilitate faculty in securing sponsored grants from DST, SERB, AICTE, UGC, and industry bodies.",
-                    "Conduct capacity-building workshops, research methodology seminars, and grant writing sessions.",
-                    "Establish robust institutional partnerships and collaborative linkages with premier R&D institutes."
+                    "Promote quality research and publications.",
+                    "Encourage funded projects, patents, and consultancy.",
+                    "Facilitate interdisciplinary and collaborative research.",
+                    "Organize research methodology, IPR, and publication ethics programmes.",
+                    "Support research proposal preparation and funding opportunities.",
+                    "Promote student research, innovation, and project-based learning.",
+                    "Develop linkages with universities, industries, NGOs, and research organizations.",
+                    "Maintain institutional records of research, publications, projects, patents, and collaborations."
                   ]).map((obj: string, i: number) => (
-                    <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
                       <span className="w-6 h-6 rounded-lg bg-blue-100 text-blue-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                         {i + 1}
                       </span>
@@ -383,30 +403,43 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
-              {/* 10 Major Initiatives */}
+              {/* Major Initiatives */}
               <div id="sec-rdc-initiatives" className="scroll-mt-56 mb-8">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
-                  <span>Major Initiatives &amp; Research Enablers</span>
+                  <span>Major Initiatives</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {(data?.rdc?.initiatives || [
-                    "Seed Money Grant Scheme for early-stage faculty research projects and experimental setups.",
-                    "Faculty Development Programs (FDPs) on advanced research methodologies and modern simulation tools.",
-                    "Financial Incentive & Recognition Scheme for indexed journal publications and book authorships.",
-                    "Student Research Mentorship Scheme encouraging B.Tech/M.Tech capstone innovation.",
-                    "Annual National & International Conferences organizing thematic technical tracks.",
-                    "Distinguished Lecture Series & Colloquia by eminent national and international scientists.",
-                    "Mandatory Plagiarism Verification via Turnitin/Urkund for all dissertations and manuscripts.",
-                    "Specialized Grant Proposal Clinics assisting faculty in drafting competitive funding submissions.",
-                    "Collaborative MOUs with research institutes, industry labs, and technological incubators.",
-                    "Annual Research Compendium documenting institutional scholarly achievements and citation metrics."
+                    "Research Methodology & FDP Programmes",
+                    "Publication and Research Guidance",
+                    "Research Ethics, Plagiarism & IPR Awareness",
+                    "Seed Funding & Research Incentives",
+                    "Patent and Innovation Support",
+                    "Funded Project & Consultancy Guidance",
+                    "Student Research & Project Activities",
+                    "Interdisciplinary and Collaborative Research",
+                    "Academic and Industry Collaborations",
+                    "Research Grant and Fellowship Awareness"
                   ]).map((init: string, i: number) => (
                     <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200/80 flex items-center gap-3 hover:border-blue-300 transition-colors">
                       <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
                       <span className="text-xs font-medium text-slate-800">{init}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Institutional Commitment */}
+              <div id="sec-rdc-commitment" className="scroll-mt-56 p-5 rounded-2xl bg-slate-50 border border-slate-200 mb-8 space-y-2">
+                <h3 className="text-base font-bold text-[#002147]">Institutional Commitment</h3>
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  {data?.rdc?.commitment || "St. Ann’s College for Women is committed to building a responsible, innovative, and collaborative research ecosystem that contributes to academic excellence, women’s empowerment, community development, and sustainable societal progress."}
+                </p>
+                <div className="pt-2">
+                  <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold">
+                    Research • Innovation • Integrity • Impact
+                  </span>
                 </div>
               </div>
 
@@ -418,7 +451,7 @@ export default function ResearchInnovationPage() {
                     <span>RDC Annual Activity Reports</span>
                   </h3>
                   <span className="text-xs text-slate-500 font-semibold">
-                    {data?.rdc?.annualReports?.length || 0} Reports Available
+                    {data?.rdc?.activityReports?.length || 2} Reports Available
                   </span>
                 </div>
 
@@ -433,7 +466,10 @@ export default function ResearchInnovationPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.rdc?.annualReports || []).map((rep: any, idx: number) => (
+                      {(data?.rdc?.activityReports || [
+                        { year: "2025–2026", title: "RDC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", title: "RDC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((rep: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
@@ -441,7 +477,7 @@ export default function ResearchInnovationPage() {
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(rep.pdfUrl, `${rep.title} (${rep.year})`)}
+                              onClick={() => openPdfModal(rep.fileUrl, rep.title)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
@@ -461,9 +497,9 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-infra"
-              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-6"
             >
-              <div className="border-b border-slate-100 pb-6 mb-8">
+              <div className="border-b border-slate-100 pb-5">
                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
                   <Building2 className="w-4 h-4 text-blue-600" />
                   <span>Section 3 • Laboratories &amp; Computing</span>
@@ -471,49 +507,49 @@ export default function ResearchInnovationPage() {
                 <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
                   3. Research Infrastructure
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  {data?.infrastructure?.tagline ||
-                    "State-of-the-Art Laboratories, Specialized Testing Instrumentation & High-Performance Computing"}
+                <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                  {data?.infrastructure?.description ||
+                    "St. Ann’s College for Women, Gorantla, Guntur provides a supportive academic environment for research, innovation, experimentation and knowledge development. The institution utilizes its departmental laboratories, library resources, digital facilities and ICT infrastructure to facilitate faculty and student research activities."}
                 </p>
               </div>
 
               {/* 6 Infrastructure Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {(data?.infrastructure?.items || [
+                {(data?.infrastructure?.facilities || [
                   {
                     id: "sec-infra-labs",
-                    title: "Dedicated Research Labs",
-                    description: "Advanced departmental research laboratories equipped for exploratory experiments, prototype synthesis, and interdisciplinary investigations in emerging engineering disciplines."
+                    title: "Research Laboratories",
+                    description: "The College has departmental laboratories that support practical learning, experimentation, project work and research-oriented academic activities across Science, Computer Science and other disciplines."
                   },
                   {
                     id: "sec-infra-equipment",
-                    title: "Advanced Analytical Equipment",
-                    description: "High-precision testing rigs, spectral analyzers, digital oscilloscopes, material testing machinery, and modern measurement instruments."
+                    title: "Laboratory Facilities & Equipment",
+                    description: "The laboratories are equipped with essential instruments, equipment and learning resources required for practical training, student projects, demonstrations and faculty research activities."
                   },
                   {
                     id: "sec-infra-dept",
                     title: "Departmental Research Facilities",
-                    description: "Specialized project labs for AI/ML, IoT testbeds, VLSI design tools, renewable energy setups, and structural modeling environments."
+                    description: "Academic departments provide discipline-specific facilities that encourage faculty research, student projects, interdisciplinary learning and innovative academic practices."
                   },
                   {
                     id: "sec-infra-library",
-                    title: "Central Library & E-Resources",
-                    description: "Extensive physical collection and institutional subscriptions to IEEE Xplore, ScienceDirect, SpringerLink, UGC-CARE indexed journals, and digital archives."
+                    title: "Library & E-Resources",
+                    description: "The College Library provides access to a wide range of books, journals, reference materials and digital learning resources that support teaching, learning and research."
                   },
                   {
                     id: "sec-infra-delnet",
-                    title: "DELNET & Digital Repository Access",
-                    description: "Integrated inter-library lending network, institutional e-thesis repositories, open-access scholarly databases, and global research paper access."
+                    title: "DELNET / Digital Resources",
+                    description: "The institution provides access to DELNET and digital resources, enabling students and faculty to explore scholarly literature, bibliographic databases, e-resources and academic information beyond the physical library collection."
                   },
                   {
                     id: "sec-infra-ict",
-                    title: "High-Performance ICT & Computing Hub",
-                    description: "Modern compute clusters, GPU-powered nodes for AI computations, campus-wide high-speed fiber backbone, and dedicated cloud computing environments."
+                    title: "ICT & Computational Facilities",
+                    description: "ICT-enabled classrooms, computer facilities, internet connectivity and relevant software applications support data analysis, digital research, project development, online learning and academic collaboration."
                   }
                 ]).map((fac: any, idx: number) => {
                   const icons = [Microscope, Cpu, Layers, Library, BookOpen, Compass];
                   const Icon = icons[idx % icons.length];
-                  const cardId = fac.id || (idx === 0 ? "sec-infra-labs" : idx === 1 ? "sec-infra-equipment" : idx === 3 ? "sec-infra-library" : idx === 5 ? "sec-infra-ict" : undefined);
+                  const cardId = fac.id || (idx === 0 ? "sec-infra-labs" : idx === 1 ? "sec-infra-equipment" : idx === 2 ? "sec-infra-dept" : idx === 3 ? "sec-infra-library" : idx === 4 ? "sec-infra-delnet" : "sec-infra-ict");
 
                   return (
                     <div
@@ -539,13 +575,13 @@ export default function ResearchInnovationPage() {
             </section>
 
             {/* ========================================================= */}
-            {/* SECTION 4: Research Publications                          */}
+            {/* SECTION 4: Research Publications & Scholarly Contributions */}
             {/* ========================================================= */}
             <section
               id="sec-publications"
-              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-8"
             >
-              <div className="border-b border-slate-100 pb-6 mb-8">
+              <div className="border-b border-slate-100 pb-5">
                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
                   <BookOpen className="w-4 h-4 text-blue-600" />
                   <span>Section 4 • Scholarly Contributions</span>
@@ -553,22 +589,15 @@ export default function ResearchInnovationPage() {
                 <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
                   4. Research Publications &amp; Scholarly Contributions
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  {data?.publications?.tagline ||
-                    "Scopus, Web of Science, UGC-CARE Indexed Journals, Authored Books & Research Proceedings"}
-                </p>
               </div>
 
-              {/* Table 1: Faculty & Student Publications */}
-              <div id="sec-pub-faculty-students" className="scroll-mt-56 space-y-4 mb-10">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                    <span>Faculty &amp; Students Research Publications</span>
-                  </h3>
-                  <span className="text-xs text-slate-500 font-semibold">
-                    {data?.publications?.facultyPublications?.length || 0} Academic Years
-                  </span>
+              {/* Sub-part 1: Publications */}
+              <div id="sec-pub-faculty-students" className="scroll-mt-56 space-y-4">
+                <div>
+                  <h3 className="text-lg font-bold text-[#002147]">Publications</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    St. Ann’s College for Women, Gorantla, Guntur promotes quality research and scholarly contributions by faculty members and students. The institution encourages publication of research findings in peer-reviewed, UGC-recognized, Scopus/Web of Science indexed, and other reputed journals, subject to applicable norms.
+                  </p>
                 </div>
 
                 <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xs">
@@ -576,29 +605,35 @@ export default function ResearchInnovationPage() {
                     <thead>
                       <tr className="bg-[#002147] text-white font-bold uppercase tracking-wider">
                         <th className="py-3 px-4 w-12 text-center">#</th>
-                        <th className="py-3 px-4">Academic Year</th>
-                        <th className="py-3 px-4">Category / Level</th>
-                        <th className="py-3 px-4">Title / Indexed Metrics</th>
-                        <th className="py-3 px-4 text-center w-24">Count</th>
-                        <th className="py-3 px-4 text-center w-36">Document</th>
+                        <th className="py-3 px-4">Year</th>
+                        <th className="py-3 px-4 text-center">Faculty Publications</th>
+                        <th className="py-3 px-4 text-center">Students Publications</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.publications?.facultyPublications || []).map((pub: any, idx: number) => (
+                      {(data?.scholarlyContributions?.publications || [
+                        { year: "2026–2027", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2025–2026", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((pub: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{pub.year}</td>
-                          <td className="py-3.5 px-4 font-semibold text-slate-800">{pub.category}</td>
-                          <td className="py-3.5 px-4 text-slate-700">
-                            <span className="font-semibold block">{pub.title}</span>
-                            {pub.description && <span className="text-[11px] text-slate-500">{pub.description}</span>}
-                          </td>
-                          <td className="py-3.5 px-4 text-center font-black text-blue-900">{pub.totalCount || "—"}</td>
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(pub.pdfUrl, `${pub.title} (${pub.year})`)}
+                              onClick={() => openPdfModal(pub.facultyFileUrl, `Faculty Publications (${pub.year})`)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View PDF</span>
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => openPdfModal(pub.studentFileUrl, `Students Publications (${pub.year})`)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-indigo-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
                               <span>View PDF</span>
@@ -611,16 +646,13 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
-              {/* Table 2: Paper Presentations */}
-              <div id="sec-pub-presentations" className="scroll-mt-56 space-y-4 mb-10">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
-                    <Award className="w-5 h-5 text-amber-600" />
-                    <span>Faculty &amp; Student Paper Presentations in Conferences</span>
-                  </h3>
-                  <span className="text-xs text-slate-500 font-semibold">
-                    {data?.publications?.paperPresentations?.length || 0} Academic Years
-                  </span>
+              {/* Sub-part 2: Paper Presentations */}
+              <div id="sec-pub-presentations" className="scroll-mt-56 space-y-4">
+                <div>
+                  <h3 className="text-lg font-bold text-[#002147]">Paper Presentations</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    The College encourages faculty members and students to disseminate their research findings through paper presentations at national and international conferences, seminars, symposiums, workshops, and academic forums. These activities provide opportunities for scholarly exchange, professional development, and wider dissemination of research outcomes.
+                  </p>
                 </div>
 
                 <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xs">
@@ -629,31 +661,36 @@ export default function ResearchInnovationPage() {
                       <tr className="bg-[#002147] text-white font-bold uppercase tracking-wider">
                         <th className="py-3 px-4 w-12 text-center">#</th>
                         <th className="py-3 px-4">Academic Year</th>
-                        <th className="py-3 px-4">Forum / Level</th>
-                        <th className="py-3 px-4">Proceedings &amp; Presentation Title</th>
-                        <th className="py-3 px-4 text-center w-24">Count</th>
-                        <th className="py-3 px-4 text-center w-36">Document</th>
+                        <th className="py-3 px-4 text-center">Faculty Paper Presentations</th>
+                        <th className="py-3 px-4 text-center">Student Paper Presentations</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.publications?.paperPresentations || []).map((pres: any, idx: number) => (
+                      {(data?.scholarlyContributions?.paperPresentations || [
+                        { year: "2025–2026", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", facultyFileUrl: "/documents/DefaultFile_1.pdf", studentFileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((pres: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{pres.year}</td>
-                          <td className="py-3.5 px-4 font-semibold text-slate-800">{pres.category}</td>
-                          <td className="py-3.5 px-4 text-slate-700">
-                            <span className="font-semibold block">{pres.title}</span>
-                            {pres.description && <span className="text-[11px] text-slate-500">{pres.description}</span>}
-                          </td>
-                          <td className="py-3.5 px-4 text-center font-black text-blue-900">{pres.totalCount || "—"}</td>
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(pres.pdfUrl, `${pres.title} (${pres.year})`)}
+                              onClick={() => openPdfModal(pres.facultyFileUrl, `Faculty Paper Presentations (${pres.year})`)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
-                              <span>View PDF</span>
+                              <span>View PDF →</span>
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => openPdfModal(pres.studentFileUrl, `Student Paper Presentations (${pres.year})`)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-indigo-200/60"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View PDF →</span>
                             </button>
                           </td>
                         </tr>
@@ -663,16 +700,23 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
-              {/* Table 3: Books and Book Chapters */}
+              {/* Sub-part 3: Journals, Books & Book Chapters */}
               <div id="sec-pub-books" className="scroll-mt-56 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-emerald-600" />
-                    <span>Faculty Journals, Authored Books &amp; Book Chapters</span>
-                  </h3>
-                  <span className="text-xs text-slate-500 font-semibold">
-                    {data?.publications?.booksAndChapters?.length || 0} Academic Years
-                  </span>
+                <div>
+                  <h3 className="text-lg font-bold text-[#002147]">Journals, Books &amp; Book Chapters</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    Faculty members of St. Ann’s College for Women contribute to academic and scholarly development through:
+                  </p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 text-xs text-slate-700 font-medium">
+                    <li className="flex items-center gap-2">• Research Articles in reputed and indexed journals</li>
+                    <li className="flex items-center gap-2">• Textbooks and Reference Books</li>
+                    <li className="flex items-center gap-2">• Edited Books and ISBN Publications</li>
+                    <li className="flex items-center gap-2">• National &amp; International Book Chapters</li>
+                    <li className="flex items-center gap-2">• Departmental Journals and Academic Magazines</li>
+                  </ul>
+                  <p className="text-xs text-slate-500 mt-2 italic">
+                    The institution encourages scholarly writing, publication, knowledge sharing, and dissemination of research across diverse disciplines.
+                  </p>
                 </div>
 
                 <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xs">
@@ -681,31 +725,28 @@ export default function ResearchInnovationPage() {
                       <tr className="bg-[#002147] text-white font-bold uppercase tracking-wider">
                         <th className="py-3 px-4 w-12 text-center">#</th>
                         <th className="py-3 px-4">Academic Year</th>
-                        <th className="py-3 px-4">Publication Type</th>
-                        <th className="py-3 px-4">Publisher &amp; Volume Title</th>
-                        <th className="py-3 px-4 text-center w-24">Count</th>
-                        <th className="py-3 px-4 text-center w-36">Document</th>
+                        <th className="py-3 px-4">Publication Category</th>
+                        <th className="py-3 px-4 text-center w-40">Document</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.publications?.booksAndChapters || []).map((book: any, idx: number) => (
+                      {(data?.scholarlyContributions?.booksAndChapters || [
+                        { year: "2026–2027", title: "Faculty Journals, Books & Book Chapters 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2025–2026", title: "Faculty Journals, Books & Book Chapters 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", title: "Faculty Journals, Books & Book Chapters 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((book: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{book.year}</td>
-                          <td className="py-3.5 px-4 font-semibold text-slate-800">{book.category}</td>
-                          <td className="py-3.5 px-4 text-slate-700">
-                            <span className="font-semibold block">{book.title}</span>
-                            {book.description && <span className="text-[11px] text-slate-500">{book.description}</span>}
-                          </td>
-                          <td className="py-3.5 px-4 text-center font-black text-blue-900">{book.totalCount || "—"}</td>
+                          <td className="py-3.5 px-4 text-slate-700 font-medium">{book.title}</td>
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(book.pdfUrl, `${book.title} (${book.year})`)}
+                              onClick={() => openPdfModal(book.fileUrl, `${book.title}`)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
-                              <span>View PDF</span>
+                              <span>View PDF →</span>
                             </button>
                           </td>
                         </tr>
@@ -721,89 +762,108 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-patents"
-              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-8"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
-                    <Lightbulb className="w-4 h-4 text-amber-500" />
-                    <span>Section 5 • IP Creation &amp; Start-ups</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
-                    5. Patents / Start-ups / Innovations
-                  </h2>
+              <div className="border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
+                  <Lightbulb className="w-4 h-4 text-amber-500" />
+                  <span>Section 5 • IP Creation &amp; Start-ups</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => openPdfModal(data?.patents?.pdfUrl, "Innovation & Start-up Guidelines")}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] text-white hover:bg-blue-900 transition-all text-xs font-bold shadow-sm shrink-0 cursor-pointer"
-                >
-                  <FileText className="w-4 h-4 text-amber-300" />
-                  <span>Innovation Policy (PDF)</span>
-                  <Eye className="w-3.5 h-3.5 text-blue-200" />
-                </button>
-              </div>
-
-              {/* Tagline */}
-              <div className="p-5 bg-gradient-to-r from-amber-50/70 to-orange-50/50 rounded-2xl border border-amber-200/60 mb-8">
-                <p className="text-sm sm:text-base font-semibold text-amber-950">
-                  {data?.patents?.tagline ||
-                    "Transforming Creative Ideation into Protected Intellectual Property, Commercial Licensing & Student-Led Tech Start-ups"}
+                <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
+                  5. Patents / Start-ups / Innovations
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                  {data?.patentsAndInnovations?.description ||
+                    "St. Ann’s College for Women, Gorantla, Guntur promotes innovation, creativity, entrepreneurship, and problem-solving among faculty and students. The institution provides opportunities to develop innovative ideas, projects, prototypes, start-up concepts, and intellectual property."}
                 </p>
               </div>
 
-              {/* 6 Major Initiatives */}
-              <div id="sec-patents-initiatives" className="scroll-mt-56 mb-8">
+              {/* Major Initiatives */}
+              <div id="sec-patents-initiatives" className="scroll-mt-56">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
-                  <span>Key Innovation &amp; Incubation Pillars</span>
+                  <span>Major Initiatives</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {(data?.patents?.initiatives || [
-                    "Innovation Hackathons & Smart India Hackathon internal scrutiny sessions.",
-                    "Patent Prior-Art Searching & Technical Drafting assistance workshops.",
-                    "Prototyping FabLabs equipped with 3D printers and microelectronics kits.",
-                    "One-on-one Mentorship by registered Patent Attorneys and industry entrepreneurs.",
-                    "Pre-incubation facilities and start-up pitch deck competitions.",
-                    "Technology Transfer & Commercialization licensing support for novel prototypes."
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {(data?.patentsAndInnovations?.initiatives || [
+                    "Innovation and Idea Presentation Programmes",
+                    "Student Project Exhibitions and Project Expos",
+                    "Entrepreneurship & Start-up Awareness Programmes",
+                    "Patent & IPR Awareness Programmes",
+                    "Innovation and Prototype Development Activities",
+                    "Incubation and Entrepreneurship Support"
                   ]).map((init: string, i: number) => (
                     <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
                       <span className="w-6 h-6 rounded-lg bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                         {i + 1}
                       </span>
-                      <p className="text-xs text-slate-700 leading-relaxed">{init}</p>
+                      <p className="text-xs text-slate-700 leading-relaxed font-medium">{init}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Year-wise Innovation & IPR Activities */}
-              <div id="sec-patents-years" className="scroll-mt-56 space-y-4">
+              {/* Year-wise Innovation & IPR Activities Table */}
+              <div id="sec-patents-matrix" className="scroll-mt-56 space-y-4">
                 <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-blue-600" />
-                  <span>Year-wise Innovation &amp; IPR Milestones</span>
+                  <span>Year-wise Innovation &amp; IPR Activities</span>
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  {(data?.patents?.yearlyActivities || []).map((yr: any, idx: number) => (
-                    <div key={idx} className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
-                      <div>
-                        <span className="inline-block px-3 py-1 bg-[#002147] text-white rounded-lg text-xs font-bold mb-3">
-                          {yr.year}
-                        </span>
-                        <h4 className="font-bold text-sm text-slate-900 mb-2">{yr.title}</h4>
-                        <p className="text-xs text-slate-600 leading-relaxed mb-4">{yr.description}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => openPdfModal(yr.pdfUrl, `${yr.title} (${yr.year})`)}
-                        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white hover:bg-blue-50 text-blue-700 rounded-xl text-xs font-bold border border-slate-200 transition-colors cursor-pointer"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        <span>View Activity Report</span>
-                      </button>
-                    </div>
-                  ))}
+                <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xs">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-[#002147] text-white font-bold uppercase tracking-wider">
+                        <th className="py-3 px-4 w-12 text-center">#</th>
+                        <th className="py-3 px-4">Academic Year</th>
+                        <th className="py-3 px-4 text-center">Innovation Activities</th>
+                        <th className="py-3 px-4 text-center">Start-up Initiatives</th>
+                        <th className="py-3 px-4 text-center">Patent / IPR Awareness</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 bg-white">
+                      {(data?.patentsAndInnovations?.activitiesMatrix || [
+                        { year: "2026–2027", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2025–2026", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", innovationFileUrl: "/documents/DefaultFile_1.pdf", startupFileUrl: "/documents/DefaultFile_1.pdf", patentIprFileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((row: any, idx: number) => (
+                        <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                          <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
+                          <td className="py-3.5 px-4 font-bold text-blue-900">{row.year}</td>
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => openPdfModal(row.innovationFileUrl, `Innovation Activities (${row.year})`)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View PDF →</span>
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => openPdfModal(row.startupFileUrl, `Start-up Initiatives (${row.year})`)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-emerald-200/60"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View PDF →</span>
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => openPdfModal(row.patentIprFileUrl, `Patent / IPR Awareness (${row.year})`)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-700 hover:bg-purple-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-purple-200/60"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View PDF →</span>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </section>
@@ -813,61 +873,44 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-ipr"
-              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-8"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
-                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                    <span>Section 6 • Statutory IP Framework</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
-                    6. Intellectual Property Rights (IPR) Cell
-                  </h2>
+              <div className="border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Section 6 • Statutory IP Framework</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => openPdfModal(data?.ipr?.pdfUrl, "IPR Policy & Operational Manual")}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] text-white hover:bg-blue-900 transition-all text-xs font-bold shadow-sm shrink-0 cursor-pointer"
-                >
-                  <FileText className="w-4 h-4 text-amber-300" />
-                  <span>IPR Policy (PDF)</span>
-                  <Eye className="w-3.5 h-3.5 text-blue-200" />
-                </button>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
+                  6. Intellectual Property Rights (IPR) Cell
+                </h2>
               </div>
 
-              {/* Tagline / Establishment Details */}
-              <div id="sec-ipr-about" className="scroll-mt-56 p-5 bg-gradient-to-r from-emerald-50/70 to-teal-50/50 rounded-2xl border border-emerald-200/60 mb-8 space-y-2">
-                <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs uppercase tracking-wider">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Constituted on: {data?.ipr?.constitutedDate || "01-09-2022"}</span>
-                </div>
-                <p className="text-sm sm:text-base font-semibold text-emerald-950">
-                  {data?.ipr?.tagline ||
-                    "Protecting Inventions, Safeguarding Creative Expressions & Facilitating Technology Transfer"}
+              {/* Description */}
+              <div id="sec-ipr-about" className="scroll-mt-56 space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+                <p>
+                  The <strong className="text-slate-900 font-bold">Intellectual Property Rights (IPR) Cell</strong> of St. Ann’s College for Women, Gorantla, Guntur, was constituted on <strong className="text-slate-900 font-bold">1 September 2022</strong> to create awareness and promote the effective protection of intellectual property among faculty and students. The Cell encourages innovation, creativity, research ethics, academic integrity, and responsible use of intellectual property.
                 </p>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {data?.ipr?.overview ||
-                    "The Intellectual Property Rights (IPR) Cell is committed to educating, guiding, and counseling faculty, research scholars, and students regarding the creation, protection, and management of intellectual property."}
+                <p>
+                  The IPR Cell provides awareness and guidance on patents, copyrights, trademarks, designs, plagiarism prevention, and related IPR procedures. It also supports research-oriented and innovation-driven academic activities in collaboration with departments and the IQAC.
                 </p>
               </div>
 
-              {/* 6 Objectives */}
-              <div id="sec-ipr-objectives" className="scroll-mt-56 mb-8">
+              {/* Objectives */}
+              <div id="sec-ipr-objectives" className="scroll-mt-56">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Target className="w-5 h-5 text-emerald-600" />
-                  <span>Key Objectives of the IPR Cell</span>
+                  <span>Objectives</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {(data?.ipr?.objectives || [
-                    "Create institutional awareness regarding the importance and scope of Intellectual Property Rights.",
-                    "Guide faculty and students through patent drafting, prior-art searches, and Indian Patent Office filing.",
-                    "Establish a streamlined mechanism for institutional scrutiny and financial support for patent filings.",
-                    "Facilitate copyright, trademark, and design registrations for software products and hardware models.",
-                    "Organize regular seminars, workshops, and training sessions in association with patent attorneys.",
-                    "Promote technology transfer, licensing, and commercialization of patented innovations."
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {(data?.iprCell?.objectives || [
+                    "Create awareness of Intellectual Property Rights among faculty and students.",
+                    "Promote innovation, creativity, and ethical research practices.",
+                    "Create awareness of patents, copyrights, trademarks, and designs.",
+                    "Guide faculty and students on IPR protection and filing procedures.",
+                    "Promote academic integrity and prevention of plagiarism.",
+                    "Encourage documentation and protection of innovative academic work."
                   ]).map((obj: string, i: number) => (
-                    <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
                       <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                         {i + 1}
                       </span>
@@ -878,21 +921,21 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Major Activities */}
-              <div className="mb-8">
+              <div>
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-blue-600" />
-                  <span>Major Activities Conducted</span>
+                  <span>Major Activities</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {(data?.ipr?.activities || [
-                    "World IP Day celebrations featuring keynote talks by IP attorneys and patent examiners.",
-                    "Patent Search & Prior-Art Analysis hands-on training using global patent databases.",
-                    "Interactive workshops on 'How to Convert Academic Projects into Protectable Patents'.",
-                    "Assistance in drafting complete and provisional patent specifications.",
-                    "Copyright protection awareness drives for computer software code, manuals, and literary works.",
-                    "Design registration workshops for novel hardware chassis and aesthetic product shapes.",
-                    "Facilitating institutional MoU partnerships with reputed patent law firms.",
-                    "Maintaining the central institutional IPR registry and filing status repository."
+                  {(data?.iprCell?.majorActivities || [
+                    "IPR awareness programmes, workshops, and seminars.",
+                    "Expert lectures and FDPs on patents, copyrights, and research ethics.",
+                    "Awareness programmes on plagiarism and academic integrity.",
+                    "Guidance on patent and copyright filing procedures.",
+                    "Innovation, creativity, quiz, and poster-presentation activities.",
+                    "Student project exhibitions and idea-presentation sessions.",
+                    "Collaboration with IQAC, departments, experts, and academic institutions.",
+                    "Maintenance of records and reports of IPR-related activities."
                   ]).map((act: string, i: number) => (
                     <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200/80 flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
@@ -903,18 +946,18 @@ export default function ResearchInnovationPage() {
               </div>
 
               {/* Expected Outcomes */}
-              <div id="sec-ipr-outcomes" className="scroll-mt-56 p-6 bg-slate-50 rounded-2xl border border-slate-200 mb-8">
-                <h3 className="text-base font-bold text-[#002147] mb-3 flex items-center gap-2">
+              <div id="sec-ipr-outcomes" className="scroll-mt-56 p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                   <Award className="w-5 h-5 text-amber-500" />
-                  <span>Expected Outcomes &amp; Impact</span>
+                  <span>Expected Outcomes</span>
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {(data?.ipr?.outcomes || [
-                    "Significant increase in published and granted patents by faculty and student inventors.",
-                    "Institutional protection for software algorithms, digital tools, and technical publications.",
-                    "Enhanced NIRF, NAAC, and NBA accreditation scores through validated intellectual capital.",
-                    "Creation of viable revenue models through patent licensing and technology commercialization.",
-                    "A vibrant innovation culture inspiring future generations of engineers and inventors."
+                  {(data?.iprCell?.expectedOutcomes || [
+                    "Enhanced awareness of IPR and research ethics.",
+                    "Greater protection of innovative and creative work.",
+                    "Promotion of academic integrity and research culture.",
+                    "Increased student participation in innovation and entrepreneurship.",
+                    "Strengthening of institutional research and innovation practices."
                   ]).map((outc: string, i: number) => (
                     <div key={i} className="flex items-start gap-2.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
@@ -929,10 +972,10 @@ export default function ResearchInnovationPage() {
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
-                    <span>IPR Cell Annual Reports</span>
+                    <span>Annual Activity Reports</span>
                   </h3>
                   <span className="text-xs text-slate-500 font-semibold">
-                    {data?.ipr?.annualReports?.length || 0} Reports Available
+                    {data?.iprCell?.activityReports?.length || 3} Reports Available
                   </span>
                 </div>
 
@@ -947,7 +990,11 @@ export default function ResearchInnovationPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.ipr?.annualReports || []).map((rep: any, idx: number) => (
+                      {(data?.iprCell?.activityReports || [
+                        { year: "2025–2026", title: "IPR Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", title: "IPR Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2023–2024", title: "IPR Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((rep: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
@@ -955,7 +1002,7 @@ export default function ResearchInnovationPage() {
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(rep.pdfUrl, `${rep.title} (${rep.year})`)}
+                              onClick={() => openPdfModal(rep.fileUrl, rep.title)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
@@ -968,6 +1015,25 @@ export default function ResearchInnovationPage() {
                   </table>
                 </div>
               </div>
+
+              {/* Intellectual Property Policy */}
+              <div id="sec-ipr-policy" className="scroll-mt-56 p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                <div>
+                  <h3 className="text-base font-bold text-[#002147]">Intellectual Property Policy</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                    {data?.iprCell?.policyDescription ||
+                      "The institution recognizes Intellectual Property as an important component of academic, research, and innovation development. The IPR Cell facilitates awareness, documentation, protection, and ethical use of intellectual property generated through academic and research activities. Faculty and students are encouraged to protect their original work while maintaining confidentiality and adhering to institutional and ethical standards."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openPdfModal(data?.iprCell?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Intellectual Property Policy Document")}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
+                >
+                  <FileText className="w-4 h-4 text-amber-300" />
+                  <span>View Policy Document</span>
+                </button>
+              </div>
             </section>
 
             {/* ========================================================= */}
@@ -975,58 +1041,53 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-edc"
-              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-8"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
-                    <Rocket className="w-4 h-4 text-indigo-600" />
-                    <span>Section 7 • Venture Incubation</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
-                    7. Entrepreneurship Development / Innovation &amp; Start-Up Centre
-                  </h2>
+              <div className="border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
+                  <Rocket className="w-4 h-4 text-indigo-600" />
+                  <span>Section 7 • Venture Incubation</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => openPdfModal(data?.edc?.pdfUrl, "Entrepreneurship Development Policy")}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] text-white hover:bg-blue-900 transition-all text-xs font-bold shadow-sm shrink-0 cursor-pointer"
-                >
-                  <FileText className="w-4 h-4 text-amber-300" />
-                  <span>ED Policy (PDF)</span>
-                  <Eye className="w-3.5 h-3.5 text-blue-200" />
-                </button>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
+                  7. Entrepreneurship Development / Innovation &amp; Start-Up Centre
+                </h2>
               </div>
 
-              {/* Tagline / Vision */}
-              <div id="sec-edc-vision" className="scroll-mt-56 p-5 bg-gradient-to-r from-indigo-50/70 to-blue-50/50 rounded-2xl border border-indigo-200/60 mb-8 space-y-2">
-                <p className="text-sm sm:text-base font-semibold text-indigo-950">
-                  {data?.edc?.tagline ||
-                    "Nurturing Student Founders, Promoting Venture Creation & Building Resilient Social & Technological Enterprises"}
+              {/* Description & Vision */}
+              <div id="sec-edc-about" className="scroll-mt-56 space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+                <p>
+                  <strong className="text-slate-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong> promotes entrepreneurship, innovation, creativity, leadership, and self-employment among students. The Entrepreneurship Development / Innovation &amp; Start-Up Centre facilitates entrepreneurial learning, skill development, industry interaction, and awareness of start-up opportunities, contributing to employability and women empowerment.
                 </p>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {data?.edc?.vision ||
-                    "To create a robust incubation and entrepreneurial ecosystem that inspires students to become job creators, technology founders, and innovators addressing national economic priorities."}
-                </p>
+
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-950 text-white space-y-2">
+                  <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
+                    <Target className="w-4 h-4" />
+                    <span>Vision</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
+                    {data?.entrepreneurshipCentre?.vision ||
+                      "To nurture an entrepreneurial and innovation-oriented environment that empowers women students with creativity, leadership, business skills, and self-employment capabilities."}
+                  </p>
+                </div>
               </div>
 
-              {/* 7 Objectives */}
-              <div className="mb-8">
+              {/* Objectives */}
+              <div id="sec-edc-objectives" className="scroll-mt-56">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Target className="w-5 h-5 text-indigo-600" />
-                  <span>Key Objectives of the ED &amp; Start-Up Centre</span>
+                  <span>Objectives</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {(data?.edc?.objectives || [
-                    "Cultivate an entrepreneurial mindset and self-reliance among engineering students.",
-                    "Provide pre-incubation, mentoring, and prototype validation support for early-stage student ventures.",
-                    "Organize business plan competitions, venture bootcamps, and investor pitch sessions.",
-                    "Connect student founders with angel investors, venture capitalists, and government funding schemes.",
-                    "Promote women entrepreneurship through tailored skill workshops and mentorship clinics.",
-                    "Facilitate industry-academia partnerships for practical market exposure and pilot deployments.",
-                    "Encourage rural and social entrepreneurship addressing grassroots community challenges."
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {(data?.entrepreneurshipCentre?.objectives || [
+                    "Promote entrepreneurial and innovative thinking among students.",
+                    "Create awareness of start-ups, entrepreneurship, and government support schemes.",
+                    "Develop leadership, communication, financial literacy, and business management skills.",
+                    "Encourage innovative ideas, projects, prototypes, and business plans.",
+                    "Facilitate interaction with entrepreneurs, industry experts, and professionals.",
+                    "Promote women entrepreneurship and economic empowerment.",
+                    "Strengthen employability through skill-based and industry-oriented learning."
                   ]).map((obj: string, i: number) => (
-                    <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
                       <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                         {i + 1}
                       </span>
@@ -1036,23 +1097,23 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
-              {/* 9 Key Activities */}
-              <div id="sec-edc-activities" className="scroll-mt-56 mb-8">
+              {/* Major Activities */}
+              <div>
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
-                  <span>Major Activities &amp; Mentorship Programs</span>
+                  <span>Major Activities</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {(data?.edc?.activities || [
-                    "Entrepreneurship Awareness Camps (EAC) conducted across all branches.",
-                    "Interactive 'Meet the Founder' sessions with successful college alumni entrepreneurs.",
-                    "Startup Bootcamps focusing on business model canvas, market validation, and revenue forecasting.",
-                    "Guidance on MSME registrations, Startup India recognition, and company incorporation.",
-                    "Pitch deck preparation clinics and mock pitching before investor panels.",
-                    "Industrial visits to startup incubators, technology parks, and manufacturing clusters.",
-                    "Legal and financial advisory clinics on equity structuring, term sheets, and compliance.",
-                    "Specialized hackathons focused on developing commercial-grade minimum viable products (MVPs).",
-                    "Facilitating co-working spaces and prototyping equipment access within campus."
+                  {(data?.entrepreneurshipCentre?.majorActivities || [
+                    "Entrepreneurship Awareness Programmes",
+                    "Workshops, seminars, and training programmes",
+                    "Business idea and business-plan competitions",
+                    "Skill development and employability programmes",
+                    "Financial literacy and entrepreneurship awareness",
+                    "Interaction with entrepreneurs and industry experts",
+                    "Innovation exhibitions and entrepreneurial activities",
+                    "Awareness programmes on government schemes and funding opportunities",
+                    "Add-on and certificate programmes related to entrepreneurship"
                   ]).map((act: string, i: number) => (
                     <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200/80 flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-indigo-600 shrink-0" />
@@ -1062,27 +1123,62 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
-              {/* Women Entrepreneurship Box */}
-              <div id="sec-edc-women" className="scroll-mt-56 p-6 bg-gradient-to-br from-pink-50/70 to-rose-50/50 rounded-2xl border border-pink-200/60 mb-8 space-y-2">
-                <div className="flex items-center gap-2 text-pink-900 font-bold text-xs uppercase tracking-wider">
-                  <Users className="w-4 h-4 text-pink-600" />
-                  <span>Special Initiative</span>
+              {/* Industry Engagement & Women Entrepreneurship */}
+              <div id="sec-edc-women" className="scroll-mt-56 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                  <h4 className="font-bold text-sm text-[#002147]">Industry &amp; Community Engagement</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {data?.entrepreneurshipCentre?.industryEngagement ||
+                      "The Centre encourages collaboration with industries, entrepreneurs, professional bodies, and community organizations to provide practical exposure, internships, training, mentoring, and entrepreneurial learning opportunities."}
+                  </p>
                 </div>
-                <h4 className="font-bold text-sm text-pink-950">Women Entrepreneurship Empowerment Cell</h4>
-                <p className="text-xs text-slate-700 leading-relaxed">
-                  Dedicated mentoring, networking circles, and grant facilitation aimed at empowering female students and alumni to establish technology startups, digital enterprises, and creative ventures.
-                </p>
+
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-pink-50/70 to-rose-50/50 border border-pink-200/60 space-y-2">
+                  <div className="flex items-center gap-2 text-pink-900 font-bold text-xs uppercase tracking-wider">
+                    <Users className="w-4 h-4 text-pink-600" />
+                    <span>Focus Area</span>
+                  </div>
+                  <h4 className="font-bold text-sm text-pink-950">Women Entrepreneurship</h4>
+                  <p className="text-xs text-slate-700 leading-relaxed">
+                    {data?.entrepreneurshipCentre?.womenEntrepreneurship ||
+                      "As a women’s institution, St. Ann’s encourages students to explore self-employment, entrepreneurship, leadership, financial independence, and innovative career pathways through skill development and entrepreneurship awareness initiatives."}
+                  </p>
+                </div>
               </div>
 
-              {/* ED Annual Reports Table */}
+              {/* Expected Outcomes */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
+                  <Award className="w-5 h-5 text-amber-500" />
+                  <span>Expected Outcomes</span>
+                </h3>
+                <p className="text-xs text-slate-600">The Centre aims to develop:</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                  {(data?.entrepreneurshipCentre?.expectedOutcomes || [
+                    "Entrepreneurial mindset and innovative thinking",
+                    "Leadership and managerial competencies",
+                    "Creativity and problem-solving skills",
+                    "Start-up and self-employment awareness",
+                    "Employability and professional skills",
+                    "Confidence and economic empowerment among women students"
+                  ]).map((outc: string, i: number) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
+                      <span className="text-xs text-slate-700 font-medium">{outc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Annual Activity Reports Table */}
               <div id="sec-edc-reports" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
-                    <span>ED &amp; Start-Up Centre Annual Reports</span>
+                    <span>Annual Activity Reports</span>
                   </h3>
                   <span className="text-xs text-slate-500 font-semibold">
-                    {data?.edc?.annualReports?.length || 0} Reports Available
+                    {data?.entrepreneurshipCentre?.activityReports?.length || 3} Reports Available
                   </span>
                 </div>
 
@@ -1097,7 +1193,11 @@ export default function ResearchInnovationPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.edc?.annualReports || []).map((rep: any, idx: number) => (
+                      {(data?.entrepreneurshipCentre?.activityReports || [
+                        { year: "2025–2026", title: "ED Centre Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", title: "ED Centre Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2023–2024", title: "ED Centre Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((rep: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
@@ -1105,7 +1205,7 @@ export default function ResearchInnovationPage() {
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(rep.pdfUrl, `${rep.title} (${rep.year})`)}
+                              onClick={() => openPdfModal(rep.fileUrl, rep.title)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
@@ -1118,6 +1218,25 @@ export default function ResearchInnovationPage() {
                   </table>
                 </div>
               </div>
+
+              {/* Policy */}
+              <div id="sec-edc-policy" className="scroll-mt-56 p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                <div>
+                  <h3 className="text-base font-bold text-[#002147]">Entrepreneurship Development / Innovation &amp; Start-Up Policy</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                    {data?.entrepreneurshipCentre?.policyDescription ||
+                      "The Entrepreneurship Development / Innovation & Start-Up Policy of St. Ann’s College for Women, Gorantla, Guntur provides a framework for promoting entrepreneurship, innovation, creativity, and self-employment among students and faculty. The policy encourages entrepreneurial learning, skill development, mentoring, industry interaction, innovative idea development, and start-up awareness. It aims to create a supportive ecosystem that strengthens employability, innovation, leadership, and women entrepreneurship, in alignment with institutional quality enhancement practices."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openPdfModal(data?.entrepreneurshipCentre?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Entrepreneurship Development / Innovation & Start-Up Policy")}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
+                >
+                  <FileText className="w-4 h-4 text-amber-300" />
+                  <span>View Policy Document</span>
+                </button>
+              </div>
             </section>
 
             {/* ========================================================= */}
@@ -1125,58 +1244,43 @@ export default function ResearchInnovationPage() {
             {/* ========================================================= */}
             <section
               id="sec-iic"
-              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="scroll-mt-56 bg-white border border-slate-200/80 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-sm space-y-8"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-8">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
-                    <Compass className="w-4 h-4 text-purple-600" />
-                    <span>Section 8 • Ministry of Education Initiative</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
-                    8. Institution Innovation Council (IIC) / Institution–Industry Cell
-                  </h2>
+              <div className="border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-700 mb-1">
+                  <Compass className="w-4 h-4 text-purple-600" />
+                  <span>Section 8 • Innovation &amp; Industry Collaboration</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => openPdfModal(data?.iic?.pdfUrl, "Institution Innovation Council Policy")}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] text-white hover:bg-blue-900 transition-all text-xs font-bold shadow-sm shrink-0 cursor-pointer"
-                >
-                  <FileText className="w-4 h-4 text-amber-300" />
-                  <span>IIC Policy (PDF)</span>
-                  <Eye className="w-3.5 h-3.5 text-blue-200" />
-                </button>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#002147] tracking-tight">
+                  8. Institution Innovation Council (IIC) / Institution–Industry Cell
+                </h2>
               </div>
 
-              {/* Tagline / Overview */}
-              <div id="sec-iic-about" className="scroll-mt-56 p-5 bg-gradient-to-r from-purple-50/70 to-indigo-50/50 rounded-2xl border border-purple-200/60 mb-8 space-y-2">
-                <p className="text-sm sm:text-base font-semibold text-purple-950">
-                  {data?.iic?.tagline ||
-                    "Driving Institutional Innovation Ecosystem, Industry Linkages, Hackathons & Nation-Building Collaborative Projects"}
-                </p>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {data?.iic?.overview ||
-                    "Established under the guidelines of the Ministry of Education (MoE's Innovation Cell), the IIC systematically fosters a vibrant innovation ecosystem among faculty and students, promoting hackathons, ideation challenges, and industry-oriented technology development."}
+              {/* About the Cell */}
+              <div id="sec-iic-about" className="scroll-mt-56 space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+                <h3 className="text-base font-bold text-[#002147]">About the Cell</h3>
+                <p>
+                  The <strong className="text-slate-900 font-bold">Institution Innovation Council (IIC) / Institution–Industry Cell</strong> of St. Ann’s College for Women, Gorantla, Guntur promotes innovation, entrepreneurship, creativity, skill development, and industry-oriented learning among students and faculty. The Cell facilitates industry interaction, expert engagement, innovative projects, start-up awareness, incubation support, and academic–industry collaboration in association with the IQAC and academic departments.
                 </p>
               </div>
 
-              {/* 7 Objectives */}
-              <div id="sec-iic-objectives" className="scroll-mt-56 mb-8">
+              {/* Objectives */}
+              <div>
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Target className="w-5 h-5 text-purple-600" />
-                  <span>Key Objectives of the IIC</span>
+                  <span>Objectives</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {(data?.iic?.objectives || [
-                    "Conduct MoE-mandated innovation, IPR, and entrepreneurship activities across all academic quarters.",
-                    "Scout, mentor, and accelerate innovative ideas and student-led prototypes.",
-                    "Organize internal hackathons and facilitate participation in Smart India Hackathon (SIH).",
-                    "Establish active industry-academia collaboration for consultancy, testing, and internships.",
-                    "Host interactive sessions with renowned innovators, serial entrepreneurs, and venture capitalists.",
-                    "Develop institutional capability for participation in national innovation rankings (ARIIA/NIRF Innovation).",
-                    "Create an interdisciplinary platform uniting engineering disciplines for sustainable product development."
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {(data?.iicCell?.objectives || [
+                    "Promote innovation, creativity, and entrepreneurship",
+                    "Develop problem-solving and design-thinking skills",
+                    "Encourage innovative projects and prototypes",
+                    "Strengthen industry–academia interaction",
+                    "Promote start-up and incubation awareness",
+                    "Facilitate research, consultancy, and skill development",
+                    "Enhance employability and industry readiness"
                   ]).map((obj: string, i: number) => (
-                    <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
                       <span className="w-6 h-6 rounded-lg bg-purple-100 text-purple-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                         {i + 1}
                       </span>
@@ -1186,22 +1290,22 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
-              {/* 8 Key Activities */}
-              <div className="mb-8">
+              {/* Key Activities */}
+              <div id="sec-iic-activities" className="scroll-mt-56">
                 <h3 className="text-base font-bold text-[#002147] mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500" />
-                  <span>Key Activities &amp; Annual Initiatives</span>
+                  <span>Key Activities</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {(data?.iic?.activities || [
-                    "Quarterly MoE IIC Calendar Activity executions and report submissions.",
-                    "National Innovation and Startup Policy (NISP) institutional implementation sessions.",
-                    "Smart India Hackathon (SIH) internal college evaluations and mentorship bootcamps.",
-                    "Field exposure visits to premier technological incubators, research labs, and science parks.",
-                    "Hands-on design thinking, critical problem solving, and prototyping workshops.",
-                    "Motivational leadership talks by successful startup founders and alumni change-makers.",
-                    "Industry Advisory Board conclaves for curriculum-industry alignment and collaborative labs.",
-                    "Annual Institutional Innovation Day celebrations and prototype exhibitions."
+                  {(data?.iicCell?.keyActivities || [
+                    "Innovation and entrepreneurship programmes",
+                    "Workshops, seminars, FDPs, and expert lectures",
+                    "Hackathons, idea competitions, and project exhibitions",
+                    "Industry interaction and industrial visits",
+                    "Start-up and incubation awareness programmes",
+                    "Skill development and employability training",
+                    "Industry-oriented projects and collaborations",
+                    "MoUs and collaborative initiatives"
                   ]).map((act: string, i: number) => (
                     <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200/80 flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-purple-600 shrink-0" />
@@ -1211,15 +1315,27 @@ export default function ResearchInnovationPage() {
                 </div>
               </div>
 
+              {/* Expected Outcomes */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
+                  <Award className="w-5 h-5 text-amber-500" />
+                  <span>Expected Outcomes</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  {data?.iicCell?.expectedOutcomes ||
+                    "The Cell aims to foster an innovative and entrepreneurial mindset, enhance students' creativity, leadership, problem-solving and professional skills, and strengthen industry–academia collaboration and employability."}
+                </p>
+              </div>
+
               {/* IIC Annual Reports Table */}
               <div id="sec-iic-reports" className="scroll-mt-56 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[#002147] flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
-                    <span>IIC Annual Activity Reports</span>
+                    <span>Annual Activity Reports</span>
                   </h3>
                   <span className="text-xs text-slate-500 font-semibold">
-                    {data?.iic?.annualReports?.length || 0} Reports Available
+                    {data?.iicCell?.activityReports?.length || 3} Reports Available
                   </span>
                 </div>
 
@@ -1234,7 +1350,11 @@ export default function ResearchInnovationPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {(data?.iic?.annualReports || []).map((rep: any, idx: number) => (
+                      {(data?.iicCell?.activityReports || [
+                        { year: "2025–2026", title: "IIC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2024–2025", title: "IIC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+                        { year: "2023–2024", title: "IIC Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+                      ]).map((rep: any, idx: number) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
                           <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
@@ -1242,7 +1362,7 @@ export default function ResearchInnovationPage() {
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => openPdfModal(rep.pdfUrl, `${rep.title} (${rep.year})`)}
+                              onClick={() => openPdfModal(rep.fileUrl, rep.title)}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
                             >
                               <Eye className="w-3.5 h-3.5" />
@@ -1254,6 +1374,25 @@ export default function ResearchInnovationPage() {
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+              {/* IIC Policy */}
+              <div id="sec-iic-policy" className="scroll-mt-56 p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                <div>
+                  <h3 className="text-base font-bold text-[#002147]">IIC Policy</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                    {data?.iicCell?.policyDescription ||
+                      "The Institution has formulated an Institution Innovation Council (IIC) Policy to foster a culture of innovation, entrepreneurship, research, creativity, and industry collaboration. The policy provides a framework for promoting innovative ideas, mentoring, prototype development, start-up awareness, industry interaction, incubation activities, and student participation in innovation-oriented programmes."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openPdfModal(data?.iicCell?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Institution Innovation Council (IIC) Policy")}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
+                >
+                  <FileText className="w-4 h-4 text-amber-300" />
+                  <span>View IIC Policy →</span>
+                </button>
               </div>
             </section>
 
