@@ -31,6 +31,8 @@ export interface SubtextBoxProps {
  */
 export function AshokaChakra({ className = "h-12 w-12", color = "#000080" }: { className?: string; color?: string }) {
   const spokes = Array.from({ length: 24 }, (_, i) => i * 15);
+  // Round to 4 decimal places to prevent SSR/client hydration mismatch from floating-point drift
+  const r = (v: number) => Math.round(v * 10000) / 10000;
   return (
     <svg
       viewBox="0 0 100 100"
@@ -46,18 +48,18 @@ export function AshokaChakra({ className = "h-12 w-12", color = "#000080" }: { c
       {/* 24 decorative dots on the rim */}
       {spokes.map((angle) => {
         const rad = ((angle + 7.5) * Math.PI) / 180;
-        const cx = 50 + 44.2 * Math.cos(rad);
-        const cy = 50 + 44.2 * Math.sin(rad);
+        const cx = r(50 + 44.2 * Math.cos(rad));
+        const cy = r(50 + 44.2 * Math.sin(rad));
         return <circle key={`dot-${angle}`} cx={cx} cy={cy} r="1.1" fill={color} />;
       })}
 
       {/* 24 Spokes radiating from center hub to inner rim */}
       {spokes.map((angle) => {
         const rad = (angle * Math.PI) / 180;
-        const x1 = 50 + 8.5 * Math.cos(rad);
-        const y1 = 50 + 8.5 * Math.sin(rad);
-        const x2 = 50 + 41.5 * Math.cos(rad);
-        const y2 = 50 + 41.5 * Math.sin(rad);
+        const x1 = r(50 + 8.5 * Math.cos(rad));
+        const y1 = r(50 + 8.5 * Math.sin(rad));
+        const x2 = r(50 + 41.5 * Math.cos(rad));
+        const y2 = r(50 + 41.5 * Math.sin(rad));
         return (
           <line
             key={`spoke-${angle}`}
