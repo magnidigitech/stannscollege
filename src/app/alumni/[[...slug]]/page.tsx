@@ -244,13 +244,13 @@ export default function AlumniPage() {
               <div className="flex flex-col gap-4">
 
                 {/* Sub-text Box */}
-                <SubtextBox variant="tricolor" icon="ashoka-chakra">
-                  <p style={{ color: "var(--sidebar-bg, #1e40af)" }} className="font-medium leading-relaxed">
-                    <mark style={{ color: "var(--sidebar-bg, #1e40af)" }} className="bg-amber-100/75 font-extrabold text-[1.15em] px-1.5 py-0.5 rounded not-italic">
+                <SubtextBox>
+                  <p className="text-slate-800 font-medium leading-relaxed">
+                    <strong className="text-blue-900 font-bold">
                       St. Ann’s College for Women, Gorantla, Guntur
-                    </mark>, fosters meaningful and lifelong alumni engagement through mentorship, career guidance, student interaction, networking and institutional growth.
-                    <span className="block mt-2 text-slate-600 font-medium italic text-sm">
-                      Guided by our institutional philosophy of “Educate, Enrich &amp; Empower,” our alumni are our pride, our ambassadors, and lifelong partners in advancing academic excellence and empowering young women.
+                    </strong>, fosters meaningful and lifelong alumni engagement through mentorship, career guidance, student interaction, networking and institutional growth.
+                    <span className="block mt-2 text-slate-600 font-medium text-sm">
+                      Guided by our institutional philosophy of Educate, Enrich &amp; Empower, our alumni are our pride, our ambassadors, and lifelong partners in advancing academic excellence and empowering young women.
                     </span>
                   </p>
                 </SubtextBox>

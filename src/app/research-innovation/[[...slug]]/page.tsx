@@ -193,13 +193,11 @@ export default function ResearchInnovationPage() {
           {/* Right: Data Elements / Sections */}
           <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
             
-            {/* Top Ashoka Chakra Subtext Box matching Alumni Page */}
-            <SubtextBox variant="tricolor" icon="ashoka-chakra">
-              <p style={{ color: "var(--sidebar-bg, #1e40af)" }} className="font-medium leading-relaxed">
-                <mark style={{ color: "var(--sidebar-bg, #1e40af)" }} className="bg-amber-100/75 font-extrabold text-[1.15em] px-1.5 py-0.5 rounded not-italic">
-                  St. Ann’s College for Women, Gorantla, Guntur
-                </mark>, research and innovation foster academic excellence, creativity, critical thinking, and societal impact. Through a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions, and community-oriented initiatives.
-                <span className="block mt-2 text-slate-600 font-medium italic text-sm">
+            {/* Top Subtext Box */}
+            <SubtextBox>
+              <p className="text-slate-800 font-medium leading-relaxed">
+                At <strong className="text-blue-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong>, research and innovation foster academic excellence, creativity, critical thinking, and societal impact. Through a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions, and community-oriented initiatives.
+                <span className="block mt-2 text-slate-600 font-medium text-sm">
                   Research inspires discovery. Innovation transforms ideas into impact.
                 </span>
               </p>

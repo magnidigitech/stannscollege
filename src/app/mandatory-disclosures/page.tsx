@@ -335,12 +335,12 @@ export default function MandatoryDisclosuresPage() {
               <div className="flex flex-col gap-4">
 
                 {/* Sub-text Box */}
-                <SubtextBox variant="tricolor" icon="ashoka-chakra">
-                  <p style={{ color: "var(--sidebar-bg, #1e40af)" }} className="font-medium leading-relaxed">
-                    <mark style={{ color: "var(--sidebar-bg, #1e40af)" }} className="bg-amber-100/75 font-extrabold text-[1.15em] px-1.5 py-0.5 rounded not-italic">
+                <SubtextBox>
+                  <p className="text-slate-800 font-medium leading-relaxed">
+                    <strong className="text-blue-900 font-bold">
                       St. Ann’s College for Women, Gorantla, Guntur
-                    </mark>, is committed to maintaining transparency, accountability, good governance and compliance with applicable statutory and regulatory requirements. The institution provides relevant information relating to its academic programmes, statutory approvals, affiliations, regulatory compliance, student welfare, financial management, governance and institutional functioning through its official website.
-                    <span className="block mt-2 text-slate-600 font-medium italic text-sm">
+                    </strong>, is committed to maintaining transparency, accountability, good governance and compliance with applicable statutory and regulatory requirements. The institution provides relevant information relating to its academic programmes, statutory approvals, affiliations, regulatory compliance, student welfare, financial management, governance and institutional functioning through its official website.
+                    <span className="block mt-2 text-slate-600 font-medium text-sm">
                       This section provides access to important institutional documents and information for the benefit of students, parents, faculty, stakeholders, regulatory authorities and the general public.
                     </span>
                   </p>
