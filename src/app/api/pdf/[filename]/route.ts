@@ -37,7 +37,9 @@ export async function GET(
       "Content-Disposition",
       `${dispositionType}; filename="${safeFilename}"; filename*=UTF-8''${encodeURIComponent(safeFilename)}`
     );
-    headers.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+    headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    headers.set("Pragma", "no-cache");
+    headers.set("Expires", "0");
 
     // Case 1: External URL (e.g. Sanity CDN: https://cdn.sanity.io/...)
     if (targetUrl && (targetUrl.startsWith("http://") || targetUrl.startsWith("https://"))) {
