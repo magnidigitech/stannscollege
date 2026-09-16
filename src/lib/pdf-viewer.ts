@@ -40,9 +40,8 @@ export function getCleanPdfUrl(url?: string, title?: string, download = false): 
   const cleanName = sanitizePdfFilename(title, "Document");
   const encodedUrl = encodeURIComponent(url);
   const dlParam = download ? "&dl=1" : "";
-  const cacheBuster = `&_t=${Date.now()}`;
   
-  return `/api/pdf/${encodeURIComponent(cleanName)}?url=${encodedUrl}${dlParam}${cacheBuster}`;
+  return `/api/pdf/${encodeURIComponent(cleanName)}?url=${encodedUrl}${dlParam}`;
 }
 
 /**
