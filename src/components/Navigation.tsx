@@ -27,7 +27,12 @@ import {
   Scale,
   Landmark,
   BarChart3,
-  Archive
+  Archive,
+  Award,
+  MessageSquareQuote,
+  Calendar,
+  Image as ImageIcon,
+  ChevronRight
 } from "lucide-react";
 
 export function toSlug(text: string) {
@@ -170,32 +175,98 @@ export default function Navigation() {
 
   const alumniCategories = [
     {
-      title: "I. Governance & Committees",
+      title: "1. About Alumni",
       icon: Users,
+      href: "/alumni#sec-about",
       items: [
-        { text: "About Alumni Engagement", href: "/alumni#sec-about" },
-        { text: "College-Level Alumni Committee", href: "/alumni#sec-committee" },
-        { text: "Registered Alumni Association", href: "/alumni#sec-association" },
-        { text: "Alumni Contributions & Support", href: "/alumni#sec-contributions" },
+        { text: "About Alumni Engagement", href: "/alumni#sec-about-engagement" },
+        { text: "Vision, Mission & Objectives", href: "/alumni#sec-about-vision" },
+        { text: "Role in Institutional Development", href: "/alumni#sec-about-role" },
+        { text: "Alumni–Institution Connect", href: "/alumni#sec-about-connect" },
       ]
     },
     {
-      title: "II. Network & Engagement",
+      title: "2. College-Level Alumni Committee",
+      icon: Users,
+      href: "/alumni#sec-committee",
+      items: [
+        { text: "About the Committee", href: "/alumni#sec-committee-about" },
+        { text: "Alumni Committee Members", href: "/alumni#sec-committee-members" },
+        { text: "Roles & Responsibilities", href: "/alumni#sec-committee-roles" },
+        { text: "Annual Action Plan & Meetings", href: "/alumni#sec-committee-plan" },
+        { text: "Annual Reports", href: "/alumni#sec-committee-reports" },
+      ]
+    },
+    {
+      title: "3. Registered Alumni Association",
+      icon: ShieldCheck,
+      href: "/alumni#sec-association",
+      items: [
+        { text: "About the Alumni Association", href: "/alumni#sec-association-about" },
+        { text: "Registration Details (307 of 2022)", href: "/alumni#sec-association-reg" },
+        { text: "Alumni Association Members", href: "/alumni#sec-association-members" },
+        { text: "Registration & Statutory Documents", href: "/alumni#sec-association-statutory" },
+      ]
+    },
+    {
+      title: "4. Alumni Contributions & Support",
       icon: HeartHandshake,
+      href: "/alumni#sec-contributions",
       items: [
-        { text: "Join the Alumni Network (Form)", href: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
-        { text: "Our Alumni – Our Pride", href: "/alumni#sec-network-pride" },
-        { text: "Voices of Our Alumni", href: "/alumni#sec-network-voices" },
-        { text: "Alumni Feedback & Connect", href: "/alumni#sec-feedback" },
+        { text: "Contributions Register (2026–2027)", href: "/alumni#sec-contributions-register" },
+        { text: "Legal Awareness Programme (14-08-2026)", href: "/alumni#sec-contributions-register" },
+        { text: "Student Counselling Workshop (25-08-2026)", href: "/alumni#sec-contributions-register" },
+        { text: "WEC Empowerment Workshop (09-09-2026)", href: "/alumni#sec-contributions-register" },
       ]
     },
     {
-      title: "III. Events, Media & Desk",
-      icon: Trophy,
+      title: "5. Alumni Network",
+      icon: Award,
+      href: "/alumni#sec-network",
       items: [
-        { text: "Alumni Events & Reunions", href: "/alumni#sec-events" },
-        { text: "Alumni Photo & Media Gallery", href: "/alumni#sec-gallery" },
-        { text: "Alumni Official Contact Desk", href: "/alumni#sec-contact" },
+        { text: "Join Alumni Network (Google Form)", href: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
+        { text: "Our Alumni", href: "/alumni#sec-network-overview" },
+        { text: "Our Alumni – Our Pride", href: "/alumni#sec-network-pride" },
+        { text: "Voices of Our Alumni (Testimonials)", href: "/alumni#sec-network-voices" },
+      ]
+    },
+    {
+      title: "6. Alumni Feedback & Connect",
+      icon: MessageSquareQuote,
+      href: "/alumni#sec-feedback",
+      items: [
+        { text: "Alumni Feedback Framework", href: "/alumni#sec-feedback-info" },
+        { text: "Suggestions & Implemented Outcomes", href: "/alumni#sec-feedback-suggestions" },
+        { text: "Quality Enhancement Connect", href: "/alumni#sec-feedback-quality" },
+      ]
+    },
+    {
+      title: "7. Alumni Events",
+      icon: Calendar,
+      href: "/alumni#sec-events",
+      items: [
+        { text: "Annual Alumni Meet", href: "/alumni#sec-events-overview" },
+        { text: "Batch & Decade Reunions", href: "/alumni#sec-events-list" },
+        { text: "Departmental Alumni Meets", href: "/alumni#sec-events-list" },
+        { text: "Guest Lectures & Mentoring", href: "/alumni#sec-events-list" },
+      ]
+    },
+    {
+      title: "8. Alumni Gallery & Media",
+      icon: ImageIcon,
+      href: "/alumni#sec-gallery",
+      items: [
+        { text: "Photo Gallery & Batch Albums", href: "/alumni#sec-gallery-photos" },
+        { text: "Video Gallery & Messages", href: "/alumni#sec-gallery-videos" },
+      ]
+    },
+    {
+      title: "9. Alumni Contact Information",
+      icon: Phone,
+      href: "/alumni#sec-contact",
+      items: [
+        { text: "Alumni Association Desk", href: "/alumni#sec-contact-desk" },
+        { text: "Campus Address & Contact Details", href: "/alumni#sec-contact-desk" },
       ]
     }
   ];
@@ -1366,7 +1437,7 @@ export default function Navigation() {
 
             {activeMenu === "alumni" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("alumni")}
                 onMouseLeave={handleMouseLeave}
@@ -1375,32 +1446,39 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Alumni Association & Network"
-                  href="/alumni"
-                  buttonText="Visit Alumni Main Page"
-                  icon={Users}
-                  onNavigate={() => setActiveMenu(null)}
-                />
+                <div className="col-span-full">
+                  <DropdownHeaderBanner
+                    title="Alumni Association & Network"
+                    href="/alumni"
+                    buttonText="Visit Alumni Main Page"
+                    icon={Users}
+                    onNavigate={() => setActiveMenu(null)}
+                  />
+                </div>
                 {alumniCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
                         {cat.title}
                       </h4>
-                    </div>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
                           href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
