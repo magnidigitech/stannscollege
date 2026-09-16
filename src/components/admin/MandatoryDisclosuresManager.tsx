@@ -314,11 +314,11 @@ export function MandatoryDisclosuresManager() {
           <div className="flex flex-wrap items-center gap-2 bg-slate-100/80 p-2 rounded-2xl border border-slate-200/70 text-xs">
             {[
               { id: "mandatory", label: "1. Mandatory Disclosure", count: data.mandatoryDisclosureDocs?.length || 0 },
-              { id: "aicte", label: "2. AICTE Approvals", count: data.aicteApprovals?.length || 0 },
-              { id: "ugc", label: "3. UGC Recognition", count: data.ugcDocuments?.length || 0 },
-              { id: "cce", label: "4. CCE Orders (Table A)", count: data.cceOrders?.length || 0 },
-              { id: "apsche", label: "5. APSCHE Orders (Table B)", count: data.apscheOrders?.length || 0 },
-              { id: "anu", label: "6. ANU Affiliations (UG/PG)", count: data.anuAffiliations?.length || 0 },
+              { id: "anu", label: "3. ANU Affiliations (UG/PG)", count: data.anuAffiliations?.length || 0 },
+              { id: "aicte", label: "4. AICTE Approvals", count: data.aicteApprovals?.length || 0 },
+              { id: "ugc", label: "5. UGC Recognition", count: data.ugcDocuments?.length || 0 },
+              { id: "cce", label: "6a. CCE Orders (Table A)", count: data.cceOrders?.length || 0 },
+              { id: "apsche", label: "6b. APSCHE Orders (Table B)", count: data.apscheOrders?.length || 0 },
               { id: "aishe", label: "7. AISHE Reports", count: data.aisheReports?.length || 0 },
               { id: "nirf", label: "8. NIRF Submissions", count: data.nirfSubmissions?.length || 0 },
             ].map((sub) => (
