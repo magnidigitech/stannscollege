@@ -434,28 +434,30 @@ export default function MandatoryDisclosuresPage() {
                         </span>
                         <div>
                           <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            2. Institutional Profile &amp; Programme Details
+                            {data.institutionalProfile?.title || "2. Institutional Profile & Programme Details"}
                           </h4>
-                          <p className="text-xs text-blue-600/80 font-medium">Academic programmes, duration, eligibility, and sanctioned intake</p>
+                          <p className="text-xs text-blue-600/80 font-medium">
+                            {data.institutionalProfile?.subtitle || "Academic programmes, duration, eligibility, and sanctioned intake"}
+                          </p>
                         </div>
                       </div>
                       <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        This section provides comprehensive information about the institution and its academic programmes, including programme names, duration, eligibility, sanctioned intake and other relevant academic particulars.
+                        {data.institutionalProfile?.description || "This section provides comprehensive information about the institution and its academic programmes, including programme names, duration, eligibility, sanctioned intake and other relevant academic particulars."}
                       </p>
                       <div className="flex flex-wrap gap-3 pt-2">
                         <Link
-                          href="/courses"
+                          href={data.institutionalProfile?.programmesLink || "/courses"}
                           className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
                         >
-                          <span>View All Academic Programmes</span>
+                          <span>{data.institutionalProfile?.programmesBtnLabel || "View All Academic Programmes"}</span>
                           <ChevronRight className="h-4 w-4" />
                         </Link>
                         <button
-                          onClick={() => openPdf("/documents/DefaultFile_1.pdf", "Programme Details & Sanctioned Intake")}
+                          onClick={() => openPdf(data.institutionalProfile?.sanctionedOrderFileUrl || "/documents/DefaultFile_1.pdf", data.institutionalProfile?.sanctionedOrderBtnLabel || "Programme Details & Sanctioned Intake")}
                           className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-blue-200/80 hover:bg-[#1e40af] hover:text-white text-blue-700 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
                         >
                           <Eye className="h-4 w-4" />
-                          <span>Sanctioned Strength Order (PDF)</span>
+                          <span>{data.institutionalProfile?.sanctionedOrderBtnLabel || "Sanctioned Strength Order (PDF)"}</span>
                         </button>
                       </div>
                     </div>

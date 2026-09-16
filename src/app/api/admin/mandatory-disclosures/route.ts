@@ -54,6 +54,16 @@ export async function GET(req: NextRequest) {
         "fileUrl": coalesce(file.asset->url, fileUrl),
         "assetId": file.asset->_id
       },
+      institutionalProfile {
+        title,
+        subtitle,
+        description,
+        programmesBtnLabel,
+        programmesLink,
+        sanctionedOrderBtnLabel,
+        "sanctionedOrderFileUrl": coalesce(sanctionedOrderFile.asset->url, sanctionedOrderFileUrl),
+        "sanctionedOrderAssetId": sanctionedOrderFile.asset->_id
+      },
       aicteApprovals[] {
         _key,
         year,
@@ -203,6 +213,8 @@ export async function GET(req: NextRequest) {
         data: {
           ...DEFAULT_MANDATORY_DISCLOSURES,
           ...data,
+          mandatoryDisclosureDocs: data.mandatoryDisclosureDocs?.length ? data.mandatoryDisclosureDocs : DEFAULT_MANDATORY_DISCLOSURES.mandatoryDisclosureDocs,
+          institutionalProfile: data.institutionalProfile || DEFAULT_MANDATORY_DISCLOSURES.institutionalProfile,
           aicteApprovals: data.aicteApprovals?.length ? data.aicteApprovals : DEFAULT_MANDATORY_DISCLOSURES.aicteApprovals,
           ugcDocuments: data.ugcDocuments?.length ? data.ugcDocuments : DEFAULT_MANDATORY_DISCLOSURES.ugcDocuments,
           cceOrders: data.cceOrders?.length ? data.cceOrders : DEFAULT_MANDATORY_DISCLOSURES.cceOrders,
@@ -298,6 +310,24 @@ export async function POST(req: NextRequest) {
       lastUpdated: body.lastUpdated || new Date().toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }),
       verifiedBy: body.verifiedBy || "Principal / IQAC Coordinator",
       mandatoryDisclosureDocs: cleanArrayWithFile(body.mandatoryDisclosureDocs),
+      institutionalProfile: body.institutionalProfile ? {
+        title: body.institutionalProfile.title || "2. Institutional Profile & Programme Details",
+        subtitle: body.institutionalProfile.subtitle || "Academic programmes, duration, eligibility, and sanctioned intake",
+        description: body.institutionalProfile.description || "",
+        programmesBtnLabel: body.institutionalProfile.programmesBtnLabel || "View All Academic Programmes",
+        programmesLink: body.institutionalProfile.programmesLink || "/courses",
+        sanctionedOrderBtnLabel: body.institutionalProfile.sanctionedOrderBtnLabel || "Sanctioned Strength Order (PDF)",
+        sanctionedOrderFileUrl: body.institutionalProfile.sanctionedOrderFileUrl || "",
+        ...(body.institutionalProfile.sanctionedOrderAssetId ? {
+          sanctionedOrderFile: {
+            _type: "file",
+            asset: {
+              _type: "reference",
+              _ref: body.institutionalProfile.sanctionedOrderAssetId,
+            }
+          }
+        } : {})
+      } : DEFAULT_MANDATORY_DISCLOSURES.institutionalProfile,
       aicteApprovals: cleanArrayWithFile(body.aicteApprovals),
       ugcDocuments: cleanArrayWithFile(body.ugcDocuments),
       cceOrders: cleanArrayWithFile(body.cceOrders),

@@ -41,7 +41,7 @@ export function MandatoryDisclosuresManager() {
   const [activeTab, setActiveTab] = useState<"A" | "B" | "C" | "D" | "E" | "F" | "G" | "H">("A");
 
   // Sub-filter for Tab A (Statutory & Regulatory)
-  const [tabASub, setTabASub] = useState<"mandatory" | "aicte" | "ugc" | "cce" | "apsche" | "anu" | "aishe" | "nirf">("mandatory");
+  const [tabASub, setTabASub] = useState<"mandatory" | "profile" | "anu" | "aicte" | "ugc" | "cce" | "apsche" | "aishe" | "nirf">("mandatory");
   // ANU sub-tab
   const [anuFilter, setAnuFilter] = useState<"ug" | "pg">("ug");
 
@@ -181,13 +181,28 @@ export function MandatoryDisclosuresManager() {
   };
 
   const TABS = [
-    { id: "A", letter: "A", label: "Statutory & Regulatory", icon: ShieldCheck, count: (data?.aicteApprovals?.length || 0) + (data?.anuAffiliations?.length || 0) },
+    {
+      id: "A",
+      letter: "A",
+      label: "Statutory & Regulatory",
+      icon: ShieldCheck,
+      count:
+        (data?.mandatoryDisclosureDocs?.length || 0) +
+        1 +
+        (data?.anuAffiliations?.length || 0) +
+        (data?.aicteApprovals?.length || 0) +
+        (data?.ugcDocuments?.length || 0) +
+        (data?.cceOrders?.length || 0) +
+        (data?.apscheOrders?.length || 0) +
+        (data?.aisheReports?.length || 0) +
+        (data?.nirfSubmissions?.length || 0),
+    },
     { id: "B", letter: "B", label: "Regulatory Compliance", icon: Scale, count: data?.regulatoryComplianceDocs?.length || 0 },
     { id: "C", letter: "C", label: "Right to Information", icon: Users, count: (data?.rtiMembers?.length || 0) + (data?.rtiDocuments?.length || 0) },
-    { id: "D", letter: "D", label: "Student Welfare & Grievance", icon: HeartHandshake, count: data?.studentWelfareCards?.length || 6 },
+    { id: "D", letter: "D", label: "Student Welfare & Grievance", icon: HeartHandshake, count: data?.studentWelfareCards?.length || 0 },
     { id: "E", letter: "E", label: "Financial Transparency", icon: Coins, count: data?.financialDocuments?.length || 0 },
-    { id: "F", letter: "F", label: "Governance & Policies", icon: Landmark, count: data?.governanceCards?.length || 6 },
-    { id: "G", letter: "G", label: "Reports & Data", icon: BarChart3, count: (data?.annualReports?.length || 0) + (data?.dataStatsCards?.length || 2) },
+    { id: "F", letter: "F", label: "Governance & Policies", icon: Landmark, count: data?.governanceCards?.length || 0 },
+    { id: "G", letter: "G", label: "Reports & Data", icon: BarChart3, count: (data?.annualReports?.length || 0) + (data?.dataStatsCards?.length || 0) },
     { id: "H", letter: "H", label: "Disclosure Archives", icon: Archive, count: data?.disclosureArchives?.length || 0 },
   ];
 
@@ -314,6 +329,7 @@ export function MandatoryDisclosuresManager() {
           <div className="flex flex-wrap items-center gap-2 bg-slate-100/80 p-2 rounded-2xl border border-slate-200/70 text-xs">
             {[
               { id: "mandatory", label: "1. Mandatory Disclosure", count: data.mandatoryDisclosureDocs?.length || 0 },
+              { id: "profile", label: "2. Institutional Profile & Scope", count: 1 },
               { id: "anu", label: "3. ANU Affiliations (UG/PG)", count: data.anuAffiliations?.length || 0 },
               { id: "aicte", label: "4. AICTE Approvals", count: data.aicteApprovals?.length || 0 },
               { id: "ugc", label: "5. UGC Recognition", count: data.ugcDocuments?.length || 0 },
@@ -368,6 +384,183 @@ export function MandatoryDisclosuresManager() {
                 )}
               />
             </TableSectionCard>
+          )}
+
+          {/* Institutional Profile & Programme Details Editor */}
+          {tabASub === "profile" && (
+            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 flex flex-col gap-5">
+              <div className="border-b border-slate-100 pb-4">
+                <h3 className="font-outfit font-black text-slate-900 text-base">
+                  2. Institutional Profile &amp; Programme Details
+                </h3>
+                <p className="text-slate-500 text-xs mt-0.5">
+                  Configure the summary banner, programmes portal redirect link, and statutory sanctioned strength order PDF.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Section Title</label>
+                  <input
+                    type="text"
+                    value={data.institutionalProfile?.title || ""}
+                    onChange={(e) => setData({
+                      ...data,
+                      institutionalProfile: { ...(data.institutionalProfile || {}), title: e.target.value }
+                    })}
+                    placeholder="2. Institutional Profile & Programme Details"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-semibold text-slate-800"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Subtitle / Tagline</label>
+                  <input
+                    type="text"
+                    value={data.institutionalProfile?.subtitle || ""}
+                    onChange={(e) => setData({
+                      ...data,
+                      institutionalProfile: { ...(data.institutionalProfile || {}), subtitle: e.target.value }
+                    })}
+                    placeholder="Academic programmes, duration, eligibility, and sanctioned intake"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Description Text</label>
+                  <textarea
+                    rows={3}
+                    value={data.institutionalProfile?.description || ""}
+                    onChange={(e) => setData({
+                      ...data,
+                      institutionalProfile: { ...(data.institutionalProfile || {}), description: e.target.value }
+                    })}
+                    placeholder="Comprehensive information about the institution and its academic programmes..."
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] leading-relaxed"
+                  />
+                </div>
+
+                {/* Programmes Redirect Link */}
+                <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-100 flex flex-col gap-3">
+                  <div className="flex items-center gap-1.5 text-blue-900 font-bold text-[11px] uppercase tracking-wider">
+                    <ExternalLink className="h-3.5 w-3.5 text-blue-700" />
+                    <span>Button 1: Academic Programmes Link</span>
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Button Label</label>
+                    <input
+                      type="text"
+                      value={data.institutionalProfile?.programmesBtnLabel || ""}
+                      onChange={(e) => setData({
+                        ...data,
+                        institutionalProfile: { ...(data.institutionalProfile || {}), programmesBtnLabel: e.target.value }
+                      })}
+                      placeholder="View All Academic Programmes"
+                      className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Redirecting Route / Link URL</label>
+                    <input
+                      type="text"
+                      value={data.institutionalProfile?.programmesLink || ""}
+                      onChange={(e) => setData({
+                        ...data,
+                        institutionalProfile: { ...(data.institutionalProfile || {}), programmesLink: e.target.value }
+                      })}
+                      placeholder="/courses or https://..."
+                      className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147] font-mono text-xs"
+                    />
+                  </div>
+                </div>
+
+                {/* Sanctioned Order PDF */}
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col gap-3">
+                  <div className="flex items-center gap-1.5 text-slate-800 font-bold text-[11px] uppercase tracking-wider">
+                    <FileText className="h-3.5 w-3.5 text-blue-700" />
+                    <span>Button 2: Sanctioned Strength Order (PDF)</span>
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Button Label</label>
+                    <input
+                      type="text"
+                      value={data.institutionalProfile?.sanctionedOrderBtnLabel || ""}
+                      onChange={(e) => setData({
+                        ...data,
+                        institutionalProfile: { ...(data.institutionalProfile || {}), sanctionedOrderBtnLabel: e.target.value }
+                      })}
+                      placeholder="Sanctioned Strength Order (PDF)"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">PDF Document File / URL</label>
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shrink-0">
+                        <Upload className="h-3.5 w-3.5" />
+                        <span>{isUploading ? "Uploading..." : "Upload PDF"}</span>
+                        <input
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={async (e) => {
+                            if (!e.target.files?.[0]) return;
+                            setIsUploading(true);
+                            try {
+                              const formData = new FormData();
+                              formData.append("file", e.target.files[0]);
+                              formData.append("type", "file");
+                              const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                              const json = await res.json();
+                              if (json.success && json.url) {
+                                setData({
+                                  ...data,
+                                  institutionalProfile: {
+                                    ...(data.institutionalProfile || {}),
+                                    sanctionedOrderFileUrl: json.url,
+                                    sanctionedOrderAssetId: json.assetId,
+                                  }
+                                });
+                              } else {
+                                alert(json.error || "Failed to upload PDF");
+                              }
+                            } catch (err: any) {
+                              alert(err.message || "Upload error");
+                            } finally {
+                              setIsUploading(false);
+                            }
+                          }}
+                          disabled={isUploading}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={data.institutionalProfile?.sanctionedOrderFileUrl || ""}
+                        onChange={(e) => setData({
+                          ...data,
+                          institutionalProfile: { ...(data.institutionalProfile || {}), sanctionedOrderFileUrl: e.target.value }
+                        })}
+                        placeholder="/documents/... or https://cdn.sanity.io/..."
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-mono text-xs"
+                      />
+                    </div>
+                  </div>
+                  {data.institutionalProfile?.sanctionedOrderFileUrl && (
+                    <div className="pt-1">
+                      <PdfBadge
+                        url={data.institutionalProfile.sanctionedOrderFileUrl}
+                        label="Preview Sanctioned Order PDF"
+                        onPreview={() => setPreviewPdf({
+                          url: data.institutionalProfile.sanctionedOrderFileUrl,
+                          title: data.institutionalProfile.sanctionedOrderBtnLabel || "Sanctioned Strength Order"
+                        })}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
           {/* AICTE Table */}

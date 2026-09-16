@@ -1219,6 +1219,15 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
     { _key: "md_4", sNo: 4, title: "Approved Intake / Sanctioned Strength", description: "Statutory approved intake capacity and student strength", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
     { _key: "md_5", sNo: 5, title: "Faculty and Infrastructure Details", description: "Faculty directory, campus infrastructure, and laboratory facilities", fileUrl: "/documents/DefaultFile_1.pdf", redirectUrl: "" },
   ],
+  institutionalProfile: {
+    title: "2. Institutional Profile & Programme Details",
+    subtitle: "Academic programmes, duration, eligibility, and sanctioned intake",
+    description: "This section provides comprehensive information about the institution and its academic programmes, including programme names, duration, eligibility, sanctioned intake and other relevant academic particulars.",
+    programmesBtnLabel: "View All Academic Programmes",
+    programmesLink: "/courses",
+    sanctionedOrderBtnLabel: "Sanctioned Strength Order (PDF)",
+    sanctionedOrderFileUrl: "/documents/DefaultFile_1.pdf",
+  },
   aicteApprovals: [
     { _key: "aicte_1", year: "2026–2027", title: "AICTE Extension of Approval (EoA) 2026-2027", fileUrl: "/documents/aicte/AICTE_Approval_2026-2027.pdf" },
     { _key: "aicte_2", year: "2025–2026", title: "AICTE Extension of Approval (EoA) 2025-2026", fileUrl: "/documents/aicte/AICTE_Approval_2025-2026.pdf" },
@@ -1350,6 +1359,15 @@ export async function getMandatoryDisclosures() {
         description,
         redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl)
+      },
+      institutionalProfile {
+        title,
+        subtitle,
+        description,
+        programmesBtnLabel,
+        programmesLink,
+        sanctionedOrderBtnLabel,
+        "sanctionedOrderFileUrl": coalesce(sanctionedOrderFile.asset->url, sanctionedOrderFileUrl)
       },
       aicteApprovals[] {
         _key,
@@ -1487,6 +1505,7 @@ export async function getMandatoryDisclosures() {
         ...DEFAULT_MANDATORY_DISCLOSURES,
         ...data,
         mandatoryDisclosureDocs: data.mandatoryDisclosureDocs?.length ? data.mandatoryDisclosureDocs : DEFAULT_MANDATORY_DISCLOSURES.mandatoryDisclosureDocs,
+        institutionalProfile: data.institutionalProfile || DEFAULT_MANDATORY_DISCLOSURES.institutionalProfile,
         aicteApprovals: data.aicteApprovals?.length ? data.aicteApprovals : DEFAULT_MANDATORY_DISCLOSURES.aicteApprovals,
         ugcDocuments: data.ugcDocuments?.length ? data.ugcDocuments : DEFAULT_MANDATORY_DISCLOSURES.ugcDocuments,
         cceOrders: data.cceOrders?.length ? data.cceOrders : DEFAULT_MANDATORY_DISCLOSURES.cceOrders,
