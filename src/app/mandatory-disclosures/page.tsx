@@ -395,18 +395,14 @@ export default function MandatoryDisclosuresPage() {
                         The institution publishes the prescribed Mandatory Disclosure containing essential information relating to the institution, management, academic programmes, approved intake, faculty, infrastructure, facilities and other relevant institutional particulars.
                       </p>
 
-                      <div className="flex flex-col gap-2 pt-1">
-                        <h5 className="font-outfit font-extrabold text-xs text-slate-900 uppercase tracking-wider">
-                          Documents / Information:
-                        </h5>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-1">
-                          {[
-                            "Mandatory Disclosure",
-                            "Institutional Profile",
-                            "Programme Details",
-                            "Approved Intake / Sanctioned Strength",
-                            "Faculty and Infrastructure Details"
-                          ].map((title: string, idx: number) => (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+                        {[
+                          "Mandatory Disclosure",
+                          "Institutional Profile",
+                          "Programme Details",
+                          "Approved Intake / Sanctioned Strength",
+                          "Faculty and Infrastructure Details"
+                        ].map((title: string, idx: number) => (
                             <div
                               key={idx}
                               className="flex items-center gap-3 bg-slate-50/90 px-4 py-3 rounded-xl border border-slate-200/80 shadow-2xs select-none"
@@ -421,7 +417,6 @@ export default function MandatoryDisclosuresPage() {
                           ))}
                         </div>
                       </div>
-                    </div>
 
                     {/* A.2 Institutional Profile & Programme Details */}
                     <div
