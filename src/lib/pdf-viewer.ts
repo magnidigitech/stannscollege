@@ -8,10 +8,12 @@ export function sanitizePdfFilename(title?: string, fallback = "Document"): stri
     return `${fallback}.pdf`;
   }
   
-  // Replace characters not allowed in filenames or URLs with safe characters
+  // Replace unicode en-dash, em-dash, special dashes with standard ASCII hyphen
   let clean = title
     .trim()
+    .replace(/[\u2010-\u2015\u2212]/g, "-")
     .replace(/[/\\?%*:|"<>#]/g, " ")
+    .replace(/[^\x20-\x7E]/g, " ")
     .replace(/\s+/g, "_")
     .replace(/_+/g, "_")
     .replace(/^_+|_+$/g, "");

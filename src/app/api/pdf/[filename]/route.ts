@@ -23,8 +23,11 @@ export async function GET(
       requestedFilename += ".pdf";
     }
 
-    // Clean filename for HTTP header
-    const safeFilename = requestedFilename.replace(/["\r\n]/g, "_");
+    // Convert Unicode dashes/characters to ASCII for HTTP ByteString header compliance
+    const asciiFilename = requestedFilename
+      .replace(/[\u2010-\u2015\u2212]/g, "-")
+      .replace(/[^\x20-\x7E]/g, "_")
+      .replace(/["\r\n]/g, "_");
 
     const searchParams = request.nextUrl.searchParams;
     let targetUrl = searchParams.get("url") || searchParams.get("file");
@@ -35,7 +38,7 @@ export async function GET(
     headers.set("Content-Type", "application/pdf");
     headers.set(
       "Content-Disposition",
-      `${dispositionType}; filename="${safeFilename}"; filename*=UTF-8''${encodeURIComponent(safeFilename)}`
+      `${dispositionType}; filename="${asciiFilename}"; filename*=UTF-8''${encodeURIComponent(requestedFilename)}`
     );
     headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
     headers.set("Pragma", "no-cache");
@@ -52,7 +55,7 @@ export async function GET(
 
         if (!response.ok) {
           console.error(`[PDF Proxy] Upstream fetch failed (${response.status}) for: ${targetUrl}`);
-          return serveFallbackPdf(safeFilename, dispositionType);
+          return serveFallbackPdf(asciiFilename, dispositionType);
         }
 
         const buffer = await response.arrayBuffer();
@@ -62,7 +65,7 @@ export async function GET(
         });
       } catch (fetchErr) {
         console.error("[PDF Proxy] Error fetching remote PDF:", fetchErr);
-        return serveFallbackPdf(safeFilename, dispositionType);
+        return serveFallbackPdf(asciiFilename, dispositionType);
       }
     }
 
@@ -86,9 +89,9 @@ export async function GET(
     }
 
     // Fallback if local file not found
-    return serveFallbackPdf(safeFilename, dispositionType);
+    return serveFallbackPdf(asciiFilename, dispositionType);
   } catch (error: any) {
-    console.error("[PDF Proxy Error]:", error?.message || error);
+    console.error("[PDF Proxy Error]:", error);
     return serveFallbackPdf("Document.pdf", "inline");
   }
 }
@@ -101,6 +104,7 @@ function serveFallbackPdf(filename: string, dispositionType: string) {
     "Content-Disposition",
     `${dispositionType}; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`
   );
+  headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
 
   if (fs.existsSync(fallbackPath)) {
     const fileBuffer = fs.readFileSync(fallbackPath);
