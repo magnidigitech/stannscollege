@@ -14,6 +14,7 @@ import {
   Table as TableIcon,
   ArrowUpDown,
 } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 export interface MagazineItem {
   _id: string;
@@ -58,6 +59,18 @@ export default function CollegeMagazinesSection({ magazines }: CollegeMagazinesS
       return sortLatestFirst ? orderA - orderB : orderB - orderA;
     });
   }, [magazines, selectedYear, searchQuery, sortLatestFirst]);
+
+  // Handle Escape key to close full-screen PDF viewer
+  React.useEffect(() => {
+    if (!activePdfModal) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActivePdfModal(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activePdfModal]);
 
   return (
     <section className="py-14 bg-slate-50/60 border-y border-slate-200/80 select-none">
@@ -333,57 +346,13 @@ export default function CollegeMagazinesSection({ magazines }: CollegeMagazinesS
         )}
       </div>
 
-      {/* PDF View Modal */}
-      {activePdfModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 sm:p-6 animate-fadeIn">
-          <div className="relative w-full max-w-5xl h-[88vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between bg-[#002147] px-5 py-3.5 text-white">
-              <div className="flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white">
-                  <BookOpen className="h-4 w-4" />
-                </span>
-                <div>
-                  <h3 className="font-outfit text-sm sm:text-base font-bold text-white leading-tight">
-                    {activePdfModal.title}
-                  </h3>
-                  <p className="font-sans text-[11px] text-slate-300 font-normal">
-                    St. Ann&apos;s College for Women • Official Magazine Reader
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={activePdfModal.pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 text-xs font-semibold transition-colors"
-                >
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Open in New Tab</span>
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setActivePdfModal(null)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                  aria-label="Close reader"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Modal Body iframe */}
-            <div className="flex-1 w-full bg-slate-100 relative">
-              <iframe
-                src={`${activePdfModal.pdfUrl}#toolbar=1`}
-                className="w-full h-full border-none"
-                title={activePdfModal.title}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Full-Screen PDF & Flipbook View Modal */}
+      <FilePreviewModal
+        isOpen={!!activePdfModal}
+        onClose={() => setActivePdfModal(null)}
+        fileUrl={activePdfModal?.pdfUrl || ""}
+        title={activePdfModal?.title || "College Magazine"}
+      />
     </section>
   );
 }

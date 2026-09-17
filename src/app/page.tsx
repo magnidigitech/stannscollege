@@ -29,6 +29,17 @@ import {
   Clock,
   Download,
   Info,
+  Compass,
+  FileSpreadsheet,
+  Eye,
+  BookMarked,
+  Layers,
+  Search,
+  Filter,
+  FolderDown,
+  CheckCircle,
+  Star,
+  ClipboardList,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -38,6 +49,8 @@ import {
   getHomeGalleries,
   getEvents,
   getNotices,
+  getStudentHandbooks,
+  getAcademicProgrammes,
 } from "@/lib/sanity";
 import {
   getEventLifecycle,
@@ -52,6 +65,101 @@ import CollegeMagazinesSection, { MagazineItem } from "@/components/home/College
 import NewslettersSection, { NewsletterItem } from "@/components/home/NewslettersSection";
 import HomePhotoGallery, { HomeGalleryDoc } from "@/components/home/HomePhotoGallery";
 import TopRecruitersSection from "@/components/home/TopRecruitersSection";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+
+// Fallback UG Programmes Data
+const fallbackUgProgrammes = [
+  { sNo: 1, name: "B.Com Honours - General", category: "UG", duration: "3 Years", convenerQuota: 14, managementQuota: 6, totalIntake: 20, deptLink: "/academics/departments/department-of-commerce", desc: "Foundational accounting, auditing, banking, and business economics with corporate internships." },
+  { sNo: 2, name: "B.Com Honours - Computer Applications", category: "UG", duration: "3 Years", convenerQuota: 56, managementQuota: 24, totalIntake: 80, deptLink: "/academics/departments/department-of-commerce", desc: "Integrates commercial commerce concepts with accounting information systems, Tally, and e-commerce." },
+  { sNo: 3, name: "BCA Honours - Computer Applications", category: "UG", duration: "3 Years", convenerQuota: 42, managementQuota: 18, totalIntake: 60, deptLink: "/academics/departments/department-of-computer-applications-bca", desc: "Software engineering, cloud architectures, database systems, web programming, and full-stack development." },
+  { sNo: 4, name: "B.Sc Honours - Computer Science", category: "UG", duration: "3 Years", convenerQuota: 25, managementQuota: 10, totalIntake: 35, deptLink: "/academics/departments/department-of-computer-science-cs-artificial-intelligence", desc: "Core algorithms, data structures, object-oriented systems, and high performance software engineering." },
+  { sNo: 5, name: "B.Sc Honours - Artificial Intelligence", category: "UG", duration: "3 Years", convenerQuota: 42, managementQuota: 18, totalIntake: 60, deptLink: "/academics/departments/department-of-computer-science-cs-artificial-intelligence", desc: "Machine learning architectures, neural networks, natural language processing, and deep predictive modeling." },
+  { sNo: 6, name: "B.Sc Honours - Mathematics", category: "UG", duration: "3 Years", convenerQuota: 18, managementQuota: 7, totalIntake: 25, deptLink: "/academics/departments/department-of-mathematics", desc: "Pure and applied mathematical methods, abstract algebra, numerical analysis, and differential dynamics." },
+  { sNo: 7, name: "B.Sc Honours - Physics", category: "UG", duration: "3 Years", convenerQuota: 18, managementQuota: 7, totalIntake: 25, deptLink: "/academics/departments/department-of-physics", desc: "Solid-state physics, electronics, thermodynamics, optics, modern physics, and experimental laboratory systems." },
+  { sNo: 8, name: "B.Sc Honours - Statistics", category: "UG", duration: "3 Years", convenerQuota: 18, managementQuota: 7, totalIntake: 25, deptLink: "/academics/departments/department-of-statistics", desc: "Statistical inference, probability modeling, biometric analytics, actuarial statistics, and R computing." },
+  { sNo: 9, name: "B.Sc Honours - Microbiology", category: "UG", duration: "3 Years", convenerQuota: 18, managementQuota: 7, totalIntake: 25, deptLink: "/academics/departments/department-of-microbiology", desc: "Immunology, bacteriology, virology, clinical diagnostics, and environmental biotechnology research." },
+  { sNo: 10, name: "B.Sc Honours - Biotechnology", category: "UG", duration: "3 Years", convenerQuota: 18, managementQuota: 7, totalIntake: 25, deptLink: "/academics/departments/department-of-biotechnology", desc: "Recombinant DNA tech, genetic engineering, plant tissue culture, bioinformatics, and fermentation." },
+  { sNo: 11, name: "B.Sc Honours - Chemistry", category: "UG", duration: "3 Years", convenerQuota: 14, managementQuota: 6, totalIntake: 20, deptLink: "/academics/departments/department-of-chemistry", desc: "Organic synthesis, inorganic spectrometry, analytical instrumentation, and industrial green chemistry." },
+  { sNo: 12, name: "B.Sc Honours - Botany", category: "UG", duration: "3 Years", convenerQuota: 18, managementQuota: 7, totalIntake: 25, deptLink: "/academics/departments/department-of-botany", desc: "Plant pathology, pharmacognosy, plant physiology, economic botany, and botanical preservation." },
+];
+
+// Fallback PG Programmes Data
+const fallbackPgProgrammes = [
+  { sNo: 1, name: "Master of Computer Applications (MCA)", category: "PG", duration: "2 Years", convenerQuota: 42, managementQuota: 18, totalIntake: 60, recognition: "AICTE Approved", deptLink: "/academics/departments/department-of-mca", desc: "Premier 2-Year technical program approved by AICTE. Advanced cloud systems, AI/ML stacks, enterprise application architecture, and industry internships." },
+  { sNo: 2, name: "Master of Business Administration (MBA)", category: "PG", duration: "2 Years", convenerQuota: 42, managementQuota: 18, totalIntake: 60, recognition: "AICTE Approved", deptLink: "/academics/departments/department-of-mba", desc: "AICTE-approved management program offering specializations in Finance, Marketing, and Human Resources with corporate seminars and executive capstones." },
+];
+
+// Fallback Student Handbooks Data (Yearly Uploads)
+const fallbackHandbooks = [
+  { year: "2023-2024", title: "Student Handbook (A.Y. 2023–24)", fileUrl: "/documents/admissions/handbooks/handbook 2023-24.pdf", order: 1 },
+  { year: "2022-2023", title: "Student Handbook (A.Y. 2022–23)", fileUrl: "/documents/admissions/handbooks/handbook 2022-23.pdf", order: 2 },
+  { year: "2021-2022", title: "Student Handbook (A.Y. 2021–22)", fileUrl: "/documents/admissions/handbooks/handbook 2021-22.pdf", order: 3 },
+  { year: "2020-2021", title: "Student Handbook (A.Y. 2020–21)", fileUrl: "/documents/admissions/handbooks/handbook 2020-21.pdf", order: 4 },
+  { year: "2019-2020", title: "Student Handbook (A.Y. 2019–20)", fileUrl: "/documents/admissions/handbooks/handbook 2019-20.pdf", order: 5 },
+  { year: "2018-2019", title: "Student Handbook (A.Y. 2018–19)", fileUrl: "/documents/admissions/handbooks/handbook 2018-19.pdf", order: 6 },
+];
+
+// Fallback Brochures Data (Yearly Uploads)
+const fallbackBrochures = [
+  {
+    id: "brochure-1",
+    title: "Institutional Overview Brochure",
+    subtitle: "Campus Infrastructure & Academic Facilities",
+    academicYear: "2025-2026",
+    fileUrl: "/documents/admissions/Pamphlets.jpg",
+    isImage: true,
+    description: "Visual roadmap of St. Ann's College facilities, student enrichment wings, laboratory infrastructure, and faculty credentials.",
+  },
+  {
+    id: "brochure-2",
+    title: "Core Highlights & Admissions Pamphlet",
+    subtitle: "Admissions, Placement Records & Faculty Eminence",
+    academicYear: "2025-2026",
+    fileUrl: "/documents/admissions/Pamphlets-WA0006.jpg",
+    isImage: true,
+    description: "Compact flyer detailing admission tracks, top tier recruitment track records, institutional scholarships, and clubs.",
+  },
+  {
+    id: "brochure-3",
+    title: "Postgraduate (MCA & MBA) Professional Brochure",
+    subtitle: "AICTE Recognized Postgraduate Programmes",
+    academicYear: "2025-2026",
+    fileUrl: "/documents/admissions/Prospectus 2025-26.pdf",
+    isImage: false,
+    description: "Detailed curriculum guide, computational lab infrastructure, live case studies, and corporate internship interfaces.",
+  },
+  {
+    id: "brochure-4",
+    title: "Undergraduate (UG Honours) Course Guide",
+    subtitle: "Single Major with One Minor Curriculum Architecture",
+    academicYear: "2025-2026",
+    fileUrl: "/documents/admissions/Prospectus 2025-26.pdf",
+    isImage: false,
+    description: "Subject clusters, add-on certificates, interdisciplinary electives, and semester credit structure under ANU Guntur.",
+  },
+];
+
+// Fallback Prospectus Data (Yearly Uploads)
+const fallbackProspectusList = [
+  {
+    id: "prospectus-current",
+    title: "St. Ann's Comprehensive College Prospectus",
+    subtitle: "Official Academic & Administrative Guide (Current Session)",
+    academicYear: "2025-2026",
+    fileUrl: "/documents/admissions/Prospectus 2025-26.pdf",
+    highlights: ["Complete Syllabi Outlines", "Hostel & Transport Amenities", "Code of Conduct & Discipline", "Scholarships & Fee Structures"],
+    description: "The primary official handbook containing academic rules, administrative guidelines, faculty directories, library facilities, and campus regulations.",
+  },
+  {
+    id: "prospectus-archive",
+    title: "Institutional Prospectus Archive Edition",
+    subtitle: "Academic Session 2024-2025 Guidebook",
+    academicYear: "2024-2025",
+    fileUrl: "/documents/admissions/Prospectus 2025-26.pdf",
+    highlights: ["Historical Curriculum Framework", "Admission Regulations", "Student Activities Charter"],
+    description: "Archived edition of the college prospectus for reference, research, and accreditation compliance.",
+  },
+];
 
 // Default Fallback Hero Slides (Synced with Sanity Home Banners 2026)
 const defaultSlides = [
@@ -435,8 +543,14 @@ export default function HomePage() {
   const [sanityEvents, setSanityEvents] = useState<any[]>(fallbackEventsHistory);
   const [sanityNotices, setSanityNotices] = useState<any[]>([]);
 
-  // Right Side Drawer / Modal State for Degree Pathways, Magazine & Monthly Newsletter
-  const [activeRightDrawer, setActiveRightDrawer] = useState<"pathways" | "magazine" | "newsletter" | null>(null);
+  // Right Side Drawer / Modal State for Programs, Newsletters, Magazines, Student Handbook, Brochures & Prospectus
+  const [activeRightDrawer, setActiveRightDrawer] = useState<"programs" | "newsletters" | "magazines" | "handbook" | "brochures" | "prospectus" | null>(null);
+  const [programsTab, setProgramsTab] = useState<"all" | "ug" | "pg">("all");
+  const [studentHandbooks, setStudentHandbooks] = useState<any[]>(fallbackHandbooks);
+  const [academicProgrammes, setAcademicProgrammes] = useState<any[]>([]);
+  const [previewModalFile, setPreviewModalFile] = useState<{ url: string; title: string } | null>(null);
+  const [handbookSearch, setHandbookSearch] = useState<string>("");
+  const [handbookYearFilter, setHandbookYearFilter] = useState<string>("ALL");
 
   // Document popup modal for events with documents and details
   const [activeDocModal, setActiveDocModal] = useState<{
@@ -555,13 +669,15 @@ export default function HomePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [magsData, newsData, bannersData, galleryData, eventsData, noticesData] = await Promise.all([
+        const [magsData, newsData, bannersData, galleryData, eventsData, noticesData, handbooksData, programmesData] = await Promise.all([
           getCollegeMagazines(),
           getNewsletters(),
           getHomeBanners(),
           getHomeGalleries(),
           getEvents(),
           getNotices(),
+          getStudentHandbooks(),
+          getAcademicProgrammes(),
         ]);
 
         if (magsData && magsData.length > 0) setMagazines(magsData);
@@ -570,6 +686,11 @@ export default function HomePage() {
         if (galleryData && galleryData.length > 0) setGalleries(galleryData);
         if (eventsData && eventsData.length > 0) setSanityEvents(eventsData);
         if (noticesData && noticesData.length > 0) setSanityNotices(noticesData);
+        if (handbooksData && handbooksData.length > 0) {
+          const validHandbooks = handbooksData.filter((h: any) => h.year && h.fileUrl);
+          if (validHandbooks.length > 0) setStudentHandbooks(validHandbooks);
+        }
+        if (programmesData && programmesData.length > 0) setAcademicProgrammes(programmesData);
       } catch (err) {
         console.error("Error loading home page Sanity data:", err);
       }
@@ -1162,58 +1283,80 @@ export default function HomePage() {
       </aside>
 
       {/* ----------------------------------------------------
-          FIXED RIGHT NOTCH BUTTONS: Degree Pathways, College Magazine & Monthly News Letter
-          (Ultra-compact vertical orientation, positioned safely below top navigation)
+          FIXED RIGHT NOTCH BUTTONS: Programs, Newsletters, Magazines, Student Handbook, Brochures, Prospectus
+          (Matches left-side social media layout: expands to left on hover with pill shape)
           ---------------------------------------------------- */}
       <aside
         aria-label="Academic & Publication Shortcuts"
-        className="fixed right-0 top-[65%] -translate-y-1/2 z-30 flex flex-col gap-2 select-none items-end"
+        className="fixed right-0 top-[60%] -translate-y-1/2 z-30 flex flex-col gap-1.5 select-none items-end"
       >
-        {/* 1. Explore Degree Pathways Vertical Notch */}
-        <button
-          onClick={() => setActiveRightDrawer("pathways")}
-          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#002147] hover:from-blue-950 hover:to-blue-800 text-white px-2.5 py-3 rounded-l-2xl border-l-[3px] border-y border-blue-400/50 shadow-xl shadow-blue-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
-          title="Explore Degree Pathways"
-        >
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/25 group-hover:bg-blue-500 text-blue-300 group-hover:text-white transition-all shrink-0 border border-blue-400/40 shadow-xs">
-            <GraduationCap className="h-4 w-4" />
-          </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-extrabold text-[11px] tracking-wider uppercase text-white group-hover:text-blue-200 transition-colors py-1 select-none whitespace-nowrap">
-            Pathways
-          </span>
-        </button>
-
-        {/* 2. College Annual Magazine Vertical Notch */}
-        <button
-          onClick={() => setActiveRightDrawer("magazine")}
-          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#1e1b4b] hover:from-indigo-950 hover:to-indigo-800 text-white px-2.5 py-3 rounded-l-2xl border-l-[3px] border-y border-indigo-400/50 shadow-xl shadow-indigo-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
-          title="College Annual Magazine"
-        >
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/25 group-hover:bg-indigo-500 text-indigo-300 group-hover:text-white transition-all shrink-0 border border-indigo-400/40 shadow-xs">
-            <BookOpen className="h-4 w-4" />
-          </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-extrabold text-[11px] tracking-wider uppercase text-white group-hover:text-indigo-200 transition-colors py-1 select-none whitespace-nowrap">
-            Magazine
-          </span>
-        </button>
-
-        {/* 3. Monthly News Letter Vertical Notch */}
-        <button
-          onClick={() => setActiveRightDrawer("newsletter")}
-          className="group flex flex-col items-center gap-1.5 bg-gradient-to-b from-[#001730] to-[#00382b] hover:from-emerald-950 hover:to-emerald-800 text-white px-2.5 py-3 rounded-l-2xl border-l-[3px] border-y border-emerald-400/50 shadow-xl shadow-emerald-950/60 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer"
-          title="Monthly News Letter"
-        >
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/25 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-white transition-all shrink-0 border border-emerald-400/40 shadow-xs">
-            <Newspaper className="h-4 w-4" />
-          </div>
-          <span className="[writing-mode:vertical-rl] rotate-180 font-outfit font-extrabold text-[11px] tracking-wider uppercase text-white group-hover:text-emerald-200 transition-colors py-1 select-none whitespace-nowrap">
-            News Letter
-          </span>
-        </button>
+        {[
+          {
+            id: "programs" as const,
+            name: "Programs",
+            bg: "bg-[#002147] hover:bg-[#003366]",
+            activeBg: "bg-[#002147]",
+            icon: <GraduationCap className="h-4 w-4" />,
+            title: "Academic Programmes (UG & PG)",
+          },
+          {
+            id: "newsletters" as const,
+            name: "Newsletters",
+            bg: "bg-[#059669] hover:bg-[#047857]",
+            activeBg: "bg-[#059669]",
+            icon: <Newspaper className="h-4 w-4" />,
+            title: "Monthly Newsletters",
+          },
+          {
+            id: "magazines" as const,
+            name: "Magazines",
+            bg: "bg-[#4338ca] hover:bg-[#3730a3]",
+            activeBg: "bg-[#4338ca]",
+            icon: <BookOpen className="h-4 w-4" />,
+            title: "College Annual Magazines",
+          },
+          {
+            id: "handbook" as const,
+            name: "Student Handbook",
+            bg: "bg-[#d97706] hover:bg-[#b45309]",
+            activeBg: "bg-[#d97706]",
+            icon: <ShieldCheck className="h-4 w-4" />,
+            title: "Yearly Student Handbook",
+          },
+          {
+            id: "brochures" as const,
+            name: "Brochures",
+            bg: "bg-[#7c3aed] hover:bg-[#6d28d9]",
+            activeBg: "bg-[#7c3aed]",
+            icon: <FileSpreadsheet className="h-4 w-4" />,
+            title: "College & Program Brochures",
+          },
+          {
+            id: "prospectus" as const,
+            name: "Prospectus",
+            bg: "bg-[#0284c7] hover:bg-[#0369a1]",
+            activeBg: "bg-[#0284c7]",
+            icon: <Compass className="h-4 w-4" />,
+            title: "Official Admissions Prospectus",
+          },
+        ].map((btn) => (
+          <button
+            key={btn.id}
+            type="button"
+            onClick={() => setActiveRightDrawer(btn.id)}
+            title={btn.title}
+            className={`group flex flex-row-reverse items-center ${btn.bg} text-white pl-2.5 pr-2.5 py-2.5 rounded-l-2xl shadow-xl shadow-slate-950/20 border-l-2 border-y border-white/20 transition-all duration-300 transform translate-x-1 hover:translate-x-0 cursor-pointer`}
+          >
+            <div className="shrink-0 flex items-center justify-center h-5 w-5">{btn.icon}</div>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[150px] group-hover:pr-2 text-xs font-bold transition-all duration-300 ease-out font-sans">
+              {btn.name}
+            </span>
+          </button>
+        ))}
       </aside>
 
       {/* ----------------------------------------------------
-          MODAL VIEWER FOR DEGREE PATHWAYS, MAGAZINE & MONTHLY NEWS LETTER
+          MODAL VIEWER FOR PROGRAMS, NEWSLETTERS, MAGAZINES, STUDENT HANDBOOK, BROCHURES & PROSPECTUS
           ---------------------------------------------------- */}
       {activeRightDrawer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
@@ -1225,50 +1368,38 @@ export default function HomePage() {
 
           {/* Modal Box */}
           <div className="relative z-10 w-full max-w-6xl max-h-[92vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200">
-            {/* Modal Top Header with Switcher and Close Button */}
-            <div className="flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#001730] text-white border-b border-indigo-950 select-none">
-              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                <div className="flex flex-wrap bg-white/10 rounded-xl p-1 border border-white/15 gap-1">
-                  <button
-                    onClick={() => setActiveRightDrawer("pathways")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                      activeRightDrawer === "pathways"
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "text-slate-300 hover:text-white"
-                    }`}
-                  >
-                    <GraduationCap className="h-3.5 w-3.5 shrink-0" />
-                    <span>Degree Pathways</span>
-                  </button>
-                  <button
-                    onClick={() => setActiveRightDrawer("magazine")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                      activeRightDrawer === "magazine"
-                        ? "bg-indigo-600 text-white shadow-md"
-                        : "text-slate-300 hover:text-white"
-                    }`}
-                  >
-                    <BookOpen className="h-3.5 w-3.5 shrink-0" />
-                    <span>College Annual Magazine</span>
-                  </button>
-                  <button
-                    onClick={() => setActiveRightDrawer("newsletter")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                      activeRightDrawer === "newsletter"
-                        ? "bg-emerald-600 text-white shadow-md"
-                        : "text-slate-300 hover:text-white"
-                    }`}
-                  >
-                    <Newspaper className="h-3.5 w-3.5 shrink-0" />
-                    <span>Monthly News Letter</span>
-                  </button>
+            {/* Modal Top Header with Category Title & Close Button (No Tab Switcher) */}
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#001730] text-white border-b border-indigo-950/80 select-none shrink-0 shadow-md">
+              <div className="flex items-center gap-3 min-w-0 pr-4">
+                <div className="h-8 w-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
+                  {activeRightDrawer === "programs" && <GraduationCap className="h-4 w-4 text-blue-300" />}
+                  {activeRightDrawer === "newsletters" && <Newspaper className="h-4 w-4 text-emerald-300" />}
+                  {activeRightDrawer === "magazines" && <BookOpen className="h-4 w-4 text-indigo-300" />}
+                  {activeRightDrawer === "handbook" && <ShieldCheck className="h-4 w-4 text-amber-300" />}
+                  {activeRightDrawer === "brochures" && <FileSpreadsheet className="h-4 w-4 text-purple-300" />}
+                  {activeRightDrawer === "prospectus" && <Compass className="h-4 w-4 text-sky-300" />}
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-outfit text-sm sm:text-base font-bold text-white truncate leading-tight">
+                    {activeRightDrawer === "programs" && "Academic Degree Programmes (UG & PG)"}
+                    {activeRightDrawer === "newsletters" && "Monthly Newsletters"}
+                    {activeRightDrawer === "magazines" && "College Annual Magazines"}
+                    {activeRightDrawer === "handbook" && "Student Handbook & Code of Conduct"}
+                    {activeRightDrawer === "brochures" && "College & Programme Brochures"}
+                    {activeRightDrawer === "prospectus" && "Official College Prospectus"}
+                  </h3>
+                  <p className="font-sans text-[10.5px] text-slate-300 truncate">
+                    St. Ann&apos;s College for Women • Autonomous &amp; NAAC A+
+                  </p>
                 </div>
               </div>
 
               <button
+                type="button"
                 onClick={() => setActiveRightDrawer(null)}
-                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/10 shrink-0 ml-2"
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/10 shrink-0"
                 aria-label="Close modal"
+                title="Close (Esc)"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -1276,112 +1407,671 @@ export default function HomePage() {
 
             {/* Modal Scrollable Body */}
             <div className="flex-1 overflow-y-auto bg-slate-50/50">
-              {activeRightDrawer === "pathways" && (
-                <div className="p-6 sm:p-10 max-w-[1400px] mx-auto animate-fadeIn">
-                  <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-3 mb-8">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1 text-xs font-black text-indigo-600 uppercase tracking-wider">
-                      <BookOpen className="h-3.5 w-3.5 text-indigo-500" /> Academic Tracks
-                    </span>
-                    <h2 className="font-outfit text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
-                      Explore Our Degree Pathways
-                    </h2>
-                    <p className="font-sans text-xs md:text-sm text-slate-500 font-semibold">
-                      Select program formats designed to accelerate career growth &amp; research aspirations.
-                    </p>
+              {/* 1. PROGRAMS VIEW (From Academics Page) */}
+              {activeRightDrawer === "programs" && (
+                <div className="p-4 sm:p-8 max-w-[1400px] mx-auto animate-fadeIn flex flex-col gap-6 font-sans">
+                  {/* Header Banner */}
+                  <div className="bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-md">
+                    <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
+                      <GraduationCap className="h-80 w-80" />
+                    </div>
+                    <div className="relative z-10 flex flex-col gap-2 max-w-3xl">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest uppercase bg-white/15 backdrop-blur px-3 py-1 rounded-full w-fit text-blue-100">
+                        <GraduationCap className="h-3.5 w-3.5 text-blue-300" /> Academic Offerings • UG &amp; PG
+                      </span>
+                      <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                        Academic Degree Programmes
+                      </h2>
+                      <p className="font-sans text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
+                        Comprehensive curriculum architectures structured under Acharya Nagarjuna University (ANU) and AICTE New Delhi. Featuring Single Major with Minor framework for UG and industry-integrated PG programs.
+                      </p>
+                    </div>
+
+                    {/* Quick Stats Strip */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-white/15 text-xs">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-blue-200 uppercase font-semibold">Total UG Programmes</span>
+                        <span className="text-lg font-black font-outfit text-white">12 Specializations</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-blue-200 uppercase font-semibold">Total PG Programmes</span>
+                        <span className="text-lg font-black font-outfit text-white">2 AICTE Approved</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-blue-200 uppercase font-semibold">Annual Sanctioned Intake</span>
+                        <span className="text-lg font-black font-outfit text-white">515 Seats</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-blue-200 uppercase font-semibold">Affiliation / Approval</span>
+                        <span className="text-lg font-black font-outfit text-white">ANU &amp; AICTE</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                    {/* Undergraduate Programmes Card */}
-                    <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-                      <div className="flex flex-col gap-4">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1 rounded bg-blue-50 border border-blue-100 px-2 py-0.5 text-[10px] font-black text-blue-600 uppercase tracking-wider">
-                            UG Honours
-                          </span>
-                          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/50 text-[#002147] shadow-2xs">
-                            <GraduationCap className="h-4 w-4" />
-                          </span>
-                        </div>
-                        <h3 className="font-outfit text-xl font-black text-slate-800 leading-snug">
-                          Undergraduate Programmes
-                        </h3>
-                        <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-normal">
-                          Excellent 3-Year Honours programmes under Acharya Nagarjuna University, Guntur. Combining robust foundational courses, electives, and mandatory internship workloads in:
-                        </p>
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-semibold text-slate-600 mt-2">
-                          <span className="flex items-center gap-1.5">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.Com Honours
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.Sc Honours
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> BCA (Comp Apps)
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> B.A. Honours
-                          </span>
-                        </div>
-                      </div>
+                  {/* Sub-Tabs: All / UG / PG */}
+                  <div className="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-slate-200">
+                    <div className="flex items-center gap-2 bg-slate-200/80 p-1 rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => setProgramsTab("all")}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          programsTab === "all"
+                            ? "bg-white text-[#002147] shadow-xs"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                      >
+                        All Programmes (14)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setProgramsTab("ug")}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          programsTab === "ug"
+                            ? "bg-[#002147] text-white shadow-xs"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                      >
+                        Undergraduate (UG) (12)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setProgramsTab("pg")}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          programsTab === "pg"
+                            ? "bg-[#002147] text-white shadow-xs"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                      >
+                        Postgraduate (PG) (2)
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-2">
                       <Link
                         href="/academics/academic-programmes/undergraduate-programmes"
                         onClick={() => setActiveRightDrawer(null)}
-                        className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white font-sans font-bold text-xs py-3.5 px-4 shadow-sm transition-all duration-300"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#002147] hover:text-blue-700 bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-100 transition-colors"
                       >
-                        View UG Syllabus &amp; Details <ArrowRight className="h-3.5 w-3.5" />
+                        <span>Full UG Details</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
-                    </div>
-
-                    {/* Postgraduate Programmes Card */}
-                    <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-                      <div className="flex flex-col gap-4">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1 rounded bg-purple-50 border border-purple-100 px-2 py-0.5 text-[10px] font-black text-purple-600 uppercase tracking-wider">
-                            PG Professional
-                          </span>
-                          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/50 text-[#002147] shadow-2xs">
-                            <Target className="h-4 w-4" />
-                          </span>
-                        </div>
-                        <h3 className="font-outfit text-xl font-black text-slate-800 leading-snug">
-                          Postgraduate Programmes
-                        </h3>
-                        <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-normal">
-                          Highly acclaimed professional PG programs approved by AICTE, New Delhi. Rigorous laboratory models, industrial internship interfaces, and seminars:
-                        </p>
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-semibold text-slate-600 mt-2">
-                          <span className="flex items-center gap-1.5 font-bold text-[#002147]">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> MCA (Comp Apps)
-                          </span>
-                          <span className="flex items-center gap-1.5 font-bold text-[#002147]">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> MBA (Management)
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> Advanced Coding Lab
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" /> Case Study Seminars
-                          </span>
-                        </div>
-                      </div>
                       <Link
                         href="/academics/academic-programmes/postgraduate-programmes"
                         onClick={() => setActiveRightDrawer(null)}
-                        className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl bg-[#002147] hover:bg-[#002b5c] text-white font-sans font-bold text-xs py-3.5 px-4 shadow-sm transition-all duration-300"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-900 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100 transition-colors"
                       >
-                        View PG Syllabus &amp; Intake <ArrowRight className="h-3.5 w-3.5" />
+                        <span>Full PG Details</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
                     </div>
+                  </div>
+
+                  {/* PG Programmes Section (Shown when Tab is 'all' or 'pg') */}
+                  {(programsTab === "all" || programsTab === "pg") && (
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-2">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100">
+                          <Target className="h-4 w-4" />
+                        </span>
+                        <h3 className="font-outfit text-lg font-black text-slate-900">
+                          Postgraduate Professional Programmes (PG)
+                        </h3>
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
+                          AICTE Approved
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {fallbackPgProgrammes.map((pg) => (
+                          <div
+                            key={pg.sNo}
+                            className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-indigo-300 transition-all flex flex-col justify-between group"
+                          >
+                            <div className="flex flex-col gap-3">
+                              <div className="flex items-center justify-between">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-50 text-purple-700 text-[10px] font-bold uppercase tracking-wider border border-purple-100">
+                                  {pg.category} Professional • {pg.duration}
+                                </span>
+                                <span className="inline-flex items-center gap-1 text-[11px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                                  <Star className="h-3 w-3 fill-emerald-600 text-emerald-600" /> {pg.recognition}
+                                </span>
+                              </div>
+
+                              <h4 className="font-outfit text-base font-bold text-slate-900 leading-snug group-hover:text-[#002147] transition-colors">
+                                {pg.name}
+                              </h4>
+
+                              <p className="text-xs text-slate-600 leading-relaxed">
+                                {pg.desc}
+                              </p>
+
+                              <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[11px]">
+                                <div className="flex flex-col">
+                                  <span className="text-slate-400 text-[10px]">Convener</span>
+                                  <span className="font-bold text-slate-700">{pg.convenerQuota} Seats</span>
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-slate-400 text-[10px]">Management</span>
+                                  <span className="font-bold text-slate-700">{pg.managementQuota} Seats</span>
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-slate-400 text-[10px]">Total Intake</span>
+                                  <span className="font-bold text-[#002147]">{pg.totalIntake} Seats</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 pt-4 mt-4 border-t border-slate-100">
+                              <Link
+                                href={pg.deptLink}
+                                onClick={() => setActiveRightDrawer(null)}
+                                className="flex-1 text-center py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors"
+                              >
+                                View Department
+                              </Link>
+                              <Link
+                                href="/academics/academic-programmes/postgraduate-programmes"
+                                onClick={() => setActiveRightDrawer(null)}
+                                className="flex-1 text-center py-2 px-3 rounded-xl bg-[#002147] hover:bg-[#002b5c] text-white text-xs font-bold transition-colors"
+                              >
+                                Syllabus &amp; Intake
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* UG Programmes Section (Shown when Tab is 'all' or 'ug') */}
+                  {(programsTab === "all" || programsTab === "ug") && (
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-2">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-700 border border-blue-100">
+                          <GraduationCap className="h-4 w-4" />
+                        </span>
+                        <h3 className="font-outfit text-lg font-black text-slate-900">
+                          Undergraduate Honours Programmes (UG)
+                        </h3>
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+                          Single Major + Minor
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {fallbackUgProgrammes.map((ug) => (
+                          <div
+                            key={ug.sNo}
+                            className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
+                          >
+                            <div className="flex flex-col gap-2.5">
+                              <div className="flex items-center justify-between">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wider border border-blue-100">
+                                  {ug.category} Honours • {ug.duration}
+                                </span>
+                                <span className="text-[11px] font-bold text-[#002147] bg-slate-100 px-2 py-0.5 rounded">
+                                  Intake: {ug.totalIntake}
+                                </span>
+                              </div>
+
+                              <h4 className="font-outfit text-sm sm:text-base font-bold text-slate-900 leading-snug group-hover:text-blue-700 transition-colors">
+                                {ug.name}
+                              </h4>
+
+                              <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                                {ug.desc}
+                              </p>
+
+                              <div className="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-[10.5px]">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-slate-400">Convener:</span>
+                                  <span className="font-bold text-slate-700">{ug.convenerQuota}</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-slate-400">Management:</span>
+                                  <span className="font-bold text-slate-700">{ug.managementQuota}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 pt-3 mt-3 border-t border-slate-100">
+                              <Link
+                                href={ug.deptLink}
+                                onClick={() => setActiveRightDrawer(null)}
+                                className="flex-1 text-center py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-colors"
+                              >
+                                Department
+                              </Link>
+                              <Link
+                                href="/academics/academic-programmes/undergraduate-programmes"
+                                onClick={() => setActiveRightDrawer(null)}
+                                className="flex-1 text-center py-1.5 px-2 rounded-lg bg-[#002147] hover:bg-[#002b5c] text-white text-[11px] font-bold transition-colors"
+                              >
+                                Details
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 2. NEWSLETTERS VIEW (Monthly Uploads) */}
+              {activeRightDrawer === "newsletters" && (
+                <NewslettersSection newsletters={newsletters} />
+              )}
+
+              {/* 3. MAGAZINES VIEW (Yearly Uploads) */}
+              {activeRightDrawer === "magazines" && (
+                <CollegeMagazinesSection magazines={magazines} />
+              )}
+
+              {/* 4. STUDENT HANDBOOK VIEW (Yearly Uploads) */}
+              {activeRightDrawer === "handbook" && (
+                <div className="p-4 sm:p-8 max-w-[1400px] mx-auto animate-fadeIn flex flex-col gap-6 font-sans">
+                  {/* Header Banner */}
+                  <div className="bg-gradient-to-r from-[#001730] via-[#78350f] to-[#b45309] text-white p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-md">
+                    <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
+                      <ShieldCheck className="h-80 w-80" />
+                    </div>
+                    <div className="relative z-10 flex flex-col gap-2 max-w-3xl">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest uppercase bg-white/15 backdrop-blur px-3 py-1 rounded-full w-fit text-amber-100">
+                        <BookMarked className="h-3.5 w-3.5 text-amber-300" /> Regulatory Charters • Yearly Uploads
+                      </span>
+                      <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                        Student Handbook &amp; Code of Conduct
+                      </h2>
+                      <p className="font-sans text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+                        Every student admitted to St. Ann&apos;s College is governed by the regulations set forth in the annual student handbook. It outlines institutional discipline, grading configs, attendance norms, and POSH Act guidelines.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Filters & Search */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+                    <div className="flex items-center gap-2">
+                      <div className="relative flex-1 sm:w-64">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <input
+                          type="text"
+                          placeholder="Search handbooks..."
+                          value={handbookSearch}
+                          onChange={(e) => setHandbookSearch(e.target.value)}
+                          className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                      {handbookSearch && (
+                        <button
+                          type="button"
+                          onClick={() => setHandbookSearch("")}
+                          className="text-xs text-slate-400 hover:text-slate-600 px-2"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-slate-500">Year Filter:</span>
+                      <select
+                        value={handbookYearFilter}
+                        onChange={(e) => setHandbookYearFilter(e.target.value)}
+                        className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-amber-500"
+                      >
+                        <option value="ALL">All Academic Years</option>
+                        {Array.from(new Set(studentHandbooks.map((h: any) => h.year))).filter(Boolean).map((y: any) => (
+                          <option key={y} value={y}>{y}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Handbooks Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {studentHandbooks
+                      .filter((h: any) => {
+                        const matchesYear = handbookYearFilter === "ALL" || h.year === handbookYearFilter;
+                        const matchesQuery =
+                          !handbookSearch ||
+                          (h.year && h.year.toLowerCase().includes(handbookSearch.toLowerCase())) ||
+                          (h.title && h.title.toLowerCase().includes(handbookSearch.toLowerCase()));
+                        return matchesYear && matchesQuery;
+                      })
+                      .map((h: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs hover:shadow-lg hover:border-amber-300 transition-all flex flex-col justify-between group"
+                        >
+                          <div className="flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                              <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                                <Calendar className="h-3 w-3 text-amber-600" /> A.Y. {h.year}
+                              </span>
+                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                Official PDF
+                              </span>
+                            </div>
+
+                            <div className="flex items-start gap-3 mt-1">
+                              <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-700 border border-amber-200 shrink-0 group-hover:scale-105 transition-transform">
+                                <FileText className="h-5 w-5" />
+                              </div>
+                              <div>
+                                <h4 className="font-outfit text-base font-bold text-slate-900 group-hover:text-amber-700 transition-colors leading-snug">
+                                  {h.title || `Student Handbook ${h.year}`}
+                                </h4>
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                  Campus rules, academic discipline &amp; grading guide
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 pt-4 mt-4 border-t border-slate-100">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setPreviewModalFile({
+                                  url: h.fileUrl,
+                                  title: h.title || `Student Handbook ${h.year}`,
+                                });
+                              }}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                            >
+                              <Eye className="h-3.5 w-3.5" />
+                              <span>View Online</span>
+                            </button>
+                            <a
+                              href={h.fileUrl}
+                              download
+                              className="h-9 w-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-colors cursor-pointer shrink-0"
+                              title="Download PDF"
+                            >
+                              <Download className="h-4 w-4" />
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Policies Callout */}
+                  <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-2">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0">
+                        <ShieldCheck className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-outfit text-sm font-bold text-slate-900">
+                          Statutory Student Welfare &amp; POSH Regulations
+                        </h4>
+                        <p className="text-xs text-slate-600">
+                          Access institutional grievance redressal, anti-ragging policies, and women empowerment cell documentation.
+                        </p>
+                      </div>
+                    </div>
+                    <Link
+                      href="/student-support/statutory-cells/internal-complaints-committee-icc"
+                      onClick={() => setActiveRightDrawer(null)}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold transition-colors whitespace-nowrap shadow-xs"
+                    >
+                      <span>Statutory Policies</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                   </div>
                 </div>
               )}
 
-              {activeRightDrawer === "magazine" && (
-                <CollegeMagazinesSection magazines={magazines} />
+              {/* 5. BROCHURES VIEW (Yearly Uploads) */}
+              {activeRightDrawer === "brochures" && (
+                <div className="p-4 sm:p-8 max-w-[1400px] mx-auto animate-fadeIn flex flex-col gap-6 font-sans">
+                  {/* Header Banner */}
+                  <div className="bg-gradient-to-r from-[#001730] via-[#581c87] to-[#7e22ce] text-white p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-md">
+                    <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
+                      <FileSpreadsheet className="h-80 w-80" />
+                    </div>
+                    <div className="relative z-10 flex flex-col gap-2 max-w-3xl">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest uppercase bg-white/15 backdrop-blur px-3 py-1 rounded-full w-fit text-purple-100">
+                        <Layers className="h-3.5 w-3.5 text-purple-300" /> Publications • Yearly Uploads
+                      </span>
+                      <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                        Official College Brochures &amp; Pamphlets
+                      </h2>
+                      <p className="font-sans text-xs sm:text-sm text-purple-100/90 leading-relaxed font-medium">
+                        Explore our comprehensive promotional guides, flyers, and course roadmaps showcasing campus facilities, laboratory ecosystems, and academic pipelines.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Brochures Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {fallbackBrochures.map((b) => (
+                      <div
+                        key={b.id}
+                        className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs hover:shadow-xl hover:border-purple-300 transition-all flex flex-col justify-between group"
+                      >
+                        <div className="flex flex-col gap-4">
+                          {/* Image or PDF Cover Thumbnail */}
+                          {b.isImage ? (
+                            <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 relative">
+                              <img
+                                src={b.fileUrl}
+                                alt={b.title}
+                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setPreviewModalFile({ url: b.fileUrl, title: b.title });
+                                  }}
+                                  className="h-10 w-10 rounded-full bg-white text-[#002147] flex items-center justify-center shadow-md cursor-pointer hover:scale-110 transition-transform"
+                                >
+                                  <Eye className="h-5 w-5" />
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="aspect-[16/7] w-full rounded-2xl bg-gradient-to-br from-purple-50 via-slate-50 to-indigo-50 border border-purple-100 p-4 flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div className="h-12 w-12 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-xs">
+                                  <FileText className="h-6 w-6" />
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider bg-purple-100 px-2 py-0.5 rounded">
+                                    Official Document
+                                  </span>
+                                  <h4 className="font-outfit text-sm font-bold text-slate-800 mt-1">
+                                    PDF Course Guide
+                                  </h4>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="flex flex-col gap-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                A.Y. {b.academicYear}
+                              </span>
+                              <span className="text-[10px] font-bold text-slate-400">
+                                {b.isImage ? "Image Flyer" : "PDF Brochure"}
+                              </span>
+                            </div>
+
+                            <h3 className="font-outfit text-lg font-bold text-slate-900 group-hover:text-purple-700 transition-colors leading-snug">
+                              {b.title}
+                            </h3>
+                            <p className="text-xs text-slate-500 font-medium">
+                              {b.subtitle}
+                            </p>
+                            <p className="text-xs text-slate-600 leading-relaxed mt-1">
+                              {b.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 pt-4 mt-4 border-t border-slate-100">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPreviewModalFile({ url: b.fileUrl, title: b.title });
+                            }}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            <span>View Online</span>
+                          </button>
+                          <a
+                            href={b.fileUrl}
+                            download
+                            className="flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold border border-slate-200 transition-colors cursor-pointer"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            <span>Download</span>
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
 
-              {activeRightDrawer === "newsletter" && (
-                <NewslettersSection newsletters={newsletters} />
+              {/* 6. PROSPECTUS VIEW (Yearly Uploads) */}
+              {activeRightDrawer === "prospectus" && (
+                <div className="p-4 sm:p-8 max-w-[1400px] mx-auto animate-fadeIn flex flex-col gap-6 font-sans">
+                  {/* Header Banner */}
+                  <div className="bg-gradient-to-r from-[#001730] via-[#0369a1] to-[#0284c7] text-white p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-md">
+                    <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
+                      <Compass className="h-80 w-80" />
+                    </div>
+                    <div className="relative z-10 flex flex-col gap-2 max-w-3xl">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest uppercase bg-white/15 backdrop-blur px-3 py-1 rounded-full w-fit text-sky-100">
+                        <Compass className="h-3.5 w-3.5 text-sky-300" /> Admissions &amp; Charter • Yearly Uploads
+                      </span>
+                      <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                        Official College Prospectus
+                      </h2>
+                      <p className="font-sans text-xs sm:text-sm text-sky-100/90 leading-relaxed font-medium">
+                        The comprehensive prospectus details academic curricula, eligibility norms, admission procedures, campus facilities, faculty strength, and institutional governance for the academic session.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Prospectus Cards */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Primary Featured Current Prospectus */}
+                    <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border-2 border-sky-300/80 shadow-md flex flex-col justify-between group">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-sky-800 text-xs font-black uppercase tracking-wider border border-sky-200">
+                            <Star className="h-3.5 w-3.5 fill-sky-600 text-sky-600" /> Academic Session 2025–2026
+                          </span>
+                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                            Current Official Edition
+                          </span>
+                        </div>
+
+                        <h3 className="font-outfit text-2xl sm:text-3xl font-black text-[#002147] tracking-tight leading-snug">
+                          St. Ann&apos;s Comprehensive Prospectus (2025–2026)
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          Contains complete degree regulations, fee schedules, code of conduct, faculty statistics, library resources, laboratory facilities, scholarship guidelines, extracurricular clubs, and general institutional policies.
+                        </p>
+
+                        {/* Highlights List */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                          {[
+                            "Complete UG & PG Syllabi Outlines",
+                            "Hostel & Campus Transport Amenities",
+                            "Code of Conduct & Discipline Norms",
+                            "Scholarships & Fee Concession Criteria",
+                            "Faculty Directory & Research Labs",
+                            "Placement Cell & Career Pipeline",
+                          ].map((hl, i) => (
+                            <div key={i} className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                              <CheckCircle className="h-4 w-4 text-sky-600 shrink-0" />
+                              <span>{hl}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-6 mt-6 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPreviewModalFile({
+                              url: "/documents/admissions/Prospectus 2025-26.pdf",
+                              title: "St. Ann's Comprehensive Prospectus 2025-26",
+                            });
+                          }}
+                          className="flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-sky-600 hover:bg-sky-700 text-white text-sm font-bold transition-all shadow-md cursor-pointer"
+                        >
+                          <Eye className="h-4 w-4" />
+                          <span>View Prospectus Online</span>
+                        </button>
+                        <a
+                          href="/documents/admissions/Prospectus 2025-26.pdf"
+                          download
+                          className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-bold border border-slate-200 transition-colors cursor-pointer"
+                        >
+                          <Download className="h-4 w-4" />
+                          <span>Download PDF</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Archive Prospectus Card */}
+                    <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+                      <div className="flex flex-col gap-3.5">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold uppercase tracking-wider w-fit">
+                          Archive Edition
+                        </span>
+
+                        <h4 className="font-outfit text-xl font-bold text-slate-900 leading-snug">
+                          Institutional Prospectus (A.Y. 2024–2025)
+                        </h4>
+
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                          Archived institutional charter, syllabus framework, and governance documentation for compliance reference.
+                        </p>
+
+                        <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 flex flex-col gap-1.5">
+                          <span className="font-bold text-[#002147]">Includes:</span>
+                          <span className="text-[11px] text-slate-500">• Previous academic session benchmarks</span>
+                          <span className="text-[11px] text-slate-500">• Statutory criteria &amp; course outlines</span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 pt-4 mt-4 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPreviewModalFile({
+                              url: "/documents/admissions/Prospectus 2025-26.pdf",
+                              title: "St. Ann's Prospectus Archive (2024-25)",
+                            });
+                          }}
+                          className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          <span>View Archive Online</span>
+                        </button>
+                        <a
+                          href="/documents/admissions/Prospectus 2025-26.pdf"
+                          download
+                          className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          <span>Download Archive</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -1536,7 +2226,7 @@ export default function HomePage() {
                         type="button"
                         key={idx}
                         onClick={() =>
-                          setViewingPdfModal({
+                          setPreviewModalFile({
                             title: doc.title || doc.originalFilename || `Event Document ${idx + 1}`,
                             url: doc.url,
                           })
@@ -1744,7 +2434,7 @@ export default function HomePage() {
                           <button
                             type="button"
                             onClick={() =>
-                              setViewingPdfModal({
+                              setPreviewModalFile({
                                 title: doc.title || "Notice Document PDF",
                                 url: doc.url,
                               })
@@ -1793,66 +2483,13 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* ----------------------------------------------------
-          IN-APP PDF VIEWER MODAL (Opens PDF in modal, not new tab)
-          ---------------------------------------------------- */}
-      {viewingPdfModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
-          {/* Backdrop click to close */}
-          <div
-            className="absolute inset-0"
-            onClick={() => setViewingPdfModal(null)}
-          />
-
-          <div className="relative z-10 w-full max-w-5xl h-[90vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-scaleUp">
-            {/* Top Header */}
-            <div className="flex items-center justify-between px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white shrink-0">
-              <div className="flex items-center gap-2.5 min-w-0 pr-4">
-                <div className="h-7 w-7 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
-                  <FileText className="h-3.5 w-3.5 text-sky-300" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-outfit text-sm sm:text-base font-bold truncate">
-                    {viewingPdfModal.title}
-                  </h3>
-                  <p className="text-[10px] sm:text-[10.5px] text-sky-200/80 leading-tight">
-                    St. Ann&apos;s College for Women • PDF Viewer
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <a
-                  href={viewingPdfModal.url}
-                  download
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors border border-white/15"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  <span>Download</span>
-                </a>
-                <button
-                  onClick={() => setViewingPdfModal(null)}
-                  className="h-7 w-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer border border-white/10 shrink-0"
-                  aria-label="Close PDF Viewer"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* PDF Viewer Body with Iframe */}
-            <div className="flex-1 w-full h-full bg-slate-100 relative">
-              <iframe
-                src={`${viewingPdfModal.url}#toolbar=1&navpanes=0`}
-                className="w-full h-full border-0"
-                title={viewingPdfModal.title}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* In-app Document & Flipbook Preview Modal for All Documents across the page */}
+      <FilePreviewModal
+        isOpen={!!previewModalFile}
+        onClose={() => setPreviewModalFile(null)}
+        fileUrl={previewModalFile?.url || ""}
+        title={previewModalFile?.title || "Document Preview"}
+      />
     </div>
   );
 }

@@ -27,6 +27,7 @@ import {
   fallbackEventsHistory,
   EventDocument,
 } from "@/lib/events";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<any[]>(fallbackEventsHistory);
@@ -590,66 +591,13 @@ export default function EventsPage() {
         </div>
       )}
 
-      {/* ----------------------------------------------------
-          IN-APP PDF VIEWER MODAL (Opens PDF in modal, not new tab)
-          ---------------------------------------------------- */}
-      {viewingPdfModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
-          {/* Backdrop click to close */}
-          <div
-            className="absolute inset-0"
-            onClick={() => setViewingPdfModal(null)}
-          />
-
-          <div className="relative z-10 w-full max-w-5xl h-[90vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-scaleUp">
-            {/* Top Header */}
-            <div className="flex items-center justify-between px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white shrink-0">
-              <div className="flex items-center gap-2.5 min-w-0 pr-4">
-                <div className="h-7 w-7 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
-                  <FileText className="h-3.5 w-3.5 text-sky-300" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-outfit text-sm sm:text-base font-bold truncate">
-                    {viewingPdfModal.title}
-                  </h3>
-                  <p className="text-[10px] sm:text-[10.5px] text-sky-200/80 leading-tight">
-                    St. Ann&apos;s College for Women • PDF Viewer
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <a
-                  href={viewingPdfModal.url}
-                  download
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors border border-white/15"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  <span>Download</span>
-                </a>
-                <button
-                  onClick={() => setViewingPdfModal(null)}
-                  className="h-7 w-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer border border-white/10 shrink-0"
-                  aria-label="Close PDF Viewer"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* PDF Viewer Body with Iframe */}
-            <div className="flex-1 w-full h-full bg-slate-100 relative">
-              <iframe
-                src={`${viewingPdfModal.url}#toolbar=1&navpanes=0`}
-                className="w-full h-full border-0"
-                title={viewingPdfModal.title}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* In-app Document & Flipbook Preview Modal */}
+      <FilePreviewModal
+        isOpen={!!viewingPdfModal}
+        onClose={() => setViewingPdfModal(null)}
+        fileUrl={viewingPdfModal?.url || ""}
+        title={viewingPdfModal?.title || "Event Document"}
+      />
     </div>
   );
 }

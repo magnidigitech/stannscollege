@@ -14,9 +14,8 @@ export function sanitizePdfFilename(title?: string, fallback = "Document"): stri
     .replace(/[\u2010-\u2015\u2212]/g, "-")
     .replace(/[/\\?%*:|"<>#]/g, " ")
     .replace(/[^\x20-\x7E]/g, " ")
-    .replace(/\s+/g, "_")
-    .replace(/_+/g, "_")
-    .replace(/^_+|_+$/g, "");
+    .replace(/\s+/g, " ")
+    .trim();
 
   if (!clean) clean = fallback;
   if (!clean.toLowerCase().endsWith(".pdf")) {

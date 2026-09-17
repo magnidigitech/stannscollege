@@ -14,6 +14,7 @@ import {
   Table as TableIcon,
   ArrowUpDown,
 } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 export interface NewsletterItem {
   _id: string;
@@ -28,6 +29,40 @@ interface NewslettersSectionProps {
   newsletters: NewsletterItem[];
 }
 
+/**
+ * Returns the exact single calendar year for a given month and academic year.
+ * For example: for A.Y. "2025-2026":
+ * June through December -> "2025"
+ * January through May -> "2026"
+ */
+export function getCalendarYear(month?: string, academicYear?: string): string {
+  if (!academicYear) return "";
+  const parts = academicYear.split("-");
+  const startYear = parts[0]?.trim() || "";
+  const endYear = parts[1]?.trim() || startYear;
+  const m = month?.toLowerCase()?.trim() || "";
+
+  if (["june", "july", "august", "september", "october", "november", "december"].includes(m)) {
+    return startYear;
+  }
+  if (["january", "february", "march", "april", "may"].includes(m)) {
+    return endYear;
+  }
+  return startYear;
+}
+
+/**
+ * Formats the title with the single calendar year.
+ * e.g. "The St. Ann's Chronicle - June 2025"
+ */
+export function getFormattedNewsletterTitle(title: string, month: string, academicYear: string): string {
+  const calYear = getCalendarYear(month, academicYear);
+  if (month && calYear) {
+    return `The St. Ann's Chronicle - ${month} ${calYear}`;
+  }
+  return title.replace(/\s*\(\d{4}[–-]\d{4}\)/g, "").replace(/\s*\d{4}[–-]\d{4}/g, "");
+}
+
 export default function NewslettersSection({ newsletters }: NewslettersSectionProps) {
   const years = useMemo(() => {
     return Array.from(new Set(newsletters.map((n) => n.academicYear))).filter(Boolean).sort().reverse();
@@ -39,7 +74,7 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
   const [sortLatestFirst, setSortLatestFirst] = useState<boolean>(true);
   const [activePdfModal, setActivePdfModal] = useState<{ title: string; pdfUrl: string } | null>(null);
 
-  // Month ordering helper for chronological sorting
+  // Month ordering helper for chronological sorting (June = start of academic year)
   const monthOrder: Record<string, number> = {
     june: 1,
     july: 2,
@@ -58,12 +93,17 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
   // Filter & sort newsletters
   const filteredNewsletters = useMemo(() => {
     let list = newsletters.filter((item) => {
+      const calYear = getCalendarYear(item.month, item.academicYear);
+      const formattedTitle = getFormattedNewsletterTitle(item.title, item.month, item.academicYear);
       const matchesYear = selectedYear === "ALL" || item.academicYear === selectedYear;
+      const q = searchQuery.toLowerCase().trim();
       const matchesQuery =
-        searchQuery.trim() === "" ||
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.month.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.academicYear.toLowerCase().includes(searchQuery.toLowerCase());
+        q === "" ||
+        formattedTitle.toLowerCase().includes(q) ||
+        item.title.toLowerCase().includes(q) ||
+        item.month.toLowerCase().includes(q) ||
+        calYear.includes(q) ||
+        item.academicYear.toLowerCase().includes(q);
       return matchesYear && matchesQuery;
     });
 
@@ -81,8 +121,20 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
     });
   }, [newsletters, selectedYear, searchQuery, sortLatestFirst]);
 
+  // Handle Escape key to close full-screen PDF viewer
+  React.useEffect(() => {
+    if (!activePdfModal) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActivePdfModal(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activePdfModal]);
+
   return (
-    <section className="py-14 bg-white border-b border-slate-200/80 select-none">
+    <section className="py-8 bg-white border-b border-slate-200/80 select-none font-sans">
       <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
@@ -143,7 +195,7 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
               <button
                 type="button"
                 onClick={() => setViewMode("table")}
-                className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
                   viewMode === "table"
                     ? "bg-[#002147] text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -156,7 +208,7 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
-                className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
                   viewMode === "grid"
                     ? "bg-[#002147] text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -206,71 +258,76 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-xs">
-                  {filteredNewsletters.map((item) => (
-                    <tr
-                      key={item._id}
-                      className="hover:bg-slate-50/80 transition-colors duration-150 group"
-                    >
-                      {/* Month & Academic Year */}
-                      <td className="py-4 px-6 whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-slate-100/90 text-slate-700 border border-slate-200/70">
-                          <Calendar className="h-3.5 w-3.5 text-[#002147]" />
-                          {item.month} {item.academicYear ? `(${item.academicYear})` : ""}
-                        </span>
-                      </td>
+                  {filteredNewsletters.map((item) => {
+                    const calYear = getCalendarYear(item.month, item.academicYear);
+                    const formattedTitle = getFormattedNewsletterTitle(item.title, item.month, item.academicYear);
 
-                      {/* Title & Description */}
-                      <td className="py-4 px-6">
-                        <div className="flex items-center gap-3.5">
-                          <div className="h-10 w-10 rounded-xl bg-[#002147]/5 border border-[#002147]/10 flex items-center justify-center text-[#002147] shrink-0 group-hover:bg-[#002147] group-hover:text-white transition-colors">
-                            <Newspaper className="h-4 w-4" />
-                          </div>
-                          <div>
-                            <span className="font-outfit text-sm sm:text-base font-bold text-slate-900 block leading-tight group-hover:text-[#002147] transition-colors">
-                              {item.title}
-                            </span>
-                            <span className="font-sans text-xs text-slate-400 block mt-0.5 font-medium">
-                              St. Ann&apos;s College for Women • Monthly Campus Bulletin
-                            </span>
-                          </div>
-                        </div>
-                      </td>
+                    return (
+                      <tr
+                        key={item._id}
+                        className="hover:bg-slate-50/80 transition-colors duration-150 group"
+                      >
+                        {/* Month & Single Calendar Year */}
+                        <td className="py-4 px-6 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-slate-100/90 text-slate-700 border border-slate-200/70">
+                            <Calendar className="h-3.5 w-3.5 text-[#002147]" />
+                            {item.month} {calYear}
+                          </span>
+                        </td>
 
-                      {/* Actions */}
-                      <td className="py-4 px-6 text-right whitespace-nowrap">
-                        {item.pdfUrl ? (
-                          <div className="inline-flex items-center gap-2 justify-end">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setActivePdfModal({
-                                  title: item.title,
-                                  pdfUrl: item.pdfUrl!,
-                                })
-                              }
-                              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-[#002147] bg-[#002147]/5 hover:bg-[#002147] hover:text-white border border-[#002147]/15 transition-all cursor-pointer shadow-2xs active:scale-95"
-                              title="Read Newsletter Online"
-                            >
-                              <Eye className="h-3.5 w-3.5" />
-                              <span>Read</span>
-                            </button>
-                            <a
-                              href={item.pdfUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              download
-                              className="inline-flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:text-[#002147] hover:bg-slate-100 border border-slate-200 transition-colors"
-                              title="Download PDF"
-                            >
-                              <Download className="h-3.5 w-3.5" />
-                            </a>
+                        {/* Title & Description */}
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3.5">
+                            <div className="h-10 w-10 rounded-xl bg-[#002147]/5 border border-[#002147]/10 flex items-center justify-center text-[#002147] shrink-0 group-hover:bg-[#002147] group-hover:text-white transition-colors">
+                              <Newspaper className="h-4 w-4" />
+                            </div>
+                            <div>
+                              <span className="font-outfit text-sm sm:text-base font-bold text-slate-900 block leading-tight group-hover:text-[#002147] transition-colors">
+                                {formattedTitle}
+                              </span>
+                              <span className="font-sans text-xs text-slate-400 block mt-0.5 font-medium">
+                                St. Ann&apos;s College for Women • Monthly Campus Bulletin
+                              </span>
+                            </div>
                           </div>
-                        ) : (
-                          <span className="text-xs text-slate-400 italic">Processing</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+
+                        {/* Actions */}
+                        <td className="py-4 px-6 text-right whitespace-nowrap">
+                          {item.pdfUrl ? (
+                            <div className="inline-flex items-center gap-2 justify-end">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setActivePdfModal({
+                                    title: formattedTitle,
+                                    pdfUrl: item.pdfUrl!,
+                                  })
+                                }
+                                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-[#002147] bg-[#002147]/5 hover:bg-[#002147] hover:text-white border border-[#002147]/15 transition-all cursor-pointer shadow-2xs active:scale-95"
+                                title="Read Newsletter Full-Screen"
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                                <span>Read</span>
+                              </button>
+                              <a
+                                href={item.pdfUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                download
+                                className="inline-flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:text-[#002147] hover:bg-slate-100 border border-slate-200 transition-colors"
+                                title="Download PDF"
+                              >
+                                <Download className="h-3.5 w-3.5" />
+                              </a>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-slate-400 italic">Processing</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -291,121 +348,83 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
              CLEAN & LIGHT GRID CARDS (Optional View)
              ======================================================= */
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 min-[1920px]:grid-cols-6 gap-5">
-            {filteredNewsletters.map((item) => (
-              <div
-                key={item._id}
-                className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/60">
-                      <Calendar className="h-3 w-3 text-slate-400" />
-                      {item.month}
-                    </span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                      {item.academicYear}
-                    </span>
+            {filteredNewsletters.map((item) => {
+              const calYear = getCalendarYear(item.month, item.academicYear);
+              const formattedTitle = getFormattedNewsletterTitle(item.title, item.month, item.academicYear);
+
+              return (
+                <div
+                  key={item._id}
+                  className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/60">
+                        <Calendar className="h-3 w-3 text-slate-400" />
+                        {item.month} {calYear}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        AY {item.academicYear}
+                      </span>
+                    </div>
+
+                    <div className="h-10 w-10 rounded-xl bg-[#002147]/5 border border-[#002147]/10 flex items-center justify-center text-[#002147] mb-3 group-hover:bg-[#002147] group-hover:text-white transition-colors">
+                      <Newspaper className="h-5 w-5" />
+                    </div>
+
+                    <h3 className="font-outfit text-base font-bold text-slate-900 leading-snug">
+                      {formattedTitle}
+                    </h3>
+                    <p className="font-sans text-xs text-slate-500 mt-1 leading-relaxed">
+                      Official monthly issue for campus events and achievements.
+                    </p>
                   </div>
 
-                  <div className="h-10 w-10 rounded-xl bg-[#002147]/5 border border-[#002147]/10 flex items-center justify-center text-[#002147] mb-3 group-hover:bg-[#002147] group-hover:text-white transition-colors">
-                    <Newspaper className="h-5 w-5" />
+                  <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center gap-2">
+                    {item.pdfUrl ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActivePdfModal({
+                              title: formattedTitle,
+                              pdfUrl: item.pdfUrl!,
+                            })
+                          }
+                          className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#002147]/5 hover:bg-[#002147] hover:text-white text-[#002147] py-2 text-xs font-bold border border-[#002147]/15 transition-all cursor-pointer"
+                        >
+                          <Eye className="h-3.5 w-3.5" /> Read
+                        </button>
+                        <a
+                          href={item.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors shrink-0"
+                          title="Download PDF"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                        </a>
+                      </>
+                    ) : (
+                      <span className="text-xs text-slate-400 italic">Processing</span>
+                    )}
                   </div>
-
-                  <h3 className="font-outfit text-base font-bold text-slate-900 leading-snug">
-                    {item.title}
-                  </h3>
-                  <p className="font-sans text-xs text-slate-500 mt-1 leading-relaxed">
-                    Official monthly issue for campus events and achievements.
-                  </p>
                 </div>
-
-                <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center gap-2">
-                  {item.pdfUrl ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setActivePdfModal({
-                            title: item.title,
-                            pdfUrl: item.pdfUrl!,
-                          })
-                        }
-                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#002147]/5 hover:bg-[#002147] hover:text-white text-[#002147] py-2 text-xs font-bold border border-[#002147]/15 transition-all"
-                      >
-                        <Eye className="h-3.5 w-3.5" /> Read
-                      </button>
-                      <a
-                        href={item.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        download
-                        className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors shrink-0"
-                        title="Download PDF"
-                      >
-                        <Download className="h-3.5 w-3.5" />
-                      </a>
-                    </>
-                  ) : (
-                    <span className="text-xs text-slate-400 italic">Processing</span>
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
 
-      {/* PDF View Modal */}
-      {activePdfModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 sm:p-6 animate-fadeIn">
-          <div className="relative w-full max-w-5xl h-[88vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between bg-[#002147] px-5 py-3.5 text-white">
-              <div className="flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white">
-                  <Newspaper className="h-4 w-4" />
-                </span>
-                <div>
-                  <h3 className="font-outfit text-sm sm:text-base font-bold text-white leading-tight">
-                    {activePdfModal.title}
-                  </h3>
-                  <p className="font-sans text-[11px] text-slate-300 font-normal">
-                    St. Ann&apos;s College for Women • The St. Ann&apos;s Chronicle
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={activePdfModal.pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 text-xs font-semibold transition-colors"
-                >
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Open in New Tab</span>
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setActivePdfModal(null)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                  aria-label="Close reader"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Modal Body iframe */}
-            <div className="flex-1 w-full bg-slate-100 relative">
-              <iframe
-                src={`${activePdfModal.pdfUrl}#toolbar=1`}
-                className="w-full h-full border-none"
-                title={activePdfModal.title}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Full-Screen PDF & Flipbook View Modal */}
+      <FilePreviewModal
+        isOpen={!!activePdfModal}
+        onClose={() => setActivePdfModal(null)}
+        fileUrl={activePdfModal?.pdfUrl || ""}
+        title={activePdfModal?.title || "Newsletter"}
+      />
     </section>
   );
 }
+
