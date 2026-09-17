@@ -36,6 +36,30 @@ import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { getResearchData, DEFAULT_RESEARCH_DATA } from "@/lib/sanity";
 
+const resolveResearchDocUrl = (type: string, yr?: string, currentUrl?: string) => {
+  if (currentUrl && currentUrl !== "/documents/DefaultFile_1.pdf" && currentUrl.trim() !== "") {
+    return currentUrl;
+  }
+  const y = (yr || "").trim();
+  if (type === "ipr-policy") return "/documents/research/Intellectual_Property_Rights_IPR_Policy.pdf";
+  if (type === "ed-policy") return "/documents/research/Entrepreneurship_Policy.pdf";
+  if (type === "iic-policy") return "/documents/research/Institution_Innovation_Cell_Policy.pdf";
+  
+  if (type === "ipr-report") {
+    if (y.includes("2025") || y.includes("2026")) return "/documents/research/IPR_Cell_Activity_Report_2025-2026.pdf";
+    if (y.includes("2024")) return "/documents/research/IPR_Cell_Activity_Report_2024-2025.pdf";
+  }
+  if (type === "ed-report") {
+    if (y.includes("2025") || y.includes("2026")) return "/documents/research/ED_Cell_Activity_Report_2025-2026.pdf";
+    if (y.includes("2024")) return "/documents/research/ED_Cell_Activity_Report_2024-2025.pdf";
+  }
+  if (type === "iic-report") {
+    if (y.includes("2025") || y.includes("2026")) return "/documents/research/IIC_Activity_Report_2025-2026.pdf";
+    if (y.includes("2024")) return "/documents/research/IIC_Activity_Report_2024-2025.pdf";
+  }
+  return currentUrl || "/documents/DefaultFile_1.pdf";
+};
+
 // Sidebar categories matching 9.Research & Innovation.docx (1 to 8)
 const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   {
@@ -1343,26 +1367,28 @@ export default function ResearchInnovationPage() {
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {(data?.iprCell?.activityReports || [
-                          { year: "2025–2026", title: "IPR Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-                          { year: "2024–2025", title: "IPR Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
-                          { year: "2023–2024", title: "IPR Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
-                        ]).map((rep: any, idx: number) => (
-                          <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                            <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
-                            <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
-                            <td className="py-3.5 px-4 text-slate-700 font-medium">{rep.title}</td>
-                            <td className="py-3.5 px-4 text-center">
-                              <button
-                                type="button"
-                                onClick={() => openPdfModal(rep.fileUrl, rep.title)}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
-                              >
-                                <Eye className="w-3.5 h-3.5" />
-                                <span>View PDF</span>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                          { year: "2025–2026", title: "IPR Cell Activity Report 2025–2026", fileUrl: "/documents/research/IPR_Cell_Activity_Report_2025-2026.pdf" },
+                          { year: "2024–2025", title: "IPR Cell Activity Report 2024–2025", fileUrl: "/documents/research/IPR_Cell_Activity_Report_2024-2025.pdf" }
+                        ]).map((rep: any, idx: number) => {
+                          const resolvedUrl = resolveResearchDocUrl("ipr-report", rep.year, rep.fileUrl);
+                          return (
+                            <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                              <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
+                              <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
+                              <td className="py-3.5 px-4 text-slate-700 font-medium">{rep.title}</td>
+                              <td className="py-3.5 px-4 text-center">
+                                <button
+                                  type="button"
+                                  onClick={() => openPdfModal(resolvedUrl, rep.title)}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                  <span>View PDF</span>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -1392,7 +1418,7 @@ export default function ResearchInnovationPage() {
                   <div>
                     <button
                       type="button"
-                      onClick={() => openPdfModal(data?.iprCell?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Intellectual Property Policy Document")}
+                      onClick={() => openPdfModal(resolveResearchDocUrl("ipr-policy", undefined, data?.iprCell?.policyFileUrl), "Intellectual Property Policy Document")}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
                     >
                       <FileText className="w-4 h-4 text-amber-300" />
@@ -1645,26 +1671,28 @@ export default function ResearchInnovationPage() {
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {(data?.entrepreneurshipCentre?.activityReports || [
-                          { year: "2025–2026", title: "ED Centre Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-                          { year: "2024–2025", title: "ED Centre Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
-                          { year: "2023–2024", title: "ED Centre Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
-                        ]).map((rep: any, idx: number) => (
-                          <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                            <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
-                            <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
-                            <td className="py-3.5 px-4 text-slate-700 font-medium">{rep.title}</td>
-                            <td className="py-3.5 px-4 text-center">
-                              <button
-                                type="button"
-                                onClick={() => openPdfModal(rep.fileUrl, rep.title)}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
-                              >
-                                <Eye className="w-3.5 h-3.5" />
-                                <span>View PDF</span>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                          { year: "2025–2026", title: "Entrepreneurship Cell Activity Report 2025–2026", fileUrl: "/documents/research/ED_Cell_Activity_Report_2025-2026.pdf" },
+                          { year: "2024–2025", title: "ED Cell Activity Report 2024–2025", fileUrl: "/documents/research/ED_Cell_Activity_Report_2024-2025.pdf" }
+                        ]).map((rep: any, idx: number) => {
+                          const resolvedUrl = resolveResearchDocUrl("ed-report", rep.year, rep.fileUrl);
+                          return (
+                            <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                              <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
+                              <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
+                              <td className="py-3.5 px-4 text-slate-700 font-medium">{rep.title}</td>
+                              <td className="py-3.5 px-4 text-center">
+                                <button
+                                  type="button"
+                                  onClick={() => openPdfModal(resolvedUrl, rep.title)}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                  <span>View PDF</span>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -1694,7 +1722,7 @@ export default function ResearchInnovationPage() {
                   <div>
                     <button
                       type="button"
-                      onClick={() => openPdfModal(data?.entrepreneurshipCentre?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Entrepreneurship Development / Innovation & Start-Up Policy")}
+                      onClick={() => openPdfModal(resolveResearchDocUrl("ed-policy", undefined, data?.entrepreneurshipCentre?.policyFileUrl), "Entrepreneurship Development / Innovation & Start-Up Policy")}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
                     >
                       <FileText className="w-4 h-4 text-amber-300" />
@@ -1878,26 +1906,28 @@ export default function ResearchInnovationPage() {
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {(data?.iicCell?.activityReports || [
-                          { year: "2025–2026", title: "IIC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-                          { year: "2024–2025", title: "IIC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
-                          { year: "2023–2024", title: "IIC Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
-                        ]).map((rep: any, idx: number) => (
-                          <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                            <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
-                            <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
-                            <td className="py-3.5 px-4 text-slate-700 font-medium">{rep.title}</td>
-                            <td className="py-3.5 px-4 text-center">
-                              <button
-                                type="button"
-                                onClick={() => openPdfModal(rep.fileUrl, rep.title)}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
-                              >
-                                <Eye className="w-3.5 h-3.5" />
-                                <span>View PDF</span>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                          { year: "2025–2026", title: "IIC Annual Activity Report 2025–2026", fileUrl: "/documents/research/IIC_Activity_Report_2025-2026.pdf" },
+                          { year: "2024–2025", title: "IIC Annual Activity Report 2024–2025", fileUrl: "/documents/research/IIC_Activity_Report_2024-2025.pdf" }
+                        ]).map((rep: any, idx: number) => {
+                          const resolvedUrl = resolveResearchDocUrl("iic-report", rep.year, rep.fileUrl);
+                          return (
+                            <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                              <td className="py-3.5 px-4 text-center font-bold text-slate-500">{idx + 1}</td>
+                              <td className="py-3.5 px-4 font-bold text-blue-900">{rep.year}</td>
+                              <td className="py-3.5 px-4 text-slate-700 font-medium">{rep.title}</td>
+                              <td className="py-3.5 px-4 text-center">
+                                <button
+                                  type="button"
+                                  onClick={() => openPdfModal(resolvedUrl, rep.title)}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer border border-blue-200/60"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                  <span>View PDF</span>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -1927,7 +1957,7 @@ export default function ResearchInnovationPage() {
                   <div>
                     <button
                       type="button"
-                      onClick={() => openPdfModal(data?.iicCell?.policyFileUrl || "/documents/DefaultFile_1.pdf", "Institution Innovation Council (IIC) Policy")}
+                      onClick={() => openPdfModal(resolveResearchDocUrl("iic-policy", undefined, data?.iicCell?.policyFileUrl), "Institution Innovation Council (IIC) Policy")}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
                     >
                       <FileText className="w-4 h-4 text-amber-300" />

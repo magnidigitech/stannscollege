@@ -2033,12 +2033,11 @@ export const DEFAULT_RESEARCH_DATA = {
       "Strengthening of institutional research and innovation practices."
     ],
     activityReports: [
-      { _key: "ipr_ar_1", year: "2025–2026", title: "IPR Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "ipr_ar_2", year: "2024–2025", title: "IPR Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "ipr_ar_3", year: "2023–2024", title: "IPR Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "ipr_ar_1", year: "2025–2026", title: "IPR Cell Activity Report 2025–2026", fileUrl: "/documents/research/IPR_Cell_Activity_Report_2025-2026.pdf" },
+      { _key: "ipr_ar_2", year: "2024–2025", title: "IPR Cell Activity Report 2024–2025", fileUrl: "/documents/research/IPR_Cell_Activity_Report_2024-2025.pdf" }
     ],
     policyDescription: "The institution recognizes Intellectual Property as an important component of academic, research, and innovation development. The IPR Cell facilitates awareness, documentation, protection, and ethical use of intellectual property generated through academic and research activities. Faculty and students are encouraged to protect their original work while maintaining confidentiality and adhering to institutional and ethical standards.",
-    policyFileUrl: "/documents/DefaultFile_1.pdf"
+    policyFileUrl: "/documents/research/Intellectual_Property_Rights_IPR_Policy.pdf"
   },
 
   entrepreneurshipCentre: {
@@ -2076,12 +2075,11 @@ export const DEFAULT_RESEARCH_DATA = {
       "Confidence and economic empowerment among women students"
     ],
     activityReports: [
-      { _key: "ed_ar_1", year: "2025–2026", title: "ED Centre Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "ed_ar_2", year: "2024–2025", title: "ED Centre Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "ed_ar_3", year: "2023–2024", title: "ED Centre Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "ed_ar_1", year: "2025–2026", title: "Entrepreneurship Cell Activity Report 2025–2026", fileUrl: "/documents/research/ED_Cell_Activity_Report_2025-2026.pdf" },
+      { _key: "ed_ar_2", year: "2024–2025", title: "ED Cell Activity Report 2024–2025", fileUrl: "/documents/research/ED_Cell_Activity_Report_2024-2025.pdf" }
     ],
     policyDescription: "The Entrepreneurship Development / Innovation & Start-Up Policy of St. Ann’s College for Women, Gorantla, Guntur provides a framework for promoting entrepreneurship, innovation, creativity, and self-employment among students and faculty. The policy encourages entrepreneurial learning, skill development, mentoring, industry interaction, innovative idea development, and start-up awareness. It aims to create a supportive ecosystem that strengthens employability, innovation, leadership, and women entrepreneurship, in alignment with institutional quality enhancement practices.",
-    policyFileUrl: "/documents/DefaultFile_1.pdf"
+    policyFileUrl: "/documents/research/Entrepreneurship_Policy.pdf"
   },
 
   iicCell: {
@@ -2108,12 +2106,11 @@ export const DEFAULT_RESEARCH_DATA = {
     ],
     expectedOutcomes: "The Cell aims to foster an innovative and entrepreneurial mindset, enhance students' creativity, leadership, problem-solving and professional skills, and strengthen industry–academia collaboration and employability.",
     activityReports: [
-      { _key: "iic_ar_1", year: "2025–2026", title: "IIC Activity Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "iic_ar_2", year: "2024–2025", title: "IIC Activity Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
-      { _key: "iic_ar_3", year: "2023–2024", title: "IIC Activity Report 2023–2024", fileUrl: "/documents/DefaultFile_1.pdf" }
+      { _key: "iic_ar_1", year: "2025–2026", title: "IIC Annual Activity Report 2025–2026", fileUrl: "/documents/research/IIC_Activity_Report_2025-2026.pdf" },
+      { _key: "iic_ar_2", year: "2024–2025", title: "IIC Annual Activity Report 2024–2025", fileUrl: "/documents/research/IIC_Activity_Report_2024-2025.pdf" }
     ],
     policyDescription: "The Institution has formulated an Institution Innovation Council (IIC) Policy to foster a culture of innovation, entrepreneurship, research, creativity, and industry collaboration. The policy provides a framework for promoting innovative ideas, mentoring, prototype development, start-up awareness, industry interaction, incubation activities, and student participation in innovation-oriented programmes.",
-    policyFileUrl: "/documents/DefaultFile_1.pdf"
+    policyFileUrl: "/documents/research/Institution_Innovation_Cell_Policy.pdf"
   }
 };
 
