@@ -157,8 +157,6 @@ const MANDATORY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     items: [
       { text: "1. Governance Structure & Organogram", id: "sec-gov-structure" },
       { text: "2. Institutional Policies Compendium", id: "sec-gov-policies" },
-      { text: "3. Code of Conduct & Ethics", id: "sec-gov-code" },
-      { text: "4. Administrative & Academic Policies", id: "sec-gov-admin" },
     ]
   },
   {
@@ -253,8 +251,6 @@ export default function MandatoryDisclosuresPage() {
       "sec-governance",
       "sec-gov-structure",
       "sec-gov-policies",
-      "sec-gov-code",
-      "sec-gov-admin",
       "sec-reports",
       "sec-reports-annual",
       "sec-reports-stats",
@@ -1376,32 +1372,41 @@ export default function MandatoryDisclosuresPage() {
                       The institution is committed to maintaining financial accountability, proper financial management and transparency in accordance with applicable rules and institutional procedures.
                     </p>
 
-                    <div className="flex flex-col gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                       {(data.financialDocuments || []).map((doc: any, idx: number) => {
                         const sNo = doc.sNo || idx + 1;
+                        const isAlt = idx % 2 === 1;
                         return (
                           <div
                             key={doc._key || idx}
                             id={`sec-financial-${doc.code || idx}`}
-                            className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-3"
-                            style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                            className={`scroll-mt-52 border-2 ${isAlt ? "border-blue-200/90" : "border-slate-200/90"} rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-3 group`}
+                            style={{ backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                           >
-                            <h4 className="font-outfit font-extrabold text-sm md:text-base text-slate-900">
-                              {sNo}. {doc.title}
-                            </h4>
-                            {doc.description && (
-                              <p className="text-slate-600 text-sm leading-relaxed">
-                                {doc.description}
-                              </p>
-                            )}
-                            <div className="flex flex-col gap-1.5 pt-1">
-                              <span className="text-xs font-black text-red-600 uppercase tracking-wider">PDF View:</span>
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-start gap-2.5">
+                                <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${isAlt ? "bg-blue-100/80 text-blue-700" : "bg-blue-50 text-blue-600"} border border-blue-100 font-extrabold text-xs shrink-0 mt-0.5`}>
+                                  {sNo}
+                                </span>
+                                <h4 className="font-outfit font-extrabold text-sm sm:text-[15px] text-slate-900 leading-snug group-hover:text-blue-700 transition-colors">
+                                  {doc.title}
+                                </h4>
+                              </div>
+                              {doc.description && (
+                                <p className="text-slate-600 text-xs leading-relaxed line-clamp-3 mt-1">
+                                  {doc.description}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col gap-1.5 pt-3 border-t border-slate-100/90 mt-auto">
+                              <span className="text-[11px] font-black text-red-600 uppercase tracking-wider">PDF View:</span>
                               <div className="flex flex-wrap items-center gap-2">
                                 <button
                                   onClick={() => openPdf(doc.fileUrl, doc.title)}
                                   className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer"
                                 >
-                                  <FileText className="h-3.5 w-3.5 text-emerald-600" />
+                                  <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                                   <span className="underline">{doc.btnLabel || doc.title} – View PDF</span>
                                 </button>
                                 {doc.secondFileUrl && (
@@ -1409,7 +1414,7 @@ export default function MandatoryDisclosuresPage() {
                                     onClick={() => openPdf(doc.secondFileUrl, doc.secondBtnLabel || doc.title)}
                                     className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer"
                                   >
-                                    <FileText className="h-3.5 w-3.5 text-emerald-600" />
+                                    <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                                     <span className="underline">{doc.secondBtnLabel || "Additional Document"} – View PDF</span>
                                   </button>
                                 )}
@@ -1420,7 +1425,7 @@ export default function MandatoryDisclosuresPage() {
                                     rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
                                     className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 cursor-pointer"
                                   >
-                                    <ExternalLink className="h-3 w-3" />
+                                    <ExternalLink className="h-3 w-3 shrink-0" />
                                     <span className="underline">Portal Link</span>
                                   </a>
                                 )}
@@ -1470,58 +1475,62 @@ export default function MandatoryDisclosuresPage() {
                       The institution follows a structured governance framework to ensure effective academic, administrative and institutional functioning.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {((data.governanceCards && data.governanceCards.length > 0) ? data.governanceCards : [
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {(((data.governanceCards && data.governanceCards.length > 0) ? data.governanceCards : [
                         { id: "sec-gov-structure", title: "Governance Structure & Organogram", href: "/about/governance-administration" },
                         { id: "sec-gov-policies", title: "Institutional Policies Compendium", href: "/about/policies" },
-                        { id: "sec-gov-code", title: "Code of Conduct & Ethics", href: "/about/code-of-conduct" },
-                        { id: "sec-gov-admin", title: "Administrative & Service Policies", href: "/about/service-rules" },
-                        { id: "sec-gov-academic", title: "Academic Policies & Regulations", href: "/academics/academic-regulations" },
-                        { id: "sec-gov-charter", title: "Student Charter & Conduct Policies", href: "/student-support/student-charter" },
-                      ]).map((item: any, idx: number) => {
-                        const isBlue = idx % 2 === 1;
-                        const targetHref = item.href || item.redirectUrl || "#";
-                        const isExternal = targetHref.startsWith("http");
-                        return (
-                          <div
-                            key={item._key || idx}
-                            id={item.id}
-                            className={`scroll-mt-52 border-2 ${isBlue ? "border-blue-200/90" : "border-slate-200/90"} p-5 rounded-2xl hover:shadow-md transition-all flex flex-col justify-between gap-3 group`}
-                            style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all shrink-0">
-                                <BookOpen className="h-4.5 w-4.5" />
-                              </span>
-                              <h5 className="font-outfit font-extrabold text-sm text-slate-900 group-hover:text-blue-700 transition-colors">
-                                {item.title}
-                              </h5>
+                      ]) as any[])
+                        .filter((item: any) => {
+                          const t = (item.title || "").toLowerCase();
+                          return !t.includes("code of conduct") &&
+                                 !t.includes("service") &&
+                                 !t.includes("academic") &&
+                                 !t.includes("student charter");
+                        })
+                        .map((item: any, idx: number) => {
+                          const isBlue = idx % 2 === 1;
+                          const targetHref = item.href || item.redirectUrl || "#";
+                          const isExternal = targetHref.startsWith("http");
+                          return (
+                            <div
+                              key={item._key || idx}
+                              id={item.id || (idx === 0 ? "sec-gov-structure" : "sec-gov-policies")}
+                              className={`scroll-mt-52 border-2 ${isBlue ? "border-blue-200/90" : "border-slate-200/90"} p-5 rounded-2xl hover:shadow-md transition-all flex flex-col justify-between gap-3 group`}
+                              style={{ backgroundColor: isBlue ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 group-hover:bg-[#1e40af] group-hover:text-white transition-all shrink-0">
+                                  <BookOpen className="h-4.5 w-4.5" />
+                                </span>
+                                <h5 className="font-outfit font-extrabold text-sm sm:text-base text-slate-900 group-hover:text-blue-700 transition-colors">
+                                  {item.title}
+                                </h5>
+                              </div>
+                              <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+                                {targetHref !== "#" && (
+                                  <Link
+                                    href={targetHref}
+                                    target={isExternal ? "_blank" : undefined}
+                                    rel={isExternal ? "noopener noreferrer" : undefined}
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors"
+                                  >
+                                    <span>View Details</span>
+                                    {isExternal ? <ExternalLink className="h-3 w-3" /> : <ChevronRight className="h-3.5 w-3.5" />}
+                                  </Link>
+                                )}
+                                {item.fileUrl && (
+                                  <button
+                                    onClick={() => openPdf(item.fileUrl, item.title)}
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#002147] hover:bg-blue-900 text-white rounded-lg text-[11px] font-bold transition-all ml-auto cursor-pointer"
+                                  >
+                                    <Eye className="h-3 w-3" />
+                                    <span>PDF</span>
+                                  </button>
+                                )}
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
-                              {targetHref !== "#" && (
-                                <Link
-                                  href={targetHref}
-                                  target={isExternal ? "_blank" : undefined}
-                                  rel={isExternal ? "noopener noreferrer" : undefined}
-                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors"
-                                >
-                                  <span>View Details</span>
-                                  {isExternal ? <ExternalLink className="h-3 w-3" /> : <ChevronRight className="h-3.5 w-3.5" />}
-                                </Link>
-                              )}
-                              {item.fileUrl && (
-                                <button
-                                  onClick={() => openPdf(item.fileUrl, item.title)}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#002147] hover:bg-blue-900 text-white rounded-lg text-[11px] font-bold transition-all ml-auto cursor-pointer"
-                                >
-                                  <Eye className="h-3 w-3" />
-                                  <span>PDF</span>
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
                     </div>
                   </div>
                 </section>

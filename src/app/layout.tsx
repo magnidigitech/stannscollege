@@ -124,7 +124,7 @@ export default function RootLayout({
           <div
             className="w-full border-b border-t select-none transition-colors duration-200"
             style={{
-              backgroundColor: "#001738",
+              backgroundColor: "#000080",
               borderColor: "rgba(255, 255, 255, 0.12)"
             }}
           >

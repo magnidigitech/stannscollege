@@ -7,7 +7,8 @@ export function AnnouncementBar() {
   return (
     <div
       id="top-announcement-bar"
-      className="w-full h-10 border-b border-white/10 bg-[#000d26] overflow-hidden select-none z-40 relative shadow-xs"
+      className="w-full h-10 border-b border-white/10 overflow-hidden select-none z-40 relative shadow-xs"
+      style={{ backgroundColor: "#000080" }}
     >
       <div className="mx-auto max-w-[1780px] px-3 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between text-xs font-semibold gap-3 sm:gap-6">
         

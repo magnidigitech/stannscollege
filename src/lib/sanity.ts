@@ -1407,10 +1407,6 @@ export const DEFAULT_MANDATORY_DISCLOSURES = {
   governanceCards: [
     { _key: "gov_1", title: "Governance Structure & Organogram", href: "/about/governance-administration", description: "Comprehensive administrative organogram, leadership hierarchy, and academic council frameworks.", fileUrl: "" },
     { _key: "gov_2", title: "Institutional Policies Compendium", href: "/about/policies", description: "Official compendium of institutional statutes, operational procedures, and governance mandates.", fileUrl: "" },
-    { _key: "gov_3", title: "Code of Conduct & Ethics", href: "/about/code-of-conduct", description: "Professional, student, and faculty ethical standards, code of conduct, and disciplinary policies.", fileUrl: "" },
-    { _key: "gov_4", title: "Administrative & Service Policies", href: "/about/service-rules", description: "Staff service rules, administrative welfare policies, recruitment regulations, and service norms.", fileUrl: "" },
-    { _key: "gov_5", title: "Academic Policies & Regulations", href: "/academics/academic-regulations", description: "CBCS examination regulations, curriculum guidelines, attendance standards, and academic credits.", fileUrl: "" },
-    { _key: "gov_6", title: "Student Charter & Conduct Policies", href: "/student-support/student-charter", description: "Institutional commitments, student privileges, responsibilities, and code of citizenship.", fileUrl: "" },
   ],
   dataStatsCards: [
     { _key: "ds_1", title: "Students Enrolment & Demographic Profile", href: "/academics/programmes", description: "Detailed intake capacity, current student strength, demographic diversity, and gender ratio data.", fileUrl: "" },

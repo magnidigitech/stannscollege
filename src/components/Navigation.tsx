@@ -441,12 +441,8 @@ export default function Navigation() {
       icon: Landmark,
       href: "/mandatory-disclosures#sec-governance",
       items: [
-        { text: "Governance Structure", href: "/about/governance-administration" },
-        { text: "Institutional Policies", href: "/about/policies" },
-        { text: "Code of Conduct", href: "/about/code-of-conduct" },
-        { text: "Administrative & Service Policies", href: "/about/service-rules" },
-        { text: "Academic Policies", href: "/academics/academic-regulations" },
-        { text: "Student Policies", href: "/student-support/student-charter" },
+        { text: "Governance Structure & Organogram", href: "/about/governance-administration" },
+        { text: "Institutional Policies Compendium", href: "/about/policies" },
       ]
     },
     {
