@@ -25,7 +25,7 @@ export function TopLogoBar() {
       className="w-full border-b border-slate-200 select-none shadow-xs bg-white transition-colors duration-200"
       style={{ backgroundColor: "#ffffff" }}
     >
-      <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-2.5 min-h-[78px] py-1">
+      <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-2.5 min-h-[72px] py-1">
 
         {/* Left: Official College Logo & Full Header Graphic / Text */}
         <Link
@@ -35,7 +35,7 @@ export function TopLogoBar() {
           <img
             src="/images/Crest_Logo.png?v=full_v5"
             alt="St. Ann's College Crest Logo"
-            className="h-[76px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0 py-0"
+            className="h-[70px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0 py-0"
           />
 
           {/* Hardcoded Institutional Typography (Center-Aligned) */}
@@ -43,19 +43,13 @@ export function TopLogoBar() {
             <h1 className="font-black text-[20px] sm:text-[22px] tracking-tight leading-none uppercase select-none text-[#000080] font-outfit w-full text-center">
               ST. ANN’S COLLEGE FOR WOMEN
             </h1>
-            <span className="font-bold text-[10px] sm:text-[10.5px] tracking-tight leading-tight mt-0.5 w-full text-blue-900 text-center">
+            <span className="font-bold text-[11px] sm:text-[11.5px] tracking-tight leading-tight mt-0.5 w-full text-blue-900 text-center">
               Run by The Society of St Anne
             </span>
-            <span className="font-medium text-[9.5px] sm:text-[10px] tracking-tight leading-tight mt-0.5 w-full text-slate-700 text-center">
+            <span className="font-semibold text-[10.5px] sm:text-[11px] tracking-tight leading-tight mt-0.5 w-full text-slate-700 text-center">
               Affiliated to Acharya Nagarjuna University, Approved by AICTE
             </span>
-            <span className="font-medium text-[9.5px] sm:text-[10px] tracking-tight leading-tight w-full text-slate-700 text-center">
-              Recognized under Section 2(f) of the UGC Act, 1956, New Delhi.
-            </span>
-            <span className="font-medium text-[9.5px] sm:text-[10px] tracking-tight leading-tight w-full text-slate-700 text-center">
-              Accredited by NAAC with &lsquo;A&rsquo; Grade in the First Cycle
-            </span>
-            <span className="font-bold text-[12px] sm:text-[13px] tracking-wide leading-tight mt-0.5 w-full text-slate-900 text-center">
+            <span className="font-bold text-[12.5px] sm:text-[13px] tracking-wide leading-tight mt-0.5 w-full text-slate-900 text-center">
               Amaravathi Road, Gorantla, Guntur–522034, Andhra Pradesh, India.
             </span>
           </div>
@@ -69,12 +63,12 @@ export function TopLogoBar() {
               <img
                 src="/images/29years--logo.png?v=full_v5"
                 alt="29+ Years of Excellence (1997 - 2026)"
-                className="h-[74px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[68px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
             </div>
 
             {/* Divider Line */}
-            <div className="h-10 w-px bg-slate-200 hidden sm:block shrink-0" />
+            <div className="h-9 w-px bg-slate-200 hidden sm:block shrink-0" />
 
             {/* NAAC 'A' Accreditation Logo */}
             <div
@@ -84,12 +78,12 @@ export function TopLogoBar() {
               <img
                 src="/images/naac_logo_clean.png?v=full_v5"
                 alt="NAAC 'A' Grade"
-                className="h-[70px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[64px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
             </div>
 
             {/* Divider Line */}
-            <div className="h-10 w-px bg-slate-200 hidden sm:block shrink-0" />
+            <div className="h-9 w-px bg-slate-200 hidden sm:block shrink-0" />
 
             {/* AICTE Approved Logo */}
             <div
@@ -99,7 +93,7 @@ export function TopLogoBar() {
               <img
                 src="/images/AICTE_Logo.png?v=full_v5"
                 alt="AICTE Approved"
-                className="h-[70px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[64px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
             </div>
           </div>
