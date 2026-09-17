@@ -1399,37 +1399,40 @@ export default function MandatoryDisclosuresPage() {
                               )}
                             </div>
 
-                            <div className="flex flex-col gap-1.5 pt-3 border-t border-slate-100/90 mt-auto">
-                              <span className="text-[11px] font-black text-red-600 uppercase tracking-wider">PDF View:</span>
-                              <div className="flex flex-wrap items-center gap-2">
-                                <button
-                                  onClick={() => openPdf(doc.fileUrl, doc.title)}
-                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer"
-                                >
-                                  <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                                  <span className="underline">{doc.btnLabel || doc.title} – View PDF</span>
-                                </button>
+                            <div className="flex items-center justify-between gap-2 pt-3 border-t border-slate-100/90 mt-auto">
+                              <div className="flex flex-wrap items-center gap-3">
+                                {doc.fileUrl && (
+                                  <button
+                                    onClick={() => openPdf(doc.fileUrl, doc.title)}
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors group/btn cursor-pointer"
+                                  >
+                                    <FileText className="h-3.5 w-3.5 text-blue-600 shrink-0" />
+                                    <span className="group-hover/btn:underline">View PDF</span>
+                                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5 text-blue-500" />
+                                  </button>
+                                )}
                                 {doc.secondFileUrl && (
                                   <button
                                     onClick={() => openPdf(doc.secondFileUrl, doc.secondBtnLabel || doc.title)}
-                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors group/btn cursor-pointer"
                                   >
-                                    <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                                    <span className="underline">{doc.secondBtnLabel || "Additional Document"} – View PDF</span>
+                                    <FileText className="h-3.5 w-3.5 text-blue-600 shrink-0" />
+                                    <span className="group-hover/btn:underline">{doc.secondBtnLabel ? `View ${doc.secondBtnLabel}` : "View PDF"}</span>
+                                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5 text-blue-500" />
                                   </button>
                                 )}
-                                {doc.redirectUrl && (
-                                  <a
-                                    href={doc.redirectUrl}
-                                    target={doc.redirectUrl.startsWith("http") ? "_blank" : "_self"}
-                                    rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                                    className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 cursor-pointer"
-                                  >
-                                    <ExternalLink className="h-3 w-3 shrink-0" />
-                                    <span className="underline">Portal Link</span>
-                                  </a>
-                                )}
                               </div>
+                              {doc.redirectUrl && (
+                                <a
+                                  href={doc.redirectUrl}
+                                  target={doc.redirectUrl.startsWith("http") ? "_blank" : "_self"}
+                                  rel={doc.redirectUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-colors cursor-pointer"
+                                >
+                                  <ExternalLink className="h-3 w-3 shrink-0" />
+                                  <span className="underline">Portal Link</span>
+                                </a>
+                              )}
                             </div>
                           </div>
                         );
