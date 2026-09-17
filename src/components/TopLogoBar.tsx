@@ -43,10 +43,10 @@ export function TopLogoBar() {
             <h1 className="font-black text-[24px] sm:text-[26px] md:text-[28px] tracking-tight leading-none uppercase select-none text-[#000080] font-outfit w-full text-center">
               ST. ANN’S COLLEGE FOR WOMEN
             </h1>
-            <span className="font-bold text-[11px] sm:text-[11.5px] tracking-tight leading-tight mt-0.5 w-full text-blue-900 text-center">
+            <span className="font-bold text-[13px] sm:text-[13.5px] tracking-normal leading-snug mt-0.5 w-full text-blue-900 text-center">
               Run by The Society of St Anne
             </span>
-            <span className="font-semibold text-[10.5px] sm:text-[11px] tracking-tight leading-tight mt-0.5 w-full text-slate-700 text-center">
+            <span className="font-semibold text-[12px] sm:text-[12.5px] tracking-normal leading-snug mt-0.5 w-full text-slate-700 text-center">
               Affiliated to Acharya Nagarjuna University
             </span>
             <span className="font-bold text-[12.5px] sm:text-[13px] tracking-wide leading-tight mt-0.5 w-full text-[#000080] text-center">
