@@ -47,7 +47,7 @@ export function TopLogoBar() {
               Run by The Society of St Anne
             </span>
             <span className="font-semibold text-[10.5px] sm:text-[11px] tracking-tight leading-tight mt-0.5 w-full text-slate-700 text-center">
-              Affiliated to Acharya Nagarjuna University, Approved by AICTE
+              Affiliated to Acharya Nagarjuna University
             </span>
             <span className="font-bold text-[12.5px] sm:text-[13px] tracking-wide leading-tight mt-0.5 w-full text-[#000080] text-center">
               Amaravathi Road, Gorantla, Guntur–522034, Andhra Pradesh, India.
