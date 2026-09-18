@@ -45,6 +45,7 @@ export async function GET() {
       `*[_type == "strategicPlan" && !(_id in path("drafts.**"))][0]{
         _id,
         title,
+        executiveSummary,
         studentFeedbackFormUrl,
         facultyFeedbackFormUrl,
         parentFeedbackFormUrl,
@@ -73,6 +74,8 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       docId: doc?._id || STRATEGIC_PLAN_DOC_ID,
+      title: doc?.title || "Strategic Plans & Future Directions",
+      executiveSummary: doc?.executiveSummary || "",
       links,
     });
   } catch (err: any) {
@@ -80,6 +83,8 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       docId: STRATEGIC_PLAN_DOC_ID,
+      title: "Strategic Plans & Future Directions",
+      executiveSummary: "",
       links: DEFAULT_FEEDBACK_LINKS,
     });
   }
@@ -100,6 +105,8 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
     const {
+      title,
+      executiveSummary,
       studentFeedbackFormUrl,
       facultyFeedbackFormUrl,
       parentFeedbackFormUrl,
@@ -117,22 +124,49 @@ export async function POST(req: NextRequest) {
 
     const docId = existing || STRATEGIC_PLAN_DOC_ID;
 
-    // Use patch if document exists, or set fields
-    await client
-      .patch(docId)
-      .set({
-        studentFeedbackFormUrl: (studentFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.studentFeedbackFormUrl,
-        facultyFeedbackFormUrl: (facultyFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.facultyFeedbackFormUrl,
-        parentFeedbackFormUrl: (parentFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.parentFeedbackFormUrl,
-        alumniFeedbackFormUrl: (alumniFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.alumniFeedbackFormUrl,
-        communityFeedbackFormUrl: (communityFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.communityFeedbackFormUrl,
-        employerFeedbackFormUrl: (employerFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.employerFeedbackFormUrl,
-      })
-      .commit();
+    const patchPayload: Record<string, any> = {};
+
+    if (studentFeedbackFormUrl !== undefined) {
+      patchPayload.studentFeedbackFormUrl = (studentFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.studentFeedbackFormUrl;
+    }
+    if (facultyFeedbackFormUrl !== undefined) {
+      patchPayload.facultyFeedbackFormUrl = (facultyFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.facultyFeedbackFormUrl;
+    }
+    if (parentFeedbackFormUrl !== undefined) {
+      patchPayload.parentFeedbackFormUrl = (parentFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.parentFeedbackFormUrl;
+    }
+    if (alumniFeedbackFormUrl !== undefined) {
+      patchPayload.alumniFeedbackFormUrl = (alumniFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.alumniFeedbackFormUrl;
+    }
+    if (communityFeedbackFormUrl !== undefined) {
+      patchPayload.communityFeedbackFormUrl = (communityFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.communityFeedbackFormUrl;
+    }
+    if (employerFeedbackFormUrl !== undefined) {
+      patchPayload.employerFeedbackFormUrl = (employerFeedbackFormUrl || "").trim() || DEFAULT_FEEDBACK_LINKS.employerFeedbackFormUrl;
+    }
+    if (executiveSummary !== undefined) {
+      patchPayload.executiveSummary = executiveSummary.trim();
+    }
+    if (title !== undefined) {
+      patchPayload.title = title.trim();
+    }
+
+    if (existing) {
+      await client.patch(docId).set(patchPayload).commit();
+    } else {
+      await client.createIfNotExists({
+        _id: STRATEGIC_PLAN_DOC_ID,
+        _type: "strategicPlan",
+        title: title || "Strategic Plans & Future Directions",
+        ...patchPayload,
+      });
+    }
 
     return NextResponse.json({
       success: true,
-      message: "Feedback form links updated successfully in Sanity!",
+      message: "Strategic plan updated successfully in Sanity!",
+      title,
+      executiveSummary,
       links: {
         studentFeedbackFormUrl,
         facultyFeedbackFormUrl,
