@@ -40,7 +40,7 @@ export function TopLogoBar() {
 
           {/* Hardcoded Institutional Typography (Center-Aligned) */}
           <div className="flex flex-col justify-center items-center text-center select-none py-0 max-w-[680px]">
-            <h1 className="font-black text-[24px] sm:text-[26px] md:text-[28px] tracking-tight leading-none uppercase select-none text-[#000080] font-outfit w-full text-center">
+            <h1 className="font-black text-[24px] sm:text-[26px] md:text-[28px] tracking-tight leading-none uppercase select-none text-[#800000] font-outfit w-full text-center">
               ST. ANN’S COLLEGE FOR WOMEN
             </h1>
             <span className="font-bold text-[13px] sm:text-[13.5px] tracking-normal leading-snug mt-0.5 w-full text-blue-900 text-center">
@@ -49,7 +49,7 @@ export function TopLogoBar() {
             <span className="font-semibold text-[12px] sm:text-[12.5px] tracking-normal leading-snug mt-0.5 w-full text-slate-700 text-center">
               Affiliated to Acharya Nagarjuna University
             </span>
-            <span className="font-bold text-[12.5px] sm:text-[13px] tracking-wide leading-tight mt-0.5 w-full text-[#000080] text-center">
+            <span className="font-bold text-[12.5px] sm:text-[13px] tracking-wide leading-tight mt-0.5 w-full text-[#800000] text-center">
               Amaravathi Road, Gorantla, Guntur–522034, Andhra Pradesh, India.
             </span>
           </div>

@@ -683,54 +683,30 @@ export default function Navigation() {
 
   const placementsCategories = [
     {
-      title: "I. Placements",
+      title: "I. Training & Placement Cell",
       icon: Briefcase,
       items: [
         { text: "About Training & Placement Cell", slug: "about-cell" },
-        { text: "Annual Reports", slug: "annual-reports" },
-        { text: "Placement Statistics", slug: "placement-statistics" },
-        { text: "Campus Recruitment Drives", slug: "recruitment-drives" },
-        { text: "Skill Development Initiatives", slug: "skill-development" },
-        { text: "Soft Skills & Personality Development", slug: "soft-skills" },
-        { text: "Internships & Industry Exposure", slug: "internships-exposure" },
-        { text: "Competitive Exam Coaching", slug: "competitive-coaching" },
-        { text: "Career Guidance & Counselling", slug: "career-guidance" },
-        { text: "Entrepreneurship Development", slug: "entrepreneurship" },
-        { text: "Placement Partnerships", slug: "placement-partnerships" },
-        { text: "Capacity Building & Skill Enhancement", slug: "capacity-building" },
-        { text: "Alumni Career Support", slug: "alumni-support" },
-        { text: "Training Calendar / Activity Gallery", slug: "training-calendar" }
+        { text: "Placements & Recruitment", slug: "placements-recruitment" },
+        { text: "APSSDC", slug: "apssdc" },
+        { text: "Skill Development Training Areas", slug: "skill-development-areas" },
+        { text: "Internships & Industry Exposure", slug: "internships-industry-exposure" },
+        { text: "Competitive Exam Coaching", slug: "competitive-exam-coaching" }
       ]
     },
     {
-      title: "II. Industry",
+      title: "II. Industry Linkages",
       icon: Handshake,
       items: [
-        { text: "Industry Partnerships", slug: "industry-partnerships" },
-        { text: "Internships & Apprenticeships", slug: "internships-apprenticeships" },
-        { text: "MoUs / Agreements", slug: "mous-agreements" },
-        { text: "MoU Activities", slug: "mou-activities" },
-        { text: "CSR Initiatives", slug: "csr-initiatives" },
-        { text: "Placement Partnerships", slug: "industry-placement-partnerships" },
-        { text: "Professional Certification Programmes", slug: "certifications" },
-        { text: "Industry Expert Lectures", slug: "expert-lectures" },
-        { text: "Industrial Visits", slug: "industrial-visits" },
-        { text: "Skill-Based Training Programmes", slug: "skill-training" },
-        { text: "Employability Enhancement Activities", slug: "employability-activities" }
+        { text: "Industry & Professional Engagement", slug: "industry-professional-engagement" },
+        { text: "MoUs – Memoranda of Understanding", slug: "mous" }
       ]
     },
     {
-      title: "III. Global",
+      title: "III. Internalization & Global Outreach",
       icon: Globe2,
       items: [
-        { text: "International Collaborations", slug: "international-collaborations" },
-        { text: "Internationalization Policy", slug: "internationalization-policy" },
-        { text: "International Accreditations & Memberships", slug: "accreditations-memberships" },
-        { text: "Global Alumni & Outreach Engagement", slug: "global-alumni" },
-        { text: "Global Research Collaborations", slug: "global-research" },
-        { text: "Student Exchange / Faculty Exchange", slug: "student-faculty-exchange" },
-        { text: "International Webinars & Conferences", slug: "webinars-conferences" },
-        { text: "Cross-Cultural Learning Activities", slug: "cross-cultural-learning" }
+        { text: "International Collaborations & Global Engagement", slug: "international-collaborations-global-engagement" }
       ]
     }
   ];
@@ -1355,13 +1331,6 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Training, Placements & Industry Linkages"
-                  href="/placements"
-                  buttonText="Visit Placements Main Page"
-                  icon={Briefcase}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {placementsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
