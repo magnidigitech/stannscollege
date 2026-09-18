@@ -5,12 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EventsManager from "@/components/admin/EventsManager";
 import NoticesManager from "@/components/admin/NoticesManager";
-import { StrategicPlanFeedbackManager } from "@/components/admin/StrategicPlanFeedbackManager";
-import { StrategicDocumentsManager } from "@/components/admin/StrategicDocumentsManager";
+import { StrategicPlanManager } from "@/components/admin/StrategicPlanManager";
 import { HeroBannersManager } from "@/components/admin/HeroBannersManager";
 import { MandatoryDisclosuresManager } from "@/components/admin/MandatoryDisclosuresManager";
 import { AlumniManager } from "@/components/admin/AlumniManager";
 import { ResearchManager } from "@/components/admin/ResearchManager";
+import { PlacementsManager } from "@/components/admin/PlacementsManager";
 import {
   Calendar,
   Bell,
@@ -27,6 +27,7 @@ import {
   Sliders,
   Users,
   FlaskConical,
+  Briefcase,
 } from "lucide-react";
 
 interface AdminUser {
@@ -77,6 +78,14 @@ const ADMIN_MODULES = [
     component: AlumniManager,
   },
   {
+    id: "placements-management",
+    label: "Placements & Industry Linkages",
+    badge: "Live Sanity Sync",
+    icon: Briefcase,
+    description: "Manage TPO Profile, Recruitment Stats, Partner Recruiters, MoUs, APSSDC Support & Annual Reports.",
+    component: PlacementsManager,
+  },
+  {
     id: "mandatory-disclosures",
     label: "Mandatory Disclosures & Compliance",
     badge: "Live Regulatory Tables & PDFs",
@@ -85,20 +94,12 @@ const ADMIN_MODULES = [
     component: MandatoryDisclosuresManager,
   },
   {
-    id: "strategic-documents",
-    label: "Strategic Documents & Reports",
-    badge: "Sanity PDF Archive",
-    icon: FileText,
-    description: "Upload, manage, reorder, and update official institutional strategic framework documents and annual deployment plan PDFs.",
-    component: StrategicDocumentsManager,
-  },
-  {
     id: "strategic-plans",
-    label: "Strategic Plan Feedback",
-    badge: "Stakeholder Submissions",
+    label: "Strategic Plan & Framework",
+    badge: "Documents & Feedback",
     icon: Compass,
-    description: "Review public feedback, community suggestions, and stakeholder submissions submitted via the Strategic Plans portal.",
-    component: StrategicPlanFeedbackManager,
+    description: "Manage strategic framework documents, annual deployment PDF archives, stakeholder feedback survey links, executive vision, and national/state alignment.",
+    component: StrategicPlanManager,
   },
 ];
 
