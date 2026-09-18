@@ -11,7 +11,8 @@ import {
   ChevronRight,
   X,
   Loader2,
-  Grid
+  Grid,
+  Calendar
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -238,6 +239,16 @@ export const AlumniGallery = () => {
                       <h3 className="font-outfit font-black text-lg text-[#002147] group-hover:text-emerald-600 transition-colors">
                         {folder.folderName}
                       </h3>
+                      {folder.eventDate && (
+                        <span className="text-xs font-bold text-emerald-700 flex items-center gap-1.5 mt-0.5">
+                          <Calendar className="h-3.5 w-3.5 text-emerald-600" />
+                          {new Date(folder.eventDate).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </span>
+                      )}
                     </div>
                   </motion.div>
                 );

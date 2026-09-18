@@ -11,6 +11,7 @@ import {
   Trophy,
   MessageSquareQuote,
   Calendar,
+  CalendarDays,
   Image as ImageIcon,
   Phone,
   Mail,
@@ -34,6 +35,8 @@ import {
   Download,
   ZoomIn,
   Layers,
+  Search,
+  Filter,
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
@@ -216,7 +219,38 @@ export default function AlumniPage() {
     openPdfViewer(url, title || "Alumni Document");
   };
 
-  const googleFormLink = data.googleFormUrl || "https://forms.gle/7QMzJvrAsYVT3YZd7";
+  const registrationLink = data.registrationFormUrl || "https://forms.gle/7QMzJvrAsYVT3YZd7";
+  const feedbackLink = data.feedbackFormUrl || data.googleFormUrl || "https://docs.google.com/forms/d/e/1FAIpQLSe52erMvj2dXnaAFjDBYV8k024E-y5fQASyPubzMn_WzFNwzw/viewform";
+  const googleFormLink = feedbackLink;
+
+  // Modals for Section 5 (Pride Alumni & Voices) and Section 7 (Events & Meets)
+  const [eventsModalOpen, setEventsModalOpen] = useState(false);
+  const [eventsActiveCategory, setEventsActiveCategory] = useState<string>("all");
+  const [eventsActiveStatus, setEventsActiveStatus] = useState<string>("all");
+  const [isPrideModalOpen, setIsPrideModalOpen] = useState(false);
+  const [prideSearchQuery, setPrideSearchQuery] = useState("");
+  const [isVoicesModalOpen, setIsVoicesModalOpen] = useState(false);
+
+  const openEventsModal = (categoryName?: string) => {
+    if (categoryName) {
+      const lower = categoryName.toLowerCase();
+      if (lower.includes("annual")) {
+        setEventsActiveCategory("Annual Alumni Meet");
+      } else if (lower.includes("reunion") || lower.includes("batch")) {
+        setEventsActiveCategory("Batch Reunions & Milestone Celebrations");
+      } else if (lower.includes("department")) {
+        setEventsActiveCategory("Departmental Alumni Interaction Sessions");
+      } else if (lower.includes("mentor") || lower.includes("guidance")) {
+        setEventsActiveCategory("Alumni Mentorship & Career Guidance Drives");
+      } else {
+        setEventsActiveCategory("all");
+      }
+    } else {
+      setEventsActiveCategory("all");
+    }
+    setEventsActiveStatus("all");
+    setEventsModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
@@ -465,7 +499,7 @@ export default function AlumniPage() {
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     
-                    {/* About Committee */}
+                    {/* 2.a About Committee (White) */}
                     <div
                       id="sec-committee-about"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -482,25 +516,25 @@ export default function AlumniPage() {
                       </p>
                     </div>
 
-                    {/* Committee Members Table */}
+                    {/* 2.b Committee Members Table (Soft Ice Blue) */}
                     <div
                       id="sec-committee-members"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-blue-200/60 pb-3">
                         <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
+                          <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
                             Alumni Committee Members
                           </h4>
-                          <p className="text-xs text-slate-500 font-medium">Institutional leadership, faculty representatives, alumni leaders &amp; student delegates</p>
+                          <p className="text-xs text-blue-900/70 font-medium">Institutional leadership, faculty representatives, alumni leaders &amp; student delegates</p>
                         </div>
-                        <span className="px-3 py-1 bg-blue-50 text-blue-900 border border-blue-200 rounded-xl text-xs font-bold w-fit">
+                        <span className="px-3 py-1 bg-white text-blue-900 border border-blue-200 rounded-xl text-xs font-bold w-fit shadow-2xs">
                           {data.committeeMembers?.length || 11} Members
                         </span>
                       </div>
 
-                      <div className="overflow-x-auto rounded-2xl border border-slate-200/80 shadow-2xs">
+                      <div className="overflow-x-auto rounded-2xl border border-blue-200/80 shadow-2xs bg-white">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-slate-100/90 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider border-b border-slate-200">
@@ -533,7 +567,7 @@ export default function AlumniPage() {
                       </div>
                     </div>
 
-                    {/* Roles & Responsibilities */}
+                    {/* 2.c Roles & Responsibilities (White) */}
                     <div
                       id="sec-committee-roles"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -562,13 +596,16 @@ export default function AlumniPage() {
                       </ul>
                     </div>
 
-                    {/* Annual Action Plan & Meetings */}
+                    {/* 2.d Annual Action Plan & Meetings (Alternating Pair) */}
                     <div
                       id="sec-committee-plan"
                       className="grid grid-cols-1 md:grid-cols-2 gap-6"
                     >
-                      <div className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm bg-white flex flex-col gap-3">
-                        <h5 className="font-outfit font-extrabold text-sm text-slate-900 uppercase tracking-wide">
+                      <div
+                        className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-3"
+                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      >
+                        <h5 className="font-outfit font-extrabold text-sm text-blue-900 uppercase tracking-wide">
                           Annual Action Plan
                         </h5>
                         <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify">
@@ -576,17 +613,20 @@ export default function AlumniPage() {
                         </p>
                       </div>
 
-                      <div className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm bg-white flex flex-col gap-3">
-                        <h5 className="font-outfit font-extrabold text-sm text-slate-900 uppercase tracking-wide">
+                      <div
+                        className="border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-3"
+                        style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+                      >
+                        <h5 className="font-outfit font-extrabold text-sm text-indigo-900 uppercase tracking-wide">
                           Meetings &amp; Minutes
                         </h5>
-                        <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify">
+                        <p className="text-xs text-slate-700 font-medium leading-relaxed text-justify">
                           The Committee conducts periodic meetings to review alumni activities, discuss proposals, plan programmes and coordinate alumni-related initiatives. The proceedings and minutes of the meetings are maintained as institutional records.
                         </p>
                       </div>
                     </div>
 
-                    {/* Committee Annual Reports Table */}
+                    {/* 2.e Committee Annual Reports Table (White) */}
                     <div
                       id="sec-committee-reports"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -668,7 +708,7 @@ export default function AlumniPage() {
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     
-                    {/* About Association & Registration Details */}
+                    {/* 3.a About Association & Registration Details (White) */}
                     <div
                       id="sec-association-about"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -711,25 +751,25 @@ export default function AlumniPage() {
                       </div>
                     </div>
 
-                    {/* Office Bearers Table */}
+                    {/* 3.b Office Bearers Table (Soft Ice Blue) */}
                     <div
                       id="sec-association-members"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                     >
-                      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                      <div className="flex items-center justify-between border-b border-blue-200/60 pb-3">
                         <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
+                          <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
                             Office Bearers of the Alumni Association
                           </h4>
-                          <p className="text-xs text-slate-500 font-medium">Elected office bearers and governing body members</p>
+                          <p className="text-xs text-blue-900/70 font-medium">Elected office bearers and governing body members</p>
                         </div>
-                        <span className="px-3 py-1 bg-indigo-50 text-indigo-900 border border-indigo-200 rounded-xl text-xs font-bold">
+                        <span className="px-3 py-1 bg-white text-indigo-900 border border-indigo-200 rounded-xl text-xs font-bold shadow-2xs">
                           {data.associationOfficeBearers?.length || 7} Bearers
                         </span>
                       </div>
 
-                      <div className="overflow-x-auto rounded-2xl border border-slate-200/80 shadow-2xs">
+                      <div className="overflow-x-auto rounded-2xl border border-blue-200/80 shadow-2xs bg-white">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-slate-100/90 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider border-b border-slate-200">
@@ -757,7 +797,7 @@ export default function AlumniPage() {
                       </div>
                     </div>
 
-                    {/* Registration & Statutory Documents */}
+                    {/* 3.c Registration & Statutory Documents (White) */}
                     <div
                       id="sec-association-docs"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -839,6 +879,7 @@ export default function AlumniPage() {
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     
+                    {/* 4.a Overview (White) */}
                     <div
                       id="sec-contributions-areas"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
@@ -849,25 +890,25 @@ export default function AlumniPage() {
                       </p>
                     </div>
 
-                    {/* Contributions & Support Register Table */}
+                    {/* 4.b Contributions & Support Register Table (Soft Ice Blue) */}
                     <div
                       id="sec-contributions-register"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-blue-200/60 pb-3">
                         <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
+                          <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
                             Alumni Contributions &amp; Support Register (AY 2026–2027)
                           </h4>
-                          <p className="text-xs text-slate-500 font-medium">Record of alumni workshops, guest lectures, and student mentoring sessions</p>
+                          <p className="text-xs text-blue-900/70 font-medium">Record of alumni workshops, guest lectures, and student mentoring sessions</p>
                         </div>
-                        <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-xl text-xs font-bold w-fit">
+                        <span className="px-3 py-1 bg-white text-emerald-900 border border-emerald-200 rounded-xl text-xs font-bold w-fit shadow-2xs">
                           {data.contributionsRegister?.length || 3} Events Documented
                         </span>
                       </div>
 
-                      <div className="overflow-x-auto rounded-2xl border border-slate-200/80 shadow-2xs">
+                      <div className="overflow-x-auto rounded-2xl border border-blue-200/80 shadow-2xs bg-white">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-slate-100/90 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider border-b border-slate-200">
@@ -948,7 +989,7 @@ export default function AlumniPage() {
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     
-                    {/* Join the Alumni Network (Registration Form Box) */}
+                    {/* 5.a Join the Alumni Network (Registration Form Box) */}
                     <div
                       id="sec-network-join"
                       className="scroll-mt-52 border-2 border-amber-200/90 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all bg-gradient-to-br from-amber-500/10 via-amber-100/40 to-white flex flex-col sm:flex-row items-center justify-between gap-6"
@@ -965,7 +1006,7 @@ export default function AlumniPage() {
                         </p>
                       </div>
                       <a
-                        href={googleFormLink}
+                        href={registrationLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#002147] hover:bg-blue-900 text-white rounded-2xl text-xs sm:text-sm font-extrabold shadow-md hover:shadow-lg transition-all shrink-0 cursor-pointer"
@@ -975,90 +1016,134 @@ export default function AlumniPage() {
                       </a>
                     </div>
 
-                    {/* Our Alumni – Our Pride */}
+                    {/* 5.b Our Alumni – Our Pride (Max 3 Displayed Outside + View All Button) */}
                     <div
                       id="sec-network-pride"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
                       style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
-                            Our Alumni – Our Pride
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">Celebrating professional excellence, leadership, and meaningful contributions</p>
-                        </div>
-                        <a
-                          href={googleFormLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white border border-blue-200/80 rounded-xl text-xs font-bold transition-all w-fit"
-                        >
-                          <span>Share Your Achievement</span>
-                          <ExternalLink className="h-3.5 w-3.5" />
-                        </a>
+                      <div className="border-b border-slate-100 pb-3">
+                        <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
+                          Our Alumni – Our Pride
+                        </h4>
+                        <p className="text-xs text-slate-500 font-medium">Celebrating professional excellence, leadership, and meaningful contributions</p>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {(data.prideAlumni || []).map((alumnus: any, idx: number) => (
-                          <div key={alumnus._key || idx} className="p-5 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all flex flex-col justify-between gap-3">
-                            <div className="flex flex-col gap-1.5">
-                              <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-900 border border-amber-200 w-fit">
-                                Distinguished Alumna
-                              </span>
-                              <h5 className="font-outfit font-black text-sm text-slate-900">{alumnus.name}</h5>
-                              <p className="text-xs font-bold text-blue-700">{alumnus.designation} • {alumnus.organization}</p>
-                              <span className="text-[10px] font-mono text-slate-500">{alumnus.programmeBatch}</span>
-                              <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">{alumnus.achievement}</p>
+                      {(() => {
+                        const allPride = data.prideAlumni || [];
+                        const featured = allPride.filter((a: any) => a.featured === true);
+                        const displayList = featured.length > 0 ? featured.slice(0, 3) : allPride.slice(0, 3);
+                        return (
+                          <>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              {displayList.map((alumnus: any, idx: number) => {
+                                const isAlt = idx % 2 === 1;
+                                return (
+                                  <div
+                                    key={alumnus._key || idx}
+                                    className={`p-5 rounded-2xl border-2 shadow-xs transition-all hover:shadow-md flex flex-col justify-between gap-3 ${
+                                      isAlt ? "border-blue-200/90" : "border-slate-200/90"
+                                    }`}
+                                    style={{
+                                      backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
+                                    }}
+                                  >
+                                    <div className="flex flex-col gap-1.5">
+                                      <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider w-fit border ${
+                                        isAlt ? "bg-blue-100 text-blue-900 border-blue-200" : "bg-amber-50 text-amber-900 border-amber-200"
+                                      }`}>
+                                        Distinguished Alumna
+                                      </span>
+                                      <h5 className="font-outfit font-black text-sm text-slate-900">{alumnus.name}</h5>
+                                      <p className="text-xs font-bold text-blue-700">{alumnus.designation} • {alumnus.organization}</p>
+                                      <span className="text-[10px] font-mono text-slate-500">{alumnus.programmeBatch}</span>
+                                      <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">{alumnus.achievement}</p>
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
-                          </div>
-                        ))}
-                      </div>
+                            {allPride.length > 3 && (
+                              <div className="pt-2 flex justify-center">
+                                <button
+                                  onClick={() => setIsPrideModalOpen(true)}
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] hover:bg-blue-900 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all cursor-pointer"
+                                >
+                                  <Trophy className="h-4 w-4 text-amber-400" />
+                                  <span>View All Distinguished Alumni ({allPride.length})</span>
+                                  <ArrowRight className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
 
-                    {/* Voices of Our Alumni (7 Testimonials) */}
+                    {/* 5.c Voices of Our Alumni (Max 6 Displayed Outside with ABBA ABBA + View All Button) */}
                     <div
                       id="sec-network-voices"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
-                            Voices of Our Alumni
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">Reflections, experiences, and memories shared by former students</p>
-                        </div>
-                        <a
-                          href={googleFormLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-800 hover:bg-indigo-900 hover:text-white border border-indigo-200/80 rounded-xl text-xs font-bold transition-all w-fit"
-                        >
-                          <span>Share Your St. Ann’s Story</span>
-                          <ExternalLink className="h-3.5 w-3.5" />
-                        </a>
+                      <div className="border-b border-blue-200/60 pb-3">
+                        <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
+                          Voices of Our Alumni
+                        </h4>
+                        <p className="text-xs text-blue-900/70 font-medium">Reflections, experiences, and memories shared by former students</p>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {(data.testimonials || []).map((test: any, idx: number) => (
-                          <div key={test._key || idx} className="p-5 rounded-2xl border border-blue-100 bg-blue-50/40 flex flex-col justify-between gap-3">
-                            <div className="flex flex-col gap-2">
-                              <div className="flex items-center gap-1.5 text-blue-700">
-                                <Quote className="h-4 w-4 shrink-0" />
-                                <h5 className="font-outfit font-extrabold text-xs uppercase tracking-wider">{test.title}</h5>
+                      {(() => {
+                        const allVoices = data.testimonials || [];
+                        const displayVoices = allVoices.slice(0, 6);
+                        return (
+                          <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {displayVoices.map((test: any, idx: number) => {
+                                // ABBA ABBA alternating pattern for 2-column grid
+                                const isAlt = idx % 4 === 1 || idx % 4 === 2;
+                                return (
+                                  <div
+                                    key={test._key || idx}
+                                    className={`p-5 rounded-2xl border-2 shadow-xs flex flex-col justify-between gap-3 transition-all hover:shadow-md ${
+                                      isAlt ? "border-blue-200/90" : "border-slate-200/90"
+                                    }`}
+                                    style={{
+                                      backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
+                                    }}
+                                  >
+                                    <div className="flex flex-col gap-2">
+                                      <div className="flex items-center gap-1.5 text-blue-700">
+                                        <Quote className="h-4 w-4 shrink-0" />
+                                        <h5 className="font-outfit font-extrabold text-xs uppercase tracking-wider">{test.title}</h5>
+                                      </div>
+                                      <p className="text-xs text-slate-700 font-medium leading-relaxed italic">
+                                        “{test.quote}”
+                                      </p>
+                                    </div>
+                                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                                      <span className="font-bold text-slate-900">— {test.alumnaName}</span>
+                                      <span className="text-[11px] font-mono font-semibold text-slate-500">{test.programmeBatch}</span>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            {allVoices.length > 6 && (
+                              <div className="pt-2 flex justify-center">
+                                <button
+                                  onClick={() => setIsVoicesModalOpen(true)}
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] hover:bg-blue-900 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all cursor-pointer"
+                                >
+                                  <Quote className="h-4 w-4 text-indigo-300" />
+                                  <span>View All Alumni Voices ({allVoices.length})</span>
+                                  <ArrowRight className="h-3.5 w-3.5" />
+                                </button>
                               </div>
-                              <p className="text-xs text-slate-700 font-medium leading-relaxed italic">
-                                “{test.quote}”
-                              </p>
-                            </div>
-                            <div className="pt-2 border-t border-blue-100 flex items-center justify-between text-xs">
-                              <span className="font-bold text-slate-900">— {test.alumnaName}</span>
-                              <span className="text-[11px] font-mono font-semibold text-slate-500">{test.programmeBatch}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
 
                   </div>
@@ -1099,21 +1184,36 @@ export default function AlumniPage() {
                   <div className="p-6 sm:p-8 md:p-10 space-y-8" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div id="sec-feedback-info" className="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col gap-2">
+                      {/* Box 1 - White */}
+                      <div
+                        id="sec-feedback-info"
+                        className="p-5 rounded-2xl border-2 border-slate-200/90 shadow-xs flex flex-col gap-2 transition-all hover:shadow-md"
+                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      >
                         <span className="font-outfit font-extrabold text-xs uppercase text-blue-700 tracking-wider">1. Alumni Feedback</span>
                         <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify">
                           Alumni feedback is collected periodically to understand their experiences, suggestions and expectations, and to support continuous institutional improvement.
                         </p>
                       </div>
 
-                      <div id="sec-feedback-suggestions" className="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col gap-2">
-                        <span className="font-outfit font-extrabold text-xs uppercase text-indigo-700 tracking-wider">2. Suggestions &amp; Outcomes</span>
-                        <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify">
-                          Relevant suggestions received from alumni and the corresponding actions taken by the institution are documented, wherever applicable.
+                      {/* Box 2 - Soft Ice Blue */}
+                      <div
+                        id="sec-feedback-suggestions"
+                        className="p-5 rounded-2xl border-2 border-blue-200/90 shadow-xs flex flex-col gap-2 transition-all hover:shadow-md"
+                        style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+                      >
+                        <span className="font-outfit font-extrabold text-xs uppercase text-indigo-800 tracking-wider">2. Suggestions &amp; Outcomes</span>
+                        <p className="text-xs text-slate-700 font-medium leading-relaxed text-justify">
+                          Relevant suggestions received from alumni and corresponding actions taken by the institution are documented, wherever applicable.
                         </p>
                       </div>
 
-                      <div id="sec-feedback-quality" className="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col gap-2">
+                      {/* Box 3 - White */}
+                      <div
+                        id="sec-feedback-quality"
+                        className="p-5 rounded-2xl border-2 border-slate-200/90 shadow-xs flex flex-col gap-2 transition-all hover:shadow-md"
+                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                      >
                         <span className="font-outfit font-extrabold text-xs uppercase text-emerald-700 tracking-wider">3. Quality Enhancement</span>
                         <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify">
                           Alumni contribute to institutional quality enhancement through curriculum feedback, mentoring, career guidance, academic enrichment, infrastructure support and other developmental initiatives.
@@ -1127,7 +1227,7 @@ export default function AlumniPage() {
                         <p className="text-blue-100 text-xs mt-0.5">Share your valuable feedback and recommendations with our IQAC &amp; Alumni Council.</p>
                       </div>
                       <a
-                        href={googleFormLink}
+                        href={feedbackLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-black shadow-xs transition-all shrink-0 inline-flex items-center gap-1.5"
@@ -1141,7 +1241,7 @@ export default function AlumniPage() {
                 </section>
 
                 {/* ============================================================ */}
-                {/* SECTION 7: Alumni Events                                     */}
+                {/* SECTION 7: Alumni Events & Meets                             */}
                 {/* ============================================================ */}
                 <section
                   id="sec-events"
@@ -1161,14 +1261,14 @@ export default function AlumniPage() {
                         className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
                         style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
                       >
-                        7. Alumni Events
+                        7. Alumni Events &amp; Meets
                       </h2>
                     </div>
                     <p
                       className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
                       style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
                     >
-                      Annual Alumni Meets, batch reunions, departmental sessions, and guest lectures.
+                      Annual Alumni Meets, batch reunions, departmental sessions, and mentorship drives.
                     </p>
                   </div>
 
@@ -1187,24 +1287,75 @@ export default function AlumniPage() {
                       </p>
                     </div>
 
-                    {/* Events Grid */}
+                    {/* 4 Program Category Boxes with Interactive Button to Open Pop-up Table of Past/Current/Upcoming Meets */}
                     <div id="sec-events-list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       {[
-                        { title: "Annual Alumni Meet", desc: "Grand institution-wide alumni reunion celebrating milestones and batch achievements." },
-                        { title: "Batch Reunions", desc: "Decade and Silver Jubilee batch reunions organized in coordination with departments." },
-                        { title: "Departmental Alumni Meets", desc: "Subject-specific academic interactions, student guidance, and industry forums." },
-                        { title: "Guest Lectures & Mentoring", desc: "Alumni-led life skill workshops, career readiness, and legal/health awareness." },
-                      ].map((item, idx) => (
-                        <div key={idx} className="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between gap-3">
-                          <div className="flex flex-col gap-1.5">
-                            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-800 font-black text-xs">
-                              {idx + 1}
-                            </span>
-                            <h5 className="font-outfit font-extrabold text-sm text-slate-900">{item.title}</h5>
-                            <p className="text-xs text-slate-600 font-medium leading-relaxed">{item.desc}</p>
+                        {
+                          title: "Annual Alumni Meet",
+                          desc: "Grand annual gathering of all alumni batches celebrating institutional milestones and reconnecting alma mater bonds.",
+                          date: "Upcoming / Scheduled Annually",
+                          categoryKey: "Annual Alumni Meet",
+                        },
+                        {
+                          title: "Batch Reunions & Milestone Celebrations",
+                          desc: "Dedicated Silver Jubilee & decade reunion gatherings organized across departments.",
+                          date: "Periodic",
+                          categoryKey: "Batch Reunions & Milestone Celebrations",
+                        },
+                        {
+                          title: "Departmental Alumni Interaction Sessions",
+                          desc: "Subject-specific guest lectures, curriculum feedback forums, and career guidance workshops.",
+                          date: "Monthly",
+                          categoryKey: "Departmental Alumni Interaction Sessions",
+                        },
+                        {
+                          title: "Alumni Mentorship & Career Guidance Drives",
+                          desc: "Direct mentorship pairing graduating seniors with industry-experienced alumni.",
+                          date: "Ongoing",
+                          categoryKey: "Alumni Mentorship & Career Guidance Drives",
+                        },
+                      ].map((item: any, idx: number) => {
+                        const isAlt = idx % 2 === 1;
+                        return (
+                          <div
+                            key={idx}
+                            className={`p-5 rounded-2xl border-2 shadow-xs flex flex-col justify-between gap-3.5 transition-all hover:shadow-md ${
+                              isAlt ? "border-blue-200/90" : "border-slate-200/90"
+                            }`}
+                            style={{
+                              backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
+                            }}
+                          >
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className={`flex h-8 w-8 items-center justify-center rounded-lg font-black text-xs ${
+                                  isAlt ? "bg-blue-200 text-blue-900" : "bg-blue-50 text-blue-800"
+                                }`}>
+                                  {idx + 1}
+                                </span>
+                                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
+                                  isAlt ? "bg-white/90 text-blue-950 border-blue-200" : "bg-slate-100 text-slate-700 border-slate-200"
+                                }`}>
+                                  {item.date}
+                                </span>
+                              </div>
+                              <h5 className="font-outfit font-extrabold text-sm text-slate-900 leading-snug">{item.title}</h5>
+                              <p className="text-xs text-slate-600 font-medium leading-relaxed">{item.desc}</p>
+                            </div>
+
+                            <div className="pt-2 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2">
+                              <button
+                                onClick={() => openEventsModal(item.categoryKey)}
+                                className="w-full px-3.5 py-2.5 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-2xs inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                              >
+                                <Calendar className="h-3.5 w-3.5 text-amber-400" />
+                                <span>View Meets / Details</span>
+                                <ChevronRight className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-200">
@@ -1212,11 +1363,18 @@ export default function AlumniPage() {
                         Event details and registration forms will be updated on this page as and when programmes are scheduled.
                       </span>
                       <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() => openEventsModal("all")}
+                          className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-950 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <CalendarDays className="h-3.5 w-3.5 text-blue-700" />
+                          <span>View All Meets Table</span>
+                        </button>
                         <a
-                          href={googleFormLink}
+                          href={registrationLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs inline-flex items-center gap-1.5"
+                          className="px-4 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
                         >
                           <span>Register / Propose Event</span>
                           <ExternalLink className="h-3.5 w-3.5" />
@@ -1315,7 +1473,7 @@ export default function AlumniPage() {
                               <button
                                 key={folder._id || folder.slug}
                                 onClick={() => {
-                                  setSelectedFolderSlug(folder.slug || "");
+                                   setSelectedFolderSlug(folder.slug || "");
                                   setPhotoDisplayLimit(24);
                                 }}
                                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
@@ -1393,9 +1551,13 @@ export default function AlumniPage() {
                       )}
                     </div>
 
-                    {/* Video Gallery & Messages */}
-                    <div id="sec-gallery-videos" className="border-2 border-slate-200/90 rounded-3xl p-6 shadow-sm bg-white flex flex-col gap-4">
-                      <h4 className="font-outfit text-blue-600 font-extrabold text-base uppercase tracking-wider">
+                    {/* Video Gallery & Messages (Soft Ice Blue Container) */}
+                    <div
+                      id="sec-gallery-videos"
+                      className="border-2 border-blue-200/90 rounded-3xl p-6 shadow-sm flex flex-col gap-4"
+                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+                    >
+                      <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
                         Video Gallery &amp; Messages
                       </h4>
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -1406,8 +1568,8 @@ export default function AlumniPage() {
                           "Expert Talks",
                           "Testimonials",
                         ].map((v, idx) => (
-                          <div key={idx} className="p-3.5 bg-indigo-50/50 border border-indigo-100 rounded-2xl text-center flex flex-col items-center justify-center gap-1.5 hover:bg-indigo-50 transition-colors">
-                            <Video className="h-5 w-5 text-indigo-700" />
+                          <div key={idx} className="p-3.5 bg-white border border-blue-200/80 rounded-2xl text-center flex flex-col items-center justify-center gap-1.5 hover:bg-blue-50/60 transition-colors shadow-2xs">
+                            <Video className="h-5 w-5 text-blue-700" />
                             <span className="text-[11px] font-bold text-slate-800">{v}</span>
                           </div>
                         ))}
@@ -1457,7 +1619,11 @@ export default function AlumniPage() {
                       </p>
 
                       <div id="sec-contact-channels" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col gap-1.5">
+                        {/* Channel Box 1 - Association Desk (White) */}
+                        <div
+                          className="p-5 rounded-2xl border-2 border-slate-200/90 shadow-xs flex flex-col gap-1.5 transition-all hover:shadow-md"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
                           <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-1">
                             <Building2 className="h-3.5 w-3.5 text-blue-700" /> Association Desk
                           </span>
@@ -1465,17 +1631,54 @@ export default function AlumniPage() {
                           <span className="text-[11px] text-slate-600 font-medium">{data.contactInfo?.address || "Gorantla, Guntur – 522 034, AP"}</span>
                         </div>
 
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col gap-1.5">
-                          <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-1">
+                        {/* Channel Box 2 - Phone & Mobile (Soft Ice Blue) */}
+                        <div
+                          className="p-5 rounded-2xl border-2 border-blue-200/90 shadow-xs flex flex-col gap-1.5 transition-all hover:shadow-md"
+                          style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+                        >
+                          <span className="text-[10px] font-black uppercase text-blue-800 tracking-wider flex items-center gap-1">
                             <Phone className="h-3.5 w-3.5 text-blue-700" /> Phone &amp; Mobile
                           </span>
-                          <a href={`tel:${data.contactInfo?.phone || "+918632231381"}`} className="text-xs font-bold text-blue-900 hover:underline">
-                            {data.contactInfo?.phone || "+91 863 2231381"}
-                          </a>
-                          <span className="text-[11px] text-slate-600 font-mono">{data.contactInfo?.mobile || "+91 93472 38194"}</span>
+                          <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] font-bold text-slate-500 uppercase">Desk:</span>
+                              <a href={`tel:${(data.contactInfo?.phone || "08632236470").replace(/[\s-]+/g, "")}`} className="text-xs font-bold text-blue-900 hover:underline">
+                                {data.contactInfo?.phone || "0863-2236470"}
+                              </a>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] font-bold text-slate-500 uppercase">Mobile:</span>
+                              {data.contactInfo?.mobile ? (
+                                <div className="flex flex-wrap items-center gap-x-1.5 text-xs">
+                                  {data.contactInfo.mobile.split(/[\/,]/).map((numStr: string, nIdx: number) => {
+                                    const trimmed = numStr.trim();
+                                    const cleanTel = trimmed.replace(/[\s-]+/g, "");
+                                    return (
+                                      <React.Fragment key={nIdx}>
+                                        {nIdx > 0 && <span className="text-slate-400">/</span>}
+                                        <a href={`tel:${cleanTel}`} className="font-bold text-slate-800 hover:text-blue-900 hover:underline font-mono">
+                                          {trimmed}
+                                        </a>
+                                      </React.Fragment>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <div className="flex flex-wrap items-center gap-x-1.5 text-xs">
+                                  <a href="tel:+917382104655" className="font-bold text-slate-800 hover:text-blue-900 hover:underline font-mono">+91 7382104655</a>
+                                  <span className="text-slate-400">/</span>
+                                  <a href="tel:+918500656134" className="font-bold text-slate-800 hover:text-blue-900 hover:underline font-mono">+91 8500656134</a>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
 
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col gap-1.5">
+                        {/* Channel Box 3 - Official Email (White) */}
+                        <div
+                          className="p-5 rounded-2xl border-2 border-slate-200/90 shadow-xs flex flex-col gap-1.5 transition-all hover:shadow-md"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
                           <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-1">
                             <Mail className="h-3.5 w-3.5 text-blue-700" /> Official Email
                           </span>
@@ -1602,6 +1805,502 @@ export default function AlumniPage() {
             onClick={(e) => e.stopPropagation()}
           >
             Use <kbd className="px-1.5 py-0.5 bg-white/10 rounded font-mono text-white">◀</kbd> and <kbd className="px-1.5 py-0.5 bg-white/10 rounded font-mono text-white">▶</kbd> arrow keys to navigate • Click outside or press <kbd className="px-1.5 py-0.5 bg-white/10 rounded font-mono text-white">Esc</kbd> to exit
+          </div>
+        </div>
+      )}
+      {/* ============================================================ */}
+      {/* ALUMNI MEETS & REUNIONS POPUP MODAL                          */}
+      {/* ============================================================ */}
+      {eventsModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+          onClick={() => setEventsModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-[2rem] w-full max-w-6xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-[#002147] via-blue-900 to-[#002147] text-white p-5 sm:p-6 flex items-start justify-between gap-4 border-b border-blue-800">
+              <div className="flex items-center gap-3.5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 border border-white/20 text-amber-400 shrink-0">
+                  <Calendar className="h-6 w-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-300">
+                    St. Ann&apos;s College for Women • Alumni Association
+                  </span>
+                  <h3 className="font-outfit font-black text-xl sm:text-2xl tracking-tight text-white mt-0.5">
+                    Alumni Meets, Reunions &amp; Interaction Schedules
+                  </h3>
+                  <p className="text-xs text-blue-100/80 font-medium mt-1">
+                    Past records, current interaction drives, and upcoming batch gathering calendars.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setEventsModalOpen(false)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer shrink-0 border border-white/10"
+                title="Close dialog"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Filter Toolbar */}
+            <div className="bg-slate-50 p-4 sm:p-5 border-b border-slate-200/80 flex flex-col gap-3">
+              {/* Top Row: Status Tabs & Search */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                {/* Status Tabs */}
+                <div className="flex items-center gap-1.5 p-1 bg-slate-200/70 rounded-2xl overflow-x-auto">
+                  {[
+                    { key: "all", label: "All Meets" },
+                    { key: "Upcoming", label: "Upcoming" },
+                    { key: "Current", label: "Current / Ongoing" },
+                    { key: "Past", label: "Past Meets & Reports" },
+                  ].map((tab) => {
+                    const active = eventsActiveStatus === tab.key;
+                    return (
+                      <button
+                        key={tab.key}
+                        onClick={() => setEventsActiveStatus(tab.key)}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                          active
+                            ? "bg-[#002147] text-white shadow-xs"
+                            : "text-slate-700 hover:text-slate-950 hover:bg-white/60"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Registration / Propose Event Quick Button */}
+                <a
+                  href={registrationLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-black transition-all inline-flex items-center justify-center gap-1.5 shadow-xs shrink-0"
+                >
+                  <span>Register / Propose Meet</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              </div>
+
+              {/* Bottom Row: Category Filter Chips */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
+                  <Filter className="h-3 w-3" /> Category:
+                </span>
+                {[
+                  { key: "all", label: "All Categories" },
+                  { key: "Annual Alumni Meet", label: "Annual Meets" },
+                  { key: "Batch Reunions & Milestone Celebrations", label: "Batch Reunions" },
+                  { key: "Departmental Alumni Interaction Sessions", label: "Departmental Meets" },
+                  { key: "Alumni Mentorship & Career Guidance Drives", label: "Mentorship Drives" },
+                ].map((cat) => {
+                  const isSelected = eventsActiveCategory === cat.key;
+                  return (
+                    <button
+                      key={cat.key}
+                      onClick={() => setEventsActiveCategory(cat.key)}
+                      className={`px-3 py-1 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer border ${
+                        isSelected
+                          ? "bg-blue-100 text-blue-900 border-blue-300 font-extrabold"
+                          : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Meets Table & Content View */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              {(() => {
+                const allMeets = data.events || [];
+                const filtered = allMeets.filter((ev: any) => {
+                  // Filter by status
+                  if (eventsActiveStatus !== "all") {
+                    if (eventsActiveStatus === "Upcoming" && ev.status !== "Upcoming") return false;
+                    if (eventsActiveStatus === "Current" && ev.status !== "Current") return false;
+                    if (eventsActiveStatus === "Past" && ev.status !== "Past") return false;
+                  }
+                  // Filter by category
+                  if (eventsActiveCategory !== "all") {
+                    const matchCategory =
+                      ev.category?.toLowerCase() === eventsActiveCategory.toLowerCase() ||
+                      ev.title?.toLowerCase().includes(eventsActiveCategory.toLowerCase().slice(0, 8));
+                    if (!matchCategory) return false;
+                  }
+                  return true;
+                });
+
+                if (filtered.length === 0) {
+                  return (
+                    <div className="flex flex-col items-center justify-center p-12 text-center bg-slate-50 rounded-2xl border border-slate-200/80">
+                      <Calendar className="h-10 w-10 text-slate-400 mb-2" />
+                      <h4 className="font-outfit font-black text-slate-800 text-base">No meets found in this category</h4>
+                      <p className="text-xs text-slate-500 max-w-sm mt-1">
+                        Try switching the status tab or category filter to view all scheduled and past alumni meets.
+                      </p>
+                      <button
+                        onClick={() => {
+                          setEventsActiveStatus("all");
+                          setEventsActiveCategory("all");
+                        }}
+                        className="mt-4 px-4 py-2 bg-[#002147] text-white rounded-xl text-xs font-bold transition-all cursor-pointer hover:bg-blue-900"
+                      >
+                        Reset All Filters
+                      </button>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="overflow-x-auto rounded-2xl border border-slate-200/90 shadow-2xs bg-white">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-slate-100/90 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider border-b border-slate-200">
+                          <th className="py-3.5 px-4 text-center w-16">Status</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Academic Year</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Date &amp; Time</th>
+                          <th className="py-3.5 px-4">Meet / Event Details</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Venue / Mode</th>
+                          <th className="py-3.5 px-4 text-right w-40">Actions / Links</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 font-medium">
+                        {filtered.map((ev: any, idx: number) => {
+                          const status = ev.status || "Upcoming";
+                          const isUpcoming = status === "Upcoming";
+                          const isCurrent = status === "Current";
+                          const isPast = status === "Past";
+
+                          return (
+                            <tr key={ev._key || idx} className="hover:bg-blue-50/40 transition-colors">
+                              {/* Status Badge */}
+                              <td className="py-3.5 px-4 text-center whitespace-nowrap">
+                                <span
+                                  className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${
+                                    isUpcoming
+                                      ? "bg-amber-50 text-amber-900 border-amber-200"
+                                      : isCurrent
+                                      ? "bg-emerald-50 text-emerald-900 border-emerald-200"
+                                      : "bg-slate-100 text-slate-700 border-slate-200"
+                                  }`}
+                                >
+                                  {status}
+                                </span>
+                              </td>
+
+                              {/* Academic Year */}
+                              <td className="py-3.5 px-4 font-mono font-bold text-slate-900 whitespace-nowrap">
+                                {ev.academicYear || "2026–2027"}
+                              </td>
+
+                              {/* Date & Time */}
+                              <td className="py-3.5 px-4 whitespace-nowrap">
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-slate-900">{ev.date || "Scheduled"}</span>
+                                  {ev.time && <span className="text-[10px] text-slate-500 font-mono">{ev.time}</span>}
+                                </div>
+                              </td>
+
+                              {/* Title & Description */}
+                              <td className="py-3.5 px-4">
+                                <div className="flex flex-col gap-1 max-w-md">
+                                  {ev.category && (
+                                    <span className="text-[10px] font-extrabold uppercase text-blue-700 tracking-wider">
+                                      {ev.category}
+                                    </span>
+                                  )}
+                                  <h5 className="font-outfit font-extrabold text-sm text-slate-900 leading-snug">
+                                    {ev.title}
+                                  </h5>
+                                  <p className="text-xs text-slate-600 font-normal leading-relaxed">
+                                    {ev.description}
+                                  </p>
+                                </div>
+                              </td>
+
+                              {/* Venue */}
+                              <td className="py-3.5 px-4 whitespace-nowrap">
+                                <span className="text-xs font-medium text-slate-700">
+                                  {ev.venue || "College Campus"}
+                                </span>
+                              </td>
+
+                              {/* Actions */}
+                              <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                                <div className="flex flex-col sm:flex-row items-end sm:items-center justify-end gap-1.5">
+                                  {(ev.redirectUrl || (!ev.fileUrl && !isPast)) && (
+                                    <a
+                                      href={ev.redirectUrl || registrationLink}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="px-3 py-1.5 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-2xs inline-flex items-center gap-1 cursor-pointer"
+                                    >
+                                      <span>{ev.buttonText || (isPast ? "View Details" : "Register")}</span>
+                                      <ExternalLink className="h-3 w-3" />
+                                    </a>
+                                  )}
+                                  {ev.fileUrl && (
+                                    <button
+                                      onClick={() => openPdf(ev.fileUrl, ev.title)}
+                                      className="px-3 py-1.5 bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 rounded-xl text-xs font-bold transition-all shadow-2xs inline-flex items-center gap-1 cursor-pointer"
+                                    >
+                                      <Eye className="h-3 w-3" />
+                                      <span>{ev.buttonText && !ev.redirectUrl ? ev.buttonText : "Report"}</span>
+                                    </button>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-slate-50 p-4 px-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+              <span>
+                Total of <strong>{(data.events || []).length}</strong> alumni meets &amp; interaction programmes documented.
+              </span>
+              <button
+                onClick={() => setEventsModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-all cursor-pointer"
+              >
+                Close Window
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* ALL DISTINGUISHED ALUMNI DIRECTORY POPUP MODAL               */}
+      {/* ============================================================ */}
+      {isPrideModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+          onClick={() => setIsPrideModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-[2rem] w-full max-w-6xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-[#002147] via-blue-900 to-[#002147] text-white p-5 sm:p-6 flex items-start justify-between gap-4 border-b border-blue-800">
+              <div className="flex items-center gap-3.5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 border border-white/20 text-amber-400 shrink-0">
+                  <Trophy className="h-6 w-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-300">
+                    Distinguished Alumni Directory
+                  </span>
+                  <h3 className="font-outfit font-black text-xl sm:text-2xl tracking-tight text-white mt-0.5">
+                    Our Alumni – Our Pride Directory
+                  </h3>
+                  <p className="text-xs text-blue-100/80 font-medium mt-1">
+                    Celebrating leaders, entrepreneurs, academicians, and distinguished achievers of St. Ann&apos;s.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsPrideModalOpen(false)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer shrink-0 border border-white/10"
+                title="Close dialog"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="bg-slate-50 p-4 px-6 border-b border-slate-200 flex items-center gap-3">
+              <Search className="h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search alumni by name, batch, designation, or company..."
+                value={prideSearchQuery}
+                onChange={(e) => setPrideSearchQuery(e.target.value)}
+                className="w-full bg-transparent text-xs font-medium text-slate-800 focus:outline-none placeholder-slate-400"
+              />
+              {prideSearchQuery && (
+                <button
+                  onClick={() => setPrideSearchQuery("")}
+                  className="text-xs text-slate-400 hover:text-slate-700 font-bold"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* Alumni Grid */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {(() => {
+                const list = (data.prideAlumni || []).filter((a: any) => {
+                  if (!prideSearchQuery) return true;
+                  const q = prideSearchQuery.toLowerCase();
+                  return (
+                    a.name?.toLowerCase().includes(q) ||
+                    a.programmeBatch?.toLowerCase().includes(q) ||
+                    a.designation?.toLowerCase().includes(q) ||
+                    a.organization?.toLowerCase().includes(q) ||
+                    a.achievement?.toLowerCase().includes(q)
+                  );
+                });
+
+                if (list.length === 0) {
+                  return (
+                    <div className="flex flex-col items-center justify-center p-12 text-center text-slate-500 text-xs">
+                      No alumni records matched your search query.
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {list.map((alumnus: any, idx: number) => {
+                      const isAlt = idx % 2 === 1;
+                      return (
+                        <div
+                          key={alumnus._key || idx}
+                          className={`p-5 rounded-2xl border-2 shadow-xs transition-all hover:shadow-md flex flex-col justify-between gap-3 ${
+                            isAlt ? "border-blue-200/90" : "border-slate-200/90"
+                          }`}
+                          style={{
+                            backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
+                          }}
+                        >
+                          <div className="flex flex-col gap-1.5">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider w-fit border ${
+                              isAlt ? "bg-blue-100 text-blue-900 border-blue-200" : "bg-amber-50 text-amber-900 border-amber-200"
+                            }`}>
+                              Distinguished Alumna
+                            </span>
+                            <h5 className="font-outfit font-black text-sm text-slate-900">{alumnus.name}</h5>
+                            <p className="text-xs font-bold text-blue-700">{alumnus.designation} • {alumnus.organization}</p>
+                            <span className="text-[10px] font-mono text-slate-500">{alumnus.programmeBatch}</span>
+                            <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">{alumnus.achievement}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-slate-50 p-4 px-6 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+              <span>
+                Displaying <strong>{(data.prideAlumni || []).length}</strong> distinguished alumni records.
+              </span>
+              <button
+                onClick={() => setIsPrideModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-all cursor-pointer"
+              >
+                Close Window
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* ALL VOICES OF OUR ALUMNI POPUP MODAL                         */}
+      {/* ============================================================ */}
+      {isVoicesModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+          onClick={() => setIsVoicesModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-[2rem] w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-[#002147] via-blue-900 to-[#002147] text-white p-5 sm:p-6 flex items-start justify-between gap-4 border-b border-blue-800">
+              <div className="flex items-center gap-3.5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 border border-white/20 text-indigo-300 shrink-0">
+                  <Quote className="h-6 w-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-300">
+                    Alumni Reflections &amp; Memories
+                  </span>
+                  <h3 className="font-outfit font-black text-xl sm:text-2xl tracking-tight text-white mt-0.5">
+                    Voices of Our Alumni Collection
+                  </h3>
+                  <p className="text-xs text-blue-100/80 font-medium mt-1">
+                    Inspiring experiences and reflections shared by graduates across various programmes and decades.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsVoicesModalOpen(false)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer shrink-0 border border-white/10"
+                title="Close dialog"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Testimonials Grid (ABBA ABBA) */}
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(data.testimonials || []).map((test: any, idx: number) => {
+                  const isAlt = idx % 4 === 1 || idx % 4 === 2;
+                  return (
+                    <div
+                      key={test._key || idx}
+                      className={`p-5 rounded-2xl border-2 shadow-xs flex flex-col justify-between gap-3 transition-all hover:shadow-md ${
+                        isAlt ? "border-blue-200/90" : "border-slate-200/90"
+                      }`}
+                      style={{
+                        backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
+                      }}
+                    >
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-1.5 text-blue-700">
+                          <Quote className="h-4 w-4 shrink-0" />
+                          <h5 className="font-outfit font-extrabold text-xs uppercase tracking-wider">{test.title}</h5>
+                        </div>
+                        <p className="text-xs text-slate-700 font-medium leading-relaxed italic">
+                          “{test.quote}”
+                        </p>
+                      </div>
+                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span className="font-bold text-slate-900">— {test.alumnaName}</span>
+                        <span className="text-[11px] font-mono font-semibold text-slate-500">{test.programmeBatch}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-slate-50 p-4 px-6 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+              <span>
+                Total of <strong>{(data.testimonials || []).length}</strong> official alumni testimonials.
+              </span>
+              <button
+                onClick={() => setIsVoicesModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-all cursor-pointer"
+              >
+                Close Window
+              </button>
+            </div>
           </div>
         </div>
       )}

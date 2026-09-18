@@ -44,6 +44,8 @@ export async function GET(req: NextRequest) {
       _id,
       title,
       lastUpdated,
+      registrationFormUrl,
+      feedbackFormUrl,
       googleFormUrl,
       registrationDetails,
       committeeMembers[] {
@@ -97,6 +99,7 @@ export async function GET(req: NextRequest) {
         designation,
         organization,
         achievement,
+        featured,
         redirectUrl,
         "photoUrl": coalesce(photo.asset->url, photoUrl),
         "photoAssetId": photo.asset->_id
@@ -111,7 +114,12 @@ export async function GET(req: NextRequest) {
       events[] {
         _key,
         title,
+        category,
+        status,
+        academicYear,
         date,
+        time,
+        venue,
         description,
         redirectUrl,
         "fileUrl": coalesce(file.asset->url, fileUrl),
@@ -133,6 +141,8 @@ export async function GET(req: NextRequest) {
         data: {
           ...DEFAULT_ALUMNI_DATA,
           ...data,
+          registrationFormUrl: data.registrationFormUrl || DEFAULT_ALUMNI_DATA.registrationFormUrl,
+          feedbackFormUrl: data.feedbackFormUrl || DEFAULT_ALUMNI_DATA.feedbackFormUrl,
           googleFormUrl: data.googleFormUrl || DEFAULT_ALUMNI_DATA.googleFormUrl,
           registrationDetails: {
             ...DEFAULT_ALUMNI_DATA.registrationDetails,
@@ -218,7 +228,9 @@ export async function POST(req: NextRequest) {
       _type: "alumniPage",
       title: body.title || "Alumni Engagement & Network",
       lastUpdated: body.lastUpdated || new Date().toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }),
-      googleFormUrl: body.googleFormUrl || "https://forms.gle/7QMzJvrAsYVT3YZd7",
+      registrationFormUrl: body.registrationFormUrl || DEFAULT_ALUMNI_DATA.registrationFormUrl,
+      feedbackFormUrl: body.feedbackFormUrl || DEFAULT_ALUMNI_DATA.feedbackFormUrl,
+      googleFormUrl: body.feedbackFormUrl || body.googleFormUrl || DEFAULT_ALUMNI_DATA.googleFormUrl,
       registrationDetails: body.registrationDetails || DEFAULT_ALUMNI_DATA.registrationDetails,
       committeeMembers: Array.isArray(body.committeeMembers) ? body.committeeMembers.map((m: any, idx: number) => ({
         _key: m._key || `cm_${Date.now()}_${idx}`,
@@ -245,6 +257,7 @@ export async function POST(req: NextRequest) {
           designation: p.designation || "",
           organization: p.organization || "",
           achievement: p.achievement || "",
+          featured: p.featured !== undefined ? !!p.featured : true,
           redirectUrl: p.redirectUrl || "",
         };
         if (p.photoAssetId) {
