@@ -1,21 +1,31 @@
 import PlacementsClientPortal from "@/components/placements/PlacementsClientPortal";
 import { Metadata } from "next";
-import { getPlacementSections, getPlacementsImages, getPlacementsData, getPlacementYearlyStats } from "@/lib/sanity";
+import { getPlacementSections, getPlacementsImages, getPlacementsSingletonData, getPlacementYearlyStats } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Placements & Industry Linkages | St. Ann's College for Women",
-  description: "Explore the comprehensive placement records, industry linkages, global outreach, and training programs at St. Ann's College for Women.",
+  description: "Explore the comprehensive placement records, industry linkages, APSSDC support, and training programs at St. Ann's College for Women, Gorantla, Guntur.",
   openGraph: {
     title: "Placements & Industry Linkages | St. Ann's College",
-    description: "Training programs, placement records, and industry partnerships.",
+    description: "Training programs, campus recruitment drives, placement statistics, and industry partnerships.",
     images: [{ url: "/images/hero-1.jpg", width: 1200, height: 630, alt: "Placements at St. Ann's" }],
   },
 };
 
 export function generateStaticParams() {
   const slugs = [
-    // Group 1
+    // 9 Canonical Sections from 8.Placements & Industry Linkages.docx
     "about-cell",
+    "placements-recruitment",
+    "apssdc",
+    "skill-development-areas",
+    "internships-industry-exposure",
+    "competitive-exam-coaching",
+    "industry-professional-engagement",
+    "mous",
+    "international-collaborations-global-engagement",
+
+    // Backward-compatible aliases
     "annual-reports",
     "placement-statistics",
     "recruitment-drives",
@@ -29,8 +39,6 @@ export function generateStaticParams() {
     "capacity-building",
     "alumni-support",
     "training-calendar",
-
-    // Group 2
     "industry-partnerships",
     "internships-apprenticeships",
     "mous-agreements",
@@ -42,8 +50,6 @@ export function generateStaticParams() {
     "industrial-visits",
     "skill-training",
     "employability-activities",
-
-    // Group 3
     "international-collaborations",
     "internationalization-policy",
     "accreditations-memberships",
@@ -58,13 +64,13 @@ export function generateStaticParams() {
 
 export default async function PlacementsPage({ params }: { params: Promise<{ slug?: string[] }> }) {
   const resolvedParams = await params;
-  const activeSlug = resolvedParams.slug?.[0] || "about-cell";
+  const activeSlug = resolvedParams.slug?.[0] || "";
   
   const [placementSections, placementsImagesData, placementsData, placementYearlyStats] = await Promise.all([
     getPlacementSections(),
-    getPlacementsImages(activeSlug),
-    getPlacementsData(activeSlug),
-    activeSlug === "placement-statistics" ? getPlacementYearlyStats() : Promise.resolve([])
+    getPlacementsImages(activeSlug || "about-cell"),
+    getPlacementsSingletonData(),
+    activeSlug === "placement-statistics" || activeSlug === "placements-recruitment" ? getPlacementYearlyStats() : Promise.resolve([])
   ]);
   
   const galleryImages = placementsImagesData?.images || [];
