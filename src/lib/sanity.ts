@@ -2391,3 +2391,28 @@ export async function getResearchData() {
   }
 }
 
+export async function getPlacementsSingletonData() {
+  try {
+    const query = `*[_type == "placements-singleton" && !(_id in path("drafts.**"))][0] {
+      _id,
+      tpoOfficer,
+      aboutOverview,
+      statistics,
+      recruiters,
+      mous,
+      annualReports,
+      skillDomains,
+      apssdcSupportAreas,
+      competitiveExamsList
+    }`;
+    const data = await sanityClient.fetch(query);
+    if (data && data._id) {
+      return data;
+    }
+    return null;
+  } catch (err) {
+    console.error("Sanity fetch error (getPlacementsSingletonData):", err);
+    return null;
+  }
+}
+

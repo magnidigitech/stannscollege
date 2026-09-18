@@ -71,13 +71,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 7. Placements sub-pages
   const placementsPaths = [
     'about-cell',
-    'placement-policy',
-    'placement-process',
-    'our-recruiters',
-    'placement-statistics',
-    'training-programmes',
-    'student-registrations',
-    'annual-reports',
+    'placements-recruitment',
+    'apssdc',
+    'skill-development-areas',
+    'internships-industry-exposure',
+    'competitive-exam-coaching',
+    'industry-professional-engagement',
+    'mous',
+    'international-collaborations-global-engagement',
   ].map(slug => `/placements/${slug}`);
 
   // 8. Quality Assurance sub-pages
