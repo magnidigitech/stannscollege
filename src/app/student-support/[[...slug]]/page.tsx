@@ -18,8 +18,8 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
   // Await the async params as required by Next.js 15+
   const resolvedParams = await params;
   
-  // Current selected slug parameter (if any), defaulting to "mentor-mentee"
-  const activeSlug = resolvedParams?.slug?.[0] || "mentor-mentee";
+  // Current selected slug parameter (if any)
+  const activeSlug = resolvedParams?.slug?.[0] || "";
 
   // Fetch images, documents and rank holders dynamically from Sanity
   // If activeSlug is "sports-games", fetch from both "sports-games" and the old individual slugs to merge them
@@ -45,15 +45,13 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
   };
 
   return (
-    <div className="bg-slate-50/50 min-h-screen animate-fadeIn select-none">
-      <StudentSupportClientPortal 
-        activeSlug={activeSlug} 
-        galleryImages={galleryImages}
-        studentSupportData={studentSupportData}
-        rankHolders={rankHolders}
-        initialSections={[]} 
-      />
-    </div>
+    <StudentSupportClientPortal 
+      activeSlug={activeSlug} 
+      galleryImages={galleryImages}
+      studentSupportData={studentSupportData}
+      rankHolders={rankHolders}
+      initialSections={[]} 
+    />
   );
 }
 

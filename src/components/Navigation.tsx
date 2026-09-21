@@ -617,34 +617,58 @@ export default function Navigation() {
 
   const supportCategories = [
     {
-      title: "I. Support Services",
+      title: "I. Support & Welfare Services",
       icon: HeartHandshake,
       items: [
-        { text: "Mentor–Mentee System", slug: "mentor-mentee" },
-        { text: "Student Counselling", slug: "student-counselling" },
-        { text: "Internal Complaints (ICC)", slug: "internal-complaints" },
         { text: "Anti-Ragging Committee", slug: "anti-ragging" },
-        { text: "Women Empowerment", slug: "women-empowerment" },
-        { text: "Sports & Games", slug: "sports-games" },
+        { text: "Grievance Redressal / Ombudsperson", slug: "grievance-redressal" },
+        { text: "Internal Complaints Committee (ICC)", slug: "internal-complaints" },
+        { text: "Women Empowerment Cell", slug: "women-empowerment" },
+        { text: "Equal Opportunity (SC/ST/Minority)", slug: "equal-opportunity" },
+        { text: "Student Counselling Cell", slug: "student-counselling" },
+        { text: "Mentor–Mentee System", slug: "mentor-mentee" },
+        { text: "Parent Association", slug: "parent-association" },
+        { text: "Student Welfare & Scholarships", slug: "scholarships-welfare" },
+        { text: "Support for Divyangjan Students", slug: "divyangjan-support" },
+        { text: "Student Feedback & Satisfaction", slug: "student-feedback" },
       ]
     },
     {
-      title: "II. Progression & Skills",
+      title: "II. Sports & Games",
       icon: Trophy,
       items: [
-        { text: "Academic Achievements", slug: "academic-achievements" },
-        { text: "Literacy and Cultural", slug: "literacy-cultural-achievements" },
-        { text: "Capacity Building & Skills", slug: "capacity-building" },
+        { text: "Sports Facilities & Playing Areas", slug: "sports-facilities" },
+        { text: "Intramural Sports Competitions", slug: "sports-competitions" },
+        { text: "Inter-Collegiate & University Trials", slug: "sports-achievements" },
+        { text: "Self-Defense & Personal Safety", slug: "self-defense-safety" },
+        { text: "Fitness, Yoga & Wellness", slug: "fitness-wellness" },
+        { text: "Sports Reports & Gallery", slug: "sports-gallery" },
       ]
     },
     {
-      title: "III. Extension Units",
+      title: "III. Extension & Outreach",
       icon: Flag,
       items: [
-        { text: "NSS Activities", slug: "nss-activities" },
-        { text: "NCC Activities", slug: "ncc-activities" },
+        { text: "National Service Scheme (NSS)", slug: "nss-activities" },
+        { text: "National Cadet Corps (NCC)", slug: "ncc-activities" },
+        { text: "Red Ribbon Club (RRC)", slug: "red-ribbon-club" },
         { text: "Mother Gnanamma Outreach", slug: "mother-gnanamma" },
-        { text: "Eco Club & Environment", slug: "environmental-social" },
+        { text: "Eco Club & Environment", slug: "eco-club" },
+        { text: "Unnat Bharat Abhiyan (UBA)", slug: "unnat-bharat-abhiyan" },
+      ]
+    },
+    {
+      title: "IV. Capacity Building",
+      icon: Compass,
+      items: [
+        { text: "Workshops & Skill Seminars", slug: "workshops-seminars" },
+      ]
+    },
+    {
+      title: "V. Student Achievements",
+      icon: Award,
+      items: [
+        { text: "Participation & University Ranks", slug: "student-achievements" },
       ]
     }
   ];
@@ -1261,7 +1285,7 @@ export default function Navigation() {
 
             {activeMenu === "support" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 cursor-default animate-fadeIn"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("support")}
                 onMouseLeave={handleMouseLeave}

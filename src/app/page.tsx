@@ -1389,7 +1389,7 @@ export default function HomePage() {
                     {activeRightDrawer === "prospectus" && "Official College Prospectus"}
                   </h3>
                   <p className="font-sans text-[10.5px] text-slate-300 truncate">
-                    St. Ann&apos;s College for Women • Autonomous &amp; NAAC A+
+                    St. Ann&apos;s College for womens, Gorantla,522034
                   </p>
                 </div>
               </div>
