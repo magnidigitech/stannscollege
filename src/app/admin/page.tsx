@@ -11,6 +11,7 @@ import { MandatoryDisclosuresManager } from "@/components/admin/MandatoryDisclos
 import { AlumniManager } from "@/components/admin/AlumniManager";
 import { ResearchManager } from "@/components/admin/ResearchManager";
 import { PlacementsManager } from "@/components/admin/PlacementsManager";
+import { StudentSupportManager } from "@/components/admin/StudentSupportManager";
 import {
   Calendar,
   Bell,
@@ -28,6 +29,7 @@ import {
   Users,
   FlaskConical,
   Briefcase,
+  HeartHandshake,
 } from "lucide-react";
 
 interface AdminUser {
@@ -60,6 +62,14 @@ const ADMIN_MODULES = [
     icon: Bell,
     description: "Publish official college circulars, notifications, examination alerts, admissions updates, and downloadable PDFs.",
     component: NoticesManager,
+  },
+  {
+    id: "student-support",
+    label: "Student Support Services",
+    badge: "5 Sections & 11 Cells",
+    icon: HeartHandshake,
+    description: "Manage welfare cells, committee orders, statutory policies, complaint forms, sports, outreach, capacity building, and annual reports.",
+    component: StudentSupportManager,
   },
   {
     id: "research-management",
