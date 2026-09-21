@@ -30,12 +30,12 @@ export function TopLogoBar() {
         {/* Left: Official College Logo & Full Header Graphic / Text */}
         <Link
           href="/"
-          className="flex items-center gap-3 group shrink-0 self-stretch py-0"
+          className="flex items-center gap-3.5 group shrink-0 self-stretch py-0.5"
         >
           <img
             src="/images/Crest_Logo.png?v=full_v5"
             alt="St. Ann's College Crest Logo"
-            className="h-[56px] sm:h-[60px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0 py-0"
+            className="h-[68px] sm:h-[76px] md:h-[82px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0 py-0"
           />
 
           {/* Hardcoded Institutional Typography (Center-Aligned) */}
@@ -59,19 +59,19 @@ export function TopLogoBar() {
         </Link>
 
         {/* Right: Accreditations (29+ Years, NAAC, AICTE) & Apply Now CTA Button */}
-        <div className="flex items-center gap-3 shrink-0 self-stretch py-0">
-          <div className="flex items-center gap-2.5 h-full py-0">
+        <div className="flex items-center gap-3.5 shrink-0 self-stretch py-0.5">
+          <div className="flex items-center gap-3 h-full py-0">
             {/* 29+ Years of Excellence Graphic */}
             <div className="flex items-center h-full py-0 shrink-0">
               <img
                 src="/images/29years--logo.png?v=full_v5"
                 alt="29+ Years of Excellence (1997 - 2026)"
-                className="h-[52px] sm:h-[55px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[64px] sm:h-[72px] md:h-[78px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
             </div>
 
             {/* Divider Line */}
-            <div className="h-7 w-px bg-slate-200 hidden sm:block shrink-0" />
+            <div className="h-10 sm:h-12 w-px bg-slate-200 hidden sm:block shrink-0" />
 
             {/* NAAC 'A' Accreditation Logo */}
             <div
@@ -81,12 +81,12 @@ export function TopLogoBar() {
               <img
                 src="/images/naac_logo_clean.png?v=full_v5"
                 alt="NAAC 'A' Grade"
-                className="h-[48px] sm:h-[50px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[58px] sm:h-[66px] md:h-[72px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
             </div>
 
             {/* Divider Line */}
-            <div className="h-7 w-px bg-slate-200 hidden sm:block shrink-0" />
+            <div className="h-10 sm:h-12 w-px bg-slate-200 hidden sm:block shrink-0" />
 
             {/* AICTE Approved Logo */}
             <div
@@ -96,17 +96,17 @@ export function TopLogoBar() {
               <img
                 src="/images/AICTE_Logo.png?v=full_v5"
                 alt="AICTE Approved"
-                className="h-[48px] sm:h-[50px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
+                className="h-[58px] sm:h-[66px] md:h-[72px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-2xs py-0 shrink-0"
               />
             </div>
           </div>
 
           {/* Apply Now button with AISHE Code below */}
-          <div className="flex flex-col items-center justify-center gap-0.5 shrink-0 py-0.5">
+          <div className="flex flex-col items-center justify-center gap-1 shrink-0 py-0.5 pl-1">
             <button
               type="button"
               onClick={() => setIsAdmissionModalOpen(true)}
-              className="flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 px-3.5 py-1.5 font-bold text-white text-xs hover:shadow-md hover:shadow-emerald-500/25 transition-all active:scale-95 duration-300 hover:-translate-y-0.5 group/btn select-none shrink-0 border border-emerald-500/30 shadow-xs cursor-pointer"
+              className="flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 px-4 py-1.5 font-bold text-white text-xs hover:shadow-md hover:shadow-emerald-500/25 transition-all active:scale-95 duration-300 hover:-translate-y-0.5 group/btn select-none shrink-0 border border-emerald-500/30 shadow-xs cursor-pointer"
             >
               <span>Apply Now</span>
               <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
