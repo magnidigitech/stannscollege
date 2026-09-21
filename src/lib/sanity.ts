@@ -1115,7 +1115,7 @@ export async function getCollegeMagazines() {
 
 export async function getNewsletters() {
   try {
-    const query = `*[_type == "newsletter" && !(_id in path("drafts.**"))] | order(academicYear desc, displayOrder asc) {
+    const query = `*[_type == "newsletter" && !(_id in path("drafts.**"))] | order(academicYear desc, displayOrder desc) {
       _id,
       title,
       academicYear,

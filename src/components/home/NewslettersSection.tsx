@@ -108,16 +108,16 @@ export default function NewslettersSection({ newsletters }: NewslettersSectionPr
     });
 
     return list.sort((a, b) => {
-      // Sort by academic year first
+      // Sort by academic year first (Newest academic year e.g. 2025-2026 before 2024-2025)
       if (a.academicYear !== b.academicYear) {
         return sortLatestFirst
           ? b.academicYear.localeCompare(a.academicYear)
           : a.academicYear.localeCompare(b.academicYear);
       }
-      // Then by display order or month sequence
-      const orderA = a.displayOrder ?? monthOrder[a.month?.toLowerCase()] ?? 99;
-      const orderB = b.displayOrder ?? monthOrder[b.month?.toLowerCase()] ?? 99;
-      return sortLatestFirst ? orderA - orderB : orderB - orderA;
+      // Then by display order or month sequence (Higher month/displayOrder e.g. Dec/Nov/Oct = newest first)
+      const orderA = a.displayOrder ?? monthOrder[a.month?.toLowerCase()] ?? 0;
+      const orderB = b.displayOrder ?? monthOrder[b.month?.toLowerCase()] ?? 0;
+      return sortLatestFirst ? orderB - orderA : orderA - orderB;
     });
   }, [newsletters, selectedYear, searchQuery, sortLatestFirst]);
 
