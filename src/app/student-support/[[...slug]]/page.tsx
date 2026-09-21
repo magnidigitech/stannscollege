@@ -1,7 +1,12 @@
 import React from "react";
 import { Metadata } from "next";
 import StudentSupportClientPortal from "@/components/student-support/StudentSupportClientPortal";
-import { getStudentSupportImages, getStudentSupportDocuments, getUniversityRankHolders } from "@/lib/sanity";
+import {
+  getStudentSupportImages,
+  getStudentSupportDocuments,
+  getUniversityRankHolders,
+  getStudentSupportPortalData,
+} from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Student Support Services | St. Ann's College for Women",
@@ -21,14 +26,14 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
   // Current selected slug parameter (if any)
   const activeSlug = resolvedParams?.slug?.[0] || "";
 
-  // Fetch images, documents and rank holders dynamically from Sanity
-  // If activeSlug is "sports-games", fetch from both "sports-games" and the old individual slugs to merge them
-  const [sanityData, sanityDataOld, sanityFiles, sanityFilesOld, rankHolders] = await Promise.all([
+  // Fetch images, documents, rank holders, and dynamic portal data from Sanity
+  const [sanityData, sanityDataOld, sanityFiles, sanityFilesOld, rankHolders, portalData] = await Promise.all([
     getStudentSupportImages(activeSlug),
     activeSlug === "sports-games" ? getStudentSupportImages("sports-cultural-achievements") : Promise.resolve(null),
     getStudentSupportDocuments(activeSlug),
     activeSlug === "sports-games" ? getStudentSupportDocuments("sports-infrastructure") : Promise.resolve(null),
-    activeSlug === "academic-achievements" ? getUniversityRankHolders() : Promise.resolve([])
+    activeSlug === "academic-achievements" ? getUniversityRankHolders() : Promise.resolve([]),
+    getStudentSupportPortalData(),
   ]);
 
   const galleryImages = [
@@ -50,8 +55,10 @@ export default async function StudentSupportPage({ params }: StudentSupportPageP
       galleryImages={galleryImages}
       studentSupportData={studentSupportData}
       rankHolders={rankHolders}
-      initialSections={[]} 
+      initialSections={[]}
+      portalData={portalData}
     />
   );
 }
+
 

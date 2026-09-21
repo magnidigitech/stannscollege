@@ -40,6 +40,7 @@ import {
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
 import { openPdfViewer, getCleanPdfUrl } from "@/lib/pdf-viewer";
+import { STUDENT_SUPPORT_DATA } from "@/components/student-support/staticData";
 
 const DEFAULT_PDF = "/documents/DefaultFile_1.pdf";
 
@@ -122,12 +123,73 @@ interface StudentSupportClientPortalProps {
   rankHolders?: any[];
   initialSections?: any[];
   studentSupportData?: any;
+  portalData?: any;
 }
 
 export default function StudentSupportClientPortal({
   activeSlug = "",
+  portalData,
 }: StudentSupportClientPortalProps) {
   const [activeSectionId, setActiveSectionId] = useState<string>("sec-welfare-services");
+  const [portal, setPortal] = useState<any>(portalData || STUDENT_SUPPORT_DATA);
+
+  // Sync when incoming server portalData changes or fetch client-side if missing
+  useEffect(() => {
+    if (portalData) {
+      setPortal(portalData);
+    } else {
+      fetch("/api/admin/student-support")
+        .then((res) => res.json())
+        .then((res) => {
+          if (res && res.success && res.data) {
+            setPortal(res.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [portalData]);
+
+  const welfareItems = portal?.welfareServices?.items || STUDENT_SUPPORT_DATA.welfareServices.items;
+
+  const getCellData = (slug: string) => {
+    return (
+      welfareItems.find((item: any) => item.slug === slug) ||
+      STUDENT_SUPPORT_DATA.welfareServices.items.find((item: any) => item.slug === slug) ||
+      {}
+    );
+  };
+
+  const renderFormButton = (cell: any, defaultLabel: string = "Online Form") => {
+    if (!cell?.formUrl || typeof cell.formUrl !== "string" || cell.formUrl.trim() === "") {
+      return null;
+    }
+    const url = cell.formUrl.trim();
+    if (url.toLowerCase().endsWith(".pdf")) {
+      return (
+        <button
+          type="button"
+          onClick={() => openPdf(url, `${cell.title} - Form`)}
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+        >
+          <MessageSquare className="h-3.5 w-3.5" />
+          <span>{cell.formLabel || defaultLabel}</span>
+          <ExternalLink className="h-3 w-3 opacity-80" />
+        </button>
+      );
+    }
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+      >
+        <MessageSquare className="h-3.5 w-3.5" />
+        <span>{cell.formLabel || defaultLabel}</span>
+        <ExternalLink className="h-3 w-3 opacity-80" />
+      </a>
+    );
+  };
 
   // State for View All Archive Modal
   const [archiveModalData, setArchiveModalData] = useState<{
@@ -479,638 +541,640 @@ export default function StudentSupportClientPortal({
                   <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
                     
                     {/* A.1 Anti-Ragging Committee */}
-                    <div
-                      id="sec-anti-ragging"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                            <ShieldCheck className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              1. Anti-Ragging Committee
-                            </h4>
-                            <p className="text-xs text-slate-500 font-medium">Committed to a Safe, Respectful and Ragging-Free Campus</p>
-                          </div>
-                        </div>
-
-                        <a
-                          href="https://forms.gle/3Z2c1j7KxW9P4yVw9"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+                    {(() => {
+                      const cell = getCellData("anti-ragging");
+                      const coreDocs = [
+                        { title: "Anti-Ragging Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/1.Anti Ragging COmmittee.pdf" },
+                        { title: "Anti-Ragging Policy & Framework", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/1.Anti Ragging Policy.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-anti-ragging"
+                          className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                         >
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          <span>Anti-Ragging Complaint Form</span>
-                          <ExternalLink className="h-3 w-3 opacity-80" />
-                        </a>
-                      </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                                <ShieldCheck className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  1. Anti-Ragging Committee
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium">{cell.tagline || "Committed to a Safe, Respectful and Ragging-Free Campus"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Anti-Ragging Complaint Form")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Anti-Ragging Committee works towards maintaining a ragging-free campus and creating awareness among students about the prevention of ragging. The Committee undertakes preventive measures, sensitization programmes and appropriate action in accordance with applicable regulations.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Anti-Ragging Committee works towards maintaining a ragging-free campus and creating awareness among students about the prevention of ragging. The Committee undertakes preventive measures, sensitization programmes and appropriate action in accordance with applicable regulations."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
+
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("Anti-Ragging Annual Reports & Documentation", reports)}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Anti-Ragging Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/1.Anti Ragging COmmittee.pdf" },
-                            { title: "Anti-Ragging Policy & Framework", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/1.Anti Ragging Policy.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("Anti-Ragging Annual Reports & Documentation", [
-                        { title: "Annual Report 2026–2027", subtitle: "Official Annual Report", year: "2026–2027", fileUrl: "/documents/student-support/Anti Ragging Report Final 2026-2027.pdf" },
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/Anti Ragging Report 2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/Anti Ragging Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                      );
+                    })()}
 
                     {/* A.2 Grievance Redressal Cell */}
-                    <div
-                      id="sec-grievance-redressal"
-                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
-                            <Scale className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              2. Grievance Redressal Cell / Ombudsperson
-                            </h4>
-                            <p className="text-xs text-blue-600/80 font-medium">Fair, Confidential and Time-Bound Redressal</p>
-                          </div>
-                        </div>
-
-                        <a
-                          href="https://forms.gle/4N8p1k6LxW2Q9yVw8"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+                    {(() => {
+                      const cell = getCellData("grievance-redressal");
+                      const coreDocs = [
+                        { title: "Grievance Redressal Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/3.Grievance Reddressal Committee.pdf" },
+                        { title: "Grievance Redressal Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/3.Greaivance Reddrassal Policy.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-grievance-redressal"
+                          className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                         >
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          <span>Online Grievance Form</span>
-                          <ExternalLink className="h-3 w-3 opacity-80" />
-                        </a>
-                      </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
+                                <Scale className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  2. Grievance Redressal Cell / Ombudsperson
+                                </h4>
+                                <p className="text-xs text-blue-600/80 font-medium">{cell.tagline || "Fair, Confidential and Time-Bound Redressal"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Online Grievance Submission Form")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Grievance Redressal Cell provides an accessible mechanism for students to submit grievances, complaints and suggestions related to academic, administrative and other student-support matters. Grievances are addressed in a fair, confidential and time-bound manner in accordance with institutional and regulatory provisions. The Ombudsperson mechanism is made available as per applicable university/regulatory guidelines.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Grievance Redressal Cell provides an accessible mechanism for students to submit grievances, complaints and suggestions related to academic, administrative and other student-support matters."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
+
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("Grievance Redressal Annual Reports & Documentation", reports)}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Grievance Redressal Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/3.Grievance Reddressal Committee.pdf" },
-                            { title: "Grievance Redressal Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/3.Greaivance Reddrassal Policy.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("Grievance Redressal Annual Reports & Documentation", [
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/GRIEVANCE REDRESSAL  Report 2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/GRIEVANCE REDRESSAL Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                      );
+                    })()}
 
                     {/* A.3 Internal Complaints Committee (ICC) */}
-                    <div
-                      id="sec-internal-complaints"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                            <FolderLock className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              3. Internal Complaints Committee (ICC)
-                            </h4>
-                            <p className="text-xs text-slate-500 font-medium">Prevention of Sexual Harassment &amp; Gender Dignity</p>
-                          </div>
-                        </div>
-
-                        <a
-                          href="https://forms.gle/9V7q2m8RxW4T1yVw7"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+                    {(() => {
+                      const cell = getCellData("internal-complaints");
+                      const coreDocs = [
+                        { title: "ICC Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/4.ICC Committee.pdf" },
+                        { title: "ICC & POSH Policy Guidelines", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/2.Internal Complaints Committee (ICC) & POSH Policy.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-internal-complaints"
+                          className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                         >
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          <span>ICC Complaint Form</span>
-                          <ExternalLink className="h-3 w-3 opacity-80" />
-                        </a>
-                      </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                                <FolderLock className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  3. Internal Complaints Committee (ICC)
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium">{cell.tagline || "Prevention of Sexual Harassment & Gender Dignity"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "ICC Confidential Complaint Form")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Internal Complaints Committee promotes a safe and respectful campus environment and addresses complaints relating to sexual harassment in accordance with applicable statutory provisions. The Committee also undertakes awareness and sensitization programmes to promote dignity, equality and a culture of respect.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Internal Complaints Committee promotes a safe and respectful campus environment and addresses complaints relating to sexual harassment in accordance with applicable statutory provisions."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
+
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("ICC Annual Reports & Documentation", reports)}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "ICC Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/4.ICC Committee.pdf" },
-                            { title: "ICC & POSH Policy Guidelines", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/2.Internal Complaints Committee (ICC) & POSH Policy.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("ICC Annual Reports & Documentation", [
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/IIC  Report 2025-26.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/IIC Report  2024-2025.pdf" },
-                      ])}
-                    </div>
+                      );
+                    })()}
 
                     {/* A.4 Women Empowerment Cell */}
-                    <div
-                      id="sec-women-empowerment"
-                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
-                    >
-                      <div className="flex items-center gap-3 border-b border-blue-200/60 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
-                          <Sparkles className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            4. Women Empowerment Cell
-                          </h4>
-                          <p className="text-xs text-blue-600/80 font-medium">Confidence Building, Leadership &amp; Holistic Development</p>
-                        </div>
-                      </div>
+                    {(() => {
+                      const cell = getCellData("women-empowerment");
+                      const coreDocs = [
+                        { title: "Women Empowerment Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/Woment Empowerment COmmittee.pdf" },
+                        { title: "Women Empowerment Cell Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/Woment Empowerment Cell Policy 2026.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-women-empowerment"
+                          className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
+                                <Sparkles className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  4. Women Empowerment Cell
+                                </h4>
+                                <p className="text-xs text-blue-600/80 font-medium">{cell.tagline || "Confidence Building, Leadership & Holistic Development"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "WEC Registration / Feedback")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Women Empowerment Cell works towards the empowerment, confidence-building and holistic development of women students. It organizes awareness programmes, capacity-building activities, counselling support and other initiatives that encourage leadership, self-reliance, safety and equal opportunities.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Women Empowerment Cell works towards the empowerment, confidence-building and holistic development of women students."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Women Empowerment Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/Woment Empowerment COmmittee.pdf" },
-                            { title: "Women Empowerment Cell Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/Woment Empowerment Cell Policy 2026.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
 
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("WEC Annual Reports & Documentation", [
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/WEC  Report 2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/WEC Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("WEC Annual Reports & Documentation", reports)}
+                        </div>
+                      );
+                    })()}
 
                     {/* A.5 Equal Opportunity / SC, ST & Minority Cell */}
-                    <div
-                      id="sec-equal-opportunity"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                          <Users className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            5. Equal Opportunity / SC, ST &amp; Minority Cell
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">Inclusive Learning &amp; Social Welfare Facilitation</p>
-                        </div>
-                      </div>
+                    {(() => {
+                      const cell = getCellData("equal-opportunity");
+                      const coreDocs = [
+                        { title: "EOC SC/ST Minority Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/6.EOC SC ST Minority COmmittee.pdf" },
+                        { title: "EOC SC/ST Minority Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/6.EOC SC ST Minority Policy.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-equal-opportunity"
+                          className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                                <Users className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  5. Equal Opportunity / SC, ST &amp; Minority Cell
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium">{cell.tagline || "Inclusive Learning & Social Welfare Facilitation"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "EOC Support Request")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Equal Opportunity, SC/ST &amp; Minority Cell promotes an inclusive and equitable learning environment. The Cell facilitates awareness of educational opportunities, scholarships, welfare schemes and institutional support available to eligible students, while encouraging equality, inclusion, dignity and non-discrimination.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Equal Opportunity, SC/ST & Minority Cell promotes an inclusive and equitable learning environment."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "EOC SC/ST Minority Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/6.EOC SC ST Minority COmmittee.pdf" },
-                            { title: "EOC SC/ST Minority Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/6.EOC SC ST Minority Policy.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
 
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("EOC Annual Reports & Action Plans", [
-                        { title: "Action Plan & Report 2026–2027", subtitle: "Action Plan & Report", year: "2026–2027", fileUrl: "/documents/student-support/EOC Report Action Plan 2026-2027.pdf" },
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/EOC Report -2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/EOC Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("EOC Annual Reports & Action Plans", reports)}
+                        </div>
+                      );
+                    })()}
 
                     {/* A.6 Student Counselling Cell */}
-                    <div
-                      id="sec-student-counselling"
-                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
-                            <HeartHandshake className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              6. Student Counselling Cell
-                            </h4>
-                            <p className="text-xs text-blue-600/80 font-medium">Emotional, Personal &amp; Academic Mental Well-being</p>
-                          </div>
-                        </div>
-
-                        <a
-                          href="https://forms.gle/5K1n3p7TxW9L2yVw6"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+                    {(() => {
+                      const cell = getCellData("student-counselling");
+                      const coreDocs = [
+                        { title: "Student Counselling Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/9.Student Counselling COmmittee.pdf" },
+                        { title: "Student Welfare & Wellness Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/9.Student Welfare,Counselling & Welness Polciy.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-student-counselling"
+                          className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                         >
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          <span>Request Counselling</span>
-                          <ExternalLink className="h-3 w-3 opacity-80" />
-                        </a>
-                      </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
+                                <HeartHandshake className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  6. Student Counselling Cell
+                                </h4>
+                                <p className="text-xs text-blue-600/80 font-medium">{cell.tagline || "Emotional, Personal & Academic Mental Well-being"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Book Counselling Session")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Student Counselling Cell provides students with a supportive space to discuss academic, personal, emotional and career-related concerns. Through counselling and guidance, the Cell assists students in developing self-confidence, coping skills, positive decision-making and healthy interpersonal relationships.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Student Counselling and Wellness Cell provides confidential professional and peer counselling support to help students cope with academic stress, emotional challenges, career dilemmas and personal issues."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
+
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("Student Counselling Annual Reports & Documentation", reports)}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Student Counselling Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/9.Student Counselling COmmittee.pdf" },
-                            { title: "Student Welfare & Wellness Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/9.Student Welfare,Counselling & Welness Polciy.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("Student Counselling Annual Reports & Documentation", [
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/Students COunselling Report 2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/Student COunse Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                      );
+                    })()}
 
                     {/* A.7 Mentor–Mentee System */}
-                    <div
-                      id="sec-mentor-mentee"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                          <GraduationCap className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            7. Mentor–Mentee System
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">Continuous Academic Monitoring, Guidance &amp; Personal Care</p>
-                        </div>
-                      </div>
+                    {(() => {
+                      const cell = getCellData("mentor-mentee");
+                      const coreDocs = [
+                        { title: "Mentor & Mentee Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/Mentor & Mentee Committee.pdf" },
+                        { title: "Mentor & Mentee Guidelines", subtitle: "Institutional Guidelines", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/Mentor & Mentee Committee Guidelines.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-mentor-mentee"
+                          className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                                <GraduationCap className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  7. Mentor–Mentee System
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium">{cell.tagline || "Continuous Academic Monitoring, Guidance & Personal Care"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Mentor Feedback Form")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Mentor–Mentee System provides continuous academic and personal guidance to students. Faculty mentors monitor students' academic progress, attendance, participation and overall development, identify areas requiring support and guide students towards appropriate academic, career and welfare resources.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Mentor–Mentee System provides continuous academic and personal guidance to students. Faculty mentors monitor students' academic progress, attendance, participation and overall development."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Mentor & Mentee Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/Mentor & Mentee Committee.pdf" },
-                            { title: "Mentor & Mentee Guidelines", subtitle: "Institutional Guidelines", year: "Policy", fileUrl: "/documents/student-support/Mentor & Mentee Committee Guidelines.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
 
-                      {/* 2. Year-wise Action Plans & Allocations (Newest First) */}
-                      {renderYearlyReportsSection("Mentor–Mentee Action Plans & Allocation Reports", [
-                        { title: "Action Plan 2026–2027", subtitle: "Official Action Plan", year: "2026–2027", fileUrl: "/documents/student-support/Mentor Mentee Action Plan 2026-2027.pdf" },
-                        { title: "Activity Report 2025–2026", subtitle: "Annual Activity Report", year: "2025–2026", fileUrl: "/documents/student-support/Mentor-Mentee Activity Report 2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Annual Summary Report", year: "2024–2025", fileUrl: "/documents/student-support/Mentor-Mentee Annual  Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                          {/* 2. Year-wise Action Plans & Allocations (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("Mentor–Mentee Action Plans & Allocation Reports", reports)}
+                        </div>
+                      );
+                    })()}
 
                     {/* A.8 Parent Association */}
-                    <div
-                      id="sec-parent-association"
-                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
-                            <Users className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              8. Parent Association
-                            </h4>
-                            <p className="text-xs text-blue-600/80 font-medium">Institutional Partnership &amp; Constructive Stakeholder Engagement</p>
-                          </div>
-                        </div>
-
-                        <a
-                          href="https://forms.gle/8X2m4q9VxW1M5yVw5"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
+                    {(() => {
+                      const cell = getCellData("parent-association");
+                      const coreDocs = [
+                        { title: "Parent Association Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: cell.committeePdf || "/documents/student-support/Parents Association COmmittee.pdf" },
+                        { title: "Parent Association Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/Parents Association Policy.pdf" },
+                      ];
+                      const reports = cell.annualReports || [];
+                      return (
+                        <div
+                          id="sec-parent-association"
+                          className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                         >
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          <span>Parent Feedback Form</span>
-                          <ExternalLink className="h-3 w-3 opacity-80" />
-                        </a>
-                      </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
+                                <Users className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  8. Parent Association
+                                </h4>
+                                <p className="text-xs text-blue-600/80 font-medium">{cell.tagline || "Institutional Partnership & Constructive Stakeholder Engagement"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Parent Feedback Form")}
+                          </div>
 
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The Parent Association facilitates meaningful interaction and collaboration between parents, students and the institution. It provides a platform for communication, feedback and constructive engagement concerning students' academic progress, welfare and overall development, thereby strengthening the partnership between the College and parents.
-                      </p>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The Parent Association facilitates meaningful interaction and collaboration between parents, students and the institution. It provides a platform for communication, feedback and constructive engagement concerning students' academic progress, welfare and overall development, thereby strengthening the partnership between the College and parents."}
+                          </p>
 
-                      {/* 1. Core Orders & Policies */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Orders &amp; Policies
-                          </h5>
+                          {/* 1. Core Orders & Policies */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Orders &amp; Policies
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
+
+                          {/* 2. Year-wise Annual Reports (Newest First) */}
+                          {reports.length > 0 && renderYearlyReportsSection("Parent Association Annual Reports & Documentation", reports)}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Parent Association Committee Order", subtitle: "Official Committee Order", year: "Order", fileUrl: "/documents/student-support/Parents Association COmmittee.pdf" },
-                            { title: "Parent Association Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/Parents Association Policy.pdf" },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-
-                      {/* 2. Year-wise Annual Reports (Newest First) */}
-                      {renderYearlyReportsSection("Parent Association Annual Reports & Documentation", [
-                        { title: "Annual Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: "/documents/student-support/Parents Assocaiton Committee Report 2025-2026.pdf" },
-                        { title: "Annual Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: "/documents/student-support/Parents Associaiton COmmittee Report 2024-2025.pdf" },
-                      ])}
-                    </div>
+                      );
+                    })()}
 
                     {/* A.9 Student Welfare & Scholarships */}
-                    <div
-                      id="sec-scholarships-welfare"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                          <Award className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            9. Student Welfare &amp; Financial Support
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">Government Scholarships, Freeships &amp; Financial Assistance</p>
-                        </div>
-                      </div>
-
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        St. Ann’s College for Women supports students through scholarships, financial assistance and welfare schemes to promote equitable access to education and student well-being.
-                      </p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
-                        {[
-                          "Government & Institutional Scholarships",
-                          "SC/ST & Minority Scholarships",
-                          "Merit Scholarships & Distinctions",
-                          "Financial Assistance / Fee Concessions",
-                          "Scholarship Guidance Helpdesk",
-                          "Student Welfare & Hardship Relief"
-                        ].map((title: string, idx: number) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-2.5 bg-slate-50/90 px-3.5 py-2.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
-                          >
-                            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                            </span>
-                            <span className="text-xs font-bold text-slate-800 leading-snug">
-                              {title}
-                            </span>
+                    {(() => {
+                      const cell = getCellData("scholarships-welfare");
+                      const coreDocs = [
+                        { title: "Scholarships, Freeships & Financial Assistance Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || "/documents/student-support/Scholarships,Freeships & Financial Assistance Polciy.pdf" },
+                        { title: "Institutional Freeships & Fee Concessions Scheme", subtitle: "Scheme Guidelines", year: "Scheme", fileUrl: DEFAULT_PDF },
+                      ];
+                      return (
+                        <div
+                          id="sec-scholarships-welfare"
+                          className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                                <Award className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  9. Student Welfare &amp; Financial Support
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium">{cell.tagline || "Government Scholarships, Freeships & Financial Assistance"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Scholarship Enquiry / Application")}
                           </div>
-                        ))}
-                      </div>
 
-                      {/* Institutional Policy Documents */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Policies &amp; Schemes
-                          </h5>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "St. Ann’s College for Women supports students through scholarships, financial assistance and welfare schemes to promote equitable access to education and student well-being."}
+                          </p>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+                            {[
+                              "Government & Institutional Scholarships",
+                              "SC/ST & Minority Scholarships",
+                              "Merit Scholarships & Distinctions",
+                              "Financial Assistance / Fee Concessions",
+                              "Scholarship Guidance Helpdesk",
+                              "Student Welfare & Hardship Relief"
+                            ].map((title: string, idx: number) => (
+                              <div
+                                key={idx}
+                                className="flex items-center gap-2.5 bg-slate-50/90 px-3.5 py-2.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
+                              >
+                                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                </span>
+                                <span className="text-xs font-bold text-slate-800 leading-snug">
+                                  {title}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Institutional Policy Documents */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Policies &amp; Schemes
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Scholarships, Freeships & Financial Assistance Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: "/documents/student-support/Scholarships,Freeships & Financial Assistance Polciy.pdf" },
-                            { title: "Institutional Freeships & Fee Concessions Scheme", subtitle: "Scheme Guidelines", year: "Scheme", fileUrl: DEFAULT_PDF },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })()}
 
                     {/* A.10 Support for Divyangjan Students */}
-                    <div
-                      id="sec-divyangjan-support"
-                      className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
-                    >
-                      <div className="flex items-center gap-3 border-b border-blue-200/60 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
-                          <HeartHandshake className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            10. Accessibility &amp; Support for Divyangjan Students
-                          </h4>
-                          <p className="text-xs text-blue-600/80 font-medium">Barrier-Free Access &amp; Assistive Educational Support</p>
-                        </div>
-                      </div>
-
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The College promotes an inclusive and accessible learning environment by providing appropriate facilities and support for students with disabilities.
-                      </p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
-                        {[
-                          "Accessible Campus Infrastructure (Ramps, Handrails)",
-                          "Mobility & Assistive Device Support",
-                          "Academic & Scribe Support for Exams",
-                          "Equal Educational Opportunities & Extra Time",
-                          "Campus Sensitisation & Inclusion Programmes"
-                        ].map((title: string, idx: number) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-2.5 bg-white px-3.5 py-2.5 rounded-xl border border-blue-200/80 shadow-2xs select-none"
-                          >
-                            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                            </span>
-                            <span className="text-xs font-bold text-slate-800 leading-snug">
-                              {title}
-                            </span>
+                    {(() => {
+                      const cell = getCellData("divyangjan-support");
+                      const coreDocs = [
+                        { title: "Divyangjan Facilities & Support Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: cell.policyPdf || DEFAULT_PDF },
+                        { title: "Barrier-Free Access Audit & Report", subtitle: "Compliance Audit", year: "Audit", fileUrl: DEFAULT_PDF },
+                      ];
+                      return (
+                        <div
+                          id="sec-divyangjan-support"
+                          className="scroll-mt-52 border-2 border-blue-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-blue-200/80 text-blue-600 shadow-2xs">
+                                <HeartHandshake className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  10. Accessibility &amp; Support for Divyangjan Students
+                                </h4>
+                                <p className="text-xs text-blue-600/80 font-medium">{cell.tagline || "Barrier-Free Access & Assistive Educational Support"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Special Assistance Request")}
                           </div>
-                        ))}
-                      </div>
 
-                      {/* Institutional Documents */}
-                      <div className="flex flex-col gap-3 pt-2">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
-                            <FileText className="h-3.5 w-3.5" />
-                          </span>
-                          <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
-                            Institutional Policies &amp; Audits
-                          </h5>
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The College promotes an inclusive and accessible learning environment by providing appropriate facilities and support for students with disabilities."}
+                          </p>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+                            {[
+                              "Accessible Campus Infrastructure (Ramps, Handrails)",
+                              "Mobility & Assistive Device Support",
+                              "Academic & Scribe Support for Exams",
+                              "Equal Educational Opportunities & Extra Time",
+                              "Campus Sensitisation & Inclusion Programmes"
+                            ].map((title: string, idx: number) => (
+                              <div
+                                key={idx}
+                                className="flex items-center gap-2.5 bg-white px-3.5 py-2.5 rounded-xl border border-blue-200/80 shadow-2xs select-none"
+                              >
+                                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                </span>
+                                <span className="text-xs font-bold text-slate-800 leading-snug">
+                                  {title}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Institutional Documents */}
+                          <div className="flex flex-col gap-3 pt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-800 shrink-0">
+                                <FileText className="h-3.5 w-3.5" />
+                              </span>
+                              <h5 className="font-outfit font-extrabold text-blue-900 text-xs md:text-sm uppercase tracking-wider">
+                                Institutional Policies &amp; Audits
+                              </h5>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {coreDocs.map((doc, idx) => renderDocCard(doc, idx, "core"))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {[
-                            { title: "Divyangjan Facilities & Support Policy", subtitle: "Institutional Policy", year: "Policy", fileUrl: DEFAULT_PDF },
-                            { title: "Barrier-Free Access Audit & Report", subtitle: "Compliance Audit", year: "Audit", fileUrl: DEFAULT_PDF },
-                          ].map((doc, idx) => renderDocCard(doc, idx, "core"))}
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })()}
 
                     {/* A.11 Student Feedback & Satisfaction */}
-                    <div
-                      id="sec-student-feedback"
-                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                            <MessageSquare className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              11. Student Feedback &amp; Satisfaction
-                            </h4>
-                            <p className="text-xs text-slate-500 font-medium">Student Satisfaction Survey (SSS) &amp; Continuous Quality Improvement</p>
-                          </div>
-                        </div>
-
-                        <a
-                          href="https://forms.gle/n6QfA4roPrqtPWjM8"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto cursor-pointer"
-                        >
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          <span>Submit Student Feedback / SSS</span>
-                          <ExternalLink className="h-3 w-3 opacity-80" />
-                        </a>
-                      </div>
-
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The College collects student feedback and satisfaction responses to identify areas for improvement and strengthen the quality of academic and support services.
-                      </p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
-                        {[
-                          "Student Feedback on Teaching",
-                          "Student Satisfaction Survey (SSS)",
-                          "Feedback Analysis Reports",
-                          "Action Taken / Improvement"
-                        ].map((title: string, idx: number) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-2.5 bg-slate-50/90 px-3.5 py-2.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
-                          >
-                            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                            </span>
-                            <span className="text-xs font-bold text-slate-800 leading-snug">
-                              {title}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Year-wise Feedback Documentation (Newest First) */}
-                      {renderYearlyReportsSection("Student Satisfaction Survey (SSS) & Feedback Reports", [
+                    {(() => {
+                      const cell = getCellData("student-feedback");
+                      const reports = cell.annualReports && cell.annualReports.length > 0 ? cell.annualReports : [
                         { title: "Student Satisfaction Survey (SSS) Report 2025–2026", subtitle: "Official SSS Analysis", year: "2025–2026", fileUrl: DEFAULT_PDF },
                         { title: "Student Satisfaction Survey (SSS) Report 2024–2025", subtitle: "Official SSS Analysis", year: "2024–2025", fileUrl: DEFAULT_PDF },
-                      ])}
-                    </div>
+                      ];
+                      return (
+                        <div
+                          id="sec-student-feedback"
+                          className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
+                                <MessageSquare className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  11. Student Feedback &amp; Satisfaction
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium">{cell.tagline || "Student Satisfaction Survey (SSS) & Continuous Quality Improvement"}</p>
+                              </div>
+                            </div>
+                            {renderFormButton(cell, "Submit Student Feedback / SSS")}
+                          </div>
+
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {cell.description || "The College collects student feedback and satisfaction responses to identify areas for improvement and strengthen the quality of academic and support services."}
+                          </p>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+                            {[
+                              "Student Feedback on Teaching",
+                              "Student Satisfaction Survey (SSS)",
+                              "Feedback Analysis Reports",
+                              "Action Taken / Improvement"
+                            ].map((title: string, idx: number) => (
+                              <div
+                                key={idx}
+                                className="flex items-center gap-2.5 bg-slate-50/90 px-3.5 py-2.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
+                              >
+                                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                </span>
+                                <span className="text-xs font-bold text-slate-800 leading-snug">
+                                  {title}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Year-wise Feedback Documentation (Newest First) */}
+                          {renderYearlyReportsSection("Student Satisfaction Survey (SSS) & Feedback Reports", reports)}
+                        </div>
+                      );
+                    })()}
 
                   </div>
                 </section>

@@ -2416,3 +2416,18 @@ export async function getPlacementsSingletonData() {
   }
 }
 
+export async function getStudentSupportPortalData() {
+  try {
+    const query = `*[_type == "studentSupportPortal" && !(_id in path("drafts.**"))][0]`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.portalData) {
+      return data.portalData;
+    }
+    return null;
+  } catch (err) {
+    console.error("Sanity fetch error (getStudentSupportPortalData):", err);
+    return null;
+  }
+}
+
+
