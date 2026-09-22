@@ -32,6 +32,9 @@ import {
   Sparkles,
   Tag,
   Star,
+  Video,
+  Play,
+  User,
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
@@ -368,7 +371,7 @@ export function AlumniManager() {
     { id: 5, label: "5. Alumni Network", icon: Trophy, count: (data?.prideAlumni?.length || 0) + (data?.testimonials?.length || 0) },
     { id: 6, label: "6. Feedback & Connect", icon: MessageSquareQuote, count: 1 },
     { id: 7, label: "7. Events & Reunions", icon: Calendar, count: data?.events?.length || 0 },
-    { id: 8, label: "8. Gallery & Media", icon: ImageIcon, count: galleryAlbums?.length || 0 },
+    { id: 8, label: "8. Gallery & Media", icon: ImageIcon, count: (galleryAlbums?.length || 0) + (data?.videos?.length || 0) },
     { id: 9, label: "9. Contact Desk", icon: Phone, count: 1 },
   ];
 
@@ -637,7 +640,7 @@ export function AlumniManager() {
       {/* ========================================================= */}
       {activeTab === 4 && (
         <TableSectionCard
-          title="4. Alumni Contributions &amp; Support Register (AY 2026–2027)"
+          title="4. Alumni Contributions &amp; Support Register"
           subtitle="Documented register recording alumni-led workshops, mentoring sessions, and professional support"
           onAdd={() => openAddModal("contributionsRegister", { sNo: (data.contributionsRegister?.length || 0) + 1, date: "14-08-2026", alumniName: "", programmeBatch: "UG", activity: "", natureOfSupport: "Mentoring & Guidance", beneficiaries: "100", fileUrl: "" })}
         >
@@ -732,14 +735,14 @@ export function AlumniManager() {
           {/* Our Alumni - Our Pride */}
           <CardGridSection
             title="5.2 Our Alumni – Our Pride (Distinguished Alumni Directory)"
-            subtitle="Showcase celebrating distinguished alumni. You can select which ones to feature on the homepage outside (Top 3 max displayed)."
-            onAdd={() => openAddModal("prideAlumni", { name: "Alumna Name", programmeBatch: "B.Sc – 2005–2008", designation: "Position", organization: "Company / Org", achievement: "Professional achievement summary.", featured: true, redirectUrl: "" })}
+            subtitle="Showcase celebrating distinguished alumni. You can upload or link photos and select which ones to feature on the page outside (Top 3 max displayed)."
+            onAdd={() => openAddModal("prideAlumni", { name: "Alumna Name", programmeBatch: "B.Sc – 2005–2008", designation: "Position", organization: "Company / Org", achievement: "Professional achievement summary.", featured: true, redirectUrl: "", photoUrl: "" })}
           >
             {(data.prideAlumni || []).map((alumnus: any, idx: number) => {
               const isFeatured = alumnus.featured !== false;
               return (
                 <div key={alumnus._key || idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-4">
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-2">
                       <button
                         onClick={() => handleTogglePrideFeatured(idx)}
@@ -755,10 +758,25 @@ export function AlumniManager() {
                       </button>
                       <ActionButtons onEdit={() => openEditModal("prideAlumni", idx, alumnus)} onDelete={() => handleDeleteItem("prideAlumni", idx)} />
                     </div>
-                    <h4 className="font-outfit font-extrabold text-sm text-slate-900">{alumnus.name}</h4>
-                    <span className="text-[11px] font-bold text-blue-700">{alumnus.designation} • {alumnus.organization}</span>
-                    <span className="text-[10px] text-slate-500 font-mono">{alumnus.programmeBatch}</span>
-                    <p className="text-slate-600 text-xs leading-relaxed">{alumnus.achievement}</p>
+
+                    <div className="flex items-center gap-3.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                      <img
+                        src={alumnus.photoUrl || "/images/Crest_Logo.png"}
+                        alt={alumnus.name}
+                        className={`h-20 w-20 rounded-xl border shadow-2xs shrink-0 bg-white ${
+                          alumnus.photoUrl
+                            ? "object-cover border-amber-200"
+                            : "object-contain p-2 border-slate-200"
+                        }`}
+                      />
+                      <div className="flex flex-col min-w-0">
+                        <h4 className="font-outfit font-extrabold text-sm text-slate-900 truncate">{alumnus.name}</h4>
+                        <span className="text-[11px] font-bold text-blue-700 leading-tight mt-0.5">{alumnus.designation} • {alumnus.organization}</span>
+                        <span className="text-[10px] text-slate-500 font-mono mt-0.5">{alumnus.programmeBatch}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{alumnus.achievement}</p>
                   </div>
                 </div>
               );
@@ -1138,6 +1156,78 @@ export function AlumniManager() {
               </div>
             )}
           </div>
+
+          {/* 8.2 Video Gallery & Messages */}
+          <TableSectionCard
+            title="8.2 Alumni Video Gallery &amp; Messages"
+            subtitle="Manage video messages, alumni keynote talks, and student testimonials via YouTube links or uploaded video files"
+            onAdd={() =>
+              openAddModal("videos", {
+                title: "New Alumni Video Message",
+                category: "Alumni Messages",
+                videoType: "youtube",
+                youtubeUrl: "https://www.youtube.com/watch?v=",
+                videoFileUrl: "",
+                speakerName: "",
+                designation: "",
+                programmeBatch: "",
+                description: "",
+              })
+            }
+          >
+            <DataTable
+              items={data.videos || []}
+              columns={["Category", "Video Title", "Speaker / Batch", "Type & Source", "Actions"]}
+              renderRow={(vid: any, idx: number) => {
+                const isYoutube = vid.videoType === "youtube" || (!vid.videoType && vid.youtubeUrl);
+                return (
+                  <tr key={vid._key || idx} className="hover:bg-blue-50/30 transition-colors border-b border-slate-100 text-xs">
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-900 border border-blue-200">
+                        {vid.category || "General"}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 font-bold text-slate-900 max-w-xs">
+                      <div>{vid.title}</div>
+                      {vid.description && <div className="text-[11px] font-normal text-slate-500 line-clamp-1 mt-0.5">{vid.description}</div>}
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <div className="font-bold text-slate-900">{vid.speakerName || "—"}</div>
+                      <div className="text-[11px] text-slate-500">{vid.designation || vid.programmeBatch || ""}</div>
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      {isYoutube && vid.youtubeUrl ? (
+                        <a
+                          href={vid.youtubeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold hover:bg-red-600 hover:text-white transition-colors"
+                        >
+                          <Video className="h-3.5 w-3.5" />
+                          <span>YouTube Link</span>
+                        </a>
+                      ) : vid.videoFileUrl ? (
+                        <a
+                          href={vid.videoFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-800 border border-blue-200 text-[11px] font-bold hover:bg-blue-900 hover:text-white transition-colors"
+                        >
+                          <Video className="h-3.5 w-3.5" />
+                          <span>Video File</span>
+                        </a>
+                      ) : (
+                        <span className="text-slate-400 font-mono text-[11px]">No Media URL</span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
+                      <ActionButtons onEdit={() => openEditModal("videos", idx, vid)} onDelete={() => handleDeleteItem("videos", idx)} />
+                    </td>
+                  </tr>
+                );
+              }}
+            />
+          </TableSectionCard>
         </div>
       )}
 
@@ -1145,20 +1235,50 @@ export function AlumniManager() {
       {/* TAB 9: 9. Contact Information                             */}
       {/* ========================================================= */}
       {activeTab === 9 && (
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 flex flex-col gap-5">
-          <div className="border-b border-slate-100 pb-3">
-            <h3 className="font-outfit font-black text-slate-900 text-base">
-              9. Alumni Official Contact Desk Information
-            </h3>
-            <p className="text-slate-500 text-xs mt-0.5">
-              Contact emails, phone numbers, and official institutional physical address.
-            </p>
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 flex flex-col gap-6">
+          <div className="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="font-outfit font-black text-slate-900 text-base">
+                9. Alumni Official Contact Desk Information
+              </h3>
+              <p className="text-slate-500 text-xs mt-0.5">
+                Manage Association desk name, campus address, phone &amp; mobile numbers, email, and working hours.
+              </p>
+            </div>
+            <button
+              onClick={handleSaveToSanity}
+              disabled={saving}
+              className="px-4 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0"
+            >
+              <Save className="h-3.5 w-3.5" />
+              <span>{saving ? "Saving..." : "Save Contact Info"}</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            {/* Association Name */}
+            <div className="md:col-span-2">
+              <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">
+                Alumni Association Desk Title / Society Name
+              </label>
+              <input
+                type="text"
+                value={data.contactInfo?.associationName || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    contactInfo: { ...data.contactInfo, associationName: e.target.value },
+                  })
+                }
+                placeholder="e.g. St. Ann's College for Women Alumni Association"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-bold text-sm"
+              />
+            </div>
+
+            {/* Official Email */}
             <div>
-              <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">
-                Official Contact Email 1
+              <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">
+                Official Alumni Email
               </label>
               <input
                 type="email"
@@ -1169,31 +1289,34 @@ export function AlumniManager() {
                     contactInfo: { ...data.contactInfo, email: e.target.value },
                   })
                 }
+                placeholder="e.g. alumni@stannscollege.com"
                 className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium"
               />
             </div>
 
+            {/* Office Working Hours */}
             <div>
-              <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">
-                Official Contact Email 2 (Optional)
+              <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">
+                Office Working Hours / Schedule
               </label>
               <input
-                type="email"
-                value={data.contactInfo?.email2 || ""}
+                type="text"
+                value={data.contactInfo?.officeHours || ""}
                 onChange={(e) =>
                   setData({
                     ...data,
-                    contactInfo: { ...data.contactInfo, email2: e.target.value },
+                    contactInfo: { ...data.contactInfo, officeHours: e.target.value },
                   })
                 }
-                placeholder="e.g. principal@stannscollegevizag.org"
+                placeholder="e.g. Monday to Saturday: 9:00 AM – 5:00 PM"
                 className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium"
               />
             </div>
 
+            {/* Primary Phone (Desk) */}
             <div>
-              <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">
-                Contact Phone 1 (Primary)
+              <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">
+                Primary Desk Phone / Landline
               </label>
               <input
                 type="text"
@@ -1204,30 +1327,33 @@ export function AlumniManager() {
                     contactInfo: { ...data.contactInfo, phone: e.target.value },
                   })
                 }
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium"
+                placeholder="e.g. 0863-2236470"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium font-mono"
               />
             </div>
 
+            {/* Mobile / Helpline */}
             <div>
-              <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">
-                Contact Phone 2 (Mobile / Additional)
+              <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">
+                Mobile Helpline Numbers (Separate with /)
               </label>
               <input
                 type="text"
-                value={data.contactInfo?.phone2 || ""}
+                value={data.contactInfo?.mobile || ""}
                 onChange={(e) =>
                   setData({
                     ...data,
-                    contactInfo: { ...data.contactInfo, phone2: e.target.value },
+                    contactInfo: { ...data.contactInfo, mobile: e.target.value },
                   })
                 }
-                placeholder="e.g. +91 891 2577977"
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium"
+                placeholder="e.g. +91 7382104655 / +91 8500656134"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium font-mono"
               />
             </div>
 
+            {/* Campus Address */}
             <div className="md:col-span-2">
-              <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">
+              <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">
                 Official Campus Address
               </label>
               <textarea
@@ -1239,8 +1365,33 @@ export function AlumniManager() {
                     contactInfo: { ...data.contactInfo, address: e.target.value },
                   })
                 }
+                placeholder="e.g. Gorantla, Guntur – 522 034, Andhra Pradesh, India"
                 className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] font-medium"
               />
+            </div>
+          </div>
+
+          {/* Live Preview of Section 9 Channels */}
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
+            <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">
+              Live Preview (Section 9 Webpage Channels)
+            </span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-2xs flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-slate-500 uppercase">1. Association Desk</span>
+                <p className="text-xs font-bold text-slate-900">{data.contactInfo?.associationName || "St. Ann’s Alumni Association"}</p>
+                <span className="text-[11px] text-slate-600">{data.contactInfo?.address || "Gorantla, Guntur – 522 034"}</span>
+              </div>
+              <div className="p-4 bg-blue-50/70 rounded-xl border border-blue-200 shadow-2xs flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-blue-800 uppercase">2. Phone &amp; Mobile</span>
+                <span className="text-xs font-bold text-blue-950 font-mono">Desk: {data.contactInfo?.phone || "0863-2236470"}</span>
+                <span className="text-[11px] text-blue-900 font-mono">Mobile: {data.contactInfo?.mobile || "+91 7382104655 / +91 8500656134"}</span>
+              </div>
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-2xs flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-slate-500 uppercase">3. Official Email</span>
+                <span className="text-xs font-bold text-blue-900">{data.contactInfo?.email || "alumni@stannscollege.com"}</span>
+                <span className="text-[11px] text-slate-600">{data.contactInfo?.officeHours || "Mon – Sat: 9:00 AM – 5:00 PM"}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1555,8 +1706,171 @@ export function AlumniManager() {
                 </div>
               )}
 
+              {/* Photo Upload & URL (for Pride Alumni or general profiles) */}
+              {(modalType === "prideAlumni" || editingItem.photoUrl !== undefined) && (
+                <div className="bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200 flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-amber-950 font-bold text-[11px] uppercase tracking-wider">
+                      <ImageIcon className="h-3.5 w-3.5 text-amber-700" />
+                      <span>Alumna Profile Photo</span>
+                    </div>
+                    {editingItem.photoUrl && (
+                      <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">
+                        Photo Ready
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={editingItem.photoUrl || "/images/Crest_Logo.png"}
+                      alt="Preview"
+                      className={`h-12 w-12 rounded-xl border shrink-0 shadow-2xs bg-white ${
+                        editingItem.photoUrl
+                          ? "object-cover border-amber-300"
+                          : "object-contain p-1 border-amber-200"
+                      }`}
+                    />
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-1">
+                      <label className="cursor-pointer inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shrink-0">
+                        <Upload className="h-3.5 w-3.5" />
+                        <span>{isUploading ? "Uploading..." : "Upload Photo"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "photoUrl", "image")}
+                          disabled={isUploading}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={editingItem.photoUrl || ""}
+                        onChange={(e) => setEditingItem({ ...editingItem, photoUrl: e.target.value })}
+                        placeholder="Paste image URL or upload above..."
+                        className="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Video Specific Fields (modalType === 'videos') */}
+              {modalType === "videos" && (
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Video Category</label>
+                    <select
+                      value={editingItem.category || "Alumni Messages"}
+                      onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] bg-white font-bold text-xs"
+                    >
+                      <option value="Alumni Messages">Alumni Messages</option>
+                      <option value="Success Stories">Success Stories</option>
+                      <option value="Alumni Meet Videos">Alumni Meet Videos</option>
+                      <option value="Expert Talks">Expert Talks</option>
+                      <option value="Testimonials">Testimonials</option>
+                      <option value="General">General Video</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-slate-700 font-bold uppercase text-[10px]">Video Source Type</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setEditingItem({ ...editingItem, videoType: "youtube" })}
+                        className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                          (editingItem.videoType || "youtube") === "youtube"
+                            ? "bg-red-50 text-red-900 border-red-300 font-extrabold"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                        }`}
+                      >
+                        <Video className="h-3.5 w-3.5 text-red-600" />
+                        <span>YouTube URL</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditingItem({ ...editingItem, videoType: "upload" })}
+                        className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                          editingItem.videoType === "upload"
+                            ? "bg-blue-50 text-blue-900 border-blue-300 font-extrabold"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                        }`}
+                      >
+                        <Upload className="h-3.5 w-3.5 text-blue-600" />
+                        <span>Upload / MP4 Video</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {(editingItem.videoType || "youtube") === "youtube" ? (
+                    <div className="bg-red-50/50 p-3 rounded-2xl border border-red-200 flex flex-col gap-1.5">
+                      <label className="block text-red-900 font-bold uppercase text-[10px]">
+                        YouTube Video Link
+                      </label>
+                      <input
+                        type="url"
+                        value={editingItem.youtubeUrl || ""}
+                        onChange={(e) => setEditingItem({ ...editingItem, youtubeUrl: e.target.value })}
+                        placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                        className="w-full px-3 py-2 bg-white border border-red-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-blue-50/50 p-3 rounded-2xl border border-blue-200 flex flex-col gap-2">
+                      <label className="block text-blue-900 font-bold uppercase text-[10px]">
+                        Direct Video File (MP4, WebM)
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shrink-0">
+                          <Upload className="h-3.5 w-3.5" />
+                          <span>{isUploading ? "Uploading..." : "Upload Video"}</span>
+                          <input
+                            type="file"
+                            accept="video/*,video/mp4,video/webm"
+                            className="hidden"
+                            onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "videoFileUrl", "file")}
+                            disabled={isUploading}
+                          />
+                        </label>
+                        <input
+                          type="text"
+                          value={editingItem.videoFileUrl || ""}
+                          onChange={(e) => setEditingItem({ ...editingItem, videoFileUrl: e.target.value })}
+                          placeholder="https://cdn.sanity.io/... or video URL"
+                          className="w-full px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Speaker / Alumna Name</label>
+                      <input
+                        type="text"
+                        value={editingItem.speakerName || ""}
+                        onChange={(e) => setEditingItem({ ...editingItem, speakerName: e.target.value })}
+                        placeholder="e.g. Mrs. Sowjanya Bindu Katari"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-600 font-bold uppercase text-[10px]">Designation / Batch</label>
+                      <input
+                        type="text"
+                        value={editingItem.designation || editingItem.programmeBatch || ""}
+                        onChange={(e) => setEditingItem({ ...editingItem, designation: e.target.value, programmeBatch: e.target.value })}
+                        placeholder="e.g. Advocate / B.Com 2007"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* PDF Document Upload & URL */}
-              {editingItem.fileUrl !== undefined && (
+              {editingItem.fileUrl !== undefined && modalType !== "videos" && (
                 <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex flex-col gap-2">
                   <div className="flex items-center gap-1.5 text-slate-700 font-bold text-[11px] uppercase tracking-wider">
                     <FileText className="h-3.5 w-3.5 text-blue-700" />

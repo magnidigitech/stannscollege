@@ -131,6 +131,20 @@ export async function GET(req: NextRequest) {
         description,
         count
       },
+      videos[] {
+        _key,
+        title,
+        category,
+        videoType,
+        youtubeUrl,
+        "videoFileUrl": coalesce(videoFile.asset->url, videoFileUrl),
+        "assetId": videoFile.asset->_id,
+        speakerName,
+        programmeBatch,
+        designation,
+        description,
+        date
+      },
       contactInfo
     }`;
 
@@ -161,6 +175,7 @@ export async function GET(req: NextRequest) {
           testimonials: data.testimonials?.length ? data.testimonials : DEFAULT_ALUMNI_DATA.testimonials,
           events: data.events?.length ? data.events : DEFAULT_ALUMNI_DATA.events,
           galleryCategories: data.galleryCategories?.length ? data.galleryCategories : DEFAULT_ALUMNI_DATA.galleryCategories,
+          videos: data.videos?.length ? data.videos : DEFAULT_ALUMNI_DATA.videos,
         },
       });
     }
@@ -223,6 +238,35 @@ export async function POST(req: NextRequest) {
       });
     };
 
+    const cleanVideosArray = (arr: any[]) => {
+      if (!Array.isArray(arr)) return [];
+      return arr.map((item, idx) => {
+        const cleaned: any = {
+          _key: item._key || `vid_${Date.now()}_${idx}`,
+          title: item.title || "",
+          category: item.category || "General",
+          videoType: item.videoType || "youtube",
+          youtubeUrl: item.youtubeUrl || "",
+          videoFileUrl: item.videoFileUrl || "",
+          speakerName: item.speakerName || "",
+          programmeBatch: item.programmeBatch || "",
+          designation: item.designation || "",
+          description: item.description || "",
+          date: item.date || "",
+        };
+        if (item.assetId) {
+          cleaned.videoFile = {
+            _type: "file",
+            asset: {
+              _type: "reference",
+              _ref: item.assetId,
+            },
+          };
+        }
+        return cleaned;
+      });
+    };
+
     const docToSave = {
       _id: ALUMNI_DOC_ID,
       _type: "alumniPage",
@@ -259,6 +303,7 @@ export async function POST(req: NextRequest) {
           achievement: p.achievement || "",
           featured: p.featured !== undefined ? !!p.featured : true,
           redirectUrl: p.redirectUrl || "",
+          photoUrl: p.photoUrl || "",
         };
         if (p.photoAssetId) {
           item.photo = {
@@ -285,7 +330,8 @@ export async function POST(req: NextRequest) {
         description: g.description || "",
         count: g.count || "Gallery Active",
       })) : [],
-      contactInfo: body.contactInfo || DEFAULT_ALUMNI_DATA.contactInfo,
+      videos: cleanVideosArray(body.videos),
+      contactInfo: body.contactInfo ? { ...DEFAULT_ALUMNI_DATA.contactInfo, ...body.contactInfo } : DEFAULT_ALUMNI_DATA.contactInfo,
     };
 
     const result = await client.createOrReplace(docToSave);

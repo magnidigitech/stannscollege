@@ -37,6 +37,8 @@ import {
   Layers,
   Search,
   Filter,
+  Play,
+  User,
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
@@ -86,7 +88,7 @@ const ALUMNI_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     sectionId: "sec-contributions",
     items: [
       { text: "Engagement Areas", id: "sec-contributions-areas" },
-      { text: "Contributions Register (AY 2026–27)", id: "sec-contributions-register" },
+      { text: "Alumni Contributions & Support Register", id: "sec-contributions-register" },
     ]
   },
   {
@@ -223,13 +225,27 @@ export default function AlumniPage() {
   const feedbackLink = data.feedbackFormUrl || data.googleFormUrl || "https://docs.google.com/forms/d/e/1FAIpQLSe52erMvj2dXnaAFjDBYV8k024E-y5fQASyPubzMn_WzFNwzw/viewform";
   const googleFormLink = feedbackLink;
 
-  // Modals for Section 5 (Pride Alumni & Voices) and Section 7 (Events & Meets)
+  // Modals for Section 5 (Pride Alumni & Voices), Section 7 (Events & Meets), and Section 8 (Videos)
   const [eventsModalOpen, setEventsModalOpen] = useState(false);
   const [eventsActiveCategory, setEventsActiveCategory] = useState<string>("all");
   const [eventsActiveStatus, setEventsActiveStatus] = useState<string>("all");
   const [isPrideModalOpen, setIsPrideModalOpen] = useState(false);
   const [prideSearchQuery, setPrideSearchQuery] = useState("");
   const [isVoicesModalOpen, setIsVoicesModalOpen] = useState(false);
+  const [activeVideoModal, setActiveVideoModal] = useState<any | null>(null);
+  const [activeVideoCategory, setActiveVideoCategory] = useState<string>("all");
+
+  function getYouTubeEmbedUrl(url?: string): string | null {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1` : null;
+  }
+
+  function getYouTubeThumbnail(url?: string): string | null {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+  }
 
   const openEventsModal = (categoryName?: string) => {
     if (categoryName) {
@@ -899,7 +915,7 @@ export default function AlumniPage() {
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-blue-200/60 pb-3">
                         <div>
                           <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
-                            Alumni Contributions &amp; Support Register (AY 2026–2027)
+                            Alumni Contributions &amp; Support Register
                           </h4>
                           <p className="text-xs text-blue-900/70 font-medium">Record of alumni workshops, guest lectures, and student mentoring sessions</p>
                         </div>
@@ -1035,29 +1051,69 @@ export default function AlumniPage() {
                         const displayList = featured.length > 0 ? featured.slice(0, 3) : allPride.slice(0, 3);
                         return (
                           <>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                               {displayList.map((alumnus: any, idx: number) => {
                                 const isAlt = idx % 2 === 1;
                                 return (
                                   <div
                                     key={alumnus._key || idx}
-                                    className={`p-5 rounded-2xl border-2 shadow-xs transition-all hover:shadow-md flex flex-col justify-between gap-3 ${
+                                    className={`rounded-3xl border-2 shadow-xs transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col overflow-hidden group ${
                                       isAlt ? "border-blue-200/90" : "border-slate-200/90"
                                     }`}
                                     style={{
                                       backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
                                     }}
                                   >
-                                    <div className="flex flex-col gap-1.5">
-                                      <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider w-fit border ${
-                                        isAlt ? "bg-blue-100 text-blue-900 border-blue-200" : "bg-amber-50 text-amber-900 border-amber-200"
-                                      }`}>
-                                        Distinguished Alumna
-                                      </span>
-                                      <h5 className="font-outfit font-black text-sm text-slate-900">{alumnus.name}</h5>
-                                      <p className="text-xs font-bold text-blue-700">{alumnus.designation} • {alumnus.organization}</p>
-                                      <span className="text-[10px] font-mono text-slate-500">{alumnus.programmeBatch}</span>
-                                      <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">{alumnus.achievement}</p>
+                                    {/* Prominent Photo Container */}
+                                    <div className="relative w-full h-48 sm:h-52 bg-gradient-to-b from-slate-100 to-slate-200/60 overflow-hidden flex items-center justify-center border-b border-slate-200/70">
+                                      {alumnus.photoUrl ? (
+                                        <img
+                                          src={alumnus.photoUrl}
+                                          alt={alumnus.name}
+                                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                      ) : (
+                                        <div className="flex flex-col items-center justify-center p-4">
+                                          <img
+                                            src="/images/Crest_Logo.png"
+                                            alt="St. Ann's College Crest"
+                                            className="h-28 w-28 object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                                          />
+                                        </div>
+                                      )}
+
+                                      {/* Floating Top Badge */}
+                                      <div className="absolute top-3 left-3">
+                                        <span className={`px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm border backdrop-blur-xs ${
+                                          isAlt ? "bg-white/95 text-blue-900 border-blue-200" : "bg-white/95 text-amber-900 border-amber-200"
+                                        }`}>
+                                          Distinguished Alumna
+                                        </span>
+                                      </div>
+
+                                      {/* Floating Batch Pill */}
+                                      {alumnus.programmeBatch && (
+                                        <div className="absolute bottom-3 right-3">
+                                          <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-slate-950/80 text-white backdrop-blur-xs shadow-xs">
+                                            {alumnus.programmeBatch}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {/* Content Body */}
+                                    <div className="p-5 flex flex-col justify-between flex-1 gap-3">
+                                      <div className="flex flex-col gap-1">
+                                        <h5 className="font-outfit font-black text-base text-slate-900 leading-snug group-hover:text-blue-900 transition-colors">
+                                          {alumnus.name}
+                                        </h5>
+                                        <p className="text-xs font-bold text-blue-700 leading-snug">
+                                          {alumnus.designation} • {alumnus.organization}
+                                        </p>
+                                        <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify mt-2 pt-2 border-t border-slate-100/80">
+                                          {alumnus.achievement}
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
                                 );
@@ -1554,26 +1610,138 @@ export default function AlumniPage() {
                     {/* Video Gallery & Messages (Soft Ice Blue Container) */}
                     <div
                       id="sec-gallery-videos"
-                      className="border-2 border-blue-200/90 rounded-3xl p-6 shadow-sm flex flex-col gap-4"
+                      className="border-2 border-blue-200/90 rounded-3xl p-6 shadow-sm flex flex-col gap-5"
                       style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                     >
-                      <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
-                        Video Gallery &amp; Messages
-                      </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                        {[
-                          "Alumni Messages",
-                          "Success Stories",
-                          "Alumni Meet Videos",
-                          "Expert Talks",
-                          "Testimonials",
-                        ].map((v, idx) => (
-                          <div key={idx} className="p-3.5 bg-white border border-blue-200/80 rounded-2xl text-center flex flex-col items-center justify-center gap-1.5 hover:bg-blue-50/60 transition-colors shadow-2xs">
-                            <Video className="h-5 w-5 text-blue-700" />
-                            <span className="text-[11px] font-bold text-slate-800">{v}</span>
-                          </div>
-                        ))}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 pb-3">
+                        <div>
+                          <h4 className="font-outfit text-blue-700 font-extrabold text-base uppercase tracking-wider">
+                            Video Gallery &amp; Messages
+                          </h4>
+                          <p className="text-xs text-blue-900/70 font-medium">
+                            Glimpses of alumni addresses, keynote recordings, and graduate testimonials
+                          </p>
+                        </div>
+                        <span className="px-3 py-1 bg-white text-blue-900 border border-blue-200 rounded-xl text-xs font-bold w-fit shadow-2xs">
+                          {(data.videos || []).length} Video Records
+                        </span>
                       </div>
+
+                      {(() => {
+                        const allVideos = data.videos || [];
+                        const filteredVideos = allVideos.filter((v: any) => {
+                          if (activeVideoCategory === "all") return true;
+                          return (
+                            v.category?.toLowerCase() === activeVideoCategory.toLowerCase() ||
+                            (v.category || "").toLowerCase().includes(activeVideoCategory.toLowerCase().slice(0, 6))
+                          );
+                        });
+
+                        return (
+                          <div className="flex flex-col gap-5">
+                            {/* Video Categories Navigation */}
+                            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
+                                <Filter className="h-3 w-3 text-blue-700" /> Filter:
+                              </span>
+                              {[
+                                { key: "all", label: "All Videos" },
+                                { key: "Alumni Messages", label: "Alumni Messages" },
+                                { key: "Success Stories", label: "Success Stories" },
+                                { key: "Alumni Meet Videos", label: "Alumni Meets" },
+                                { key: "Expert Talks", label: "Expert Talks" },
+                                { key: "Testimonials", label: "Testimonials" },
+                              ].map((cat) => {
+                                const isSel = activeVideoCategory === cat.key;
+                                return (
+                                  <button
+                                    key={cat.key}
+                                    onClick={() => setActiveVideoCategory(cat.key)}
+                                    className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer border ${
+                                      isSel
+                                        ? "bg-[#002147] text-white border-[#002147] font-extrabold shadow-2xs"
+                                        : "bg-white text-slate-700 border-blue-200/80 hover:bg-blue-50"
+                                    }`}
+                                  >
+                                    {cat.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+
+                            {filteredVideos.length > 0 ? (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {filteredVideos.map((vid: any, idx: number) => {
+                                  const isYoutube = vid.videoType === "youtube" || (!vid.videoType && vid.youtubeUrl);
+                                  const ytThumb = isYoutube ? getYouTubeThumbnail(vid.youtubeUrl) : null;
+                                  const coverImg = ytThumb || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800";
+
+                                  return (
+                                    <div
+                                      key={vid._key || idx}
+                                      onClick={() => setActiveVideoModal(vid)}
+                                      className="bg-white rounded-2xl border-2 border-blue-200/90 shadow-xs hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
+                                    >
+                                      {/* Thumbnail & Play Overlay */}
+                                      <div className="relative aspect-video bg-slate-950 overflow-hidden">
+                                        <img
+                                          src={coverImg}
+                                          alt={vid.title}
+                                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                                        />
+                                        <div className="absolute inset-0 bg-slate-950/30 flex items-center justify-center group-hover:bg-slate-950/10 transition-all">
+                                          <div className="h-12 w-12 rounded-full bg-red-600 group-hover:bg-red-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-all">
+                                            <Play className="h-5 w-5 fill-white ml-0.5 text-white" />
+                                          </div>
+                                        </div>
+                                        <span className="absolute top-2.5 left-2.5 px-2.5 py-1 bg-black/75 backdrop-blur-xs text-amber-300 rounded-lg text-[10px] font-black uppercase font-mono">
+                                          {vid.category || "Video"}
+                                        </span>
+                                        {isYoutube && (
+                                          <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 bg-red-600 text-white rounded-md text-[10px] font-bold flex items-center gap-1">
+                                            <Video className="h-3 w-3" /> YouTube
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      {/* Details */}
+                                      <div className="p-4 flex flex-col justify-between flex-1 gap-2">
+                                        <div className="flex flex-col gap-1">
+                                          <h5 className="font-outfit font-extrabold text-sm text-slate-900 group-hover:text-blue-900 transition-colors line-clamp-2">
+                                            {vid.title}
+                                          </h5>
+                                          {vid.speakerName && (
+                                            <span className="text-xs font-bold text-blue-700">
+                                              {vid.speakerName} {vid.designation ? `• ${vid.designation}` : ""}
+                                            </span>
+                                          )}
+                                          {vid.description && (
+                                            <p className="text-xs text-slate-600 line-clamp-2 mt-0.5 leading-relaxed">
+                                              {vid.description}
+                                            </p>
+                                          )}
+                                        </div>
+                                        <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-blue-900 font-bold">
+                                          <span className="inline-flex items-center gap-1 text-[11px] text-blue-800 group-hover:underline">
+                                            <Play className="h-3 w-3 fill-blue-800" /> Watch Video
+                                          </span>
+                                          {vid.programmeBatch && (
+                                            <span className="text-[10px] font-mono text-slate-500">{vid.programmeBatch}</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              <div className="p-8 text-center bg-white rounded-2xl border border-blue-200/80 text-xs text-slate-600">
+                                No videos found in this category.
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
 
                   </div>
@@ -2168,29 +2336,69 @@ export default function AlumniPage() {
                 }
 
                 return (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     {list.map((alumnus: any, idx: number) => {
                       const isAlt = idx % 2 === 1;
                       return (
                         <div
                           key={alumnus._key || idx}
-                          className={`p-5 rounded-2xl border-2 shadow-xs transition-all hover:shadow-md flex flex-col justify-between gap-3 ${
+                          className={`rounded-3xl border-2 shadow-xs transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col overflow-hidden group ${
                             isAlt ? "border-blue-200/90" : "border-slate-200/90"
                           }`}
                           style={{
                             backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)",
                           }}
                         >
-                          <div className="flex flex-col gap-1.5">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider w-fit border ${
-                              isAlt ? "bg-blue-100 text-blue-900 border-blue-200" : "bg-amber-50 text-amber-900 border-amber-200"
-                            }`}>
-                              Distinguished Alumna
-                            </span>
-                            <h5 className="font-outfit font-black text-sm text-slate-900">{alumnus.name}</h5>
-                            <p className="text-xs font-bold text-blue-700">{alumnus.designation} • {alumnus.organization}</p>
-                            <span className="text-[10px] font-mono text-slate-500">{alumnus.programmeBatch}</span>
-                            <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">{alumnus.achievement}</p>
+                          {/* Prominent Photo Container */}
+                          <div className="relative w-full h-48 bg-gradient-to-b from-slate-100 to-slate-200/60 overflow-hidden flex items-center justify-center border-b border-slate-200/70">
+                            {alumnus.photoUrl ? (
+                              <img
+                                src={alumnus.photoUrl}
+                                alt={alumnus.name}
+                                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center justify-center p-4">
+                                <img
+                                  src="/images/Crest_Logo.png"
+                                  alt="St. Ann's College Crest"
+                                  className="h-28 w-28 object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                            )}
+
+                            {/* Floating Top Badge */}
+                            <div className="absolute top-3 left-3">
+                              <span className={`px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm border backdrop-blur-xs ${
+                                isAlt ? "bg-white/95 text-blue-900 border-blue-200" : "bg-white/95 text-amber-900 border-amber-200"
+                              }`}>
+                                Distinguished Alumna
+                              </span>
+                            </div>
+
+                            {/* Floating Batch Pill */}
+                            {alumnus.programmeBatch && (
+                              <div className="absolute bottom-3 right-3">
+                                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-slate-950/80 text-white backdrop-blur-xs shadow-xs">
+                                  {alumnus.programmeBatch}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Content Body */}
+                          <div className="p-5 flex flex-col justify-between flex-1 gap-3">
+                            <div className="flex flex-col gap-1">
+                              <h5 className="font-outfit font-black text-base text-slate-900 leading-snug group-hover:text-blue-900 transition-colors">
+                                {alumnus.name}
+                              </h5>
+                              <p className="text-xs font-bold text-blue-700 leading-snug">
+                                {alumnus.designation} • {alumnus.organization}
+                              </p>
+                              <p className="text-xs text-slate-600 font-medium leading-relaxed text-justify mt-2 pt-2 border-t border-slate-100/80">
+                                {alumnus.achievement}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       );
@@ -2301,6 +2509,82 @@ export default function AlumniPage() {
                 Close Window
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* VIDEO PLAYER POPUP MODAL (Section 8)                         */}
+      {/* ============================================================ */}
+      {activeVideoModal && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+          onClick={() => setActiveVideoModal(null)}
+        >
+          <div
+            className="bg-slate-900 rounded-[2rem] w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-700 overflow-hidden animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Video Header */}
+            <div className="p-4 sm:p-5 flex items-start justify-between gap-4 border-b border-slate-800 text-white bg-slate-950">
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider">
+                  {activeVideoModal.category || "Alumni Video Message"}
+                </span>
+                <h3 className="font-outfit font-black text-base sm:text-lg text-white mt-0.5">
+                  {activeVideoModal.title}
+                </h3>
+                {activeVideoModal.speakerName && (
+                  <span className="text-xs text-slate-300 font-medium mt-0.5">
+                    {activeVideoModal.speakerName} {activeVideoModal.designation ? `• ${activeVideoModal.designation}` : ""} {activeVideoModal.programmeBatch ? `(${activeVideoModal.programmeBatch})` : ""}
+                  </span>
+                )}
+              </div>
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer shrink-0 border border-white/10"
+                title="Close video"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Video Player Frame */}
+            <div className="relative aspect-video w-full bg-black flex items-center justify-center">
+              {activeVideoModal.videoType === "youtube" || (!activeVideoModal.videoType && activeVideoModal.youtubeUrl) ? (
+                <iframe
+                  src={getYouTubeEmbedUrl(activeVideoModal.youtubeUrl) || activeVideoModal.youtubeUrl}
+                  title={activeVideoModal.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : activeVideoModal.videoFileUrl ? (
+                <video
+                  src={activeVideoModal.videoFileUrl}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <div className="text-slate-400 text-xs p-8 text-center">
+                  No playable video stream or source URL attached.
+                </div>
+              )}
+            </div>
+
+            {/* Video Description Footer */}
+            {activeVideoModal.description && (
+              <div className="p-4 bg-slate-950 text-slate-300 text-xs border-t border-slate-800 flex items-center justify-between">
+                <p className="leading-relaxed">{activeVideoModal.description}</p>
+                <button
+                  onClick={() => setActiveVideoModal(null)}
+                  className="px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs shrink-0 cursor-pointer ml-4"
+                >
+                  Close
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
