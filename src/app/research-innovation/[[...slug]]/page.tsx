@@ -63,20 +63,11 @@ const resolveResearchDocUrl = (type: string, yr?: string, currentUrl?: string) =
 // Sidebar categories matching 9.Research & Innovation.docx (1 to 8)
 const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   {
-    catSlug: "sec-about",
-    title: "About Research & Innovation",
-    sectionId: "sec-about",
-    items: [
-      { text: "About Research & Innovation at St. Ann's", id: "sec-about" },
-    ],
-  },
-  {
     catSlug: "sec-policy",
     title: "1. Research Promotion, Ethics & Funding Policy",
     sectionId: "sec-policy",
     items: [
       { text: "Policy Framework & Commitments", id: "sec-policy" },
-      { text: "View Policy Document (PDF)", id: "sec-policy-doc" },
     ],
   },
   {
@@ -133,7 +124,6 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
       { text: "Objectives & Major Activities", id: "sec-ipr-objectives" },
       { text: "Expected Outcomes", id: "sec-ipr-outcomes" },
       { text: "Annual Activity Reports", id: "sec-ipr-reports" },
-      { text: "Intellectual Property Policy", id: "sec-ipr-policy" },
     ],
   },
   {
@@ -145,7 +135,6 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
       { text: "Objectives & Major Activities", id: "sec-edc-objectives" },
       { text: "Industry & Women Entrepreneurship", id: "sec-edc-women" },
       { text: "Annual Activity Reports", id: "sec-edc-reports" },
-      { text: "ED & Start-Up Policy", id: "sec-edc-policy" },
     ],
   },
   {
@@ -156,14 +145,13 @@ const RESEARCH_SIDEBAR_CATEGORIES: SidebarCategory[] = [
       { text: "About the Cell & Objectives", id: "sec-iic-about" },
       { text: "Key Activities & Outcomes", id: "sec-iic-activities" },
       { text: "Annual Activity Reports", id: "sec-iic-reports" },
-      { text: "IIC Policy", id: "sec-iic-policy" },
     ],
   },
 ];
 
 export default function ResearchInnovationPage() {
   const [data, setData] = useState<any>(DEFAULT_RESEARCH_DATA);
-  const [activeSectionId, setActiveSectionId] = useState<string>("sec-about");
+  const [activeSectionId, setActiveSectionId] = useState<string>("sec-policy");
   const [previewPdf, setPreviewPdf] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
@@ -218,78 +206,17 @@ export default function ResearchInnovationPage() {
             {/* Top Subtext Box */}
             <SubtextBox>
               <p className="text-slate-800 font-medium leading-relaxed">
-                At <strong className="text-blue-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong>, research and innovation foster academic excellence, creativity, critical thinking, and societal impact. Through a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions, and community-oriented initiatives.
-                <span className="block mt-2 text-slate-600 font-medium text-sm">
-                  Research inspires discovery. Innovation transforms ideas into impact.
-                </span>
+                At <strong className="text-blue-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong>, research and innovation foster academic excellence, creativity, critical thinking, and societal impact. The College encourages faculty and students to engage in research, innovative projects, interdisciplinary collaboration, publications and knowledge sharing.
               </p>
-            </SubtextBox>
-
-            {/* ============================================================ */}
-            {/* OVERVIEW SECTION: About Research & Innovation at St. Ann's  */}
-            {/* ============================================================ */}
-            <section
-              id="sec-about"
-              className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
-              style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
-            >
-              <div
-                className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
-                style={{
-                  backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
-                  borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <FlaskConical className="h-6 w-6 text-indigo-300 shrink-0" />
-                  <h2
-                    className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                    style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
-                  >
-                    About Research &amp; Innovation at St. Ann’s
-                  </h2>
-                </div>
-                <p
-                  className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                  style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
-                >
-                  Institutional research ecosystem, intellectual inquiry, and societal impact.
+              <p className="text-slate-700 font-medium leading-relaxed mt-2.5">
+                Through a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives, nurturing women researchers and innovators prepared to contribute to a knowledge-driven and <strong className="text-blue-900 font-bold">Viksit Bharat</strong>.
+              </p>
+              <div className="mt-4 pt-3.5 border-t border-blue-200/80 text-center">
+                <p className="text-amber-900 font-bold text-sm sm:text-base">
+                  Research inspires discovery. Innovation transforms ideas into impact.
                 </p>
               </div>
-
-              <div className="p-6 sm:p-8 md:p-10 space-y-6" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
-                <div
-                  className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                >
-                  <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                      <Sparkles className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                        About Research &amp; Innovation
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">Institutional Ecosystem &amp; Academic Excellence</p>
-                    </div>
-                  </div>
-
-                  <p className="text-slate-700 text-sm font-medium leading-relaxed text-justify">
-                    At <strong className="text-slate-900 font-bold">St. Ann’s College for Women, Gorantla, Guntur</strong>, research and innovation foster academic excellence, creativity, critical thinking and societal impact. The College encourages faculty and students to engage in research, innovative projects, interdisciplinary collaboration, publications and knowledge sharing.
-                  </p>
-                  <p className="text-slate-700 text-sm font-medium leading-relaxed text-justify">
-                    Through a supportive research ecosystem, St. Ann’s promotes ethical research, emerging technologies, practical solutions and community-oriented initiatives, nurturing women researchers and innovators prepared to contribute to a knowledge-driven and <strong className="text-slate-900 font-bold">Viksit Bharat</strong>.
-                  </p>
-
-                  {/* Slogan box without quotation marks */}
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200/80 text-center mt-2">
-                    <p className="text-sm sm:text-base font-bold text-amber-900">
-                      Research inspires discovery. Innovation transforms ideas into impact.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
+            </SubtextBox>
 
             {/* ============================================================ */}
             {/* SECTION 1: Research Promotion, Ethics & Funding Policy       */}
@@ -369,30 +296,6 @@ export default function ResearchInnovationPage() {
                       Research with Integrity • Innovation with Purpose • Knowledge for Society
                     </p>
                   </div>
-                </div>
-
-                {/* PDF Banner */}
-                <div
-                  id="sec-policy-doc"
-                  className="scroll-mt-52 p-5 rounded-2xl bg-gradient-to-r from-blue-900 to-[#002147] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-                      <FileText className="w-5 h-5 text-amber-300" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm">Official Institutional Research Policy Document</h4>
-                      <p className="text-xs text-blue-200/90">Complete guidelines on ethics, seed grants, publication rewards &amp; IPR procedures.</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => openPdfModal(data?.researchPolicy?.policyFileUrl || "/documents/research/1.Rsearch Promotion & Development Policy.pdf", "Research Promotion, Ethics & Funding Policy")}
-                    className="px-4 py-2 bg-amber-400 text-blue-950 hover:bg-amber-300 font-bold text-xs rounded-xl transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>View PDF Research Policy</span>
-                  </button>
                 </div>
               </div>
             </section>
@@ -559,7 +462,7 @@ export default function ResearchInnovationPage() {
                 <div
                   id="sec-rdc-initiatives"
                   className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-100/60 text-amber-600">
@@ -585,7 +488,7 @@ export default function ResearchInnovationPage() {
                       "Academic and Industry Collaborations",
                       "Research Grant and Fellowship Awareness"
                     ]).map((init: string, i: number) => (
-                      <div key={i} className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-center gap-3">
+                      <div key={i} className="p-3 rounded-xl bg-white border border-blue-200/60 flex items-center gap-3">
                         <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
                         <span className="text-xs font-semibold text-slate-800">{init}</span>
                       </div>
@@ -761,13 +664,14 @@ export default function ResearchInnovationPage() {
                     const icons = [Microscope, Cpu, Layers, Library, BookOpen, Compass];
                     const Icon = icons[idx % icons.length];
                     const cardId = fac.id || (idx === 0 ? "sec-infra-labs" : idx === 1 ? "sec-infra-equipment" : idx === 2 ? "sec-infra-dept" : idx === 3 ? "sec-infra-library" : idx === 4 ? "sec-infra-delnet" : "sec-infra-ict");
+                    const isAlt = idx % 2 === 1;
 
                     return (
                       <div
                         key={idx}
                         id={cardId}
                         className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        style={{ backgroundColor: isAlt ? "var(--card-alt-bg, #e8f1fd)" : "var(--card-main-bg, #ffffff)" }}
                       >
                         <div>
                           <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 flex items-center justify-center mb-4">
@@ -891,7 +795,7 @@ export default function ResearchInnovationPage() {
                 <div
                   id="sec-pub-presentations"
                   className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-100/60 text-amber-600">
@@ -1081,7 +985,7 @@ export default function ResearchInnovationPage() {
                 <div
                   id="sec-patents-initiatives"
                   className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-100/60 text-amber-600">
@@ -1103,7 +1007,7 @@ export default function ResearchInnovationPage() {
                       "Innovation and Prototype Development Activities",
                       "Incubation and Entrepreneurship Support"
                     ]).map((init: string, i: number) => (
-                      <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                      <div key={i} className="p-3.5 rounded-xl bg-white border border-amber-200/60 flex items-start gap-3">
                         <span className="w-6 h-6 rounded-lg bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                           {i + 1}
                         </span>
@@ -1196,21 +1100,34 @@ export default function ResearchInnovationPage() {
                   borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="h-6 w-6 text-indigo-300 shrink-0" />
-                  <h2
-                    className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                    style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <ShieldCheck className="h-6 w-6 text-indigo-300 shrink-0" />
+                    <div>
+                      <h2
+                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                        style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                      >
+                        6. Intellectual Property Rights (IPR) Cell
+                      </h2>
+                      <p
+                        className="text-sm font-medium mt-0.5 transition-colors duration-200"
+                        style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                      >
+                        Constituted on 1 September 2022 to protect inventions and nurture ethical research practices.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => openPdfModal(resolveResearchDocUrl("ipr-policy", undefined, data?.iprCell?.policyFileUrl), "Intellectual Property Rights (IPR) Policy")}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 text-blue-950 hover:bg-amber-300 font-bold text-xs shadow-sm shrink-0 cursor-pointer transition-all self-start sm:self-auto"
                   >
-                    6. Intellectual Property Rights (IPR) Cell
-                  </h2>
+                    <FileText className="w-4 h-4" />
+                    <span>View PDF: IPR Policy</span>
+                    <Eye className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-                <p
-                  className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                  style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
-                >
-                  Constituted on 1 September 2022 to protect inventions and nurture ethical research practices.
-                </p>
               </div>
 
               <div className="p-6 sm:p-8 md:p-10 space-y-6" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
@@ -1243,7 +1160,7 @@ export default function ResearchInnovationPage() {
                 <div
                   id="sec-ipr-objectives"
                   className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100/60 text-emerald-600">
@@ -1265,7 +1182,7 @@ export default function ResearchInnovationPage() {
                       "Promote academic integrity and prevention of plagiarism.",
                       "Encourage documentation and protection of innovative academic work."
                     ]).map((obj: string, i: number) => (
-                      <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                      <div key={i} className="p-3.5 rounded-xl bg-white border border-emerald-200/60 flex items-start gap-3">
                         <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                           {i + 1}
                         </span>
@@ -1314,7 +1231,7 @@ export default function ResearchInnovationPage() {
                 <div
                   id="sec-ipr-outcomes"
                   className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-100/60 text-amber-600">
@@ -1393,39 +1310,6 @@ export default function ResearchInnovationPage() {
                     </table>
                   </div>
                 </div>
-
-                {/* 6.f Intellectual Property Policy */}
-                <div
-                  id="sec-ipr-policy"
-                  className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                >
-                  <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 border border-purple-100/60 text-purple-600">
-                      <FileText className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                        f. Intellectual Property Policy
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">Statutory guidelines on IP ownership and procedures</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-700 text-sm font-medium leading-relaxed text-justify">
-                    {data?.iprCell?.policyDescription ||
-                      "The institution recognizes Intellectual Property as an important component of academic, research, and innovation development. The IPR Cell facilitates awareness, documentation, protection, and ethical use of intellectual property generated through academic and research activities. Faculty and students are encouraged to protect their original work while maintaining confidentiality and adhering to institutional and ethical standards."}
-                  </p>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => openPdfModal(resolveResearchDocUrl("ipr-policy", undefined, data?.iprCell?.policyFileUrl), "Intellectual Property Policy Document")}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="w-4 h-4 text-amber-300" />
-                      <span>View Policy Document</span>
-                    </button>
-                  </div>
-                </div>
               </div>
             </section>
 
@@ -1444,21 +1328,34 @@ export default function ResearchInnovationPage() {
                   borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <Rocket className="h-6 w-6 text-indigo-300 shrink-0" />
-                  <h2
-                    className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                    style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <Rocket className="h-6 w-6 text-indigo-300 shrink-0" />
+                    <div>
+                      <h2
+                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                        style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                      >
+                        7. Entrepreneurship Development / Innovation &amp; Start-Up Centre
+                      </h2>
+                      <p
+                        className="text-sm font-medium mt-0.5 transition-colors duration-200"
+                        style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                      >
+                        Nurturing entrepreneurial learning, skill development, industry interaction, and women empowerment.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => openPdfModal(resolveResearchDocUrl("ed-policy", undefined, data?.entrepreneurshipCentre?.policyFileUrl), "Entrepreneurship Development / Innovation & Start-Up Policy")}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 text-blue-950 hover:bg-amber-300 font-bold text-xs shadow-sm shrink-0 cursor-pointer transition-all self-start sm:self-auto"
                   >
-                    7. Entrepreneurship Development / Innovation &amp; Start-Up Centre
-                  </h2>
+                    <FileText className="w-4 h-4" />
+                    <span>View PDF: ED Policy</span>
+                    <Eye className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-                <p
-                  className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                  style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
-                >
-                  Nurturing entrepreneurial learning, skill development, industry interaction, and women empowerment.
-                </p>
               </div>
 
               <div className="p-6 sm:p-8 md:p-10 space-y-6" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
@@ -1500,7 +1397,7 @@ export default function ResearchInnovationPage() {
                 <div
                   id="sec-edc-objectives"
                   className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/60 text-indigo-600">
@@ -1523,7 +1420,7 @@ export default function ResearchInnovationPage() {
                       "Promote women entrepreneurship and economic empowerment.",
                       "Strengthen employability through skill-based and industry-oriented learning."
                     ]).map((obj: string, i: number) => (
-                      <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                      <div key={i} className="p-3.5 rounded-xl bg-white border border-indigo-200/60 flex items-start gap-3">
                         <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                           {i + 1}
                         </span>
@@ -1573,7 +1470,7 @@ export default function ResearchInnovationPage() {
                 <div id="sec-edc-women" className="scroll-mt-52 grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div
                     className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-3"
-                    style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                    style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                   >
                     <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
@@ -1697,39 +1594,6 @@ export default function ResearchInnovationPage() {
                     </table>
                   </div>
                 </div>
-
-                {/* 7.g Policy */}
-                <div
-                  id="sec-edc-policy"
-                  className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                >
-                  <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 border border-purple-100/60 text-purple-600">
-                      <FileText className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                        g. Entrepreneurship Development / Innovation &amp; Start-Up Policy
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">Policy framework promoting entrepreneurship &amp; innovation</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-700 text-sm font-medium leading-relaxed text-justify">
-                    {data?.entrepreneurshipCentre?.policyDescription ||
-                      "The Entrepreneurship Development / Innovation & Start-Up Policy of St. Ann’s College for Women, Gorantla, Guntur provides a framework for promoting entrepreneurship, innovation, creativity, and self-employment among students and faculty. The policy encourages entrepreneurial learning, skill development, mentoring, industry interaction, innovative idea development, and start-up awareness. It aims to create a supportive ecosystem that strengthens employability, innovation, leadership, and women entrepreneurship, in alignment with institutional quality enhancement practices."}
-                  </p>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => openPdfModal(resolveResearchDocUrl("ed-policy", undefined, data?.entrepreneurshipCentre?.policyFileUrl), "Entrepreneurship Development / Innovation & Start-Up Policy")}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="w-4 h-4 text-amber-300" />
-                      <span>View Policy Document</span>
-                    </button>
-                  </div>
-                </div>
               </div>
             </section>
 
@@ -1748,21 +1612,46 @@ export default function ResearchInnovationPage() {
                   borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <Compass className="h-6 w-6 text-indigo-300 shrink-0" />
-                  <h2
-                    className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                    style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
-                  >
-                    8. Institution Innovation Council (IIC) / Institution–Industry Cell
-                  </h2>
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <Compass className="h-6 w-6 text-indigo-300 shrink-0" />
+                    <div>
+                      <h2
+                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                        style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                      >
+                        8. Institution Innovation Council (IIC) / Institution–Industry Cell
+                      </h2>
+                      <p
+                        className="text-sm font-medium mt-0.5 transition-colors duration-200"
+                        style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                      >
+                        Driving innovation ecosystem, incubation support, MoUs, and academic-industry linkages.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start lg:self-auto">
+                    <a
+                      href={data?.iicCell?.micLink || "https://share.google/0NlFUFGweTwIqrDRa"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-sm cursor-pointer transition-all shrink-0"
+                    >
+                      <Sparkles className="w-4 h-4 text-cyan-200" />
+                      <span>MIC Link: MoE | MoE Innovation Cell</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => openPdfModal(resolveResearchDocUrl("iic-policy", undefined, data?.iicCell?.policyFileUrl), "Institution Innovation Council (IIC) Policy")}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 text-blue-950 hover:bg-amber-300 font-bold text-xs shadow-sm shrink-0 cursor-pointer transition-all"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span>View PDF: IIC Policy</span>
+                      <Eye className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
-                <p
-                  className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                  style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
-                >
-                  Driving innovation ecosystem, incubation support, MoUs, and academic-industry linkages.
-                </p>
               </div>
 
               <div className="p-6 sm:p-8 md:p-10 space-y-6" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
@@ -1791,7 +1680,7 @@ export default function ResearchInnovationPage() {
                 {/* 8.b Objectives */}
                 <div
                   className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 border border-purple-100/60 text-purple-600">
@@ -1814,7 +1703,7 @@ export default function ResearchInnovationPage() {
                       "Facilitate research, consultancy, and skill development",
                       "Enhance employability and industry readiness"
                     ]).map((obj: string, i: number) => (
-                      <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+                      <div key={i} className="p-3.5 rounded-xl bg-white border border-purple-200/60 flex items-start gap-3">
                         <span className="w-6 h-6 rounded-lg bg-purple-100 text-purple-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                           {i + 1}
                         </span>
@@ -1863,7 +1752,7 @@ export default function ResearchInnovationPage() {
                 {/* 8.d Expected Outcomes */}
                 <div
                   className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                  style={{ backgroundColor: "var(--card-alt-bg, #e8f1fd)" }}
                 >
                   <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-100/60 text-amber-600">
@@ -1930,39 +1819,6 @@ export default function ResearchInnovationPage() {
                         })}
                       </tbody>
                     </table>
-                  </div>
-                </div>
-
-                {/* 8.f IIC Policy */}
-                <div
-                  id="sec-iic-policy"
-                  className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                  style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                >
-                  <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 border border-purple-100/60 text-purple-600">
-                      <FileText className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                        f. Institution Innovation Council (IIC) Policy
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">Operating framework for incubation &amp; industry collaboration</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-700 text-sm font-medium leading-relaxed text-justify">
-                    {data?.iicCell?.policyDescription ||
-                      "The Institution has formulated an Institution Innovation Council (IIC) Policy to foster a culture of innovation, entrepreneurship, research, creativity, and industry collaboration. The policy provides a framework for promoting innovative ideas, mentoring, prototype development, start-up awareness, industry interaction, incubation activities, and student participation in innovation-oriented programmes."}
-                  </p>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => openPdfModal(resolveResearchDocUrl("iic-policy", undefined, data?.iicCell?.policyFileUrl), "Institution Innovation Council (IIC) Policy")}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#002147] text-white hover:bg-blue-900 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="w-4 h-4 text-amber-300" />
-                      <span>View IIC Policy →</span>
-                    </button>
                   </div>
                 </div>
               </div>

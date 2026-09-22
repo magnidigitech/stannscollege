@@ -781,6 +781,34 @@ export function ResearchManager({ onNotify }: ResearchManagerProps) {
                   <Eye className="h-3.5 w-3.5" />
                   <span>Preview</span>
                 </button>
+                <label className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-all border border-slate-300 inline-flex items-center gap-1.5 cursor-pointer">
+                  <Upload className="h-3.5 w-3.5" />
+                  <span>Upload PDF</span>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const fd = new FormData();
+                      fd.append("file", file);
+                      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+                      const j = await res.json();
+                      if (j.success && j.url) {
+                        setData({
+                          ...data,
+                          iprCell: {
+                            ...data.iprCell,
+                            policyFileUrl: j.url,
+                            policyAssetId: j.assetId || j.id,
+                          },
+                        });
+                        notify("IPR Policy PDF uploaded successfully!", "success");
+                      }
+                    }}
+                    className="hidden"
+                  />
+                </label>
               </div>
             </div>
           </div>
@@ -859,6 +887,34 @@ export function ResearchManager({ onNotify }: ResearchManagerProps) {
                   <Eye className="h-3.5 w-3.5" />
                   <span>Preview</span>
                 </button>
+                <label className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-all border border-slate-300 inline-flex items-center gap-1.5 cursor-pointer">
+                  <Upload className="h-3.5 w-3.5" />
+                  <span>Upload PDF</span>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const fd = new FormData();
+                      fd.append("file", file);
+                      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+                      const j = await res.json();
+                      if (j.success && j.url) {
+                        setData({
+                          ...data,
+                          entrepreneurshipCentre: {
+                            ...data.entrepreneurshipCentre,
+                            policyFileUrl: j.url,
+                            policyAssetId: j.assetId || j.id,
+                          },
+                        });
+                        notify("ED Policy PDF uploaded successfully!", "success");
+                      }
+                    }}
+                    className="hidden"
+                  />
+                </label>
               </div>
             </div>
           </div>
@@ -906,7 +962,7 @@ export function ResearchManager({ onNotify }: ResearchManagerProps) {
                 8. Institution Innovation Council (IIC) / Institution–Industry Cell
               </h3>
               <p className="text-slate-500 text-xs mt-0.5">
-                Objectives, Key Activities, Expected Outcomes, and IIC Policy
+                Objectives, Key Activities, Expected Outcomes, MIC Link, and IIC Policy
               </p>
             </div>
 
@@ -918,6 +974,33 @@ export function ResearchManager({ onNotify }: ResearchManagerProps) {
                 onChange={(e) => setData({ ...data, iicCell: { ...data.iicCell, description: e.target.value } })}
                 className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-medium leading-relaxed"
               />
+            </div>
+
+            <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-200/80 flex flex-col gap-2.5">
+              <label className="block text-xs font-bold text-blue-950 uppercase">
+                MIC Link: MoE | MoE Innovation Cell
+              </label>
+              <div className="flex flex-wrap items-center gap-3">
+                <input
+                  type="text"
+                  value={data.iicCell?.micLink || ""}
+                  onChange={(e) => setData({ ...data, iicCell: { ...data.iicCell, micLink: e.target.value } })}
+                  placeholder="https://share.google/0NlFUFGweTwIqrDRa"
+                  className="flex-1 min-w-[240px] px-3 py-2 bg-white border border-blue-200 rounded-xl focus:outline-none focus:border-[#002147] text-xs font-mono text-slate-800"
+                />
+                <a
+                  href={data.iicCell?.micLink || "https://share.google/0NlFUFGweTwIqrDRa"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Test Link</span>
+                </a>
+              </div>
+              <p className="text-[11px] text-slate-500 font-medium">
+                Official Ministry of Education (MoE) Innovation Cell portal link for St. Ann&apos;s IIC.
+              </p>
             </div>
 
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col gap-3">
@@ -937,6 +1020,34 @@ export function ResearchManager({ onNotify }: ResearchManagerProps) {
                   <Eye className="h-3.5 w-3.5" />
                   <span>Preview</span>
                 </button>
+                <label className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-all border border-slate-300 inline-flex items-center gap-1.5 cursor-pointer">
+                  <Upload className="h-3.5 w-3.5" />
+                  <span>Upload PDF</span>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const fd = new FormData();
+                      fd.append("file", file);
+                      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+                      const j = await res.json();
+                      if (j.success && j.url) {
+                        setData({
+                          ...data,
+                          iicCell: {
+                            ...data.iicCell,
+                            policyFileUrl: j.url,
+                            policyAssetId: j.assetId || j.id,
+                          },
+                        });
+                        notify("IIC Policy PDF uploaded successfully!", "success");
+                      }
+                    }}
+                    className="hidden"
+                  />
+                </label>
               </div>
             </div>
           </div>

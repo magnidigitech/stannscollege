@@ -149,9 +149,7 @@ export default function Navigation() {
       icon: Scale,
       href: "/research-innovation#sec-policy",
       items: [
-        { text: "Policy Objectives & Principles", href: "/research-innovation#sec-policy-principles" },
-        { text: "Ethics & Integrity Framework", href: "/research-innovation#sec-policy-ethics" },
-        { text: "Seed Grants & Funding Policy", href: "/research-innovation#sec-policy-doc" },
+        { text: "Policy Framework & Commitments", href: "/research-innovation#sec-policy" },
       ]
     },
     {
@@ -160,11 +158,12 @@ export default function Navigation() {
       icon: FlaskConical,
       href: "/research-innovation#sec-rdc",
       items: [
-        { text: "About RDC & Overview", href: "/research-innovation#sec-rdc-about" },
+        { text: "About RDC", href: "/research-innovation#sec-rdc-about" },
         { text: "Vision & Mission", href: "/research-innovation#sec-rdc-vision" },
-        { text: "Core Objectives", href: "/research-innovation#sec-rdc-objectives" },
+        { text: "Key Objectives", href: "/research-innovation#sec-rdc-objectives" },
         { text: "Major Initiatives", href: "/research-innovation#sec-rdc-initiatives" },
-        { text: "RDC Annual Reports", href: "/research-innovation#sec-rdc-reports" },
+        { text: "Institutional Commitment", href: "/research-innovation#sec-rdc-commitment" },
+        { text: "RDC Annual Activity Reports", href: "/research-innovation#sec-rdc-reports" },
       ]
     },
     {
@@ -173,20 +172,22 @@ export default function Navigation() {
       icon: Building2,
       href: "/research-innovation#sec-infra",
       items: [
-        { text: "Dedicated Research Labs", href: "/research-innovation#sec-infra" },
-        { text: "Advanced Analytical Equipment", href: "/research-innovation#sec-infra" },
-        { text: "Library & E-Resources Gateway", href: "/research-innovation#sec-infra" },
-        { text: "High-Performance ICT & Computing", href: "/research-innovation#sec-infra" },
+        { text: "Research Laboratories", href: "/research-innovation#sec-infra-labs" },
+        { text: "Laboratory Facilities & Equipment", href: "/research-innovation#sec-infra-equipment" },
+        { text: "Departmental Research Facilities", href: "/research-innovation#sec-infra-dept" },
+        { text: "Library & E-Resources", href: "/research-innovation#sec-infra-library" },
+        { text: "DELNET / Digital Resources", href: "/research-innovation#sec-infra-delnet" },
+        { text: "ICT & Computational Facilities", href: "/research-innovation#sec-infra-ict" },
       ]
     },
     {
       title: "4. Research Publications",
-      fullTitle: "4. Research Publications & Contributions",
+      fullTitle: "4. Research Publications & Scholarly Contributions",
       icon: BookOpen,
       href: "/research-innovation#sec-publications",
       items: [
         { text: "Faculty & Students Publications", href: "/research-innovation#sec-pub-faculty-students" },
-        { text: "Paper Presentations in Conferences", href: "/research-innovation#sec-pub-presentations" },
+        { text: "Faculty & Student Paper Presentations", href: "/research-innovation#sec-pub-presentations" },
         { text: "Journals, Books & Book Chapters", href: "/research-innovation#sec-pub-books" },
       ]
     },
@@ -196,8 +197,8 @@ export default function Navigation() {
       icon: Lightbulb,
       href: "/research-innovation#sec-patents",
       items: [
-        { text: "Key Innovation Pillars", href: "/research-innovation#sec-patents-initiatives" },
-        { text: "Year-wise Innovation & IPR Milestones", href: "/research-innovation#sec-patents-years" },
+        { text: "Major Innovation Initiatives", href: "/research-innovation#sec-patents-initiatives" },
+        { text: "Year-wise Innovation & IPR Activities", href: "/research-innovation#sec-patents-matrix" },
       ]
     },
     {
@@ -207,9 +208,9 @@ export default function Navigation() {
       href: "/research-innovation#sec-ipr",
       items: [
         { text: "About IPR Cell (Est. 01-09-2022)", href: "/research-innovation#sec-ipr-about" },
-        { text: "IPR Objectives & Activities", href: "/research-innovation#sec-ipr-objectives" },
-        { text: "Expected Outcomes & Impact", href: "/research-innovation#sec-ipr-outcomes" },
-        { text: "IPR Annual Reports", href: "/research-innovation#sec-ipr-reports" },
+        { text: "Objectives & Major Activities", href: "/research-innovation#sec-ipr-objectives" },
+        { text: "Expected Outcomes", href: "/research-innovation#sec-ipr-outcomes" },
+        { text: "Annual Activity Reports", href: "/research-innovation#sec-ipr-reports" },
       ]
     },
     {
@@ -218,10 +219,10 @@ export default function Navigation() {
       icon: Rocket,
       href: "/research-innovation#sec-edc",
       items: [
-        { text: "Vision & Objectives", href: "/research-innovation#sec-edc-vision" },
-        { text: "Key Activities & Mentorship", href: "/research-innovation#sec-edc-activities" },
-        { text: "Women Entrepreneurship Cell", href: "/research-innovation#sec-edc-women" },
-        { text: "ED Annual Reports", href: "/research-innovation#sec-edc-reports" },
+        { text: "About Centre & Vision", href: "/research-innovation#sec-edc-about" },
+        { text: "Objectives & Major Activities", href: "/research-innovation#sec-edc-objectives" },
+        { text: "Industry & Women Entrepreneurship", href: "/research-innovation#sec-edc-women" },
+        { text: "Annual Activity Reports", href: "/research-innovation#sec-edc-reports" },
       ]
     },
     {
@@ -230,9 +231,9 @@ export default function Navigation() {
       icon: Compass,
       href: "/research-innovation#sec-iic",
       items: [
-        { text: "About IIC & Industry Cell", href: "/research-innovation#sec-iic-about" },
-        { text: "Objectives & Key Activities", href: "/research-innovation#sec-iic-objectives" },
-        { text: "IIC Annual Reports", href: "/research-innovation#sec-iic-reports" },
+        { text: "About the Cell & Objectives", href: "/research-innovation#sec-iic-about" },
+        { text: "Key Activities & Outcomes", href: "/research-innovation#sec-iic-activities" },
+        { text: "Annual Activity Reports", href: "/research-innovation#sec-iic-reports" },
       ]
     }
   ];
@@ -266,10 +267,10 @@ export default function Navigation() {
       icon: ShieldCheck,
       href: "/alumni#sec-association",
       items: [
-        { text: "About the Alumni Association", href: "/alumni#sec-association-about" },
+        { text: "About the Association", href: "/alumni#sec-association-about" },
         { text: "Registration Details (307 of 2022)", href: "/alumni#sec-association-reg" },
-        { text: "Alumni Association Members", href: "/alumni#sec-association-members" },
-        { text: "Registration & Statutory Documents", href: "/alumni#sec-association-statutory" },
+        { text: "Office Bearers", href: "/alumni#sec-association-members" },
+        { text: "Registration & Statutory Documents", href: "/alumni#sec-association-docs" },
       ]
     },
     {
@@ -277,10 +278,8 @@ export default function Navigation() {
       icon: HeartHandshake,
       href: "/alumni#sec-contributions",
       items: [
-        { text: "Contributions Register (2026–2027)", href: "/alumni#sec-contributions-register" },
-        { text: "Legal Awareness Programme (14-08-2026)", href: "/alumni#sec-contributions-register" },
-        { text: "Student Counselling Workshop (25-08-2026)", href: "/alumni#sec-contributions-register" },
-        { text: "WEC Empowerment Workshop (09-09-2026)", href: "/alumni#sec-contributions-register" },
+        { text: "Engagement Areas", href: "/alumni#sec-contributions-areas" },
+        { text: "Contributions & Support Register", href: "/alumni#sec-contributions-register" },
       ]
     },
     {
@@ -288,10 +287,9 @@ export default function Navigation() {
       icon: Award,
       href: "/alumni#sec-network",
       items: [
-        { text: "Join Alumni Network (Google Form)", href: "https://forms.gle/7QMzJvrAsYVT3YZd7" },
-        { text: "Our Alumni", href: "/alumni#sec-network-overview" },
+        { text: "Join the Alumni Network (Form)", href: "/alumni#sec-network-join" },
         { text: "Our Alumni – Our Pride", href: "/alumni#sec-network-pride" },
-        { text: "Voices of Our Alumni (Testimonials)", href: "/alumni#sec-network-voices" },
+        { text: "Voices of Our Alumni", href: "/alumni#sec-network-voices" },
       ]
     },
     {
@@ -299,8 +297,8 @@ export default function Navigation() {
       icon: MessageSquareQuote,
       href: "/alumni#sec-feedback",
       items: [
-        { text: "Alumni Feedback Framework", href: "/alumni#sec-feedback-info" },
-        { text: "Suggestions & Implemented Outcomes", href: "/alumni#sec-feedback-suggestions" },
+        { text: "Feedback Framework", href: "/alumni#sec-feedback-info" },
+        { text: "Suggestions & Outcomes", href: "/alumni#sec-feedback-suggestions" },
         { text: "Quality Enhancement Connect", href: "/alumni#sec-feedback-quality" },
       ]
     },
@@ -309,10 +307,8 @@ export default function Navigation() {
       icon: Calendar,
       href: "/alumni#sec-events",
       items: [
-        { text: "Annual Alumni Meet", href: "/alumni#sec-events-overview" },
-        { text: "Batch & Decade Reunions", href: "/alumni#sec-events-list" },
-        { text: "Departmental Alumni Meets", href: "/alumni#sec-events-list" },
-        { text: "Guest Lectures & Mentoring", href: "/alumni#sec-events-list" },
+        { text: "Events & Reunions Overview", href: "/alumni#sec-events-overview" },
+        { text: "Scheduled & Annual Programmes", href: "/alumni#sec-events-list" },
       ]
     },
     {
@@ -320,7 +316,7 @@ export default function Navigation() {
       icon: ImageIcon,
       href: "/alumni#sec-gallery",
       items: [
-        { text: "Photo Gallery & Batch Albums", href: "/alumni#sec-gallery-photos" },
+        { text: "Photo Gallery Categories", href: "/alumni#sec-gallery-photos" },
         { text: "Video Gallery & Messages", href: "/alumni#sec-gallery-videos" },
       ]
     },
@@ -329,8 +325,8 @@ export default function Navigation() {
       icon: Phone,
       href: "/alumni#sec-contact",
       items: [
-        { text: "Alumni Association Desk", href: "/alumni#sec-contact-desk" },
-        { text: "Campus Address & Contact Details", href: "/alumni#sec-contact-desk" },
+        { text: "Association Office Desk", href: "/alumni#sec-contact-desk" },
+        { text: "Direct Contact Channels", href: "/alumni#sec-contact-channels" },
       ]
     }
   ];

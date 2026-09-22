@@ -1861,6 +1861,32 @@ export const DEFAULT_ALUMNI_DATA = {
     { _key: "gal_3", title: "Contributions & Recognitions", description: "Moments of philanthropic contributions and alumni awards.", count: "Gallery Active" },
     { _key: "gal_4", title: "Departmental Alumni Events", description: "Department-wise student-alumni collaborative activities.", count: "Gallery Active" },
   ],
+  videos: [
+    {
+      _key: "vid_1",
+      title: "Alumni Annual Meet – Message from Distinguished Alumna",
+      category: "Alumni Messages",
+      videoType: "youtube",
+      youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      videoFileUrl: "",
+      speakerName: "Mrs. Sowjanya Bindu Katari",
+      designation: "Advocate, High Court of AP",
+      programmeBatch: "B.Com (2004–2007)",
+      description: "Inspiring alumni address sharing experiences from student days to legal practice.",
+    },
+    {
+      _key: "vid_2",
+      title: "Campus to Corporate: Journey & Success Reflections",
+      category: "Success Stories",
+      videoType: "youtube",
+      youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      videoFileUrl: "",
+      speakerName: "Ms. I. Rani",
+      designation: "Founder, SkillEdge Solutions",
+      programmeBatch: "MBA (2012–2014)",
+      description: "Entrepreneurial journey and advice for final year students on confidence and career readiness.",
+    },
+  ],
   contactInfo: {
     associationName: "St. Ann's College for Women Alumni Association",
     institution: "St. Ann's College for Women",
@@ -1869,6 +1895,7 @@ export const DEFAULT_ALUMNI_DATA = {
     mobile: "+91 7382104655 / +91 8500656134",
     email: "alumni@stannscollege.com",
     officeHours: "Monday to Saturday: 9:00 AM – 5:00 PM",
+    contactPerson: "Alumni Relations & Placement Desk",
   }
 };
 
@@ -1960,6 +1987,19 @@ export async function getAlumniData() {
         description,
         count
       },
+      videos[] {
+        _key,
+        title,
+        category,
+        videoType,
+        youtubeUrl,
+        "videoFileUrl": coalesce(videoFile.asset->url, videoFileUrl),
+        speakerName,
+        designation,
+        programmeBatch,
+        description,
+        date
+      },
       contactInfo
     }`;
 
@@ -1988,6 +2028,7 @@ export async function getAlumniData() {
         testimonials: data.testimonials?.length ? data.testimonials : DEFAULT_ALUMNI_DATA.testimonials,
         events: data.events?.length ? data.events : DEFAULT_ALUMNI_DATA.events,
         galleryCategories: data.galleryCategories?.length ? data.galleryCategories : DEFAULT_ALUMNI_DATA.galleryCategories,
+        videos: data.videos?.length ? data.videos : DEFAULT_ALUMNI_DATA.videos,
       };
     }
     return DEFAULT_ALUMNI_DATA;
@@ -2201,6 +2242,7 @@ export const DEFAULT_RESEARCH_DATA = {
       "MoUs and collaborative initiatives"
     ],
     expectedOutcomes: "The Cell aims to foster an innovative and entrepreneurial mindset, enhance students' creativity, leadership, problem-solving and professional skills, and strengthen industry–academia collaboration and employability.",
+    micLink: "https://share.google/0NlFUFGweTwIqrDRa",
     activityReports: [
       { _key: "iic_ar_1", year: "2025–2026", title: "IIC Annual Activity Report 2025–2026", fileUrl: "/documents/research/IIC_Activity_Report_2025-2026.pdf" },
       { _key: "iic_ar_2", year: "2024–2025", title: "IIC Annual Activity Report 2024–2025", fileUrl: "/documents/research/IIC_Activity_Report_2024-2025.pdf" }
@@ -2324,6 +2366,7 @@ export async function getResearchData() {
         objectives,
         keyActivities,
         expectedOutcomes,
+        micLink,
         policyDescription,
         "policyFileUrl": coalesce(policyFile.asset->url, policyFileUrl),
         activityReports[] {
