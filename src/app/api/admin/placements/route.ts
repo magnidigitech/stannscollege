@@ -7,7 +7,10 @@ import {
   placementAboutDoc,
   skillDomains,
   apssdcSupportAreas,
-  competitiveExamsList
+  competitiveExamsList,
+  defaultInternshipGalleries,
+  defaultCompetitiveGalleries,
+  defaultPlacementExternalLinks
 } from "@/components/placements/staticData";
 
 const PROJECT_ID = "fhjwqub5";
@@ -103,21 +106,45 @@ const DEFAULT_PLACEMENTS_DATA = {
     { id: "chaitanya", name: "Sri Chaitanya Institutions", short: "SCI", sector: "Academic & EdTech", roles: "Faculty Trainee / Coordinator", color: "from-red-800 to-amber-950", tag: "EdTech & Analytics" }
   ],
   mous: [
-    { id: "mou-1", title: "EXCER Edtech Pvt. Ltd. (Skill & Placement Integration)", department: "Institutional / Placement Cell", year: "2025-2026", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-2", title: "Dimensions Coaching Centre (Competitive Exams Coaching)", department: "Career Development Cell", year: "2025-2026", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-3", title: "Datavalley India Pvt. Ltd. (Long Term Digital Internships)", department: "Computer Science & IT", year: "2025-2026", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-4", title: "Ala Hospital (Healthcare Sciences & Clinical Exposure)", department: "Life Sciences / Biotech", year: "2025-2026", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-5", title: "APSSDC (Skill Hub & Employability Support)", department: "All Departments", year: "2025-2026", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-6", title: "EXCER Edtech Pvt. Ltd. (2023-2024 & 2024-2025)", department: "Institution / Placement Cell", year: "2024-2025", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-7", title: "Dimensions Coaching Centre 2020-2025", department: "Career Development Cell", year: "2024-2025", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-8", title: "Datavalley India Pvt. Ltd. (Long Term Internship)", department: "Computer Applications", year: "2024-2025", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-9", title: "Ala Hospital 2017-2026", department: "Botany & Zoology", year: "2024-2025", fileUrl: "/documents/placements/Training & Placement Cell.pdf" },
-    { id: "mou-10", title: "Pidilite Industries Ltd., Guntur", department: "Chemistry & Commerce", year: "2024-2025", fileUrl: "/documents/placements/Training & Placement Cell.pdf" }
+    { id: "mou-1", title: "EXCER Edtech Pvt. Ltd. (Skill & Placement Integration)", department: "Institutional / Placement Cell", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-2", title: "Dimensions Coaching Centre (Competitive Exams Coaching)", department: "Career Development Cell", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-3", title: "Datavalley India Pvt. Ltd. (Long Term Digital Internships)", department: "Computer Science & IT", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-4", title: "Ala Hospital (Healthcare Sciences & Clinical Exposure)", department: "Life Sciences / Biotech", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-5", title: "APSSDC (Skill Hub & Employability Support)", department: "All Departments", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-6", title: "EXCER Edtech Pvt. Ltd. (2023-2024 & 2024-2025)", department: "Institution / Placement Cell", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-7", title: "Dimensions Coaching Centre 2020-2025", department: "Career Development Cell", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-8", title: "Datavalley India Pvt. Ltd. (Long Term Internship)", department: "Computer Applications", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-9", title: "Ala Hospital 2017-2026", department: "Botany & Zoology", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: "mou-10", title: "Pidilite Industries Ltd., Guntur", department: "Chemistry & Commerce", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" }
+  ],
+  mousMasterPdfUrl: "/documents/placements/Training & Placement Cell.pdf",
+  mouActivities: [
+    { id: 1, title: "Industry 4.0 & Cloud Tech Training Workshop", partner: "EXCER Edtech Pvt. Ltd.", dept: "Institutional Placement Cell", date: "Dec 2025", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: 2, title: "6-Month Full Stack Web Development Internship", partner: "Datavalley India Pvt. Ltd.", dept: "Computer Science & IT", date: "Nov 2025", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: 3, title: "Banking & SSC Fast-Track Coaching Modules", partner: "Dimensions Coaching Centre", dept: "Career Development Cell", date: "Oct 2025", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: 4, title: "Clinical Diagnostics & Biochemical Testing Exposure", partner: "Ala Hospital", dept: "Life Sciences / Zoology", date: "Sep 2025", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: 5, title: "Industrial Chemistry Workshop & Polymer Demo", partner: "Pidilite Industries Ltd., Guntur", dept: "Chemistry & Commerce", date: "Aug 2024", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { id: 6, title: "Faculty & Student Botanical Field Exposure", partner: "Hindu College Collaboration", dept: "Botany", date: "Jul 2024", year: "2024-2025", fileUrl: "/documents/DefaultFile_1.pdf" }
   ],
   annualReports: [...annualReportsList],
   skillDomains: [...skillDomains],
+  skillTrainingPdfUrl: "/documents/DefaultFile_1.pdf",
   apssdcSupportAreas: [...apssdcSupportAreas],
-  competitiveExamsList: [...competitiveExamsList]
+  apssdcPdfUrl: "/documents/DefaultFile_1.pdf",
+  internshipReports: [
+    { year: "2025-2026", title: "Internships & Industry Exposure 2025–2026 Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { year: "2024-2025", title: "Internships & Industry Exposure 2024–2025 Report", fileUrl: "/documents/DefaultFile_1.pdf" }
+  ],
+  internshipGalleries: [...defaultInternshipGalleries],
+  competitiveExamsList: [...competitiveExamsList],
+  competitiveExamReports: [
+    { year: "2025-2026", title: "Competitive Exam Coaching 2025–2026 Syllabus & Report", fileUrl: "/documents/DefaultFile_1.pdf" },
+    { year: "2024-2025", title: "Competitive Exam Coaching 2024–2025 Syllabus & Report", fileUrl: "/documents/DefaultFile_1.pdf" }
+  ],
+  competitiveExamGalleries: [...defaultCompetitiveGalleries],
+  externalLinks: { ...defaultPlacementExternalLinks },
+  industryEngagementPdfUrl: "/documents/DefaultFile_1.pdf",
+  internationalPolicyPdfUrl: "/documents/DefaultFile_1.pdf"
 };
 
 /**
@@ -141,16 +168,38 @@ export async function GET(req: NextRequest) {
       statistics,
       recruiters,
       mous,
+      mousMasterPdfUrl,
+      mouActivities,
       annualReports,
       skillDomains,
-      apssdcData,
-      competitiveExamCoaching,
-      internshipsExposure
+      skillTrainingPdfUrl,
+      apssdcSupportAreas,
+      apssdcPdfUrl,
+      internshipReports,
+      internshipGalleries,
+      competitiveExamsList,
+      competitiveExamReports,
+      competitiveExamGalleries,
+      externalLinks,
+      industryEngagementPdfUrl,
+      internationalPolicyPdfUrl
     }`;
 
     const sanityDoc = await client.fetch(query);
     if (sanityDoc && sanityDoc._id) {
-      return NextResponse.json({ success: true, data: sanityDoc });
+      return NextResponse.json({
+        success: true,
+        data: {
+          ...DEFAULT_PLACEMENTS_DATA,
+          ...sanityDoc,
+          internshipGalleries: sanityDoc.internshipGalleries?.length ? sanityDoc.internshipGalleries : DEFAULT_PLACEMENTS_DATA.internshipGalleries,
+          competitiveExamGalleries: sanityDoc.competitiveExamGalleries?.length ? sanityDoc.competitiveExamGalleries : DEFAULT_PLACEMENTS_DATA.competitiveExamGalleries,
+          externalLinks: {
+            ...DEFAULT_PLACEMENTS_DATA.externalLinks,
+            ...(sanityDoc.externalLinks || {})
+          }
+        }
+      });
     }
 
     // Return default template
@@ -185,10 +234,21 @@ export async function POST(req: NextRequest) {
       statistics: body.statistics || DEFAULT_PLACEMENTS_DATA.statistics,
       recruiters: body.recruiters || DEFAULT_PLACEMENTS_DATA.recruiters,
       mous: body.mous || DEFAULT_PLACEMENTS_DATA.mous,
+      mousMasterPdfUrl: body.mousMasterPdfUrl || DEFAULT_PLACEMENTS_DATA.mousMasterPdfUrl,
+      mouActivities: body.mouActivities || DEFAULT_PLACEMENTS_DATA.mouActivities,
       annualReports: body.annualReports || DEFAULT_PLACEMENTS_DATA.annualReports,
       skillDomains: body.skillDomains || DEFAULT_PLACEMENTS_DATA.skillDomains,
+      skillTrainingPdfUrl: body.skillTrainingPdfUrl || DEFAULT_PLACEMENTS_DATA.skillTrainingPdfUrl,
       apssdcSupportAreas: body.apssdcSupportAreas || DEFAULT_PLACEMENTS_DATA.apssdcSupportAreas,
+      apssdcPdfUrl: body.apssdcPdfUrl || DEFAULT_PLACEMENTS_DATA.apssdcPdfUrl,
+      internshipReports: body.internshipReports || DEFAULT_PLACEMENTS_DATA.internshipReports,
+      internshipGalleries: body.internshipGalleries || DEFAULT_PLACEMENTS_DATA.internshipGalleries,
       competitiveExamsList: body.competitiveExamsList || DEFAULT_PLACEMENTS_DATA.competitiveExamsList,
+      competitiveExamReports: body.competitiveExamReports || DEFAULT_PLACEMENTS_DATA.competitiveExamReports,
+      competitiveExamGalleries: body.competitiveExamGalleries || DEFAULT_PLACEMENTS_DATA.competitiveExamGalleries,
+      externalLinks: body.externalLinks || DEFAULT_PLACEMENTS_DATA.externalLinks,
+      industryEngagementPdfUrl: body.industryEngagementPdfUrl || DEFAULT_PLACEMENTS_DATA.industryEngagementPdfUrl,
+      internationalPolicyPdfUrl: body.internationalPolicyPdfUrl || DEFAULT_PLACEMENTS_DATA.internationalPolicyPdfUrl,
       updatedAt: new Date().toISOString()
     };
 

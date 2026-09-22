@@ -22,8 +22,18 @@ import {
   TrendingUp,
   Image as ImageIcon,
   Users,
+  ExternalLink,
+  Calendar,
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import {
+  flattenAlbumsToPhotos,
+  defaultInternshipAlbums,
+  defaultCompetitiveAlbums,
+  defaultPlacementExternalLinks,
+  PlacementPhotoAlbum,
+  PlacementAlbumImage,
+} from "@/components/placements/staticData";
 
 export function PlacementsManager() {
   const [data, setData] = useState<any>(null);
@@ -47,11 +57,19 @@ export function PlacementsManager() {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  // Album & Multi-Photo Batch Manager State (Matching AlumniManager.tsx & user screenshots)
+  const [isAlbumModalOpen, setIsAlbumModalOpen] = useState(false);
+  const [albumModalType, setAlbumModalType] = useState<"internship" | "competitive">("internship");
+  const [selectedAlbum, setSelectedAlbum] = useState<any>(null);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+
   // PDF / Image Preview Modal State
   const [previewFile, setPreviewFile] = useState<{ url: string; title: string } | null>(null);
 
   // Filters
   const [recruiterTagFilter, setRecruiterTagFilter] = useState<string>("all");
+  const [internshipGalleryYearFilter, setInternshipGalleryYearFilter] = useState<string>("all");
+  const [competitiveGalleryYearFilter, setCompetitiveGalleryYearFilter] = useState<string>("all");
 
   useEffect(() => {
     fetchData();
@@ -64,7 +82,17 @@ export function PlacementsManager() {
       const res = await fetch("/api/admin/placements");
       const json = await res.json();
       if (json.success && json.data) {
-        setData(json.data);
+        const loadedData = json.data;
+        if (!loadedData.internshipAlbums || loadedData.internshipAlbums.length === 0) {
+          loadedData.internshipAlbums = defaultInternshipAlbums;
+        }
+        if (!loadedData.competitiveAlbums || loadedData.competitiveAlbums.length === 0) {
+          loadedData.competitiveAlbums = defaultCompetitiveAlbums;
+        }
+        if (!loadedData.externalLinks) {
+          loadedData.externalLinks = defaultPlacementExternalLinks;
+        }
+        setData(loadedData);
       } else {
         setError(json.error || "Failed to load placements data.");
       }
@@ -73,6 +101,134 @@ export function PlacementsManager() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Album Management Handlers
+  const openAddAlbumModal = (type: "internship" | "competitive") => {
+    setAlbumModalType(type);
+    setSelectedAlbum({
+      id: `${type}-album-${Date.now()}`,
+      folderName: "",
+      year: "2025-2026",
+      eventDate: new Date().toISOString().split("T")[0],
+      images: [],
+    });
+    setIsAlbumModalOpen(true);
+  };
+
+  const openEditAlbumModal = (type: "internship" | "competitive", album: any, index: number) => {
+    setAlbumModalType(type);
+    setSelectedAlbum({
+      ...album,
+      index,
+      images: (album.images || []).map((img: any) => ({
+        _key: img._key || `img_${Math.random()}`,
+        url: img.url,
+        title: img.title || "",
+        caption: img.caption || "",
+      })),
+    });
+    setIsAlbumModalOpen(true);
+  };
+
+  const handleDeleteAlbum = (type: "internship" | "competitive", albumIdx: number) => {
+    if (!window.confirm("Are you sure you want to delete this entire album and all its photos?")) return;
+    const field = type === "internship" ? "internshipAlbums" : "competitiveAlbums";
+    const currentAlbums = [...(data[field] || (type === "internship" ? defaultInternshipAlbums : defaultCompetitiveAlbums))];
+    currentAlbums.splice(albumIdx, 1);
+
+    const galleryField = type === "internship" ? "internshipGalleries" : "competitiveExamGalleries";
+    const flatPhotos = flattenAlbumsToPhotos(currentAlbums);
+
+    setData({
+      ...data,
+      [field]: currentAlbums,
+      [galleryField]: flatPhotos,
+    });
+  };
+
+  const handleUploadPhotoToAlbum = async (files: FileList | null) => {
+    if (!files || files.length === 0 || !selectedAlbum) return;
+    setIsUploadingPhoto(true);
+    try {
+      const newImages = [...(selectedAlbum.images || [])];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("type", "image");
+
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const json = await res.json();
+        const url = json.asset?.url || json.url;
+
+        if (json.success && url) {
+          newImages.push({
+            _key: `img_${Date.now()}_${i}`,
+            url,
+            title: selectedAlbum.folderName || "",
+            caption: "",
+          });
+        }
+      }
+      setSelectedAlbum({
+        ...selectedAlbum,
+        images: newImages,
+      });
+    } catch (err: any) {
+      alert("Error uploading one or more photos: " + err.message);
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
+
+  const handleDeletePhotoFromAlbum = (photoIndex: number) => {
+    if (!selectedAlbum) return;
+    const updatedImages = [...selectedAlbum.images];
+    updatedImages.splice(photoIndex, 1);
+    setSelectedAlbum({
+      ...selectedAlbum,
+      images: updatedImages,
+    });
+  };
+
+  const handleSaveAlbum = () => {
+    if (!selectedAlbum) return;
+    if (!selectedAlbum.folderName?.trim()) {
+      alert("Please enter a name / occasion title for the album.");
+      return;
+    }
+    const field = albumModalType === "internship" ? "internshipAlbums" : "competitiveAlbums";
+    const currentAlbums = [...(data[field] || (albumModalType === "internship" ? defaultInternshipAlbums : defaultCompetitiveAlbums))];
+
+    const albumToSave = {
+      id: selectedAlbum.id || `${albumModalType}-album-${Date.now()}`,
+      folderName: selectedAlbum.folderName.trim(),
+      year: selectedAlbum.year || "2025-2026",
+      eventDate: selectedAlbum.eventDate || "",
+      images: selectedAlbum.images || [],
+    };
+
+    if (selectedAlbum.index !== undefined && selectedAlbum.index >= 0) {
+      currentAlbums[selectedAlbum.index] = albumToSave;
+    } else {
+      currentAlbums.unshift(albumToSave);
+    }
+
+    const galleryField = albumModalType === "internship" ? "internshipGalleries" : "competitiveExamGalleries";
+    const flatPhotos = flattenAlbumsToPhotos(currentAlbums);
+
+    setData({
+      ...data,
+      [field]: currentAlbums,
+      [galleryField]: flatPhotos,
+    });
+
+    setIsAlbumModalOpen(false);
+    setSelectedAlbum(null);
   };
 
   const handleSaveToSanity = async () => {
@@ -122,10 +278,10 @@ export function PlacementsManager() {
           [fieldName]: fileUrl,
         }));
       } else {
-        alert(json.error || "Failed to upload file to Sanity.");
+        alert(json.error || "Upload failed. Please try again.");
       }
     } catch (err: any) {
-      alert("Error uploading file: " + err.message);
+      alert("Upload failed: " + err.message);
     } finally {
       setIsUploading(false);
     }
@@ -157,6 +313,7 @@ export function PlacementsManager() {
           roles: "Graduate Trainee",
           color: "from-blue-900 to-indigo-950",
           tag: "IT Services",
+          logoUrl: "",
         };
       case "mou":
         return {
@@ -166,12 +323,50 @@ export function PlacementsManager() {
           year: "2025-2026",
           fileUrl: "",
         };
+      case "mouActivity":
+        return {
+          id: Date.now(),
+          title: "",
+          partner: "",
+          dept: "Institutional Placement Cell",
+          date: "Jan 2026",
+          year: "2025-2026",
+          fileUrl: "",
+        };
       case "annualReport":
         return {
           year: "2025–2026",
           title: "Annual Activity Report 2025–2026",
           fileUrl: "",
           isAvailable: true,
+        };
+      case "internshipReport":
+        return {
+          year: "2026-2027",
+          title: "Internships & Industry Exposure 2026–2027 Report",
+          fileUrl: "",
+        };
+      case "internshipGallery":
+        return {
+          id: `intern-photo-${Date.now()}`,
+          year: "2025-2026",
+          title: "",
+          caption: "",
+          url: "",
+        };
+      case "competitiveExamReport":
+        return {
+          year: "2026-2027",
+          title: "Competitive Exam Coaching 2026–2027 Syllabus & Report",
+          fileUrl: "",
+        };
+      case "competitiveGallery":
+        return {
+          id: `coach-photo-${Date.now()}`,
+          year: "2025-2026",
+          title: "",
+          caption: "",
+          url: "",
         };
       case "skillDomain":
         return {
@@ -238,11 +433,36 @@ export function PlacementsManager() {
         if (editIndex !== null) list[editIndex] = editingItem;
         else list.push(editingItem);
         updated.mous = list;
+      } else if (modalType === "mouActivity") {
+        const list = [...(updated.mouActivities || [])];
+        if (editIndex !== null) list[editIndex] = editingItem;
+        else list.push(editingItem);
+        updated.mouActivities = list;
       } else if (modalType === "annualReport") {
         const list = [...(updated.annualReports || [])];
         if (editIndex !== null) list[editIndex] = editingItem;
         else list.push(editingItem);
         updated.annualReports = list;
+      } else if (modalType === "internshipReport") {
+        const list = [...(updated.internshipReports || [])];
+        if (editIndex !== null) list[editIndex] = editingItem;
+        else list.push(editingItem);
+        updated.internshipReports = list;
+      } else if (modalType === "internshipGallery") {
+        const list = [...(updated.internshipGalleries || [])];
+        if (editIndex !== null) list[editIndex] = editingItem;
+        else list.push(editingItem);
+        updated.internshipGalleries = list;
+      } else if (modalType === "competitiveExamReport") {
+        const list = [...(updated.competitiveExamReports || [])];
+        if (editIndex !== null) list[editIndex] = editingItem;
+        else list.push(editingItem);
+        updated.competitiveExamReports = list;
+      } else if (modalType === "competitiveGallery") {
+        const list = [...(updated.competitiveExamGalleries || [])];
+        if (editIndex !== null) list[editIndex] = editingItem;
+        else list.push(editingItem);
+        updated.competitiveExamGalleries = list;
       } else if (modalType === "skillDomain") {
         const list = [...(updated.skillDomains || [])];
         if (editIndex !== null) list[editIndex] = editingItem;
@@ -287,8 +507,18 @@ export function PlacementsManager() {
         updated.recruiters = updated.recruiters.filter((_: any, i: number) => i !== index);
       } else if (type === "mou") {
         updated.mous = updated.mous.filter((_: any, i: number) => i !== index);
+      } else if (type === "mouActivity") {
+        updated.mouActivities = (updated.mouActivities || []).filter((_: any, i: number) => i !== index);
       } else if (type === "annualReport") {
         updated.annualReports = updated.annualReports.filter((_: any, i: number) => i !== index);
+      } else if (type === "internshipReport") {
+        updated.internshipReports = (updated.internshipReports || []).filter((_: any, i: number) => i !== index);
+      } else if (type === "internshipGallery") {
+        updated.internshipGalleries = (updated.internshipGalleries || []).filter((_: any, i: number) => i !== index);
+      } else if (type === "competitiveExamReport") {
+        updated.competitiveExamReports = (updated.competitiveExamReports || []).filter((_: any, i: number) => i !== index);
+      } else if (type === "competitiveGallery") {
+        updated.competitiveExamGalleries = (updated.competitiveExamGalleries || []).filter((_: any, i: number) => i !== index);
       } else if (type === "skillDomain") {
         updated.skillDomains = updated.skillDomains.filter((_: any, i: number) => i !== index);
       } else if (type === "apssdcArea") {
@@ -603,6 +833,63 @@ export function PlacementsManager() {
                     className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900"
                   />
                 </div>
+                <div className="md:col-span-2">
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">TPO Officer Photo (JPG / PNG)</label>
+                  <div className="flex items-center gap-3">
+                    {data.tpoOfficer?.photoUrl && (
+                      <div className="h-10 w-10 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                        <img
+                          src={data.tpoOfficer.photoUrl}
+                          alt="TPO Photo Preview"
+                          className="h-full w-full object-cover object-top"
+                        />
+                      </div>
+                    )}
+                    <input
+                      type="text"
+                      value={data.tpoOfficer?.photoUrl || ""}
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          tpoOfficer: { ...data.tpoOfficer, photoUrl: e.target.value },
+                        })
+                      }
+                      placeholder="Image URL or upload photo"
+                      className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    />
+                    <label className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs">
+                      <Upload className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isUploading ? "Uploading..." : "Upload Photo"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setIsUploading(true);
+                            try {
+                              const formData = new FormData();
+                              formData.append("file", file);
+                              formData.append("type", "image");
+                              const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                              const json = await res.json();
+                              const imgUrl = json.asset?.url || json.url;
+                              if (json.success && imgUrl) {
+                                setData({
+                                  ...data,
+                                  tpoOfficer: { ...data.tpoOfficer, photoUrl: imgUrl },
+                                });
+                              }
+                            } finally {
+                              setIsUploading(false);
+                            }
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
 
               {/* Vision & Mission */}
@@ -644,7 +931,7 @@ export function PlacementsManager() {
                   <div>
                     <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">Official Handbook Document</span>
                     <span className="text-xs font-bold text-slate-800">
-                      {data.aboutOverview?.aboutPdfUrl ? "Training & Placement Cell.pdf" : "No PDF uploaded"}
+                      {data.aboutOverview?.aboutPdfUrl ? (data.aboutOverview.aboutPdfUrl.split("/").pop() || "Training & Placement Cell.pdf") : "No custom PDF (using default)"}
                     </span>
                   </div>
                 </div>
@@ -694,6 +981,24 @@ export function PlacementsManager() {
                       }}
                     />
                   </label>
+
+                  {data.aboutOverview?.aboutPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset handbook to default document?")) {
+                          setData({
+                            ...data,
+                            aboutOverview: { ...data.aboutOverview, aboutPdfUrl: "" },
+                          });
+                        }
+                      }}
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                      title="Remove custom PDF"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -1090,8 +1395,75 @@ export function PlacementsManager() {
                   3. APSSDC – Skill Development &amp; Employability Support
                 </h3>
                 <p className="text-xs text-slate-500 font-medium">
-                  Manage APSSDC collaboration framework, skill hub initiatives, and job mela support programs.
+                  Manage APSSDC collaboration framework, skill hub initiatives, program document, and job mela support programs.
                 </p>
+              </div>
+
+              {/* APSSDC Master Document PDF */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-7 h-7 text-blue-700 shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">APSSDC Program &amp; Skill Hub Document</span>
+                    <span className="text-xs font-bold text-slate-800">
+                      {data.apssdcPdfUrl ? (data.apssdcPdfUrl.split("/").pop() || "APSSDC Program Report.pdf") : "No custom PDF (using default)"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {data.apssdcPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setPreviewFile({ url: data.apssdcPdfUrl, title: "APSSDC Program Document" })}
+                      className="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> Preview
+                    </button>
+                  )}
+
+                  <label className="px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                    <Upload className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setIsUploading(true);
+                          try {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                            const json = await res.json();
+                            if (json.success && json.asset?.url) {
+                              setData({ ...data, apssdcPdfUrl: json.asset.url });
+                            }
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {data.apssdcPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset APSSDC document to default?")) {
+                          setData({ ...data, apssdcPdfUrl: "" });
+                        }
+                      }}
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                      title="Remove custom PDF"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="flex flex-col gap-4">
@@ -1130,6 +1502,49 @@ export function PlacementsManager() {
                   ))}
                 </div>
               </div>
+
+              {/* External Redirect Portals & Links Configuration */}
+              <div className="p-5 bg-amber-50/70 rounded-2xl border border-amber-200/90 flex flex-col gap-4">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500 text-slate-950 shadow-2xs shrink-0">
+                    <Globe className="w-4 h-4" />
+                  </span>
+                  <div>
+                    <h4 className="font-outfit font-black text-sm text-slate-900">
+                      External Redirect Portals &amp; Web Links
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">
+                      Configure destination URLs for external portal redirect buttons on the website
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1.5 max-w-xl">
+                  {/* Nypunyam Portal Link */}
+                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <ExternalLink className="w-3 h-3 text-amber-700" />
+                    APSSDC / Naipunyam Portal Link
+                  </label>
+                  <input
+                    type="url"
+                    value={data.externalLinks?.nypunyamPortalUrl || ""}
+                    onChange={(e) =>
+                      setData({
+                        ...data,
+                        externalLinks: {
+                          ...(data.externalLinks || {}),
+                          nypunyamPortalUrl: e.target.value,
+                        },
+                      })
+                    }
+                    placeholder="https://naipunyam.ap.gov.in/"
+                    className="px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-xs font-mono text-slate-800"
+                  />
+                  <span className="text-[10px] text-slate-500">
+                    Target destination URL for the "View Nypunyam Portal" button in Section 1.c (APSSDC).
+                  </span>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1142,8 +1557,75 @@ export function PlacementsManager() {
                   4. Skill Development Training Areas
                 </h3>
                 <p className="text-xs text-slate-500 font-medium">
-                  Manage the 11 comprehensive skill training domains, scope descriptions, and curriculum topics.
+                  Manage the 11 comprehensive skill training domains, scope descriptions, curriculum topics, and master training plan PDF.
                 </p>
+              </div>
+
+              {/* Skill Training Master Plan PDF */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-7 h-7 text-indigo-700 shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">Skill Training Plan &amp; Calendar Document</span>
+                    <span className="text-xs font-bold text-slate-800">
+                      {data.skillTrainingPdfUrl ? (data.skillTrainingPdfUrl.split("/").pop() || "Skill Development Calendar.pdf") : "No custom PDF (using default)"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {data.skillTrainingPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setPreviewFile({ url: data.skillTrainingPdfUrl, title: "Skill Development Training Plan" })}
+                      className="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> Preview
+                    </button>
+                  )}
+
+                  <label className="px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                    <Upload className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setIsUploading(true);
+                          try {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                            const json = await res.json();
+                            if (json.success && json.asset?.url) {
+                              setData({ ...data, skillTrainingPdfUrl: json.asset.url });
+                            }
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {data.skillTrainingPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset Skill Training document to default?")) {
+                          setData({ ...data, skillTrainingPdfUrl: "" });
+                        }
+                      }}
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                      title="Remove custom PDF"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1177,17 +1659,218 @@ export function PlacementsManager() {
           {/* 5. Internships & Industry Exposure Content */}
           {tierISub === "internships-industry-exposure" && (
             <div className="flex flex-col gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs">
-              <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-black uppercase text-blue-900 tracking-wider block">I. Training &amp; Placement Cell</span>
-                <h3 className="font-outfit font-extrabold text-lg text-slate-900">
-                  5. Internships &amp; Industry Exposure
-                </h3>
-                <p className="text-xs text-slate-500 font-medium">
-                  Manage short-term summer internships, semester-long clinical &amp; digital internships, and industrial visits.
-                </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                  <span className="text-[10px] font-black uppercase text-blue-900 tracking-wider block">I. Training &amp; Placement Cell</span>
+                  <h3 className="font-outfit font-extrabold text-lg text-slate-900">
+                    5. Internships &amp; Industry Exposure
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium">
+                    Manage short-term summer internships, semester-long clinical &amp; digital internships, and yearly internship report PDFs.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openModal("internshipReport")}
+                  className="px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer shadow-2xs"
+                >
+                  <Plus className="w-3.5 h-3.5 text-teal-200" /> Add Year Report (PDF)
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Yearly Internship Reports PDF Grid */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-outfit font-black text-sm text-slate-800">
+                    Yearly Internship &amp; Industry Exposure Reports (PDFs)
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    Connected to the frontend year dropdown selector
+                  </span>
+                </div>
+
+                {(!data.internshipReports || data.internshipReports.length === 0) ? (
+                  <div className="p-6 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-xs font-semibold">
+                    No custom internship reports added yet. Falling back to default document.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {data.internshipReports.map((item: any, idx: number) => (
+                      <div key={idx} className="p-4 rounded-2xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-teal-300 transition-all flex items-center justify-between gap-3 shadow-2xs">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <FileText className="w-6 h-6 text-teal-600 shrink-0" />
+                          <div className="min-w-0">
+                            <span className="text-[10px] font-bold text-teal-700 uppercase tracking-wider block">{item.year}</span>
+                            <span className="font-bold text-xs text-slate-800 truncate block" title={item.title}>{item.title}</span>
+                            <span className="text-[10px] text-slate-400 truncate block">{item.fileUrl || "No PDF uploaded"}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {item.fileUrl && (
+                            <button
+                              type="button"
+                              onClick={() => setPreviewFile({ url: item.fileUrl, title: item.title })}
+                              className="p-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors cursor-pointer"
+                              title="View PDF"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => openModal("internshipReport", item, idx)}
+                            className="p-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors cursor-pointer"
+                            title="Edit Title & Year"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <label className="p-1.5 rounded-lg bg-[#002147] hover:bg-blue-950 text-white transition-colors cursor-pointer" title="Replace PDF">
+                            <Upload className="w-3.5 h-3.5 text-amber-300" />
+                            <input
+                              type="file"
+                              accept=".pdf"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const formData = new FormData();
+                                  formData.append("file", file);
+                                  formData.append("type", "file");
+                                  const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                                  const json = await res.json();
+                                  if (json.success && (json.asset?.url || json.url)) {
+                                    const updatedReports = [...(data.internshipReports || [])];
+                                    updatedReports[idx].fileUrl = json.asset?.url || json.url;
+                                    setData({ ...data, internshipReports: updatedReports });
+                                  }
+                                }
+                              }}
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteItem("internshipReport", idx)}
+                            className="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                            title="Delete Item"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Photo Albums Manager for Internships & Industry Visits */}
+              <div className="flex flex-col gap-4 pt-4 border-t border-slate-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-outfit font-black text-sm text-slate-900 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4 text-teal-600" />
+                      Internship Photo Albums &amp; Memories Gallery
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">
+                      Create albums, organize internship batches, upload multi-photo groups, and manage captions for the website gallery.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openAddAlbumModal("internship")}
+                      className="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-2xs shrink-0"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-teal-200" /> + Create New Album
+                    </button>
+                  </div>
+                </div>
+
+                {/* Albums Grid (Matching Screenshot 1) */}
+                {(() => {
+                  const albums = data.internshipAlbums || defaultInternshipAlbums;
+                  if (!albums || albums.length === 0) {
+                    return (
+                      <div className="p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-xs font-semibold">
+                        No albums created yet. Click "+ Create New Album" to upload photos.
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {albums.map((album: any, idx: number) => {
+                        const photoCount = (album.images || []).length;
+                        const coverImg = album.images?.[0]?.url || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200";
+                        return (
+                          <div
+                            key={album.id || idx}
+                            className="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                          >
+                            {/* Card Cover with Badges */}
+                            <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                              <img
+                                src={coverImg}
+                                alt={album.folderName}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              {/* Top-Left Date / Year Badge */}
+                              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-xs text-slate-800 text-[10px] font-bold flex items-center gap-1.5 shadow-xs">
+                                <Calendar className="w-3 h-3 text-teal-700" />
+                                <span>{album.year ? `AY ${album.year}` : album.eventDate}</span>
+                              </div>
+                              {/* Bottom-Right Photo Count Badge */}
+                              <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-xs text-white text-[10px] font-bold flex items-center gap-1.5">
+                                <ImageIcon className="w-3 h-3 text-teal-300" />
+                                <span>{photoCount} Photos</span>
+                              </div>
+                            </div>
+
+                            {/* Album Info */}
+                            <div className="p-4 flex flex-col gap-3">
+                              <div>
+                                <h4 className="font-outfit font-black text-sm text-slate-900 group-hover:text-teal-900 transition-colors line-clamp-1">
+                                  {album.folderName}
+                                </h4>
+                                <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500 font-medium">
+                                  <span>{photoCount} {photoCount === 1 ? "photo stored" : "photos stored"}</span>
+                                  <span>•</span>
+                                  <span className="text-teal-800 font-bold flex items-center gap-1">
+                                    <Calendar className="h-3 w-3 text-teal-600" />
+                                    {album.eventDate || album.year}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Action Buttons */}
+                              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => openEditAlbumModal("internship", album, idx)}
+                                  className="px-3.5 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-900 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer flex-1 justify-center"
+                                >
+                                  <ImageIcon className="h-3.5 w-3.5 text-teal-700" />
+                                  <span>Edit Album / Photos ({photoCount})</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteAlbum("internship", idx)}
+                                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                                  title="Delete Album"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-slate-100">
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
                   <span className="text-xs font-black uppercase text-blue-900">Short-Term Internships</span>
                   <p className="text-xs text-slate-600 font-medium leading-relaxed">
@@ -1213,17 +1896,218 @@ export function PlacementsManager() {
           {/* 6. Competitive Exam Coaching Content */}
           {tierISub === "competitive-exam-coaching" && (
             <div className="flex flex-col gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs">
-              <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-black uppercase text-blue-900 tracking-wider block">I. Training &amp; Placement Cell</span>
-                <h3 className="font-outfit font-extrabold text-lg text-slate-900">
-                  6. Competitive Exam Coaching
-                </h3>
-                <p className="text-xs text-slate-500 font-medium">
-                  Manage specialized competitive coaching in partnership with Dimensions Coaching Centre and in-house faculty.
-                </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                  <span className="text-[10px] font-black uppercase text-blue-900 tracking-wider block">I. Training &amp; Placement Cell</span>
+                  <h3 className="font-outfit font-extrabold text-lg text-slate-900">
+                    6. Competitive Exam Coaching
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium">
+                    Manage competitive exam tracks, coaching partners, and yearly syllabus &amp; activity report PDFs.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openModal("competitiveExamReport")}
+                  className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer shadow-2xs"
+                >
+                  <Plus className="w-3.5 h-3.5 text-amber-200" /> Add Year Report (PDF)
+                </button>
               </div>
 
-              <div className="flex flex-col gap-4">
+              {/* Yearly Competitive Coaching Reports PDF Grid */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-outfit font-black text-sm text-slate-800">
+                    Yearly Competitive Coaching Syllabi &amp; Reports (PDFs)
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    Connected to the coaching year dropdown selector
+                  </span>
+                </div>
+
+                {(!data.competitiveExamReports || data.competitiveExamReports.length === 0) ? (
+                  <div className="p-6 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-xs font-semibold">
+                    No custom coaching reports added yet. Falling back to default document.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {data.competitiveExamReports.map((item: any, idx: number) => (
+                      <div key={idx} className="p-4 rounded-2xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-amber-300 transition-all flex items-center justify-between gap-3 shadow-2xs">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <FileText className="w-6 h-6 text-amber-600 shrink-0" />
+                          <div className="min-w-0">
+                            <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">{item.year}</span>
+                            <span className="font-bold text-xs text-slate-800 truncate block" title={item.title}>{item.title}</span>
+                            <span className="text-[10px] text-slate-400 truncate block">{item.fileUrl || "No PDF uploaded"}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {item.fileUrl && (
+                            <button
+                              type="button"
+                              onClick={() => setPreviewFile({ url: item.fileUrl, title: item.title })}
+                              className="p-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors cursor-pointer"
+                              title="View PDF"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => openModal("competitiveExamReport", item, idx)}
+                            className="p-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors cursor-pointer"
+                            title="Edit Title & Year"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <label className="p-1.5 rounded-lg bg-[#002147] hover:bg-blue-950 text-white transition-colors cursor-pointer" title="Replace PDF">
+                            <Upload className="w-3.5 h-3.5 text-amber-300" />
+                            <input
+                              type="file"
+                              accept=".pdf"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const formData = new FormData();
+                                  formData.append("file", file);
+                                  formData.append("type", "file");
+                                  const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                                  const json = await res.json();
+                                  if (json.success && (json.asset?.url || json.url)) {
+                                    const updatedReports = [...(data.competitiveExamReports || [])];
+                                    updatedReports[idx].fileUrl = json.asset?.url || json.url;
+                                    setData({ ...data, competitiveExamReports: updatedReports });
+                                  }
+                                }
+                              }}
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteItem("competitiveExamReport", idx)}
+                            className="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                            title="Delete Item"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Photo Albums Manager for Competitive Exam Coaching */}
+              <div className="flex flex-col gap-4 pt-4 border-t border-slate-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-outfit font-black text-sm text-slate-900 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4 text-amber-600" />
+                      Competitive Exam Coaching Photo Albums &amp; Gallery
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">
+                      Create albums, organize coaching batches, upload multi-photo groups, and manage captions for the website gallery.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openAddAlbumModal("competitive")}
+                      className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-2xs shrink-0"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-amber-200" /> + Create New Album
+                    </button>
+                  </div>
+                </div>
+
+                {/* Albums Grid (Matching Screenshot 1) */}
+                {(() => {
+                  const albums = data.competitiveAlbums || defaultCompetitiveAlbums;
+                  if (!albums || albums.length === 0) {
+                    return (
+                      <div className="p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-xs font-semibold">
+                        No albums created yet. Click "+ Create New Album" to upload photos.
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {albums.map((album: any, idx: number) => {
+                        const photoCount = (album.images || []).length;
+                        const coverImg = album.images?.[0]?.url || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200";
+                        return (
+                          <div
+                            key={album.id || idx}
+                            className="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                          >
+                            {/* Card Cover with Badges */}
+                            <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                              <img
+                                src={coverImg}
+                                alt={album.folderName}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              {/* Top-Left Date / Year Badge */}
+                              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-xs text-slate-800 text-[10px] font-bold flex items-center gap-1.5 shadow-xs">
+                                <Calendar className="w-3 h-3 text-amber-700" />
+                                <span>{album.year ? `AY ${album.year}` : album.eventDate}</span>
+                              </div>
+                              {/* Bottom-Right Photo Count Badge */}
+                              <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-xs text-white text-[10px] font-bold flex items-center gap-1.5">
+                                <ImageIcon className="w-3 h-3 text-amber-300" />
+                                <span>{photoCount} Photos</span>
+                              </div>
+                            </div>
+
+                            {/* Album Info */}
+                            <div className="p-4 flex flex-col gap-3">
+                              <div>
+                                <h4 className="font-outfit font-black text-sm text-slate-900 group-hover:text-amber-900 transition-colors line-clamp-1">
+                                  {album.folderName}
+                                </h4>
+                                <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500 font-medium">
+                                  <span>{photoCount} {photoCount === 1 ? "photo stored" : "photos stored"}</span>
+                                  <span>•</span>
+                                  <span className="text-amber-800 font-bold flex items-center gap-1">
+                                    <Calendar className="h-3 w-3 text-amber-600" />
+                                    {album.eventDate || album.year}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Action Buttons */}
+                              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => openEditAlbumModal("competitive", album, idx)}
+                                  className="px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer flex-1 justify-center"
+                                >
+                                  <ImageIcon className="h-3.5 w-3.5 text-amber-700" />
+                                  <span>Edit Album / Photos ({photoCount})</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteAlbum("competitive", idx)}
+                                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                                  title="Delete Album"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
+              </div>
+
+              <div className="flex flex-col gap-4 pt-2 border-t border-slate-100">
                 <div className="flex items-center justify-between">
                   <h4 className="font-outfit font-black text-sm text-slate-900">Coached Examination Categories</h4>
                   <button
@@ -1278,7 +2162,7 @@ export function PlacementsManager() {
           <div className="flex flex-wrap items-center gap-2 bg-slate-100/80 p-2 rounded-2xl border border-slate-200/70 text-xs">
             {[
               { id: "industry-engagement", label: "1. Industry & Professional Engagement", count: 2 },
-              { id: "mous", label: "2. MoUs – Memoranda of Understanding", count: data?.mous?.length || 0 },
+              { id: "mous", label: "2. MoUs – Memoranda of Understanding", count: (data?.mous?.length || 0) + (data?.mouActivities?.length || 0) + 1 },
             ].map((sub) => (
               <button
                 key={sub.id}
@@ -1312,6 +2196,73 @@ export function PlacementsManager() {
                 </p>
               </div>
 
+              {/* Master Industry Linkages Handbook PDF */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-7 h-7 text-indigo-600 shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">Industry Engagement Handbook Document</span>
+                    <span className="text-xs font-bold text-slate-800">
+                      {data.industryEngagementPdfUrl ? (data.industryEngagementPdfUrl.split("/").pop() || "Industry Linkages Handbook.pdf") : "No custom PDF (using default)"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {data.industryEngagementPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setPreviewFile({ url: data.industryEngagementPdfUrl, title: "Industry Linkages Handbook" })}
+                      className="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> Preview
+                    </button>
+                  )}
+
+                  <label className="px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                    <Upload className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setIsUploading(true);
+                          try {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                            const json = await res.json();
+                            if (json.success && json.asset?.url) {
+                              setData({ ...data, industryEngagementPdfUrl: json.asset.url });
+                            }
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {data.industryEngagementPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset Industry Engagement document to default?")) {
+                          setData({ ...data, industryEngagementPdfUrl: "" });
+                        }
+                      }}
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                      title="Remove custom PDF"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
                   <span className="text-xs font-black uppercase text-blue-900">Professional Certifications</span>
@@ -1339,58 +2290,188 @@ export function PlacementsManager() {
                     2. MoUs – Memoranda of Understanding
                   </h3>
                   <p className="text-xs text-slate-500 font-medium">
-                    Manage signed MoUs, partner organizations, active durations, and official signed PDF documents.
+                    Manage master MoU document, signed agreements with partners, and collaborative MoU activity records.
                   </p>
                 </div>
-                <button
-                  onClick={() => openModal("mou")}
-                  className="px-4 py-2 rounded-xl bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer shadow-xs transition-colors"
-                >
-                  <Plus className="w-4 h-4 text-amber-300" />
-                  <span>Add Signed MoU</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openModal("mou")}
+                    className="px-3.5 py-2 rounded-xl bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-amber-300" />
+                    <span>Add Signed MoU</span>
+                  </button>
+                  <button
+                    onClick={() => openModal("mouActivity")}
+                    className="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-emerald-200" />
+                    <span>Add MoU Activity</span>
+                  </button>
+                </div>
               </div>
 
-              {/* MoUs List */}
-              <div className="flex flex-col gap-3">
-                {(data.mous || []).map((mou: any, idx: number) => (
-                  <div key={mou.id || idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="h-10 w-10 rounded-xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-outfit font-black text-xs shrink-0">
-                        MoU
-                      </div>
-                      <div className="min-w-0">
-                        <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">{mou.year} • {mou.department}</span>
-                        <h5 className="font-outfit font-bold text-sm text-slate-900 truncate">{mou.title}</h5>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
-                      {mou.fileUrl && (
-                        <button
-                          onClick={() => setPreviewFile({ url: mou.fileUrl, title: mou.title })}
-                          className="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs flex items-center gap-1 cursor-pointer"
-                        >
-                          <Eye className="w-3 h-3" /> View
-                        </button>
-                      )}
-                      <button
-                        onClick={() => openModal("mou", mou, idx)}
-                        className="p-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer"
-                        title="Edit MoU"
-                      >
-                        <Edit2 className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteItem("mou", idx)}
-                        className="p-1.5 rounded-xl bg-white border border-slate-200 hover:bg-red-50 text-red-600 cursor-pointer"
-                        title="Delete MoU"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
+              {/* Master MoUs Document PDF */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-7 h-7 text-indigo-700 shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">MoUs Master Document</span>
+                    <span className="text-xs font-bold text-slate-800">
+                      {data.mousMasterPdfUrl ? (data.mousMasterPdfUrl.split("/").pop() || "MoUs Master Document.pdf") : "No custom PDF (using default)"}
+                    </span>
                   </div>
-                ))}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {data.mousMasterPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setPreviewFile({ url: data.mousMasterPdfUrl, title: "MoUs Master Document" })}
+                      className="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> Preview
+                    </button>
+                  )}
+
+                  <label className="px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                    <Upload className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setIsUploading(true);
+                          try {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                            const json = await res.json();
+                            if (json.success && json.asset?.url) {
+                              setData({ ...data, mousMasterPdfUrl: json.asset.url });
+                            }
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {data.mousMasterPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset MoUs Master document to default?")) {
+                          setData({ ...data, mousMasterPdfUrl: "" });
+                        }
+                      }}
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                      title="Remove custom PDF"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Signed MoUs List */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-outfit font-black text-sm text-slate-800">Verified Signed Institutional MoUs</h4>
+                  <span className="text-[11px] text-slate-400 font-medium">Listing of signed copies by partner and year</span>
+                </div>
+
+                <div className="flex flex-col gap-2.5">
+                  {(data.mous || []).map((mou: any, idx: number) => (
+                    <div key={mou.id || idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-10 w-10 rounded-xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-outfit font-black text-xs shrink-0">
+                          MoU
+                        </div>
+                        <div className="min-w-0">
+                          <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">{mou.year} • {mou.department}</span>
+                          <h5 className="font-outfit font-bold text-sm text-slate-900 truncate">{mou.title}</h5>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+                        {mou.fileUrl && (
+                          <button
+                            onClick={() => setPreviewFile({ url: mou.fileUrl, title: mou.title })}
+                            className="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs flex items-center gap-1 cursor-pointer"
+                          >
+                            <Eye className="w-3 h-3" /> View
+                          </button>
+                        )}
+                        <button
+                          onClick={() => openModal("mou", mou, idx)}
+                          className="p-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer"
+                          title="Edit MoU"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteItem("mou", idx)}
+                          className="p-1.5 rounded-xl bg-white border border-slate-200 hover:bg-red-50 text-red-600 cursor-pointer"
+                          title="Delete MoU"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Collaborative MoU Activities Archive */}
+              <div className="flex flex-col gap-3 pt-3 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-outfit font-black text-sm text-slate-800">MoU Collaborative Activities Archive</h4>
+                  <span className="text-[11px] text-slate-400 font-medium">Activity reports and workshops conducted under active MoUs</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                  {(data.mouActivities || []).map((act: any, idx: number) => (
+                    <div key={act.id || idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between gap-3">
+                      <div>
+                        <div className="flex items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                          <span className="text-[10px] font-bold text-emerald-700 uppercase">{act.year} • {act.date}</span>
+                          <div className="flex items-center gap-1 shrink-0">
+                            {act.fileUrl && (
+                              <button
+                                onClick={() => setPreviewFile({ url: act.fileUrl, title: act.title })}
+                                className="p-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer"
+                                title="Preview Report"
+                              >
+                                <Eye className="w-3 h-3" />
+                              </button>
+                            )}
+                            <button
+                              onClick={() => openModal("mouActivity", act, idx)}
+                              className="p-1 rounded-lg bg-white border border-slate-200 text-slate-700 cursor-pointer"
+                              title="Edit Activity"
+                            >
+                              <Edit2 className="w-3 h-3" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteItem("mouActivity", idx)}
+                              className="p-1 rounded-lg bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                              title="Delete Activity"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                        <h5 className="font-outfit font-bold text-xs text-slate-900 mt-2">{act.title}</h5>
+                        <p className="text-[11px] text-slate-500 font-medium">Partner: <strong>{act.partner}</strong> ({act.dept})</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -1437,6 +2518,73 @@ export function PlacementsManager() {
                 <p className="text-xs text-slate-500 font-medium">
                   Fostering global perspectives through international linkages, cross-cultural learning, faculty/student exchanges, and global research.
                 </p>
+              </div>
+
+              {/* Master Internationalization Policy PDF */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-7 h-7 text-blue-800 shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">Internationalization Policy &amp; Global Engagement Document</span>
+                    <span className="text-xs font-bold text-slate-800">
+                      {data.internationalPolicyPdfUrl ? (data.internationalPolicyPdfUrl.split("/").pop() || "Internationalization Policy.pdf") : "No custom PDF (using default)"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {data.internationalPolicyPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setPreviewFile({ url: data.internationalPolicyPdfUrl, title: "Internationalization Policy Document" })}
+                      className="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> Preview
+                    </button>
+                  )}
+
+                  <label className="px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-blue-950 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                    <Upload className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{isUploading ? "Uploading..." : "Upload New PDF"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setIsUploading(true);
+                          try {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+                            const json = await res.json();
+                            if (json.success && json.asset?.url) {
+                              setData({ ...data, internationalPolicyPdfUrl: json.asset.url });
+                            }
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {data.internationalPolicyPdfUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset Internationalization Policy document to default?")) {
+                          setData({ ...data, internationalPolicyPdfUrl: "" });
+                        }
+                      }}
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                      title="Remove custom PDF"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1524,6 +2672,37 @@ export function PlacementsManager() {
                     <option value="Pharma & Science">Pharma & Science</option>
                     <option value="EdTech & Analytics">EdTech & Analytics</option>
                   </select>
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Company Logo (SVG / PNG / JPG)</label>
+                  <div className="flex items-center gap-2">
+                    {editingItem.logoUrl && (
+                      <div className="h-9 w-9 rounded-xl bg-slate-50 border border-slate-200 p-1 flex items-center justify-center shrink-0">
+                        <img
+                          src={editingItem.logoUrl}
+                          alt="Logo Preview"
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                    )}
+                    <input
+                      type="text"
+                      value={editingItem.logoUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, logoUrl: e.target.value })}
+                      placeholder="Logo URL or upload"
+                      className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
+                    />
+                    <label className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold flex items-center gap-1 cursor-pointer shrink-0">
+                      <Upload className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isUploading ? "Uploading..." : "Upload"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "logoUrl", "image")}
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
             )}
@@ -1792,6 +2971,308 @@ export function PlacementsManager() {
               </div>
             )}
 
+            {/* Internship Report Modal Form */}
+            {modalType === "internshipReport" && (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Academic Year</label>
+                  <input
+                    type="text"
+                    value={editingItem.year || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
+                    placeholder="e.g. 2026–2027"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Report Title</label>
+                  <input
+                    type="text"
+                    value={editingItem.title || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
+                    placeholder="e.g. Internships & Industry Exposure 2026–2027 Report"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Official Report PDF</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={editingItem.fileUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, fileUrl: e.target.value })}
+                      placeholder="PDF File URL"
+                      className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
+                    />
+                    <label className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold flex items-center gap-1 cursor-pointer">
+                      <Upload className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isUploading ? "Uploading..." : "Upload"}</span>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "fileUrl", "file")}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Competitive Exam Report Modal Form */}
+            {modalType === "competitiveExamReport" && (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Academic Year</label>
+                  <input
+                    type="text"
+                    value={editingItem.year || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
+                    placeholder="e.g. 2026–2027"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Report Title / Syllabus</label>
+                  <input
+                    type="text"
+                    value={editingItem.title || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
+                    placeholder="e.g. Competitive Exam Coaching 2026–2027 Syllabus & Report"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Official Syllabus &amp; Report PDF</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={editingItem.fileUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, fileUrl: e.target.value })}
+                      placeholder="PDF File URL"
+                      className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
+                    />
+                    <label className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold flex items-center gap-1 cursor-pointer">
+                      <Upload className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isUploading ? "Uploading..." : "Upload"}</span>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "fileUrl", "file")}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Internship Photo Gallery Modal Form */}
+            {modalType === "internshipGallery" && (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Academic Year</label>
+                  <input
+                    type="text"
+                    value={editingItem.year || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
+                    placeholder="e.g. 2025-2026"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Photo Title</label>
+                  <input
+                    type="text"
+                    value={editingItem.title || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
+                    placeholder="e.g. Datavalley Full Stack Internship Project Review"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Caption / Description</label>
+                  <textarea
+                    rows={2}
+                    value={editingItem.caption || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, caption: e.target.value })}
+                    placeholder="e.g. Students demonstrating web application architecture to industry mentors."
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Photograph File (Upload or Image URL)</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={editingItem.url || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, url: e.target.value })}
+                      placeholder="Image URL (https://...)"
+                      className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
+                    />
+                    <label className="px-3 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold flex items-center gap-1 cursor-pointer">
+                      <Upload className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isUploading ? "Uploading..." : "Upload Photo"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "url", "image")}
+                      />
+                    </label>
+                  </div>
+                  {editingItem.url && (
+                    <div className="mt-2 w-32 aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100">
+                      <img src={editingItem.url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Competitive Coaching Photo Gallery Modal Form */}
+            {modalType === "competitiveGallery" && (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Academic Year</label>
+                  <input
+                    type="text"
+                    value={editingItem.year || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
+                    placeholder="e.g. 2025-2026"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Photo Title</label>
+                  <input
+                    type="text"
+                    value={editingItem.title || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
+                    placeholder="e.g. Banking & SSC Fast-Track Coaching Session"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Caption / Description</label>
+                  <textarea
+                    rows={2}
+                    value={editingItem.caption || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, caption: e.target.value })}
+                    placeholder="e.g. Students solving simulated quantitative reasoning papers."
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Photograph File (Upload or Image URL)</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={editingItem.url || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, url: e.target.value })}
+                      placeholder="Image URL (https://...)"
+                      className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
+                    />
+                    <label className="px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold flex items-center gap-1 cursor-pointer">
+                      <Upload className="w-3.5 h-3.5 text-amber-200" />
+                      <span>{isUploading ? "Uploading..." : "Upload Photo"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "url", "image")}
+                      />
+                    </label>
+                  </div>
+                  {editingItem.url && (
+                    <div className="mt-2 w-32 aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100">
+                      <img src={editingItem.url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* MoU Activity Modal Form */}
+            {modalType === "mouActivity" && (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Activity Title</label>
+                  <input
+                    type="text"
+                    value={editingItem.title || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
+                    placeholder="e.g. Industry 4.0 & Cloud Tech Training Workshop"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Partner Organization</label>
+                  <input
+                    type="text"
+                    value={editingItem.partner || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, partner: e.target.value })}
+                    placeholder="e.g. EXCER Edtech Pvt. Ltd."
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-600 block mb-1">Department / Cell</label>
+                    <input
+                      type="text"
+                      value={editingItem.dept || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, dept: e.target.value })}
+                      placeholder="e.g. Computer Science & IT"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-600 block mb-1">Month / Date</label>
+                    <input
+                      type="text"
+                      value={editingItem.date || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, date: e.target.value })}
+                      placeholder="e.g. Nov 2025"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Academic Year</label>
+                  <input
+                    type="text"
+                    value={editingItem.year || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
+                    placeholder="e.g. 2025-2026"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Activity Report PDF</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={editingItem.fileUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, fileUrl: e.target.value })}
+                      placeholder="PDF File URL"
+                      className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
+                    />
+                    <label className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold flex items-center gap-1 cursor-pointer">
+                      <Upload className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isUploading ? "Uploading..." : "Upload"}</span>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], "fileUrl", "file")}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Skill Domain Modal Form */}
             {modalType === "skillDomain" && (
               <div className="flex flex-col gap-3">
@@ -1845,6 +3326,171 @@ export function PlacementsManager() {
               >
                 Apply Changes
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── UNIFIED ALBUM & MULTI-PHOTO BATCH MANAGER MODAL ── */}
+      {isAlbumModalOpen && selectedAlbum && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 shadow-2xl border border-slate-100 flex flex-col gap-4 max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span className={`text-[10px] font-black uppercase tracking-wider ${albumModalType === "internship" ? "text-teal-700" : "text-amber-700"}`}>
+                  {albumModalType === "internship" ? "Internships & Exposure Album" : "Competitive Coaching Album"}
+                </span>
+                <h3 className="font-outfit font-black text-slate-900 text-base">
+                  {selectedAlbum.index !== undefined ? `Edit Album • ${selectedAlbum.folderName || "Untitled"}` : "Create New Photo Album"}
+                </h3>
+              </div>
+              <button
+                onClick={() => {
+                  setIsAlbumModalOpen(false);
+                  setSelectedAlbum(null);
+                }}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-4 text-xs">
+              {/* Album Title & Academic Year / Event Date Inputs */}
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-2 flex flex-col gap-1.5">
+                  <label className="block text-slate-800 font-extrabold uppercase text-[11px] tracking-wide">
+                    Album Name / Occasion Title <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={selectedAlbum.folderName || ""}
+                    onChange={(e) => setSelectedAlbum({ ...selectedAlbum, folderName: e.target.value })}
+                    placeholder={albumModalType === "internship" ? "e.g. 2025-2026 Datavalley & Ala Hospital Internships" : "e.g. 2025-2026 Banking & SSC Fast-Track Coaching"}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-sm focus:outline-none focus:border-[#002147] focus:ring-2 focus:ring-blue-100"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-slate-800 font-extrabold uppercase text-[11px] tracking-wide flex items-center justify-between">
+                    <span>Academic Year / Date</span>
+                    <span className="text-[10px] text-blue-700 font-bold">(Auto-sorts)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={selectedAlbum.year || selectedAlbum.eventDate || ""}
+                    onChange={(e) => setSelectedAlbum({ ...selectedAlbum, year: e.target.value, eventDate: e.target.value })}
+                    placeholder="e.g. 2025-2026"
+                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-xs focus:outline-none focus:border-[#002147] focus:ring-2 focus:ring-blue-100"
+                  />
+                </div>
+              </div>
+
+              {/* Photo Upload Zone */}
+              <div className="border border-slate-200 rounded-2xl p-4 bg-white flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                  <div>
+                    <h4 className="font-outfit font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                      <ImageIcon className="h-4 w-4 text-blue-700" />
+                      <span>Photos in this Album ({(selectedAlbum.images || []).length})</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      Select multiple photos from your device to upload directly to Sanity.
+                    </p>
+                  </div>
+
+                  <label className="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs shrink-0">
+                    {isUploadingPhoto ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <span>Uploading to Sanity...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-3.5 w-3.5" />
+                        <span>+ Upload Photos</span>
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={(e) => handleUploadPhotoToAlbum(e.target.files)}
+                      disabled={isUploadingPhoto}
+                    />
+                  </label>
+                </div>
+
+                {/* Uploaded Photos Grid */}
+                {(selectedAlbum.images || []).length === 0 ? (
+                  <div className="py-10 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                    <ImageIcon className="h-8 w-8 text-slate-300" />
+                    <span className="font-medium text-slate-600">No photos uploaded to this album yet.</span>
+                    <span className="text-[11px] text-slate-400">Click &quot;+ Upload Photos&quot; above to select images.</span>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-72 overflow-y-auto p-1">
+                    {(selectedAlbum.images || []).map((img: any, pIdx: number) => (
+                      <div
+                        key={img._key || pIdx}
+                        className="bg-slate-50 p-2 rounded-xl border border-slate-200 flex flex-col gap-1.5 relative group"
+                      >
+                        <div className="aspect-[4/3] rounded-lg overflow-hidden bg-slate-200 relative">
+                          <img src={img.url} alt={img.caption || img.title} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => handleDeletePhotoFromAlbum(pIdx)}
+                            className="absolute top-1.5 right-1.5 p-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm opacity-90 group-hover:opacity-100 transition-all cursor-pointer"
+                            title="Remove photo"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={img.caption || ""}
+                          onChange={(e) => {
+                            const updated = [...selectedAlbum.images];
+                            updated[pIdx] = { ...img, caption: e.target.value };
+                            setSelectedAlbum({ ...selectedAlbum, images: updated });
+                          }}
+                          placeholder="Add photo caption..."
+                          className="w-full px-2 py-1 bg-white border border-slate-200 rounded-md text-[11px] focus:outline-none focus:border-[#002147]"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+              <span className="text-slate-500 font-medium">
+                {(selectedAlbum.images || []).length} {(selectedAlbum.images || []).length === 1 ? "photo" : "photos"} ready in album
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAlbumModalOpen(false);
+                    setSelectedAlbum(null);
+                  }}
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveAlbum}
+                  className="px-5 py-2 rounded-xl bg-[#00875A] hover:bg-[#007048] text-white font-bold cursor-pointer shadow-xs"
+                >
+                  Save Album &amp; Photos
+                </button>
+              </div>
             </div>
           </div>
         </div>

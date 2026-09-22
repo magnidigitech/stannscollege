@@ -2443,10 +2443,21 @@ export async function getPlacementsSingletonData() {
       statistics,
       recruiters,
       mous,
+      mousMasterPdfUrl,
+      mouActivities,
       annualReports,
       skillDomains,
+      skillTrainingPdfUrl,
       apssdcSupportAreas,
-      competitiveExamsList
+      apssdcPdfUrl,
+      internshipReports,
+      internshipGalleries,
+      competitiveExamsList,
+      competitiveExamReports,
+      competitiveExamGalleries,
+      externalLinks,
+      industryEngagementPdfUrl,
+      internationalPolicyPdfUrl
     }`;
     const data = await sanityClient.fetch(query);
     if (data && data._id) {

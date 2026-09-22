@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" fill="none">
+  <rect width="400" height="120" rx="16" fill="#ffffff" />
+  <!-- AP Emblem / Circle -->
+  <circle cx="60" cy="60" r="42" fill="#002147" />
+  <circle cx="60" cy="60" r="36" fill="#f59e0b" />
+  <circle cx="60" cy="60" r="32" fill="#ffffff" />
+  <!-- Inner Gear & Skill Icon -->
+  <path d="M60 38 L63 46 L71 44 L68 52 L76 56 L69 61 L74 68 L66 69 L67 77 L60 73 L53 77 L54 69 L46 68 L51 61 L44 56 L52 52 L49 44 L57 46 Z" fill="#002147" />
+  <circle cx="60" cy="60" r="8" fill="#f59e0b" />
+  
+  <!-- Text: APSSDC -->
+  <text x="120" y="52" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="34" fill="#002147" letter-spacing="1">APSSDC</text>
+  <text x="120" y="74" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="13" fill="#d97706">Andhra Pradesh State Skill Development Corporation</text>
+  <text x="120" y="92" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="11" fill="#64748b">Government of Andhra Pradesh</text>
+</svg>
