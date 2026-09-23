@@ -24,14 +24,16 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
   const allProfiles = await getAllFacultyProfiles();
   const pdfDocuments = await getFacultyPdfDocuments();
 
-  // Build a name → slug map and name → photo map for "View Profile" links and member cards
+  // Build a name → slug map, name → photo map, and name → pdf map for "View Profile" / PDF links and member cards
   const profileSlugMap: Record<string, string> = {};
   const profilePhotoMap: Record<string, string> = {};
+  const profilePdfMap: Record<string, string> = {};
   (allProfiles || []).forEach((profile: any) => {
     if (profile.facultyName) {
       const key = profile.facultyName.trim().toLowerCase();
       if (profile.slug) profileSlugMap[key] = profile.slug;
       if (profile.profilePhotoUrl) profilePhotoMap[key] = profile.profilePhotoUrl;
+      if (profile.facultyProfilePdfUrl || profile.cvPdfUrl) profilePdfMap[key] = profile.facultyProfilePdfUrl || profile.cvPdfUrl;
     }
   });
   (members || []).forEach((m: any) => {
@@ -39,6 +41,7 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
       const key = m.name.trim().toLowerCase();
       if (m.slug && !profileSlugMap[key]) profileSlugMap[key] = m.slug;
       if (m.imageUrl && !profilePhotoMap[key]) profilePhotoMap[key] = m.imageUrl;
+      if (m.profilePdfUrl && !profilePdfMap[key]) profilePdfMap[key] = m.profilePdfUrl;
     }
   });
 
@@ -53,6 +56,7 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
         activeSlug={activeSlug}
         profileSlugMap={profileSlugMap}
         profilePhotoMap={profilePhotoMap}
+        profilePdfMap={profilePdfMap}
         initialPdfDocuments={pdfDocuments || []}
       />
     </div>

@@ -239,6 +239,7 @@ interface FacultyClientPortalProps {
   activeSlug?: string;
   profileSlugMap?: Record<string, string>;
   profilePhotoMap?: Record<string, string>;
+  profilePdfMap?: Record<string, string>;
   initialPdfDocuments?: any[];
 }
 
@@ -248,6 +249,7 @@ export default function FacultyClientPortal({
   activeSlug = "teaching-staff",
   profileSlugMap = {},
   profilePhotoMap = {},
+  profilePdfMap = {},
   initialPdfDocuments = []
 }: FacultyClientPortalProps) {
   const router = useRouter();
@@ -347,7 +349,7 @@ export default function FacultyClientPortal({
     );
   }, [allFdpReports, fdpArchiveSearchQuery]);
 
-  // Compute teaching members list with dynamic photo & profile slug lookup
+  // Compute teaching members list with dynamic photo, profile slug & PDF lookup
   const teachingStaff = useMemo(() => {
     const rawList = FACULTY_DATA.teachingFaculty || [];
     return rawList.map((member) => {
@@ -371,13 +373,38 @@ export default function FacultyClientPortal({
         }
       }
 
+      // Look up PDF
+      let pdf = (member as any).pdfUrl || "";
+      for (const [key, val] of Object.entries(profilePdfMap)) {
+        if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
+          pdf = val;
+          break;
+        }
+      }
+
+      // Auto-created dynamic PDF endpoint with available data
+      const memberSlug = slug || (member as any).slug || (member as any).employeeId || normName;
+      const params = new URLSearchParams({
+        name: member.name || "",
+        designation: member.designation || "",
+        department: member.department || "",
+        qualification: member.qualification || "",
+        doj: member.dateOfJoining || "",
+        exp: member.experience || "",
+        empId: member.employeeId || "",
+        photo: photo || member.imageUrl || "",
+      });
+      const dynamicPdfUrl = `/api/faculty-pdf/${encodeURIComponent(memberSlug)}.pdf?${params.toString()}`;
+      const finalPdfUrl = pdf && pdf.startsWith("http") ? pdf : dynamicPdfUrl;
+
       return {
         ...member,
         profileSlug: slug || undefined,
-        imageUrl: photo || undefined
+        imageUrl: photo || undefined,
+        pdfUrl: finalPdfUrl
       };
     });
-  }, [profileSlugMap, profilePhotoMap]);
+  }, [profileSlugMap, profilePhotoMap, profilePdfMap]);
 
   // Map of faculty by name for quick department lookups
   const facultyByNameMap = useMemo(() => {
@@ -536,15 +563,14 @@ export default function FacultyClientPortal({
                           <table className="w-full border-collapse text-left font-sans text-xs">
                             <thead>
                               <tr className="bg-[#002147] text-white font-outfit text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
-                                <th className="px-2 py-3 text-center w-[4%]">S.No.</th>
-                                <th className="px-2 py-3 text-center w-[10%]">Employee ID</th>
-                                <th className="px-2.5 py-3 w-[20%]">Name of the Employee</th>
-                                <th className="px-2 py-3 w-[17%]">Designation</th>
-                                <th className="px-2 py-3 w-[13%]">Department</th>
-                                <th className="px-2 py-3 w-[15%]">Qualification</th>
-                                <th className="px-2 py-3 text-center w-[9%]">Date of Joining</th>
-                                <th className="px-1.5 py-3 text-center w-[6%]">Experience</th>
-                                <th className="px-1.5 py-3 text-center w-[6%]">Profile</th>
+                                <th className="px-2.5 py-3 text-center w-[5%]">S.No.</th>
+                                <th className="px-2.5 py-3 text-center w-[11%]">Employee ID</th>
+                                <th className="px-3 py-3 w-[23%]">Name of the Employee</th>
+                                <th className="px-2.5 py-3 w-[18%]">Designation</th>
+                                <th className="px-2.5 py-3 w-[14%]">Department</th>
+                                <th className="px-2.5 py-3 w-[14%]">Qualification</th>
+                                <th className="px-2.5 py-3 text-center w-[9%]">Date of Joining</th>
+                                <th className="px-2 py-3 text-center w-[6%]">Experience</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs sm:text-[12px]">
@@ -560,25 +586,24 @@ export default function FacultyClientPortal({
                                       key={m.sNo}
                                       className="hover:bg-slate-50/80 transition-colors group"
                                     >
-                                      <td className="px-2 py-2 text-center font-bold text-[#002147] bg-slate-50/40">
+                                      <td className="px-2.5 py-2.5 text-center font-bold text-[#002147] bg-slate-50/40">
                                         {m.sNo}
                                       </td>
-                                      <td className="px-2 py-2 text-center font-mono font-bold text-slate-600 bg-slate-50/20 text-[11px]">
+                                      <td className="px-2.5 py-2.5 text-center font-mono font-bold text-slate-600 bg-slate-50/20 text-[11px]">
                                         {m.employeeId || "—"}
                                       </td>
-                                      <td className="px-2.5 py-2 font-extrabold text-slate-800">
-                                        {m.profileSlug ? (
-                                          <Link
-                                            href={`/faculty/profile/${m.profileSlug}`}
-                                            className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-1 font-black"
-                                          >
-                                            {m.name}
-                                          </Link>
-                                        ) : (
+                                      <td className="px-3 py-2.5 font-extrabold text-slate-800">
+                                        <button
+                                          type="button"
+                                          onClick={() => handleOpenPdf(m.pdfUrl || DEFAULT_PDF, `${m.name} - Faculty Profile`)}
+                                          className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-1.5 font-black text-left cursor-pointer transition-colors group/btn"
+                                          title={`View PDF profile for ${m.name}`}
+                                        >
                                           <span>{m.name}</span>
-                                        )}
+                                          <FileText className="w-3.5 h-3.5 text-blue-600 opacity-70 group-hover/btn:opacity-100 group-hover/btn:scale-110 transition-all shrink-0" />
+                                        </button>
                                       </td>
-                                      <td className="px-2 py-2 font-semibold text-slate-700">
+                                      <td className="px-2.5 py-2.5 font-semibold text-slate-700">
                                         <div className="flex flex-wrap items-center gap-1">
                                           <span>{m.designation}</span>
                                           {isLeadership && (
@@ -593,39 +618,24 @@ export default function FacultyClientPortal({
                                           )}
                                         </div>
                                       </td>
-                                      <td className="px-2 py-2 font-bold text-[#002147]">
+                                      <td className="px-2.5 py-2.5 font-bold text-[#002147]">
                                         {m.department || "—"}
                                       </td>
-                                      <td className="px-2 py-2 font-medium text-slate-600 text-[11px]">
+                                      <td className="px-2.5 py-2.5 font-medium text-slate-600 text-[11px]">
                                         {m.qualification || "—"}
                                       </td>
-                                      <td className="px-2 py-2 text-center font-medium text-slate-600 text-[11px]">
+                                      <td className="px-2.5 py-2.5 text-center font-medium text-slate-600 text-[11px]">
                                         {m.dateOfJoining}
                                       </td>
-                                      <td className="px-1.5 py-2 text-center font-extrabold text-[#002147]">
+                                      <td className="px-2 py-2.5 text-center font-extrabold text-[#002147]">
                                         {m.experience} {m.experience && !m.experience.includes("Yr") && !m.experience.includes("—") ? "Yrs" : ""}
-                                      </td>
-                                      <td className="px-1.5 py-2 text-center">
-                                        {m.profileSlug ? (
-                                          <Link
-                                            href={`/faculty/profile/${m.profileSlug}`}
-                                            className="inline-flex items-center justify-center gap-1 px-2 py-0.5 rounded-lg bg-[#002147] hover:bg-[#003366] text-white text-[10px] font-bold shadow-sm transition-all active:scale-95"
-                                          >
-                                            <Eye className="w-3 h-3" />
-                                            View
-                                          </Link>
-                                        ) : (
-                                          <span className="text-[9px] font-semibold text-slate-400 bg-slate-100 px-1 py-0.5 rounded">
-                                            Listed
-                                          </span>
-                                        )}
                                       </td>
                                     </tr>
                                   );
                                 })
                               ) : (
                                 <tr>
-                                  <td colSpan={9} className="py-12 text-center text-slate-400 font-semibold text-sm">
+                                  <td colSpan={8} className="py-12 text-center text-slate-400 font-semibold text-sm">
                                     No faculty members match your search criteria.
                                   </td>
                                 </tr>
@@ -726,7 +736,8 @@ export default function FacultyClientPortal({
                                       experience: "—",
                                       employeeId: "—",
                                       profileSlug: undefined,
-                                      imageUrl: undefined
+                                      imageUrl: undefined,
+                                      pdfUrl: `/api/faculty-pdf/${encodeURIComponent(normName)}.pdf?name=${encodeURIComponent(facultyName)}&department=${encodeURIComponent(dept.name.replace(/^\d+\.\s*/, ""))}&designation=Faculty+Member`
                                     };
 
                                     const isLeadership =
@@ -760,7 +771,15 @@ export default function FacultyClientPortal({
                                           </div>
 
                                           <h4 className="font-outfit text-xl sm:text-2xl font-black text-[#002147] mb-3 leading-snug">
-                                            {member.name}
+                                            <button
+                                              type="button"
+                                              onClick={() => handleOpenPdf(member.pdfUrl || DEFAULT_PDF, `${member.name} - Faculty Profile`)}
+                                              className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-2 text-left cursor-pointer transition-colors"
+                                              title={`View PDF profile for ${member.name}`}
+                                            >
+                                              <span>{member.name}</span>
+                                              <FileText className="w-4 h-4 text-blue-600 opacity-70 shrink-0" />
+                                            </button>
                                           </h4>
 
                                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 border-t border-slate-200/60 pt-3 text-xs sm:text-sm font-semibold text-slate-600">
@@ -787,8 +806,8 @@ export default function FacultyClientPortal({
                                           </div>
                                         </div>
 
-                                        {/* Right: Framed Passport Photo & View Profile Link */}
-                                        <div className="flex flex-col items-center justify-center gap-3 shrink-0">
+                                        {/* Right: Framed Passport Photo */}
+                                        <div className="flex flex-col items-center justify-center shrink-0">
                                           <div className="relative p-1.5 bg-white border-2 border-slate-200/80 rounded-2xl shadow-inner w-32 h-40 sm:w-36 sm:h-44 overflow-hidden flex items-center justify-center group/img">
                                             {member.imageUrl ? (
                                               <img
@@ -805,20 +824,6 @@ export default function FacultyClientPortal({
                                               </div>
                                             )}
                                           </div>
-
-                                          {member.profileSlug ? (
-                                            <Link
-                                              href={`/faculty/profile/${member.profileSlug}`}
-                                              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow hover:shadow-md transition-all active:scale-95 w-full text-center"
-                                            >
-                                              <Eye className="w-3.5 h-3.5" />
-                                              View Profile
-                                            </Link>
-                                          ) : (
-                                            <span className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-400 text-[10px] font-bold">
-                                              Profile on File
-                                            </span>
-                                          )}
                                         </div>
                                       </div>
                                     );

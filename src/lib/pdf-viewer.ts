@@ -33,8 +33,11 @@ export function getCleanPdfUrl(url?: string, title?: string, download = false): 
     url = "/documents/DefaultFile_1.pdf";
   }
 
-  // If it's already an internal /api/pdf route, return as is
-  if (url.startsWith("/api/pdf/")) {
+  // If it's already an internal API route (/api/pdf, /api/faculty-pdf, etc.), return as is with download flag
+  if (url.startsWith("/api/")) {
+    if (download && !url.includes("dl=1") && !url.includes("download=1")) {
+      return url.includes("?") ? `${url}&dl=1` : `${url}?dl=1`;
+    }
     return url;
   }
 

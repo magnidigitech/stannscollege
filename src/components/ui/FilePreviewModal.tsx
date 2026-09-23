@@ -23,7 +23,11 @@ interface FilePreviewModalProps {
 }
 
 export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePreviewModalProps) {
-  const isPdf = fileUrl ? fileUrl.toLowerCase().includes(".pdf") : false;
+  const isPdf = fileUrl
+    ? fileUrl.toLowerCase().includes(".pdf") ||
+      fileUrl.includes("/api/faculty-pdf") ||
+      fileUrl.includes("/api/pdf")
+    : false;
   // Default view is standard native browser PDF view
   const [viewMode, setViewMode] = useState<"standard" | "flipbook">("standard");
 
