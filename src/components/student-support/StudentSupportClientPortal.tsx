@@ -94,10 +94,10 @@ const STUDENT_SUPPORT_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   },
   {
     catSlug: "sec-capacity-building",
-    title: "D. Capacity Building & Skills",
+    title: "D. Workshops & Seminars",
     sectionId: "sec-capacity-building",
     items: [
-      { text: "1. Workshops & Skill Seminars", id: "sec-workshops" },
+      { text: "1. Workshops & Seminars", id: "sec-workshops" },
     ],
   },
   {
@@ -115,6 +115,21 @@ interface SupportDocItem {
   fileUrl?: string;
   subtitle?: string;
   year?: string;
+}
+
+interface GalleryPhotoItem {
+  id?: string;
+  url: string;
+  title?: string;
+  caption?: string;
+  year?: string;
+}
+
+interface PhotoGalleryModalState {
+  isOpen: boolean;
+  title: string;
+  subtitle?: string;
+  photos: GalleryPhotoItem[];
 }
 
 interface StudentSupportClientPortalProps {
@@ -148,6 +163,83 @@ export default function StudentSupportClientPortal({
         .catch(() => {});
     }
   }, [portalData]);
+
+  // State for View All Archive Modal
+  const [archiveModalData, setArchiveModalData] = useState<{
+    title: string;
+    subtitle?: string;
+    docs: SupportDocItem[];
+  } | null>(null);
+  const [archiveSearchQuery, setArchiveSearchQuery] = useState("");
+
+  // State for Photo Gallery Modal & Lightbox
+  const [activeGalleryModal, setActiveGalleryModal] = useState<PhotoGalleryModalState | null>(null);
+  const [galleryYearFilter, setGalleryYearFilter] = useState<string>("all");
+  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState<number | null>(null);
+
+  const normalizeYear = (yr?: string) => {
+    if (!yr) return "";
+    return yr.replace(/\s+/g, "").replace(/–/g, "-");
+  };
+
+  const galleryAvailableYears = React.useMemo(() => {
+    if (!activeGalleryModal?.photos) return [];
+    const yearsSet = new Set<string>();
+    activeGalleryModal.photos.forEach((p) => {
+      if (p.year && p.year.trim()) {
+        yearsSet.add(p.year.trim());
+      }
+    });
+    return Array.from(yearsSet).sort((a, b) => b.localeCompare(a));
+  }, [activeGalleryModal]);
+
+  const currentModalPhotos = React.useMemo(() => {
+    if (!activeGalleryModal?.photos) return [];
+    if (galleryYearFilter === "all") return activeGalleryModal.photos;
+    return activeGalleryModal.photos.filter(
+      (p) => normalizeYear(p.year) === normalizeYear(galleryYearFilter) || (p.year && p.year.includes(galleryYearFilter))
+    );
+  }, [activeGalleryModal, galleryYearFilter]);
+
+  const normalizeGalleryPhotos = (rawList: any[]): GalleryPhotoItem[] => {
+    if (!Array.isArray(rawList)) return [];
+    const photos: GalleryPhotoItem[] = [];
+    rawList.forEach((item) => {
+      if (!item) return;
+      if (Array.isArray(item.images) && item.images.length > 0) {
+        item.images.forEach((img: any, idx: number) => {
+          photos.push({
+            id: img.id || `${item.id || item.title || "grp"}-${idx}`,
+            url: img.url,
+            title: img.title || item.title || "Photo",
+            year: img.year || item.year || "2025–2026",
+            caption: img.caption || item.caption || "",
+          });
+        });
+      } else if (item.url) {
+        photos.push({
+          id: item.id || `photo-${Math.random()}`,
+          url: item.url,
+          title: item.title || "Photo",
+          year: item.year || "2025–2026",
+          caption: item.caption || "",
+        });
+      }
+    });
+    return photos;
+  };
+
+  const openGalleryModal = (title: string, subtitle: string, rawPhotos: any[]) => {
+    setGalleryYearFilter("all");
+    setGalleryLightboxIndex(null);
+    const photos = normalizeGalleryPhotos(rawPhotos);
+    setActiveGalleryModal({
+      isOpen: true,
+      title,
+      subtitle,
+      photos,
+    });
+  };
 
   const welfareItems = portal?.welfareServices?.items || STUDENT_SUPPORT_DATA.welfareServices.items;
 
@@ -190,14 +282,6 @@ export default function StudentSupportClientPortal({
       </a>
     );
   };
-
-  // State for View All Archive Modal
-  const [archiveModalData, setArchiveModalData] = useState<{
-    title: string;
-    subtitle?: string;
-    docs: SupportDocItem[];
-  } | null>(null);
-  const [archiveSearchQuery, setArchiveSearchQuery] = useState("");
 
   // Map incoming URL slug to page element id
   const slugToIdMap: Record<string, string> = {
@@ -247,18 +331,32 @@ export default function StudentSupportClientPortal({
     }
   }, [activeSlug]);
 
-  // Handle escape key for archive modal
+  // Handle escape and arrow keys for modals & lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setArchiveModalData(null);
+        if (galleryLightboxIndex !== null) {
+          setGalleryLightboxIndex(null);
+        } else if (activeGalleryModal) {
+          setActiveGalleryModal(null);
+        } else if (archiveModalData) {
+          setArchiveModalData(null);
+        }
+      } else if (galleryLightboxIndex !== null && currentModalPhotos.length > 0) {
+        if (e.key === "ArrowLeft") {
+          setGalleryLightboxIndex((prev) =>
+            prev !== null && prev > 0 ? prev - 1 : currentModalPhotos.length - 1
+          );
+        } else if (e.key === "ArrowRight") {
+          setGalleryLightboxIndex((prev) =>
+            prev !== null && prev < currentModalPhotos.length - 1 ? prev + 1 : 0
+          );
+        }
       }
     };
-    if (archiveModalData) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
+    window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [archiveModalData]);
+  }, [galleryLightboxIndex, activeGalleryModal, archiveModalData, currentModalPhotos]);
 
   // Scrollspy to automatically highlight sidebar items as user scrolls
   useEffect(() => {
@@ -1213,47 +1311,74 @@ export default function StudentSupportClientPortal({
                   </div>
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[
-                        { id: "sec-sports-facilities", title: "1. Sports & Games Facilities", desc: "The College provides appropriate indoor and outdoor sports facilities, playing areas, equipment and physical education resources to encourage regular participation and fitness." },
-                        { id: "sec-sports-intramural", title: "2. Intramural Sports", desc: "Students participate in inter-class and inter-department competitions, annual sports meets, individual and team events, and recreational games, fostering healthy competition and team spirit." },
-                        { id: "sec-sports-intercollegiate", title: "3. Inter-Collegiate Competitions", desc: "Students are encouraged to participate in inter-collegiate tournaments, university competitions, friendly matches and individual and team events, providing opportunities to develop competitive skills." },
-                        { id: "sec-sports-national", title: "4. University / State / National Level", desc: "The College encourages talented students to participate in university, state and national-level competitions, championships and selection trials." },
-                        { id: "sec-sports-selfdefense", title: "5. Self-Defense & Personal Safety Training", desc: "Self-defense programmes are organized to develop personal safety awareness, confidence, physical preparedness and basic self-protection skills, particularly among women students." },
-                        { id: "sec-sports-fitness", title: "6. Fitness & Wellness", desc: "The College promotes physical fitness, yoga, wellness and regular physical activity as integral components of students' health and holistic development." },
-                        { id: "sec-sports-coaching", title: "7. Sports Coaching & Training", desc: "Students are supported through coaching, practice sessions, training camps and skill-development activities, with emphasis on sportsmanship, teamwork, discipline and leadership." },
-                        { id: "sec-sports-achievements", title: "8. Sports Achievements", desc: "The achievements of students and teams in sports competitions at university, state and national levels are recognized and showcased." },
-                        { id: "sec-sports-events", title: "9. Sports Events & Activities", desc: "The College conducts Annual Sports Meets, special sporting events, fitness activities and National Sports Day programmes to encourage active participation and healthy living." },
-                      ].map((item, idx) => (
-                        <div
-                          key={idx}
-                          id={item.id}
-                          className={`scroll-mt-52 border-2 ${
-                            idx % 2 === 1 ? "border-blue-200/90 bg-[#e8f1fd]" : "border-slate-200/90 bg-white"
-                          } rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-3`}
-                        >
-                          <div>
-                            <h4 className="font-outfit font-extrabold text-blue-700 text-sm md:text-base">
-                              {item.title}
-                            </h4>
-                            <p className="text-slate-600 text-xs mt-1.5 leading-relaxed font-medium">
-                              {item.desc}
-                            </p>
-                          </div>
-                          <div className={`pt-2 border-t ${idx % 2 === 1 ? "border-blue-200/60" : "border-slate-100"} flex items-center justify-between text-[11px] text-slate-500 font-semibold`}>
-                            <span>Physical Fitness</span>
-                            <span className="text-emerald-700 font-bold">Active Campus</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      {(portal?.sportsAndGames?.pillars || STUDENT_SUPPORT_DATA.sportsAndGames.pillars).map((item: any, idx: number) => {
+                        const isAlt = idx % 2 === 1;
+                        const staticPillar = STUDENT_SUPPORT_DATA.sportsAndGames.pillars.find((p: any) => p.slug === item.slug);
+                        const reports = (item.reports && item.reports.length > 0) ? item.reports : (staticPillar?.reports || []);
+                        const gallery = (item.gallery && item.gallery.length > 0) ? item.gallery : (staticPillar?.gallery || []);
+                        return (
+                          <div
+                            key={idx}
+                            id={item.id}
+                            className={`scroll-mt-52 border-2 ${
+                              isAlt ? "border-blue-200/90 bg-[#e8f1fd]" : "border-slate-200/90 bg-white"
+                            } rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group`}
+                          >
+                            <div>
+                              <div className="flex items-center justify-between gap-2 mb-2.5">
+                                <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200">
+                                  Sports &amp; Fitness
+                                </span>
+                                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-md">
+                                  Active Programme
+                                </span>
+                              </div>
+                              <h4 className="font-outfit font-extrabold text-blue-700 text-base md:text-lg group-hover:text-blue-900 transition-colors">
+                                {item.title}
+                              </h4>
+                              <p className="text-slate-600 text-xs mt-2 leading-relaxed font-medium text-justify">
+                                {item.desc}
+                              </p>
+                            </div>
 
-                    {/* Sports Strategic Document Cards (Newest First) */}
-                    {renderYearlyReportsSection("Year-wise Sports Activity Reports", [
-                      { title: "Annual Sports Activity Report 2026–2027", subtitle: "Official Annual Report", year: "2026–2027", fileUrl: DEFAULT_PDF },
-                      { title: "Annual Sports Activity Report 2025–2026", subtitle: "Official Annual Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                      { title: "Annual Sports Activity Report 2024–2025", subtitle: "Official Annual Report", year: "2024–2025", fileUrl: DEFAULT_PDF },
-                    ])}
+                            {/* Action Buttons for Each Sports Wing/Pillar */}
+                            <div className={`pt-3.5 border-t ${isAlt ? "border-blue-200/70" : "border-slate-100"} flex flex-wrap items-center gap-2.5`}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setArchiveSearchQuery("");
+                                  setArchiveModalData({
+                                    title: `${item.title} - Reports Archive`,
+                                    subtitle: `Complete year-wise archive (${reports.length} documents)`,
+                                    docs: reports,
+                                  });
+                                }}
+                                className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#002147] bg-white hover:bg-[#002147] hover:text-white border border-slate-200/90 px-3.5 py-2 rounded-xl transition-all shadow-2xs cursor-pointer flex-1"
+                              >
+                                <FileText className="h-3.5 w-3.5 text-blue-600" />
+                                <span>Yearly Reports ({reports.length})</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  openGalleryModal(
+                                    `${item.title} Photo Gallery`,
+                                    `Photographs and activities of ${item.title}`,
+                                    gallery
+                                  )
+                                }
+                                className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white border border-emerald-200/80 px-3.5 py-2 rounded-xl transition-all shadow-2xs cursor-pointer flex-1"
+                              >
+                                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                                <span>Photo Gallery ({gallery.length})</span>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </section>
 
@@ -1291,54 +1416,79 @@ export default function StudentSupportClientPortal({
                   </div>
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[
-                        { id: "sec-nss", title: "1. National Service Scheme (NSS)", desc: "The NSS encourages students to engage in community service, social awareness, health and hygiene, environmental protection and civic responsibility through regular activities and special outreach programmes." },
-                        { id: "sec-ncc", title: "2. National Cadet Corps (NCC)", desc: "The NCC develops discipline, leadership, teamwork, patriotism and a spirit of service among students through training, camps, drills and community-oriented activities." },
-                        { id: "sec-rrc", title: "3. Red Ribbon Club (RRC)", desc: "The Red Ribbon Club promotes awareness on HIV/AIDS prevention, health, hygiene, responsible behaviour and healthy lifestyles through awareness programmes and student-led activities." },
-                        { id: "sec-mother-gnanamma", title: "4. Mother Gnanamma Outreach Committee", desc: "The Mother Gnanamma Outreach Committee promotes the values of service, compassion and social responsibility through community-oriented initiatives and outreach programmes for the welfare of society." },
-                        { id: "sec-eco-club", title: "5. Eco Club & Environmental Initiatives", desc: "The College promotes environmental sustainability and ecological responsibility through plantation drives, cleanliness campaigns, waste management, conservation activities and environmental awareness programmes." },
-                        { id: "sec-uba", title: "6. Community Outreach – Unnat Bharat Abhiyan", desc: "St. Ann’s College for Women promotes community engagement and rural development through Unnat Bharat Abhiyan (UBA). The initiative encourages students and faculty to work with local communities through activities focused on education, health, sanitation, environmental awareness, digital literacy and social development." },
-                      ].map((item, idx) => (
-                        <div
-                          key={idx}
-                          id={item.id}
-                          className={`scroll-mt-52 border-2 ${
-                            idx % 2 === 1 ? "border-blue-200/90 bg-[#e8f1fd]" : "border-slate-200/90 bg-white"
-                          } rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-3 group`}
-                        >
-                          <div>
-                            <div className="flex items-center justify-between gap-2 mb-2">
-                              <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-100">
-                                Outreach Wing
-                              </span>
-                              <span className="text-xs text-slate-400 font-medium">Active Cell</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      {(portal?.extensionOutreach?.wings || STUDENT_SUPPORT_DATA.extensionOutreach.wings).map((item: any, idx: number) => {
+                        const isAlt = idx % 2 === 1;
+                        const staticWing = STUDENT_SUPPORT_DATA.extensionOutreach.wings.find((w: any) => w.slug === item.slug);
+                        const reports = (item.reports && item.reports.length > 0) ? item.reports : (staticWing?.reports || []);
+                        const gallery = (item.gallery && item.gallery.length > 0) ? item.gallery : (staticWing?.gallery || []);
+                        return (
+                          <div
+                            key={idx}
+                            id={item.id}
+                            className={`scroll-mt-52 border-2 ${
+                              isAlt ? "border-blue-200/90 bg-[#e8f1fd]" : "border-slate-200/90 bg-white"
+                            } rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-4 group`}
+                          >
+                            <div>
+                              <div className="flex items-center justify-between gap-2 mb-2.5">
+                                <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-100">
+                                  Outreach Wing
+                                </span>
+                                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-md">
+                                  Active Wing
+                                </span>
+                              </div>
+                              <h4 className="font-outfit font-extrabold text-blue-700 text-base md:text-lg group-hover:text-blue-900 transition-colors">
+                                {item.title}
+                              </h4>
+                              <p className="text-slate-600 text-xs mt-2 leading-relaxed font-medium text-justify">
+                                {item.desc}
+                              </p>
                             </div>
-                            <h4 className="font-outfit font-extrabold text-blue-700 text-sm md:text-base group-hover:text-blue-900 transition-colors">
-                              {item.title}
-                            </h4>
-                            <p className="text-slate-600 text-xs mt-1.5 leading-relaxed font-medium">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
 
-                    {/* Outreach Strategic Document Cards (Newest First) */}
-                    {renderYearlyReportsSection("Extension & Outreach Annual Reports", [
-                      { title: "NSS Activities & Community Camps Report", subtitle: "NSS Wing Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                      { title: "NCC Annual Training & Drills Report", subtitle: "NCC Unit Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                      { title: "Red Ribbon Club (RRC) Awareness Report", subtitle: "RRC Unit Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                      { title: "Mother Gnanamma Outreach Welfare Report", subtitle: "Outreach Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                      { title: "Eco Club Environmental & Plantation Report", subtitle: "Eco Club Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                      { title: "Unnat Bharat Abhiyan (UBA) Rural Report", subtitle: "UBA Unit Report", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                    ])}
+                            {/* Action Buttons for Each Outreach Wing */}
+                            <div className={`pt-3.5 border-t ${isAlt ? "border-blue-200/70" : "border-slate-100"} flex flex-wrap items-center gap-2.5`}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setArchiveSearchQuery("");
+                                  setArchiveModalData({
+                                    title: `${item.title} - Reports Archive`,
+                                    subtitle: `Complete year-wise archive (${reports.length} documents)`,
+                                    docs: reports,
+                                  });
+                                }}
+                                className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#002147] bg-white hover:bg-[#002147] hover:text-white border border-slate-200/90 px-3.5 py-2 rounded-xl transition-all shadow-2xs cursor-pointer flex-1"
+                              >
+                                <FileText className="h-3.5 w-3.5 text-blue-600" />
+                                <span>Yearly Reports ({reports.length})</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  openGalleryModal(
+                                    `${item.title} Photo Gallery`,
+                                    `Photographs and activities of ${item.title}`,
+                                    gallery
+                                  )
+                                }
+                                className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white border border-emerald-200/80 px-3.5 py-2 rounded-xl transition-all shadow-2xs cursor-pointer flex-1"
+                              >
+                                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                                <span>Photo Gallery ({gallery.length})</span>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </section>
 
                 {/* ============================================================ */}
-                {/* SECTION D: Capacity Building & Skill Enhancement             */}
+                {/* SECTION D: Workshops & Seminars                              */}
                 {/* ============================================================ */}
                 <section
                   id="sec-capacity-building"
@@ -1347,27 +1497,44 @@ export default function StudentSupportClientPortal({
                 >
                   {/* Full-Width Section Header Banner */}
                   <div
-                    className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                    className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b transition-colors duration-200"
                     style={{
                       backgroundColor: "var(--sec4-bg, var(--level2-bg, #002147))",
                       borderColor: "var(--sec4-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
                     }}
                   >
-                    <div className="flex items-center gap-3">
-                      <Compass className="h-6 w-6 text-sky-300 shrink-0" />
-                      <h2
-                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                        style={{ color: "var(--sec4-title, var(--level2-title, #ffffff))" }}
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <BookOpen className="h-6 w-6 text-sky-300 shrink-0" />
+                        <h2
+                          className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                          style={{ color: "var(--sec4-title, var(--level2-title, #ffffff))" }}
+                        >
+                          D. Workshops &amp; Seminars
+                        </h2>
+                      </div>
+                      <p
+                        className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                        style={{ color: "var(--sec4-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
                       >
-                        D. Capacity Building &amp; Skill Enhancement
-                      </h2>
+                        Workshops, skill-development training programmes, seminars, and expert sessions.
+                      </p>
                     </div>
-                    <p
-                      className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                      style={{ color: "var(--sec4-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openGalleryModal(
+                          "Workshops & Seminars Photo Gallery",
+                          "Hands-on workshops, seminars, technical bootcamps, and expert training sessions",
+                          portal?.capacityBuilding?.gallery || STUDENT_SUPPORT_DATA.capacityBuilding.gallery
+                        )
+                      }
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer shrink-0 self-start sm:self-auto"
                     >
-                      Workshops, skill-development training programmes, and experiential learning.
-                    </p>
+                      <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+                      <span>View Photo Gallery</span>
+                    </button>
                   </div>
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-6 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
@@ -1375,28 +1542,18 @@ export default function StudentSupportClientPortal({
                       id="sec-workshops"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5 bg-white"
                     >
-                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600">
-                          <BookOpen className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            1. Workshops &amp; Seminars
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">Subject Knowledge, Practical Skills &amp; Professional Competencies</p>
-                        </div>
-                      </div>
-
                       <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        The College organizes workshops, seminars, training programmes and expert sessions to enhance students' subject knowledge, practical skills, awareness and professional competencies. Programmes are conducted in collaboration with faculty, industry experts, professionals and subject specialists, wherever appropriate.
+                        {portal?.capacityBuilding?.description ||
+                          "The College organizes workshops, seminars, training programmes and expert sessions to enhance students' subject knowledge, practical skills, awareness and professional competencies. Programmes are conducted in collaboration with faculty, industry experts, professionals and subject specialists, wherever appropriate."}
                       </p>
 
                       {/* Documents Grid (Newest First) */}
-                      {renderYearlyReportsSection("Workshops, Seminars & Skill Training Documentation", [
-                        { title: "Workshops & Seminars Schedule 2026–2027", subtitle: "Official Schedule", year: "2026–2027", fileUrl: "/documents/student-support/Mentor Mentee Action Plan 2026-2027.pdf" },
-                        { title: "Skill Enhancement & Training Report 2025–2026", subtitle: "Annual Training Summary", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                        { title: "Capacity Building Annual Summary 2024–2025", subtitle: "Annual Training Summary", year: "2024–2025", fileUrl: DEFAULT_PDF },
-                      ])}
+                      {renderYearlyReportsSection(
+                        "Workshops, Seminars & Skill Training Documentation",
+                        portal?.capacityReports ||
+                          portal?.capacityBuilding?.reports ||
+                          STUDENT_SUPPORT_DATA.capacityBuilding.reports
+                      )}
                     </div>
                   </div>
                 </section>
@@ -1411,27 +1568,44 @@ export default function StudentSupportClientPortal({
                 >
                   {/* Full-Width Section Header Banner */}
                   <div
-                    className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                    className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b transition-colors duration-200"
                     style={{
                       backgroundColor: "var(--sec5-bg, var(--level2-bg, #002147))",
                       borderColor: "var(--sec5-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
                     }}
                   >
-                    <div className="flex items-center gap-3">
-                      <Award className="h-6 w-6 text-amber-300 shrink-0" />
-                      <h2
-                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                        style={{ color: "var(--sec5-title, var(--level2-title, #ffffff))" }}
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <Award className="h-6 w-6 text-amber-300 shrink-0" />
+                        <h2
+                          className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                          style={{ color: "var(--sec5-title, var(--level2-title, #ffffff))" }}
+                        >
+                          E. Student Participation &amp; Laurels
+                        </h2>
+                      </div>
+                      <p
+                        className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                        style={{ color: "var(--sec5-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
                       >
-                        E. Student Participation &amp; Laurels
-                      </h2>
+                        Recognition of excellence in academic, co-curricular, cultural, and sports competitions.
+                      </p>
                     </div>
-                    <p
-                      className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                      style={{ color: "var(--sec5-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openGalleryModal(
+                          "Student Laurels & University Ranks Gallery",
+                          "Gold medalists, university rank holders, youth festivals and state/national awards",
+                          portal?.studentAchievements?.gallery || STUDENT_SUPPORT_DATA.studentAchievements.gallery
+                        )
+                      }
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer shrink-0 self-start sm:self-auto"
                     >
-                      Recognition of excellence in academic, co-curricular, cultural, and sports competitions.
-                    </p>
+                      <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+                      <span>View Photo Gallery</span>
+                    </button>
                   </div>
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-6 transition-colors duration-200" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
@@ -1439,27 +1613,18 @@ export default function StudentSupportClientPortal({
                       id="sec-laurels"
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5 bg-white"
                     >
-                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-100 text-amber-700">
-                          <Trophy className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            1. Student Participation &amp; Laurels
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">University Ranks, State &amp; National Level Recognitions</p>
-                        </div>
-                      </div>
-
                       <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
-                        St. Ann’s College for Women encourages students to actively participate in academic, co-curricular, extracurricular, sports, cultural, research, extension and community activities at various levels. The College provides opportunities for students to develop confidence, leadership, teamwork and professional competencies, while recognizing their achievements at University, State, National and other levels.
+                        {portal?.studentAchievements?.description ||
+                          "St. Ann’s College for Women encourages students to actively participate in academic, co-curricular, extracurricular, sports, cultural, research, extension and community activities at various levels. The College provides opportunities for students to develop confidence, leadership, teamwork and professional competencies, while recognizing their achievements at University, State, National and other levels."}
                       </p>
 
                       {/* Documents Grid (Newest First) */}
-                      {renderYearlyReportsSection("Student Laurels, University Ranks & Recognitions Archive", [
-                        { title: "Student Laurels & University Ranks 2025–2026", subtitle: "Annual Laurels Record", year: "2025–2026", fileUrl: DEFAULT_PDF },
-                        { title: "Student Laurels & Achievements 2024–2025", subtitle: "Annual Laurels Record", year: "2024–2025", fileUrl: DEFAULT_PDF },
-                      ])}
+                      {renderYearlyReportsSection(
+                        "Student Laurels, University Ranks & Recognitions Archive",
+                        portal?.laurelReports ||
+                          portal?.studentAchievements?.reports ||
+                          STUDENT_SUPPORT_DATA.studentAchievements.reports
+                      )}
                     </div>
                   </div>
                 </section>
@@ -1594,12 +1759,87 @@ export default function StudentSupportClientPortal({
                   })}
                 </div>
               )}
+
+              <span className="text-xs font-bold text-slate-500 whitespace-nowrap hidden sm:inline-block">
+                Total Documents:{" "}
+                <span className="text-[#002147] font-extrabold">{archiveModalData.docs.length}</span>
+              </span>
+            </div>
+
+            {/* Modal Body / Table */}
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar">
+              {(() => {
+                const query = archiveSearchQuery.toLowerCase().trim();
+                const filtered = archiveModalData.docs.filter(
+                  (d) =>
+                    !query ||
+                    d.title.toLowerCase().includes(query) ||
+                    (d.year && d.year.toLowerCase().includes(query)) ||
+                    (d.subtitle && d.subtitle.toLowerCase().includes(query))
+                );
+
+                if (filtered.length === 0) {
+                  return (
+                    <div className="py-16 text-center text-slate-500 flex flex-col items-center justify-center gap-3">
+                      <FileText className="h-12 w-12 text-slate-300" />
+                      <p className="text-sm font-bold text-slate-700">
+                        No documents matched your search term.
+                      </p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xs">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-xs font-extrabold">
+                          <th className="py-3 px-4">Academic Year</th>
+                          <th className="py-3 px-4">Document / Report Title</th>
+                          <th className="py-3 px-4 text-right">View / Download</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                        {filtered.map((doc, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                            <td className="py-3.5 px-4 whitespace-nowrap">
+                              <span className="px-2.5 py-1 rounded-md bg-blue-50 text-blue-900 border border-blue-200 font-extrabold">
+                                {doc.year || "Annual"}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-4">
+                              <p className="font-bold text-slate-900 text-xs sm:text-sm">
+                                {doc.title}
+                              </p>
+                              {doc.subtitle && (
+                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                                  {doc.subtitle}
+                                </p>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                              <button
+                                type="button"
+                                onClick={() => openPdf(doc.fileUrl || DEFAULT_PDF, doc.title)}
+                                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147] hover:bg-[#003366] text-white rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                                <span>Open PDF</span>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Modal Footer */}
             <div className="bg-white px-6 py-4 border-t border-slate-200 flex items-center justify-between shrink-0">
               <span className="text-xs font-bold text-slate-500">
-                Showing {filteredModalDocs.length} of {archiveModalData.docs.length} documents
+                St. Ann’s College for Women • Official Documentation
               </span>
               <button
                 type="button"
@@ -1610,6 +1850,266 @@ export default function StudentSupportClientPortal({
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          PHOTO GALLERY MODAL POPUP (MULTI-YEAR TABS + LIGHTBOX)
+         ========================================================================= */}
+      {activeGalleryModal?.isOpen && (
+        <div
+          className="fixed inset-0 z-[9990] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs animate-fadeIn"
+          onClick={() => setActiveGalleryModal(null)}
+        >
+          <div
+            className="bg-[#f8fafc] border-2 border-slate-300/80 rounded-3xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header Banner */}
+            <div className="bg-[#002147] text-white px-6 py-4 sm:px-8 sm:py-5 flex items-center justify-between border-b border-[#001733] shrink-0">
+              <div className="flex items-center gap-3.5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 border border-white/20 text-white shadow-xs shrink-0 backdrop-blur-xs">
+                  <Sparkles className="h-5 w-5 text-amber-300" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest bg-white/20 text-white px-2.5 py-0.5 rounded-md">
+                      {galleryYearFilter === "all" ? "All Academic Years" : `AY ${galleryYearFilter}`}
+                    </span>
+                    <span className="text-[10px] font-bold text-white/80">
+                      {currentModalPhotos.length} {currentModalPhotos.length === 1 ? "Photograph" : "Photographs"}
+                    </span>
+                  </div>
+                  <h3 className="font-outfit font-black text-lg sm:text-xl tracking-tight text-white mt-0.5">
+                    {activeGalleryModal.title}
+                  </h3>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActiveGalleryModal(null)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer hover:rotate-90 duration-200"
+                title="Close Gallery"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Subtitle & Year Filter Tabs Bar */}
+            <div className="px-6 py-3.5 bg-white border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0">
+              <p className="text-xs text-slate-600 font-medium truncate max-w-xl">
+                {activeGalleryModal.subtitle || "Field activities, student initiatives, and event photographs."}
+              </p>
+
+              {/* Academic Year Filter Tabs */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 custom-scrollbar shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGalleryYearFilter("all");
+                    setGalleryLightboxIndex(null);
+                  }}
+                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                    galleryYearFilter === "all"
+                      ? "bg-[#002147] text-white shadow-xs"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                  }`}
+                >
+                  All Photos ({activeGalleryModal.photos.length})
+                </button>
+
+                {galleryAvailableYears.map((yr) => {
+                  const countForYr = activeGalleryModal.photos.filter(
+                    (p) => normalizeYear(p.year) === normalizeYear(yr) || (p.year && p.year.includes(yr))
+                  ).length;
+                  return (
+                    <button
+                      key={yr}
+                      type="button"
+                      onClick={() => {
+                        setGalleryYearFilter(yr);
+                        setGalleryLightboxIndex(null);
+                      }}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        galleryYearFilter === yr
+                          ? "bg-emerald-700 text-white shadow-xs"
+                          : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                      }`}
+                    >
+                      {yr} ({countForYr})
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Photos Grid */}
+            <div className="p-4 sm:p-6 sm:p-8 overflow-y-auto flex-1 custom-scrollbar">
+              {currentModalPhotos.length === 0 ? (
+                <div className="py-16 text-center text-slate-500 flex flex-col items-center justify-center gap-3">
+                  <Sparkles className="h-12 w-12 text-slate-300" />
+                  <p className="text-sm font-bold text-slate-700">
+                    No photographs available for the selected filter.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {currentModalPhotos.map((photo, idx) => (
+                    <div
+                      key={photo.id || idx}
+                      onClick={() => setGalleryLightboxIndex(idx)}
+                      className="group relative cursor-pointer aspect-[4/3] bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg hover:border-blue-400 transition-all duration-300 flex flex-col"
+                    >
+                      {/* Image */}
+                      <img
+                        src={photo.url}
+                        alt={photo.caption || photo.title || `Photo ${idx + 1}`}
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        onError={(e: any) => {
+                          e.currentTarget.src = "/images/infrastructure/cultural-recreation/img-1.jpg";
+                        }}
+                      />
+
+                      {/* Year Badge */}
+                      {photo.year && (
+                        <div className="absolute top-3 left-3 z-10">
+                          <span className="text-[10px] font-black uppercase tracking-wider bg-black/70 backdrop-blur-xs text-white px-2.5 py-1 rounded-lg border border-white/20 shadow-xs">
+                            {photo.year}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Hover Info Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white">
+                        <h4 className="font-outfit font-bold text-sm leading-snug line-clamp-2 text-white group-hover:text-amber-300 transition-colors">
+                          {photo.title || activeGalleryModal.title}
+                        </h4>
+                        {photo.caption && (
+                          <p className="text-[11px] text-slate-300 font-medium line-clamp-2 mt-1">
+                            {photo.caption}
+                          </p>
+                        )}
+                        <span className="text-[10px] font-bold text-emerald-300 mt-1.5 flex items-center gap-1">
+                          <Eye className="h-3 w-3" /> Click to view full image
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-white px-6 py-4 border-t border-slate-200 flex items-center justify-between shrink-0">
+              <span className="text-xs font-bold text-slate-500">
+                Showing {currentModalPhotos.length} of {activeGalleryModal.photos.length} photographs
+              </span>
+              <button
+                type="button"
+                onClick={() => setActiveGalleryModal(null)}
+                className="px-5 py-2 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          FULLSCREEN LIGHTBOX MODAL
+         ========================================================================= */}
+      {galleryLightboxIndex !== null && currentModalPhotos[galleryLightboxIndex] && (
+        <div
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/95 backdrop-blur-md animate-fadeIn"
+          onClick={() => setGalleryLightboxIndex(null)}
+        >
+          {/* Top Bar with Title & Close */}
+          <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-white z-20">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-black uppercase tracking-widest bg-white/20 px-3 py-1 rounded-xl backdrop-blur-xs">
+                {galleryLightboxIndex + 1} / {currentModalPhotos.length}
+              </span>
+              {currentModalPhotos[galleryLightboxIndex].year && (
+                <span className="text-xs font-black text-amber-300 bg-amber-500/20 border border-amber-500/40 px-2.5 py-1 rounded-xl backdrop-blur-xs">
+                  {currentModalPhotos[galleryLightboxIndex].year}
+                </span>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setGalleryLightboxIndex(null)}
+              className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer hover:rotate-90 duration-200"
+              title="Close Preview (Esc)"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Navigation Prev Button */}
+          {currentModalPhotos.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setGalleryLightboxIndex((prev) =>
+                  prev !== null && prev > 0 ? prev - 1 : currentModalPhotos.length - 1
+                );
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-2xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer z-20 backdrop-blur-xs"
+              title="Previous Photo (Left Arrow)"
+            >
+              <ChevronRight className="h-6 w-6 rotate-180" />
+            </button>
+          )}
+
+          {/* Main Photo Center */}
+          <div
+            className="max-w-5xl max-h-[80vh] flex flex-col items-center justify-center p-2 z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={currentModalPhotos[galleryLightboxIndex].url}
+              alt={
+                currentModalPhotos[galleryLightboxIndex].caption ||
+                currentModalPhotos[galleryLightboxIndex].title ||
+                "Photograph"
+              }
+              className="max-w-full max-h-[72vh] object-contain rounded-2xl shadow-2xl border border-white/10"
+              onError={(e: any) => {
+                e.currentTarget.src = "/images/infrastructure/cultural-recreation/img-1.jpg";
+              }}
+            />
+            <div className="mt-4 text-center max-w-2xl">
+              <h4 className="font-outfit font-black text-base sm:text-lg text-white">
+                {currentModalPhotos[galleryLightboxIndex].title || activeGalleryModal?.title}
+              </h4>
+              {currentModalPhotos[galleryLightboxIndex].caption && (
+                <p className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">
+                  {currentModalPhotos[galleryLightboxIndex].caption}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Navigation Next Button */}
+          {currentModalPhotos.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setGalleryLightboxIndex((prev) =>
+                  prev !== null && prev < currentModalPhotos.length - 1 ? prev + 1 : 0
+                );
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-2xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer z-20 backdrop-blur-xs"
+              title="Next Photo (Right Arrow)"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          )}
         </div>
       )}
     </div>

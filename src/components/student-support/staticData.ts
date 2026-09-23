@@ -261,46 +261,122 @@ export const STUDENT_SUPPORT_DATA = {
       "St. Ann’s College for Women promotes physical fitness, sportsmanship, teamwork, discipline and leadership through diverse sports and fitness activities. Students are encouraged to participate in intramural, inter-collegiate, university, state and national-level competitions, along with self-defense and wellness programmes.",
     pillars: [
       {
+        id: "sec-sports-facilities",
+        slug: "sports-facilities",
         title: "1. Sports & Games Facilities",
         desc: "The College provides appropriate indoor and outdoor sports facilities, playing areas, equipment and physical education resources to encourage regular participation and fitness.",
+        reports: [
+          { year: "2026–2027", title: "Sports Infrastructure & Gymnasium Facilities Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Sports Equipment & Ground Maintenance Audit 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-1", url: "/images/infrastructure/sports-games/img-1.jpg", title: "Indoor Sports Complex & Multi-Gym", year: "2025-2026", caption: "Students training at the campus gymnasium and badminton court" },
+        ],
       },
       {
+        id: "sec-sports-intramural",
+        slug: "intramural-sports",
         title: "2. Intramural Sports",
         desc: "Students participate in inter-class and inter-department competitions, annual sports meets, individual and team events, and recreational games, fostering healthy competition and team spirit.",
+        reports: [
+          { year: "2026–2027", title: "Intramural Tournament Schedule & Fixtures 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Inter-Department Sports League Summary 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-2", url: "/images/infrastructure/sports-games/img-2.jpg", title: "Intramural Throwball & Kho-Kho Matches", year: "2025-2026", caption: "Inter-department league matches and team spirit celebration" },
+        ],
       },
       {
+        id: "sec-sports-intercollegiate",
+        slug: "intercollegiate-competitions",
         title: "3. Inter-Collegiate Competitions",
         desc: "Students are encouraged to participate in inter-collegiate tournaments, university competitions, friendly matches and individual and team events, providing opportunities to develop competitive skills.",
+        reports: [
+          { year: "2026–2027", title: "Inter-Collegiate Tournament Participation Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Regional Inter-College Championship Summary 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-3", url: "/images/infrastructure/sports-games/img-3.jpg", title: "Regional Inter-Collegiate Volleyball Tournament", year: "2025-2026", caption: "College team winning the runner-up championship trophy" },
+        ],
       },
       {
+        id: "sec-sports-national",
+        slug: "university-national-level",
         title: "4. University / State / National Level Participation",
         desc: "The College encourages talented students to participate in university, state and national-level competitions, championships and selection trials.",
+        reports: [
+          { year: "2026–2027", title: "National Level Sports Representation Record 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Inter-University Championship Participation 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-4", url: "/images/infrastructure/sports-games/img-1.jpg", title: "All India Inter-University Athletics Contingent", year: "2025-2026", caption: "Athletes representing the college at national level competitions" },
+        ],
       },
       {
+        id: "sec-sports-selfdefense",
+        slug: "selfdefense-training",
         title: "5. Self-Defense & Personal Safety Training",
         desc: "Self-defense programmes are organized to develop personal safety awareness, confidence, physical preparedness and basic self-protection skills, particularly among women students.",
+        reports: [
+          { year: "2026–2027", title: "Women Self-Defense Workshop & Martial Arts Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Campus Self-Protection Training Summary 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-5", url: "/images/infrastructure/sports-games/img-2.jpg", title: "Self-Defense Karate & Krav Maga Workshop", year: "2025-2026", caption: "Practical self-defense training techniques for women students" },
+        ],
       },
       {
+        id: "sec-sports-fitness",
+        slug: "fitness-wellness",
         title: "6. Fitness & Wellness",
         desc: "The College promotes physical fitness, yoga, wellness and regular physical activity as integral components of students' health and holistic development.",
+        reports: [
+          { year: "2026–2027", title: "International Yoga Day & Fitness Tracker 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Campus Health & Aerobics Workshop Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-6", url: "/images/infrastructure/sports-games/img-3.jpg", title: "International Yoga Day Mass Asana Session", year: "2025-2026", caption: "Students and faculty performing morning yoga and pranayama" },
+        ],
       },
       {
+        id: "sec-sports-coaching",
+        slug: "sports-coaching",
         title: "7. Sports Coaching & Training",
         desc: "Students are supported through coaching, practice sessions, training camps and skill-development activities, with emphasis on sportsmanship, teamwork, discipline and leadership.",
+        reports: [
+          { year: "2026–2027", title: "Specialized Sports Coaching & Training Camp Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Athletic Conditioning & Coaching Schedule 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-7", url: "/images/infrastructure/sports-games/img-1.jpg", title: "Track & Field Specialized Coaching Camp", year: "2025-2026", caption: "Expert coaches training students in sprint, relay, and high jump" },
+        ],
       },
       {
+        id: "sec-sports-achievements",
+        slug: "sports-achievements",
         title: "8. Sports Achievements",
         desc: "The achievements of students and teams in sports competitions at university, state and national levels are recognized and showcased.",
+        reports: [
+          { year: "2026–2027", title: "Sports Honors, Medals & Champions Roll 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "State & National Medals Presentation Summary 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-8", url: "/images/infrastructure/sports-games/img-2.jpg", title: "Annual Sports Awards & Medal Presentation", year: "2025-2026", caption: "Felicitation of outstanding state and national medalists" },
+        ],
       },
       {
+        id: "sec-sports-events",
+        slug: "sports-events",
         title: "9. Sports Events & Activities",
         desc: "The College conducts Annual Sports Meets, special sporting events, fitness activities and National Sports Day programmes to encourage active participation and healthy living.",
+        reports: [
+          { year: "2026–2027", title: "Annual Sports Meet & National Sports Day Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Campus Sports Day & March Past Summary 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "sp-9", url: "/images/infrastructure/sports-games/img-3.jpg", title: "Annual Sports Day March Past & Torch Lighting", year: "2025-2026", caption: "Grand sports parade and Olympic torch lighting ceremony" },
+        ],
       },
-    ],
-    reports: [
-      { year: "2026–2027", title: "Annual Sports Report 2026–2027", fileUrl: "#" },
-      { year: "2025–2026", title: "Annual Sports Report 2025–2026", fileUrl: "#" },
-      { year: "2024–2025", title: "Annual Sports Report 2024–2025", fileUrl: "#" },
     ],
   },
 
@@ -313,63 +389,138 @@ export const STUDENT_SUPPORT_DATA = {
       "St. Ann’s College for Women promotes social responsibility, community engagement, environmental consciousness and responsible citizenship through a range of extension and outreach initiatives. Students actively participate in community service, awareness campaigns, environmental activities and social development programmes.",
     wings: [
       {
+        id: "sec-nss",
+        slug: "nss",
         title: "1. National Service Scheme (NSS)",
         desc: "The NSS encourages students to engage in community service, social awareness, health and hygiene, environmental protection and civic responsibility through regular activities and special outreach programmes.",
-        years: ["2026–2027", "2025–2026", "2024–2025"],
+        reports: [
+          { year: "2026–2027", title: "NSS Special Camping & Village Outreach Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "NSS Community Health & Hygiene Drive Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2024–2025", title: "NSS Annual Activities & Social Service Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "nss-1", url: "/images/infrastructure/cultural-recreation/img-1.jpg", title: "NSS Village Outreach & Swachhata Camp", year: "2025-2026", caption: "NSS volunteers conducting rural sanitation and community hygiene awareness" },
+          { id: "nss-2", url: "/images/infrastructure/cultural-recreation/img-2.jpg", title: "Blood Donation & Mega Health Camp", year: "2025-2026", caption: "Voluntary blood donation and health check-up camp organized on campus" },
+          { id: "nss-3", url: "/images/infrastructure/cultural-recreation/img-3.jpg", title: "National Voters' Day Rally & Awareness", year: "2024-2025", caption: "Students participating in the democratic rights and voter enrollment campaign" },
+          { id: "nss-4", url: "/images/infrastructure/green-campus/img-4.jpg", title: "Mega Tree Plantation Drive (Vanam-Manam)", year: "2024-2025", caption: "Plantation of 500+ saplings in adopted nearby villages" },
+        ],
       },
       {
+        id: "sec-ncc",
+        slug: "ncc",
         title: "2. National Cadet Corps (NCC)",
         desc: "The NCC develops discipline, leadership, teamwork, patriotism and a spirit of service among students through training, camps, drills and community-oriented activities.",
-        years: ["2026–2027", "2025–2026", "2024–2025"],
+        reports: [
+          { year: "2026–2027", title: "NCC Annual Training Camp & Republic Day Contingent 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "NCC Cadets Leadership & Combined Annual Camp Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2024–2025", title: "NCC Annual Drills & Social Service Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "ncc-1", url: "/images/infrastructure/cultural-recreation/img-4.jpg", title: "NCC Ceremonial Parade & Guard of Honour", year: "2025-2026", caption: "Cadets presenting Guard of Honour during Independence Day Celebrations" },
+          { id: "ncc-2", url: "/images/infrastructure/cultural-recreation/img-5.jpg", title: "Combined Annual Training Camp (CATC)", year: "2025-2026", caption: "Cadets participating in rifle drill, obstacle course and tactical training" },
+          { id: "ncc-3", url: "/images/infrastructure/sports-games/img-1.jpg", title: "NCC Trekking & Adventure Expedition", year: "2024-2025", caption: "Cadets on annual state-level adventure and trekking expedition" },
+        ],
       },
       {
+        id: "sec-rrc",
+        slug: "rrc",
         title: "3. Red Ribbon Club (RRC)",
         desc: "The Red Ribbon Club promotes awareness on HIV/AIDS prevention, health, hygiene, responsible behaviour and healthy lifestyles through awareness programmes and student-led activities.",
-        years: ["2026–2027", "2025–2026", "2024–2025"],
+        reports: [
+          { year: "2026–2027", title: "Red Ribbon Club Health Awareness & Sensitization Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "RRC World AIDS Day Campaign & Youth Seminar Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2024–2025", title: "RRC Blood Donation & Life Skills Training Summary 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "rrc-1", url: "/images/infrastructure/cultural-recreation/img-6.jpg", title: "World AIDS Day Human Red Ribbon & Rally", year: "2025-2026", caption: "Students forming human ribbon and conducting street awareness play" },
+          { id: "rrc-2", url: "/images/infrastructure/cultural-recreation/img-7.jpg", title: "Peer Educator Life Skills Workshop", year: "2024-2025", caption: "Interactive session on youth health, nutrition and emotional wellness" },
+        ],
       },
       {
+        id: "sec-mother-gnanamma",
+        slug: "mother-gnanamma",
         title: "4. Mother Gnanamma Outreach Committee",
         desc: "The Mother Gnanamma Outreach Committee promotes the values of service, compassion and social responsibility through community-oriented initiatives and outreach programmes for the welfare of society.",
-        years: ["2026–2027", "2025–2026", "2024–2025"],
+        reports: [
+          { year: "2026–2027", title: "Mother Gnanamma Outreach Community Welfare Report 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Mother Gnanamma Destitute Relief & Education Aid Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2024–2025", title: "Mother Gnanamma Outreach Annual Service Summary 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "mg-1", url: "/images/infrastructure/cultural-recreation/img-8.jpg", title: "Outreach to Orphanages & Elder Care Homes", year: "2025-2026", caption: "Distribution of essentials, groceries, and educational kits to underprivileged children" },
+          { id: "mg-2", url: "/images/infrastructure/cultural-recreation/img-9.jpg", title: "Rural Women Livelihood Skill Camp", year: "2024-2025", caption: "Vocational tailoring and handicraft training for marginalized rural women" },
+        ],
       },
       {
+        id: "sec-eco-club",
+        slug: "eco-club",
         title: "5. Eco Club & Environmental Initiatives",
         desc: "The College promotes environmental sustainability and ecological responsibility through plantation drives, cleanliness campaigns, waste management, conservation activities and environmental awareness programmes.",
-        years: ["2026–2027", "2025–2026", "2024–2025"],
+        reports: [
+          { year: "2026–2027", title: "Eco Club Green Audit & Environmental Action Plan 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "Eco Club Plantation & Plastic-Free Campus Report 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2024–2025", title: "Energy Conservation & Waste Management Audit Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "eco-1", url: "/images/infrastructure/green-campus/img-1.jpg", title: "Botanical Garden Herbal Plantation Drive", year: "2025-2026", caption: "Students planting medicinal saplings in the college botanical garden" },
+          { id: "eco-2", url: "/images/infrastructure/green-campus/img-2.jpg", title: "Solid Waste Segregation & Composting Unit", year: "2025-2026", caption: "Demonstration of organic composting and zero-waste campus practices" },
+          { id: "eco-3", url: "/images/infrastructure/green-campus/img-3.jpg", title: "World Environment Day Cyclothon", year: "2024-2025", caption: "Campus green rally and pledge for single-use plastic reduction" },
+        ],
       },
       {
+        id: "sec-uba",
+        slug: "uba",
         title: "6. Community Outreach – Unnat Bharat Abhiyan",
         desc: "St. Ann’s College for Women promotes community engagement and rural development through Unnat Bharat Abhiyan (UBA). The initiative encourages students and faculty to work with local communities through activities focused on education, health, sanitation, environmental awareness, digital literacy and social development.",
-        years: ["2026–2027", "2025–2026", "2024–2025"],
+        reports: [
+          { year: "2026–2027", title: "Unnat Bharat Abhiyan Village Household Survey 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2025–2026", title: "UBA Adopted Villages Development & Action Plan 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+          { year: "2024–2025", title: "UBA Rural Digital Literacy & Sanitation Camp Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+        ],
+        gallery: [
+          { id: "uba-1", url: "/images/infrastructure/cultural-recreation/img-10.jpg", title: "UBA Adopted Village Baseline Survey", year: "2025-2026", caption: "Faculty and student volunteers conducting door-to-door socio-economic survey" },
+          { id: "uba-2", url: "/images/infrastructure/cultural-recreation/img-11.jpg", title: "Digital Literacy & Smart Banking Workshop", year: "2024-2025", caption: "Training rural women and farmers in online banking and government schemes" },
+        ],
       },
     ],
   },
 
-  // SECTION IV: Capacity Building & Skill Enhancement
+  // SECTION IV: Workshops & Seminars (Formerly Capacity Building)
   capacityBuilding: {
     id: "sec-capacity-building",
     roman: "IV",
-    title: "Capacity Building & Skill Enhancement",
+    title: "Workshops & Seminars",
     description:
-      "St. Ann’s College for Women provides students with diverse opportunities to develop knowledge, skills, confidence and employability through workshops, training programmes, seminars and experiential learning activities. These initiatives support students' academic, professional, personal and career development.",
-    items: [
-      {
-        title: "1. Workshops & Seminars",
-        desc: "The College organizes workshops, seminars, training programmes and expert sessions to enhance students' subject knowledge, practical skills, awareness and professional competencies. Programmes are conducted in collaboration with faculty, industry experts, professionals and subject specialists, wherever appropriate.",
-      },
+      "St. Ann’s College for Women organizes workshops, seminars, training programmes and expert sessions to enhance students' subject knowledge, practical skills, awareness and professional competencies. Programmes are conducted in collaboration with faculty, industry experts, professionals and subject specialists, wherever appropriate.",
+    reports: [
+      { year: "2026–2027", title: "Workshops & Seminars Schedule 2026–2027", fileUrl: "/documents/student-support/Mentor Mentee Action Plan 2026-2027.pdf" },
+      { year: "2025–2026", title: "Skill Enhancement & Technical Workshop Summary 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { year: "2024–2025", title: "National Seminars & Faculty Interaction Report 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    ],
+    gallery: [
+      { id: "ws-1", url: "/images/infrastructure/skill-development/img-1.jpg", title: "Hands-on Technical & AI Skill Workshop", year: "2025-2026", caption: "Practical coding and artificial intelligence hands-on session with industry experts" },
+      { id: "ws-2", url: "/images/infrastructure/skill-development/img-2.jpg", title: "National Seminar on Emerging Trends in Science", year: "2025-2026", caption: "Distinguished speakers delivering keynote addresses during the National Seminar" },
+      { id: "ws-3", url: "/images/infrastructure/skill-development/img-3.jpg", title: "Soft Skills & Corporate Etiquette Training", year: "2024-2025", caption: "Interactive career-readiness and interview preparation masterclass" },
+      { id: "ws-4", url: "/images/infrastructure/skill-development/img-4.jpg", title: "Entrepreneurship & Startup Ideation Bootcamp", year: "2024-2025", caption: "Students pitching innovative business models to incubation mentors" },
     ],
   },
 
-  // SECTION V: Student Participation & Achievements
+  // SECTION V: Student Participation & Laurels
   studentAchievements: {
     id: "sec-student-achievements",
     roman: "V",
-    title: "Student Participation & Achievements",
+    title: "Student Participation & Laurels",
     description:
       "St. Ann’s College for Women encourages students to actively participate in academic, co-curricular, extracurricular, sports, cultural, research, extension and community activities at various levels. The College provides opportunities for students to develop confidence, leadership, teamwork and professional competencies, while recognizing their achievements at University, State, National and other levels.",
     reports: [
-      { year: "2025–2026", title: "Student Participation & Achievements 2025–2026", fileUrl: "#" },
-      { year: "2024–2025", title: "Student Participation & Achievements 2024–2025", fileUrl: "#" },
+      { year: "2026–2027", title: "Student Laurels & University Ranks 2026–2027", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { year: "2025–2026", title: "Student Laurels & Achievements Record 2025–2026", fileUrl: "/documents/DefaultFile_1.pdf" },
+      { year: "2024–2025", title: "National & State Level Awards Compilation 2024–2025", fileUrl: "/documents/DefaultFile_1.pdf" },
+    ],
+    gallery: [
+      { id: "laurel-1", url: "/images/infrastructure/cultural-recreation/img-1.jpg", title: "University Gold Medalists Felicitation Ceremony", year: "2025-2026", caption: "Annual College Day honors for Acharya Nagarjuna University rank holders" },
+      { id: "laurel-2", url: "/images/infrastructure/cultural-recreation/img-2.jpg", title: "State-Level Youth Festival Champions Trophy", year: "2025-2026", caption: "College cultural troupe securing First Prize at Inter-University Youth Fest" },
+      { id: "laurel-3", url: "/images/infrastructure/sports-games/img-2.jpg", title: "National Championship Medal Presentation", year: "2024-2025", caption: "Athletes receiving medals and citations for outstanding sports performances" },
     ],
   },
 };
@@ -408,14 +559,14 @@ export const SIDEBAR_NAV_ITEMS = [
   },
   {
     id: "sec-capacity-building",
-    title: "IV. Capacity Building",
+    title: "IV. Workshops & Seminars",
     subItems: [
       { id: "sec-capacity-building", title: "Workshops & Seminars" },
     ],
   },
   {
     id: "sec-student-achievements",
-    title: "V. Student Achievements",
+    title: "V. Student Laurels",
     subItems: [
       { id: "sec-student-achievements", title: "University Ranks & Laurels" },
     ],
