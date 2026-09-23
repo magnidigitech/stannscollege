@@ -24,11 +24,21 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
   const allProfiles = await getAllFacultyProfiles();
   const pdfDocuments = await getFacultyPdfDocuments();
 
-  // Build a name → slug map for "View Profile" links in roster
+  // Build a name → slug map and name → photo map for "View Profile" links and member cards
   const profileSlugMap: Record<string, string> = {};
-  (allProfiles || []).forEach((profile: { facultyName: string; slug: string }) => {
-    if (profile.facultyName && profile.slug) {
-      profileSlugMap[profile.facultyName.trim().toLowerCase()] = profile.slug;
+  const profilePhotoMap: Record<string, string> = {};
+  (allProfiles || []).forEach((profile: any) => {
+    if (profile.facultyName) {
+      const key = profile.facultyName.trim().toLowerCase();
+      if (profile.slug) profileSlugMap[key] = profile.slug;
+      if (profile.profilePhotoUrl) profilePhotoMap[key] = profile.profilePhotoUrl;
+    }
+  });
+  (members || []).forEach((m: any) => {
+    if (m.name) {
+      const key = m.name.trim().toLowerCase();
+      if (m.slug && !profileSlugMap[key]) profileSlugMap[key] = m.slug;
+      if (m.imageUrl && !profilePhotoMap[key]) profilePhotoMap[key] = m.imageUrl;
     }
   });
 
@@ -42,6 +52,7 @@ export default async function FacultyPage({ params }: FacultyPageProps) {
         initialSections={sections || []} 
         activeSlug={activeSlug}
         profileSlugMap={profileSlugMap}
+        profilePhotoMap={profilePhotoMap}
         initialPdfDocuments={pdfDocuments || []}
       />
     </div>

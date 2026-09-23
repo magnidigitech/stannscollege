@@ -12,6 +12,7 @@ import { AlumniManager } from "@/components/admin/AlumniManager";
 import { ResearchManager } from "@/components/admin/ResearchManager";
 import { PlacementsManager } from "@/components/admin/PlacementsManager";
 import { StudentSupportManager } from "@/components/admin/StudentSupportManager";
+import { FacultyProfilesManager } from "@/components/admin/FacultyProfilesManager";
 import {
   Calendar,
   Bell,
@@ -30,6 +31,7 @@ import {
   FlaskConical,
   Briefcase,
   HeartHandshake,
+  GraduationCap,
 } from "lucide-react";
 
 interface AdminUser {
@@ -46,6 +48,14 @@ const ADMIN_MODULES = [
     icon: ImageIcon,
     description: "Manage, reorder, preview, and upload 16:6 widescreen homepage hero banners directly synced to Sanity.",
     component: HeroBannersManager,
+  },
+  {
+    id: "faculty-profiles",
+    label: "Faculty Profiles & Directory",
+    badge: "Live Sanity Sync",
+    icon: GraduationCap,
+    description: "Create, edit, and manage comprehensive faculty profiles, academic qualifications, research, publications, and directory listings.",
+    component: FacultyProfilesManager,
   },
   {
     id: "events-management",

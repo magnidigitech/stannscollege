@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import Script from "next/script";
 import Navigation from "@/components/Navigation";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { TopLogoBar } from "@/components/TopLogoBar";
@@ -39,73 +38,8 @@ export default function RootLayout({
         <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
-        <Script
-          id="customization-preload"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                var c = localStorage.getItem('stanns_customization_cache');
-                if (c) {
-                  var p = JSON.parse(c);
-                  var lb = p['logo-bar'] && p['logo-bar'].sections && p['logo-bar'].sections[0];
-                  if (lb && lb.colors) {
-                    var bg = lb.colors.logoBarColor || (lb.colors.bgColor !== '#ffffff' ? lb.colors.bgColor : null);
-                    if (bg) document.documentElement.style.setProperty('--logo-bar-bg', bg);
-                  }
-                }
-              } catch(e) {}
-            `,
-          }}
-        />
       </head>
       <body className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col justify-between selection:bg-indigo-50 selection:text-indigo-900" suppressHydrationWarning>
-        <Script
-          id="css-chunk-retry"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                // Intercept failed CSS chunk loads and retry with cache-buster query parameter
-                window.addEventListener('error', function(e) {
-                  var target = e.target;
-                  if (target && target.tagName === 'LINK' && target.rel === 'stylesheet') {
-                    var href = target.href;
-                    if (href && !href.includes('_cb=')) {
-                      var separator = href.includes('?') ? '&' : '?';
-                      var newLink = document.createElement('link');
-                      newLink.rel = 'stylesheet';
-                      newLink.href = href + separator + '_cb=' + Date.now();
-                      document.head.appendChild(newLink);
-                    }
-                  }
-                  if (e.message && (e.message.indexOf('Loading CSS chunk') !== -1 || e.message.indexOf('ChunkLoadError') !== -1)) {
-                    var reloadKey = '_css_reload_ts';
-                    var lastReload = sessionStorage.getItem(reloadKey);
-                    var now = Date.now();
-                    if (!lastReload || now - parseInt(lastReload, 10) > 15000) {
-                      sessionStorage.setItem(reloadKey, now.toString());
-                      window.location.reload();
-                    }
-                  }
-                }, true);
-
-                window.addEventListener('unhandledrejection', function(e) {
-                  var reason = e.reason ? (e.reason.message || e.reason.toString()) : '';
-                  if (reason && (reason.indexOf('Loading CSS chunk') !== -1 || reason.indexOf('ChunkLoadError') !== -1)) {
-                    var reloadKey = '_css_reload_ts';
-                    var lastReload = sessionStorage.getItem(reloadKey);
-                    var now = Date.now();
-                    if (!lastReload || now - parseInt(lastReload, 10) > 15000) {
-                      sessionStorage.setItem(reloadKey, now.toString());
-                      window.location.reload();
-                    }
-                  }
-                });
-              })();
-            `,
-          }}
-        />
 
 
         <CustomizationProvider>

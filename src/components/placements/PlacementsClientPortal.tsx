@@ -167,7 +167,9 @@ const RICH_RECRUITERS = [
   { id: "genpact", name: "Genpact", short: "GEN", sector: "Analytics & Digital Operations", roles: "Process Associate / Finance", color: "from-amber-600 to-red-900", tag: "EdTech & Analytics", logoUrl: "https://cdn.simpleicons.org/genpact/FF4F00" },
   { id: "sutherland", name: "Sutherland Global", short: "SUTH", sector: "Customer Experience & ITES", roles: "Associate / Digital Support", color: "from-blue-700 to-indigo-900", tag: "EdTech & Analytics" },
   { id: "omega", name: "Omega Healthcare", short: "OMG", sector: "Healthcare IT & RCM", roles: "Medical Coding Trainee", color: "from-cyan-800 to-blue-950", tag: "Pharma & Science" },
-  { id: "chaitanya", name: "Sri Chaitanya Institutions", short: "SCI", sector: "Academic & EdTech", roles: "Faculty Trainee / Coordinator", color: "from-red-800 to-amber-950", tag: "EdTech & Analytics" }
+  { id: "chaitanya", name: "Sri Chaitanya Institutions", short: "SCI", sector: "Academic & EdTech", roles: "Faculty Trainee / Coordinator", color: "from-red-800 to-amber-950", tag: "EdTech & Analytics" },
+  { id: "ilm", name: "Institute of Language Management (ILM)", short: "ILM", sector: "Language & Communication Skills", roles: "Professional Language Trainer", color: "from-blue-800 to-red-800", tag: "EdTech & Analytics", logoUrl: "/images/recruiters/ilm.png" },
+  { id: "english-for-you", name: "English For You Institution", short: "E4U", sector: "English Language & Professional Training", roles: "Faculty & Communication Consultant", color: "from-blue-700 to-indigo-950", tag: "EdTech & Analytics", logoUrl: "/images/recruiters/english-for-you.png" }
 ];
 
 interface PlacementsClientPortalProps {
@@ -1292,9 +1294,9 @@ export default function PlacementsClientPortal({
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-3">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-14 w-44 sm:w-52 items-center justify-center rounded-xl bg-white border border-amber-200/80 p-2 shadow-2xs shrink-0">
+                          <div className="flex h-16 w-16 sm:h-18 sm:w-18 items-center justify-center rounded-xl bg-white border border-amber-200/80 p-1.5 shadow-2xs shrink-0">
                             <img
-                              src="/images/logos/apssdc.svg"
+                              src="/images/logos/apssdc.png"
                               alt="APSSDC Logo"
                               className="h-full w-full object-contain"
                               onError={(e) => {
@@ -1963,27 +1965,38 @@ export default function PlacementsClientPortal({
                   style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                 >
                   <div
-                    className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                    className="text-white px-6 py-3.5 sm:px-8 sm:py-4 md:px-10 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b transition-colors duration-200"
                     style={{
                       backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
                       borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
                     }}
                   >
-                    <div className="flex items-center gap-3">
-                      <Globe2 className="h-6 w-6 text-indigo-300 shrink-0" />
-                      <h2
-                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                        style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <Globe2 className="h-6 w-6 text-indigo-300 shrink-0" />
+                        <h2
+                          className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                          style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                        >
+                          III. INTERNALIZATION &amp; GLOBAL OUTREACH
+                        </h2>
+                      </div>
+                      <p
+                        className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                        style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
                       >
-                        III. INTERNALIZATION &amp; GLOBAL OUTREACH
-                      </h2>
+                        Global collaborations, research partnerships, intercultural learning, and international engagement.
+                      </p>
                     </div>
-                    <p
-                      className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                      style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+
+                    <button
+                      type="button"
+                      onClick={() => openPdf(placementsData?.internationalPolicyPdfUrl || DEFAULT_PDF, "Internationalization & Global Outreach Policy Document")}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 text-blue-950 hover:bg-amber-300 font-bold text-xs shadow-sm shrink-0 cursor-pointer transition-all self-start sm:self-auto"
                     >
-                      Global collaborations, research partnerships, intercultural learning, and international engagement.
-                    </p>
+                      <FileText className="h-4 w-4 text-blue-950" />
+                      <span>View PDF</span>
+                    </button>
                   </div>
 
                   <div className="p-6 sm:p-8 md:p-10 space-y-8" style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}>
@@ -1994,29 +2007,16 @@ export default function PlacementsClientPortal({
                       className="scroll-mt-52 border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
                       style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 border border-sky-100/60 text-sky-600">
-                            <Globe2 className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <h4 className="font-outfit text-sky-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                              a. International Collaborations &amp; Global Engagement
-                            </h4>
-                            <p className="text-xs text-slate-500 font-medium">Promoting international perspectives and intercultural competencies</p>
-                          </div>
+                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 border border-sky-100/60 text-sky-600">
+                          <Globe2 className="h-5 w-5" />
+                        </span>
+                        <div>
+                          <h4 className="font-outfit text-sky-700 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                            a. International Collaborations &amp; Global Engagement
+                          </h4>
+                          <p className="text-xs text-slate-500 font-medium">Promoting international perspectives and intercultural competencies</p>
                         </div>
-
-                        {placementsData?.internationalPolicyPdfUrl && (
-                          <button
-                            type="button"
-                            onClick={() => openPdf(placementsData.internationalPolicyPdfUrl, "Internationalization & Global Engagement Policy Document")}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#002147] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer shrink-0"
-                          >
-                            <FileText className="h-3.5 w-3.5 text-sky-300" />
-                            <span>View International Policy PDF</span>
-                          </button>
-                        )}
                       </div>
 
                       <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">

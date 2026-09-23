@@ -127,7 +127,9 @@ export const recruitersList: RecruiterItem[] = [
   { name: "Genpact", sector: "BPO & Analytics", tier: "major", logoUrl: "https://cdn.simpleicons.org/genpact/FF4F00" },
   { name: "Sutherland Global Services", sector: "Customer Experience & ITES", tier: "major" },
   { name: "Omega Healthcare", sector: "Healthcare IT & RCM", tier: "emerging" },
-  { name: "Sri Chaitanya Institutions", sector: "Academic & EdTech", tier: "emerging" }
+  { name: "Sri Chaitanya Institutions", sector: "Academic & EdTech", tier: "emerging" },
+  { name: "Institute of Language Management (ILM)", sector: "Language & Communication Skills", tier: "major", logoUrl: "/images/recruiters/ilm.png" },
+  { name: "English For You Institution", sector: "English Language & Professional Training", tier: "major", logoUrl: "/images/recruiters/english-for-you.png" }
 ];
 
 export const skillDomains = [

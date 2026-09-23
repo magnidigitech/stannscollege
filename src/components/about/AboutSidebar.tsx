@@ -203,7 +203,7 @@ export default function AboutSidebar({
               </h4>
             </div>
             <div className="flex flex-col gap-1">
-              {cat.items.map((item) => {
+              {cat.items.map((item, idx) => {
                 const isItemActive =
                   (item.id && activeId === item.id) ||
                   (!item.id && (
@@ -237,7 +237,7 @@ export default function AboutSidebar({
 
                 return (
                   <Link
-                    key={item.id || item.slug || item.text}
+                    key={`${cat.catSlug}-${item.id || item.slug || item.text}-${idx}`}
                     href={href}
                     onClick={handleClick}
                     className={`group font-sans rounded-xl transition-all duration-200 flex items-center justify-between select-none ${subItemClasses} ${

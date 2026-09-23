@@ -103,7 +103,9 @@ const DEFAULT_PLACEMENTS_DATA = {
     { id: "genpact", name: "Genpact", short: "GEN", sector: "Analytics & Digital Operations", roles: "Process Associate / Finance", color: "from-amber-600 to-red-900", tag: "EdTech & Analytics" },
     { id: "sutherland", name: "Sutherland Global", short: "SUTH", sector: "Customer Experience & ITES", roles: "Associate / Digital Support", color: "from-blue-700 to-indigo-900", tag: "EdTech & Analytics" },
     { id: "omega", name: "Omega Healthcare", short: "OMG", sector: "Healthcare IT & RCM", roles: "Medical Coding Trainee", color: "from-cyan-800 to-blue-950", tag: "Pharma & Science" },
-    { id: "chaitanya", name: "Sri Chaitanya Institutions", short: "SCI", sector: "Academic & EdTech", roles: "Faculty Trainee / Coordinator", color: "from-red-800 to-amber-950", tag: "EdTech & Analytics" }
+    { id: "chaitanya", name: "Sri Chaitanya Institutions", short: "SCI", sector: "Academic & EdTech", roles: "Faculty Trainee / Coordinator", color: "from-red-800 to-amber-950", tag: "EdTech & Analytics" },
+    { id: "ilm", name: "Institute of Language Management (ILM)", short: "ILM", sector: "Language & Communication Skills", roles: "Professional Language Trainer", color: "from-blue-800 to-red-800", tag: "EdTech & Analytics", logoUrl: "/images/recruiters/ilm.png" },
+    { id: "english-for-you", name: "English For You Institution", short: "E4U", sector: "English Language & Professional Training", roles: "Faculty & Communication Consultant", color: "from-blue-700 to-indigo-950", tag: "EdTech & Analytics", logoUrl: "/images/recruiters/english-for-you.png" }
   ],
   mous: [
     { id: "mou-1", title: "EXCER Edtech Pvt. Ltd. (Skill & Placement Integration)", department: "Institutional / Placement Cell", year: "2025-2026", fileUrl: "/documents/DefaultFile_1.pdf" },

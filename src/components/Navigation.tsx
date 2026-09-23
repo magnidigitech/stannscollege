@@ -671,32 +671,31 @@ export default function Navigation() {
 
   const facultyCategories = [
     {
-      title: "I. Staff Roster",
+      title: "I. Staff Rosters",
       icon: Users,
       items: [
-        { text: "List of Teaching Staff", slug: "teaching-staff" },
-        { text: "Faculty Department wise", slug: "department-wise" },
-        { text: "List of Non-Teaching Staff", slug: "non-teaching-staff" },
+        { text: "Teaching Staff Directory", slug: "teaching-staff" },
+        { text: "Department-Wise Faculty", slug: "department-wise" },
+        { text: "Non-Teaching Staff", slug: "non-teaching-staff" },
+        { text: "Visiting & Adjunct Faculty", slug: "visiting-professors" },
       ]
     },
     {
-      title: "II. Policies & Appraisal",
+      title: "II. Policies & Empowerment",
       icon: ShieldCheck,
       items: [
-        { text: "Visiting / Adjunct Professors", slug: "visiting-professors" },
-        { text: "Recruitment Policy & Process", slug: "recruitment-policy" },
-        { text: "360° Performance Appraisal", slug: "performance-appraisal" },
+        { text: "Recruitment & Selection", slug: "recruitment-policy" },
+        { text: "Faculty Development & FDP", slug: "faculty-development" },
+        { text: "360° Performance Appraisal (ASAR)", slug: "performance-appraisal" },
       ]
     },
     {
-      title: "III. Development & Awards",
-      icon: Lightbulb,
+      title: "III. Excellence & Welfare",
+      icon: Award,
       items: [
-        { text: "Professional Development", slug: "professional-development" },
-        { text: "Seminars & Conferences", slug: "seminars-conferences" },
-        { text: "Faculty Achievements", slug: "faculty-achievements" },
-        { text: "Faculty Exchange & Sabbaticals", slug: "faculty-exchange" },
-        { text: "Consultancy Assignments", slug: "consultancy-assignments" },
+        { text: "Faculty Achievements & Awards", slug: "faculty-achievements" },
+        { text: "Academic Mobility & Exchange", slug: "faculty-exchange" },
+        { text: "Faculty Welfare & Support", slug: "faculty-welfare" },
       ]
     }
   ];
@@ -1351,6 +1350,13 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
+                <DropdownHeaderBanner
+                  title="Placements & Industry Linkages Portal"
+                  href="/placements"
+                  buttonText="Visit Placements Main Page"
+                  icon={Briefcase}
+                  onNavigate={() => setActiveMenu(null)}
+                />
                 {placementsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
