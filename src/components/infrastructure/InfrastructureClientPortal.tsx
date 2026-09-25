@@ -207,10 +207,10 @@ export default function InfrastructureClientPortal({
       <div className="flex flex-col font-sans select-none animate-fadeIn w-full">
         {/* Main Content Container (Sidebar on Left, Data Elements on Right) */}
         <div className="max-w-[1600px] mx-auto pt-6 sm:pt-8 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-12 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
             
-            {/* Left: Navigation Sidebar */}
-            <aside className="lg:col-span-3">
+            {/* Left: Navigation Sidebar (Sticky) */}
+            <aside className="lg:col-span-3 h-full">
               <AboutSidebar
                 categories={INFRASTRUCTURE_SIDEBAR_CATEGORIES}
                 bannerTitle="Campus Infrastructure"
