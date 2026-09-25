@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Building2,
   Presentation,
@@ -18,856 +17,546 @@ import {
   ShieldAlert,
   Leaf,
   Accessibility,
-  ChevronDown,
-  ChevronRight,
-  Sparkles,
   Eye,
   X,
   ChevronLeft,
+  ChevronRight,
   Maximize2,
-  ArrowRight,
+  CheckCircle2,
+  ExternalLink,
   Layers,
-  TableProperties
+  Sparkles
 } from "lucide-react";
-import { staticInfrastructureSections } from "./staticData";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
+import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
+import { INFRASTRUCTURE_SECTIONS, INFRASTRUCTURE_SUBTEXT, InfrastructureSectionItem } from "./staticData";
 
-// Category Tabs Mapping
-const tabs = [
-  // Category 1: Academic & Campus Infrastructure
-  { text: "1. Campus & Buildings", slug: "campus-buildings", icon: Building2, group: "Academic & Campus Infrastructure" },
-  { text: "2. Classrooms", slug: "classrooms", icon: Presentation, group: "Academic & Campus Infrastructure" },
-  { text: "3. Library & Info Centre", slug: "library", icon: BookOpen, group: "Academic & Campus Infrastructure" },
-  { text: "4. ICT & Digital Infra", slug: "ict-digital", icon: Cpu, group: "Academic & Campus Infrastructure" },
+// Icon resolver helper
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Building2,
+  Presentation,
+  BookOpen,
+  Cpu,
+  FlaskConical,
+  Briefcase,
+  Home,
+  UtensilsCrossed,
+  HeartPulse,
+  Dumbbell,
+  Music,
+  ShieldAlert,
+  Leaf,
+  Accessibility
+};
 
-  // Category 2: Laboratories & Skill Centre
-  { text: "5. Laboratories", slug: "laboratories", icon: FlaskConical, group: "Laboratories & Skill Centre" },
-  { text: "6. Skill Development Centre", slug: "skill-development", icon: Briefcase, group: "Laboratories & Skill Centre" },
-
-  // Category 3: Student Amenities & Support
-  { text: "7. Hostel", slug: "hostel", icon: Home, group: "Student Amenities & Support" },
-  { text: "8. Canteen", slug: "canteen", icon: UtensilsCrossed, group: "Student Amenities & Support" },
-  { text: "9. Health Centre", slug: "health-centre", icon: HeartPulse, group: "Student Amenities & Support" },
-  { text: "10. Sports, Games & Gym", slug: "sports-games", icon: Dumbbell, group: "Student Amenities & Support" },
-  { text: "11. Cultural & Recreation Facilities", slug: "cultural-recreation", icon: Music, group: "Student Amenities & Support" },
-
-  // Category 4: Safety & Sustainability
-  { text: "12. Safety & Disaster Mgmt", slug: "safety-security", icon: ShieldAlert, group: "Safety & Sustainability" },
-  { text: "13. Green Campus Initiatives", slug: "green-campus", icon: Leaf, group: "Safety & Sustainability" },
-  { text: "14. Barrier-Free Access", slug: "inclusive-access", icon: Accessibility, group: "Safety & Sustainability" },
+// Sidebar categories matching Mandatory Disclosures structure (A, B, C)
+const INFRASTRUCTURE_SIDEBAR_CATEGORIES: SidebarCategory[] = [
+  {
+    catSlug: "academic-infra",
+    title: "A. Academic & Learning Spaces",
+    sectionId: "sec-campus-buildings",
+    items: [
+      { text: "1. Campus & Buildings", id: "sec-campus-buildings" },
+      { text: "2. Classrooms", id: "sec-classrooms" },
+      { text: "3. Library & Information Centre", id: "sec-library" },
+      { text: "4. ICT & Digital Infrastructure", id: "sec-ict-digital" },
+      { text: "5. Laboratories", id: "sec-laboratories" },
+      { text: "6. Skill Development Centre", id: "sec-skill-development" },
+    ]
+  },
+  {
+    catSlug: "student-amenities",
+    title: "B. Student Amenities & Living",
+    sectionId: "sec-hostel",
+    items: [
+      { text: "7. Hostel", id: "sec-hostel" },
+      { text: "8. Canteen", id: "sec-canteen" },
+      { text: "9. Health Centre", id: "sec-health-centre" },
+      { text: "10. Sports, Games & Gym", id: "sec-sports-games" },
+      { text: "11. Cultural & Recreation Facilities", id: "sec-cultural-recreation" },
+    ]
+  },
+  {
+    catSlug: "safety-sustainability",
+    title: "C. Campus Environment & Access",
+    sectionId: "sec-safety-security",
+    items: [
+      { text: "12. Safety, Security & Disaster Mgmt", id: "sec-safety-security" },
+      { text: "13. Green Campus & Sustainability", id: "sec-green-campus" },
+      { text: "14. Barrier-Free & Inclusive Access", id: "sec-inclusive-access" },
+    ]
+  }
 ];
 
+const ALL_SECTION_IDS = INFRASTRUCTURE_SECTIONS.map((s) => `sec-${s.slug}`);
+
 interface InfrastructureClientPortalProps {
-  activeSlug: string;
+  activeSlug?: string;
 }
 
 export default function InfrastructureClientPortal({
-  activeSlug = "overview"
+  activeSlug = "campus-buildings"
 }: InfrastructureClientPortalProps) {
+  const initialId = activeSlug && activeSlug !== "overview" ? `sec-${activeSlug}` : "sec-campus-buildings";
+  const [activeSectionId, setActiveSectionId] = useState<string>(initialId);
 
-  const isOverview = activeSlug === "overview";
-  const activeTab = tabs.find(t => t.slug === activeSlug) || tabs[0];
+  // Lightbox Modal state
+  const [lightboxData, setLightboxData] = useState<{
+    images: string[];
+    index: number;
+    title: string;
+  } | null>(null);
 
-  // Local States
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
-
+  // Scroll to active section if slug provided
   useEffect(() => {
-    setMobileMenuOpen(false);
-    setLightboxIdx(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (activeSlug && activeSlug !== "overview") {
+      const targetId = `sec-${activeSlug}`;
+      setActiveSectionId(targetId);
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
+      }
+    }
   }, [activeSlug]);
 
-  // Dynamic section selection
-  const sectionData = staticInfrastructureSections[activeSlug] || {
-    title: "",
-    content: "",
-    images: []
-  };
-
-  // Universal text sanitation utility to cleanly strip all emoji characters from input text
-  const stripEmojis = (str: string) => {
-    if (!str) return "";
-    return str.replace(/[\u{1F300}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{2700}-\u{27BF}\u{2600}-\u{26FF}]/gu, '').trim();
-  };
-
-  // Enhanced Regex Tokenizer ensuring no inline bold/link markdown escapes display
-  const renderRichString = (str: string) => {
-    const sanitized = stripEmojis(str);
-    if (!sanitized) return "";
-
-    const tokenRegex = /(\*\*|__)([\s\S]+?)\1|\[([^\]]+)\]\(([^)]+)\)/g;
-    const parts = [];
-    let lastIdx = 0;
-    let match;
-    let keyCounter = 0;
-
-    while ((match = tokenRegex.exec(sanitized)) !== null) {
-      if (match.index > lastIdx) {
-        parts.push(sanitized.substring(lastIdx, match.index));
-      }
-
-      if (match[1]) {
-        // Dynamic Bold text highlighting with forest emerald color
-        // We also replace raw double-underscores from inside URLs if they leaked
-        const boldContent = match[2].replace(/__/g, '').trim();
-        parts.push(
-          <strong key={keyCounter++} className="text-[#004225] font-black tracking-tight inline">
-            {renderRichString(boldContent)}
-          </strong>
-        );
-      } else if (match[3]) {
-        // Premium dynamic Link anchors
-        const linkLabel = match[3].replace(/__/g, '').trim();
-        parts.push(
-          <a
-            key={keyCounter++}
-            href={match[4]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-emerald-600 hover:text-emerald-800 font-bold underline-offset-4 transition-colors inline hover:underline"
-          >
-            {linkLabel}
-          </a>
-        );
-      }
-      lastIdx = tokenRegex.lastIndex;
-    }
-
-    if (lastIdx < sanitized.length) {
-      parts.push(sanitized.substring(lastIdx));
-    }
-
-    return parts.length > 0 ? parts : sanitized;
-  };
-
-  // Intelligent Content & Adaptive Table Parser Engine
-  const renderContentBody = (text: string) => {
-    if (!text) return null;
-
-    const rawChunks = text.split("\n\n").map(c => c.trim()).filter(Boolean);
-    const nodes: any[] = [];
-
-    let i = 0;
-    while (i < rawChunks.length) {
-      const chunk = rawChunks[i];
-
-      // 1. Clean chunk values & Ultra-robust normalized table matching helpers
-      const clean = (s: string) => (s || "").replace(/[*_]+/g, '').trim();
-      const norm = (s: string) => (s || "").replace(/[*_\s\.]+/g, '').toLowerCase();
-
-      const n0 = norm(chunk);
-      const n1 = norm(rawChunks[i + 1] || "");
-      const n2 = norm(rawChunks[i + 2] || "");
-      const n3 = norm(rawChunks[i + 3] || "");
-      const n4 = norm(rawChunks[i + 4] || "");
-
-      // Skip standard redundant photo indicators
-      if (n0 === "photogallery" || n0 === "gallery" || n0 === "photos" || chunk.startsWith("[Embedded")) {
-        i++;
-        continue;
-      }
-
-      // Standardised Serial Number Header triggers (covers 'sno', 'slno', 'sno.')
-      const isSNo = n0.startsWith("sno") || n0.startsWith("slno") || n0 === "s";
-
-      // Intelligent 5-Column Table Engine (Matches "S. No.", "Name", "Qualification", "Designation", "Experience")
-      const is5ColTable = isSNo && n1 === "name" && n2 === "qualification";
-
-      // Intelligent 4-Column Table Engine
-      const is4ColTable =
-        (isSNo && n1 === "name" && n2 === "designation") ||
-        (isSNo && n1.includes("nameofthemember")) ||
-        (n0 === "name" && n1 === "designation" && n2.includes("departmentrole")) ||
-        (n0 === "academicyear" && n1 === "programme" && n2.includes("nameofthestudent"));
-
-      // Intelligent 3-Column Table Engine (Matches "S.No", "Particulars", "Total" or "S.No", "Name", "Link")
-      const is3ColTable =
-        (isSNo && n1 === "particulars" && n2 === "total") ||
-        (isSNo && n1 === "name" && n2 === "link");
-
-      if (is5ColTable) {
-        const headers = [chunk, rawChunks[i + 1], rawChunks[i + 2], rawChunks[i + 3], rawChunks[i + 4]];
-        const rowItems: string[] = [];
-        let lookAhead = i + 5;
-
-        while (lookAhead < rawChunks.length) {
-          const nextVal = rawChunks[lookAhead];
-          const nextClean = clean(nextVal);
-          // Table terminates on next bold title or markdown headers
-          if ((nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) || nextVal.startsWith("#")) break;
-          if (nextClean.includes("Services") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
-          rowItems.push(nextVal);
-          lookAhead++;
-        }
-
-        const rows: string[][] = [];
-        for (let r = 0; r < rowItems.length; r += 5) {
-          const slice = rowItems.slice(r, r + 5);
-          if (slice.length > 0) {
-            while (slice.length < 5) slice.push("—");
-            rows.push(slice);
+  // Scroll listener for dynamic sidebar active indicator
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 280;
+      for (let i = ALL_SECTION_IDS.length - 1; i >= 0; i--) {
+        const el = document.getElementById(ALL_SECTION_IDS[i]);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSectionId(ALL_SECTION_IDS[i]);
+            break;
           }
         }
-
-        nodes.push({ type: 'table', headers, rows, columns: 5 });
-        i = lookAhead;
-        continue;
       }
+    };
 
-      if (is4ColTable) {
-        const headers = [chunk, rawChunks[i + 1], rawChunks[i + 2], rawChunks[i + 3]];
-        const rowItems: string[] = [];
-        let lookAhead = i + 4;
-
-        while (lookAhead < rawChunks.length) {
-          const nextVal = rawChunks[lookAhead];
-          const nextClean = clean(nextVal);
-          if ((nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) || nextVal.startsWith("#")) break;
-          if (nextClean.includes("Services") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
-          rowItems.push(nextVal);
-          lookAhead++;
-        }
-
-        const rows: string[][] = [];
-        for (let r = 0; r < rowItems.length; r += 4) {
-          const slice = rowItems.slice(r, r + 4);
-          if (slice.length > 0) {
-            while (slice.length < 4) slice.push("—");
-            rows.push(slice);
-          }
-        }
-
-        nodes.push({ type: 'table', headers, rows, columns: 4 });
-        i = lookAhead;
-        continue;
-      }
-
-      if (is3ColTable) {
-        const headers = [chunk, rawChunks[i + 1], rawChunks[i + 2]];
-        const rowItems: string[] = [];
-        let lookAhead = i + 3;
-
-        while (lookAhead < rawChunks.length) {
-          const nextVal = rawChunks[lookAhead];
-          const nextClean = clean(nextVal);
-          if ((nextVal.startsWith("__") && nextVal.endsWith("__") && nextVal.length > 4) || nextVal.startsWith("#")) break;
-          if (nextClean.includes("Access Platforms") || nextClean.includes("Open Access") || nextClean.startsWith("View PDF") || nextClean.includes("Gallery")) break;
-          rowItems.push(nextVal);
-          lookAhead++;
-        }
-
-        const rows: string[][] = [];
-        for (let r = 0; r < rowItems.length; r += 3) {
-          const slice = rowItems.slice(r, r + 3);
-          if (slice.length > 0) {
-            while (slice.length < 3) slice.push("—");
-            rows.push(slice);
-          }
-        }
-
-        nodes.push({ type: 'table', headers, rows, columns: 3 });
-        i = lookAhead;
-        continue;
-      }
-
-      nodes.push({ type: 'paragraph', text: chunk });
-      i++;
-    }
-
-    // Tracker to ensure first section title is boosted as Hero, and first Major Section flows seamlessly
-    let hasBoostedFirstHeader = false;
-    let hasRenderedFirstMajorHeader = false;
-
-    return nodes.map((node, idx) => {
-      if (node.type === 'table') {
-        return (
-          <div key={idx} className="my-12 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.04)] select-text animate-fadeIn">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gradient-to-r from-[#004225] via-[#02542f] to-[#085e36] text-white">
-                    {node.headers.map((h: string, hIdx: number) => {
-                      const lowerH = h.toLowerCase().replace(/[^a-z]/g, '');
-                      const isSno = lowerH === 'sno' || lowerH === 'slno' || lowerH === 's';
-                      const isTotal = lowerH === 'total';
-                      const cleanHeaderText = stripEmojis(h.replace(/[*_#]/g, '').trim());
-
-                      return (
-                        <th
-                          key={hIdx}
-                          className={`px-8 py-5.5 font-outfit text-[11px] md:text-xs uppercase tracking-widest font-black border-r border-white/10 last:border-0 ${isSno ? 'text-center' : isTotal ? 'text-right' : 'text-left'
-                            }`}
-                        >
-                          <span className="text-white font-black tracking-wider block">
-                            {cleanHeaderText}
-                          </span>
-                        </th>
-                      );
-                    })}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100/70">
-                  {node.rows.map((row: string[], rIdx: number) => (
-                    <tr
-                      key={rIdx}
-                      className="group transition-all duration-200 hover:bg-emerald-50/20"
-                    >
-                      {row.map((cell, cIdx) => {
-                        const headerText = node.headers[cIdx] || "";
-                        const lowerH = headerText.toLowerCase().replace(/[^a-z]/g, '');
-                        const isSno = lowerH === 'sno' || lowerH === 'slno' || lowerH === 's';
-                        const isTotal = lowerH === 'total';
-                        const isLink = lowerH === 'link';
-                        const isEmpty = cell === "—" || cell.trim() === "";
-
-                        return (
-                          <td
-                            key={cIdx}
-                            className={`px-8 py-5 text-slate-600 text-xs md:text-[14px] font-medium leading-relaxed transition-colors duration-200 ${isSno ? 'text-center w-[80px] md:w-[100px]' : isTotal ? 'text-right' : 'text-left'
-                              }`}
-                          >
-                            {isSno ? (
-                              <div className="flex justify-center">
-                                <span className="inline-flex items-center justify-center min-w-[28px] h-[28px] px-2 text-[11px] font-black font-outfit rounded-lg bg-slate-100 text-slate-500 border border-slate-200/20 transition-all duration-300 shadow-sm group-hover:bg-[#004225]/10 group-hover:text-[#004225] group-hover:border-[#004225]/20 group-hover:scale-105">
-                                  {cell.trim()}
-                                </span>
-                              </div>
-                            ) : isTotal ? (
-                              <span className="font-outfit font-extrabold text-slate-900 text-[14px] md:text-[15px] tracking-tight transition-colors duration-200 group-hover:text-[#004225] tabular-nums">
-                                {isEmpty ? <span className="text-slate-300 font-normal">—</span> : renderRichString(cell)}
-                              </span>
-                            ) : (
-                              <span className={isEmpty ? "text-slate-300 font-normal" : "text-slate-700 font-semibold tracking-tight transition-colors duration-200 group-hover:text-slate-900"}>
-                                {isEmpty ? "—" : renderRichString(cell)}
-                              </span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-      }
-
-
-      const p = node.text;
-
-      // 1. Heading Detection (Markdown ###, ##, # or legacy __...__)
-      const isMdH3 = p.startsWith("### ");
-      const isMdH2 = p.startsWith("## ");
-      const isMdH1 = p.startsWith("# ");
-      const isUnderlineHeader = p.startsWith("__") && p.endsWith("__") && p.length > 4;
-
-      if (isMdH3 || isMdH2 || isMdH1 || isUnderlineHeader) {
-        const rawTitle = isMdH3
-          ? p.replace(/^###\s+/, '')
-          : isMdH2
-          ? p.replace(/^##\s+/, '')
-          : isMdH1
-          ? p.replace(/^#\s+/, '')
-          : p.replace(/__/g, '');
-
-        const cleanTitle = stripEmojis(rawTitle.trim())
-          .replace(/^(?:(?:\d+(?:\.\d+)*|[IVXLCDM]+|[a-zA-Z])[\.\)]\s+)+/i, '')
-          .trim();
-
-        const cleanTitleLower = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const activeTabLower = activeTab.text.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const sectionTitleLower = (sectionData.title || "").toLowerCase().replace(/[^a-z0-9]/g, '');
-
-        if (
-          cleanTitleLower === activeTabLower ||
-          cleanTitleLower === sectionTitleLower ||
-          cleanTitleLower === activeTabLower + "infrastructure" ||
-          cleanTitleLower === "infrastructure" + activeTabLower ||
-          cleanTitleLower === "infrastructure"
-        ) {
-          return null;
-        }
-
-        // Level 1: Explicit # or First numbered Department header
-        const isLevel1 = isMdH1 || (!hasBoostedFirstHeader && /^[IVX\d]+\./.test(rawTitle.trim()));
-
-        if (isLevel1) {
-          hasBoostedFirstHeader = true;
-          return (
-            <h2 key={idx} className="font-outfit text-2xl sm:text-3xl md:text-4xl font-black text-[#004225] tracking-tight mt-2 mb-8 flex items-center gap-3.5 leading-tight animate-fadeIn">
-              <span className="h-9 md:h-10 w-2 md:w-2.5 rounded-full bg-gradient-to-b from-[#004225] to-[#08723c] shrink-0"></span>
-              {cleanTitle}
-            </h2>
-          );
-        }
-
-        // Level 3: Explicit ### Sub-heading
-        if (isMdH3) {
-          return (
-            <h4 key={idx} className="font-outfit text-base sm:text-lg font-bold text-slate-800 mt-7 mb-3 flex items-center gap-2.5 tracking-tight">
-              <span className="h-2.5 w-2.5 rounded bg-emerald-600 shrink-0 shadow-xs"></span>
-              <span>{cleanTitle}</span>
-            </h4>
-          );
-        }
-
-        // Level 2: Explicit ## or standard Major Section
-        const isFirstMajor = !hasRenderedFirstMajorHeader;
-        hasRenderedFirstMajorHeader = true;
-
-        return (
-          <h3
-            key={idx}
-            className={`font-outfit text-xl sm:text-2xl font-black text-[#004225] tracking-tight flex items-center gap-3 ${
-              isFirstMajor ? 'mt-6 mb-4' : 'mt-14 mb-5 pt-8 border-t border-slate-200/80'
-            }`}
-          >
-            <span className="h-6 w-2 rounded-full bg-[#004225] shrink-0"></span>
-            {cleanTitle}
-          </h3>
-        );
-      }
-
-      // 2. Unordered Lists Parser
-      if (p.startsWith("- ") || p.startsWith("* ")) {
-        // Stitch orphaned multiline bullet elements together cleanly
-        const rawLines = p.split("\n").map((l: string) => l.trim()).filter(Boolean);
-        const lines: string[] = [];
-        for (const line of rawLines) {
-          if (line.startsWith("-") || line.startsWith("*")) {
-            lines.push(line.replace(/^[-*]\s*/, "").trim());
-          } else {
-            if (lines.length > 0) {
-              lines[lines.length - 1] += " " + line;
-            } else {
-              lines.push(line);
-            }
-          }
-        }
-
-        return (
-          <ul key={idx} className="space-y-3.5 my-6 pl-1">
-            {lines.map((l: string, lIdx: number) => {
-              const boldSplit = l.indexOf(" – ");
-              const colonSplit = l.indexOf(": ");
-              const splitIdx = boldSplit !== -1 ? boldSplit : colonSplit;
-
-              if (splitIdx > 0 && splitIdx < 45) {
-                const splitChar = boldSplit !== -1 ? " – " : ": ";
-                const label = stripEmojis(l.substring(0, splitIdx).replace(/__/g, '').trim());
-                const desc = l.substring(splitIdx + splitChar.length).trim();
-                return (
-                  <li key={lIdx} className="flex items-start gap-3 text-slate-600 font-semibold text-xs md:text-sm leading-relaxed">
-                    <span className="h-2 w-2 rounded bg-emerald-600 mt-2 shrink-0"></span>
-                    <span>
-                      <strong className="text-[#004225] font-black mr-1.5 tracking-tight border-b border-emerald-50">{label}:</strong>
-                      {renderRichString(desc)}
-                    </span>
-                  </li>
-                );
-              }
-              return (
-                <li key={lIdx} className="flex items-start gap-3 text-slate-600 font-semibold text-xs md:text-sm leading-relaxed">
-                  <span className="h-2 w-2 rounded bg-emerald-600 mt-2 shrink-0"></span>
-                  <span>{renderRichString(l)}</span>
-                </li>
-              );
-            })}
-          </ul>
-        );
-      }
-
-      // Image Renderer
-      if (p.startsWith("<img")) {
-        const srcMatch = p.match(/src="(.*?)"/);
-        const src = srcMatch ? srcMatch[1] : "";
-        return (
-          <div key={idx} className="my-8 rounded-2xl overflow-hidden shadow-sm border border-slate-100">
-            <img src={src} alt="Content" className="w-full h-auto object-cover" />
-          </div>
-        );
-      }
-
-      // Default Paragraph Renderer
-      return (
-        <p key={idx} className="text-slate-600 font-semibold text-sm md:text-base leading-relaxed mb-5 text-justify">
-          {renderRichString(p)}
-        </p>
-      );
-    });
-  };
-
-  const openNext = () => {
-    if (lightboxIdx === null) return;
-    setLightboxIdx((lightboxIdx + 1) % sectionData.images.length);
-  };
-
-  const openPrev = () => {
-    if (lightboxIdx === null) return;
-    setLightboxIdx((lightboxIdx - 1 + sectionData.images.length) % sectionData.images.length);
-  };
-
-  // Pre-group the tabs into their 3 distinct structural groups
-  const tabGroups = useMemo(() => {
-    const groups: Record<string, typeof tabs> = {};
-    tabs.forEach(t => {
-      if (!groups[t.group]) groups[t.group] = [];
-      groups[t.group].push(t);
-    });
-    return groups;
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Helper to extract a short textual preview of a section for the overview cards
-  const getShortPreview = (content: string) => {
-    if (!content) return "Consulting academic facility archives...";
-    const sanitized = stripEmojis(content)
-      .replace(/[*_]/g, '')
-      .replace(/\[.*?\]\(.*?\)/g, '')
-      .split("\n\n")
-      .find(c => c.trim().length > 40 && !c.trim().includes("Photo Gallery"));
+  // Keyboard controls for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lightboxData) return;
+      if (e.key === "Escape") setLightboxData(null);
+      if (e.key === "ArrowRight") {
+        setLightboxData((prev) =>
+          prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : null
+        );
+      }
+      if (e.key === "ArrowLeft") {
+        setLightboxData((prev) =>
+          prev
+            ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length }
+            : null
+        );
+      }
+    };
 
-    const preview = sanitized ? sanitized.trim() : content.substring(0, 100);
-    return preview.length > 110 ? preview.substring(0, 110) + "..." : preview;
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxData]);
+
+  const openLightbox = (images: string[], index: number, title: string) => {
+    setLightboxData({ images, index, title });
+  };
+
+  const nextSlide = () => {
+    if (!lightboxData) return;
+    setLightboxData({
+      ...lightboxData,
+      index: (lightboxData.index + 1) % lightboxData.images.length
+    });
+  };
+
+  const prevSlide = () => {
+    if (!lightboxData) return;
+    setLightboxData({
+      ...lightboxData,
+      index: (lightboxData.index - 1 + lightboxData.images.length) % lightboxData.images.length
+    });
   };
 
   return (
-    <div className="font-sans min-h-screen bg-[#fafcfb]/50 w-full select-none animate-fadeIn">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
-        {/* Sub-text Box */}
-        <SubtextBox 
-          subtext="St. Ann's College for Women provides state-of-the-art campus infrastructure, ICT-enabled classrooms, an automated Library & Information Centre, specialized scientific laboratories, residential hostels, sports amenities, and sustainable green campus initiatives."
-          className="mb-8"
-        />
+    <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
+      <div className="flex flex-col font-sans select-none animate-fadeIn w-full">
+        {/* Main Content Container (Sidebar on Left, Data Elements on Right) */}
+        <div className="max-w-[1600px] mx-auto pt-6 sm:pt-8 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-12 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+            
+            {/* Left: Navigation Sidebar */}
+            <aside className="lg:col-span-3">
+              <AboutSidebar
+                categories={INFRASTRUCTURE_SIDEBAR_CATEGORIES}
+                bannerTitle="Campus Infrastructure"
+                bannerSubtitle="Sections on this Page"
+                activeId={activeSectionId}
+                onItemClick={(id) => {
+                  setActiveSectionId(id);
+                  const el = document.getElementById(id);
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }
+                }}
+              />
+            </aside>
 
-        {/* If inside a specific segment, provide a quick Return button back to standard Overview Page */}
-        {!isOverview && (
-          <div className="mb-8">
-            <Link
-              href="/infrastructure"
-              className="inline-flex items-center gap-2 font-bold text-sm text-[#004225] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-xs"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Back to Infrastructure Overview
-            </Link>
-          </div>
-        )}
+            {/* Right: Data Elements / Sections */}
+            <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
+              <div className="flex flex-col gap-4">
 
-      {/* -------------------- RENDER CASE 1: DEDICATED LAUNCHPAD DASHBOARD (OVERVIEW) -------------------- */}
-      {isOverview ? (
-        <div className="flex flex-col gap-14 animate-fadeIn select-none">
-          {Object.entries(tabGroups).map(([groupName, items]) => (
-            <div key={groupName} className="flex flex-col gap-6">
+                {/* Sub-text Box */}
+                <SubtextBox>
+                  <p className="text-slate-800 font-medium leading-relaxed">
+                    <strong className="text-blue-900 font-bold">
+                      {INFRASTRUCTURE_SUBTEXT.institution}
+                    </strong>
+                    , {INFRASTRUCTURE_SUBTEXT.overview.replace(/^[^\,]+,\s*/, "")}
+                    <span className="block mt-2 text-slate-600 font-medium text-sm">
+                      This section provides comprehensive information regarding academic learning spaces, specialized laboratories, digital infrastructure, student residential amenities, sports facilities, safety systems, and green campus initiatives.
+                    </span>
+                  </p>
+                </SubtextBox>
 
-              {/* Group Categorizer Label */}
-              <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-                <div className="h-10 w-10 rounded-xl bg-emerald-50 flex items-center justify-center text-[#004225] shadow-xs border border-emerald-100">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div>
-                  <h2 className="font-outfit text-xl md:text-2xl font-black text-[#004225] tracking-tight uppercase">
-                    {groupName}
-                  </h2>
-                  <p className="text-xs font-bold text-slate-400 tracking-wider -mt-0.5">Institutional Core Blocks</p>
-                </div>
-              </div>
-
-              {/* Grand Cards Responsive Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-                {items.map((t) => {
-                  const data = staticInfrastructureSections[t.slug] || { content: "", images: [] };
-                  const firstImg = data.images && data.images.length > 0 ? data.images[0] : null;
-
+                {/* ============================================================ */}
+                {/* 14 INFRASTRUCTURE SECTIONS                                   */}
+                {/* ============================================================ */}
+                {INFRASTRUCTURE_SECTIONS.map((sec) => {
+                  const Icon = ICON_MAP[sec.iconName] || Building2;
                   return (
-                    <Link
-                      key={t.slug}
-                      href={`/infrastructure/${t.slug}`}
-                      className="group flex flex-col h-full bg-white border border-slate-200/70 rounded-[2rem] overflow-hidden hover:shadow-2xl shadow-indigo-100/20 hover:-translate-y-1.5 transition-all duration-500"
+                    <section
+                      key={sec.id}
+                      id={`sec-${sec.slug}`}
+                      className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200"
+                      style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                     >
-                      {/* Photo Thumbnail Header */}
-                      <div className="h-48 w-full bg-slate-100 relative overflow-hidden border-b border-slate-100">
-                        {firstImg ? (
-                          <img
-                            src={firstImg}
-                            alt={t.text}
-                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-emerald-900 to-[#004225] flex items-center justify-center opacity-80">
-                            <t.icon className="h-12 w-12 text-emerald-200/40" />
+                      {/* Full-Width Section Header Banner */}
+                      <div
+                        className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                        style={{
+                          backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
+                          borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="h-6 w-6 text-indigo-300 shrink-0" />
+                          <h2
+                            className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                            style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                          >
+                            {sec.title}
+                          </h2>
+                        </div>
+                        <p
+                          className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                          style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                        >
+                          {sec.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Section Content Body */}
+                      <div
+                        className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200"
+                        style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+                      >
+                        {/* Primary Narrative & Features Card */}
+                        <div
+                          className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 shrink-0">
+                              <Icon className="h-5 w-5" />
+                            </span>
+                            <div>
+                              <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                {sec.title}
+                              </h4>
+                              <p className="text-xs text-slate-500 font-medium">{sec.subtitle}</p>
+                            </div>
+                          </div>
+
+                          <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                            {sec.description}
+                          </p>
+
+                          {/* Subsections: bullet features, tables, links */}
+                          {sec.subsections &&
+                            sec.subsections.map((sub, sIdx) => (
+                              <div
+                                key={sIdx}
+                                className="flex flex-col gap-3 pt-3 border-t border-slate-100"
+                              >
+                                <h5 className="font-outfit text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
+                                  <span className="h-2 w-2 rounded-full bg-blue-600 shrink-0"></span>
+                                  <span>{sub.title}</span>
+                                </h5>
+
+                                {sub.description && (
+                                  <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                                    {sub.description}
+                                  </p>
+                                )}
+
+                                {/* Bullet Feature Cards */}
+                                {sub.items && sub.items.length > 0 && (
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                    {sub.items.map((itemStr, iIdx) => {
+                                      const colonIdx = itemStr.indexOf(" – ");
+                                      const altColonIdx = itemStr.indexOf(": ");
+                                      const splitIdx = colonIdx !== -1 ? colonIdx : altColonIdx;
+
+                                      if (splitIdx > 0 && splitIdx < 50) {
+                                        const splitChar = colonIdx !== -1 ? " – " : ": ";
+                                        const label = itemStr.substring(0, splitIdx).trim();
+                                        const desc = itemStr.substring(splitIdx + splitChar.length).trim();
+                                        return (
+                                          <div
+                                            key={iIdx}
+                                            className="flex items-start gap-3 bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
+                                          >
+                                            <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0 mt-0.5">
+                                              <CheckCircle2 className="h-3.5 w-3.5" />
+                                            </span>
+                                            <div className="text-xs text-slate-800 leading-snug">
+                                              <strong className="text-blue-900 font-bold block mb-0.5">
+                                                {label}
+                                              </strong>
+                                              <span className="font-medium text-slate-600">{desc}</span>
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+
+                                      return (
+                                        <div
+                                          key={iIdx}
+                                          className="flex items-start gap-3 bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
+                                        >
+                                          <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0 mt-0.5">
+                                            <CheckCircle2 className="h-3.5 w-3.5" />
+                                          </span>
+                                          <span className="text-xs font-bold text-slate-800 leading-snug">
+                                            {itemStr}
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+
+                                {/* Data Tables */}
+                                {sub.table && (
+                                  <div className="overflow-x-auto rounded-2xl border-2 border-slate-200/90 bg-white shadow-xs mt-2">
+                                    <table className="w-full text-left border-collapse text-xs">
+                                      <thead>
+                                        <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-xs font-extrabold border-b border-[#001733]">
+                                          {sub.table.headers.map((h, hIdx) => (
+                                            <th
+                                              key={hIdx}
+                                              className={`py-3.5 px-6 ${hIdx === 0 ? "w-20" : ""}`}
+                                            >
+                                              {h}
+                                            </th>
+                                          ))}
+                                        </tr>
+                                      </thead>
+                                      <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                                        {sub.table.rows.map((row, rIdx) => (
+                                          <tr
+                                            key={rIdx}
+                                            className="hover:bg-blue-50/50 transition-colors"
+                                          >
+                                            {row.map((cell, cIdx) => (
+                                              <td
+                                                key={cIdx}
+                                                className={`py-3.5 px-6 ${
+                                                  cIdx === 0
+                                                    ? "font-bold text-slate-900"
+                                                    : cIdx === row.length - 1 && sub.table?.headers[cIdx]?.toLowerCase().includes("total")
+                                                    ? "font-extrabold text-blue-900"
+                                                    : ""
+                                                }`}
+                                              >
+                                                {cell}
+                                              </td>
+                                            ))}
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                )}
+
+                                {/* Links / Portals */}
+                                {sub.links && (
+                                  <div className="flex flex-wrap gap-2.5 pt-2">
+                                    {sub.links.map((link, lIdx) => (
+                                      <a
+                                        key={lIdx}
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/80 cursor-pointer shadow-2xs group"
+                                      >
+                                        <ExternalLink className="h-3.5 w-3.5 text-blue-600 group-hover:text-white" />
+                                        <span>{link.title}</span>
+                                        {link.note && (
+                                          <span className="text-[10px] opacity-75 font-normal">
+                                            ({link.note})
+                                          </span>
+                                        )}
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                        </div>
+
+                        {/* Section Photo Gallery Grid */}
+                        {sec.images && sec.images.length > 0 && (
+                          <div
+                            className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+                            style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                              <div className="flex items-center gap-3">
+                                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100/60 text-emerald-700 shrink-0">
+                                  <Eye className="h-5 w-5" />
+                                </span>
+                                <div>
+                                  <h4 className="font-outfit text-emerald-800 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                    Photo Gallery — {sec.title.replace(/^\d+\.\s*/, "")}
+                                  </h4>
+                                  <p className="text-xs text-slate-500 font-medium">
+                                    Visual facility showcase &amp; infrastructure records
+                                  </p>
+                                </div>
+                              </div>
+                              <span className="text-[11px] font-black uppercase bg-slate-100 text-slate-600 px-3 py-1 rounded-lg tracking-wider self-start sm:self-auto">
+                                {sec.images.length} Photos
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 pt-1">
+                              {sec.images.map((imgSrc, imgIdx) => (
+                                <div
+                                  key={imgIdx}
+                                  onClick={() => openLightbox(sec.images, imgIdx, sec.title)}
+                                  className="group relative rounded-xl overflow-hidden bg-slate-100 cursor-pointer aspect-[4/3] shadow-2xs border border-slate-200/80 hover:shadow-md hover:scale-[1.02] transition-all duration-300 select-none"
+                                >
+                                  <img
+                                    src={imgSrc}
+                                    alt={`${sec.title} frame ${imgIdx + 1}`}
+                                    className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                    loading="lazy"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                                    <div className="flex items-center justify-between w-full text-white">
+                                      <span className="text-[11px] font-bold tracking-wide truncate pr-1">
+                                        Frame #{imgIdx + 1}
+                                      </span>
+                                      <div className="h-6 w-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shrink-0">
+                                        <Maximize2 className="h-3 w-3" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         )}
-
-                        {/* Glass floating Pill tracking images index */}
-                        <div className="absolute top-4 right-4 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-white tracking-wider flex items-center gap-1.5 border border-white/10">
-                          <Eye className="h-3 w-3" />
-                          {data.images?.length || 0} Photos
-                        </div>
                       </div>
-
-                      {/* Card Narrative Block */}
-                      <div className="p-6 flex-1 flex flex-col justify-between">
-                        <div className="flex flex-col gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="h-9 w-9 rounded-xl bg-[#004225]/5 border border-[#004225]/10 flex items-center justify-center text-[#004225]">
-                              <t.icon className="h-4.5 w-4.5" />
-                            </div>
-                            <h3 className="font-outfit font-black text-[#004225] text-lg leading-snug group-hover:text-emerald-700 transition-colors">
-                              {t.text}
-                            </h3>
-                          </div>
-
-                          <p className="text-slate-500 font-semibold text-xs md:text-sm leading-relaxed mt-1">
-                            {getShortPreview(data.content)}
-                          </p>
-                        </div>
-
-                        {/* Bottom Link Action */}
-                        <div className="mt-6 pt-4 border-t border-slate-50 flex items-center justify-between text-emerald-700 font-black text-xs md:text-[13px] tracking-tight">
-                          <span>Explore</span>
-                          <div className="h-8 w-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center transform group-hover:translate-x-1.5 transition-all duration-300">
-                            <ArrowRight className="h-4 w-4" />
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
+                    </section>
                   );
                 })}
+
               </div>
+            </main>
 
-            </div>
-          ))}
-        </div>
-      ) : (
-
-        // -------------------- RENDER CASE 2: DETAILED SUBSECTION SPLIT-PANEL PORTAL --------------------
-        <div>
-          {/* Mobile Responsive Sticky Top Toggle */}
-          <div className="md:hidden mb-6 relative select-none">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-full bg-white border-2 border-slate-200 rounded-2xl px-5 py-4 flex items-center justify-between text-[#004225] font-black shadow-sm active:scale-[0.98] transition-all"
-            >
-              <span className="flex items-center gap-3">
-                <activeTab.icon className="h-5 w-5 shrink-0 text-emerald-600" />
-                {activeTab.text}
-              </span>
-              <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${mobileMenuOpen ? 'rotate-180' : ''}`} />
-            </button>
-
-            {mobileMenuOpen && (
-              <div className="absolute left-0 right-0 mt-2 bg-white border border-slate-200 shadow-2xl rounded-2xl z-30 p-2 flex flex-col gap-1 max-h-[70vh] overflow-y-auto animate-fadeInUp">
-                {/* Explicit Option to Return to Grid Overview */}
-                <Link
-                  href="/infrastructure"
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-black text-emerald-700 bg-emerald-50/50 border-b border-emerald-50 mb-2"
-                >
-                  <Layers className="h-4 w-4 text-emerald-700" />
-                  Back to Overview Grid
-                </Link>
-
-                {Object.entries(tabGroups).map(([grp, items]) => (
-                  <div key={grp} className="flex flex-col gap-0.5">
-                    <span className="text-[9px] uppercase tracking-widest font-black text-slate-400 px-3 pt-3 pb-1">{grp}</span>
-                    {items.map((t) => (
-                      <Link
-                        key={t.slug}
-                        href={`/infrastructure/${t.slug}`}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeSlug === t.slug ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}`}
-                      >
-                        <t.icon className={`h-4 w-4 ${activeSlug === t.slug ? 'text-emerald-600' : 'text-slate-400'}`} />
-                        {t.text}
-                      </Link>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Sidebar Layout View */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative items-start animate-fadeIn">
-
-            {/* Sidebar Selectors Panel for Desktop (Floating scroll window) */}
-            <div className="hidden md:flex flex-col gap-6 sticky top-24 select-none">
-              <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-5 shadow-sm hover:shadow-md transition-all flex flex-col gap-4 max-h-[80vh] overflow-y-auto no-scrollbar">
-                
-                <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 px-2">
-                  <h1 className="font-outfit text-xl font-black text-[#004225] tracking-tight">Infrastructure</h1>
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                    Campus &amp; Facilities
-                  </span>
-                </div>
-
-                {/* Back to Overview Hub link button */}
-                <Link
-                  href="/infrastructure"
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs md:text-[13px] font-black text-emerald-700 bg-emerald-50 hover:bg-emerald-100/60 border border-emerald-100 transition-all group mb-2"
-                >
-                  <Layers className="h-4 w-4 shrink-0 text-emerald-600 group-hover:scale-110 transition-transform" />
-                  Overview Dashboard
-                </Link>
-
-                {Object.entries(tabGroups).map(([grp, items]) => (
-                  <div key={grp} className="flex flex-col gap-1.5">
-                    <span className="text-[10px] uppercase tracking-widest font-black text-emerald-950/40 px-3 pt-1">
-                      {grp}
-                    </span>
-                    {items.map((t) => {
-                      const isActive = activeSlug === t.slug;
-                      return (
-                        <Link
-                          key={t.slug}
-                          href={`/infrastructure/${t.slug}`}
-                          className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs md:text-[13px] transition-all ${isActive
-                            ? 'bg-gradient-to-r from-[#004225] to-[#0a5932] text-white shadow-md shadow-emerald-100'
-                            : 'text-slate-600 hover:bg-slate-50 hover:text-[#004225]'}`}
-                        >
-                          <span className={`flex items-center justify-center h-6 w-6 rounded-lg shrink-0 border transition-colors duration-300 ${isActive ? 'bg-white/20 border-white/10 text-white' : 'bg-slate-100 border-transparent text-slate-500 group-hover:bg-[#004225]/5 group-hover:text-[#004225]'}`}>
-                            <t.icon className="h-3.5 w-3.5" />
-                          </span>
-                          <span className="leading-snug">{t.text}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
-
-              {/* High level auditor compliance stamp */}
-              <div className="bg-emerald-950 border border-emerald-900 p-6 rounded-[2.5rem] text-white flex flex-col gap-4 relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-white/5 h-32 w-32 rounded-full translate-x-1/4 -translate-y-1/4 pointer-events-none"></div>
-                <div className="relative z-10 flex flex-col gap-2">
-                  <span className="bg-emerald-500/20 border border-emerald-400/20 text-emerald-200 px-3 py-1 rounded-lg text-[10px] uppercase tracking-wider font-black w-fit">Facility Audit</span>
-                  <h4 className="font-outfit text-base font-bold leading-tight">AICTE & ISO Compliant</h4>
-                  <p className="text-emerald-200/60 text-xs font-semibold leading-relaxed">Laboratory safety procedures, structural fire prevention standards, and accessibility channels inspected semi-annually.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Primary Text canvas view */}
-            <div className="md:col-span-3 flex flex-col gap-8 animate-fadeInUp">
-
-              {/* Text & Smart Tables block */}
-              <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-10 shadow-xs select-text selection:bg-emerald-50 selection:text-[#004225]">
-                <div className="flex items-center gap-4 border-b border-slate-100 pb-6 mb-8">
-                  <div className="h-12 w-12 shrink-0 bg-[#004225]/5 border border-[#004225]/10 rounded-xl text-[#004225] flex items-center justify-center shadow-xs">
-                    <activeTab.icon className="h-5 w-5" />
-                  </div>
-                  <h2 className="font-outfit text-2xl md:text-3xl font-black text-[#004225] tracking-tight leading-none">
-                    {sectionData.title || activeTab.text}
-                  </h2>
-                </div>
-                {sectionData.content ? renderContentBody(sectionData.content) : (
-                  <p className="text-slate-400 italic text-sm">Consulting data records...</p>
-                )}
-              </div>
-
-              {/* Elite photo masonry grid (Renders all images perfectly) */}
-              {sectionData.images && sectionData.images.length > 0 && (
-                <div className="flex flex-col gap-6 animate-fadeIn">
-                  <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
-                    <div className="h-7 w-7 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                      <Eye className="h-4 w-4" />
-                    </div>
-                    <h3 className="font-outfit text-xl md:text-2xl font-black text-[#004225] tracking-tight">
-                      Photo Gallery
-                    </h3>
-                    <span className="ml-auto text-[11px] font-black uppercase bg-slate-100 text-slate-500 px-3 py-1 rounded-lg tracking-wider">
-                      {sectionData.images.length} Frames
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {sectionData.images.map((imgSrc, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => setLightboxIdx(idx)}
-                        className="group relative rounded-2xl overflow-hidden bg-slate-100 cursor-pointer aspect-[4/3] shadow-sm border border-slate-200/60 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 select-none animate-zoomIn animate-delay-75"
-                      >
-                        <img
-                          src={imgSrc}
-                          alt={`${sectionData.title} view ${idx + 1}`}
-                          className="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                          <div className="flex items-center justify-between w-full text-white">
-                            <span className="text-xs font-bold tracking-wide truncate pr-2 capitalize">{activeTab.text} View #{idx + 1}</span>
-                            <div className="h-7 w-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 transform scale-75 group-hover:scale-100 transition-transform duration-300 shrink-0">
-                              <Maximize2 className="h-3.5 w-3.5" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Fullscreen Modal Viewer (Native Fullscreen Lightbox) */}
-      {lightboxIdx !== null && sectionData.images.length > 0 && (
+      {/* ============================================================ */}
+      {/* FULLSCREEN LIGHTBOX MODAL                                    */}
+      {/* ============================================================ */}
+      {lightboxData && (
         <div className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-lg flex flex-col animate-fadeIn select-none">
-
-          {/* Close panel */}
+          {/* Header Bar */}
           <div className="h-16 flex items-center justify-between px-6 border-b border-white/10 text-white bg-slate-950/80 relative z-50">
             <div className="flex items-center gap-3">
-              <activeTab.icon className="h-5 w-5 text-emerald-400" />
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs">
+                {lightboxData.index + 1}
+              </span>
               <div>
-                <span className="text-xs font-black uppercase tracking-wider text-slate-400">{sectionData.title}</span>
-                <p className="text-sm font-bold -mt-0.5">Asset Frame {lightboxIdx + 1} of {sectionData.images.length}</p>
+                <span className="text-xs font-black uppercase tracking-wider text-slate-300">
+                  {lightboxData.title}
+                </span>
+                <p className="text-sm font-bold text-white -mt-0.5">
+                  Photo {lightboxData.index + 1} of {lightboxData.images.length}
+                </p>
               </div>
             </div>
             <button
-              onClick={() => setLightboxIdx(null)}
+              onClick={() => setLightboxData(null)}
               className="h-10 w-10 rounded-full border border-white/20 hover:border-white/50 bg-white/5 text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
-          {/* Slides container */}
-          <div className="flex-1 flex items-center justify-between px-4 relative overflow-hidden">
+          {/* Main Slide Stage */}
+          <div className="flex-1 flex items-center justify-between px-4 sm:px-8 relative overflow-hidden">
             <button
-              onClick={openPrev}
+              onClick={prevSlide}
               className="h-14 w-14 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center z-10 transition-all hover:scale-105 backdrop-blur-md cursor-pointer hidden sm:flex"
             >
               <ChevronLeft className="h-8 w-8" />
             </button>
 
-            <div className="absolute inset-0 flex items-center justify-center p-4 md:p-12">
+            <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-12">
               <img
-                src={sectionData.images[lightboxIdx]}
-                alt="Enlarged slide"
-                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/5 animate-zoomIn"
+                src={lightboxData.images[lightboxData.index]}
+                alt="Enlarged photo"
+                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/10 animate-zoomIn"
               />
             </div>
 
             <button
-              onClick={openNext}
+              onClick={nextSlide}
               className="h-14 w-14 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center z-10 transition-all hover:scale-105 backdrop-blur-md cursor-pointer hidden sm:flex"
             >
               <ChevronRight className="h-8 w-8" />
             </button>
           </div>
 
-          {/* Mobile bottom actions panel */}
+          {/* Mobile Bottom Actions */}
           <div className="p-4 border-t border-white/10 flex justify-center gap-4 sm:hidden bg-slate-950/80">
-            <button onClick={openPrev} className="px-6 py-3 bg-white/10 text-white rounded-xl text-sm font-black cursor-pointer active:scale-95">Prev</button>
-            <button onClick={openNext} className="px-6 py-3 bg-emerald-600 text-white rounded-xl text-sm font-black cursor-pointer active:scale-95">Next</button>
+            <button
+              onClick={prevSlide}
+              className="px-6 py-2.5 bg-white/10 text-white rounded-xl text-xs font-bold cursor-pointer active:scale-95"
+            >
+              Previous
+            </button>
+            <button
+              onClick={nextSlide}
+              className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold cursor-pointer active:scale-95"
+            >
+              Next
+            </button>
           </div>
-
         </div>
       )}
-
     </div>
-  </div>
-);
+  );
 }
