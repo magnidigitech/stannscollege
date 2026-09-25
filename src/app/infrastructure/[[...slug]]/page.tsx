@@ -1,6 +1,12 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import InfrastructureClientPortal from "@/components/infrastructure/InfrastructureClientPortal";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Campus Infrastructure & Facilities | St. Ann's College for Women",
+  description: "Explore our modern campus featuring ICT-enabled classrooms, advanced scientific laboratories, automated library, sports amenities, residential hostel, and green campus initiatives.",
+};
 
 // Configure standard Static Param generation for pre-rendering!
 export const dynamic = "force-static";
@@ -38,12 +44,12 @@ interface PageProps {
 
 export default async function InfrastructurePage({ params }: PageProps) {
   const resolvedParams = await params;
-  const slugArray = resolvedParams.slug || [];
+  const slugArray = resolvedParams?.slug || [];
   
-  // Default to overview dashboard if no slug is provided in root path
-  const activeSlug = slugArray.length > 0 ? slugArray[0] : "overview";
+  // Default to Section 1 "campus-buildings" if no slug is provided in root path
+  const activeSlug = slugArray.length > 0 ? slugArray[0] : "campus-buildings";
 
-  if (slugArray.length > 1 || (slugArray.length === 1 && !VALID_SLUGS.includes(activeSlug) && activeSlug !== "overview")) {
+  if (slugArray.length > 1 || (slugArray.length === 1 && !VALID_SLUGS.includes(activeSlug))) {
     notFound();
   }
 
