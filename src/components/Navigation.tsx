@@ -36,7 +36,17 @@ import {
   FlaskConical,
   Rocket,
   Compass,
-  Building2
+  Building2,
+  Presentation,
+  Cpu,
+  Home,
+  UtensilsCrossed,
+  HeartPulse,
+  Dumbbell,
+  Music,
+  ShieldAlert,
+  Leaf,
+  Accessibility
 } from "lucide-react";
 
 export function toSlug(text: string) {
@@ -578,37 +588,53 @@ export default function Navigation() {
     }
   ];
 
-  const infraCategories = [
-    {
-      title: "I. Academic Blocks",
-      icon: Building,
-      items: [
-        { text: "Campus & Buildings", slug: "campus-buildings" },
-        { text: "Classrooms", slug: "classrooms" },
-        { text: "Library", slug: "library" },
-        { text: "Scientific Laboratories", slug: "laboratories" },
-      ]
-    },
-    {
-      title: "II. Student Facilities",
-      icon: GraduationCap,
-      items: [
-        { text: "Hostel Residence", slug: "hostel" },
-        { text: "Cafeteria / Canteen", slug: "canteen" },
-        { text: "Sports, Games & Gym", slug: "sports-games" },
-        { text: "Health Centre", slug: "health-centre" },
-      ]
-    },
-    {
-      title: "III. Operations & Utility",
-      icon: ShieldCheck,
-      items: [
-        { text: "ICT & Digital Infra", slug: "ict-digital" },
-        { text: "Safety & Security", slug: "safety-security" },
-        { text: "Green Campus", slug: "green-campus" },
-        { text: "Barrier-Free Access", slug: "inclusive-access" },
-      ]
-    }
+  const infraColumns = [
+    [
+      {
+        title: "Academic & Campus Infra",
+        icon: Building2,
+        items: [
+          { text: "1. Campus & Buildings", slug: "campus-buildings" },
+          { text: "2. Classrooms", slug: "classrooms" },
+          { text: "3. Library & Info Centre", slug: "library" },
+          { text: "4. ICT & Digital Infra", slug: "ict-digital" },
+        ]
+      }
+    ],
+    [
+      {
+        title: "Laboratories & Skills",
+        icon: FlaskConical,
+        items: [
+          { text: "5. Laboratories", slug: "laboratories" },
+          { text: "6. Skill Development Centre", slug: "skill-development" },
+          { text: "7. Hostel", slug: "hostel" },
+          { text: "8. Canteen", slug: "canteen" },
+        ]
+      }
+    ],
+    [
+      {
+        title: "Student Support & Amenities",
+        icon: HeartPulse,
+        items: [
+          { text: "9. Health Centre", slug: "health-centre" },
+          { text: "10. Sports, Games & Gym", slug: "sports-games" },
+          { text: "11. Cultural & Recreation", slug: "cultural-recreation" },
+        ]
+      }
+    ],
+    [
+      {
+        title: "Safety & Sustainability",
+        icon: ShieldAlert,
+        items: [
+          { text: "12. Safety & Disaster Mgmt", slug: "safety-security" },
+          { text: "13. Green Campus Initiatives", slug: "green-campus" },
+          { text: "14. Barrier-Free Access", slug: "inclusive-access" },
+        ]
+      }
+    ]
   ];
 
   const supportCategories = [
@@ -1232,7 +1258,7 @@ export default function Navigation() {
 
             {activeMenu === "infra" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("infra")}
                 onMouseLeave={handleMouseLeave}
@@ -1241,35 +1267,32 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Campus Infrastructure & Facilities"
-                  href="/infrastructure"
-                  buttonText="Visit Infrastructure Main Page"
-                  icon={Building}
-                  onNavigate={() => setActiveMenu(null)}
-                />
-                {infraCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
-                      </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
-                      </h4>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      {cat.items.map((item, idx) => (
-                        <Link
-                          key={idx}
-                          href={`/infrastructure/${item.slug}`}
-                          onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
-                        >
-                          {item.text}
-                        </Link>
-                      ))}
-                    </div>
+                {infraColumns.map((col, colIdx) => (
+                  <div key={colIdx} className="flex flex-col gap-5">
+                    {col.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-2.5">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                            <cat.icon className="h-3.5 w-3.5" />
+                          </span>
+                          <span className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight">
+                            {cat.title}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          {cat.items.map((item, idx) => (
+                            <Link
+                              key={idx}
+                              href={`/infrastructure/${item.slug}`}
+                              onClick={() => setActiveMenu(null)}
+                              className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-2.5 py-1 rounded-lg transition-all"
+                            >
+                              {item.text}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -1972,11 +1995,15 @@ export default function Navigation() {
                       <span>Visit Infrastructure Main Page</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
-                    {infraCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={`/infrastructure/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                    {infraColumns.map((col, colIdx) => (
+                      <div key={colIdx} className="flex flex-col gap-2">
+                        {col.map((cat, i) => (
+                          <div key={i} className="flex flex-col gap-1">
+                            <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                            {cat.items.map((item, idx) => (
+                              <Link key={idx} href={`/infrastructure/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                            ))}
+                          </div>
                         ))}
                       </div>
                     ))}

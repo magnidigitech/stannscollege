@@ -34,25 +34,27 @@ import { SubtextBox } from "@/components/ui/Heading1Notch";
 
 // Category Tabs Mapping
 const tabs = [
-  // Category 1: Academic Infrastructure
-  { text: "Campus & Buildings", slug: "campus-buildings", icon: Building2, group: "Academic Blocks" },
-  { text: "Classrooms", slug: "classrooms", icon: Presentation, group: "Academic Blocks" },
-  { text: "Library", slug: "library", icon: BookOpen, group: "Academic Blocks" },
-  { text: "Laboratories", slug: "laboratories", icon: FlaskConical, group: "Academic Blocks" },
-  { text: "Skill Development Centre", slug: "skill-development", icon: Briefcase, group: "Academic Blocks" },
+  // Category 1: Academic & Campus Infrastructure
+  { text: "1. Campus & Buildings", slug: "campus-buildings", icon: Building2, group: "Academic & Campus Infrastructure" },
+  { text: "2. Classrooms", slug: "classrooms", icon: Presentation, group: "Academic & Campus Infrastructure" },
+  { text: "3. Library & Info Centre", slug: "library", icon: BookOpen, group: "Academic & Campus Infrastructure" },
+  { text: "4. ICT & Digital Infra", slug: "ict-digital", icon: Cpu, group: "Academic & Campus Infrastructure" },
 
-  // Category 2: Campus Facilities
-  { text: "Hostel", slug: "hostel", icon: Home, group: "Student Support & Living" },
-  { text: "Canteen", slug: "canteen", icon: UtensilsCrossed, group: "Student Support & Living" },
-  { text: "Health Centre", slug: "health-centre", icon: HeartPulse, group: "Student Support & Living" },
-  { text: "Sports, Games & Gym", slug: "sports-games", icon: Dumbbell, group: "Student Support & Living" },
-  { text: "Cultural & Recreational", slug: "cultural-recreation", icon: Music, group: "Student Support & Living" },
+  // Category 2: Laboratories & Skill Centre
+  { text: "5. Laboratories", slug: "laboratories", icon: FlaskConical, group: "Laboratories & Skill Centre" },
+  { text: "6. Skill Development Centre", slug: "skill-development", icon: Briefcase, group: "Laboratories & Skill Centre" },
 
-  // Category 3: Utility & Sustainability
-  { text: "ICT & Digital Infra", slug: "ict-digital", icon: Cpu, group: "Administration & Operations" },
-  { text: "Safety & Security", slug: "safety-security", icon: ShieldAlert, group: "Administration & Operations" },
-  { text: "Green Campus", slug: "green-campus", icon: Leaf, group: "Administration & Operations" },
-  { text: "Barrier-Free Access", slug: "inclusive-access", icon: Accessibility, group: "Administration & Operations" },
+  // Category 3: Student Amenities & Support
+  { text: "7. Hostel", slug: "hostel", icon: Home, group: "Student Amenities & Support" },
+  { text: "8. Canteen", slug: "canteen", icon: UtensilsCrossed, group: "Student Amenities & Support" },
+  { text: "9. Health Centre", slug: "health-centre", icon: HeartPulse, group: "Student Amenities & Support" },
+  { text: "10. Sports, Games & Gym", slug: "sports-games", icon: Dumbbell, group: "Student Amenities & Support" },
+  { text: "11. Cultural & Recreation Facilities", slug: "cultural-recreation", icon: Music, group: "Student Amenities & Support" },
+
+  // Category 4: Safety & Sustainability
+  { text: "12. Safety & Disaster Mgmt", slug: "safety-security", icon: ShieldAlert, group: "Safety & Sustainability" },
+  { text: "13. Green Campus Initiatives", slug: "green-campus", icon: Leaf, group: "Safety & Sustainability" },
+  { text: "14. Barrier-Free Access", slug: "inclusive-access", icon: Accessibility, group: "Safety & Sustainability" },
 ];
 
 interface InfrastructureClientPortalProps {
@@ -535,7 +537,7 @@ export default function InfrastructureClientPortal({
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
         {/* Sub-text Box */}
         <SubtextBox 
-          subtext="Step inside our ultra-modern 25+ acre green campus hosting digitised classroom pods, scientific labs, holistic residencies, and lush sustainable initiatives."
+          subtext="St. Ann's College for Women provides state-of-the-art campus infrastructure, ICT-enabled classrooms, an automated Library & Information Centre, specialized scientific laboratories, residential hostels, sports amenities, and sustainable green campus initiatives."
           className="mb-8"
         />
 

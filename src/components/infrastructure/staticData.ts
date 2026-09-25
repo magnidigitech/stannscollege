@@ -1,1000 +1,883 @@
 /**
- * Structured Static Dataset for Phase 4: Infrastructure
- * Ported directly from documents with dynamic public gallery indexes.
+ * Structured Static Dataset for Infrastructure
+ * Strictly adhering to 5.infrastructure (1).docx
  */
 
-export interface InfrastructureSection {
+export interface InfrastructureSectionItem {
+  id: string;
+  slug: string;
+  sectionNumber: number;
   title: string;
-  content: string;
+  subtitle: string;
+  iconName: string;
+  description: string;
+  contentMarkdown?: string;
+  subsections?: {
+    title: string;
+    description?: string;
+    items?: string[];
+    table?: {
+      headers: string[];
+      rows: string[][];
+    };
+    links?: { title: string; url: string; note?: string }[];
+  }[];
   images: string[];
 }
 
-export const staticInfrastructureSections: Record<string, InfrastructureSection> = {
-  "campus-buildings": {
-    title: "College Campus & Buildings",
-    content: `## Overview
-
-The College provides a well-planned, student-centric infrastructure that supports academic excellence, research, skill development, and holistic growth. The campus integrates modern facilities with a safe, inclusive, and eco-friendly environment.
-
-## 1. Campus & Buildings
-
-The College campus provides a serene, safe, and student-friendly environment that supports academic excellence and holistic development.
-
-- Spacious and well-maintained campus with lush greenery 
-- Separate blocks for academic programmes: 
-	- St. Ann’s Block for Undergraduate (UG) Programmes 
-	- Gnanam Block for Postgraduate (PG) Programmes 
-- Well-equipped seminar halls and auditorium for academic and co-curricular events 
-- Clean, well-laid internal roads and organized common spaces 
-- Regular maintenance ensures a hygienic and eco-friendly campus environment
-
-__Photo Gallery __
-
-Campus View 
-
-St. Ann’s Block (UG) 
-
-Gnanam Block (PG) 
-
-Seminar Hall 
-
-Auditorium`,
-    images: ["/images/infrastructure/campus-buildings/img-1.jpg", "/images/infrastructure/campus-buildings/img-2.jpg", "/images/infrastructure/campus-buildings/img-3.jpg", "/images/infrastructure/campus-buildings/img-4.jpg", "/images/infrastructure/campus-buildings/img-5.jpg", "/images/infrastructure/campus-buildings/img-6.jpg", "/images/infrastructure/campus-buildings/img-7.jpg"]
-  },
-  "classrooms": {
-    title: "Modern Classrooms & Seminars",
-    content: `__2. Classrooms__
-
-The College provides well-designed, technology-enabled classrooms that create an effective and engaging learning environment.
-
-- Well-ventilated and spacious classrooms ensuring a comfortable atmosphere 
-- ICT-enabled classrooms with LCD projectors and digital teaching tools 
-- Smart classrooms supporting interactive and multimedia-based learning 
-- Comfortable seating arrangements with adequate lighting and acoustics 
-- Wi-Fi-enabled learning spaces for access to digital resources 
-- Regular maintenance ensures cleanliness and functionality of classroom facilities
-
-__Photo Gallery__
-
-__ __Smart Classroom 
-
- ICT-enabled Teaching 
-
-Classroom Interior 
-
-Digital Learning Environment`,
-    images: ["/images/infrastructure/classrooms/img-1.jpg", "/images/infrastructure/classrooms/img-2.jpg", "/images/infrastructure/classrooms/img-3.jpg", "/images/infrastructure/classrooms/img-4.jpg", "/images/infrastructure/classrooms/img-5.jpg", "/images/infrastructure/classrooms/img-6.jpg", "/images/infrastructure/classrooms/img-7.jpg", "/images/infrastructure/classrooms/img-8.jpg", "/images/infrastructure/classrooms/img-9.jpg", "/images/infrastructure/classrooms/img-10.jpg", "/images/infrastructure/classrooms/img-11.jpg", "/images/infrastructure/classrooms/img-12.jpg", "/images/infrastructure/classrooms/img-13.jpg"]
-  },
-  "library": {
-    title: "Knowledge Resource Centre & Library",
-    content: `# 3. Department of Library & Information Science
-
-## About Us
-
-The College Library is a central academic facility that supports teaching, learning, and research. It provides access to print and digital resources, fostering reading habits, academic excellence, and lifelong learning.
-
-## Library Development
-
-The College Library has witnessed phased developmental milestones over the years across undergraduate and postgraduate divisions, culminating in the establishment of a unified Central Library:
-
-### UG Library
-
-- Established in 1997 with 107 volumes and 44 titles 
-- Shifted to Gorantla (1999) – St. Ann’s Block 
-- Relocated to Gnanam Block (2019–2024) 
-- Presently located in St. Ann’s Block (Second Floor) 
-
-### PG Library
-
-- Established in 2002–2003 (MCA Programme) 
-- Expanded with MBA Programme (2007–2008) 
-- Functioned in St. Ann’s Block until 2023–2024 
-- Shifted to Gnanam Block (2024–2025) 
-
-### NAAC Initiative – Central Library (2025)
-
-As per recommendations of the NAAC Peer Team (June 2024):
-
-- UG & PG Libraries merged into Single Central Library 
-- Renovated during April–May 2025 
-- Functioning from June 2025 onwards 
-
-## Vision & Mission
-
-### Vision
-
-To promote a knowledge-enriched learning community committed to the development and empowerment of society with integrity.
-
-### Mission
-
-- To support teaching, learning, and research with state-of-the-art information resources 
-- To promote reflective thinking and intellectual growth 
-- To facilitate access to contemporary knowledge in relevant fields 
-
-## Objectives of the Library
-
-- To promote reading habits among students and faculty 
-- To encourage extensive use of library resources 
-- To acquire, organize, and update collections to support the Teaching-Learning Process (TLP) 
-- To motivate students to read beyond the prescribed curriculum 
-- To provide guidance and assistance in the effective use of library resources and services 
-- To develop the library as a dynamic and growing knowledge centre
-
-## At a Glance
-
-### Infrastructure
-
-- Library Built-up Area: 203.45 sq. mt 
-- Spacious Reading Hall with adequate seating 
-- Dedicated Digital Library Section with internet-enabled systems 
-- Quiet, well-maintained and learner-friendly environment 
-
-### Library Timings
-
-- Monday to Friday: 8:00 AM to 4:00 PM 
-- Saturday: 8:00 AM to 1:00 PM
-
-## Our Team
-
-__S. No__
-
-__Name__
-
-__Qualification__
-
-__Designation__
-
-__Experience__
-
-1
-
-Mrs. G. Sailaja
-
-M.A., M.L.I.Sc., B.Ed
-
-Librarian
-
-24 Years
-
-2
-
-Mrs. D. Anitha
-
-M.A., M.L.I.Sc
-
-Librarian
-
-14 Years
-
-## Library Services
-
-- Circulation Services (Issue, Return & Renewal of Books) 
-- Access to Print Journals and E-Journals 
-- Reference Services for academic support 
-- Access to Previous Question Papers 
-- Newspaper Clipping Service for current awareness 
-- Project Reference Support for students 
-- Issue of Book CDs and Magazine CDs 
-- Digital Library Services through DELNET 
-- Reprographic (Photocopy) Services 
-- OPAC (Online Public Access Catalogue) for easy search 
-- Documentation of Syllabus Books 
-- Organization of Library Events and Awareness Programmes 
-- Overnight Issue Facility for reference books
-
-## Library Resources
-
-S.NO
-
-PARTICULARS
-
-TOTAL
-
-1
-
-No. of Books
-
-23459
-
-2
-
-No of Titles
-
-5679
-
-3
-
-No of Print journals & Magazines
-
-24
-
-4
-
-No. of News Papers
-
-05
-
-5
-
-Book CD’s
-
-857
-
-6
-
-Magazine CD’s
-
-331
-
-7
-
-Back Volumes of Journals
-
-51
-
-8
-
-Project Reports
-
-1448
-
-9
-
-E- Subscriptions 
-
-DELNET
-
-10
-
-DELNET Union Catalogues and Databases
-
-75,00,000
-
-11
-
-Software
-
-NewGenLib 3.0
-
-12
-
-Systems for Internet
-
-07
-
-## Access Platforms
-
-The Library provides access to national and international digital resources to support academic learning, research, and self-study.
-
-- National Digital Library (NDL): [https://www.ndl.gov.in](https://www.ndl.gov.in)
-- DELNET (Developing Library Network): [https://delnet.in/index.html](https://delnet.in/index.html)
-
-## Open Access Resources
-
-The following platforms are freely accessible to all users (students, faculty, and public) and provide a wide range of e-learning materials, courses, and academic resources:
-
-__S.No__
-
-__Name__
-
-__Link__
-
-1
-
-e-PG Pathshala
-
-[https://epgp.inflibnet.ac.in](https://epgp.inflibnet.ac.in)
-
-2
-
-e-Pathshala
-
-[https://epathshala.nic.in](https://epathshala.nic.in)
-
-3
-
-Khan Academy
-
-[https://khanacademy.org](https://khanacademy.org)
-
-4
-
-Consortium for Educational Communication (CEC)
-
-[https://cec.nic.in](https://cec.nic.in)
-
-5
-
-e-Gyankosh
-
-[https://egyankosh.ac.in](https://egyankosh.ac.in)
-
-6
-
-NPTEL (Online Courses)
-
-[https://nptel.ac.in](https://nptel.ac.in)
-
-7
-
-SWAYAM Prabha TV Channels
-
-[https://swayamprabha.gov.in](https://swayamprabha.gov.in)
-
-8
-
-Virtual Labs
-
-[https://vlab.co.in](https://vlab.co.in)
-
-9
-
-TutorialsPoint
-
-[https://tutorialspoint.com](https://tutorialspoint.com)
-
-10
-
-NMEICT (Sakshat Portal)
-
-[https://sakshat.ac.in](https://sakshat.ac.in)
-
-11
-
-CSIR Institutional Repositories
-
-[https://csircentral.net](https://csircentral.net)
-
-12
-
-National Scholarships Portal
-
-[https://scholarships.gov.in](https://scholarships.gov.in)
-
-## MOOCs (Massive Open Online Courses)
-
-The Library facilitates access to online learning platforms that offer free and structured courses across various disciplines to enhance knowledge, skills, and employability.
-
-- UGC MOOCs (INFLIBNET) – [https://ugcmoocs.inflibnet.ac.in](https://ugcmoocs.inflibnet.ac.in) 
-- SWAYAM Online Courses – [https://swayam.gov.in](https://swayam.gov.in) 
-- NPTEL Online Courses – [https://onlinecourses.nptel.ac.in](https://onlinecourses.nptel.ac.in) 
-- ANU MOOCs – [https://moocs.anuonline.ac.in](https://moocs.anuonline.ac.in)
-
-## Projects & Training Programmes
-
-The Library provides information and access to various national and international organizations that support research projects, training programmes, fellowships, and academic initiatives for students and faculty.
-
-- Department of Science and Technology (DST) – [https://dst.gov.in](https://dst.gov.in) 
-- Department of Biotechnology (DBT) – [https://dbtindia.nic.in](https://dbtindia.nic.in) 
-- Indian Council of Social Science Research (ICSSR) – [https://icssr.org](https://icssr.org) 
-- Indo-U.S. Science and Technology Forum (IUSSTF) – [https://iusstf.org](https://iusstf.org) 
-- United States-India Educational Foundation (USIEF) – [https://usief.org.in](https://usief.org.in) 
-- Council of Scientific and Industrial Research (CSIR) – [https://csir.res.in](https://csir.res.in) 
-- Ministry of Education (formerly MHRD) – [https://mhrd.gov.in](https://mhrd.gov.in) 
-- University Grants Commission (UGC) – [https://ugc.ac.in](https://ugc.ac.in)
-
-## Electronic Theses & Dissertations (ETDs)
-
-The Library provides access to Electronic Theses and Dissertations (ETDs) to support academic learning, research, and project work for UG and PG students.
-
-- INFLIBNET Shodhganga – [https://shodhganga.inflibnet.ac.in](https://shodhganga.inflibnet.ac.in) 
-- Mahatma Gandhi University Theses Repository – [https://mgutheses.org](https://mgutheses.org) 
-- IISc Electronic Theses & Dissertations – [https://etd.ncsi.iisc.ernet.in](https://etd.ncsi.iisc.ernet.in) 
-- Saurashtra University ETD Repository – [https://etheses.saurashtrauniversity.edu](https://etheses.saurashtrauniversity.edu) 
-- Cochin University Digital Repository (Dyuthi) – [https://dyuthi.cusat.ac.in](https://dyuthi.cusat.ac.in) 
-- North-Eastern Hill University Repository – [https://dspace.nehu.ac.in](https://dspace.nehu.ac.in) 
-
-## National Digital Library of Theses & Dissertations (NDLTD)
-
-The Library provides access to international repositories of theses, dissertations, and research publications, supporting advanced academic study and research activities.
-
-- Networked Digital Library of Theses and Dissertations (NDLTD) – [https://ndltd.org](https://ndltd.org) 
-- University of Oregon Libraries – [https://library.uoregon.edu](https://library.uoregon.edu) 
-- arXiv (Open Access E-prints) – [https://arxiv.org](https://arxiv.org) 
-- EThOS – British Library Theses Service – [https://ethos.bl.uk](https://ethos.bl.uk) 
-- Deutsche Nationalbibliothek (German National Library) – [https://portal.dnb.de](https://portal.dnb.de) 
-
-## Digital Libraries
-
-The Library also provides access to major national and international digital libraries, offering a wide range of books, research materials, and academic resources.
-
-- National Digital Library of India (NDLI) – [https://ndl.iitkgp.ac.in](https://ndl.iitkgp.ac.in) 
-- National Academic Depository (NAD) – UGC – [https://nad.gov.in](https://nad.gov.in) 
-- National Science Digital Library (NSDL) – [https://nsdl.oercommons.org](https://nsdl.oercommons.org) 
-- British Library – [https://bl.uk](https://bl.uk) 
-- UNESCO Digital Library – [https://unesco.org/library](https://unesco.org/library) 
-- Virtual Library – [https://vlib.org](https://vlib.org) 
-- World Digital Library (WDL) – [https://wdl.org](https://wdl.org)
-
-## E-Journals & Digital Academic Resources
-
-The Library provides access to a wide range of national and international e-journals, open access publications, and digital academic platforms to support teaching, learning, and research.
-
-### E-Journal Sources (Open Access & Academic Platforms)
-
-- UGC Approved Journals – [https://ugc.ac.in/journallist](https://ugc.ac.in/journallist) 
-- CSIR Journals – [https://nopr.niscair.res.in](https://nopr.niscair.res.in) 
-- Indian Academy of Sciences Journals – [https://ias.ac.in](https://ias.ac.in) 
-- Directory of Open Access Journals (DOAJ) – [https://doaj.org](https://doaj.org) 
-
-### Science & Research Academies
-
-- Indian National Science Academy (INSA) – [https://insaindia.res.in](https://insaindia.res.in) 
-- National Academy of Sciences, India (NASI) – [https://nasi.org.in](https://nasi.org.in) 
-- PhysNet Journals – [https://physnet.net](https://physnet.net) 
-- SPIE Digital Library – [https://spiedigitallibrary.org](https://spiedigitallibrary.org) 
-
-### International Journals & Open Access Platforms
-
-- Open Access Library (OALib) – [https://oalib.com](https://oalib.com) 
-- Cambridge Core – [https://cambridge.org/core](https://cambridge.org/core) 
-- SpringerOpen – [https://springeropen.com](https://springeropen.com) 
-- Social Science Research Network (SSRN) – [https://ssrn.com](https://ssrn.com) 
-- Science and Education Publishing – [https://sciepub.com](https://sciepub.com) 
-- Free Medical Journals – [https://freemedicaljournals.com](https://freemedicaljournals.com) 
-- ABC Chemistry – [https://abc-chemistry.org](https://abc-chemistry.org) 
-- Directory of Open Access Books (DOAB) – [https://doabooks.org](https://doabooks.org) 
-
-### Digital Libraries & E-Books
-
-- Internet Archive (Digital Library of India) – [https://archive.org](https://archive.org) 
-- Ebook Friendly – [https://ebookfriendly.com](https://ebookfriendly.com) 
-- Kathanilayam (Telugu Resources) – [https://kathanilayam.com](https://kathanilayam.com) 
-- Rare Ebooks – [https://rareebooks.com](https://rareebooks.com) 
-
-### Subject-wise E-Book Resources
-
-- Engineering & Technology – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
-- Humanities – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
-- Mathematics – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
-- Pure Sciences – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
-- History & Tourism – [https://e-booksdirectory.com](https://e-booksdirectory.com) 
-- UNESCO Open Access Publications – [https://unesco.org/open-access](https://unesco.org/open-access) 
-
-### Reference & Dictionary Resources
-
-- Oxford English Dictionary (Online) – [https://oed.com](https://oed.com) 
-
-### Useful Academic & Career Links
-
-- Online Exams Practice – [https://brainbashers.com](https://brainbashers.com) 
-- Online Universities – [https://testsworld.com](https://testsworld.com) 
-- Abroad Research Platforms – [https://academicearth.org](https://academicearth.org) 
-- College Board Resources – [https://collegeboard.com](https://collegeboard.com) 
-- Peterson’s Guide – [https://petersonsguide.com](https://petersonsguide.com) 
-- BBC Learning English – [https://bbc.co.uk/worldservice/learningenglish](https://bbc.co.uk/worldservice/learningenglish) 
-- English Club – [https://englishclub.com](https://englishclub.com) 
-- Purdue OWL (Academic Writing) – [https://owl.english.purdue.edu](https://owl.english.purdue.edu) 
-- Career Guidance (Career Varsity) – [https://careervarsity.com](https://careervarsity.com) 
-- MOOCs (ANU Online Courses) – [https://moocs.anuonline.ac.in](https://moocs.anuonline.ac.in) 
-
-### User Access Policy
-
-- Most resources listed above are open access and freely available 
-- Some platforms (like premium journals) may require institutional subscription or login 
-- Access is supported through library systems and internet-enabled facilities 
-
-### NAAC Enhancement Line
-
-- *The library provides access to diverse e-journal platforms and digital resources to enhance research capability, academic writing, and knowledge enrichment.*
-
-## General Academic Resources
-
-- __CCE e-Learning (UG Courses)__  
-[http://www.ccelms.ap.gov.in/rusa/user/gpapers](http://www.ccelms.ap.gov.in/rusa/user/gpapers)  
-*Access to UG course materials across all subjects* 
-- __e-PG Pathshala__  
-[http://epgp.inflibnet.ac.in](http://epgp.inflibnet.ac.in)  
-*Postgraduate learning resources for all disciplines* 
-- __Rare Books Society of India__  
-[http://www.rarebooksociety.org](http://www.rarebooksociety.org)  
-*Collection of rare and historical books* 
-
-## Telugu & Regional Language Resources
-
-- __Telugu & Sanskrit Digital Books__  
-[http://www.teluguthesis.com](http://www.teluguthesis.com) 
-- __Vedic Heritage Portal (Vedas & Upanishads)__  
-[http://vedicheritage.gov.in](http://vedicheritage.gov.in) 
-- __Telugu Literature Resources (A to Z Collection)__  
-[http://www.atoz2512.com](http://www.atoz2512.com) 
-- __TeluguOne Grandhalayam (Digital Library)__  
-[http://www.teluguone.com/grandalayam](http://www.teluguone.com/grandalayam) 
-- __AP Public Digital Libraries__  
-[https://publiclibraries.ap.gov.in](https://publiclibraries.ap.gov.in)
-
-## Best Practices of the Library
-
-- __User-Centric Collection Development__:  
-Students and faculty are encouraged to recommend books and journals through a prescribed requisition form, ensuring the collection remains relevant and need-based. 
-- __Display of New Arrivals:__  
-Newly acquired books and journals are regularly displayed to create awareness and promote reading among users. 
-- __Digital Library Services (DELNET):__  
-The library provides access to digital resources through DELNET, enabling users to explore a wide range of e-books, e-journals, and academic databases. 
-- __User Orientation Programme:__  
-Orientation sessions are conducted for newly admitted students to familiarize them with library resources, services, and usage guidelines. 
-- __Home Lending of Multimedia Resources:__  
-CDs and DVDs are made available for home lending to both students and staff to support academic and co-curricular learning. 
-- __Promotion of Reading Culture:__  
-The library offers free access to reading materials, fostering reading habits and encouraging lifelong learning among students.
-
-## Library Circulation & Discipline Policy
-
-### Book Issue Policy
-
-- Students are permitted to borrow up to 3 books at a time. 
-- Faculty members may borrow up to 10 books. 
-- The loan period is 14 days for all issued books. 
-- A renewal facility is available, subject to demand and reservation status. 
-- Overdue charges are applicable for late returns as per library rules. 
-
-### Library Discipline
-
-- Strict silence must be maintained within the library premises. 
-- Eating and drinking are not permitted inside the library. 
-- Mobile phones should be kept on silent mode or switched off. 
-
-### Penalties
-
-- Damage to Books: Users must compensate for any damage caused to library materials. 
-- Loss of Books: Lost books must be replaced with the same or latest edition, or the prescribed fine must be paid. 
-- Late Return: A fine is imposed for overdue books as per library policy.
-
-## Library Activities & Programmes
-
-The Library and Information Science section consistently organizes a wide range of academic, cultural, and awareness programmes every year to promote reading habits, information literacy, and holistic student development.
-
-These activities are designed to create an engaging learning environment, enhance access to knowledge resources, and develop lifelong learning skills among students.
-
-### Regular Activities Conducted
-
-- __User Orientation Programmes:__  
-Conducted for newly admitted students to familiarize them with library resources, services, digital platforms, and usage guidelines. 
-- __Celebration of Important Occasions:__  
-Observance of significant days such as the birth anniversary of Iyyanki Venkata Ramanayya, Librarian’s Day, Library Week, and other academic events. 
-- __Library Week Celebrations:__  
-Organized annually with activities such as: 
-	- Awareness programmes on e-resources 
-	- Essay writing competitions 
-	- Quiz, Sudoku, and creative competitions 
-	- Painting and literary activities 
-- __Reading Promotion Initiatives:__  
-Activities aimed at developing reading habits, including book displays, reading sessions, and interactive programmes. 
-- __Information Literacy Programmes:__  
-Training sessions to help students effectively use digital resources, e-journals, and online databases (such as DELNET). 
-- __Student Engagement Activities:__  
-Creative and collaborative activities like competitions, awareness campaigns, and theme-based events. 
-- __Educational Visits:__  
-Visits to book fairs and exhibitions such as the Vijayawada Book Festival to expose students and faculty to a wide range of publications and learning resources. 
-
-### Sample Activities (Academic Year 2025–2026)
-
-During the academic year 2025–2026, the library organized several programmes including:
-
-- Orientation sessions for first-year students 
-- Celebration of important academic and social occasions 
-- Librarian’s Day and Library Week activities 
-- Awareness programmes on e-resources 
-- Creative competitions such as essay writing, painting, and quizzes 
-- Educational visit to a book festival 
-
-These programmes witnessed active participation from students across all departments, reflecting the vibrant academic culture of the institution.
-
-`,
-    images: ["/images/infrastructure/library/img-1.jpg", "/images/infrastructure/library/img-2.jpg", "/images/infrastructure/library/img-3.jpg", "/images/infrastructure/library/img-4.jpg", "/images/infrastructure/library/img-5.jpg", "/images/infrastructure/library/img-6.jpg", "/images/infrastructure/library/img-7.jpg", "/images/infrastructure/library/img-8.jpg", "/images/infrastructure/library/img-9.jpg", "/images/infrastructure/library/img-10.jpg", "/images/infrastructure/library/img-11.jpg"]
-  },
-  "ict-digital": {
-    title: "ICT & Digital Infrastructure",
-    content: `__4. ICT & Digital Infrastructure__
-
-The institution provides a comprehensive ICT-enabled ecosystem to support academic excellence, skill development, and digital learning. The infrastructure is designed to meet the diverse needs of various programmes and ensure hands-on learning experiences.
-
-__ Campus-wide Wi-Fi Connectivity __
-
-The entire campus is equipped with high-speed Wi-Fi connectivity, enabling students and faculty to access academic resources, e-content, and online platforms seamlessly across all departments.
-
-__Gallery __
-
-__ Programme-wise Computer Laboratories__
-
-The institution maintains separate, well-equipped, and specialized computer laboratories to meet the academic and practical requirements of various programmes:
-
-- B.Sc. Programmes – Facilities for scientific computing, data analysis, and practical-based learning 
-- B.Com. Programme – Equipped with accounting software such as Tally and other business applications 
-- BCA Programme – Advanced infrastructure for programming, database management, and application development 
-- B.Sc. (Artificial Intelligence) – Access to AI tools, machine learning environments, and data analytics platforms 
-- B.Sc. (Statistics) – Dedicated Statistics Laboratory for data analysis, statistical computing, and research activities 
-- MCA Programme – High-end systems supporting software development, project work, and advanced computing 
-- MBA Programme – ICT-enabled facilities for business analytics, presentations, simulations, and case study analysis 
-
-All laboratories are equipped with updated computer systems, licensed software, and high-speed internet connectivity, ensuring effective practical training and hands-on learning experiences.
-
-__Gallery __
-
-__Learning Management System (LMS)__
-
-The institution uses Learning Management Systems (LMS) and digital platforms to support blended and student-centric learning.
-
-Faculty utilize platforms such as Google Classroom, Microsoft Teams, and WhatsApp for academic activities.
-
-Course materials, lecture notes, PPTs, and e-resources are regularly shared through these platforms.
-
-Online quizzes and assessments are conducted using tools like Google Forms.
-
-Assignments and internal assessments are assigned, submitted, and evaluated digitally.
-
-Faculty provide timely feedback and academic support through these platforms.
-
-Continuous learning is ensured through online interaction beyond the classroom.
-
-WhatsApp groups are used for quick communication, updates, and doubt clarification.
-
-These digital tools promote flexible, accessible, and technology-enabled learning, enhancing student engagement and academic performance
-
-__Gallery __
-
-__Digital Teaching–Learning & Evaluation__
-
-Teaching–learning is enhanced through the use of ICT tools such as projectors, smart boards, and online platforms.
-
-Digital methods are adopted for evaluation, including online tests, assignments, and internal assessments.
-
-These practices ensure effective learning, transparency, and timely assessment.
-
-__Gallery __
-
-__Language Lab__
-
-The Language Lab is a dedicated facility designed to enhance students’ communication skills, particularly in English and other languages. It provides an interactive and technology-enabled environment that supports listening, speaking, reading, and writing (LSRW) skill development.
-
-Equipped with modern audio-visual tools, computers, and language learning software, the lab enables students to practice pronunciation, improve vocabulary, and develop fluency through structured exercises and self-paced learning modules.
-
-The Language Lab plays a vital role in preparing students for academic success, competitive examinations, and professional careers by strengthening their confidence in communication.
-
-__ Key Features__
-
-- 🎧 Audio-visual based language training
-- 💻 Computer-assisted learning modules
-- 🗣️ Focus on pronunciation and spoken skills
-- 📘 Interactive sessions for LSRW development
-- 🎯 Support for placements, interviews, and presentations
-
-__ Objectives__
-
-- To improve students’ communication and soft skills
-- To develop fluency and accuracy in language usage
-- To build confidence for public speaking and professional interactions
-- To support overall personality development`,
-    images: ["/images/infrastructure/ict-digital/img-1.jpg", "/images/infrastructure/ict-digital/img-2.jpg", "/images/infrastructure/ict-digital/img-3.jpg", "/images/infrastructure/ict-digital/img-4.jpg", "/images/infrastructure/ict-digital/img-5.jpg", "/images/infrastructure/ict-digital/img-6.jpg", "/images/infrastructure/ict-digital/img-7.jpg", "/images/infrastructure/ict-digital/img-8.jpg", "/images/infrastructure/ict-digital/img-9.jpg", "/images/infrastructure/ict-digital/img-10.jpg", "/images/infrastructure/ict-digital/img-11.jpg", "/images/infrastructure/ict-digital/img-12.jpg", "/images/infrastructure/ict-digital/img-13.jpg", "/images/infrastructure/ict-digital/img-14.jpg", "/images/infrastructure/ict-digital/img-15.jpg", "/images/infrastructure/ict-digital/img-16.jpg", "/images/infrastructure/ict-digital/img-17.jpg", "/images/infrastructure/ict-digital/img-18.jpg", "/images/infrastructure/ict-digital/img-19.jpg", "/images/infrastructure/ict-digital/img-20.jpg"]
-  },
-  "laboratories": {
-    title: "Scientific Laboratories & Research Units",
-    content: `__Laboratories__
-
-The institution provides well-equipped laboratories to support practical learning, experimentation, and research across science and analytical disciplines. These labs enable students to gain hands-on experience, reinforce theoretical concepts, and develop scientific and problem-solving skills in alignment with academic requirements 
-
-__Science Laboratories__
-
-The college maintains specialized laboratories for core science subjects, equipped with essential instruments and safety facilities to facilitate practical sessions and experimental learning.
-
-- __Physics Lab__ – Supports experiments in mechanics, optics, electronics, and modern physics 
-- __Chemistry Lab__ – Equipped for organic, inorganic, and physical chemistry experiments 
-- __Botany Lab__ – Provides facilities for plant studies, microscopy, and specimen analysis 
-- __Microbiology Lab__ – Enables study of microorganisms through culture and staining techniques 
-- __Biotechnology Lab__ – Supports basic molecular biology and biotechnological experiments 
-
-__ Analytical & Computational Laboratories__
-
-These laboratories are designed to strengthen analytical, computational, and problem-solving abilities through practical applications.
-
-- __Statistics Lab__ – Provides facilities for data analysis, statistical computations, and software-based learning 
-- __Mathematics Lab__ – Supports concept-based learning through models, charts, and activity-oriented methods 
-
-__ Key Features__
-
-- 🧪 Well-maintained laboratories with essential equipment 
-- 👨‍🔬 Hands-on training aligned with curriculum requirements 
-- ⚗️ Safety measures and standard laboratory practices 
-- 📊 Support for experimental learning and project work 
-- 🎯 Enhances scientific temper and analytical skills 
-
-__🎯 Objectives__
-
-- To provide experiential learning through practical exposure 
-- To bridge the gap between theory and application 
-- To develop research orientation and analytical thinking 
-- To ensure skill-based education in science and allied fields`,
-    images: ["/images/infrastructure/laboratories/img-1.jpg", "/images/infrastructure/laboratories/img-2.jpg", "/images/infrastructure/laboratories/img-3.jpg", "/images/infrastructure/laboratories/img-4.jpg", "/images/infrastructure/laboratories/img-5.jpg", "/images/infrastructure/laboratories/img-6.jpg", "/images/infrastructure/laboratories/img-7.jpg", "/images/infrastructure/laboratories/img-8.jpg", "/images/infrastructure/laboratories/img-9.jpg", "/images/infrastructure/laboratories/img-10.jpg", "/images/infrastructure/laboratories/img-11.jpg", "/images/infrastructure/laboratories/img-12.jpg", "/images/infrastructure/laboratories/img-13.jpg", "/images/infrastructure/laboratories/img-14.jpg", "/images/infrastructure/laboratories/img-15.jpg", "/images/infrastructure/laboratories/img-16.jpg", "/images/infrastructure/laboratories/img-17.jpg", "/images/infrastructure/laboratories/img-18.jpg", "/images/infrastructure/laboratories/img-19.jpg", "/images/infrastructure/laboratories/img-20.jpg", "/images/infrastructure/laboratories/img-21.jpg", "/images/infrastructure/laboratories/img-22.jpg", "/images/infrastructure/laboratories/img-23.jpg", "/images/infrastructure/laboratories/img-24.jpg", "/images/infrastructure/laboratories/img-25.jpg", "/images/infrastructure/laboratories/img-26.jpg", "/images/infrastructure/laboratories/img-27.jpg", "/images/infrastructure/laboratories/img-28.jpg", "/images/infrastructure/laboratories/img-29.jpg", "/images/infrastructure/laboratories/img-30.jpg", "/images/infrastructure/laboratories/img-31.jpg"]
-  },
-  "skill-development": {
-    title: "Skill Development Centre",
-    content: `__APSSDC Skill Development Centre__
-
-The institution has established an APSSDC Skill Development Centre in collaboration with Andhra Pradesh State Skill Development Corporation to enhance students’ employability and professional competencies.
-
-The centre plays a vital role in preparing students to meet industry expectations by offering structured training programmes in the following areas:
-
-- Soft Skills & Communication – Development of interpersonal skills, presentation skills, and workplace communication 
-- Aptitude & Reasoning – Training in quantitative aptitude, logical reasoning, and problem-solving techniques 
-- Technical Skill Development – Programme-specific technical training aligned with current industry trends 
-- Career Guidance & Placement Preparation – Resume building, interview skills, mock interviews, and career counselling 
-
-The centre regularly organizes workshops, training sessions, and certification programmes in collaboration with industry experts and APSSDC trainers.
-
-It effectively bridges the gap between academic learning and industry requirements, thereby enhancing students’ readiness for employment and higher education opportunities.
-
-__Gallery __`,
-    images: ["/images/infrastructure/skill-development/img-1.jpg", "/images/infrastructure/skill-development/img-2.jpg", "/images/infrastructure/skill-development/img-3.jpg", "/images/infrastructure/skill-development/img-4.jpg", "/images/infrastructure/skill-development/img-5.jpg"]
-  },
-  "hostel": {
-    title: "Safe & Modern Hostel Residence",
-    content: `__Hostel Facility__
-
-The institution provides hostel accommodation to support students from different regions, ensuring a safe, comfortable, and conducive living environment for academic growth and overall well-being.
-
-The hostel is designed to offer a disciplined and student-friendly atmosphere with essential amenities. It promotes a balanced lifestyle by encouraging study, rest, and participation in co-curricular activities.
-
-__Key Features__
-
-- 🛏️ Well-maintained rooms with basic furnishings 
-- 💧 Safe drinking water and sanitation facilities 
-- 🍽️ Hygienic dining and mess arrangements 
-- 🔐 Secure campus with supervision and discipline 
-- ⚡ Uninterrupted power supply and basic amenities 
-- 📚 Quiet environment for study and learning 
-
-__🎯 Objectives__
-
-- To provide safe and affordable accommodation for students 
-- To create a supportive and inclusive living environment 
-- To promote discipline, responsibility, and community living 
-- To support students’ academic focus and personal development`,
-    images: ["/images/infrastructure/hostel/img-1.jpg", "/images/infrastructure/hostel/img-2.jpg"]
-  },
-  "canteen": {
-    title: "Hygienic Cafeteria & Canteen",
-    content: `__Canteen__
-
-The college canteen provides clean and hygienic food services to students and staff within the campus. It offers a variety of fresh and nutritious snacks and meals at affordable prices, ensuring quality and hygiene standards.
-
-The canteen serves as a convenient and comfortable space for students to relax and interact during breaks.`,
-    images: ["/images/infrastructure/canteen/img-1.jpg", "/images/infrastructure/canteen/img-2.jpg", "/images/infrastructure/canteen/img-3.jpeg", "/images/infrastructure/canteen/img-4.jpeg", "/images/infrastructure/canteen/img-5.jpeg", "/images/infrastructure/canteen/img-6.jpeg"]
-  },
-  "health-centre": {
-    title: "Campus Medical & Health Centre",
-    content: `__Health Centre__
-
-The college Health Centre, located at the Gnanam Block, provides basic medical support and promotes health awareness among students and staff.
-
-__Facilities & Services__
-
-- 📍 Located in __Gnanam Block__
-- 🩺 Regular awareness programmes
-- 🎤 Guest lectures on health education
-- 🚑 First-aid 
-
-The Health Centre ensures timely care and encourages a healthy campus environment.`,
-    images: ["/images/infrastructure/health-centre/img-1.jpg", "/images/infrastructure/health-centre/img-2.jpg", "/images/infrastructure/health-centre/img-3.jpg", "/images/infrastructure/health-centre/img-4.jpg", "/images/infrastructure/health-centre/img-5.jpg", "/images/infrastructure/health-centre/img-6.jpg", "/images/infrastructure/health-centre/img-7.jpg", "/images/infrastructure/health-centre/img-8.jpg", "/images/infrastructure/health-centre/img-9.jpg", "/images/infrastructure/health-centre/img-10.jpg", "/images/infrastructure/health-centre/img-11.jpg", "/images/infrastructure/health-centre/img-12.jpg", "/images/infrastructure/health-centre/img-13.jpg", "/images/infrastructure/health-centre/img-14.jpg", "/images/infrastructure/health-centre/img-15.jpg", "/images/infrastructure/health-centre/img-16.jpg", "/images/infrastructure/health-centre/img-17.jpg", "/images/infrastructure/health-centre/img-18.jpg", "/images/infrastructure/health-centre/img-19.jpg", "/images/infrastructure/health-centre/img-20.jpg", "/images/infrastructure/health-centre/img-21.jpg", "/images/infrastructure/health-centre/img-22.jpg", "/images/infrastructure/health-centre/img-23.jpg", "/images/infrastructure/health-centre/img-24.jpg", "/images/infrastructure/health-centre/img-25.jpg", "/images/infrastructure/health-centre/img-26.jpg", "/images/infrastructure/health-centre/img-27.jpg", "/images/infrastructure/health-centre/img-28.jpg", "/images/infrastructure/health-centre/img-29.jpg", "/images/infrastructure/health-centre/img-30.jpg", "/images/infrastructure/health-centre/img-31.jpg", "/images/infrastructure/health-centre/img-32.jpg", "/images/infrastructure/health-centre/img-33.jpg", "/images/infrastructure/health-centre/img-34.jpeg", "/images/infrastructure/health-centre/img-35.jpeg", "/images/infrastructure/health-centre/img-36.jpeg", "/images/infrastructure/health-centre/img-37.jpeg", "/images/infrastructure/health-centre/img-38.jpeg"]
-  },
-  "sports-games": {
-    title: "Sports, Gymnasium & Play Fields",
-    content: `__Department of Physical Education, Sports & Games__
-
-The Department of Physical Education is committed to nurturing physical fitness, discipline, and team spirit among students. The department actively promotes a culture of sportsmanship and holistic development through well-structured training, modern infrastructure, and participation in competitive events.
-
-The department is led by Mrs. G. Bala show Reddy, Physical Director, with the support of Mrs. K. Susmitha, Assistant Physical Director, who consistently guide and motivate students towards excellence in sports and fitness.
-
-__Sports Infrastructure__
-
-- Spacious playground for outdoor games such as Cricket, Volleyball, Kho-Kho, and Kabaddi 
-- Indoor facilities for Table Tennis, Chess, and Carrom 
-- Well-maintained courts with proper markings and equipment 
-- Safe and student-friendly environment for regular practice 
-
-__Gallery __
-
-__ Gymnasium & Fitness Facilities__
-
-Well-equipped gymnasium with modern fitness equipment 
-
-- Facilities for strength training, cardio, and general fitness 
-- Regular supervision to ensure student health and well-being 
-
-__Gallery __
-
-__Training & Coaching__
-
-Professional guidance by qualified Physical Director and Assistant Director 
-
-- Regular practice sessions and coaching camps 
-- Special training for intercollegiate and university-level competitions 
-- Training in traditional martial arts such as __Karrasamu__ and __Karate__ 
-
-__Gallery __
-
-__ Student Participation & Achievements__
-
-Active participation in __intra-college and intercollegiate competitions__ 
-
-- Students have achieved recognition in various sports events at college and district levels 
-- Encouragement through awards, medals, and certificates 
-- Continuous involvement in team events and individual competitions 
-
-__Gallery __
-
-__Health & Fitness Promotion__
-
-- Organization of fitness awareness programmes and sports events 
-- Celebration of __International Yoga Day__ and __National Sports Day__ 
-- Activities promoting discipline, teamwork, and a healthy lifestyle 
-
-__Gallery __
-
-__Maintenance & Safety__
-
-- Regular maintenance of playgrounds, courts, and sports equipment 
-- Availability of first-aid facilities during sports activities 
-- Ensuring safety measures during practice sessions and competitions 
-
-__ Highlights__
-
-- Dedicated Physical Education team with strong student support 
-- Regular participation in __intra- and intercollegiate sports events__ 
-- Special focus on __traditional martial arts – Karrasamu & Karate__ 
-- Encouraging student achievements and overall personality development`,
-    images: ["/images/infrastructure/sports-games/img-1.jpg", "/images/infrastructure/sports-games/img-2.jpg", "/images/infrastructure/sports-games/img-3.jpg", "/images/infrastructure/sports-games/img-4.jpg", "/images/infrastructure/sports-games/img-5.jpg", "/images/infrastructure/sports-games/img-6.png", "/images/infrastructure/sports-games/img-7.jpg", "/images/infrastructure/sports-games/img-8.png", "/images/infrastructure/sports-games/img-9.jpg", "/images/infrastructure/sports-games/img-10.jpeg", "/images/infrastructure/sports-games/img-11.jpeg", "/images/infrastructure/sports-games/img-12.jpeg"]
-  },
-  "cultural-recreation": {
-    title: "Cultural & Recreational Facilities",
-    content: `__Cultural & Recreation Facilities__
-
-The institution provides vibrant cultural and recreational facilities to promote creativity, talent, and holistic development among students. These facilities serve as platforms for students to explore their artistic abilities, enhance interpersonal skills, and actively participate in co-curricular and extracurricular activities.
-
-__ Auditorium & Event Spaces__
-
-- Spacious auditorium with adequate seating capacity for hosting cultural programmes, seminars, and events
-- Equipped with sound systems, lighting facilities, and stage arrangements
-- Regularly utilized for annual day celebrations, competitions, guest lectures, and student activities
-
-__Gallery__
-
-__ Music, Dance & Fine Arts Facilities__
-
-- Dedicated spaces for music, dance, and fine arts activities
-- Facilities for practice, rehearsals, and creative expression
-- Encouragement for participation in cultural competitions and intercollegiate events
-- Promotion of traditional and contemporary art forms
-
-__Gallery__
-
-__Student Clubs & Activity Centres__
-
-- Active student clubs such as Literary Club, Cultural Club, and Fine Arts Club
-- Platforms for organizing events like debates, quizzes, exhibitions, and cultural fests
-- Opportunities for leadership, teamwork, and personality development
-- Student-driven initiatives that enhance campus life and engagement
-
-__Gallery__
-
-__Cultural Participation & Achievements__
-
-- Students actively participate in __intra-college and intercollegiate cultural competitions__
-- Recognition through prizes, certificates, and awards in various cultural events
-- Organization of annual cultural fests and celebrations
-
-__Gallery__
-
-__Holistic Development & Engagement__
-
-- Facilities support overall personality development and creative thinking
-- Encouragement for inclusivity, collaboration, and cultural diversity
-- Integration of cultural activities with academic life for balanced development
-
-__Gallery__`,
-    images: ["/images/infrastructure/cultural-recreation/img-1.jpg", "/images/infrastructure/cultural-recreation/img-2.jpg", "/images/infrastructure/cultural-recreation/img-3.jpg", "/images/infrastructure/cultural-recreation/img-4.jpg", "/images/infrastructure/cultural-recreation/img-5.jpg", "/images/infrastructure/cultural-recreation/img-6.jpg", "/images/infrastructure/cultural-recreation/img-7.jpg", "/images/infrastructure/cultural-recreation/img-8.jpg", "/images/infrastructure/cultural-recreation/img-9.jpg", "/images/infrastructure/cultural-recreation/img-10.jpg", "/images/infrastructure/cultural-recreation/img-11.jpg"]
-  },
-  "safety-security": {
-    title: "Safety, Security & Disaster Management",
-    content: `__Safety, Security & Disaster Management__
-
-The institution ensures a safe, secure, and well-regulated campus environment through systematic safety measures, surveillance systems, and awareness programmes. Emphasis is placed on prevention, preparedness, and prompt response to emergencies.
-
-__ Campus Surveillance & Security__
-
-- 24/7 CCTV surveillance covering key areas of the campus 
-- Deployment of trained security personnel at entry and exit points 
-- Continuous monitoring to ensure student safety and discipline 
-
-__ Fire Safety & Emergency Facilities__
-
-- Installation of fire extinguishers at strategic locations 
-- Clearly marked emergency exits for safe evacuation 
-- Regular inspection and maintenance of safety equipment 
-
-__ Disaster Management & Awareness__
-
-- Conduct of disaster management drills and mock evacuation exercises 
-- Organization of safety awareness programmes and training sessions 
-- First-aid awareness and emergency response preparedness for students and staff 
-
-__ Safety Commitment__
-
-- Strong institutional commitment to maintaining a secure and risk-free campus 
-- Promotion of safety awareness, responsibility, and preparedness among all stakeholders`,
-    images: ["/images/infrastructure/safety-security/img-1.jpg", "/images/infrastructure/safety-security/img-2.jpg", "/images/infrastructure/safety-security/img-3.jpg", "/images/infrastructure/safety-security/img-4.jpg", "/images/infrastructure/safety-security/img-5.jpg", "/images/infrastructure/safety-security/img-6.jpg", "/images/infrastructure/safety-security/img-7.jpg", "/images/infrastructure/safety-security/img-8.jpg"]
-  },
-  "green-campus": {
-    title: "Eco-Friendly Green Campus & Solar Grids",
-    content: `__🌿 Green Campus & Sustainability Initiatives__
-
-The institution is committed to environmental sustainability and promotes eco-friendly practices to create a green and healthy campus. Various initiatives are undertaken to conserve natural resources, manage waste effectively, and instill environmental responsibility among students and staff.
-
-__Green Landscaping & Tree Plantation__
-
-- Regular tree plantation drives to enhance green cover
-- Well-maintained gardens and landscaped campus
-- Promotion of biodiversity and eco-conscious campus environment
-
-__Gallery__
-
-__Waste Management Practices__
-
-- Segregation of waste into biodegradable and non-biodegradable categories
-- Use of waste management pits for eco-friendly disposal
-- Awareness programmes on responsible waste handling
-
-__Gallery__
-
-__Energy Conservation Initiatives__
-
-- Installation of solar panels to promote renewable energy usage
-- Use of solar-powered lighting systems (7 solar lights installed)
-- Adoption of energy-efficient practices across campus
-
-__Gallery__
-
-__Water Conservation__
-
-- Implementation of rainwater harvesting systems
-- Conservation and efficient utilization of water resources
-- Awareness initiatives on sustainable water usage
-
-__Gallery__
-
-__ Eco-Friendly Practices & Awareness__
-
-- Promotion of plastic-free campus initiatives
-- Encouragement of environmentally responsible behavior among students
-- Organization of awareness programmes on sustainability and green practices
-
-__Gallery__
-
-__🌱 Highlights__
-
-- Active green campus initiatives with student participation
-- Functional __rainwater harvesting system__
-- Installation of __solar panels and  solar lights__
-- Sustainable __waste management pits__ for eco-friendly disposal
-- __Gallery__`,
-    images: ["/images/infrastructure/green-campus/img-1.jpg", "/images/infrastructure/green-campus/img-2.jpg", "/images/infrastructure/green-campus/img-3.jpg", "/images/infrastructure/green-campus/img-4.jpg", "/images/infrastructure/green-campus/img-5.jpg", "/images/infrastructure/green-campus/img-6.jpg", "/images/infrastructure/green-campus/img-7.jpg", "/images/infrastructure/green-campus/img-8.jpg", "/images/infrastructure/green-campus/img-9.jpg", "/images/infrastructure/green-campus/img-10.jpg", "/images/infrastructure/green-campus/img-11.jpg", "/images/infrastructure/green-campus/img-12.jpg", "/images/infrastructure/green-campus/img-13.jpg", "/images/infrastructure/green-campus/img-14.jpg", "/images/infrastructure/green-campus/img-15.jpg", "/images/infrastructure/green-campus/img-16.jpg", "/images/infrastructure/green-campus/img-17.jpg", "/images/infrastructure/green-campus/img-18.jpg", "/images/infrastructure/green-campus/img-19.jpg", "/images/infrastructure/green-campus/img-20.jpg", "/images/infrastructure/green-campus/img-21.jpg", "/images/infrastructure/green-campus/img-22.jpg"]
-  },
-  "inclusive-access": {
-    title: "Barrier-Free & Inclusive Access",
-    content: `__Barrier-Free & Inclusive Access__
-
-The institution is committed to providing an inclusive and accessible environment for all students, including those with special needs, ensuring equal opportunities in academics and campus life.
-
-__ Accessibility Features__
-
-- Ramps with railings for easy mobility across campus 
-- Accessible and user-friendly washroom facilities 
-- Barrier-free pathways to key academic and administrative areas 
-
-__ Inclusive Support System__
-
-- Supportive and inclusive learning environment for differently-abled students 
-- Academic and personal assistance as required 
-- Commitment to equality, dignity, and participation for all learners`,
-    images: ["/images/infrastructure/inclusive-access/img-1.jpg", "/images/infrastructure/inclusive-access/img-2.jpg", "/images/infrastructure/inclusive-access/img-3.jpg", "/images/infrastructure/inclusive-access/img-4.jpg", "/images/infrastructure/inclusive-access/img-5.jpg", "/images/infrastructure/inclusive-access/img-6.jpg", "/images/infrastructure/inclusive-access/img-7.jpg", "/images/infrastructure/inclusive-access/img-8.jpg", "/images/infrastructure/inclusive-access/img-9.jpg", "/images/infrastructure/inclusive-access/img-10.jpg", "/images/infrastructure/inclusive-access/img-11.jpg", "/images/infrastructure/inclusive-access/img-12.jpg"]
-  },
+export const INFRASTRUCTURE_SUBTEXT = {
+  institution: "St. Ann’s College for Women, Gorantla, Guntur",
+  overview:
+    "St. Ann’s College for Women provides a safe, accessible, technology-enabled and student-friendly campus environment that supports teaching, learning, research, skill development, sports and holistic student development. The infrastructure is periodically maintained and upgraded to meet academic and institutional requirements.",
+  tagline: "Safe, accessible, technology-enabled and student-friendly campus environment."
 };
+
+export const INFRASTRUCTURE_SECTIONS: InfrastructureSectionItem[] = [
+  // 1. Campus & Buildings
+  {
+    id: "campus-buildings",
+    slug: "campus-buildings",
+    sectionNumber: 1,
+    title: "1. Campus & Buildings",
+    subtitle: "St. Ann’s Block (UG) & Gnanam Block (PG), Academic, Administrative & Support Facilities",
+    iconName: "Building2",
+    description:
+      "The College has a well-maintained campus with St. Ann’s Block and Gnanam Block, housing academic, administrative and student-support facilities. The campus provides a conducive environment for academic and co-curricular activities.",
+    subsections: [
+      {
+        title: "Campus Architecture & Blocks Overview",
+        items: [
+          "Spacious and well-maintained campus with lush greenery and serene ambience.",
+          "St. Ann’s Block dedicated to Undergraduate (UG) academic programmes, administrative offices, and central facilities.",
+          "Gnanam Block dedicated to Postgraduate (PG) programmes (MCA & MBA), research facilities, and specialised departments.",
+          "Well-equipped air-conditioned seminar halls and auditorium for academic conferences, guest lectures, and co-curricular events.",
+          "Clean, well-laid internal roads, pedestrian pathways, and organized open common spaces.",
+          "Regular institutional maintenance schedule ensuring a hygienic, safe, and eco-friendly campus environment."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/campus-buildings/img-1.jpg",
+      "/images/infrastructure/campus-buildings/img-2.jpg",
+      "/images/infrastructure/campus-buildings/img-3.jpg",
+      "/images/infrastructure/campus-buildings/img-4.jpg",
+      "/images/infrastructure/campus-buildings/img-5.jpg",
+      "/images/infrastructure/campus-buildings/img-6.jpg",
+      "/images/infrastructure/campus-buildings/img-7.jpg"
+    ]
+  },
+
+  // 2. Classrooms
+  {
+    id: "classrooms",
+    slug: "classrooms",
+    sectionNumber: 2,
+    title: "2. Classrooms",
+    subtitle: "Spacious, Ventilated & ICT-Enabled Interactive Learning Spaces",
+    iconName: "Presentation",
+    description:
+      "The College provides spacious and well-ventilated classrooms equipped with essential teaching facilities. ICT-enabled classrooms and digital teaching resources support interactive and technology-integrated learning.",
+    subsections: [
+      {
+        title: "Key Classroom Features",
+        items: [
+          "Spacious, naturally lit, and well-ventilated classrooms ensuring an optimal learning atmosphere.",
+          "ICT-enabled lecture rooms equipped with ceiling-mounted LCD projectors, interactive smart boards, and digital podiums.",
+          "Smart classrooms supporting multimedia presentations, virtual lectures, and blended pedagogical methodologies.",
+          "Ergonomic dual-desk seating arrangements with clear sightlines and optimal acoustics.",
+          "High-speed campus Wi-Fi connectivity enabling digital resource access during classroom sessions.",
+          "Continuous facility management and periodic technology upgrades ensuring flawless classroom operations."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/classrooms/img-1.jpg",
+      "/images/infrastructure/classrooms/img-2.jpg",
+      "/images/infrastructure/classrooms/img-3.jpg",
+      "/images/infrastructure/classrooms/img-4.jpg",
+      "/images/infrastructure/classrooms/img-5.jpg",
+      "/images/infrastructure/classrooms/img-6.jpg",
+      "/images/infrastructure/classrooms/img-7.jpg",
+      "/images/infrastructure/classrooms/img-8.jpg",
+      "/images/infrastructure/classrooms/img-9.jpg",
+      "/images/infrastructure/classrooms/img-10.jpg",
+      "/images/infrastructure/classrooms/img-11.jpg",
+      "/images/infrastructure/classrooms/img-12.jpg",
+      "/images/infrastructure/classrooms/img-13.jpg"
+    ]
+  },
+
+  // 3. Library & Information Centre
+  {
+    id: "library",
+    slug: "library",
+    sectionNumber: 3,
+    title: "3. Library & Information Centre",
+    subtitle: "Central Knowledge Resource Hub, Digital Repositories, DELNET & E-Learning",
+    iconName: "BookOpen",
+    description:
+      "The Library & Information Centre of St. Ann’s College for Women is an integral part of the academic environment, supporting teaching, learning, research, self-study and intellectual development.",
+    subsections: [
+      {
+        title: "A. About the Library",
+        description:
+          "The Library & Information Centre of St. Ann’s College for Women is an integral part of the academic environment, supporting teaching, learning, research, self-study and intellectual development. It provides students and faculty with access to print and digital resources, reference materials, e-resources and online learning platforms.\n\n" +
+          "• Vision: To promote a knowledge-enriched learning community committed to the development and empowerment of society with integrity.\n" +
+          "• Mission:\n" +
+          "  - To support teaching, learning and research through quality information resources.\n" +
+          "  - To promote reflective thinking and intellectual growth.\n" +
+          "  - To facilitate access to contemporary knowledge in relevant fields.\n" +
+          "• Objectives:\n" +
+          "  - To promote reading habits among students and faculty.\n" +
+          "  - To encourage effective use of library resources and services.\n" +
+          "  - To develop and maintain relevant and updated collections in support of the Teaching-Learning Process.\n" +
+          "  - To encourage students to explore knowledge beyond the prescribed curriculum.\n" +
+          "  - To provide guidance in the effective use of print and digital resources.\n" +
+          "  - To develop the Library as a dynamic and growing knowledge centre.\n" +
+          "• Role in Teaching, Learning & Research:\n" +
+          "The Library supports the academic needs of UG Degree, MCA and MBA programmes by providing access to books, journals, reference materials, project resources, digital resources and online learning platforms. It facilitates independent learning, project work, information literacy and research-oriented learning, thereby contributing to academic excellence, knowledge enrichment and lifelong learning."
+      },
+      {
+        title: "B. Library at a Glance",
+        description:
+          "The Library & Information Centre provides a well-equipped and learner-friendly environment with print, digital and reference resources to support the academic requirements of students and faculty.",
+        table: {
+          headers: ["Particular", "Details"],
+          rows: [
+            ["Library Built-up Area", "203.45 sq. mt."],
+            ["Books", "23,459"],
+            ["Titles", "5,679"],
+            ["Journals & Magazines", "24"],
+            ["Newspapers", "05"],
+            ["Project Reports", "1,448"],
+            ["Book CDs", "857"],
+            ["Magazine CDs", "331"],
+            ["Back Volumes of Journals", "51"],
+            ["Internet-enabled Systems", "07"],
+            ["E-Subscription", "DELNET"],
+            ["DELNET Union Catalogues & Databases", "75,00,000"],
+            ["Library Software", "NewGenLib 3.0"]
+          ]
+        }
+      },
+      {
+        title: "C. Library Infrastructure & Facilities",
+        items: [
+          "Reading Hall: Spacious and conducive reading area for students and faculty.",
+          "Stack Area: Systematically organized collection of books and other learning resources.",
+          "Reference Section: Reference materials to support academic study, assignments and project work.",
+          "Digital Library: Dedicated facility providing access to digital and online academic resources.",
+          "Internet-enabled Systems: Computer systems supporting access to online learning resources and digital services.",
+          "OPAC Facility: Online Public Access Catalogue for searching and locating Library resources.",
+          "Reprographic Facility: Facility for photocopying and reproduction of permitted academic materials.",
+          "Newspaper & Magazine Section: Access to newspapers, magazines and current-awareness resources.",
+          "CD / Multimedia Resources: Academic book CDs and magazine CDs supporting supplementary learning.",
+          "Learner-friendly Environment: A peaceful and disciplined atmosphere conducive to reading, self-study and academic engagement."
+        ]
+      },
+      {
+        title: "D. Library Resources",
+        description:
+          "The Library & Information Centre maintains a diverse and continually developing collection of print, multimedia and digital resources to support the academic requirements of UG Degree, MCA and MBA programmes, as well as faculty teaching, project work and research.",
+        items: [
+          "Books: A comprehensive collection of textbooks, reference books and supplementary reading materials.",
+          "Titles: A wide range of titles covering various academic disciplines and areas of study.",
+          "Journals & Magazines: Current academic journals, periodicals and magazines supporting subject knowledge and current awareness.",
+          "Newspapers: Newspapers providing access to current affairs, educational, social and general information.",
+          "Back Volumes: Preserved back volumes of journals for reference and academic use.",
+          "Project Reports: Student project reports providing useful reference material for academic and project work.",
+          "Book CDs: Supplementary multimedia resources accompanying selected academic books.",
+          "Magazine CDs: Digital multimedia resources supporting additional learning and information access.",
+          "E-Subscriptions: Access to subscribed digital resources, including DELNET, as applicable.",
+          "DELNET: Access to union catalogues and shared library resources through the Developing Library Network.",
+          "Digital Resources: Access to digital libraries, e-books, e-journals, online learning platforms, open-access resources and academic repositories."
+        ]
+      },
+      {
+        title: "E. Library Services",
+        items: [
+          "Circulation Service: Efficient issue, return and management of Library resources.",
+          "Issue / Return / Renewal: Facility for borrowing, returning and renewing books as per Library rules.",
+          "Reference Service: Assistance in locating and using reference materials for academic and research needs.",
+          "OPAC: Online Public Access Catalogue for searching and locating Library resources.",
+          "Previous Question Papers: Access to previous examination question papers to support examination preparation and academic practice.",
+          "Project Reference Support: Assistance in identifying relevant books, reports and other resources for student projects.",
+          "Reprographic Service: Photocopying and reproduction of permitted academic materials.",
+          "Digital Library: Access to digital and online academic resources through the Library.",
+          "Newspaper Clipping Service: Selected newspaper information maintained for current awareness and reference.",
+          "Overnight Reference Book Facility: Provision for overnight use of designated reference books, subject to Library rules.",
+          "New Arrivals Display: Display of newly added books and other resources to create awareness among users."
+        ]
+      },
+      {
+        title: "F. Digital Library & E-Resources",
+        description:
+          "The Library & Information Centre of St. Ann’s College for Women facilitates access to a wide range of digital learning resources, e-books, e-journals, databases, Massive Open Online Courses (MOOCs), theses and dissertations, institutional repositories and open educational resources.\n\n" +
+          "1. Institutional Digital Resources:\n" +
+          "• DELNET – Developing Library Network (Access: Institutional subscription / authorised access. Useful for UG, MCA, MBA, Faculty, Project Work & Research).\n\n" +
+          "2. National Digital Learning Platforms:\n" +
+          "• National Digital Library of India (NDLI) – Single-window portal for multidisciplinary resources.\n" +
+          "• SWAYAM – National online learning platform for Management, Commerce, CS, Math, Sciences & Humanities.\n" +
+          "• NPTEL – Quality online technical courses developed by IITs and IISc.\n" +
+          "• CEC – Consortium for Educational Communication for UG digital e-content.\n" +
+          "• e-PG Pathshala – UGC postgraduate e-content for MCA & MBA.\n" +
+          "• eGyanKosh – IGNOU national digital repository for commerce, management & computing.\n\n" +
+          "3. MOOCs & Online Certification Courses (Table below):",
+        table: {
+          headers: ["Platform", "Major Use", "Access"],
+          rows: [
+            ["SWAYAM", "UG, PG, Management, Commerce, Sciences, Computer Applications", "https://swayam.gov.in"],
+            ["NPTEL", "Computer Science, Technology, Mathematics, Sciences & Management", "https://nptel.ac.in"],
+            ["SWAYAM Plus", "Employability & industry-oriented learning", "https://swayam-plus.co.in"],
+            ["CEC", "Undergraduate e-content and MOOCs", "https://cec.nic.in"]
+          ]
+        }
+      },
+      {
+        title: "G. Programme-Specific Digital Resources",
+        description:
+          "• A. Resources for Undergraduate Degree Students:\n" +
+          "  - Commerce & Management: SWAYAM, eGyanKosh, DOAJ, SSRN.\n" +
+          "  - Computer Science & Applications: NPTEL, SWAYAM, Virtual Labs, arXiv.\n" +
+          "  - Mathematics & Physical Sciences: NPTEL, Virtual Labs, Indian Academy of Sciences (IAS), arXiv.\n" +
+          "  - Life Sciences (Biotechnology, Microbiology, Botany, Chemistry): DBT, CSIR, PubMed, DOAJ, Virtual Labs.\n\n" +
+          "• B. Digital Resources for MCA:\n" +
+          "  - Platforms: NPTEL (CS), SWAYAM, Virtual Labs, arXiv (CS), DOAJ, DELNET.\n" +
+          "  - Suggested Focus Areas: AI, Machine Learning, Data Science, Cloud Computing, Cyber Security, Database Systems, Software Engineering, Networks.\n\n" +
+          "• C. Digital Resources for MBA:\n" +
+          "  - Platforms: SWAYAM (Management), NPTEL (Management), SSRN, DOAJ, eGyanKosh, DELNET.\n" +
+          "  - Suggested Focus Areas: Finance, Marketing, HR, Business Analytics, Entrepreneurship, Operations, Strategic Management, Research.\n\n" +
+          "• 5. E-Journals & Open Access Research: DOAJ, IAS, SpringerOpen, Cambridge Core, SSRN.\n" +
+          "• 6. E-Books: DOAB, Internet Archive, Project Gutenberg.\n" +
+          "• 7. Electronic Theses & Dissertations: Shodhganga, Shodhgangotri, NDLTD.\n" +
+          "• 8. Research & Funding Bodies (Table below):\n" +
+          "• 9. Academic Writing & Research Support: Purdue OWL, Google Scholar, Crossref, ORCID.\n" +
+          "• 10. Telugu & Indian Knowledge: Vedic Heritage Portal, AP Public Libraries, Internet Archive (Telugu).\n" +
+          "• 11. Competitive Exams & Skills: National Career Service (NCS), Skill India Digital, SWAYAM, NPTEL.\n" +
+          "• 12. Regulatory Links: UGC, AICTE, MoE, NAAC, SWAYAM, NDLI.\n" +
+          "• 13. Digital Resource Policy: For academic purposes only, compliance with copyright, credentials protection, verification of sources and proper citations.\n" +
+          "• 14. Support for Digital Learning: Orientation, DELNET sessions, literature search guidance, and information literacy.",
+        table: {
+          headers: ["Organisation", "Access Link"],
+          rows: [
+            ["University Grants Commission – UGC", "https://ugc.ac.in"],
+            ["All India Council for Technical Education – AICTE", "https://aicte-india.org"],
+            ["Ministry of Education, Government of India", "https://education.gov.in"],
+            ["Department of Science & Technology – DST", "https://dst.gov.in"],
+            ["Department of Biotechnology – DBT", "https://dbtindia.nic.in"],
+            ["Council of Scientific & Industrial Research – CSIR", "https://csir.res.in"],
+            ["Indian Council of Social Science Research – ICSSR", "https://icssr.org"]
+          ]
+        }
+      },
+      {
+        title: "H. Library Team",
+        table: {
+          headers: ["S. No.", "Name", "Qualification", "Designation", "Experience"],
+          rows: [
+            ["1", "Mrs. G. Sailaja", "M.A., M.L.I.Sc., B.Ed.", "Librarian", "24 Years"],
+            ["2", "Mrs. D. Anitha", "M.A., M.L.I.Sc.", "Librarian", "14 Years"]
+          ]
+        }
+      },
+      {
+        title: "I. Library Rules & Regulations",
+        items: [
+          "Book Issue & Renewal: Books are issued and renewed according to prescribed Library rules. Books should be returned within the specified loan period. Renewal is subject to availability and demand.",
+          "Overdue, Lost & Damaged Books: Books must be returned on or before due date. Overdue books attract a fine. Damaged/lost books must be replaced with the latest edition or compensated.",
+          "Library Discipline: Maintain strict silence inside the Library. Eating and drinking are prohibited. Mobile phones must be kept on silent or switched off. Library furniture and equipment must be handled with care.",
+          "User Responsibilities: Follow Library procedures, return resources on time, maintain discipline, and comply with instructions of Library staff."
+        ]
+      },
+      {
+        title: "J. Library Best Practices",
+        items: [
+          "1. Need-Based Collection Development: Books and learning resources updated based on curriculum needs and recommendations from students and faculty.",
+          "2. New Arrivals Display: Newly acquired books and resources regularly displayed to encourage wider utilization.",
+          "3. Digital & E-Resource Awareness: Active encouragement to use DELNET, digital resources, and online platforms.",
+          "4. Library User Orientation: Annual orientation sessions conducted for newly admitted students.",
+          "5. Promotion of Reading Culture: Organized book displays, reading sessions, Library Week, and literary contests.",
+          "6. Information Literacy: Training students to locate, evaluate, and use print and digital scholarly materials.",
+          "7. Academic & Project Support: Access to reference books, previous question papers, and project repositories.",
+          "8. Library Awareness & Student Engagement: Quizzes, essay writing, painting, and theme-based competitions.",
+          "9. User-Centred Services: Smooth circulation, OPAC search, reprography, and digital assistance.",
+          "10. Feedback & Continuous Improvement: Regular user feedback collected to upgrade library services.",
+          "11. Preservation & Responsible Use: Systematic shelving, maintenance, and conservation of learning assets."
+        ]
+      },
+      {
+        title: "K. Library Activities & Programmes",
+        description:
+          "The Library & Information Centre organizes a variety of academic, literary and awareness programmes to promote reading habits, information literacy, digital resource utilization and active student engagement.",
+        items: [
+          "Library Orientation Programmes for First-Year Students",
+          "Library Week Celebrations & National Librarian's Day",
+          "E-Resource & DELNET Awareness Demonstrations",
+          "Reading Promotion Sessions & Book Exhibitions",
+          "Literary Competitions: Essay Writing, Quiz & Painting",
+          "Educational Visits to Book Fairs and Vijayawada Book Festival",
+          "Information Literacy & Research Database Workshops"
+        ]
+      },
+      {
+        title: "L. Library Timings & Contact",
+        table: {
+          headers: ["Day", "Timings"],
+          rows: [
+            ["Monday – Friday", "8:00 AM – 4:00 PM"],
+            ["Saturday", "8:00 AM – 1:00 PM"]
+          ]
+        },
+        description:
+          "Contact Address:\n" +
+          "Library & Information Centre, St. Ann’s College for Women, Amaravathi Road, Gorantla, Guntur – Andhra Pradesh\n" +
+          "Email: st_anns_coll@yahoo.co.in\n" +
+          "For assistance regarding Library resources, services, digital resources and academic information, students and faculty may contact the Library during working hours."
+      }
+    ],
+    images: [
+      "/images/infrastructure/library/img-1.jpg",
+      "/images/infrastructure/library/img-2.jpg",
+      "/images/infrastructure/library/img-3.jpg",
+      "/images/infrastructure/library/img-4.jpg",
+      "/images/infrastructure/library/img-5.jpg",
+      "/images/infrastructure/library/img-6.jpg",
+      "/images/infrastructure/library/img-7.jpg",
+      "/images/infrastructure/library/img-8.jpg",
+      "/images/infrastructure/library/img-9.jpg",
+      "/images/infrastructure/library/img-10.jpg",
+      "/images/infrastructure/library/img-11.jpg"
+    ]
+  },
+
+  // 4. ICT & Digital Infrastructure
+  {
+    id: "ict-digital",
+    slug: "ict-digital",
+    sectionNumber: 4,
+    title: "4. ICT & Digital Infrastructure",
+    subtitle: "High-Speed Campus Wi-Fi, Programme-Wise Computer Labs, LMS & Language Lab",
+    iconName: "Cpu",
+    description:
+      "The institution provides a comprehensive ICT-enabled ecosystem to support academic excellence, skill development, and digital learning. The infrastructure is designed to meet the diverse needs of various programmes and ensure hands-on learning experiences.",
+    subsections: [
+      {
+        title: "Campus-Wide Wi-Fi Connectivity",
+        description:
+          "The entire campus is equipped with high-speed Wi-Fi connectivity, enabling students and faculty to access academic resources, e-content, and online platforms seamlessly across all departments."
+      },
+      {
+        title: "Programme-Wise Computer Laboratories",
+        description:
+          "The institution maintains separate, well-equipped, and specialized computer laboratories to meet the academic and practical requirements of various programmes:",
+        items: [
+          "B.Sc. Programmes – Facilities for scientific computing, data analysis, and practical-based learning.",
+          "B.Com. Programme – Equipped with accounting software such as Tally and other business applications.",
+          "BCA Programme – Advanced infrastructure for programming, database management, and application development.",
+          "B.Sc. (Artificial Intelligence) – Access to AI tools, machine learning environments, and data analytics platforms.",
+          "B.Sc. (Statistics) – Dedicated Statistics Laboratory for data analysis, statistical computing, and research activities.",
+          "MCA Programme – High-end systems supporting software development, project work, and advanced computing.",
+          "MBA Programme – ICT-enabled facilities for business analytics, presentations, simulations, and case study analysis."
+        ]
+      },
+      {
+        title: "Learning Management System (LMS) & Digital Teaching",
+        items: [
+          "Faculty utilize digital platforms such as Google Classroom, Microsoft Teams, and WhatsApp for academic activities.",
+          "Course materials, lecture notes, PPTs, and e-resources are regularly shared through these platforms.",
+          "Online quizzes and assessments are conducted using digital tools such as Google Forms.",
+          "Assignments and internal assessments are assigned, submitted, and evaluated digitally.",
+          "Continuous learning and doubt clarification are facilitated through interactive online channels.",
+          "Digital teaching enhanced through projectors, smart boards, and structured evaluation portals."
+        ]
+      },
+      {
+        title: "Language Lab",
+        description:
+          "The Language Lab is a dedicated facility designed to enhance students’ communication skills, particularly in English and other languages. It provides an interactive and technology-enabled environment that supports listening, speaking, reading, and writing (LSRW) skill development.",
+        items: [
+          "Audio-visual based language training with modern headsets and interactive software.",
+          "Computer-assisted learning modules supporting self-paced phonetics and vocabulary exercises.",
+          "Focus on pronunciation, spoken clarity, and conversational fluency.",
+          "Interactive practice sessions for group discussions, mock interviews, and public speaking.",
+          "Support for placement preparation, campus interviews, and professional presentation skills."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/ict-digital/img-1.jpg",
+      "/images/infrastructure/ict-digital/img-2.jpg",
+      "/images/infrastructure/ict-digital/img-3.jpg",
+      "/images/infrastructure/ict-digital/img-4.jpg",
+      "/images/infrastructure/ict-digital/img-5.jpg",
+      "/images/infrastructure/ict-digital/img-6.jpg",
+      "/images/infrastructure/ict-digital/img-7.jpg",
+      "/images/infrastructure/ict-digital/img-8.jpg",
+      "/images/infrastructure/ict-digital/img-9.jpg",
+      "/images/infrastructure/ict-digital/img-10.jpg",
+      "/images/infrastructure/ict-digital/img-11.jpg",
+      "/images/infrastructure/ict-digital/img-12.jpg",
+      "/images/infrastructure/ict-digital/img-13.jpg",
+      "/images/infrastructure/ict-digital/img-14.jpg",
+      "/images/infrastructure/ict-digital/img-15.jpg",
+      "/images/infrastructure/ict-digital/img-16.jpg",
+      "/images/infrastructure/ict-digital/img-17.jpg",
+      "/images/infrastructure/ict-digital/img-18.jpg",
+      "/images/infrastructure/ict-digital/img-19.jpg",
+      "/images/infrastructure/ict-digital/img-20.jpg"
+    ]
+  },
+
+  // 5. Laboratories
+  {
+    id: "laboratories",
+    slug: "laboratories",
+    sectionNumber: 5,
+    title: "5. Laboratories",
+    subtitle: "Specialized Science, Analytical & Computational Laboratories",
+    iconName: "FlaskConical",
+    description:
+      "The College provides well-equipped laboratories that facilitate practical learning, experimentation, research, and skill development across various disciplines. These labs enable students to gain hands-on experience, reinforce theoretical concepts, and develop scientific and problem-solving skills in alignment with academic requirements.",
+    subsections: [
+      {
+        title: "Science Laboratories",
+        description:
+          "The college maintains specialized laboratories for core science subjects, equipped with essential instruments, chemical supplies, and safety facilities to facilitate practical sessions and experimental learning:",
+        items: [
+          "Physics Lab – Supports experiments in mechanics, optics, electronics, thermodynamics, and modern physics.",
+          "Chemistry Lab – Equipped for organic, inorganic, and physical chemistry experiments, titrations, and analysis.",
+          "Botany Lab – Provides facilities for plant morphology, taxonomy, physiology, microscopy, and specimen preservation.",
+          "Microbiology Lab – Enables study of microorganisms through sterile culture, staining, isolation, and incubation techniques.",
+          "Biotechnology Lab – Supports molecular biology, electrophoresis, tissue culture, and genetic engineering experiments."
+        ]
+      },
+      {
+        title: "Mathematics & Statistics Laboratories",
+        description:
+          "These laboratories are designed to strengthen analytical, statistical, and mathematical problem-solving capabilities through practical applications:",
+        items: [
+          "Statistics Lab – Provides computer-aided statistical software, data analytics packages, and data visualization tools for survey analysis and research.",
+          "Mathematics Lab – Supports concept-based learning, mathematical modeling, geometric visualization, and computational problem-solving."
+        ]
+      },
+      {
+        title: "Safety Standards & Quality Highlights",
+        items: [
+          "Well-maintained laboratories with calibrated precision instruments and safety equipment.",
+          "Mandatory laboratory safety guidelines, fire extinguishers, first-aid boxes, and fume cupboards.",
+          "Hands-on experimental curriculum bridging the gap between theoretical knowledge and real-world application.",
+          "Active promotion of scientific temper, inquiry-based learning, and undergraduate research projects."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/laboratories/img-1.jpg",
+      "/images/infrastructure/laboratories/img-2.jpg",
+      "/images/infrastructure/laboratories/img-3.jpg",
+      "/images/infrastructure/laboratories/img-4.jpg",
+      "/images/infrastructure/laboratories/img-5.jpg",
+      "/images/infrastructure/laboratories/img-6.jpg",
+      "/images/infrastructure/laboratories/img-7.jpg",
+      "/images/infrastructure/laboratories/img-8.jpg",
+      "/images/infrastructure/laboratories/img-9.jpg",
+      "/images/infrastructure/laboratories/img-10.jpg",
+      "/images/infrastructure/laboratories/img-11.jpg",
+      "/images/infrastructure/laboratories/img-12.jpg",
+      "/images/infrastructure/laboratories/img-13.jpg",
+      "/images/infrastructure/laboratories/img-14.jpg",
+      "/images/infrastructure/laboratories/img-15.jpg",
+      "/images/infrastructure/laboratories/img-16.jpg",
+      "/images/infrastructure/laboratories/img-17.jpg",
+      "/images/infrastructure/laboratories/img-18.jpg",
+      "/images/infrastructure/laboratories/img-19.jpg",
+      "/images/infrastructure/laboratories/img-20.jpg",
+      "/images/infrastructure/laboratories/img-21.jpg",
+      "/images/infrastructure/laboratories/img-22.jpg",
+      "/images/infrastructure/laboratories/img-23.jpg",
+      "/images/infrastructure/laboratories/img-24.jpg",
+      "/images/infrastructure/laboratories/img-25.jpg",
+      "/images/infrastructure/laboratories/img-26.jpg",
+      "/images/infrastructure/laboratories/img-27.jpg",
+      "/images/infrastructure/laboratories/img-28.jpg",
+      "/images/infrastructure/laboratories/img-29.jpg",
+      "/images/infrastructure/laboratories/img-30.jpg",
+      "/images/infrastructure/laboratories/img-31.jpg"
+    ]
+  },
+
+  // 6. Skill Development Centre
+  {
+    id: "skill-development",
+    slug: "skill-development",
+    sectionNumber: 6,
+    title: "6. Skill Development Centre",
+    subtitle: "APSSDC Collaboration, Employability Skills, Technical Certification & Career Readiness",
+    iconName: "Briefcase",
+    description:
+      "The Skill Development Centre provides opportunities for students to develop employability, communication, technical, entrepreneurial, and vocational skills through training programmes and workshops.",
+    subsections: [
+      {
+        title: "APSSDC Skill Development Centre Collaboration",
+        description:
+          "The institution has established an APSSDC Skill Development Centre in collaboration with the Andhra Pradesh State Skill Development Corporation to enhance students’ employability and professional competencies. The centre plays a vital role in preparing students to meet industry expectations through structured training programmes:",
+        items: [
+          "Soft Skills & Communication – Development of interpersonal skills, presentation skills, body language, and workplace communication.",
+          "Aptitude & Logical Reasoning – Intensive training in quantitative aptitude, numerical analysis, and analytical problem-solving.",
+          "Technical Skill Training – Domain-specific technical training aligned with contemporary IT, commerce, and industrial trends.",
+          "Career Guidance & Placement Preparation – Resume building workshops, mock interview sessions, group discussions, and career counselling.",
+          "Certification Modules – Short-term certified skill-oriented courses conducted by certified APSSDC and corporate trainers."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/skill-development/img-1.jpg",
+      "/images/infrastructure/skill-development/img-2.jpg",
+      "/images/infrastructure/skill-development/img-3.jpg",
+      "/images/infrastructure/skill-development/img-4.jpg",
+      "/images/infrastructure/skill-development/img-5.jpg"
+    ]
+  },
+
+  // 7. Hostel
+  {
+    id: "hostel",
+    slug: "hostel",
+    sectionNumber: 7,
+    title: "7. Hostel",
+    subtitle: "Secure, Safe & Comfortable Residential Living for Outstation Students",
+    iconName: "Home",
+    description:
+      "The College provides hostel accommodation with essential facilities to ensure a safe, comfortable, and supportive residential environment for students.",
+    subsections: [
+      {
+        title: "Residential Facilities & Amenities",
+        items: [
+          "Spacious, well-ventilated, and fully furnished student living rooms.",
+          "24/7 round-the-clock security, CCTV surveillance, and resident warden supervision ensuring female student safety.",
+          "Hygienic dining hall serving wholesome, nutritious, and balanced meals prepared under strict sanitary standards.",
+          "Continuous clean drinking water supply with commercial RO filtration systems.",
+          "Uninterrupted power supply with standby diesel generator backup.",
+          "Quiet study halls and supportive community living conducive to academic concentration and personal growth."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/hostel/img-1.jpg",
+      "/images/infrastructure/hostel/img-2.jpg"
+    ]
+  },
+
+  // 8. Canteen
+  {
+    id: "canteen",
+    slug: "canteen",
+    sectionNumber: 8,
+    title: "8. Canteen",
+    subtitle: "Hygienic Food Services, Fresh Meals, Nutritious Refreshments & Socializing Space",
+    iconName: "UtensilsCrossed",
+    description:
+      "The College canteen provides hygienic and affordable food and refreshments in a comfortable environment for students and staff.",
+    subsections: [
+      {
+        title: "Cafeteria Services & Hygiene Standards",
+        items: [
+          "Serves a wide variety of freshly prepared, healthy, and nutritious vegetarian meals, breakfast items, and snacks.",
+          "Strict adherence to food safety, water purity, and kitchen hygiene protocols.",
+          "Subsidized and pocket-friendly pricing structure ensuring affordability for all students.",
+          "Comfortable seating area offering a relaxing environment for dining, socializing, and peer interaction during breaks."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/canteen/img-1.jpg",
+      "/images/infrastructure/canteen/img-2.jpg",
+      "/images/infrastructure/canteen/img-3.jpeg",
+      "/images/infrastructure/canteen/img-4.jpeg",
+      "/images/infrastructure/canteen/img-5.jpeg",
+      "/images/infrastructure/canteen/img-6.jpeg"
+    ]
+  },
+
+  // 9. Health Centre
+  {
+    id: "health-centre",
+    slug: "health-centre",
+    sectionNumber: 9,
+    title: "9. Health Centre",
+    subtitle: "Immediate Medical Care, First-Aid Support & Health Awareness",
+    iconName: "HeartPulse",
+    description:
+      "The College provides basic healthcare and first-aid support to address the immediate health needs of students and staff and promotes health and well-being.",
+    subsections: [
+      {
+        title: "Medical Facilities & Healthcare Services",
+        items: [
+          "Strategically located in Gnanam Block with dedicated examination beds and first-aid facilities.",
+          "Immediate first-aid care, basic medicines, and rest facilities for students and faculty during college hours.",
+          "Organization of periodic health checkup camps, eye checkups, hemoglobin screening, and blood donation drives.",
+          "Expert guest lectures and awareness programmes on women's health, nutrition, hygiene, and mental wellness.",
+          "Tie-ups and emergency ambulance access with nearby specialty hospitals for advanced medical emergencies."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/health-centre/img-1.jpg",
+      "/images/infrastructure/health-centre/img-2.jpg",
+      "/images/infrastructure/health-centre/img-3.jpg",
+      "/images/infrastructure/health-centre/img-4.jpg",
+      "/images/infrastructure/health-centre/img-5.jpg",
+      "/images/infrastructure/health-centre/img-6.jpg",
+      "/images/infrastructure/health-centre/img-7.jpg",
+      "/images/infrastructure/health-centre/img-8.jpg",
+      "/images/infrastructure/health-centre/img-9.jpg",
+      "/images/infrastructure/health-centre/img-10.jpg",
+      "/images/infrastructure/health-centre/img-11.jpg",
+      "/images/infrastructure/health-centre/img-12.jpg",
+      "/images/infrastructure/health-centre/img-13.jpg",
+      "/images/infrastructure/health-centre/img-14.jpg",
+      "/images/infrastructure/health-centre/img-15.jpg",
+      "/images/infrastructure/health-centre/img-16.jpg",
+      "/images/infrastructure/health-centre/img-17.jpg",
+      "/images/infrastructure/health-centre/img-18.jpg",
+      "/images/infrastructure/health-centre/img-19.jpg",
+      "/images/infrastructure/health-centre/img-20.jpg",
+      "/images/infrastructure/health-centre/img-21.jpg",
+      "/images/infrastructure/health-centre/img-22.jpg",
+      "/images/infrastructure/health-centre/img-23.jpg",
+      "/images/infrastructure/health-centre/img-24.jpg",
+      "/images/infrastructure/health-centre/img-25.jpg",
+      "/images/infrastructure/health-centre/img-26.jpg",
+      "/images/infrastructure/health-centre/img-27.jpg",
+      "/images/infrastructure/health-centre/img-28.jpg",
+      "/images/infrastructure/health-centre/img-29.jpg",
+      "/images/infrastructure/health-centre/img-30.jpg",
+      "/images/infrastructure/health-centre/img-31.jpg",
+      "/images/infrastructure/health-centre/img-32.jpg",
+      "/images/infrastructure/health-centre/img-33.jpg",
+      "/images/infrastructure/health-centre/img-34.jpeg",
+      "/images/infrastructure/health-centre/img-35.jpeg",
+      "/images/infrastructure/health-centre/img-36.jpeg",
+      "/images/infrastructure/health-centre/img-37.jpeg",
+      "/images/infrastructure/health-centre/img-38.jpeg"
+    ]
+  },
+
+  // 10. Sports, Games & Gym
+  {
+    id: "sports-games",
+    slug: "sports-games",
+    sectionNumber: 10,
+    title: "10. Sports, Games & Gym",
+    subtitle: "Playgrounds, Indoor Sports, Gymnasium, Yoga & Traditional Martial Arts",
+    iconName: "Dumbbell",
+    description:
+      "The College encourages physical fitness and sports participation through indoor and outdoor sports facilities, games, fitness activities, and gym facilities.",
+    subsections: [
+      {
+        title: "Department of Physical Education & Leadership",
+        description:
+          "The Department of Physical Education is committed to nurturing physical fitness, discipline, and team spirit among students. The department is led by Mr. Ganji Bala Show Reddy, Physical Director, with the support of Lft. Kankanampati Susmitha, Assistant Physical Director & NCC Officer, who consistently guide and motivate students towards sporting excellence."
+      },
+      {
+        title: "Outdoor & Indoor Sports Infrastructure",
+        items: [
+          "Spacious multi-sport outdoor grounds for Cricket, Volleyball, Kho-Kho, Kabaddi, and Track & Field athletics.",
+          "Indoor sports arena equipped for Table Tennis, Chess, Carrom, and Badminton.",
+          "Well-maintained play courts with regulatory dimensions, marking lines, and sports kits.",
+          "Modern Gymnasium equipped with cardio units, resistance machines, and strength training equipment."
+        ]
+      },
+      {
+        title: "Coaching, Martial Arts & Wellness Initiatives",
+        items: [
+          "Structured training and coaching camps for intercollegiate, university, and state tournaments.",
+          "Specialised self-defense training in traditional martial arts: Karrasamu (stick fighting) & Karate.",
+          "Celebration of International Yoga Day and National Sports Day to promote lifetime fitness habits.",
+          "Consistent record of university-level medals, championship trophies, and merit certificates."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/sports-games/img-1.jpg",
+      "/images/infrastructure/sports-games/img-2.jpg",
+      "/images/infrastructure/sports-games/img-3.jpg",
+      "/images/infrastructure/sports-games/img-4.jpg",
+      "/images/infrastructure/sports-games/img-5.jpg",
+      "/images/infrastructure/sports-games/img-6.png",
+      "/images/infrastructure/sports-games/img-7.jpg",
+      "/images/infrastructure/sports-games/img-8.png",
+      "/images/infrastructure/sports-games/img-9.jpg",
+      "/images/infrastructure/sports-games/img-10.jpeg",
+      "/images/infrastructure/sports-games/img-11.jpeg",
+      "/images/infrastructure/sports-games/img-12.jpeg"
+    ]
+  },
+
+  // 11. Cultural & Recreation Facilities
+  {
+    id: "cultural-recreation",
+    slug: "cultural-recreation",
+    sectionNumber: 11,
+    title: "11. Cultural & Recreation Facilities",
+    subtitle: "Auditorium, Fine Arts Spaces, Student Activity Clubs & Annual Fests",
+    iconName: "Music",
+    description:
+      "The College provides facilities that encourage students to participate in cultural, literary, artistic, recreational, and co-curricular activities, promoting creativity and holistic development.",
+    subsections: [
+      {
+        title: "Auditorium, Stage & Creative Spaces",
+        items: [
+          "Spacious main auditorium with acoustic treatment, stage lighting, and sound reinforcement systems for institutional ceremonies and cultural fests.",
+          "Dedicated rehearsal and practice rooms for Music, Classical/Contemporary Dance, and Fine Arts.",
+          "Active student-led bodies: Literary Club, Cultural Club, Fine Arts Club, and Youth Red Cross.",
+          "Platforms for debating competitions, quizzes, theater productions, painting exhibitions, and intercollegiate youth festivals.",
+          "Annual cultural celebrations recognizing outstanding artistic talents through awards and honors."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/cultural-recreation/img-1.jpg",
+      "/images/infrastructure/cultural-recreation/img-2.jpg",
+      "/images/infrastructure/cultural-recreation/img-3.jpg",
+      "/images/infrastructure/cultural-recreation/img-4.jpg",
+      "/images/infrastructure/cultural-recreation/img-5.jpg",
+      "/images/infrastructure/cultural-recreation/img-6.jpg",
+      "/images/infrastructure/cultural-recreation/img-7.jpg",
+      "/images/infrastructure/cultural-recreation/img-8.jpg",
+      "/images/infrastructure/cultural-recreation/img-9.jpg",
+      "/images/infrastructure/cultural-recreation/img-10.jpg",
+      "/images/infrastructure/cultural-recreation/img-11.jpg"
+    ]
+  },
+
+  // 12. Safety, Security & Disaster Management
+  {
+    id: "safety-security",
+    slug: "safety-security",
+    sectionNumber: 12,
+    title: "12. Safety, Security & Disaster Management",
+    subtitle: "24/7 CCTV Surveillance, Fire Safety Systems, Emergency Preparedness & Drills",
+    iconName: "ShieldAlert",
+    description:
+      "The College maintains a safe campus through security measures, surveillance systems, emergency preparedness, fire-safety arrangements, and disaster management practices.",
+    subsections: [
+      {
+        title: "Comprehensive Campus Safety Measures",
+        items: [
+          "Round-the-clock 24/7 CCTV surveillance network monitoring campus gates, corridors, and sensitive zones.",
+          "Trained security personnel stationed at all institutional entry and exit access points.",
+          "Fire safety equipment, fire extinguishers, and clear emergency evacuation exit signage installed across all blocks.",
+          "Periodic mock evacuation drills and disaster management preparedness exercises.",
+          "First-aid training and rapid response protocols for accidental and medical contingencies."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/safety-security/img-1.jpg",
+      "/images/infrastructure/safety-security/img-2.jpg",
+      "/images/infrastructure/safety-security/img-3.jpg",
+      "/images/infrastructure/safety-security/img-4.jpg",
+      "/images/infrastructure/safety-security/img-5.jpg",
+      "/images/infrastructure/safety-security/img-6.jpg",
+      "/images/infrastructure/safety-security/img-7.jpg",
+      "/images/infrastructure/safety-security/img-8.jpg"
+    ]
+  },
+
+  // 13. Green Campus & Sustainability Initiatives
+  {
+    id: "green-campus",
+    slug: "green-campus",
+    sectionNumber: 13,
+    title: "13. Green Campus & Sustainability Initiatives",
+    subtitle: "Solar Energy, Rainwater Harvesting, Green Landscaping & Eco-Friendly Waste Management",
+    iconName: "Leaf",
+    description:
+      "The College promotes a clean, green, and sustainable campus through plantation, herbal and botanical initiatives, waste management, water conservation, energy conservation, and environmental awareness activities.",
+    subsections: [
+      {
+        title: "Sustainability Programs & Ecological Assets",
+        items: [
+          "Lush green landscaping with avenue trees, botanical garden, and medicinal herbal garden.",
+          "Rooftop solar photovoltaic panel generation units promoting renewable energy usage across the campus.",
+          "Installation of 7 dedicated solar-powered street lighting fixtures throughout the premises.",
+          "Functional rainwater harvesting pits recharging groundwater tables and conserving rainwater.",
+          "Systematic waste segregation into biodegradable and non-biodegradable bins with compost pits.",
+          "Strict enforcement of a plastic-free campus and regular student-led environmental awareness rallies."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/green-campus/img-1.jpg",
+      "/images/infrastructure/green-campus/img-2.jpg",
+      "/images/infrastructure/green-campus/img-3.jpg",
+      "/images/infrastructure/green-campus/img-4.jpg",
+      "/images/infrastructure/green-campus/img-5.jpg",
+      "/images/infrastructure/green-campus/img-6.jpg",
+      "/images/infrastructure/green-campus/img-7.jpg",
+      "/images/infrastructure/green-campus/img-8.jpg",
+      "/images/infrastructure/green-campus/img-9.jpg",
+      "/images/infrastructure/green-campus/img-10.jpg",
+      "/images/infrastructure/green-campus/img-11.jpg",
+      "/images/infrastructure/green-campus/img-12.jpg",
+      "/images/infrastructure/green-campus/img-13.jpg",
+      "/images/infrastructure/green-campus/img-14.jpg",
+      "/images/infrastructure/green-campus/img-15.jpg",
+      "/images/infrastructure/green-campus/img-16.jpg",
+      "/images/infrastructure/green-campus/img-17.jpg",
+      "/images/infrastructure/green-campus/img-18.jpg",
+      "/images/infrastructure/green-campus/img-19.jpg",
+      "/images/infrastructure/green-campus/img-20.jpg",
+      "/images/infrastructure/green-campus/img-21.jpg",
+      "/images/infrastructure/green-campus/img-22.jpg"
+    ]
+  },
+
+  // 14. Barrier-Free & Inclusive Access
+  {
+    id: "inclusive-access",
+    slug: "inclusive-access",
+    sectionNumber: 14,
+    title: "14. Barrier-Free & Inclusive Access",
+    subtitle: "Ramps with Handrails, Accessible Washrooms & Equal Learning Opportunities",
+    iconName: "Accessibility",
+    description:
+      "The College promotes an inclusive and accessible campus by providing appropriate facilities and access provisions to support the mobility, participation, and educational needs of persons with disabilities.",
+    subsections: [
+      {
+        title: "Accessibility Infrastructure for Divyangjan",
+        items: [
+          "Graded entrance ramps with secure safety handrails at key entry points of academic and administrative blocks.",
+          "Specially designed barrier-free and accessible washroom facilities for differently-abled students.",
+          "Smooth, non-slippery, and barrier-free ground-floor pathways connecting vital academic zones.",
+          "Institutional policy prioritizing ground-floor classroom allotment and examination accommodations for students with mobility needs.",
+          "Supportive staff culture ensuring dignity, equal participation, and academic empowerment for all learners."
+        ]
+      }
+    ],
+    images: [
+      "/images/infrastructure/inclusive-access/img-1.jpg",
+      "/images/infrastructure/inclusive-access/img-2.jpg",
+      "/images/infrastructure/inclusive-access/img-3.jpg",
+      "/images/infrastructure/inclusive-access/img-4.jpg",
+      "/images/infrastructure/inclusive-access/img-5.jpg",
+      "/images/infrastructure/inclusive-access/img-6.jpg",
+      "/images/infrastructure/inclusive-access/img-7.jpg",
+      "/images/infrastructure/inclusive-access/img-8.jpg",
+      "/images/infrastructure/inclusive-access/img-9.jpg",
+      "/images/infrastructure/inclusive-access/img-10.jpg",
+      "/images/infrastructure/inclusive-access/img-11.jpg",
+      "/images/infrastructure/inclusive-access/img-12.jpg"
+    ]
+  }
+];
+
+// Backwards-compatible map for legacy components
+export const staticInfrastructureSections: Record<string, { title: string; content: string; images: string[] }> = {};
+INFRASTRUCTURE_SECTIONS.forEach((s) => {
+  staticInfrastructureSections[s.slug] = {
+    title: s.title,
+    content: s.description,
+    images: s.images
+  };
+});
