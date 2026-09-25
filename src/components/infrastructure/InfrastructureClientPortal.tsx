@@ -29,7 +29,6 @@ import {
   Layers,
   Sparkles
 } from "lucide-react";
-import { SubtextBox } from "@/components/ui/Heading1Notch";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { INFRASTRUCTURE_SECTIONS, INFRASTRUCTURE_SUBTEXT, InfrastructureSectionItem } from "./staticData";
 
@@ -189,7 +188,7 @@ export default function InfrastructureClientPortal({
       <div className="flex flex-col font-sans select-none animate-fadeIn w-full">
         {/* Main Content Container (Sidebar on Left, Data Elements on Right) */}
         <div className="max-w-[1600px] mx-auto pt-6 sm:pt-8 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-12 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 items-start">
             
             {/* Left: Navigation Sidebar */}
             <aside className="lg:col-span-3">
@@ -202,118 +201,85 @@ export default function InfrastructureClientPortal({
               />
             </aside>
 
-            {/* Right: Data Elements / Subpage Content */}
-            <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
-              <div className="flex flex-col gap-4">
-
-                {/* Sub-text Box */}
-                <SubtextBox>
-                  <p className="text-slate-800 font-medium leading-relaxed">
-                    <strong className="text-blue-900 font-bold">
-                      St. Ann’s College for Women, Gorantla, Guntur
-                    </strong>
-                    , provides a safe, accessible, technology-enabled and student-friendly campus environment that supports teaching, learning, research, skill development, sports and holistic student development. The infrastructure is periodically maintained and upgraded to meet academic and institutional requirements.
-                    <span className="block mt-2 text-slate-600 font-medium text-sm">
-                      This section provides comprehensive details regarding academic learning spaces, specialized laboratories, digital infrastructure, student residential amenities, sports facilities, safety systems, and green campus initiatives.
-                    </span>
+            {/* Right: Active Section Content (Header aligns directly beside sidebar banner) */}
+            <main className="lg:col-span-9 flex flex-col gap-8 mb-16">
+              {/* ============================================================ */}
+              {/* ACTIVE SUBPAGE SECTION CONTAINER                             */}
+              {/* ============================================================ */}
+              <section
+                key={currentSection.id}
+                className="border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
+              >
+                {/* Full-Width Section Header Banner (Directly aligned with sidebar banner) */}
+                <div
+                  className="text-white px-6 py-3 sm:px-8 sm:py-4 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                  style={{
+                    backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
+                    borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <SectionIcon className="h-6 w-6 text-indigo-300 shrink-0" />
+                    <h2
+                      className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
+                      style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
+                    >
+                      {currentSection.title}
+                    </h2>
+                  </div>
+                  <p
+                    className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
+                    style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
+                  >
+                    {currentSection.subtitle}
                   </p>
-                </SubtextBox>
+                </div>
 
-                {/* ============================================================ */}
-                {/* ACTIVE SUBPAGE SECTION CONTAINER                             */}
-                {/* ============================================================ */}
-                <section
-                  key={currentSection.id}
-                  className="border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                {/* Section Content Body */}
+                <div
+                  className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200"
                   style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                 >
-                  {/* Full-Width Section Header Banner */}
+                  {/* Primary Narrative & Features Card */}
                   <div
-                    className="text-white px-6 py-3 sm:px-8 sm:py-3.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
-                    style={{
-                      backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
-                      borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
-                    }}
+                    className="border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
+                    style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                   >
-                    <div className="flex items-center gap-3">
-                      <SectionIcon className="h-6 w-6 text-indigo-300 shrink-0" />
-                      <h2
-                        className="font-outfit font-black text-xl sm:text-2xl tracking-tight transition-colors duration-200"
-                        style={{ color: "var(--sec1-title, var(--level2-title, #ffffff))" }}
-                      >
-                        {currentSection.title}
-                      </h2>
-                    </div>
-                    <p
-                      className="text-sm font-medium mt-1 sm:pl-9 transition-colors duration-200"
-                      style={{ color: "var(--sec1-subtitle, var(--level2-subtitle, rgba(219, 234, 254, 0.9)))" }}
-                    >
-                      {currentSection.subtitle}
+                    <p className="text-slate-700 text-sm sm:text-base font-medium leading-relaxed text-justify">
+                      {currentSection.description}
                     </p>
-                  </div>
 
-                  {/* Section Content Body */}
-                  <div
-                    className="p-6 sm:p-8 md:p-10 space-y-8 transition-colors duration-200"
-                    style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
-                  >
-                    {/* Primary Narrative & Features Card */}
-                    <div
-                      className="border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
-                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                    >
-                      <p className="text-slate-700 text-sm sm:text-base font-medium leading-relaxed text-justify">
-                        {currentSection.description}
-                      </p>
+                    {/* Subsections: bullet features, tables, links */}
+                    {currentSection.subsections &&
+                      currentSection.subsections.map((sub, sIdx) => (
+                        <div
+                          key={sIdx}
+                          className="flex flex-col gap-3 pt-5 border-t border-slate-100"
+                        >
+                          <h5 className="font-outfit text-sm sm:text-base font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
+                            <span className="h-2 w-2 rounded-full bg-blue-600 shrink-0"></span>
+                            <span>{sub.title}</span>
+                          </h5>
 
-                      {/* Subsections: bullet features, tables, links */}
-                      {currentSection.subsections &&
-                        currentSection.subsections.map((sub, sIdx) => (
-                          <div
-                            key={sIdx}
-                            className="flex flex-col gap-3 pt-5 border-t border-slate-100"
-                          >
-                            <h5 className="font-outfit text-sm sm:text-base font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
-                              <span className="h-2 w-2 rounded-full bg-blue-600 shrink-0"></span>
-                              <span>{sub.title}</span>
-                            </h5>
+                          {sub.description && (
+                            <div className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed space-y-2 whitespace-pre-line text-justify">
+                              {sub.description}
+                            </div>
+                          )}
 
-                            {sub.description && (
-                              <div className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed space-y-2 whitespace-pre-line text-justify">
-                                {sub.description}
-                              </div>
-                            )}
+                          {/* Bullet Feature Cards */}
+                          {sub.items && sub.items.length > 0 && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                              {sub.items.map((itemStr, iIdx) => {
+                                const colonIdx = itemStr.indexOf(" – ");
+                                const altColonIdx = itemStr.indexOf(": ");
+                                const splitIdx = colonIdx !== -1 ? colonIdx : altColonIdx;
 
-                            {/* Bullet Feature Cards */}
-                            {sub.items && sub.items.length > 0 && (
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                                {sub.items.map((itemStr, iIdx) => {
-                                  const colonIdx = itemStr.indexOf(" – ");
-                                  const altColonIdx = itemStr.indexOf(": ");
-                                  const splitIdx = colonIdx !== -1 ? colonIdx : altColonIdx;
-
-                                  if (splitIdx > 0 && splitIdx < 50) {
-                                    const splitChar = colonIdx !== -1 ? " – " : ": ";
-                                    const label = itemStr.substring(0, splitIdx).trim();
-                                    const desc = itemStr.substring(splitIdx + splitChar.length).trim();
-                                    return (
-                                      <div
-                                        key={iIdx}
-                                        className="flex items-start gap-3 bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
-                                      >
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0 mt-0.5">
-                                          <CheckCircle2 className="h-3.5 w-3.5" />
-                                        </span>
-                                        <div className="text-xs text-slate-800 leading-snug">
-                                          <strong className="text-blue-900 font-bold block mb-0.5">
-                                            {label}
-                                          </strong>
-                                          <span className="font-medium text-slate-600">{desc}</span>
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-
+                                if (splitIdx > 0 && splitIdx < 50) {
+                                  const splitChar = colonIdx !== -1 ? " – " : ": ";
+                                  const label = itemStr.substring(0, splitIdx).trim();
+                                  const desc = itemStr.substring(splitIdx + splitChar.length).trim();
                                   return (
                                     <div
                                       key={iIdx}
@@ -322,207 +288,223 @@ export default function InfrastructureClientPortal({
                                       <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0 mt-0.5">
                                         <CheckCircle2 className="h-3.5 w-3.5" />
                                       </span>
-                                      <span className="text-xs font-bold text-slate-800 leading-snug">
-                                        {itemStr}
-                                      </span>
+                                      <div className="text-xs text-slate-800 leading-snug">
+                                        <strong className="text-blue-900 font-bold block mb-0.5">
+                                          {label}
+                                        </strong>
+                                        <span className="font-medium text-slate-600">{desc}</span>
+                                      </div>
                                     </div>
                                   );
-                                })}
-                              </div>
-                            )}
+                                }
 
-                            {/* Full-Width Balanced Data Tables (Zero Empty Space on Right) */}
-                            {sub.table && (
-                              <div className="w-full rounded-2xl border-2 border-slate-200/90 bg-white shadow-xs overflow-hidden mt-3">
-                                <table className="w-full border-collapse text-left font-sans text-xs">
-                                  <thead>
-                                    <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-xs font-extrabold border-b border-[#001733]">
-                                      {sub.table.headers.map((h, hIdx) => {
-                                        const totalCols = sub.table?.headers.length || 2;
-                                        const isFirst = hIdx === 0;
-                                        const isLast = hIdx === totalCols - 1;
-                                        const isSno = isFirst && (h.toLowerCase().includes("s. no") || h.toLowerCase().includes("s.no") || h.toLowerCase().includes("sl"));
+                                return (
+                                  <div
+                                    key={iIdx}
+                                    className="flex items-start gap-3 bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80 shadow-2xs select-none"
+                                  >
+                                    <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0 mt-0.5">
+                                      <CheckCircle2 className="h-3.5 w-3.5" />
+                                    </span>
+                                    <span className="text-xs font-bold text-slate-800 leading-snug">
+                                      {itemStr}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
 
-                                        let colWidth = "w-auto";
-                                        if (isSno) colWidth = "w-16 sm:w-20 text-center";
-                                        else if (totalCols === 2) {
-                                          colWidth = isFirst ? "w-1/2" : "w-1/2 text-right sm:text-left";
-                                        } else if (totalCols === 3) {
-                                          if (isFirst) colWidth = "w-16 sm:w-24 text-center";
-                                          else if (isLast) colWidth = "w-44 sm:w-56 text-right";
-                                          else colWidth = "w-auto";
-                                        }
+                          {/* Full-Width Balanced Data Tables (Zero Empty Space on Right) */}
+                          {sub.table && (
+                            <div className="w-full rounded-2xl border-2 border-slate-200/90 bg-white shadow-xs overflow-hidden mt-3">
+                              <table className="w-full border-collapse text-left font-sans text-xs">
+                                <thead>
+                                  <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-xs font-extrabold border-b border-[#001733]">
+                                    {sub.table.headers.map((h, hIdx) => {
+                                      const totalCols = sub.table?.headers.length || 2;
+                                      const isFirst = hIdx === 0;
+                                      const isLast = hIdx === totalCols - 1;
+                                      const isSno = isFirst && (h.toLowerCase().includes("s. no") || h.toLowerCase().includes("s.no") || h.toLowerCase().includes("sl"));
 
-                                        return (
-                                          <th
-                                            key={hIdx}
-                                            className={`py-3.5 px-4 sm:px-6 ${colWidth} ${
-                                              isLast && totalCols <= 3 ? "text-right" : "text-left"
-                                            }`}
-                                          >
-                                            {h}
-                                          </th>
-                                        );
-                                      })}
-                                    </tr>
-                                  </thead>
-                                  <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
-                                    {sub.table.rows.map((row, rIdx) => {
-                                      const totalCols = row.length;
+                                      let colWidth = "w-auto";
+                                      if (isSno) colWidth = "w-16 sm:w-20 text-center";
+                                      else if (totalCols === 2) {
+                                        colWidth = isFirst ? "w-1/2" : "w-1/2 text-right sm:text-left";
+                                      } else if (totalCols === 3) {
+                                        if (isFirst) colWidth = "w-16 sm:w-24 text-center";
+                                        else if (isLast) colWidth = "w-44 sm:w-56 text-right";
+                                        else colWidth = "w-auto";
+                                      }
+
                                       return (
-                                        <tr
-                                          key={rIdx}
-                                          className="hover:bg-blue-50/50 transition-colors"
+                                        <th
+                                          key={hIdx}
+                                          className={`py-3.5 px-4 sm:px-6 ${colWidth} ${
+                                            isLast && totalCols <= 3 ? "text-right" : "text-left"
+                                          }`}
                                         >
-                                          {row.map((cell, cIdx) => {
-                                            const isFirst = cIdx === 0;
-                                            const isLast = cIdx === totalCols - 1;
-                                            const headerText = sub.table?.headers[cIdx]?.toLowerCase() || "";
-                                            const isUrl = typeof cell === "string" && cell.startsWith("http");
-                                            const isTotal = headerText.includes("total") || headerText.includes("details");
-
-                                            return (
-                                              <td
-                                                key={cIdx}
-                                                className={`py-3.5 px-4 sm:px-6 ${
-                                                  isFirst ? "font-bold text-slate-900" : ""
-                                                } ${isLast && totalCols <= 3 ? "text-right" : "text-left"}`}
-                                              >
-                                                {isUrl ? (
-                                                  <a
-                                                    href={cell}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all border border-blue-100 shadow-2xs"
-                                                  >
-                                                    <ExternalLink className="h-3.5 w-3.5" />
-                                                    <span>Open Portal</span>
-                                                  </a>
-                                                ) : isTotal && isLast ? (
-                                                  <span className="font-extrabold text-blue-900 text-[13px]">
-                                                    {cell}
-                                                  </span>
-                                                ) : (
-                                                  cell
-                                                )}
-                                              </td>
-                                            );
-                                          })}
-                                        </tr>
+                                          {h}
+                                        </th>
                                       );
                                     })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            )}
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                                  {sub.table.rows.map((row, rIdx) => {
+                                    const totalCols = row.length;
+                                    return (
+                                      <tr
+                                        key={rIdx}
+                                        className="hover:bg-blue-50/50 transition-colors"
+                                      >
+                                        {row.map((cell, cIdx) => {
+                                          const isFirst = cIdx === 0;
+                                          const isLast = cIdx === totalCols - 1;
+                                          const headerText = sub.table?.headers[cIdx]?.toLowerCase() || "";
+                                          const isUrl = typeof cell === "string" && cell.startsWith("http");
+                                          const isTotal = headerText.includes("total") || headerText.includes("details");
 
-                            {/* Links / Portals */}
-                            {sub.links && (
-                              <div className="flex flex-wrap gap-2.5 pt-2">
-                                {sub.links.map((link, lIdx) => (
-                                  <a
-                                    key={lIdx}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/80 cursor-pointer shadow-2xs group"
-                                  >
-                                    <ExternalLink className="h-3.5 w-3.5 text-blue-600 group-hover:text-white" />
-                                    <span>{link.title}</span>
-                                    {link.note && (
-                                      <span className="text-[10px] opacity-75 font-normal">
-                                        ({link.note})
-                                      </span>
-                                    )}
-                                  </a>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                    </div>
-
-                    {/* Section Photo Gallery Grid (6 Photos + View More) */}
-                    {currentSection.images && currentSection.images.length > 0 && (
-                      <div
-                        className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
-                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                          <div className="flex items-center gap-3">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100/60 text-emerald-700 shrink-0">
-                              <Eye className="h-5 w-5" />
-                            </span>
-                            <div>
-                              <h4 className="font-outfit text-emerald-800 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                                Photo Gallery — {currentSection.title.replace(/^\d+\.\s*/, "")}
-                              </h4>
-                              <p className="text-xs text-slate-500 font-medium">
-                                Visual facility showcase &amp; infrastructure records
-                              </p>
+                                          return (
+                                            <td
+                                              key={cIdx}
+                                              className={`py-3.5 px-4 sm:px-6 ${
+                                                isFirst ? "font-bold text-slate-900" : ""
+                                              } ${isLast && totalCols <= 3 ? "text-right" : "text-left"}`}
+                                            >
+                                              {isUrl ? (
+                                                <a
+                                                  href={cell}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all border border-blue-100 shadow-2xs"
+                                                >
+                                                  <ExternalLink className="h-3.5 w-3.5" />
+                                                  <span>Open Portal</span>
+                                                </a>
+                                              ) : isTotal && isLast ? (
+                                                <span className="font-extrabold text-blue-900 text-[13px]">
+                                                  {cell}
+                                                </span>
+                                              ) : (
+                                                cell
+                                              )}
+                                            </td>
+                                          );
+                                        })}
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
                             </div>
-                          </div>
-                          <span className="text-[11px] font-black uppercase bg-slate-100 text-slate-600 px-3 py-1 rounded-lg tracking-wider self-start sm:self-auto">
-                            {currentSection.images.length} Photos Available
-                          </span>
-                        </div>
+                          )}
 
-                        {/* Responsive 3-column Grid (6 initial frames or all expanded) */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 pt-1">
-                          {displayedGalleryImages.map((imgSrc, imgIdx) => (
-                            <div
-                              key={imgIdx}
-                              onClick={() => openLightbox(currentSection.images, imgIdx, currentSection.title)}
-                              className="group relative rounded-xl overflow-hidden bg-slate-100 cursor-pointer aspect-[4/3] shadow-2xs border border-slate-200/80 hover:shadow-md hover:scale-[1.02] transition-all duration-300 select-none"
-                            >
-                              <img
-                                src={imgSrc}
-                                alt={`${currentSection.title} photo ${imgIdx + 1}`}
-                                className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                                loading="lazy"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                                <div className="flex items-center justify-between w-full text-white">
-                                  <span className="text-[11px] font-bold tracking-wide truncate pr-1">
-                                    Frame #{imgIdx + 1}
-                                  </span>
-                                  <div className="h-6 w-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shrink-0">
-                                    <Maximize2 className="h-3 w-3" />
-                                  </div>
+                          {/* Links / Portals */}
+                          {sub.links && (
+                            <div className="flex flex-wrap gap-2.5 pt-2">
+                              {sub.links.map((link, lIdx) => (
+                                <a
+                                  key={lIdx}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white rounded-xl font-bold text-xs transition-all border border-blue-100/80 cursor-pointer shadow-2xs group"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5 text-blue-600 group-hover:text-white" />
+                                  <span>{link.title}</span>
+                                  {link.note && (
+                                    <span className="text-[10px] opacity-75 font-normal">
+                                      ({link.note})
+                                    </span>
+                                  )}
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Section Photo Gallery Grid (6 Photos + View More) */}
+                  {currentSection.images && currentSection.images.length > 0 && (
+                    <div
+                      className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-4"
+                      style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100/60 text-emerald-700 shrink-0">
+                            <Eye className="h-5 w-5" />
+                          </span>
+                          <div>
+                            <h4 className="font-outfit text-emerald-800 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                              Photo Gallery — {currentSection.title.replace(/^\d+\.\s*/, "")}
+                            </h4>
+                            <p className="text-xs text-slate-500 font-medium">
+                              Visual facility showcase &amp; infrastructure records
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-[11px] font-black uppercase bg-slate-100 text-slate-600 px-3 py-1 rounded-lg tracking-wider self-start sm:self-auto">
+                          {currentSection.images.length} Photos Available
+                        </span>
+                      </div>
+
+                      {/* Responsive 3-column Grid (6 initial frames or all expanded) */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 pt-1">
+                        {displayedGalleryImages.map((imgSrc, imgIdx) => (
+                          <div
+                            key={imgIdx}
+                            onClick={() => openLightbox(currentSection.images, imgIdx, currentSection.title)}
+                            className="group relative rounded-xl overflow-hidden bg-slate-100 cursor-pointer aspect-[4/3] shadow-2xs border border-slate-200/80 hover:shadow-md hover:scale-[1.02] transition-all duration-300 select-none"
+                          >
+                            <img
+                              src={imgSrc}
+                              alt={`${currentSection.title} photo ${imgIdx + 1}`}
+                              className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                              <div className="flex items-center justify-between w-full text-white">
+                                <span className="text-[11px] font-bold tracking-wide truncate pr-1">
+                                  Frame #{imgIdx + 1}
+                                </span>
+                                <div className="h-6 w-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shrink-0">
+                                  <Maximize2 className="h-3 w-3" />
                                 </div>
                               </div>
                             </div>
-                          ))}
-                        </div>
-
-                        {/* View More / Show Less Toggle Button */}
-                        {currentSection.images.length > 6 && (
-                          <div className="flex justify-center pt-3 border-t border-slate-100 mt-2">
-                            <button
-                              type="button"
-                              onClick={() => setShowAllGallery(!showAllGallery)}
-                              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs bg-emerald-50 text-emerald-800 hover:bg-[#004225] hover:text-white border border-emerald-200/90 transition-all shadow-2xs hover:shadow hover:scale-105 active:scale-95 cursor-pointer select-none"
-                            >
-                              <Eye className="h-4 w-4" />
-                              <span>
-                                {showAllGallery
-                                  ? "Show Less Photos"
-                                  : `View More Photos (+${currentSection.images.length - 6} more)`}
-                              </span>
-                              <ChevronDown
-                                className={`h-4 w-4 transition-transform duration-300 ${
-                                  showAllGallery ? "rotate-180" : ""
-                                }`}
-                              />
-                            </button>
                           </div>
-                        )}
+                        ))}
                       </div>
-                    )}
-                  </div>
-                </section>
 
-              </div>
+                      {/* View More / Show Less Toggle Button */}
+                      {currentSection.images.length > 6 && (
+                        <div className="flex justify-center pt-3 border-t border-slate-100 mt-2">
+                          <button
+                            type="button"
+                            onClick={() => setShowAllGallery(!showAllGallery)}
+                            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs bg-emerald-50 text-emerald-800 hover:bg-[#004225] hover:text-white border border-emerald-200/90 transition-all shadow-2xs hover:shadow hover:scale-105 active:scale-95 cursor-pointer select-none"
+                          >
+                            <Eye className="h-4 w-4" />
+                            <span>
+                              {showAllGallery
+                                ? "Show Less Photos"
+                                : `View More Photos (+${currentSection.images.length - 6} more)`}
+                            </span>
+                            <ChevronDown
+                              className={`h-4 w-4 transition-transform duration-300 ${
+                                showAllGallery ? "rotate-180" : ""
+                              }`}
+                            />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </section>
             </main>
 
           </div>
