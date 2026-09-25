@@ -23,7 +23,13 @@ import {
   Filter,
   Archive,
   Calendar,
-  X
+  X,
+  Camera,
+  Play,
+  Image as ImageIcon,
+  ChevronLeft,
+  ChevronRight,
+  Info
 } from "lucide-react";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
@@ -33,10 +39,12 @@ import {
   FACULTY_DATA,
   FacultyMember,
   NonTeachingMember,
-  DepartmentItem
+  DepartmentItem,
+  FacultyEventAlbum,
+  FacultyEventMedia
 } from "@/components/faculty/staticData";
 
-const DEFAULT_PDF = "/documents/DefaultFile_1.pdf";
+const DEFAULT_PDF = "/documents/faculty/Faculty_Website_Profile_View.pdf";
 
 const FACULTY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   {
@@ -61,8 +69,8 @@ const FACULTY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     sectionId: "non-teaching-staff",
     items: [
       { text: "1. Administrative Staff", id: "administrative-staff" },
-      { text: "2. Technical & Laboratory Staff", id: "technical-staff" },
-      { text: "3. Support Staff", id: "support-staff" },
+      { text: "2. Laboratory & Technical Support Staff", id: "technical-staff" },
+      { text: "3. Contingent Staff", id: "support-staff" },
     ],
   },
   {
@@ -119,6 +127,14 @@ const FACULTY_SIDEBAR_CATEGORIES: SidebarCategory[] = [
     sectionId: "faculty-welfare",
     items: [
       { text: "1. Welfare Schemes & Benefits", id: "faculty-welfare" },
+    ],
+  },
+  {
+    catSlug: "faculty-gallery",
+    title: "K. Faculty & Staff Gallery",
+    sectionId: "faculty-gallery",
+    items: [
+      { text: "1. Photo & Video Gallery", id: "faculty-gallery" },
     ],
   },
 ];
@@ -183,7 +199,7 @@ const TABS: TabItem[] = [
     id: "faculty-development",
     slug: "faculty-development",
     sectionCode: "F",
-    title: "F. Faculty Development & Professional Empowerment (FDP)",
+    title: "F. Faculty Development & Professional Development (FDP)",
     subtitle: "Continuous pedagogical enrichment, research orientation, and skill upgradation.",
     icon: Lightbulb,
     aliases: ["faculty-development", "professional-development", "seminars-conferences", "fdp", "sec-fdp"]
@@ -223,14 +239,37 @@ const TABS: TabItem[] = [
     subtitle: "Comprehensive institutional support, social security, and conducive workplace environment.",
     icon: HeartHandshake,
     aliases: ["faculty-welfare", "welfare-support", "sec-welfare"]
+  },
+  {
+    id: "faculty-gallery",
+    slug: "faculty-gallery",
+    sectionCode: "K",
+    title: "K. Faculty & Staff Photo & Video Gallery",
+    subtitle: "Memorable moments, academic seminars, workshops, faculty development events, and celebrations.",
+    icon: Camera,
+    aliases: ["faculty-gallery", "gallery", "photo-gallery", "video-gallery", "sec-gallery"]
   }
 ];
 
 function normalizeKey(str: string) {
   return (str || "")
     .toLowerCase()
-    .replace(/^(dr|mr|mrs|ms|miss|prof|sr)\.?\s+/gi, "")
+    .replace(/^(dr|mr|mrs|ms|miss|prof|sr|lft)\.?\s*/gi, "")
+    .replace(/^(dr|mr|mrs|ms|miss|prof|sr|lft)\.?\s*/gi, "")
     .replace(/[^a-z0-9]/g, "");
+}
+
+function getEmbedUrl(url: string) {
+  if (!url) return "";
+  if (url.includes("youtube.com/watch?v=")) {
+    const videoId = url.split("v=")[1]?.split("&")[0];
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  }
+  if (url.includes("youtu.be/")) {
+    const videoId = url.split("youtu.be/")[1]?.split("?")[0];
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  }
+  return url;
 }
 
 interface FacultyClientPortalProps {
@@ -240,6 +279,7 @@ interface FacultyClientPortalProps {
   profileSlugMap?: Record<string, string>;
   profilePhotoMap?: Record<string, string>;
   profilePdfMap?: Record<string, string>;
+  profileDetailsMap?: Record<string, any>;
   initialPdfDocuments?: any[];
 }
 
@@ -250,6 +290,7 @@ export default function FacultyClientPortal({
   profileSlugMap = {},
   profilePhotoMap = {},
   profilePdfMap = {},
+  profileDetailsMap = {},
   initialPdfDocuments = []
 }: FacultyClientPortalProps) {
   const router = useRouter();
@@ -307,15 +348,24 @@ export default function FacultyClientPortal({
   // State for search and filters
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDeptFilter, setSelectedDeptFilter] = useState("All");
-  const [activeNonTeachingTab, setActiveNonTeachingTab] = useState<"administrative" | "technical" | "support">("administrative");
+  const [activeNonTeachingTab, setActiveNonTeachingTab] = useState<"administrative" | "technical" | "support" | "contingent">("administrative");
   const [selectedDeptCard, setSelectedDeptCard] = useState<string>(
-    FACULTY_DATA.departments[0]?.name || "1. DEPARTMENT OF COMMERCE"
+    FACULTY_DATA.departments[0]?.name || "1. Department of Commerce"
   );
 
   // PDF Preview Modal state
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [currentPdfUrl, setCurrentPdfUrl] = useState("");
   const [currentPdfTitle, setCurrentPdfTitle] = useState("");
+
+  // Faculty / Staff Interactive Profile Modal (Image 1 + Image 2) state
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<any | null>(null);
+
+  const handleOpenProfileModal = (profileData: any) => {
+    setSelectedProfile(profileData);
+    setProfileModalOpen(true);
+  };
 
   // FDP Archive Modal state
   const [fdpArchiveModalOpen, setFdpArchiveModalOpen] = useState(false);
@@ -329,10 +379,52 @@ export default function FacultyClientPortal({
     setPdfModalOpen(true);
   };
 
+  // Live policy documents from Sanity / API
+  const [livePolicyDocs, setLivePolicyDocs] = useState<any[]>(initialPdfDocuments || []);
+
+  useEffect(() => {
+    async function fetchPolicies() {
+      try {
+        const res = await fetch("/api/faculty-policies");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.documents) && data.documents.length > 0) {
+          setLivePolicyDocs(data.documents);
+        }
+      } catch (err) {
+        console.warn("Could not fetch live faculty policy documents:", err);
+      }
+    }
+    fetchPolicies();
+  }, []);
+
+  // Section E HR Policy document
+  const hrPolicyDoc = useMemo(() => {
+    const matched = livePolicyDocs.find((d) => d.category === "recruitment");
+    if (matched) {
+      return {
+        title: matched.title || FACULTY_DATA.recruitment.hrPolicyDoc.title,
+        subtitle: matched.subtitle || FACULTY_DATA.recruitment.hrPolicyDoc.subtitle,
+        fileUrl: matched.fileUrl || FACULTY_DATA.recruitment.hrPolicyDoc.fileUrl,
+        year: matched.year || FACULTY_DATA.recruitment.hrPolicyDoc.year,
+      };
+    }
+    return FACULTY_DATA.recruitment.hrPolicyDoc;
+  }, [livePolicyDocs]);
+
   // Memoized FDP Annual Reports (all, latest 3, and filtered for archive popup)
   const allFdpReports = useMemo(() => {
+    const liveFdp = livePolicyDocs.filter((d) => d.category === "fdp");
+    if (liveFdp.length > 0) {
+      return liveFdp.map((d) => ({
+        year: d.year || "2025–2026",
+        title: d.title,
+        subtitle: d.subtitle || "",
+        fileUrl: d.fileUrl || "/documents/DefaultFile_1.pdf",
+        certificatesUrl: d.certificatesUrl || "",
+      }));
+    }
     return FACULTY_DATA.professionalDevelopment.annualReports || [];
-  }, []);
+  }, [livePolicyDocs]);
 
   const latestFdpReports = useMemo(() => {
     return allFdpReports.slice(0, 3);
@@ -349,71 +441,215 @@ export default function FacultyClientPortal({
     );
   }, [allFdpReports, fdpArchiveSearchQuery]);
 
-  // Compute teaching members list with dynamic photo, profile slug & PDF lookup
+  // Compute teaching members list with dynamic photo, profile slug, PDF & details lookup
   const teachingStaff = useMemo(() => {
     const rawList = FACULTY_DATA.teachingFaculty || [];
     return rawList.map((member) => {
       const normName = normalizeKey(member.name);
-      
+      const empId = (member.employeeId || "").trim().toUpperCase();
+
       // Look up slug
       let slug = member.slug || "";
-      for (const [key, val] of Object.entries(profileSlugMap)) {
-        if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
-          slug = val;
-          break;
+      if (empId && profileSlugMap[empId]) {
+        slug = profileSlugMap[empId];
+      } else {
+        for (const [key, val] of Object.entries(profileSlugMap)) {
+          if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
+            slug = val;
+            break;
+          }
         }
       }
 
-      // Look up photo
+      // Look up photo by employeeId first, then name
       let photo = member.imageUrl || "";
-      for (const [key, val] of Object.entries(profilePhotoMap)) {
-        if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
-          photo = val;
-          break;
+      if (empId && profilePhotoMap[empId]) {
+        photo = profilePhotoMap[empId];
+      } else {
+        for (const [key, val] of Object.entries(profilePhotoMap)) {
+          if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
+            photo = val;
+            break;
+          }
         }
       }
 
-      // Look up PDF
+      // Look up custom uploaded PDF from Admin by employeeId first, then name
       let pdf = (member as any).pdfUrl || "";
-      for (const [key, val] of Object.entries(profilePdfMap)) {
-        if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
-          pdf = val;
-          break;
+      if (empId && profilePdfMap[empId]) {
+        pdf = profilePdfMap[empId];
+      } else {
+        for (const [key, val] of Object.entries(profilePdfMap)) {
+          if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
+            pdf = val;
+            break;
+          }
         }
       }
 
-      // Auto-created dynamic PDF endpoint with available data
-      const memberSlug = slug || (member as any).slug || (member as any).employeeId || normName;
-      const params = new URLSearchParams({
-        name: member.name || "",
-        designation: member.designation || "",
-        department: member.department || "",
-        qualification: member.qualification || "",
-        doj: member.dateOfJoining || "",
-        exp: member.experience || "",
-        empId: member.employeeId || "",
-        photo: photo || member.imageUrl || "",
-      });
-      const dynamicPdfUrl = `/api/faculty-pdf/${encodeURIComponent(memberSlug)}.pdf?${params.toString()}`;
-      const finalPdfUrl = pdf && pdf.startsWith("http") ? pdf : dynamicPdfUrl;
+      // Look up full details from Sanity / Admin by employeeId first, then name
+      let details: any = null;
+      if (empId && profileDetailsMap[empId]) {
+        details = profileDetailsMap[empId];
+      } else {
+        for (const [key, val] of Object.entries(profileDetailsMap)) {
+          if (normalizeKey(key) === normName || normName.includes(normalizeKey(key)) || normalizeKey(key).includes(normName)) {
+            details = val;
+            break;
+          }
+        }
+      }
+
+      // If custom uploaded PDF exists, use it; otherwise, use default Faculty Website Profile View.pdf
+      const finalPdfUrl = pdf && (pdf.startsWith("http") || pdf.startsWith("/")) ? pdf : DEFAULT_PDF;
 
       return {
         ...member,
         profileSlug: slug || undefined,
-        imageUrl: photo || undefined,
-        pdfUrl: finalPdfUrl
+        imageUrl: photo || details?.profilePhotoUrl || undefined,
+        pdfUrl: finalPdfUrl,
+        frsId: details?.frsId || (member as any).frsId || "",
+        aicteId: details?.aicteId || (member as any).aicteId || "",
+        institutionalRole: details?.institutionalRole || (member as any).institutionalRole || "",
+        committeeRoles: details?.committeeRoles || (member as any).committeeRoles || []
       };
     });
-  }, [profileSlugMap, profilePhotoMap, profilePdfMap]);
+  }, [profileSlugMap, profilePhotoMap, profilePdfMap, profileDetailsMap]);
 
-  // Map of faculty by name for quick department lookups
-  const facultyByNameMap = useMemo(() => {
+  // Map of faculty by Employee ID and Normalized Name for quick department lookups
+  const facultyLookupMap = useMemo(() => {
     const map = new Map<string, typeof teachingStaff[0]>();
     teachingStaff.forEach((m) => {
+      if (m.employeeId && m.employeeId !== "—") {
+        map.set(m.employeeId.trim().toUpperCase(), m);
+        map.set(m.employeeId.trim().toLowerCase(), m);
+      }
       map.set(normalizeKey(m.name), m);
     });
     return map;
   }, [teachingStaff]);
+
+  // Visiting Faculty computed list
+  const visitingStaff = useMemo(() => {
+    const dynamicVisiting = (initialMembers || []).filter(
+      (m: any) => m.staffType === "visiting"
+    );
+    const staticVisiting = FACULTY_DATA.visitingFaculty?.members || [];
+    const combined: any[] = [];
+    const seen = new Set<string>();
+
+    dynamicVisiting.forEach((m: any) => {
+      const key = (m.employeeId || m.facultyId || m.name || "").trim().toLowerCase();
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        combined.push({
+          sNo: combined.length + 1,
+          employeeId: m.employeeId || m.facultyId || `SACW-VF-${String(combined.length + 1).padStart(3, "0")}`,
+          name: m.name || m.facultyName,
+          designation: m.designation || "Visiting Professor",
+          department: m.department || "Specialized Academic / Industry Expert",
+          qualification: m.qualification || m.highestQualification || "Postgraduate / Doctoral",
+          dateOfJoining: m.dateOfJoining || "—",
+          experience: m.experience || m.totalExperience || "—",
+          specialization: m.specialization || (Array.isArray(m.areaOfExpertise) ? m.areaOfExpertise.join(", ") : m.areaOfExpertise) || "",
+          profilePdfUrl: m.profilePdfUrl || m.facultyProfilePdfUrl || DEFAULT_PDF,
+          imageUrl: m.imageUrl || m.profilePhotoUrl || "",
+        });
+      }
+    });
+
+    staticVisiting.forEach((m: any) => {
+      const key = (m.employeeId || m.name || "").trim().toLowerCase();
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        const normName = normalizeKey(m.name);
+        const empId = (m.employeeId || "").trim().toUpperCase();
+
+        let photo = m.imageUrl || "";
+        if (empId && profilePhotoMap[empId]) photo = profilePhotoMap[empId];
+        else if (profilePhotoMap[normName]) photo = profilePhotoMap[normName];
+
+        let pdf = m.profilePdfUrl || "";
+        if (empId && profilePdfMap[empId]) pdf = profilePdfMap[empId];
+        else if (profilePdfMap[normName]) pdf = profilePdfMap[normName];
+
+        combined.push({
+          ...m,
+          sNo: combined.length + 1,
+          imageUrl: photo || m.imageUrl,
+          profilePdfUrl: pdf || m.profilePdfUrl || DEFAULT_PDF,
+        });
+      }
+    });
+
+    return combined;
+  }, [initialMembers, profilePhotoMap, profilePdfMap]);
+
+  // Event Gallery & Toast States
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [eventAlbums, setEventAlbums] = useState<FacultyEventAlbum[]>(FACULTY_DATA.eventAlbums || []);
+  const [selectedEventAlbum, setSelectedEventAlbum] = useState<FacultyEventAlbum | null>(null);
+  const [galleryYearFilter, setGalleryYearFilter] = useState<string>("all");
+  const [albumMediaFilter, setAlbumMediaFilter] = useState<"all" | "photo" | "video">("all");
+  const [eventSearchQuery, setEventSearchQuery] = useState<string>("");
+  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState<number | null>(null);
+  const [activeVideoModal, setActiveVideoModal] = useState<{ url: string; title: string; caption?: string } | null>(null);
+
+  useEffect(() => {
+    async function loadLiveAlbums() {
+      try {
+        const res = await fetch("/api/faculty-gallery");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.albums) && data.albums.length > 0) {
+          setEventAlbums(data.albums);
+        }
+      } catch (err) {
+        console.warn("Could not fetch dynamic faculty event albums:", err);
+      }
+    }
+    loadLiveAlbums();
+  }, []);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
+  const galleryAvailableYears = useMemo(() => {
+    const years = new Set<string>();
+    eventAlbums.forEach((alb) => {
+      if (alb.year) years.add(alb.year);
+    });
+    return Array.from(years);
+  }, [eventAlbums]);
+
+  const filteredEventAlbums = useMemo(() => {
+    const q = eventSearchQuery.trim().toLowerCase();
+    return eventAlbums.filter((alb) => {
+      const matchesYear = galleryYearFilter === "all" || alb.year === galleryYearFilter;
+      const matchesSearch =
+        !q ||
+        alb.title.toLowerCase().includes(q) ||
+        (alb.category && alb.category.toLowerCase().includes(q)) ||
+        (alb.description && alb.description.toLowerCase().includes(q));
+      return matchesYear && matchesSearch;
+    });
+  }, [eventAlbums, galleryYearFilter, eventSearchQuery]);
+
+  // Current selected album's photos for lightbox navigation
+  const currentAlbumPhotos = useMemo(() => {
+    if (!selectedEventAlbum) return [];
+    return (selectedEventAlbum.media || []).filter((m) => m.mediaType === "photo");
+  }, [selectedEventAlbum]);
+
+  const currentAlbumFilteredMedia = useMemo(() => {
+    if (!selectedEventAlbum) return [];
+    const allMedia = selectedEventAlbum.media || [];
+    if (albumMediaFilter === "all") return allMedia;
+    return allMedia.filter((m) => m.mediaType === albumMediaFilter);
+  }, [selectedEventAlbum, albumMediaFilter]);
 
   // Unique departments for filter dropdown
   const departmentOptions = useMemo(() => {
@@ -562,72 +798,58 @@ export default function FacultyClientPortal({
                         <div className="rounded-2xl border border-slate-200 bg-white shadow-inner overflow-hidden">
                           <table className="w-full border-collapse text-left font-sans text-xs">
                             <thead>
-                              <tr className="bg-[#002147] text-white font-outfit text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
-                                <th className="px-2.5 py-3 text-center w-[5%]">S.No.</th>
-                                <th className="px-2.5 py-3 text-center w-[11%]">Employee ID</th>
-                                <th className="px-3 py-3 w-[23%]">Name of the Employee</th>
-                                <th className="px-2.5 py-3 w-[18%]">Designation</th>
-                                <th className="px-2.5 py-3 w-[14%]">Department</th>
-                                <th className="px-2.5 py-3 w-[14%]">Qualification</th>
-                                <th className="px-2.5 py-3 text-center w-[9%]">Date of Joining</th>
-                                <th className="px-2 py-3 text-center w-[6%]">Experience</th>
+                              <tr className="bg-[#002147] text-white font-outfit text-[11px] sm:text-xs font-black uppercase tracking-wider">
+                                <th className="px-3 py-3.5 text-center w-12">S.No.</th>
+                                <th className="px-4 py-3.5 min-w-[200px]">Name of the Employee</th>
+                                <th className="px-3 py-3.5 min-w-[170px]">Designation</th>
+                                <th className="px-3 py-3.5 min-w-[130px]">Department</th>
+                                <th className="px-3 py-3.5 min-w-[130px]">Qualification</th>
+                                <th className="px-4 py-3.5 text-center whitespace-nowrap">Date of Joining</th>
+                                <th className="px-4 py-3.5 text-center whitespace-nowrap">Experience</th>
                               </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100 text-xs sm:text-[12px]">
+                            <tbody className="divide-y divide-slate-100 text-xs">
                               {filteredTeachingStaff.length > 0 ? (
-                                filteredTeachingStaff.map((m) => {
-                                  const isLeadership =
-                                    m.designation.includes("Principal") ||
-                                    m.designation.includes("Vice-Principal");
-                                  const isHod = m.designation.includes("HOD");
-
+                                filteredTeachingStaff.map((m, idx) => {
                                   return (
                                     <tr
-                                      key={m.sNo}
+                                      key={m.employeeId ? `${m.employeeId}-${idx}` : `${m.name}-${m.sNo || idx}`}
                                       className="hover:bg-slate-50/80 transition-colors group"
                                     >
-                                      <td className="px-2.5 py-2.5 text-center font-bold text-[#002147] bg-slate-50/40">
+                                      <td className="px-3 py-3 text-center font-bold text-[#002147] bg-slate-50/40 text-xs">
                                         {m.sNo}
                                       </td>
-                                      <td className="px-2.5 py-2.5 text-center font-mono font-bold text-slate-600 bg-slate-50/20 text-[11px]">
-                                        {m.employeeId || "—"}
-                                      </td>
-                                      <td className="px-3 py-2.5 font-extrabold text-slate-800">
+                                      <td className="px-4 py-3 font-semibold text-slate-800 text-xs">
                                         <button
                                           type="button"
-                                          onClick={() => handleOpenPdf(m.pdfUrl || DEFAULT_PDF, `${m.name} - Faculty Profile`)}
-                                          className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-1.5 font-black text-left cursor-pointer transition-colors group/btn"
-                                          title={`View PDF profile for ${m.name}`}
+                                          onClick={() => handleOpenProfileModal({
+                                            ...m,
+                                            employmentClassification: (m as any).employmentClassification || "Full-Time Teaching Faculty",
+                                            frsId: m.frsId || "",
+                                            aicteId: m.aicteId || "",
+                                            institutionalRole: m.institutionalRole || (m.designation.includes("Principal") ? "Principal, St. Ann's College for Women" : m.designation.includes("HOD") ? `Head of the Department, ${m.department}` : `${m.designation}, St. Ann's College for Women`),
+                                            committeeRoles: m.committeeRoles && m.committeeRoles.length > 0 ? m.committeeRoles : []
+                                          })}
+                                          className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-1.5 font-bold text-left cursor-pointer transition-colors group/btn"
+                                          title={`Click to view profile of ${m.name}`}
                                         >
                                           <span>{m.name}</span>
-                                          <FileText className="w-3.5 h-3.5 text-blue-600 opacity-70 group-hover/btn:opacity-100 group-hover/btn:scale-110 transition-all shrink-0" />
+                                          <Eye className="w-3.5 h-3.5 text-blue-600 opacity-60 group-hover/btn:opacity-100 group-hover/btn:scale-110 transition-all shrink-0" />
                                         </button>
                                       </td>
-                                      <td className="px-2.5 py-2.5 font-semibold text-slate-700">
-                                        <div className="flex flex-wrap items-center gap-1">
-                                          <span>{m.designation}</span>
-                                          {isLeadership && (
-                                            <span className="px-1 py-0.2 rounded text-[8px] font-black uppercase bg-rose-50 text-rose-700 border border-rose-200">
-                                              Leadership
-                                            </span>
-                                          )}
-                                          {isHod && (
-                                            <span className="px-1 py-0.2 rounded text-[8px] font-black uppercase bg-amber-50 text-amber-700 border border-amber-200">
-                                              HOD
-                                            </span>
-                                          )}
-                                        </div>
+                                      <td className="px-3 py-3 font-semibold text-slate-700 text-xs">
+                                        {m.designation}
                                       </td>
-                                      <td className="px-2.5 py-2.5 font-bold text-[#002147]">
+                                      <td className="px-3 py-3 font-semibold text-slate-700 text-xs">
                                         {m.department || "—"}
                                       </td>
-                                      <td className="px-2.5 py-2.5 font-medium text-slate-600 text-[11px]">
+                                      <td className="px-3 py-3 font-semibold text-slate-700 text-xs">
                                         {m.qualification || "—"}
                                       </td>
-                                      <td className="px-2.5 py-2.5 text-center font-medium text-slate-600 text-[11px]">
+                                      <td className="px-4 py-3 text-center font-semibold text-slate-700 text-xs whitespace-nowrap">
                                         {m.dateOfJoining}
                                       </td>
-                                      <td className="px-2 py-2.5 text-center font-extrabold text-[#002147]">
+                                      <td className="px-4 py-3 text-center font-semibold text-slate-700 text-xs whitespace-nowrap">
                                         {m.experience} {m.experience && !m.experience.includes("Yr") && !m.experience.includes("—") ? "Yrs" : ""}
                                       </td>
                                     </tr>
@@ -635,7 +857,7 @@ export default function FacultyClientPortal({
                                 })
                               ) : (
                                 <tr>
-                                  <td colSpan={8} className="py-12 text-center text-slate-400 font-semibold text-sm">
+                                  <td colSpan={7} className="py-12 text-center text-slate-400 font-semibold text-sm">
                                     No faculty members match your search criteria.
                                   </td>
                                 </tr>
@@ -724,62 +946,43 @@ export default function FacultyClientPortal({
 
                                 {/* Member Cards */}
                                 <div className="flex flex-col gap-4">
-                                  {dept.facultyNames.map((facultyName, mIdx) => {
+                                  {(dept.members && dept.members.length > 0 ? dept.members : dept.facultyNames.map(name => ({ name }))).map((rawMem: any, mIdx) => {
+                                    const facultyName = typeof rawMem === 'string' ? rawMem : rawMem.name;
+                                    const rawEmpId = (typeof rawMem === 'object' && rawMem.employeeId ? rawMem.employeeId : "").trim().toUpperCase();
                                     const normName = normalizeKey(facultyName);
-                                    const member = facultyByNameMap.get(normName) || {
+                                    const globalMember = (rawEmpId && rawEmpId !== "—" ? facultyLookupMap.get(rawEmpId) : null) || facultyLookupMap.get(normName);
+                                    const member = {
                                       sNo: mIdx + 1,
                                       name: facultyName,
-                                      designation: "Faculty Member",
+                                      designation: rawMem.designation || globalMember?.designation || "Faculty Member",
                                       department: dept.name.replace(/^\d+\.\s*/, ""),
-                                      qualification: "Postgraduate / Doctoral",
-                                      dateOfJoining: "—",
-                                      experience: "—",
-                                      employeeId: "—",
-                                      profileSlug: undefined,
-                                      imageUrl: undefined,
-                                      pdfUrl: `/api/faculty-pdf/${encodeURIComponent(normName)}.pdf?name=${encodeURIComponent(facultyName)}&department=${encodeURIComponent(dept.name.replace(/^\d+\.\s*/, ""))}&designation=Faculty+Member`
+                                      qualification: rawMem.qualification || globalMember?.qualification || "Postgraduate / Doctoral",
+                                      dateOfJoining: rawMem.dateOfJoining || globalMember?.dateOfJoining || "—",
+                                      rejoiningDate: rawMem.rejoiningDate || (globalMember as any)?.rejoiningDate || "",
+                                      experience: rawMem.experience || globalMember?.experience || "—",
+                                      employeeId: rawMem.employeeId || globalMember?.employeeId || "—",
+                                      profileSlug: globalMember?.profileSlug,
+                                      imageUrl: globalMember?.imageUrl,
+                                      pdfUrl: globalMember?.pdfUrl || DEFAULT_PDF
                                     };
-
-                                    const isLeadership =
-                                      member.designation.includes("Principal") ||
-                                      member.designation.includes("Vice-Principal");
-                                    const isHod = member.designation.includes("HOD");
 
                                     return (
                                       <div
-                                        key={member.employeeId || mIdx}
+                                        key={member.employeeId && member.employeeId !== "—" ? `${member.employeeId}-${mIdx}` : `${member.name}-${mIdx}`}
                                         className="bg-slate-50/60 border border-slate-200/90 hover:border-indigo-300 hover:shadow-md rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row items-center md:items-stretch justify-between gap-6 transition-all duration-300"
                                       >
                                         {/* Left: Faculty Details */}
                                         <div className="flex-1 flex flex-col justify-center text-left w-full">
-                                          <div className="flex flex-wrap items-center gap-2 mb-2">
-                                            {isLeadership && (
-                                              <span className="bg-rose-50 text-rose-600 border border-rose-200 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase">
-                                                Leadership
-                                              </span>
-                                            )}
-                                            {isHod && (
-                                              <span className="bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase">
-                                                Head of Department
-                                              </span>
-                                            )}
-                                            {member.employeeId && member.employeeId !== "—" && (
+                                          {member.employeeId && member.employeeId !== "—" && (
+                                            <div className="mb-2">
                                               <span className="bg-[#002147]/5 text-[#002147] border border-[#002147]/10 px-2.5 py-0.5 rounded-full text-[10px] font-bold">
                                                 Emp ID: {member.employeeId}
                                               </span>
-                                            )}
-                                          </div>
+                                            </div>
+                                          )}
 
                                           <h4 className="font-outfit text-xl sm:text-2xl font-black text-[#002147] mb-3 leading-snug">
-                                            <button
-                                              type="button"
-                                              onClick={() => handleOpenPdf(member.pdfUrl || DEFAULT_PDF, `${member.name} - Faculty Profile`)}
-                                              className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-2 text-left cursor-pointer transition-colors"
-                                              title={`View PDF profile for ${member.name}`}
-                                            >
-                                              <span>{member.name}</span>
-                                              <FileText className="w-4 h-4 text-blue-600 opacity-70 shrink-0" />
-                                            </button>
+                                            {member.name}
                                           </h4>
 
                                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 border-t border-slate-200/60 pt-3 text-xs sm:text-sm font-semibold text-slate-600">
@@ -798,16 +1001,18 @@ export default function FacultyClientPortal({
                                             <p>
                                               <span className="font-bold text-slate-800">Date of Joining:</span>{" "}
                                               {member.dateOfJoining}
+                                              {member.rejoiningDate ? ` (Rejoined: ${member.rejoiningDate})` : ""}
                                             </p>
                                             <p>
                                               <span className="font-bold text-slate-800">Teaching Experience:</span>{" "}
-                                              {member.experience} Years
+                                              {member.experience}
+                                              {member.experience && !member.experience.includes("Year") && !member.experience.includes("Yr") && !member.experience.includes("—") ? " Years" : ""}
                                             </p>
                                           </div>
                                         </div>
 
-                                        {/* Right: Framed Passport Photo */}
-                                        <div className="flex flex-col items-center justify-center shrink-0">
+                                        {/* Right: Framed Passport Photo & View Profile Button */}
+                                        <div className="flex flex-col items-center justify-center shrink-0 w-36 sm:w-40">
                                           <div className="relative p-1.5 bg-white border-2 border-slate-200/80 rounded-2xl shadow-inner w-32 h-40 sm:w-36 sm:h-44 overflow-hidden flex items-center justify-center group/img">
                                             {member.imageUrl ? (
                                               <img
@@ -816,14 +1021,26 @@ export default function FacultyClientPortal({
                                                 className="w-full h-full object-cover rounded-xl group-hover/img:scale-105 transition-transform duration-300"
                                               />
                                             ) : (
-                                              <div className="w-full h-full rounded-xl bg-gradient-to-br from-[#002147]/10 to-indigo-50 flex flex-col items-center justify-center text-slate-400 p-2 text-center">
-                                                <Users className="w-10 h-10 text-[#002147]/40 mb-1" />
-                                                <span className="text-[10px] font-bold text-slate-500">
-                                                  St. Ann's Faculty
-                                                </span>
+                                              <div className="w-full h-full rounded-xl bg-white flex flex-col items-center justify-center p-2 text-center">
+                                                <img
+                                                  src="/images/Crest_Logo.png"
+                                                  alt="St. Ann's Crest"
+                                                  className="w-full h-full object-contain p-1"
+                                                />
                                               </div>
                                             )}
                                           </div>
+                                          
+                                          {/* View Profile Button Below Picture */}
+                                          <button
+                                            type="button"
+                                            onClick={() => handleOpenPdf(member.pdfUrl || DEFAULT_PDF, `${member.name} - Faculty Profile`)}
+                                            className="mt-2.5 w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all active:scale-95 cursor-pointer"
+                                            title={`View Profile PDF for ${member.name}`}
+                                          >
+                                            <FileText className="w-3.5 h-3.5" />
+                                            <span>View Profile</span>
+                                          </button>
                                         </div>
                                       </div>
                                     );
@@ -877,48 +1094,83 @@ export default function FacultyClientPortal({
                                 : "bg-slate-100 hover:bg-slate-200 text-slate-700"
                             }`}
                           >
-                            Technical &amp; Lab Staff ({FACULTY_DATA.nonTeachingStaff.technical.length})
+                            Laboratory &amp; Technical Support Staff ({FACULTY_DATA.nonTeachingStaff.technical.length})
                           </button>
                           <button
                             onClick={() => setActiveNonTeachingTab("support")}
                             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                              activeNonTeachingTab === "support"
+                              activeNonTeachingTab === "support" || activeNonTeachingTab === "contingent"
                                 ? "bg-[#002147] text-white shadow"
                                 : "bg-slate-100 hover:bg-slate-200 text-slate-700"
                             }`}
                           >
-                            Support Staff ({FACULTY_DATA.nonTeachingStaff.support.length})
+                            Contingent Staff ({FACULTY_DATA.nonTeachingStaff.support.length})
                           </button>
                         </div>
 
                         {/* Non-Teaching Table */}
                         <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-inner">
-                          <table className="w-full border-collapse text-left font-sans min-w-[700px]">
+                          <table className="w-full border-collapse text-left font-sans min-w-[650px]">
                             <thead>
                               <tr className="bg-[#002147] text-white font-outfit text-[11px] font-black uppercase tracking-wider">
                                 <th className="px-3 py-3.5 text-center w-12">S.No</th>
-                                <th className="px-3 py-3.5 min-w-[180px]">Staff Name</th>
-                                <th className="px-3 py-3.5 min-w-[160px]">Designation</th>
-                                <th className="px-3 py-3.5 min-w-[140px]">Qualification</th>
-                                <th className="px-3 py-3.5 text-center min-w-[100px]">Joined On</th>
-                                <th className="px-3 py-3.5 text-center w-24">Exp (Yrs)</th>
+                                <th className="px-4 py-3.5 min-w-[180px]">Staff Name</th>
+                                <th className="px-4 py-3.5 min-w-[160px]">Designation</th>
+                                {activeNonTeachingTab !== "support" && activeNonTeachingTab !== "contingent" && (
+                                  <th className="px-4 py-3.5 min-w-[140px]">Qualification</th>
+                                )}
+                                <th className="px-4 py-3.5 text-center whitespace-nowrap min-w-[120px]">Joined On</th>
+                                <th className="px-4 py-3.5 text-center w-28 whitespace-nowrap">Exp (Yrs)</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs sm:text-[13px]">
-                              {FACULTY_DATA.nonTeachingStaff[activeNonTeachingTab].map((m: any) => (
-                                <tr key={m.sNo} className="hover:bg-slate-50 transition-colors">
-                                  <td className="px-3 py-3 text-center font-bold text-[#002147] bg-slate-50/40">
-                                    {m.sNo}
-                                  </td>
-                                  <td className="px-3 py-3 font-extrabold text-slate-800">{m.name}</td>
-                                  <td className="px-3 py-3 font-semibold text-slate-700">{m.designation}</td>
-                                  <td className="px-3 py-3 font-medium text-slate-600 text-[12px]">{m.qualification || "—"}</td>
-                                  <td className="px-3 py-3 text-center font-medium text-slate-600 whitespace-nowrap text-[12px]">
-                                    {m.dateOfJoining || "—"}
-                                  </td>
-                                  <td className="px-3 py-3 text-center font-extrabold text-[#002147]">{m.experience || "—"}</td>
-                                </tr>
-                              ))}
+                              {FACULTY_DATA.nonTeachingStaff[activeNonTeachingTab].map((m: any) => {
+                                const normName = normalizeKey(m.name);
+                                const photo = profilePhotoMap[normName] || profilePhotoMap[m.name] || "";
+                                const pdf = profilePdfMap[normName] || profilePdfMap[m.name] || DEFAULT_PDF;
+                                const staffClassification = activeNonTeachingTab === "administrative" ? "Administrative Staff" : activeNonTeachingTab === "technical" ? "Laboratory & Technical Support Staff" : "Contingent Staff";
+                                const staffDept = activeNonTeachingTab === "administrative" ? "Administration" : activeNonTeachingTab === "technical" ? "Technical & Laboratory Support" : "Campus Support & Maintenance";
+
+                                const staffProfile = {
+                                  ...m,
+                                  employeeId: m.employeeId || `SACW-NT${String(m.sNo).padStart(2, '0')}`,
+                                  department: staffDept,
+                                  employmentClassification: staffClassification,
+                                  imageUrl: photo || undefined,
+                                  pdfUrl: pdf,
+                                  frsId: m.frsId || "",
+                                  aicteId: m.aicteId || "",
+                                  institutionalRole: m.institutionalRole || `${m.designation}, St. Ann's College for Women`,
+                                  committeeRoles: m.committeeRoles || []
+                                };
+
+                                return (
+                                  <tr key={m.employeeId ? `${m.employeeId}-${m.sNo}` : `${m.name}-${m.sNo}`} className="hover:bg-slate-50 transition-colors">
+                                    <td className="px-3 py-3 text-center font-bold text-[#002147] bg-slate-50/40">
+                                      {m.sNo}
+                                    </td>
+                                    <td className="px-4 py-3 font-extrabold text-slate-800">
+                                      <button
+                                        type="button"
+                                        onClick={() => handleOpenProfileModal(staffProfile)}
+                                        className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-1.5 font-black text-left cursor-pointer transition-colors group/btn"
+                                        title={`Click to view profile of ${m.name}`}
+                                      >
+                                        <span>{m.name}</span>
+                                        <Eye className="w-3.5 h-3.5 text-blue-600 opacity-60 group-hover/btn:opacity-100 group-hover/btn:scale-110 transition-all shrink-0" />
+                                      </button>
+                                    </td>
+                                    <td className="px-4 py-3 font-semibold text-slate-700">{m.designation}</td>
+                                    {activeNonTeachingTab !== "support" && activeNonTeachingTab !== "contingent" && (
+                                      <td className="px-4 py-3 font-medium text-slate-600 text-[12px]">{m.qualification || "—"}</td>
+                                    )}
+                                    <td className="px-4 py-3 text-center font-medium text-slate-600 whitespace-nowrap text-[12px]">
+                                      {m.dateOfJoining || "—"}
+                                    </td>
+                                    <td className="px-4 py-3 text-center font-extrabold text-[#002147] whitespace-nowrap">{m.experience || "—"}</td>
+                                  </tr>
+                                );
+                              })}
                             </tbody>
                           </table>
                         </div>
@@ -927,35 +1179,111 @@ export default function FacultyClientPortal({
 
                     {/* SECTION D: VISITING & ADJUNCT FACULTY */}
                     {currentTab === "visiting-professors" && (
-                      <div
-                        className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
-                        style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
-                      >
-                        <div className="border-b border-slate-100 pb-3">
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            Visiting Professors, Scholars &amp; Industry Experts
-                          </h4>
-                          <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">
+                      <div className="flex flex-col gap-6">
+                        {/* Section Header Card */}
+                        <div
+                          className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-3"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          <div className="flex items-center gap-3.5">
+                            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 shrink-0">
+                              <GraduationCap className="h-5 w-5" />
+                            </span>
+                            <div>
+                              <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                Visiting Professors, Adjunct Faculty &amp; Industry Experts
+                              </h4>
+                              <p className="text-xs text-slate-500 font-semibold italic mt-0.5">
+                                Distinguished Academic Scholars, Industry Leaders &amp; Guest Practitioners
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1 leading-relaxed">
                             {FACULTY_DATA.visitingFaculty.description}
                           </p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {FACULTY_DATA.visitingFaculty.pillars.map((pillar, idx) => (
+                        {/* Individual Visiting Faculty Member Profile Cards */}
+                        <div className="flex flex-col gap-4">
+                          {visitingStaff.map((member: any, idx: number) => (
                             <div
-                              key={idx}
-                              className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 flex items-start gap-3.5"
+                              key={member.employeeId ? `${member.employeeId}-${idx}` : `${member.name}-${idx}`}
+                              className="bg-slate-50/60 border border-slate-200/90 hover:border-indigo-300 hover:shadow-md rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row items-center md:items-stretch justify-between gap-6 transition-all duration-300"
                             >
-                              <div className="w-8 h-8 rounded-lg bg-[#002147] text-white font-outfit font-black text-xs flex items-center justify-center shrink-0">
-                                {idx + 1}
+                              {/* Left: Faculty Details */}
+                              <div className="flex-1 flex flex-col justify-center text-left w-full">
+                                {member.employeeId && (
+                                  <div className="mb-2">
+                                    <span className="bg-[#002147]/5 text-[#002147] border border-[#002147]/10 px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+                                      ID: {member.employeeId}
+                                    </span>
+                                  </div>
+                                )}
+
+                                <h4 className="font-outfit text-xl sm:text-2xl font-black text-[#002147] mb-3 leading-snug">
+                                  {member.name}
+                                </h4>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 border-t border-slate-200/60 pt-3 text-xs sm:text-sm font-semibold text-slate-600">
+                                  <p>
+                                    <span className="font-bold text-slate-800">Designation:</span>{" "}
+                                    {member.designation}
+                                  </p>
+                                  <p>
+                                    <span className="font-bold text-slate-800">Department / Domain:</span>{" "}
+                                    {member.department}
+                                  </p>
+                                  <p>
+                                    <span className="font-bold text-slate-800">Qualifications:</span>{" "}
+                                    {member.qualification}
+                                  </p>
+                                  <p>
+                                    <span className="font-bold text-slate-800">Date of Joining / Associated:</span>{" "}
+                                    {member.dateOfJoining}
+                                  </p>
+                                  <p>
+                                    <span className="font-bold text-slate-800">Experience:</span>{" "}
+                                    {member.experience} {member.experience && !member.experience.includes("Year") && !member.experience.includes("Yr") && !member.experience.includes("—") ? " Years" : ""}
+                                  </p>
+                                  {member.specialization && (
+                                    <p className="sm:col-span-2">
+                                      <span className="font-bold text-slate-800">Area of Specialization:</span>{" "}
+                                      {member.specialization}
+                                    </p>
+                                  )}
+                                </div>
                               </div>
-                              <div>
-                                <h5 className="font-outfit font-extrabold text-slate-800 text-sm">
-                                  {pillar.title}
-                                </h5>
-                                <p className="text-slate-600 text-xs font-medium mt-1 leading-relaxed">
-                                  {pillar.desc}
-                                </p>
+
+                              {/* Right: Framed Passport Photo & View Profile Button */}
+                              <div className="flex flex-col items-center justify-center shrink-0 w-36 sm:w-40">
+                                <div className="relative p-1.5 bg-white border-2 border-slate-200/80 rounded-2xl shadow-inner w-32 h-40 sm:w-36 sm:h-44 overflow-hidden flex items-center justify-center group/img">
+                                  {member.imageUrl ? (
+                                    <img
+                                      src={member.imageUrl}
+                                      alt={member.name}
+                                      className="w-full h-full object-cover rounded-xl group-hover/img:scale-105 transition-transform duration-300"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full rounded-xl bg-white flex flex-col items-center justify-center p-2 text-center">
+                                      <img
+                                        src="/images/Crest_Logo.png"
+                                        alt="St. Ann's Crest"
+                                        className="w-full h-full object-contain p-1"
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* View Profile Button Below Picture */}
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenPdf(member.profilePdfUrl || DEFAULT_PDF, `${member.name} - Visiting Faculty Profile`)}
+                                  className="mt-2.5 w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all active:scale-95 cursor-pointer"
+                                  title={`View Profile PDF for ${member.name}`}
+                                >
+                                  <FileText className="w-3.5 h-3.5" />
+                                  <span>View Profile</span>
+                                </button>
                               </div>
                             </div>
                           ))}
@@ -1008,10 +1336,10 @@ export default function FacultyClientPortal({
                             </div>
                             <div>
                               <h5 className="font-outfit font-black text-[#002147] text-base">
-                                {FACULTY_DATA.recruitment.hrPolicyDoc.title}
+                                {hrPolicyDoc.title}
                               </h5>
                               <p className="text-slate-600 text-xs font-medium mt-0.5">
-                                {FACULTY_DATA.recruitment.hrPolicyDoc.subtitle}
+                                {hrPolicyDoc.subtitle}
                               </p>
                             </div>
                           </div>
@@ -1020,17 +1348,17 @@ export default function FacultyClientPortal({
                             <button
                               onClick={() =>
                                 handleOpenPdf(
-                                  FACULTY_DATA.recruitment.hrPolicyDoc.fileUrl,
+                                  hrPolicyDoc.fileUrl,
                                   "Human Resource Policy - St. Ann's College for Women"
                                 )
                               }
-                              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all active:scale-95"
+                              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all active:scale-95 cursor-pointer"
                             >
                               <Eye className="w-4 h-4" />
-                              Preview Policy
+                              View PDF Document
                             </button>
                             <a
-                              href={FACULTY_DATA.recruitment.hrPolicyDoc.fileUrl}
+                              href={hrPolicyDoc.fileUrl}
                               download
                               className="inline-flex items-center justify-center p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 transition-all shadow-sm"
                               title="Download HR Policy PDF"
@@ -1050,145 +1378,103 @@ export default function FacultyClientPortal({
                       >
                         <div className="border-b border-slate-100 pb-3">
                           <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            Faculty Development &amp; Professional Empowerment
+                            Faculty Development &amp; Professional Development
                           </h4>
                           <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">
                             {FACULTY_DATA.professionalDevelopment.description}
                           </p>
                         </div>
 
-                        {/* Core Initiatives List */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {FACULTY_DATA.professionalDevelopment.initiatives.map((item, idx) => (
-                            <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center gap-3">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                              <span className="text-xs sm:text-sm font-bold text-slate-700">{item}</span>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* FDP Annual Reports Header & Action */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
-                          <div>
-                            <span className="text-xs font-black uppercase text-indigo-900 tracking-wider">
-                              Annual Reports &amp; Documentation (Latest {latestFdpReports.length})
-                            </span>
-                            <p className="text-xs text-slate-500 font-medium mt-0.5">
-                              Review recent academic annual reports. Access older yearly records in the full archive popup.
-                            </p>
-                          </div>
-                          {allFdpReports.length > 3 && (
-                            <button
-                              onClick={() => {
-                                setFdpArchiveSearchQuery("");
-                                setFdpArchiveModalOpen(true);
-                              }}
-                              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0"
-                            >
-                              <Archive className="w-4 h-4 text-indigo-600" />
-                              View All Yearly Archives ({allFdpReports.length})
-                            </button>
-                          )}
-                        </div>
-
-                        {/* FDP Annual Reports Cards (Latest 3) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                          {latestFdpReports.map((report) => (
-                            <div
-                              key={report.year}
-                              className="bg-white border-2 border-slate-200/90 rounded-2xl p-5 flex flex-col justify-between hover:border-indigo-300 hover:shadow-md transition-all group"
-                            >
+                        {/* 7 Pillars from Doc */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                          {FACULTY_DATA.professionalDevelopment.pillars.map((item, idx) => (
+                            <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex items-start gap-3.5">
+                              <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white font-outfit font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                                <CheckCircle2 className="w-4 h-4" />
+                              </div>
                               <div>
-                                <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-indigo-50 text-indigo-700 border border-indigo-200">
-                                  Academic Year {report.year}
-                                </span>
-                                <h5 className="font-outfit font-black text-[#002147] text-base leading-snug mt-2">
-                                  {report.title}
+                                <h5 className="font-outfit font-bold text-slate-800 text-sm">
+                                  {item.title}
                                 </h5>
-                                <p className="text-slate-500 text-xs font-medium mt-1 leading-relaxed">
-                                  {report.subtitle}
+                                <p className="text-slate-600 text-xs font-medium mt-1 leading-relaxed">
+                                  {item.desc}
                                 </p>
-                              </div>
-
-                              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                                <button
-                                  onClick={() => handleOpenPdf(report.fileUrl, report.title)}
-                                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow-sm transition-all"
-                                >
-                                  <Eye className="w-3.5 h-3.5" />
-                                  View Report PDF
-                                </button>
-                                <a
-                                  href={report.fileUrl}
-                                  download
-                                  className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all shrink-0"
-                                  title="Download PDF"
-                                >
-                                  <Download className="w-3.5 h-3.5" />
-                                </a>
                               </div>
                             </div>
                           ))}
                         </div>
 
-                        {/* Banner for Archives if > 3 */}
-                        {allFdpReports.length > 3 && (
-                          <div className="p-4 bg-gradient-to-r from-indigo-50/80 via-blue-50/60 to-indigo-50/80 border border-indigo-100 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div className="flex items-center gap-3">
-                              <div className="p-2.5 rounded-xl bg-[#002147] text-amber-300 shrink-0 shadow-sm">
-                                <Archive className="w-5 h-5" />
-                              </div>
-                              <div>
-                                <p className="text-xs sm:text-sm font-extrabold text-slate-900">
-                                  Historical FDP Annual Reports Archive
-                                </p>
-                                <p className="text-xs text-slate-600 font-medium">
-                                  Showing {latestFdpReports.length} latest academic years above. Access all {allFdpReports.length} previous annual reports in the archive repository.
-                                </p>
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => {
-                                setFdpArchiveSearchQuery("");
-                                setFdpArchiveModalOpen(true);
-                              }}
-                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow-md transition-all active:scale-95 shrink-0"
-                            >
-                              <Archive className="w-4 h-4 text-amber-300" />
-                              View All Archives ({allFdpReports.length})
-                            </button>
-                          </div>
-                        )}
-
-                        {/* Certificates Document Card */}
-                        <div className="p-5 bg-amber-50/80 border border-amber-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                          <div className="flex items-center gap-3.5">
-                            <div className="w-11 h-11 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow">
-                              <Award className="w-5 h-5" />
-                            </div>
+                        {/* Year-wise FDP Activities Table 4 */}
+                        <div className="space-y-4 pt-2">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                             <div>
-                              <h5 className="font-outfit font-black text-amber-950 text-base">
-                                {FACULTY_DATA.professionalDevelopment.certificatesDoc.title}
+                              <h5 className="font-outfit font-extrabold text-[#002147] text-base">
+                                Year-wise Faculty Development &amp; Professional Development Activities
                               </h5>
-                              <p className="text-amber-900 text-xs font-medium mt-0.5">
-                                {FACULTY_DATA.professionalDevelopment.certificatesDoc.subtitle}
+                              <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                Table 4: Annual FDP reports, training records, and verified participation certificates.
                               </p>
                             </div>
+                            {allFdpReports.length > 3 && (
+                              <button
+                                onClick={() => {
+                                  setFdpArchiveSearchQuery("");
+                                  setFdpArchiveModalOpen(true);
+                                }}
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer"
+                              >
+                                <Archive className="w-4 h-4 text-indigo-600" />
+                                View All Archives ({allFdpReports.length})
+                              </button>
+                            )}
                           </div>
 
-                          <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto">
-                            <button
-                              onClick={() =>
-                                handleOpenPdf(
-                                  FACULTY_DATA.professionalDevelopment.certificatesDoc.fileUrl,
-                                  "2024-2025 FDPs & Seminars Certificates"
-                                )
-                              }
-                              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold shadow transition-all active:scale-95"
-                            >
-                              <Eye className="w-4 h-4" />
-                              Preview Certificates PDF
-                            </button>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {allFdpReports.map((report) => (
+                              <div
+                                key={report.year}
+                                className="bg-slate-50/70 border-2 border-slate-200/90 rounded-2xl p-5 flex flex-col justify-between hover:bg-white hover:border-indigo-300 hover:shadow-md transition-all group"
+                              >
+                                <div>
+                                  <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                    Academic Year {report.year}
+                                  </span>
+                                  <h5 className="font-outfit font-black text-[#002147] text-base leading-snug mt-2">
+                                    {report.title}
+                                  </h5>
+                                  <p className="text-slate-500 text-xs font-medium mt-1 leading-relaxed">
+                                    {report.subtitle}
+                                  </p>
+                                </div>
+
+                                <div className="mt-4 pt-3 border-t border-slate-200/60 flex flex-wrap items-center gap-2.5">
+                                  {/* View Document Button */}
+                                  <button
+                                    onClick={() => handleOpenPdf(report.fileUrl, report.title)}
+                                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" />
+                                    <span>View PDF</span>
+                                  </button>
+
+                                  {/* View Certificates Button Beside Document */}
+                                  <button
+                                    onClick={() => {
+                                      if (report.certificatesUrl && report.certificatesUrl.trim() && report.certificatesUrl !== "#") {
+                                        handleOpenPdf(report.certificatesUrl, `${report.year} FDP Certificates`);
+                                      } else {
+                                        setToastMessage(`Certificates for Academic Year ${report.year} will be updated soon.`);
+                                      }
+                                    }}
+                                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
+                                    title="View Verified FDP & Seminars Certificates"
+                                  >
+                                    <Award className="w-3.5 h-3.5" />
+                                    <span>View Certificates</span>
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -1202,13 +1488,14 @@ export default function FacultyClientPortal({
                       >
                         <div className="border-b border-slate-100 pb-3">
                           <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            Faculty Achievements &amp; Recognition
+                            Faculty Achievements &amp; Scholarly Contributions
                           </h4>
                           <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">
                             {FACULTY_DATA.achievements.description}
                           </p>
                         </div>
 
+                        {/* 8 Pillars from Doc */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {FACULTY_DATA.achievements.pillars.map((item, idx) => (
                             <div
@@ -1230,14 +1517,14 @@ export default function FacultyClientPortal({
                           ))}
                         </div>
 
-                        {/* Year-wise Table */}
+                        {/* Table 5: Year-wise Faculty Research & Academic Contributions */}
                         <div className="space-y-3 pt-2">
                           <div className="border-b border-slate-100 pb-2">
                             <h5 className="font-outfit font-extrabold text-[#002147] text-base">
                               Year-wise Faculty Research &amp; Academic Contributions
                             </h5>
                             <p className="text-xs text-slate-500 font-medium mt-0.5">
-                              Annual repository of research publications, patents, book chapters, and academic contributions.
+                              Table 5: Annual repository of research publications, patents, books/chapters, and academic contributions.
                             </p>
                           </div>
 
@@ -1245,7 +1532,7 @@ export default function FacultyClientPortal({
                             <table className="w-full border-collapse text-left text-xs font-sans">
                               <thead>
                                 <tr className="bg-[#002147] text-white font-outfit text-[11px] font-black uppercase tracking-wider">
-                                  <th className="px-4 py-3.5 text-center w-16">S.No.</th>
+                                  <th className="px-4 py-3.5 text-center w-16">S. No.</th>
                                   <th className="px-4 py-3.5 min-w-[140px]">Academic Year</th>
                                   <th className="px-4 py-3.5 text-center min-w-[150px]">Research Publications</th>
                                   <th className="px-4 py-3.5 text-center min-w-[130px]">Patents</th>
@@ -1265,7 +1552,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.publicationsDoc, `Research Publications - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1274,7 +1561,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.patentsDoc, `Patents & Innovations - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1283,7 +1570,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.booksDoc, `Books & Chapters - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1292,7 +1579,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.academicDoc, `Academic Contributions - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1315,13 +1602,14 @@ export default function FacultyClientPortal({
                       >
                         <div className="border-b border-slate-100 pb-3">
                           <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            Academic Mobility &amp; Faculty Exchange
+                            Faculty Exchange &amp; Academic Mobility
                           </h4>
                           <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">
                             {FACULTY_DATA.mobility.description}
                           </p>
                         </div>
 
+                        {/* 4 Pillars from Doc */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {FACULTY_DATA.mobility.pillars.map((collab, idx) => (
                             <div
@@ -1343,14 +1631,14 @@ export default function FacultyClientPortal({
                           ))}
                         </div>
 
-                        {/* Year-wise Table */}
+                        {/* Table 6: Year-wise Record of Faculty Exchange & Academic Mobility */}
                         <div className="space-y-3 pt-2">
                           <div className="border-b border-slate-100 pb-2">
                             <h5 className="font-outfit font-extrabold text-[#002147] text-base">
                               Year-wise Record of Faculty Exchange &amp; Academic Mobility
                             </h5>
                             <p className="text-xs text-slate-500 font-medium mt-0.5">
-                              Historical logs of faculty exchanges, study visits, invited guest talks, and inter-institutional initiatives.
+                              Table 6: Historical records of faculty exchange, study visits, invited guest talks, and collaborative programmes.
                             </p>
                           </div>
 
@@ -1358,12 +1646,12 @@ export default function FacultyClientPortal({
                             <table className="w-full border-collapse text-left text-xs font-sans">
                               <thead>
                                 <tr className="bg-[#002147] text-white font-outfit text-[11px] font-black uppercase tracking-wider">
-                                  <th className="px-4 py-3.5 text-center w-16">S.No.</th>
+                                  <th className="px-4 py-3.5 text-center w-16">S. No.</th>
                                   <th className="px-4 py-3.5 min-w-[140px]">Academic Year</th>
                                   <th className="px-4 py-3.5 text-center min-w-[150px]">Faculty Exchange</th>
                                   <th className="px-4 py-3.5 text-center min-w-[140px]">Academic Visits</th>
                                   <th className="px-4 py-3.5 text-center min-w-[140px]">Guest Lectures</th>
-                                  <th className="px-4 py-3.5 text-center min-w-[180px]">Collaborative Activities</th>
+                                  <th className="px-4 py-3.5 text-center min-w-[180px]">Collaborative Academic Activities</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100 bg-white text-slate-700">
@@ -1378,7 +1666,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.exchangeDoc, `Faculty Exchange - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1387,7 +1675,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.visitsDoc, `Academic Visits - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1396,7 +1684,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.guestLecturesDoc, `Guest Lectures - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1405,7 +1693,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.collaborativeDoc, `Collaborative Academic Activities - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1420,7 +1708,7 @@ export default function FacultyClientPortal({
                       </div>
                     )}
 
-                    {/* SECTION I: PERFORMANCE APPRAISAL (ASAR) */}
+                    {/* SECTION I: PERFORMANCE APPRAISAL */}
                     {currentTab === "performance-appraisal" && (
                       <div
                         className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
@@ -1428,13 +1716,14 @@ export default function FacultyClientPortal({
                       >
                         <div className="border-b border-slate-100 pb-3">
                           <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            Faculty Performance Appraisal (ASAR)
+                            Faculty Performance Appraisal
                           </h4>
                           <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">
                             {FACULTY_DATA.appraisal.description}
                           </p>
                         </div>
 
+                        {/* 5 Pillars from Doc */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {FACULTY_DATA.appraisal.pillars.map((param, idx) => (
                             <div
@@ -1456,14 +1745,14 @@ export default function FacultyClientPortal({
                           ))}
                         </div>
 
-                        {/* Year-wise Table */}
+                        {/* Table 7: Year-wise Faculty Performance Appraisal Records */}
                         <div className="space-y-3 pt-2">
                           <div className="border-b border-slate-100 pb-2">
                             <h5 className="font-outfit font-extrabold text-[#002147] text-base">
                               Year-wise Faculty Performance Appraisal Records
                             </h5>
                             <p className="text-xs text-slate-500 font-medium mt-0.5">
-                              Systematic annual performance appraisals, ASAR filings, API rubrics, and stakeholder feedback.
+                              Table 7: Annual performance appraisal system, API metrics, stakeholder feedback, and 360° evaluation.
                             </p>
                           </div>
 
@@ -1471,7 +1760,7 @@ export default function FacultyClientPortal({
                             <table className="w-full border-collapse text-left text-xs font-sans">
                               <thead>
                                 <tr className="bg-[#002147] text-white font-outfit text-[11px] font-black uppercase tracking-wider">
-                                  <th className="px-4 py-3.5 text-center w-16">S.No.</th>
+                                  <th className="px-4 py-3.5 text-center w-16">S. No.</th>
                                   <th className="px-4 py-3.5 min-w-[140px]">Academic Year</th>
                                   <th className="px-4 py-3.5 text-center min-w-[150px]">Performance Appraisal</th>
                                   <th className="px-4 py-3.5 text-center min-w-[140px]">Annual Appraisal</th>
@@ -1492,7 +1781,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.appraisalDoc, `Performance Appraisal System - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1501,7 +1790,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.annualDoc, `Annual Faculty Appraisal - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1510,7 +1799,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.indicatorsDoc, `Academic Performance Indicators - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1519,7 +1808,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.feedbackDoc, `Teaching Feedback - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1528,7 +1817,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.appraisal360Doc, `360-Degree Appraisal - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1558,6 +1847,7 @@ export default function FacultyClientPortal({
                           </p>
                         </div>
 
+                        {/* 5 Pillars from Doc */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {FACULTY_DATA.welfare.pillars.map((scheme, idx) => (
                             <div
@@ -1579,14 +1869,14 @@ export default function FacultyClientPortal({
                           ))}
                         </div>
 
-                        {/* Year-wise Table */}
+                        {/* Table 8: Year-wise Faculty Welfare & Support Activities */}
                         <div className="space-y-3 pt-2">
                           <div className="border-b border-slate-100 pb-2">
                             <h5 className="font-outfit font-extrabold text-[#002147] text-base">
                               Year-wise Faculty Welfare &amp; Support Activities
                             </h5>
                             <p className="text-xs text-slate-500 font-medium mt-0.5">
-                              Statutory benefits, capacity building leave, conference travel grants, and digital learning infrastructure.
+                              Table 8: Welfare schemes, leave support, conference travel grants, and digital learning infrastructure.
                             </p>
                           </div>
 
@@ -1594,7 +1884,7 @@ export default function FacultyClientPortal({
                             <table className="w-full border-collapse text-left text-xs font-sans">
                               <thead>
                                 <tr className="bg-[#002147] text-white font-outfit text-[11px] font-black uppercase tracking-wider">
-                                  <th className="px-4 py-3.5 text-center w-16">S.No.</th>
+                                  <th className="px-4 py-3.5 text-center w-16">S. No.</th>
                                   <th className="px-4 py-3.5 min-w-[140px]">Academic Year</th>
                                   <th className="px-4 py-3.5 text-center min-w-[150px]">Welfare Measures</th>
                                   <th className="px-4 py-3.5 text-center min-w-[170px]">Leave &amp; Prof. Dev.</th>
@@ -1615,7 +1905,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.welfareDoc, `Welfare Measures - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1624,7 +1914,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.leaveDoc, `Leave & Professional Development Support - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1633,7 +1923,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.financialDoc, `Financial Assistance - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1642,7 +1932,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.researchDoc, `Research Support - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1651,7 +1941,7 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center">
                                       <button
                                         onClick={() => handleOpenPdf(rec.ictDoc, `ICT & Digital Learning Support - ${rec.year}`)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-800 hover:bg-[#002147] hover:text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
                                       >
                                         <Eye className="w-3.5 h-3.5" />
                                         View PDF
@@ -1662,6 +1952,326 @@ export default function FacultyClientPortal({
                               </tbody>
                             </table>
                           </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* SECTION K: EVENT PHOTO & VIDEO GALLERY */}
+                    {currentTab === "faculty-gallery" && (
+                      <div className="flex flex-col gap-6">
+                        <div
+                          className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                          style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
+                        >
+                          {/* Top Header */}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                            <div className="flex items-center gap-3.5">
+                              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 shrink-0">
+                                <Camera className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                                  Faculty &amp; Staff Event Gallery
+                                </h4>
+                                <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                  Visual albums of institutional events, faculty development programmes, seminars, workshops, and celebrations.
+                                </p>
+                              </div>
+                            </div>
+                            <span className="px-3 py-1 rounded-xl bg-indigo-50 border border-indigo-200 text-[#002147] text-xs font-black shrink-0 self-start sm:self-auto">
+                              {eventAlbums.length} Event Album{eventAlbums.length !== 1 ? "s" : ""}
+                            </span>
+                          </div>
+
+                          {/* IF AN ALBUM IS CURRENTLY SELECTED */}
+                          {selectedEventAlbum ? (
+                            <div className="space-y-6 animate-fadeIn">
+                              {/* Navigation back bar */}
+                              <div className="flex items-center justify-between">
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedEventAlbum(null)}
+                                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-[#002147] hover:text-white text-slate-700 text-xs font-black transition-all cursor-pointer shadow-sm active:scale-95"
+                                >
+                                  <ChevronLeft className="w-4 h-4" />
+                                  <span>Back to All Events</span>
+                                </button>
+                                <span className="text-xs font-bold text-slate-400">
+                                  {selectedEventAlbum.media?.length || 0} media file{(selectedEventAlbum.media?.length || 0) !== 1 ? "s" : ""} in this album
+                                </span>
+                              </div>
+
+                              {/* Album Header Banner */}
+                              <div className="bg-gradient-to-r from-[#002147] to-[#003366] text-white p-6 sm:p-7 rounded-2xl shadow-md space-y-3">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <span className="px-3 py-0.5 rounded-md bg-amber-400 text-[#002147] text-[11px] font-black uppercase tracking-wider">
+                                    {selectedEventAlbum.year}
+                                  </span>
+                                  {selectedEventAlbum.category && (
+                                    <span className="px-3 py-0.5 rounded-md bg-white/20 text-white text-[11px] font-bold">
+                                      {selectedEventAlbum.category}
+                                    </span>
+                                  )}
+                                  <span className="text-xs text-blue-200 font-medium ml-auto">
+                                    📅 {selectedEventAlbum.date}
+                                  </span>
+                                </div>
+                                <h3 className="font-outfit font-black text-xl sm:text-2xl leading-snug text-white">
+                                  {selectedEventAlbum.title}
+                                </h3>
+                                {selectedEventAlbum.description && (
+                                  <p className="text-xs sm:text-sm text-blue-100 font-medium leading-relaxed max-w-4xl">
+                                    {selectedEventAlbum.description}
+                                  </p>
+                                )}
+                              </div>
+
+                              {/* Media Filter Tabs for this Album */}
+                              <div className="flex items-center justify-between gap-4 pt-1 border-b border-slate-100 pb-3">
+                                <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+                                  <button
+                                    onClick={() => setAlbumMediaFilter("all")}
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      albumMediaFilter === "all"
+                                        ? "bg-[#002147] text-white shadow-sm font-extrabold"
+                                        : "text-slate-600 hover:text-slate-900"
+                                    }`}
+                                  >
+                                    All ({selectedEventAlbum.media?.length || 0})
+                                  </button>
+                                  <button
+                                    onClick={() => setAlbumMediaFilter("photo")}
+                                    className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      albumMediaFilter === "photo"
+                                        ? "bg-[#002147] text-white shadow-sm font-extrabold"
+                                        : "text-slate-600 hover:text-slate-900"
+                                    }`}
+                                  >
+                                    <ImageIcon className="w-3.5 h-3.5" />
+                                    <span>Photos ({(selectedEventAlbum.media || []).filter((m) => m.mediaType === "photo").length})</span>
+                                  </button>
+                                  <button
+                                    onClick={() => setAlbumMediaFilter("video")}
+                                    className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                      albumMediaFilter === "video"
+                                        ? "bg-[#002147] text-white shadow-sm font-extrabold"
+                                        : "text-slate-600 hover:text-slate-900"
+                                    }`}
+                                  >
+                                    <Play className="w-3.5 h-3.5" />
+                                    <span>Videos ({(selectedEventAlbum.media || []).filter((m) => m.mediaType === "video").length})</span>
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Album Media Grid */}
+                              {currentAlbumFilteredMedia.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                  {currentAlbumFilteredMedia.map((m, idx) => {
+                                    const isVideo = m.mediaType === "video";
+                                    return (
+                                      <div
+                                        key={m.id || idx}
+                                        className="group bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-sm hover:border-indigo-300 hover:shadow-lg transition-all duration-300 flex flex-col"
+                                      >
+                                        <div
+                                          onClick={() => {
+                                            if (isVideo) {
+                                              setActiveVideoModal({ url: m.url, title: selectedEventAlbum.title, caption: m.caption });
+                                            } else {
+                                              const pIdx = currentAlbumPhotos.findIndex((p) => p.id === m.id);
+                                              setGalleryLightboxIndex(pIdx >= 0 ? pIdx : 0);
+                                            }
+                                          }}
+                                          className="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer flex items-center justify-center group"
+                                        >
+                                          {isVideo ? (
+                                            <>
+                                              <div className="w-full h-full bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center">
+                                                <img
+                                                  src={m.thumbnailUrl || "/images/college_crest_gold.png"}
+                                                  alt={m.caption || selectedEventAlbum.title}
+                                                  onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = "/images/college_crest_gold.png";
+                                                  }}
+                                                  className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                              </div>
+                                              <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+                                                <div className="w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                                                  <Play className="w-6 h-6 ml-0.5 fill-current" />
+                                                </div>
+                                              </div>
+                                              <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 text-white text-[10px] font-bold flex items-center gap-1">
+                                                <Play className="w-2.5 h-2.5 fill-current" /> Video
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <img
+                                                src={m.url}
+                                                alt={m.caption || selectedEventAlbum.title}
+                                                onError={(e) => {
+                                                  (e.target as HTMLImageElement).src = "/images/college_crest_gold.png";
+                                                }}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                              />
+                                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                                <div className="p-2.5 rounded-full bg-white/90 text-slate-900 shadow-md">
+                                                  <Eye className="w-5 h-5" />
+                                                </div>
+                                              </div>
+                                              <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 text-white text-[10px] font-bold flex items-center gap-1">
+                                                <ImageIcon className="w-2.5 h-2.5" /> Photo
+                                              </span>
+                                            </>
+                                          )}
+                                        </div>
+
+                                        {m.caption && (
+                                          <div className="p-3.5 bg-white border-t border-slate-100">
+                                            <p className="text-slate-700 text-xs font-semibold leading-relaxed">
+                                              {m.caption}
+                                            </p>
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <div className="p-12 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                                  <p className="text-xs text-slate-500 font-bold">No media items match the selected filter.</p>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            /* SHOWCASE LIST OF EVENT ALBUMS */
+                            <div className="space-y-6">
+                              {/* Filter Bar: Year & Search */}
+                              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pt-1">
+                                {/* Academic Year Filter Pills */}
+                                <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full">
+                                  <button
+                                    onClick={() => setGalleryYearFilter("all")}
+                                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                                      galleryYearFilter === "all"
+                                        ? "bg-[#002147] text-white shadow"
+                                        : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                                    }`}
+                                  >
+                                    All Academic Years
+                                  </button>
+                                  {galleryAvailableYears.map((yr) => (
+                                    <button
+                                      key={yr}
+                                      onClick={() => setGalleryYearFilter(yr)}
+                                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                                        galleryYearFilter === yr
+                                          ? "bg-[#002147] text-white shadow"
+                                          : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                                      }`}
+                                    >
+                                      {yr}
+                                    </button>
+                                  ))}
+                                </div>
+
+                                {/* Event Search Bar */}
+                                <div className="relative w-full md:w-64 shrink-0">
+                                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                  <input
+                                    type="text"
+                                    value={eventSearchQuery}
+                                    onChange={(e) => setEventSearchQuery(e.target.value)}
+                                    placeholder="Search event name..."
+                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Event Album Cards Grid */}
+                              {filteredEventAlbums.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                  {filteredEventAlbums.map((alb) => {
+                                    const photoCount = (alb.media || []).filter((m) => m.mediaType === "photo").length;
+                                    const videoCount = (alb.media || []).filter((m) => m.mediaType === "video").length;
+                                    const coverUrl =
+                                      alb.coverImage ||
+                                      (alb.media && alb.media.length > 0 ? alb.media[0].url : "/images/college_crest_gold.png");
+
+                                    return (
+                                      <div
+                                        key={alb.id || alb._id}
+                                        onClick={() => setSelectedEventAlbum(alb)}
+                                        className="group bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-sm hover:border-[#002147] hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer"
+                                      >
+                                        {/* Cover Image */}
+                                        <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
+                                          <img
+                                            src={coverUrl}
+                                            alt={alb.title}
+                                            onError={(e) => {
+                                              (e.target as HTMLImageElement).src = "/images/college_crest_gold.png";
+                                            }}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                          />
+                                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                                          {/* Year Badge */}
+                                          <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-md bg-[#002147]/90 text-amber-300 text-[10px] font-black border border-white/10 shadow-sm">
+                                            {alb.year}
+                                          </span>
+
+                                          {/* Media Counter Pill */}
+                                          <span className="absolute top-3 right-3 px-2.5 py-0.5 rounded-md bg-black/70 backdrop-blur-sm text-white text-[10px] font-extrabold flex items-center gap-1.5">
+                                            <Camera className="w-3 h-3 text-amber-400" />
+                                            {photoCount} {photoCount === 1 ? "Photo" : "Photos"}
+                                            {videoCount > 0 && ` • ${videoCount} Vid`}
+                                          </span>
+
+                                          {/* Date on cover */}
+                                          <span className="absolute bottom-2.5 left-3 text-[11px] font-bold text-slate-200">
+                                            📅 {alb.date}
+                                          </span>
+                                        </div>
+
+                                        {/* Content Box */}
+                                        <div className="p-5 flex-1 flex flex-col justify-between gap-4">
+                                          <div>
+                                            {alb.category && (
+                                              <span className="inline-block px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-black uppercase mb-2">
+                                                {alb.category}
+                                              </span>
+                                            )}
+                                            <h5 className="font-outfit font-black text-[#002147] text-base leading-snug group-hover:text-blue-600 transition-colors">
+                                              {alb.title}
+                                            </h5>
+                                            {alb.description && (
+                                              <p className="text-slate-600 text-xs font-medium mt-2 leading-relaxed line-clamp-2">
+                                                {alb.description}
+                                              </p>
+                                            )}
+                                          </div>
+
+                                          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-blue-700 group-hover:text-blue-900">
+                                            <span>Explore Event Photos &amp; Videos</span>
+                                            <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <div className="p-16 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200 space-y-3">
+                                  <Camera className="w-10 h-10 text-slate-300 mx-auto" />
+                                  <h5 className="font-outfit font-black text-slate-700 text-base">No Event Albums Found</h5>
+                                  <p className="text-xs text-slate-500 font-medium">Try changing your academic year or search query.</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -1802,6 +2412,362 @@ export default function FacultyClientPortal({
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* FACULTY / STAFF PROFILE MODAL (IMAGE 1 HEADER + IMAGE 2 CONTENT) */}
+      {profileModalOpen && selectedProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200 animate-scaleUp">
+            
+            {/* Top Image 1 College Header Banner */}
+            <div className="relative bg-[#002147] text-white px-6 py-5 sm:px-8 sm:py-6 text-center shadow-md">
+              <button
+                onClick={() => setProfileModalOpen(false)}
+                className="absolute right-4 top-4 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95"
+                title="Close Profile"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <h2 className="font-outfit font-black text-lg sm:text-2xl md:text-3xl tracking-tight text-white uppercase">
+                ST. ANN&apos;S COLLEGE FOR WOMEN
+              </h2>
+              <p className="text-blue-100 text-[11px] sm:text-xs md:text-sm font-medium mt-1">
+                Run by The Society of St. Anne, Guntur | Affiliated to Acharya Nagarjuna University
+              </p>
+              <p className="text-blue-200 text-[10px] sm:text-[11px] md:text-xs font-normal mt-0.5">
+                Recognized under Section 2(f) of UGC Act 1956 | NAAC Accredited &apos;A&apos; Grade | AISHE: C-39493
+              </p>
+              <p className="text-amber-300 text-[10px] sm:text-[11px] md:text-xs font-semibold mt-0.5">
+                Gorantla, Guntur - 522034, Andhra Pradesh, India
+              </p>
+            </div>
+
+            {/* Gold Accent Stripe */}
+            <div className="h-1.5 w-full bg-amber-500 shrink-0" />
+
+            {/* Modal Scrollable Body (Image 2 Content) */}
+            <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 bg-white font-sans text-slate-900 space-y-6">
+              
+              {/* Sub-Title */}
+              <div className="text-center">
+                <h3 className="text-xl sm:text-2xl font-bold font-sans text-slate-900">
+                  Faculty Profile
+                </h3>
+              </div>
+
+              {/* Image 2 Top Framed Card */}
+              <div className="border-2 border-slate-900 p-5 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 bg-white">
+                {/* Left Info */}
+                <div className="flex-1 space-y-1.5 text-left">
+                  <h3 className="font-sans font-bold text-xl sm:text-2xl text-slate-900 leading-tight">
+                    {selectedProfile.name}
+                  </h3>
+                  <p className="font-bold text-slate-800 text-sm sm:text-base">
+                    {selectedProfile.designation}
+                  </p>
+                  <p className="font-bold text-slate-800 text-sm sm:text-base">
+                    Department of {selectedProfile.department?.replace(/^\d+\.\s*/, "") || "Academic Department"}
+                  </p>
+                  <p className="font-bold text-slate-800 text-xs sm:text-sm pt-1">
+                    Qualifications: <span className="font-normal">{selectedProfile.qualification || "Postgraduate / Doctoral"}</span>
+                  </p>
+                </div>
+
+                {/* Right: Photo Frame & Employee ID */}
+                <div className="flex flex-col items-center shrink-0 self-center sm:self-auto">
+                  <div className="w-28 h-36 sm:w-32 sm:h-40 border-2 border-slate-900 bg-white flex items-center justify-center overflow-hidden p-1">
+                    {selectedProfile.imageUrl ? (
+                      <img
+                        src={selectedProfile.imageUrl}
+                        alt={selectedProfile.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src="/images/Crest_Logo.png"
+                        alt="St. Ann's College Crest"
+                        className="w-full h-full object-contain p-2"
+                      />
+                    )}
+                  </div>
+                  <p className="mt-1.5 text-xs sm:text-sm font-bold text-slate-900 text-center">
+                    Employee ID: {selectedProfile.employeeId || "SACW-REGISTERED"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Section 1: Faculty Details (Red Heading) */}
+              <div className="pt-2">
+                <h4 className="text-red-600 font-bold text-base sm:text-lg mb-3">
+                  Faculty Details
+                </h4>
+                <ul className="space-y-2.5 text-xs sm:text-sm text-slate-900 font-medium pl-2">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-900 font-bold">•</span>
+                    <div>
+                      <strong>Employment Classification:</strong> {selectedProfile.employmentClassification || "Full-Time Teaching Faculty"}
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-900 font-bold">•</span>
+                    <div>
+                      <strong>Date of Joining:</strong> {selectedProfile.dateOfJoining || "—"}
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-900 font-bold">•</span>
+                    <div>
+                      <strong>FRS ID:</strong> {selectedProfile.frsId || ""}
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-900 font-bold">•</span>
+                    <div>
+                      <strong>AICTE ID:</strong> {selectedProfile.aicteId || ""}
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-900 font-bold">•</span>
+                    <div>
+                      <strong>Total Teaching / Professional Experience:</strong> {selectedProfile.experience ? `${selectedProfile.experience} ${!selectedProfile.experience.toString().includes("Yr") && !selectedProfile.experience.toString().includes("Year") && selectedProfile.experience !== "—" ? "Years" : ""}` : "—"}
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Section 2: Institutional Responsibilities */}
+              <div className="pt-2 border-t border-slate-200">
+                <h4 className="font-bold text-base sm:text-lg text-slate-900 mb-1">
+                  Institutional Responsibilities
+                </h4>
+                <p className="text-red-600 font-bold text-sm sm:text-base mb-3">
+                  {selectedProfile.institutionalRole || (selectedProfile.designation?.includes("Principal") ? "Principal, St. Ann's College for Women" : selectedProfile.designation?.includes("HOD") ? `Head of the Department, ${selectedProfile.department}` : "")}
+                </p>
+                <p className="font-bold text-slate-900 text-xs sm:text-sm mb-2">
+                  Convener / Coordinator of Committees &amp; Cells
+                </p>
+                <ul className="space-y-2 text-xs sm:text-sm text-slate-800 font-medium pl-2">
+                  {selectedProfile.committeeRoles && selectedProfile.committeeRoles.length > 0 ? (
+                    selectedProfile.committeeRoles.map((role: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-slate-900 font-bold">•</span>
+                        <span className="border-b border-slate-300 pb-0.5 flex-1">{role}</span>
+                      </li>
+                    ))
+                  ) : (
+                    [1, 2, 3, 4].map((i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-slate-900 font-bold">•</span>
+                        <span className="border-b border-slate-300 pb-0.5 flex-1 min-h-[1.25rem] inline-block" />
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+
+            </div>
+
+            {/* Modal Footer with Actions */}
+            <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span className="text-xs font-semibold text-slate-500">
+                Official Academic Record — St. Ann&apos;s College for Women
+              </span>
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleOpenPdf(selectedProfile.pdfUrl || DEFAULT_PDF, `${selectedProfile.name} - Faculty Profile`);
+                  }}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all active:scale-95 cursor-pointer"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>Open Official Profile PDF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProfileModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* PHOTO LIGHTBOX MODAL */}
+      {galleryLightboxIndex !== null && currentAlbumPhotos[galleryLightboxIndex] && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/90 backdrop-blur-md animate-fadeIn select-none">
+          <div className="relative max-w-5xl w-full max-h-[92vh] flex flex-col items-center justify-center">
+            {/* Top Bar with Counter & Close */}
+            <div className="w-full flex items-center justify-between text-white pb-3 px-2">
+              <span className="text-xs sm:text-sm font-bold bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+                Photo {galleryLightboxIndex + 1} of {currentAlbumPhotos.length}
+              </span>
+              <button
+                onClick={() => setGalleryLightboxIndex(null)}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 cursor-pointer"
+                title="Close Lightbox"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Photo Display Container with Navigation Controls */}
+            <div className="relative w-full flex items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-white/10">
+              <img
+                src={currentAlbumPhotos[galleryLightboxIndex].url}
+                alt={currentAlbumPhotos[galleryLightboxIndex].caption || selectedEventAlbum?.title || "Event Photo"}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/images/college_crest_gold.png";
+                }}
+                className="max-h-[70vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
+              />
+
+              {/* Prev Button */}
+              {galleryLightboxIndex > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setGalleryLightboxIndex(galleryLightboxIndex - 1);
+                  }}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-all shadow-xl active:scale-95 cursor-pointer"
+                  title="Previous Photo"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
+
+              {/* Next Button */}
+              {galleryLightboxIndex < currentAlbumPhotos.length - 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setGalleryLightboxIndex(galleryLightboxIndex + 1);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 hover:bg-black/80 text-white transition-all shadow-xl active:scale-95 cursor-pointer"
+                  title="Next Photo"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+
+            {/* Photo Info Banner Below */}
+            <div className="w-full mt-3 bg-white/10 backdrop-blur-md rounded-2xl p-4 text-white border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded bg-amber-400 text-slate-900 text-[10px] font-black uppercase">
+                    {selectedEventAlbum?.year || "Event"}
+                  </span>
+                  <h4 className="font-outfit font-extrabold text-base sm:text-lg">
+                    {selectedEventAlbum?.title || "Event Gallery"}
+                  </h4>
+                </div>
+                {currentAlbumPhotos[galleryLightboxIndex].caption && (
+                  <p className="text-xs sm:text-sm text-slate-200 font-medium mt-1">
+                    {currentAlbumPhotos[galleryLightboxIndex].caption}
+                  </p>
+                )}
+              </div>
+              {selectedEventAlbum?.date && (
+                <span className="text-xs font-semibold text-slate-300 shrink-0">
+                  📅 {selectedEventAlbum.date}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* VIDEO PLAYER MODAL */}
+      {activeVideoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md animate-fadeIn select-none">
+          <div className="relative max-w-4xl w-full bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 animate-scaleUp flex flex-col">
+            {/* Video Header */}
+            <div className="bg-[#002147] text-white px-6 py-4 flex items-center justify-between border-b border-blue-900/50">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-red-600 text-white">
+                  <Play className="w-4 h-4 fill-current" />
+                </div>
+                <div>
+                  <h3 className="font-outfit font-bold text-base sm:text-lg">
+                    {activeVideoModal.title}
+                  </h3>
+                  {activeVideoModal.caption && (
+                    <p className="text-xs text-blue-200 font-medium line-clamp-1">
+                      {activeVideoModal.caption}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 cursor-pointer"
+                title="Close Video"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Video Player Box */}
+            <div className="relative aspect-video w-full bg-black flex items-center justify-center">
+              {activeVideoModal.url.includes("youtube") || activeVideoModal.url.includes("youtu.be") ? (
+                <iframe
+                  src={getEmbedUrl(activeVideoModal.url)}
+                  title={activeVideoModal.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  src={activeVideoModal.url}
+                  controls
+                  autoPlay
+                  className="w-full h-full max-h-[70vh] object-contain"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              )}
+            </div>
+
+            {/* Video Footer */}
+            <div className="p-4 bg-slate-900 border-t border-slate-800 flex items-center justify-between">
+              <span className="text-xs text-slate-400 font-medium">
+                St. Ann&apos;s College for Women — Faculty Media Archives
+              </span>
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all active:scale-95"
+              >
+                Close Player
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TOAST NOTIFICATION */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 animate-slideUp bg-[#002147] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-blue-400/40 flex items-center gap-3.5 max-w-md">
+          <div className="p-1.5 rounded-xl bg-amber-400/20 text-amber-300 shrink-0">
+            <Info className="w-5 h-5" />
+          </div>
+          <p className="text-xs sm:text-sm font-bold text-slate-100 flex-1 leading-snug">
+            {toastMessage}
+          </p>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="p-1 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
+            title="Dismiss notification"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 

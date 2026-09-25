@@ -1794,7 +1794,7 @@ export function StudentSupportManager() {
                   <FileText className="h-3.5 w-3.5" />
                 </span>
                 <h4 className="font-outfit font-extrabold text-xs uppercase tracking-wider text-blue-900">
-                  1. Student Laurels &amp; Awards Archive ({laurelReports.length} Records)
+                  1. Student Laurels &amp; Awards Archive ({laurelsReports.length} Records)
                 </h4>
               </div>
 
@@ -1819,14 +1819,14 @@ export function StudentSupportManager() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
-                  {laurelReports.length === 0 ? (
+                  {laurelsReports.length === 0 ? (
                     <tr>
                       <td colSpan={4} className="text-center py-6 text-slate-400">
                         No laurel records added yet. Click &quot;Add Laurels Record&quot; to upload one.
                       </td>
                     </tr>
                   ) : (
-                    laurelReports.map((rep: any, idx: number) => (
+                    laurelsReports.map((rep: any, idx: number) => (
                       <tr key={idx} className="hover:bg-slate-50 transition-colors">
                         <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">
                           <span className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold">

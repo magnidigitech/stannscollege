@@ -312,7 +312,7 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
         <div className="relative w-full h-full flex flex-col bg-slate-950 overflow-hidden">
           {/* Native Browser PDF Iframe with Clean Sanitized Filename Header */}
           <iframe
-            src={`${cleanPdfUrl}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
+            src={`${cleanPdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=Fit`}
             className="w-full h-full border-none bg-slate-900"
             title={title}
           />

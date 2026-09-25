@@ -635,7 +635,8 @@ export default function Navigation() {
       items: [
         { text: "Sports Facilities & Playing Areas", slug: "sports-facilities" },
         { text: "Intramural Sports Competitions", slug: "sports-competitions" },
-        { text: "Inter-Collegiate & University Trials", slug: "sports-achievements" },
+        { text: "Inter-Collegiate Tournaments", slug: "sports-achievements" },
+        { text: "University / State / National Level", slug: "sports-achievements" },
         { text: "Self-Defense & Personal Safety", slug: "self-defense-safety" },
         { text: "Fitness, Yoga & Wellness", slug: "fitness-wellness" },
         { text: "Sports Reports & Gallery", slug: "sports-gallery" },
@@ -650,54 +651,127 @@ export default function Navigation() {
         { text: "Red Ribbon Club (RRC)", slug: "red-ribbon-club" },
         { text: "Mother Gnanamma Outreach", slug: "mother-gnanamma" },
         { text: "Eco Club & Environment", slug: "eco-club" },
-        { text: "Unnat Bharat Abhiyan (UBA)", slug: "unnat-bharat-abhiyan" },
+        { text: "Community Outreach (UBA)", slug: "unnat-bharat-abhiyan" },
       ]
     },
     {
-      title: "IV. Capacity Building",
+      title: "IV. Workshops & Seminars",
       icon: Compass,
       items: [
         { text: "Workshops & Skill Seminars", slug: "workshops-seminars" },
       ]
     },
     {
-      title: "V. Student Achievements",
+      title: "V. Student Laurels & Ranks",
       icon: Award,
       items: [
-        { text: "Participation & University Ranks", slug: "student-achievements" },
+        { text: "Student Laurels & University Ranks", slug: "student-achievements" },
       ]
     }
   ];
 
   const facultyCategories = [
     {
-      title: "I. Staff Rosters",
+      title: "A. Teaching Faculty",
       icon: Users,
+      href: "/faculty/teaching-staff",
       items: [
-        { text: "Teaching Staff Directory", slug: "teaching-staff" },
-        { text: "Department-Wise Faculty", slug: "department-wise" },
-        { text: "Non-Teaching Staff", slug: "non-teaching-staff" },
-        { text: "Visiting & Adjunct Faculty", slug: "visiting-professors" },
+        { text: "1. Teaching Staff Directory", slug: "teaching-staff" },
       ]
     },
     {
-      title: "II. Policies & Empowerment",
-      icon: ShieldCheck,
+      title: "B. Department-Wise Faculty",
+      icon: Building,
+      href: "/faculty/department-wise",
       items: [
-        { text: "Recruitment & Selection", slug: "recruitment-policy" },
-        { text: "Faculty Development & FDP", slug: "faculty-development" },
-        { text: "360° Performance Appraisal (ASAR)", slug: "performance-appraisal" },
+        { text: "1. Academic Departments & Profiles", slug: "department-wise" },
       ]
     },
     {
-      title: "III. Excellence & Welfare",
+      title: "C. Non-Teaching Staff",
+      icon: Users,
+      href: "/faculty/non-teaching-staff",
+      items: [
+        { text: "1. Administrative Staff", slug: "non-teaching-staff" },
+        { text: "2. Laboratory & Technical Support Staff", slug: "non-teaching-staff" },
+        { text: "3. Contingent Staff", slug: "non-teaching-staff" },
+      ]
+    },
+    {
+      title: "D. Visiting / Adjunct Faculty",
+      icon: GraduationCap,
+      href: "/faculty/visiting-professors",
+      items: [
+        { text: "1. Visiting & Adjunct Scholars", slug: "visiting-professors" },
+      ]
+    },
+    {
+      title: "E. Faculty Recruitment & Selection",
+      icon: FileCheck,
+      href: "/faculty/recruitment-policy",
+      items: [
+        { text: "1. Recruitment Policy & Process", slug: "recruitment-policy" },
+      ]
+    },
+    {
+      title: "F. Faculty Development (FDP)",
       icon: Award,
+      href: "/faculty/faculty-development",
       items: [
-        { text: "Faculty Achievements & Awards", slug: "faculty-achievements" },
-        { text: "Academic Mobility & Exchange", slug: "faculty-exchange" },
-        { text: "Faculty Welfare & Support", slug: "faculty-welfare" },
+        { text: "1. FDP Reports & Certificates", slug: "faculty-development" },
+      ]
+    },
+    {
+      title: "G. Faculty Achievements",
+      icon: Trophy,
+      href: "/faculty/faculty-achievements",
+      items: [
+        { text: "1. Honors, Awards & Publications", slug: "faculty-achievements" },
+      ]
+    },
+    {
+      title: "H. Faculty Exchange & Academic Mobility",
+      icon: Globe2,
+      href: "/faculty/faculty-exchange",
+      items: [
+        { text: "1. Faculty Exchange & Collaborations", slug: "faculty-exchange" },
+      ]
+    },
+    {
+      title: "I. Faculty Performance Appraisal (ASAR)",
+      icon: ShieldCheck,
+      href: "/faculty/performance-appraisal",
+      items: [
+        { text: "1. 360° Appraisal & ASAR", slug: "performance-appraisal" },
+      ]
+    },
+    {
+      title: "J. Faculty Welfare & Support",
+      icon: HeartHandshake,
+      href: "/faculty/faculty-welfare",
+      items: [
+        { text: "1. Welfare Schemes & Benefits", slug: "faculty-welfare" },
+      ]
+    },
+    {
+      title: "K. Faculty & Staff Gallery",
+      icon: ImageIcon,
+      href: "/faculty/faculty-gallery",
+      items: [
+        { text: "1. Photo & Video Gallery", slug: "faculty-gallery" },
       ]
     }
+  ];
+
+  const facultyColumns = [
+    // Column 1: A, B, C
+    [facultyCategories[0], facultyCategories[1], facultyCategories[2]],
+    // Column 2: D, E, F
+    [facultyCategories[3], facultyCategories[4], facultyCategories[5]],
+    // Column 3: G, H, I
+    [facultyCategories[6], facultyCategories[7], facultyCategories[8]],
+    // Column 4: J, K
+    [facultyCategories[9], facultyCategories[10]]
   ];
 
   const placementsCategories = [
@@ -722,7 +796,7 @@ export default function Navigation() {
       ]
     },
     {
-      title: "III. Internalization & Global Outreach",
+      title: "III. Internationalization & Global Outreach",
       icon: Globe2,
       items: [
         { text: "International Collaborations & Global Engagement", slug: "international-collaborations-global-engagement" }
@@ -1219,7 +1293,7 @@ export default function Navigation() {
 
             {activeMenu === "faculty" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("faculty")}
                 onMouseLeave={handleMouseLeave}
@@ -1228,35 +1302,36 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Faculty & Academic Staff Directory"
-                  href="/faculty"
-                  buttonText="Visit Faculty Main Page"
-                  icon={Users}
-                  onNavigate={() => setActiveMenu(null)}
-                />
-                {facultyCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
-                      </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
-                      </h4>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      {cat.items.map((item, idx) => (
-                        <Link
-                          key={idx}
-                          href={`/faculty/${item.slug}`}
-                          onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
-                        >
-                          {item.text}
-                        </Link>
-                      ))}
-                    </div>
+                {facultyColumns.map((col, colIdx) => (
+                  <div key={colIdx} className="flex flex-col gap-5">
+                    {col.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-2.5">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
+                            <cat.icon className="h-3.5 w-3.5" />
+                          </span>
+                          <Link
+                            href={cat.href}
+                            onClick={() => setActiveMenu(null)}
+                            className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight hover:text-[#002147] transition-colors"
+                          >
+                            {cat.title}
+                          </Link>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          {cat.items.map((item, idx) => (
+                            <Link
+                              key={idx}
+                              href={`/faculty/${item.slug}`}
+                              onClick={() => setActiveMenu(null)}
+                              className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-2.5 py-1 rounded-lg transition-all"
+                            >
+                              {item.text}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -1289,13 +1364,6 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Student Support & Services Portal"
-                  href="/student-support"
-                  buttonText="Visit Student Support Main Page"
-                  icon={HeartHandshake}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {supportCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1350,13 +1418,6 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Placements & Industry Linkages Portal"
-                  href="/placements"
-                  buttonText="Visit Placements Main Page"
-                  icon={Briefcase}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {placementsCategories.map((cat, i) => (
                   <div key={i} className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -1934,19 +1995,24 @@ export default function Navigation() {
                 </button>
                 {mFaculty && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/faculty"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Faculty Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
                     {facultyCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                      <div key={i} className="flex flex-col gap-1">
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[11px] font-black uppercase text-indigo-700 tracking-wider hover:underline"
+                        >
+                          {cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
-                          <Link key={idx} href={`/faculty/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                          <Link
+                            key={idx}
+                            href={`/faculty/${item.slug}`}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
+                          >
+                            • {item.text}
+                          </Link>
                         ))}
                       </div>
                     ))}
@@ -1965,14 +2031,6 @@ export default function Navigation() {
                 </button>
                 {mSupport && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/student-support"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Student Support Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
                     {supportCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
@@ -1996,14 +2054,6 @@ export default function Navigation() {
                 </button>
                 {mPlacements && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/placements"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Placements Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
                     {placementsCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>

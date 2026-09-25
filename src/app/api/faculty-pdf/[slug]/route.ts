@@ -100,8 +100,10 @@ export async function GET(
     const textMuted = rgb(100 / 255, 116 / 255, 139 / 255);  // #64748B
     const textWhite = rgb(1, 1, 1);
 
-    // Fetch and embed photo if available
+    // Fetch and embed photo if available, or fallback to college crest
     let embeddedPhoto: any = null;
+    let isCrestFallback = false;
+    
     if (photoUrl) {
       try {
         let imgBuffer: Buffer | null = null;
@@ -132,6 +134,20 @@ export async function GET(
         }
       } catch (e) {
         console.warn("Failed to fetch faculty photo for PDF:", e);
+      }
+    }
+
+    // If no photo or photo loading failed, embed College Crest
+    if (!embeddedPhoto) {
+      try {
+        const crestPath = path.join(process.cwd(), "public", "images", "Crest_Logo.png");
+        if (fs.existsSync(crestPath)) {
+          const crestBuffer = fs.readFileSync(crestPath);
+          embeddedPhoto = await pdfDoc.embedPng(crestBuffer);
+          isCrestFallback = true;
+        }
+      } catch (e) {
+        console.warn("Could not embed Crest logo:", e);
       }
     }
 
@@ -528,7 +544,7 @@ export async function GET(
     });
   } catch (error: any) {
     console.error("[Faculty Dynamic PDF Generation Error]:", error);
-    const fallbackPath = path.join(process.cwd(), "public", "documents", "DefaultFile_1.pdf");
+    const fallbackPath = path.join(process.cwd(), "public", "documents", "faculty", "Faculty_Website_Profile_View.pdf");
     if (fs.existsSync(fallbackPath)) {
       const fileBuffer = fs.readFileSync(fallbackPath);
       return new Response(fileBuffer, {

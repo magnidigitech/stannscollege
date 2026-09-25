@@ -697,7 +697,18 @@ export async function getAllFacultyProfiles() {
       "slug": slug.current,
       designation,
       department,
+      facultyId,
       "profilePhotoUrl": profilePhoto.asset->url,
+      "facultyProfilePdfUrl": facultyProfilePdf.asset->url,
+      "cvPdfUrl": cvPdf.asset->url,
+      frsId,
+      aicteId,
+      institutionalRole,
+      committeeRoles,
+      dateOfJoining,
+      totalExperience,
+      teachingExperience,
+      highestQualification,
       featuredFaculty,
       sNo
     }`;
@@ -837,11 +848,16 @@ export const getFacultyProfile = cache(async (slug: string) => {
  */
 export async function getFacultyPdfDocuments() {
   try {
-    const query = `*[_type == "facultyPdfDocument" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
-      _id,
+    const query = `*[_type in ["facultyPolicyDocument", "facultyPdfDocument"] && !(_id in path("drafts.**"))] | order(displayOrder asc, _createdAt asc) {
+      "id": documentId,
+      "documentId": documentId,
+      "_id": _id,
       title,
+      subtitle,
       category,
-      "pdfUrl": pdfFile.asset->url,
+      year,
+      "fileUrl": coalesce(fileUrl, pdfFile.asset->url),
+      certificatesUrl,
       displayOrder
     }`;
     const data = await sanityClient.fetch(query);

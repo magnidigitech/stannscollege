@@ -2503,7 +2503,7 @@ export default function PlacementsClientPortal({
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredMouActivities.map((act) => (
+                  {filteredMouActivities.map((act: any) => (
                     <div
                       key={act.id}
                       className="rounded-2xl p-5 bg-white border border-slate-200/90 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between gap-3.5"

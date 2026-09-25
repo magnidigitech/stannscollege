@@ -24,7 +24,7 @@ function checkAdminAuth(req: NextRequest): boolean {
   return !!session;
 }
 
-export function generateSlug(text: string): string {
+function generateSlug(text: string): string {
   return (text || "")
     .toLowerCase()
     .trim()
@@ -53,6 +53,10 @@ export async function GET(req: NextRequest) {
       designation,
       department,
       facultyId,
+      frsId,
+      aicteId,
+      institutionalRole,
+      committeeRoles,
       gender,
       dateOfBirth,
       dateOfJoining,
@@ -227,6 +231,10 @@ export async function POST(req: NextRequest) {
       scopusId: faculty.scopusId?.trim() || "",
       researchGateUrl: faculty.researchGateUrl?.trim() || "",
       personalWebsite: faculty.personalWebsite?.trim() || "",
+      frsId: faculty.frsId?.trim() || "",
+      aicteId: faculty.aicteId?.trim() || "",
+      institutionalRole: faculty.institutionalRole?.trim() || "",
+      committeeRoles: Array.isArray(faculty.committeeRoles) ? faculty.committeeRoles : [],
       metaTitle: faculty.metaTitle?.trim() || `${faculty.facultyName.trim()} | Faculty | St. Ann's College for Women`,
       metaDescription: faculty.metaDescription?.trim() || faculty.shortBio?.trim() || "",
       imageAltText: faculty.imageAltText?.trim() || faculty.facultyName.trim(),
@@ -260,7 +268,18 @@ export async function POST(req: NextRequest) {
       };
     }
 
-    const savedDoc = await client.createOrReplace(docToSave);
+    // Handle Faculty Profile PDF asset ref if provided
+    if (faculty.facultyProfilePdfAssetId) {
+      docToSave.facultyProfilePdf = {
+        _type: "file",
+        asset: {
+          _type: "reference",
+          _ref: faculty.facultyProfilePdfAssetId,
+        },
+      };
+    }
+
+    const savedDoc = await client.createOrReplace(docToSave as any);
 
     return NextResponse.json({
       success: true,

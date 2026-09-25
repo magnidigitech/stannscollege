@@ -36,9 +36,22 @@ import {
   Network,
   Download,
   FolderPlus,
+  Camera,
+  Play,
+  Image as ImageIcon,
+  Film,
 } from "lucide-react";
-import { generateSlug } from "@/app/api/admin/faculty/route";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import { FACULTY_DATA, FacultyGalleryItem, FacultyEventAlbum, FacultyEventMedia, DEFAULT_FACULTY_POLICY_DOCS } from "@/components/faculty/staticData";
+
+function generateSlug(text: string): string {
+  return (text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
 
 interface QualificationItem {
   degreeName?: string;
@@ -132,6 +145,12 @@ export interface FacultyMemberItem {
   currentAdministrativeRole?: string;
   departmentResponsibilities?: string[];
   committeeMemberships?: string[];
+  frsId?: string;
+  aicteId?: string;
+  institutionalRole?: string;
+  committeeRoles?: string[];
+  facultyProfilePdfUrl?: string;
+  facultyProfilePdfAssetId?: string;
   linkedinUrl?: string;
   googleScholarUrl?: string;
   orcidId?: string;
@@ -147,11 +166,14 @@ export interface FacultyMemberItem {
 
 export interface PolicyDocItem {
   id: string;
+  _id?: string;
   title: string;
   subtitle?: string;
   category: "recruitment" | "fdp" | "achievements" | "exchange" | "appraisal" | "welfare";
   year?: string;
   fileUrl: string;
+  certificatesUrl?: string;
+  displayOrder?: number;
 }
 
 const DEPARTMENTS = [
@@ -227,6 +249,12 @@ const EMPTY_FORM: FacultyMemberItem = {
   currentAdministrativeRole: "",
   departmentResponsibilities: [],
   committeeMemberships: [],
+  frsId: "",
+  aicteId: "",
+  institutionalRole: "",
+  committeeRoles: [],
+  facultyProfilePdfUrl: "",
+  facultyProfilePdfAssetId: "",
   linkedinUrl: "",
   googleScholarUrl: "",
   orcidId: "",
@@ -245,8 +273,8 @@ export function FacultyProfilesManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Top Section Switcher: "teaching" | "non-teaching" | "visiting" | "policies"
-  const [activeSection, setActiveSection] = useState<"teaching" | "non-teaching" | "visiting" | "policies">("teaching");
+  // Top Section Switcher: "teaching" | "non-teaching" | "visiting" | "policies" | "gallery"
+  const [activeSection, setActiveSection] = useState<"teaching" | "non-teaching" | "visiting" | "policies" | "gallery">("teaching");
 
   // Non-Teaching Category Sub-tab: "all" | "administrative" | "technical" | "support"
   const [nonTeachingCategory, setNonTeachingCategory] = useState<"all" | "administrative" | "technical" | "support">("all");
@@ -270,80 +298,324 @@ export function FacultyProfilesManager() {
   // Upload States
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [uploadingCv, setUploadingCv] = useState(false);
-  const [uploadingDocPdf, setUploadingDocPdf] = useState(false);
+  const [uploadingProfilePdf, setUploadingProfilePdf] = useState(false);
 
   // Helper input states for comma-separated tags
   const [expertiseTagsInput, setExpertiseTagsInput] = useState("");
   const [languagesInput, setLanguagesInput] = useState("");
   const [researchAreasInput, setResearchAreasInput] = useState("");
+  const [committeeRolesInput, setCommitteeRolesInput] = useState("");
 
   // Modal State for Delete
   const [facultyToDelete, setFacultyToDelete] = useState<FacultyMemberItem | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  // Policy Documents State (Sections E - J)
-  const [policyDocs, setPolicyDocs] = useState<PolicyDocItem[]>([
-    {
-      id: "doc-hr-policy",
-      title: "Human Resource Policy & Service Rules",
-      subtitle: "Institutional recruitment and merit selection framework",
-      category: "recruitment",
-      year: "2024–2025",
-      fileUrl: "/documents/DefaultFile_1.pdf",
-    },
-    {
-      id: "doc-fdp-report",
-      title: "Annual Faculty Development (FDP) Report",
-      subtitle: "Pedagogical workshops and faculty empowerment programs",
-      category: "fdp",
-      year: "2024–2025",
-      fileUrl: "/documents/DefaultFile_2.pdf",
-    },
-    {
-      id: "doc-achievements",
-      title: "Faculty Research, Awards & Publication Register",
-      subtitle: "Compendium of faculty honors and journal publications",
-      category: "achievements",
-      year: "2024–2025",
-      fileUrl: "/documents/DefaultFile_3.pdf",
-    },
-    {
-      id: "doc-exchange",
-      title: "Academic Mobility & Collaborative Exchange Reports",
-      subtitle: "Inter-institutional guest faculty exchange initiatives",
-      category: "exchange",
-      year: "2024–2025",
-      fileUrl: "/documents/DefaultFile_4.pdf",
-    },
-    {
-      id: "doc-asar-appraisal",
-      title: "Faculty Performance Appraisal (ASAR) Guidelines & Form",
-      subtitle: "Annual self-appraisal report and API score calculation",
-      category: "appraisal",
-      year: "2024–2025",
-      fileUrl: "/documents/DefaultFile_5.pdf",
-    },
-    {
-      id: "doc-welfare",
-      title: "Institutional Faculty Welfare Schemes & Benefit Circulars",
-      subtitle: "Maternity, medical, provident fund, and financial support policies",
-      category: "welfare",
-      year: "2024–2025",
-      fileUrl: "/documents/DefaultFile_1.pdf",
-    },
-  ]);
+  // Event Albums Management State (Section K - Event Gallery)
+  const [eventAlbumsList, setEventAlbumsList] = useState<FacultyEventAlbum[]>(FACULTY_DATA.eventAlbums || []);
+  const [albumYearFilter, setAlbumYearFilter] = useState<string>("all");
+  const [albumSearchQuery, setAlbumSearchQuery] = useState<string>("");
+  const [isAlbumModalOpen, setIsAlbumModalOpen] = useState<boolean>(false);
+  const [editingAlbum, setEditingAlbum] = useState<FacultyEventAlbum | null>(null);
+  const [albumFormData, setAlbumFormData] = useState<FacultyEventAlbum>({
+    id: "",
+    title: "",
+    date: new Date().toISOString().split("T")[0],
+    year: "2025–2026",
+    category: "Faculty Development",
+    description: "",
+    coverImage: "",
+    media: [],
+  });
+  const [uploadingAlbumMedia, setUploadingAlbumMedia] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
+  const [videoInputUrl, setVideoInputUrl] = useState("");
+  const [videoInputCaption, setVideoInputCaption] = useState("");
 
+  // Fetch live event albums from Sanity
+  const fetchEventAlbums = async () => {
+    try {
+      const res = await fetch("/api/admin/faculty-gallery");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.albums) && data.albums.length > 0) {
+        setEventAlbumsList(data.albums);
+      }
+    } catch (err) {
+      console.warn("Could not fetch Sanity faculty event albums:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchEventAlbums();
+  }, []);
+
+  // Multi-File Upload directly to Sanity CDN for the current event album
+  const handleBatchUploadToAlbum = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingAlbumMedia(true);
+    setUploadProgress({ current: 0, total: files.length });
+    const newMediaItems: FacultyEventMedia[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      setUploadProgress({ current: i + 1, total: files.length });
+      try {
+        const data = new FormData();
+        data.append("file", file);
+        data.append("type", file.type.startsWith("video") ? "file" : "image");
+
+        // Uploads directly into Sanity Asset Pipeline
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
+          body: data,
+        });
+        const result = await res.json();
+        if (result.success && result.asset) {
+          const isVid = file.type.startsWith("video");
+          const cleanedName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ");
+          const formattedTitle = cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
+          newMediaItems.push({
+            id: `media-${Date.now()}-${i}`,
+            mediaType: isVid ? "video" : "photo",
+            url: result.asset.url,
+            assetId: result.asset._id,
+            caption: formattedTitle,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to upload file to Sanity:", file.name, err);
+      }
+    }
+
+    if (newMediaItems.length > 0) {
+      setAlbumFormData((prev) => {
+        const updatedMedia = [...(prev.media || []), ...newMediaItems];
+        return {
+          ...prev,
+          media: updatedMedia,
+          coverImage: prev.coverImage || updatedMedia[0]?.url || "",
+        };
+      });
+      showNotification(`Successfully uploaded ${newMediaItems.length} file(s) to Sanity!`);
+    } else {
+      alert("No files were successfully uploaded to Sanity.");
+    }
+    setUploadingAlbumMedia(false);
+  };
+
+  // Add YouTube / Video URL to this event album
+  const handleAddVideoToAlbum = () => {
+    if (!videoInputUrl.trim()) return;
+    const newVid: FacultyEventMedia = {
+      id: `vid-${Date.now()}`,
+      mediaType: "video",
+      url: videoInputUrl.trim(),
+      caption: videoInputCaption.trim() || "Event Video Highlight",
+    };
+    setAlbumFormData((prev) => ({
+      ...prev,
+      media: [...(prev.media || []), newVid],
+    }));
+    setVideoInputUrl("");
+    setVideoInputCaption("");
+    showNotification("Video added to event album.");
+  };
+
+  // Save Event Album directly to Sanity via POST /api/admin/faculty-gallery
+  const handleSaveEventAlbum = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!albumFormData.title.trim()) {
+      alert("Event Title is required.");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch("/api/admin/faculty-gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ album: albumFormData }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        showNotification("Event album saved successfully to Sanity!");
+        await fetchEventAlbums();
+        setIsAlbumModalOpen(false);
+      } else {
+        throw new Error(result.error || "Failed to save event album to Sanity");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to save event album to Sanity.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Delete Event Album from Sanity via DELETE /api/admin/faculty-gallery?id=xxx
+  const handleDeleteEventAlbum = async (album: FacultyEventAlbum) => {
+    if (!confirm(`Are you sure you want to permanently delete event album "${album.title}"?`)) return;
+    try {
+      const albumId = album._id || album.id;
+      const res = await fetch(`/api/admin/faculty-gallery?id=${encodeURIComponent(albumId)}`, {
+        method: "DELETE",
+      });
+      const result = await res.json();
+      if (result.success) {
+        showNotification("Event album deleted from Sanity.");
+        setEventAlbumsList((prev) => prev.filter((a) => (a._id || a.id) !== albumId));
+      } else {
+        throw new Error(result.error || "Failed to delete from Sanity");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to delete event album.");
+    }
+  };
+
+  // Policy Documents State (Sections E - J)
+  const [policyDocs, setPolicyDocs] = useState<PolicyDocItem[]>(DEFAULT_FACULTY_POLICY_DOCS as PolicyDocItem[]);
   const [activePolicyCategory, setActivePolicyCategory] = useState<string>("all");
   const [isDocModalOpen, setIsDocModalOpen] = useState(false);
   const [editingDoc, setEditingDoc] = useState<PolicyDocItem | null>(null);
+  const [savingDoc, setSavingDoc] = useState(false);
+  const [uploadingDocPdf, setUploadingDocPdf] = useState(false);
+  const [uploadingCertPdf, setUploadingCertPdf] = useState(false);
   const [docFormData, setDocFormData] = useState<PolicyDocItem>({
     id: "",
     title: "",
     subtitle: "",
-    category: "recruitment",
-    year: "2024–2025",
-    fileUrl: "/documents/DefaultFile_1.pdf",
+    category: "fdp",
+    year: "2025–2026",
+    fileUrl: "",
+    certificatesUrl: "",
   });
+
+  const filteredPolicyDocs = useMemo(() => {
+    if (activePolicyCategory === "all") return policyDocs;
+    return policyDocs.filter((d) => d.category === activePolicyCategory);
+  }, [policyDocs, activePolicyCategory]);
+
+  // Fetch live policy documents from Sanity
+  const fetchPolicyDocs = async () => {
+    try {
+      const res = await fetch("/api/admin/faculty-policies");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.documents) && data.documents.length > 0) {
+        setPolicyDocs(data.documents);
+      }
+    } catch (err) {
+      console.warn("Could not fetch Sanity faculty policy documents:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPolicyDocs();
+  }, []);
+
+  const handlePolicyDocUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "application/pdf") {
+      alert("Please upload a valid PDF document.");
+      return;
+    }
+    setUploadingDocPdf(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setDocFormData((prev) => ({ ...prev, fileUrl: data.url }));
+        showNotification("PDF uploaded successfully to Sanity CDN.");
+      } else {
+        throw new Error(data.error || "Upload failed");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to upload PDF.");
+    } finally {
+      setUploadingDocPdf(false);
+    }
+  };
+
+  const handleCertDocUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "application/pdf") {
+      alert("Please upload a valid PDF document.");
+      return;
+    }
+    setUploadingCertPdf(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setDocFormData((prev) => ({ ...prev, certificatesUrl: data.url }));
+        showNotification("Certificates PDF uploaded successfully to Sanity CDN.");
+      } else {
+        throw new Error(data.error || "Upload failed");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to upload Certificates PDF.");
+    } finally {
+      setUploadingCertPdf(false);
+    }
+  };
+
+  const handleSaveDoc = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!docFormData.title.trim()) {
+      alert("Document title is required.");
+      return;
+    }
+    setSavingDoc(true);
+    try {
+      const res = await fetch("/api/admin/faculty-policies", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ document: docFormData }),
+      });
+      const data = await res.json();
+      if (data.success && data.document) {
+        showNotification(data.message || "Document saved to Sanity.");
+        setIsDocModalOpen(false);
+        fetchPolicyDocs();
+      } else {
+        throw new Error(data.error || "Failed to save document");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to save document.");
+    } finally {
+      setSavingDoc(false);
+    }
+  };
+
+  const handleDeleteDoc = async (doc: PolicyDocItem) => {
+    if (!confirm(`Are you sure you want to delete "${doc.title}"?`)) return;
+    try {
+      const docId = doc._id || doc.id;
+      const res = await fetch(`/api/admin/faculty-policies?id=${encodeURIComponent(docId)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        showNotification("Document deleted from Sanity.");
+        setPolicyDocs((prev) => prev.filter((d) => (d._id || d.id) !== docId));
+      } else {
+        throw new Error(data.error || "Failed to delete document");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to delete document.");
+    }
+  };
 
   // PDF Preview Modal
   const [previewPdfUrl, setPreviewPdfUrl] = useState<string | null>(null);
@@ -383,12 +655,7 @@ export function FacultyProfilesManager() {
   // Filtered List based on Active Section and Sub-filters
   const currentSectionFaculty = useMemo(() => {
     return facultyList.filter((f) => {
-      const isTeaching =
-        (f.staffType === "teaching" || !f.staffType) &&
-        f.staffType !== "non-teaching" &&
-        f.staffType !== "technical" &&
-        f.staffType !== "support" &&
-        f.staffType !== "visiting";
+      const isTeaching = f.staffType === "teaching" || !f.staffType;
 
       if (activeSection === "teaching") {
         return isTeaching;
@@ -603,6 +870,7 @@ export function FacultyProfilesManager() {
     setExpertiseTagsInput("");
     setLanguagesInput("");
     setResearchAreasInput("");
+    setCommitteeRolesInput("");
     setActiveModalTab("basic");
     setFormError(null);
     setIsModalOpen(true);
@@ -625,6 +893,7 @@ export function FacultyProfilesManager() {
     setExpertiseTagsInput((faculty.areaOfExpertise || []).join(", "));
     setLanguagesInput((faculty.languagesKnown || []).join(", "));
     setResearchAreasInput((faculty.researchAreas || []).join(", "));
+    setCommitteeRolesInput((faculty.committeeRoles || []).join("\n"));
     setActiveModalTab("basic");
     setFormError(null);
     setIsModalOpen(true);
@@ -696,6 +965,39 @@ export function FacultyProfilesManager() {
     }
   };
 
+  // Handle Faculty Profile PDF Upload
+  const handleFacultyProfilePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingProfilePdf(true);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("type", "file");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: data,
+      });
+      const result = await res.json();
+      if (result.success && result.asset) {
+        setFormData((prev) => ({
+          ...prev,
+          facultyProfilePdfUrl: result.asset.url,
+          facultyProfilePdfAssetId: result.asset._id,
+        }));
+        showNotification("Official Faculty Profile PDF uploaded successfully.");
+      } else {
+        throw new Error(result.error || "Failed to upload Profile PDF");
+      }
+    } catch (err: any) {
+      alert("Error uploading Profile PDF: " + err.message);
+    } finally {
+      setUploadingProfilePdf(false);
+    }
+  };
+
   // Save Faculty Profile
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -722,6 +1024,10 @@ export function FacultyProfilesManager() {
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
+    const committeeRoles = committeeRolesInput
+      .split(/\r?\n|,/)
+      .map((t) => t.trim())
+      .filter(Boolean);
 
     const payload = {
       faculty: {
@@ -730,6 +1036,7 @@ export function FacultyProfilesManager() {
         areaOfExpertise,
         languagesKnown,
         researchAreas,
+        committeeRoles,
       },
     };
 
@@ -759,14 +1066,16 @@ export function FacultyProfilesManager() {
     if (!facultyToDelete?._id) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/faculty?id=${encodeURIComponent(facultyToDelete._id)}`, {
+      const deletedId = facultyToDelete._id;
+      const res = await fetch(`/api/admin/faculty?id=${encodeURIComponent(deletedId)}`, {
         method: "DELETE",
       });
       const result = await res.json();
       if (result.success) {
         showNotification("Profile deleted successfully.");
+        setFacultyList((prev) => prev.filter((f) => f._id !== deletedId));
         setFacultyToDelete(null);
-        fetchFaculty();
+        await fetchFaculty();
       } else {
         throw new Error(result.error || "Failed to delete profile.");
       }
@@ -776,68 +1085,6 @@ export function FacultyProfilesManager() {
       setDeleting(false);
     }
   };
-
-  // Handle Policy Document PDF Upload
-  const handlePolicyDocUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploadingDocPdf(true);
-    try {
-      const data = new FormData();
-      data.append("file", file);
-      data.append("type", "file");
-
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: data,
-      });
-      const result = await res.json();
-      if (result.success && result.asset) {
-        setDocFormData((prev) => ({
-          ...prev,
-          fileUrl: result.asset.url,
-        }));
-        showNotification("Document PDF uploaded successfully.");
-      } else {
-        throw new Error(result.error || "Failed to upload document");
-      }
-    } catch (err: any) {
-      alert("Error uploading PDF: " + err.message);
-    } finally {
-      setUploadingDocPdf(false);
-    }
-  };
-
-  // Save Policy Document
-  const handleSaveDoc = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!docFormData.title.trim()) return;
-
-    if (editingDoc) {
-      setPolicyDocs((prev) =>
-        prev.map((d) => (d.id === editingDoc.id ? { ...docFormData } : d))
-      );
-      showNotification("Policy document updated successfully.");
-    } else {
-      const newDoc: PolicyDocItem = {
-        ...docFormData,
-        id: `doc-${Date.now()}`,
-      };
-      setPolicyDocs((prev) => [...prev, newDoc]);
-      showNotification("New policy document added successfully.");
-    }
-    setIsDocModalOpen(false);
-  };
-
-  const filteredPolicyDocs = useMemo(() => {
-    return policyDocs.filter((d) => {
-      const matchesCat = activePolicyCategory === "all" || d.category === activePolicyCategory;
-      const q = searchQuery.trim().toLowerCase();
-      const matchesQ = !q || d.title.toLowerCase().includes(q) || (d.subtitle && d.subtitle.toLowerCase().includes(q));
-      return matchesCat && matchesQ;
-    });
-  }, [policyDocs, activePolicyCategory, searchQuery]);
 
   return (
     <div className="space-y-6">
@@ -873,15 +1120,28 @@ export function FacultyProfilesManager() {
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             Refresh
           </button>
-          {activeSection !== "policies" ? (
+          {activeSection === "gallery" ? (
             <button
-              onClick={handleOpenAdd}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#002147] font-black text-xs transition-all shadow-md active:scale-95"
+              onClick={() => {
+                setEditingAlbum(null);
+                setAlbumFormData({
+                  id: "",
+                  title: "",
+                  date: new Date().toISOString().split("T")[0],
+                  year: albumYearFilter === "all" ? "2025–2026" : albumYearFilter,
+                  category: "Faculty Development",
+                  description: "",
+                  coverImage: "",
+                  media: [],
+                });
+                setIsAlbumModalOpen(true);
+              }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#002147] font-black text-xs transition-all shadow-md active:scale-95 cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
-              {activeSection === "non-teaching" ? "Add Staff Member" : "Add Faculty Profile"}
+              <FolderPlus className="w-4 h-4" />
+              Create Event Album
             </button>
-          ) : (
+          ) : activeSection === "policies" ? (
             <button
               onClick={() => {
                 setEditingDoc(null);
@@ -895,10 +1155,22 @@ export function FacultyProfilesManager() {
                 });
                 setIsDocModalOpen(true);
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#002147] font-black text-xs transition-all shadow-md active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#002147] font-black text-xs transition-all shadow-md active:scale-95 cursor-pointer"
             >
               <FolderPlus className="w-4 h-4" />
               Add Policy Document
+            </button>
+          ) : (
+            <button
+              onClick={handleOpenAdd}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#002147] font-black text-xs transition-all shadow-md active:scale-95 cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              {activeSection === "non-teaching"
+                ? "Add Staff Member"
+                : activeSection === "visiting"
+                ? "Add Visiting Faculty"
+                : "Add Faculty Profile"}
             </button>
           )}
         </div>
@@ -908,50 +1180,62 @@ export function FacultyProfilesManager() {
       <div className="flex flex-wrap gap-2 p-1.5 bg-slate-200/70 rounded-2xl border border-slate-300/80">
         <button
           onClick={() => setActiveSection("teaching")}
-          className={`flex-1 min-w-[200px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+          className={`flex-1 min-w-[180px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
             activeSection === "teaching"
               ? "bg-[#002147] text-white shadow-md font-extrabold"
               : "text-slate-700 hover:bg-white/60"
           }`}
         >
           <GraduationCap className="w-4 h-4" />
-          A &amp; B. Teaching Faculty Roster ({facultyList.filter((f) => (f.staffType === "teaching" || !f.staffType) && f.staffType !== "non-teaching" && f.staffType !== "technical" && f.staffType !== "support" && f.staffType !== "visiting").length})
+          A &amp; B. Teaching ({facultyList.filter((f) => f.staffType === "teaching" || !f.staffType).length})
         </button>
 
         <button
           onClick={() => setActiveSection("non-teaching")}
-          className={`flex-1 min-w-[200px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+          className={`flex-1 min-w-[180px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
             activeSection === "non-teaching"
               ? "bg-[#002147] text-white shadow-md font-extrabold"
               : "text-slate-700 hover:bg-white/60"
           }`}
         >
           <Network className="w-4 h-4" />
-          C. Non-Teaching Staff ({nonTeachingCounts.all})
+          C. Non-Teaching ({nonTeachingCounts.all})
         </button>
 
         <button
           onClick={() => setActiveSection("visiting")}
-          className={`flex-1 min-w-[180px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+          className={`flex-1 min-w-[160px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
             activeSection === "visiting"
               ? "bg-[#002147] text-white shadow-md font-extrabold"
               : "text-slate-700 hover:bg-white/60"
           }`}
         >
           <Users className="w-4 h-4" />
-          D. Visiting / Adjunct
+          D. Visiting ({facultyList.filter((f) => f.staffType === "visiting").length})
         </button>
 
         <button
           onClick={() => setActiveSection("policies")}
-          className={`flex-1 min-w-[220px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+          className={`flex-1 min-w-[180px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
             activeSection === "policies"
               ? "bg-[#002147] text-white shadow-md font-extrabold"
               : "text-slate-700 hover:bg-white/60"
           }`}
         >
           <FileText className="w-4 h-4" />
-          E - J. Policy Archives &amp; PDFs ({policyDocs.length})
+          E - J. Policies &amp; PDFs ({policyDocs.length})
+        </button>
+
+        <button
+          onClick={() => setActiveSection("gallery")}
+          className={`flex-1 min-w-[180px] flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            activeSection === "gallery"
+              ? "bg-[#002147] text-white shadow-md font-extrabold"
+              : "text-slate-700 hover:bg-white/60"
+          }`}
+        >
+          <Camera className="w-4 h-4" />
+          K. Event Gallery ({eventAlbumsList.length})
         </button>
       </div>
 
@@ -1008,70 +1292,66 @@ export function FacultyProfilesManager() {
         </div>
       )}
 
-      {/* Search & Filter Bar */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-center gap-4">
-        <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={
-              activeSection === "policies"
-                ? "Search policies, circulars, reports, and PDFs..."
-                : "Search by name, designation, qualification, emp ID, or slug..."
-            }
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold"
-            >
-              Clear
-            </button>
-          )}
-        </div>
-
-        {activeSection !== "policies" && (
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            {/* Department Filter */}
-            <div className="relative flex-1 md:w-56">
-              <select
-                value={selectedDeptFilter}
-                onChange={(e) => setSelectedDeptFilter(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2.5 text-xs sm:text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147] appearance-none cursor-pointer"
-              >
-                <option value="All">All Departments</option>
-                {DEPARTMENTS.map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+      {/* SECTIONS A, B, C, D: FACULTY & STAFF SEARCH & TABLE */}
+      {(activeSection === "teaching" || activeSection === "non-teaching" || activeSection === "visiting") && (
+        <>
+          {/* Search & Filter Bar */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-center gap-4">
+            <div className="relative flex-1 w-full">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by name, designation, qualification, emp ID, or slug..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold"
+                >
+                  Clear
+                </button>
+              )}
             </div>
 
-            {/* Status Filter */}
-            <div className="relative w-36">
-              <select
-                value={selectedStatusFilter}
-                onChange={(e) => setSelectedStatusFilter(e.target.value as any)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2.5 text-xs sm:text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147] appearance-none cursor-pointer"
-              >
-                <option value="All">All Status</option>
-                <option value="active">Active Only</option>
-                <option value="inactive">Inactive Only</option>
-              </select>
-              <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              {/* Department Filter */}
+              <div className="relative flex-1 md:w-56">
+                <select
+                  value={selectedDeptFilter}
+                  onChange={(e) => setSelectedDeptFilter(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2.5 text-xs sm:text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147] appearance-none cursor-pointer"
+                >
+                  <option value="All">All Departments</option>
+                  {DEPARTMENTS.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+
+              {/* Status Filter */}
+              <div className="relative w-36">
+                <select
+                  value={selectedStatusFilter}
+                  onChange={(e) => setSelectedStatusFilter(e.target.value as any)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2.5 text-xs sm:text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147] appearance-none cursor-pointer"
+                >
+                  <option value="All">All Status</option>
+                  <option value="active">Active Only</option>
+                  <option value="inactive">Inactive Only</option>
+                </select>
+                <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
           </div>
-        )}
-      </div>
 
-      {/* SECTIONS A, B, C, D: FACULTY & STAFF TABLE */}
-      {activeSection !== "policies" && (
-        <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
+          {/* Table Container */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
           {loading ? (
             <div className="p-16 text-center text-slate-400 font-semibold space-y-3">
               <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-600" />
@@ -1149,8 +1429,12 @@ export function FacultyProfilesManager() {
                                 className="w-9 h-9 rounded-xl object-cover border border-slate-200 shadow-sm shrink-0"
                               />
                             ) : (
-                              <div className="w-9 h-9 rounded-xl bg-blue-100 text-[#002147] font-black text-xs flex items-center justify-center border border-blue-200 shrink-0">
-                                {item.facultyName ? item.facultyName.charAt(0) : "F"}
+                              <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shrink-0 shadow-sm">
+                                <img
+                                  src="/images/Crest_Logo.png"
+                                  alt="College Crest"
+                                  className="w-full h-full object-contain"
+                                />
                               </div>
                             )}
                             <div>
@@ -1208,6 +1492,18 @@ export function FacultyProfilesManager() {
 
                         <td className="px-3 py-3 text-center">
                           <div className="flex items-center justify-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const pdfTarget = item.facultyProfilePdfUrl || item.cvPdfUrl || "/documents/faculty/Faculty_Website_Profile_View.pdf";
+                                setPreviewPdfUrl(pdfTarget);
+                                setPreviewPdfTitle(`${item.facultyName} - Profile Document`);
+                              }}
+                              title="Preview Profile PDF"
+                              className="p-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all font-bold"
+                            >
+                              <FileText className="w-3.5 h-3.5" />
+                            </button>
                             {slug && item.staffType === "teaching" && (
                               <Link
                                 href={`/faculty/profile/${slug}`}
@@ -1242,88 +1538,124 @@ export function FacultyProfilesManager() {
             </div>
           )}
         </div>
+        </>
       )}
 
       {/* SECTION E - J: POLICY DOCUMENTS & ARCHIVES */}
       {activeSection === "policies" && (
-        <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden p-6 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden p-6 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
             <div>
               <h3 className="font-outfit font-black text-slate-900 text-base md:text-lg">
                 Statutory Policy &amp; Faculty Documents Register
               </h3>
               <p className="text-xs text-slate-500 font-medium">
-                Official PDF documents, appraisal forms, and welfare circulars for Sections E through J
+                Official PDF reports, certificates, appraisal forms, and welfare circulars for Sections E through J
               </p>
             </div>
+            <button
+              onClick={() => {
+                setEditingDoc(null);
+                setDocFormData({
+                  id: `doc-${Date.now()}`,
+                  title: "",
+                  subtitle: "",
+                  category: "fdp",
+                  year: "2025–2026",
+                  fileUrl: "",
+                  certificatesUrl: "",
+                });
+                setIsDocModalOpen(true);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-black shadow-md transition-all shrink-0 cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Document / FDP Report</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredPolicyDocs.map((doc) => (
               <div
-                key={doc.id}
-                className="p-4 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 hover:border-indigo-300 transition-all flex flex-col justify-between gap-4"
+                key={doc._id || doc.id}
+                className="p-5 rounded-2xl border-2 border-slate-200/90 bg-slate-50/70 hover:bg-white hover:border-indigo-300 hover:shadow-md transition-all flex flex-col justify-between gap-4"
               >
                 <div className="flex items-start gap-3.5">
                   <div className="w-11 h-11 rounded-xl bg-[#002147] text-white flex items-center justify-center shrink-0 shadow-sm">
                     <FileText className="w-5 h-5 text-indigo-200" />
                   </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-blue-100 text-[#002147]">
                         Section {doc.category.toUpperCase()}
                       </span>
                       {doc.year && (
-                        <span className="text-[10px] font-bold text-slate-500">{doc.year}</span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                          {doc.year}
+                        </span>
+                      )}
+                      {doc.certificatesUrl && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          ✓ Certificates Attached
+                        </span>
                       )}
                     </div>
-                    <h4 className="font-outfit font-extrabold text-slate-900 text-sm">{doc.title}</h4>
+                    <h4 className="font-outfit font-black text-slate-900 text-sm leading-snug">{doc.title}</h4>
                     {doc.subtitle && (
-                      <p className="text-xs text-slate-600 font-medium">{doc.subtitle}</p>
+                      <p className="text-xs text-slate-600 font-medium leading-relaxed">{doc.subtitle}</p>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-slate-200/60 pt-3">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => {
-                        setPreviewPdfUrl(doc.fileUrl);
-                        setPreviewPdfTitle(doc.title);
-                      }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      Preview PDF
-                    </button>
-                    <a
-                      href={doc.fileUrl}
-                      download
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                    </a>
+                <div className="flex flex-wrap items-center justify-between border-t border-slate-200/60 pt-3 gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    {/* Main PDF preview */}
+                    {doc.fileUrl ? (
+                      <button
+                        onClick={() => {
+                          setPreviewPdfUrl(doc.fileUrl);
+                          setPreviewPdfTitle(doc.title);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>Preview PDF</span>
+                      </button>
+                    ) : (
+                      <span className="text-[11px] text-slate-400 italic">No PDF uploaded</span>
+                    )}
+
+                    {/* Certificates preview */}
+                    {doc.certificatesUrl && (
+                      <button
+                        onClick={() => {
+                          setPreviewPdfUrl(doc.certificatesUrl!);
+                          setPreviewPdfTitle(`${doc.title} - Certificates`);
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-bold transition-all cursor-pointer"
+                      >
+                        <Award className="w-3.5 h-3.5 text-amber-600" />
+                        <span>Certificates</span>
+                      </button>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => {
                         setEditingDoc(doc);
-                        setDocFormData(doc);
+                        setDocFormData({ ...doc });
                         setIsDocModalOpen(true);
                       }}
-                      className="p-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-all font-bold"
+                      className="p-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-all font-bold cursor-pointer"
+                      title="Edit Document"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
-                      onClick={() => {
-                        if (confirm(`Remove document "${doc.title}"?`)) {
-                          setPolicyDocs((prev) => prev.filter((d) => d.id !== doc.id));
-                          showNotification("Document removed.");
-                        }
-                      }}
-                      className="p-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 transition-all font-bold"
+                      onClick={() => handleDeleteDoc(doc)}
+                      className="p-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 transition-all font-bold cursor-pointer"
+                      title="Delete Document"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -1332,6 +1664,200 @@ export function FacultyProfilesManager() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* SECTION K: EVENT PHOTO & VIDEO GALLERY */}
+      {activeSection === "gallery" && (
+        <div className="space-y-6">
+          {/* Gallery Header & Filters */}
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h3 className="font-outfit font-black text-slate-900 text-lg sm:text-xl">
+                  Faculty &amp; Staff Event Photo &amp; Video Albums
+                </h3>
+                <p className="text-xs text-slate-500 font-medium">
+                  Create albums for institutional events (e.g. FDPs, seminars, workshops, celebrations) and batch upload photos/videos directly to Sanity CDN.
+                </p>
+              </div>
+
+              {/* Year Filter */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold text-slate-500">Filter Year:</span>
+                {["all", "2025–2026", "2024–2025", "2023–2024", "2022–2023"].map((yr) => (
+                  <button
+                    key={yr}
+                    onClick={() => setAlbumYearFilter(yr)}
+                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
+                      albumYearFilter === yr
+                        ? "bg-[#002147] text-white shadow"
+                        : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                    }`}
+                  >
+                    {yr === "all" ? "All Years" : yr}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Search Bar & Action */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-slate-100">
+              <div className="relative flex-1 max-w-md">
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={albumSearchQuery}
+                  onChange={(e) => setAlbumSearchQuery(e.target.value)}
+                  placeholder="Search event name, category, or description..."
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                />
+              </div>
+
+              <button
+                onClick={() => {
+                  setEditingAlbum(null);
+                  setAlbumFormData({
+                    id: "",
+                    title: "",
+                    date: new Date().toISOString().split("T")[0],
+                    year: albumYearFilter === "all" ? "2025–2026" : albumYearFilter,
+                    category: "Faculty Development",
+                    description: "",
+                    coverImage: "",
+                    media: [],
+                  });
+                  setIsAlbumModalOpen(true);
+                }}
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#002147] font-black text-xs transition-all shadow-md active:scale-95 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Create New Event Album
+              </button>
+            </div>
+          </div>
+
+          {/* Event Albums Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            {eventAlbumsList
+              .filter((album) => {
+                if (albumYearFilter !== "all" && album.year !== albumYearFilter) return false;
+                if (albumSearchQuery.trim()) {
+                  const q = albumSearchQuery.toLowerCase();
+                  return (
+                    album.title.toLowerCase().includes(q) ||
+                    (album.category && album.category.toLowerCase().includes(q)) ||
+                    (album.description && album.description.toLowerCase().includes(q))
+                  );
+                }
+                return true;
+              })
+              .map((album) => {
+                const photoCount = (album.media || []).filter((m) => m.mediaType === "photo").length;
+                const videoCount = (album.media || []).filter((m) => m.mediaType === "video").length;
+                const coverUrl =
+                  album.coverImage ||
+                  (album.media && album.media.length > 0 ? album.media[0].url : "/images/college_crest_gold.png");
+
+                return (
+                  <div
+                    key={album.id || album._id}
+                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
+                  >
+                    {/* Cover Thumbnail */}
+                    <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
+                      <img
+                        src={coverUrl}
+                        alt={album.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/images/college_crest_gold.png";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-[#002147]/90 text-amber-300 text-[10px] font-black border border-white/10 shadow-sm">
+                        {album.year}
+                      </span>
+                      <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm text-white text-[10px] font-extrabold flex items-center gap-1">
+                        <Camera className="w-3 h-3 text-amber-400" />
+                        {photoCount} Photos {videoCount > 0 && `• ${videoCount} Vids`}
+                      </span>
+                      <span className="absolute bottom-2 left-2.5 text-[11px] font-bold text-slate-200">
+                        📅 {album.date}
+                      </span>
+                    </div>
+
+                    {/* Body Content */}
+                    <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                      <div>
+                        {album.category && (
+                          <span className="inline-block px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-black uppercase mb-1.5">
+                            {album.category}
+                          </span>
+                        )}
+                        <h4 className="font-outfit font-black text-slate-900 text-sm leading-snug group-hover:text-[#002147] transition-colors">
+                          {album.title}
+                        </h4>
+                        {album.description && (
+                          <p className="text-xs text-slate-500 font-medium line-clamp-2 mt-1">
+                            {album.description}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center justify-between pt-2.5 border-t border-slate-100">
+                        <span className="text-[11px] font-bold text-slate-400">
+                          {album.media?.length || 0} items
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => {
+                              setEditingAlbum(album);
+                              setAlbumFormData({
+                                id: album.id || album._id || "",
+                                _id: album._id,
+                                title: album.title,
+                                date: album.date || "",
+                                year: album.year || "2025–2026",
+                                category: album.category || "Faculty Development",
+                                description: album.description || "",
+                                coverImage: album.coverImage || "",
+                                media: album.media || [],
+                              });
+                              setIsAlbumModalOpen(true);
+                            }}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-xs font-bold transition-all cursor-pointer"
+                            title="Edit Album & Photos"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                            <span>Edit Album</span>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteEventAlbum(album)}
+                            className="p-1.5 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100 transition-all cursor-pointer"
+                            title="Delete Album"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+
+          {eventAlbumsList.length === 0 && (
+            <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
+              <Camera className="w-12 h-12 text-slate-300 mx-auto" />
+              <h4 className="font-outfit font-black text-slate-800 text-lg">No Event Albums Found</h4>
+              <p className="text-xs text-slate-500 max-w-md mx-auto font-medium">
+                Click &quot;Create New Event Album&quot; above to create an album and upload all event photos and videos directly to Sanity.
+              </p>
+            </div>
+          )}
         </div>
       )}
 
@@ -1480,7 +2006,7 @@ export function FacultyProfilesManager() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
                         Employee ID
@@ -1494,6 +2020,34 @@ export function FacultyProfilesManager() {
                       />
                     </div>
 
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        FRS ID
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.frsId || ""}
+                        onChange={(e) => setFormData({ ...formData, frsId: e.target.value })}
+                        placeholder="e.g. 102948"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        AICTE ID
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.aicteId || ""}
+                        onChange={(e) => setFormData({ ...formData, aicteId: e.target.value })}
+                        placeholder="e.g. 1-284920194"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
                         Date of Joining
@@ -1580,7 +2134,7 @@ export function FacultyProfilesManager() {
                     </div>
                   </div>
 
-                  {/* Profile Photo Upload */}
+                  {/* Profile Photo Upload with Crest Fallback Display */}
                   <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 flex flex-col sm:flex-row items-center gap-5">
                     {formData.profilePhotoUrl ? (
                       <img
@@ -1589,14 +2143,25 @@ export function FacultyProfilesManager() {
                         className="w-20 h-20 rounded-2xl object-cover border-2 border-[#002147]/20 shadow-md shrink-0"
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-2xl bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-400 font-bold shrink-0">
-                        <User className="w-8 h-8" />
+                      <div className="w-20 h-20 rounded-2xl bg-white border border-slate-300 flex flex-col items-center justify-center p-2 shadow-inner shrink-0">
+                        <img
+                          src="/images/Crest_Logo.png"
+                          alt="College Crest Fallback"
+                          className="w-full h-full object-contain"
+                        />
                       </div>
                     )}
                     <div className="space-y-1.5 flex-1">
-                      <p className="text-xs font-bold text-slate-800">Profile Photo</p>
+                      <p className="text-xs font-bold text-slate-800">
+                        Profile Photo
+                        {!formData.profilePhotoUrl && (
+                          <span className="ml-2 text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full font-bold">
+                            Default: College Crest Logo
+                          </span>
+                        )}
+                      </p>
                       <p className="text-[11px] text-slate-500 font-medium">
-                        Upload portrait or official photo (JPG, PNG, WebP).
+                        Upload personal portrait (JPG, PNG). If left empty, the official College Crest is automatically used as the profile picture.
                       </p>
                       <div className="flex items-center gap-3 pt-1">
                         <label className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white font-bold text-xs shadow-sm transition-all">
@@ -1616,7 +2181,7 @@ export function FacultyProfilesManager() {
                             onClick={() => setFormData({ ...formData, profilePhotoUrl: undefined, photoAssetId: undefined })}
                             className="text-xs font-bold text-rose-600 hover:underline"
                           >
-                            Remove
+                            Remove (Use Crest)
                           </button>
                         )}
                       </div>
@@ -1992,6 +2557,37 @@ export function FacultyProfilesManager() {
                       </div>
                     )}
                   </div>
+
+                  {/* Institutional Responsibilities & Committee Roles */}
+                  <div className="border-t border-slate-200 pt-4 space-y-4">
+                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-600">
+                      Institutional Responsibilities &amp; Committee Roles
+                    </h4>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Institutional Role / Position
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.institutionalRole || ""}
+                        onChange={(e) => setFormData({ ...formData, institutionalRole: e.target.value })}
+                        placeholder="e.g. Principal, St. Ann's College for Women or Head of the Department, Commerce"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Convener / Coordinator of Committees &amp; Cells (One per line or comma-separated)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={committeeRolesInput}
+                        onChange={(e) => setCommitteeRolesInput(e.target.value)}
+                        placeholder="e.g.&#10;Internal Quality Assurance Cell (IQAC) Core Member&#10;Academic Council & Curriculum Committee&#10;Women Empowerment & Anti-Ragging Cell"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800"
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -2319,6 +2915,56 @@ export function FacultyProfilesManager() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Official Faculty Profile PDF Upload (Custom Profile View) */}
+                  <div className="border border-blue-200 rounded-2xl p-4 bg-blue-50/40 flex flex-col sm:flex-row items-center gap-5">
+                    <div className="w-12 h-12 rounded-xl bg-blue-100 border border-blue-300 text-[#002147] flex items-center justify-center shrink-0 shadow-sm">
+                      <FileText className="w-6 h-6" />
+                    </div>
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs font-bold text-slate-800">Official Faculty Profile PDF</p>
+                        <span className="text-[10px] bg-blue-100 text-blue-900 font-extrabold px-2 py-0.5 rounded-full">
+                          Website Profile View
+                        </span>
+                      </div>
+                      {formData.facultyProfilePdfUrl ? (
+                        <p className="text-[11px] text-emerald-700 font-bold flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Custom Profile PDF attached.
+                          <a href={formData.facultyProfilePdfUrl} target="_blank" className="underline ml-1">
+                            Preview PDF
+                          </a>
+                        </p>
+                      ) : (
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          Upload custom official profile PDF. If not uploaded, the system automatically uses default <span className="font-semibold text-[#002147]">Faculty Website Profile View.pdf</span>.
+                        </p>
+                      )}
+                      <div className="flex items-center gap-3 pt-1">
+                        <label className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white font-bold text-xs shadow-sm transition-all">
+                          <Upload className="w-3.5 h-3.5" />
+                          {uploadingProfilePdf ? "Uploading..." : "Upload Profile PDF"}
+                          <input
+                            type="file"
+                            accept="application/pdf"
+                            onChange={handleFacultyProfilePdfUpload}
+                            disabled={uploadingProfilePdf}
+                            className="hidden"
+                          />
+                        </label>
+                        {formData.facultyProfilePdfUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, facultyProfilePdfUrl: undefined, facultyProfilePdfAssetId: undefined })}
+                            className="text-xs font-bold text-rose-600 hover:underline"
+                          >
+                            Remove (Use Default PDF)
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -2355,135 +3001,299 @@ export function FacultyProfilesManager() {
         </div>
       )}
 
-      {/* POLICY DOCUMENT MODAL (Sections E - J) */}
-      {isDocModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-6 space-y-5 border border-slate-200 animate-scaleUp">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+
+
+      {/* ADD / EDIT EVENT ALBUM MODAL */}
+      {isAlbumModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn select-none">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200 animate-scaleUp">
+            {/* Modal Header */}
+            <div className="bg-[#002147] text-white px-6 py-4 flex items-center justify-between border-b border-[#003366]">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-blue-50 text-[#002147]">
-                  <FileText className="w-5 h-5" />
+                <div className="p-2 rounded-xl bg-amber-400 text-[#002147]">
+                  <Camera className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-outfit font-black text-slate-900 text-base">
-                    {editingDoc ? "Edit Policy Document" : "Add Policy Document"}
+                  <h3 className="font-outfit font-black text-lg">
+                    {editingAlbum ? `Edit Album: ${albumFormData.title}` : "Create New Event Album"}
                   </h3>
-                  <p className="text-xs text-slate-500 font-medium">Sections E through J</p>
+                  <p className="text-xs text-blue-200 font-medium">
+                    Upload institutional photos &amp; videos for this event directly into Sanity CDN.
+                  </p>
                 </div>
               </div>
               <button
-                onClick={() => setIsDocModalOpen(false)}
-                className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600"
+                type="button"
+                onClick={() => setIsAlbumModalOpen(false)}
+                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveDoc} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Document Title <span className="text-rose-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={docFormData.title}
-                  onChange={(e) => setDocFormData({ ...docFormData, title: e.target.value })}
-                  placeholder="e.g. Annual Faculty Development Program Report"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Subtitle / Description
-                </label>
-                <input
-                  type="text"
-                  value={docFormData.subtitle || ""}
-                  onChange={(e) => setDocFormData({ ...docFormData, subtitle: e.target.value })}
-                  placeholder="e.g. Statutory norms, workshops, and participation certificates"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Section Category
-                  </label>
-                  <select
-                    value={docFormData.category}
-                    onChange={(e) => setDocFormData({ ...docFormData, category: e.target.value as any })}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800"
-                  >
-                    <option value="recruitment">Section E - Recruitment Policy</option>
-                    <option value="fdp">Section F - Faculty Development (FDP)</option>
-                    <option value="achievements">Section G - Faculty Achievements</option>
-                    <option value="exchange">Section H - Academic Mobility</option>
-                    <option value="appraisal">Section I - Appraisal (ASAR)</option>
-                    <option value="welfare">Section J - Welfare Schemes</option>
-                  </select>
-                </div>
+            {/* Modal Form Content */}
+            <form onSubmit={handleSaveEventAlbum} className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* Event Metadata Grid */}
+              <div className="space-y-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                <h4 className="font-outfit font-extrabold text-slate-800 text-xs uppercase tracking-wider">
+                  1. Event Information
+                </h4>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Academic Year / Period
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1">
+                    Event Name / Title *
                   </label>
                   <input
                     type="text"
-                    value={docFormData.year || ""}
-                    onChange={(e) => setDocFormData({ ...docFormData, year: e.target.value })}
-                    placeholder="e.g. 2024–2025"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800"
+                    required
+                    value={albumFormData.title}
+                    onChange={(e) => setAlbumFormData((p) => ({ ...p, title: e.target.value }))}
+                    placeholder="e.g. National Faculty Development Program on Digital Pedagogies"
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-black text-slate-700 uppercase mb-1">
+                      Event Date *
+                    </label>
+                    <input
+                      type="date"
+                      required
+                      value={albumFormData.date}
+                      onChange={(e) => setAlbumFormData((p) => ({ ...p, date: e.target.value }))}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-black text-slate-700 uppercase mb-1">
+                      Academic Year *
+                    </label>
+                    <select
+                      value={albumFormData.year}
+                      onChange={(e) => setAlbumFormData((p) => ({ ...p, year: e.target.value }))}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                    >
+                      <option value="2025–2026">2025–2026</option>
+                      <option value="2024–2025">2024–2025</option>
+                      <option value="2023–2024">2023–2024</option>
+                      <option value="2022–2023">2022–2023</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-black text-slate-700 uppercase mb-1">
+                      Category / Department
+                    </label>
+                    <input
+                      type="text"
+                      value={albumFormData.category || ""}
+                      onChange={(e) => setAlbumFormData((p) => ({ ...p, category: e.target.value }))}
+                      placeholder="e.g. Faculty Development"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1">
+                    Event Overview / Description
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={albumFormData.description || ""}
+                    onChange={(e) => setAlbumFormData((p) => ({ ...p, description: e.target.value }))}
+                    placeholder="Brief highlights and proceedings of the event..."
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#002147]"
                   />
                 </div>
               </div>
 
-              {/* Upload PDF */}
-              <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50 space-y-2">
-                <label className="block text-xs font-bold text-slate-700">Attach Official PDF</label>
-                <div className="flex items-center gap-3">
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all">
-                    <Upload className="w-3.5 h-3.5" />
-                    {uploadingDocPdf ? "Uploading..." : "Upload PDF"}
+              {/* Multi-File Upload to Sanity */}
+              <div className="space-y-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h4 className="font-outfit font-extrabold text-slate-800 text-xs uppercase tracking-wider">
+                      2. Batch Upload Photos &amp; Videos to Sanity
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">
+                      Select multiple photos or video files from your device. All files upload straight to Sanity CDN.
+                    </p>
+                  </div>
+
+                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition-all shadow-sm cursor-pointer shrink-0 active:scale-95">
+                    {uploadingAlbumMedia ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        Uploading {uploadProgress.current}/{uploadProgress.total}...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-4 h-4" />
+                        Select Multiple Files to Upload
+                      </>
+                    )}
                     <input
                       type="file"
-                      accept="application/pdf"
-                      onChange={handlePolicyDocUpload}
-                      disabled={uploadingDocPdf}
+                      multiple
+                      accept="image/*,video/*"
+                      onChange={handleBatchUploadToAlbum}
+                      disabled={uploadingAlbumMedia}
                       className="hidden"
                     />
                   </label>
-                  {docFormData.fileUrl && (
-                    <span className="text-[11px] text-emerald-700 font-bold flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      PDF Attached
-                    </span>
-                  )}
                 </div>
-                <input
-                  type="text"
-                  value={docFormData.fileUrl}
-                  onChange={(e) => setDocFormData({ ...docFormData, fileUrl: e.target.value })}
-                  placeholder="Or enter PDF URL (/documents/...)"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-medium text-slate-700 mt-2"
-                />
+
+                {/* Video URL Adder */}
+                <div className="pt-3 border-t border-slate-200 flex flex-col sm:flex-row items-center gap-2">
+                  <input
+                    type="text"
+                    value={videoInputUrl}
+                    onChange={(e) => setVideoInputUrl(e.target.value)}
+                    placeholder="Or enter YouTube link / video URL..."
+                    className="flex-1 w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                  />
+                  <input
+                    type="text"
+                    value={videoInputCaption}
+                    onChange={(e) => setVideoInputCaption(e.target.value)}
+                    placeholder="Video title / caption..."
+                    className="w-full sm:w-48 px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#002147]"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddVideoToAlbum}
+                    disabled={!videoInputUrl.trim()}
+                    className="w-full sm:w-auto px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-all disabled:opacity-40 shrink-0"
+                  >
+                    Add Video Link
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2">
+              {/* Uploaded Media Items in this Event Album */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-outfit font-extrabold text-slate-800 text-xs uppercase tracking-wider">
+                    3. Media Items in this Album ({(albumFormData.media || []).length})
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-semibold">
+                    Cover Image is indicated with a star ⭐
+                  </span>
+                </div>
+
+                {(albumFormData.media || []).length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 max-h-72 overflow-y-auto p-1">
+                    {(albumFormData.media || []).map((m, idx) => {
+                      const isCover = albumFormData.coverImage === m.url;
+                      return (
+                        <div
+                          key={m.id || idx}
+                          className={`bg-white rounded-xl border p-2.5 space-y-2 flex flex-col justify-between transition-all ${
+                            isCover ? "border-amber-400 ring-2 ring-amber-400/20 shadow-sm" : "border-slate-200"
+                          }`}
+                        >
+                          <div className="relative aspect-video bg-slate-900 rounded-lg overflow-hidden flex items-center justify-center">
+                            {m.mediaType === "video" ? (
+                              <div className="w-full h-full bg-slate-900 flex items-center justify-center text-amber-400">
+                                <Play className="w-8 h-8 fill-current" />
+                              </div>
+                            ) : (
+                              <img
+                                src={m.url}
+                                alt={m.caption || "Asset"}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = "/images/college_crest_gold.png";
+                                }}
+                              />
+                            )}
+                            <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-black uppercase">
+                              {m.mediaType}
+                            </span>
+                            {isCover && (
+                              <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-amber-400 text-[#002147] text-[9px] font-black">
+                                ⭐ Cover
+                              </span>
+                            )}
+                          </div>
+
+                          <input
+                            type="text"
+                            value={m.caption || ""}
+                            onChange={(e) => {
+                              const newMedia = [...(albumFormData.media || [])];
+                              newMedia[idx] = { ...newMedia[idx], caption: e.target.value };
+                              setAlbumFormData((p) => ({ ...p, media: newMedia }));
+                            }}
+                            placeholder="Add photo/video caption..."
+                            className="w-full px-2.5 py-1 rounded-lg border border-slate-200 text-[11px] text-slate-800"
+                          />
+
+                          <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                            {!isCover && (
+                              <button
+                                type="button"
+                                onClick={() => setAlbumFormData((p) => ({ ...p, coverImage: m.url }))}
+                                className="text-[10px] font-bold text-amber-600 hover:text-amber-800"
+                              >
+                                Set as Cover
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newMedia = (albumFormData.media || []).filter((_, i) => i !== idx);
+                                setAlbumFormData((p) => ({
+                                  ...p,
+                                  media: newMedia,
+                                  coverImage: isCover ? newMedia[0]?.url || "" : p.coverImage,
+                                }));
+                              }}
+                              className="text-[10px] font-bold text-rose-600 hover:text-rose-800 ml-auto"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200 text-xs text-slate-400 font-medium">
+                    No photos or videos uploaded to this event yet. Use the batch upload button above.
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer Actions */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                 <button
                   type="button"
-                  onClick={() => setIsDocModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold"
+                  onClick={() => setIsAlbumModalOpen(false)}
+                  disabled={saving}
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow"
+                  disabled={saving || uploadingAlbumMedia}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white font-black text-xs shadow-md transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                 >
-                  Save Document
+                  {saving ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      Saving to Sanity...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      Save Event Album to Sanity
+                    </>
+                  )}
                 </button>
               </div>
             </form>
@@ -2539,6 +3349,216 @@ export function FacultyProfilesManager() {
                 )}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* DOCUMENT EDIT / ADD MODAL */}
+      {isDocModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 sm:p-7 space-y-5 border border-slate-200 max-h-[90vh] overflow-y-auto animate-scaleUp">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#002147] text-amber-300 flex items-center justify-center font-bold">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-outfit font-black text-lg text-slate-900">
+                    {editingDoc ? "Edit Section Document / FDP Report" : "Add New Section Document / FDP Report"}
+                  </h3>
+                  <p className="text-xs text-slate-500 font-semibold">
+                    Upload documents directly to Sanity CDN (Sections E through J)
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsDocModalOpen(false)}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveDoc} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-black uppercase text-slate-700 mb-1">
+                    Section Category *
+                  </label>
+                  <select
+                    value={docFormData.category}
+                    onChange={(e) => setDocFormData({ ...docFormData, category: e.target.value as any })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-[#002147]"
+                  >
+                    <option value="recruitment">Section E: Recruitment &amp; Selection</option>
+                    <option value="fdp">Section F: Faculty Development (FDP)</option>
+                    <option value="achievements">Section G: Faculty Achievements</option>
+                    <option value="exchange">Section H: Academic Mobility &amp; Exchange</option>
+                    <option value="appraisal">Section I: Performance Appraisal (ASAR)</option>
+                    <option value="welfare">Section J: Faculty Welfare &amp; Support</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-black uppercase text-slate-700 mb-1">
+                    Academic Year
+                  </label>
+                  <input
+                    type="text"
+                    value={docFormData.year || ""}
+                    onChange={(e) => setDocFormData({ ...docFormData, year: e.target.value })}
+                    placeholder="e.g. 2025–2026 or 2024–2025"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-[#002147]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black uppercase text-slate-700 mb-1">
+                  Document Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={docFormData.title}
+                  onChange={(e) => setDocFormData({ ...docFormData, title: e.target.value })}
+                  placeholder="e.g. Faculty Development Programme (FDP) Annual Report 2025–2026"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-[#002147]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black uppercase text-slate-700 mb-1">
+                  Subtitle / Description
+                </label>
+                <input
+                  type="text"
+                  value={docFormData.subtitle || ""}
+                  onChange={(e) => setDocFormData({ ...docFormData, subtitle: e.target.value })}
+                  placeholder="e.g. Institutional FDPs, Pedagogical Workshops & Training Modules"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-[#002147]"
+                />
+              </div>
+
+              {/* Main Document PDF Upload & URL */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <label className="block text-xs font-black uppercase text-slate-800">
+                  Main Document PDF File *
+                </label>
+                <div className="flex flex-col sm:flex-row items-stretch gap-2">
+                  <input
+                    type="text"
+                    value={docFormData.fileUrl}
+                    onChange={(e) => setDocFormData({ ...docFormData, fileUrl: e.target.value })}
+                    placeholder="/documents/... or https://cdn.sanity.io/..."
+                    className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800"
+                  />
+                  <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-black cursor-pointer shrink-0 shadow-sm">
+                    {uploadingDocPdf ? (
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    <span>{uploadingDocPdf ? "Uploading..." : "Upload to Sanity"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={handlePolicyDocUpload}
+                      disabled={uploadingDocPdf}
+                    />
+                  </label>
+                  {docFormData.fileUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPreviewPdfUrl(docFormData.fileUrl);
+                        setPreviewPdfTitle(docFormData.title);
+                      }}
+                      className="px-3 py-2 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-bold shrink-0"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Verified Certificates PDF Upload & URL (for FDP, etc.) */}
+              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-black uppercase text-amber-950">
+                    Verified Participation Certificates PDF (Optional - Section F)
+                  </label>
+                  <span className="text-[10px] font-bold text-amber-700">
+                    Leave blank to show &quot;Will be updated soon&quot;
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row items-stretch gap-2">
+                  <input
+                    type="text"
+                    value={docFormData.certificatesUrl || ""}
+                    onChange={(e) => setDocFormData({ ...docFormData, certificatesUrl: e.target.value })}
+                    placeholder="/documents/... or https://cdn.sanity.io/..."
+                    className="flex-1 bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800"
+                  />
+                  <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-black cursor-pointer shrink-0 shadow-sm">
+                    {uploadingCertPdf ? (
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    <span>{uploadingCertPdf ? "Uploading..." : "Upload Certs"}</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={handleCertDocUpload}
+                      disabled={uploadingCertPdf}
+                    />
+                  </label>
+                  {docFormData.certificatesUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPreviewPdfUrl(docFormData.certificatesUrl!);
+                        setPreviewPdfTitle(`${docFormData.title} - Certificates`);
+                      }}
+                      className="px-3 py-2 rounded-xl bg-amber-200 hover:bg-amber-300 text-amber-900 text-xs font-bold shrink-0"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsDocModalOpen(false)}
+                  disabled={savingDoc}
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingDoc}
+                  className="inline-flex items-center gap-2 px-6 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white font-black text-xs shadow-md transition-all active:scale-95 disabled:opacity-50"
+                >
+                  {savingDoc ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      Saving to Sanity...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      Save Document
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
