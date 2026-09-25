@@ -29,6 +29,7 @@ import {
   Layers,
   Sparkles
 } from "lucide-react";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { INFRASTRUCTURE_SECTIONS, INFRASTRUCTURE_SUBTEXT, InfrastructureSectionItem } from "./staticData";
 
@@ -112,7 +113,6 @@ export default function InfrastructureClientPortal({
     if (activeSlug && activeSlug !== currentTab) {
       setCurrentTab(activeSlug);
       setShowAllGallery(false);
-      window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, [activeSlug]);
 
@@ -124,12 +124,31 @@ export default function InfrastructureClientPortal({
     );
   }, [currentTab]);
 
+  const scrollToSectionHeader = () => {
+    if (typeof window === "undefined") return;
+    const sectionEl = document.getElementById("infrastructure-active-section");
+    if (sectionEl) {
+      const header = document.getElementById("main-header");
+      const currentHeight = header
+        ? header.getBoundingClientRect().height || header.offsetHeight
+        : 225;
+      const elementPosition = sectionEl.getBoundingClientRect().top + window.pageYOffset;
+      const targetScrollY = elementPosition - currentHeight - 16;
+      window.scrollTo({
+        top: Math.max(0, targetScrollY),
+        behavior: "smooth"
+      });
+    }
+  };
+
   const handleTabChange = (slug: string) => {
     setCurrentTab(slug);
     setShowAllGallery(false);
     if (typeof window !== "undefined") {
       window.history.pushState(null, "", `/infrastructure/${slug}`);
-      window.scrollTo({ top: 0, behavior: "instant" });
+      setTimeout(() => {
+        scrollToSectionHeader();
+      }, 50);
     }
   };
 
@@ -201,17 +220,31 @@ export default function InfrastructureClientPortal({
               />
             </aside>
 
-            {/* Right: Active Section Content (Header aligns directly beside sidebar banner) */}
+            {/* Right: Data Elements / Subpage Content */}
             <main className="lg:col-span-9 flex flex-col gap-8 mb-16">
+              {/* Sub-text Box at Top */}
+              <SubtextBox>
+                <p className="text-slate-800 font-medium leading-relaxed">
+                  <strong className="text-blue-900 font-bold">
+                    {INFRASTRUCTURE_SUBTEXT.institution}
+                  </strong>
+                  , provides a safe, accessible, technology-enabled and student-friendly campus environment that supports teaching, learning, research, skill development, sports and holistic student development. The infrastructure is periodically maintained and upgraded to meet academic and institutional requirements.
+                  <span className="block mt-2 text-slate-600 font-medium text-sm">
+                    This section provides comprehensive details regarding academic learning spaces, specialized laboratories, digital infrastructure, student residential amenities, sports facilities, safety systems, and green campus initiatives.
+                  </span>
+                </p>
+              </SubtextBox>
+
               {/* ============================================================ */}
               {/* ACTIVE SUBPAGE SECTION CONTAINER                             */}
               {/* ============================================================ */}
               <section
+                id="infrastructure-active-section"
                 key={currentSection.id}
-                className="border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                 style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
               >
-                {/* Full-Width Section Header Banner (Directly aligned with sidebar banner) */}
+                {/* Full-Width Section Header Banner */}
                 <div
                   className="text-white px-6 py-3 sm:px-8 sm:py-4 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
                   style={{
