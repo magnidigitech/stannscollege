@@ -113,6 +113,7 @@ export default function InfrastructureClientPortal({
     if (activeSlug && activeSlug !== currentTab) {
       setCurrentTab(activeSlug);
       setShowAllGallery(false);
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, [activeSlug]);
 
@@ -127,8 +128,10 @@ export default function InfrastructureClientPortal({
   const handleTabChange = (slug: string) => {
     setCurrentTab(slug);
     setShowAllGallery(false);
-    router.push(`/infrastructure/${slug}`, { scroll: false });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", `/infrastructure/${slug}`);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
   };
 
   // Keyboard controls for lightbox
@@ -207,9 +210,9 @@ export default function InfrastructureClientPortal({
                 <SubtextBox>
                   <p className="text-slate-800 font-medium leading-relaxed">
                     <strong className="text-blue-900 font-bold">
-                      {INFRASTRUCTURE_SUBTEXT.institution}
+                      St. Ann’s College for Women, Gorantla, Guntur
                     </strong>
-                    , {INFRASTRUCTURE_SUBTEXT.overview.replace(/^[^\,]+,\s*/, "")}
+                    , provides a safe, accessible, technology-enabled and student-friendly campus environment that supports teaching, learning, research, skill development, sports and holistic student development. The infrastructure is periodically maintained and upgraded to meet academic and institutional requirements.
                     <span className="block mt-2 text-slate-600 font-medium text-sm">
                       This section provides comprehensive details regarding academic learning spaces, specialized laboratories, digital infrastructure, student residential amenities, sports facilities, safety systems, and green campus initiatives.
                     </span>
@@ -221,12 +224,12 @@ export default function InfrastructureClientPortal({
                 {/* ============================================================ */}
                 <section
                   key={currentSection.id}
-                  className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                  className="border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                   style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                 >
                   {/* Full-Width Section Header Banner */}
                   <div
-                    className="text-white px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
+                    className="text-white px-6 py-3 sm:px-8 sm:py-3.5 md:px-10 w-full flex flex-col justify-center border-b transition-colors duration-200"
                     style={{
                       backgroundColor: "var(--sec1-bg, var(--level2-bg, #002147))",
                       borderColor: "var(--sec1-border, var(--level2-border, rgba(49, 46, 129, 0.2)))"
@@ -256,22 +259,10 @@ export default function InfrastructureClientPortal({
                   >
                     {/* Primary Narrative & Features Card */}
                     <div
-                      className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5"
+                      className="border-2 border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
                       style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                     >
-                      <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 border border-blue-100/60 text-blue-600 shrink-0">
-                          <SectionIcon className="h-5 w-5" />
-                        </span>
-                        <div>
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            {currentSection.title}
-                          </h4>
-                          <p className="text-xs text-slate-500 font-medium">{currentSection.subtitle}</p>
-                        </div>
-                      </div>
-
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed text-justify">
+                      <p className="text-slate-700 text-sm sm:text-base font-medium leading-relaxed text-justify">
                         {currentSection.description}
                       </p>
 
@@ -280,7 +271,7 @@ export default function InfrastructureClientPortal({
                         currentSection.subsections.map((sub, sIdx) => (
                           <div
                             key={sIdx}
-                            className="flex flex-col gap-3 pt-4 border-t border-slate-100"
+                            className="flex flex-col gap-3 pt-5 border-t border-slate-100"
                           >
                             <h5 className="font-outfit text-sm sm:text-base font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
                               <span className="h-2 w-2 rounded-full bg-blue-600 shrink-0"></span>
