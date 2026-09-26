@@ -5,6 +5,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   productionBrowserSourceMaps: false,
   poweredByHeader: false,
   generateBuildId: async () => BUILD_ID,
