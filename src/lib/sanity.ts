@@ -2500,4 +2500,19 @@ export async function getStudentSupportPortalData() {
   }
 }
 
+export async function getAdmissionsPortalData() {
+  try {
+    const query = `*[_type == "admissionsPortal" && !(_id in path("drafts.**"))][0]`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.portalData) {
+      return data.portalData;
+    }
+    return null;
+  } catch (err) {
+    console.error("Sanity fetch error (getAdmissionsPortalData):", err);
+    return null;
+  }
+}
+
+
 

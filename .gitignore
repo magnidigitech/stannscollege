@@ -68,6 +68,12 @@ testTableRender.jsx
 # Raw local data folders & source assets
 555/
 /555/
+77/
+/77/
+admission old versionfilles/
+/admission old versionfilles/
+admissions_doc_content.json
+admissions_parsed.txt
 6.Faculty.docx
 6.Student Support/
 7.Placements & Industry Linkages/
@@ -87,6 +93,8 @@ Affilliations UG-PG/
 AISHE(MHRD) Certificate/
 pppp/
 /Alumni/
+/logos/
+logos/
 
 # Root level reference assets and PDFs
 /*.pdf
@@ -101,3 +109,6 @@ CHA_2140.JPG
 /*.png
 /*.jpg
 /*.jpeg
+*.doc
+*.docx
+

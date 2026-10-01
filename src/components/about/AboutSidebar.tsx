@@ -72,6 +72,7 @@ interface AboutSidebarProps {
   bannerSubtitle?: string;
   activeId?: string;
   onItemClick?: (id: string) => void;
+  children?: React.ReactNode;
 }
 
 export default function AboutSidebar({
@@ -81,7 +82,8 @@ export default function AboutSidebar({
   bannerTitle = "ABOUT US",
   bannerSubtitle = "Institutional Directory",
   activeId,
-  onItemClick
+  onItemClick,
+  children
 }: AboutSidebarProps) {
   const activeCategories = categories || ABOUT_CATEGORIES;
   const [headerHeight, setHeaderHeight] = React.useState<number>(225);
@@ -270,6 +272,12 @@ export default function AboutSidebar({
             </div>
           </div>
         ))}
+
+        {children && (
+          <div className="pt-2">
+            {children}
+          </div>
+        )}
       </div>
     </aside>
   );

@@ -27,21 +27,23 @@ interface AdmissionEnquiryModalProps {
 }
 
 const UG_PROGRAMMES = [
-  "B.Com Honours – General",
-  "B.Com Honours – Computer Applications",
-  "BCA – Computer Applications",
-  "B.Sc Honours – Computer Science",
-  "B.Sc Honours – Artificial Intelligence",
-  "B.Sc Honours – Mathematics",
-  "B.Sc Honours – Physics",
-  "B.Sc Honours – Statistics",
-  "B.Sc Honours – Biotechnology",
-  "B.Sc Honours – Microbiology",
-  "B.Sc Honours – Botany",
-  "B.Sc Honours – Chemistry",
+  "B.Com. Honours-General",
+  "B.Com. Honours-Computer Applications",
+  "BCA Honours-Computer Applications",
+  "B.Sc. Honours -Computer Science",
+  "B.Sc. Honours -Artificial Intelligence",
+  "B.Sc. Honours -Mathematics",
+  "B.Sc. Honours -Physics",
+  "B.Sc. Honours -Statistics",
+  "B.Sc. Honours-Biotechnology",
+  "B.Sc. Honours -Microbiology",
+  "B.Sc. Honours-Chemistry",
 ];
 
-const PG_PROGRAMMES = ["MCA", "MBA"];
+const PG_PROGRAMMES = [
+  "MCA – Master of Computer Applications",
+  "MBA – Master of Business Administration",
+];
 
 
 const PASSING_YEARS = [

@@ -27,10 +27,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 3. Admissions sub-pages
   const admissionsPaths = [
-    'procedure',
-    'fee-structure',
-    'rules-regulations',
-    'guidelines',
+    'programmes-eligibility',
+    'programmes-offered',
+    'eligibility-criteria',
+    'admission-policy-process',
+    'prospectus-brochures',
+    'admission-desk',
+    'admission-information',
   ].map(slug => `/admissions/${slug}`);
 
   // 4. Alumni sub-pages

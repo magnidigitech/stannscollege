@@ -1,187 +1,73 @@
-"use client";
+import React from "react";
+import { Metadata } from "next";
+import AdmissionsClientPortal from "@/components/admissions/AdmissionsClientPortal";
+import { getAdmissionsPortalData } from "@/lib/sanity";
 
-import React, { use } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { GraduationCap, Sparkles, Phone, Mail, ArrowRight, CheckCircle, ShieldCheck } from "lucide-react";
-
-// Component Imports
-import { AdmissionPolicyProcess } from "@/components/admissions/AdmissionPolicyProcess";
-import { ProspectusBrochures } from "@/components/admissions/ProspectusBrochures";
-import { EligibilityCriteria } from "@/components/admissions/EligibilityCriteria";
-import { FeeStructure } from "@/components/admissions/FeeStructure";
-import { ScholarshipsFreeships } from "@/components/admissions/ScholarshipsFreeships";
-import { StudentHandbook } from "@/components/admissions/StudentHandbook";
-import { AdmissionStatistics } from "@/components/admissions/AdmissionStatistics";
-import { SubtextBox } from "@/components/ui/Heading1Notch";
-
-const admissionsTitles: Record<string, string> = {
-  "policy-process": "Admission Policy & Process",
-  "prospectus-brochures": "Prospectus & Brochures",
-  "eligibility-criteria": "Eligibility Criteria",
-  "fee-structure": "Fee Structure",
-  "scholarships-freeships": "Scholarships & Freeships",
-  "student-handbook": "Student Handbook",
-  "admission-statistics": "Admission Statistics"
+export const metadata: Metadata = {
+  title: "Admissions 2026–2027 | St. Ann's College for Women",
+  description:
+    "Explore undergraduate and postgraduate programmes, intake details, eligibility criteria, admission procedures, prospectus, and admission desk at St. Ann's College for Women, Gorantla, Guntur.",
+  openGraph: {
+    title: "Admissions 2026–2027 | St. Ann's College for Women, Guntur",
+    description:
+      "Join St. Ann's College for Women. Quality higher education in a supportive, inclusive and value-based environment.",
+    images: [{ url: "/images/hero-1.jpg", width: 1200, height: 630, alt: "Admissions at St. Ann's" }],
+  },
 };
 
-const admissionsSubtexts: Record<string, string> = {
-  "policy-process": "Transparent, merit-based admission guidelines ensuring access to quality education for women.",
-  "prospectus-brochures": "Official prospectus, program brochures, and institutional course handbooks.",
-  "eligibility-criteria": "Prerequisite qualifications, subject combinations, and academic eligibility requirements.",
-  "fee-structure": "Approved fee structure for undergraduate and postgraduate programs of study.",
-  "scholarships-freeships": "Government welfare scholarships, institutional freeships, and fee concessions.",
-  "student-handbook": "Code of conduct, campus guidelines, academic regulations, and student rights handbook.",
-  "admission-statistics": "Year-wise admission trends, quota distributions, and student diversity metrics."
-};
+export function generateStaticParams() {
+  const slugs = [
+    // Subpage & Canonical Sections
+    "programmes-eligibility",
+    "programmes-offered",
+    "eligibility-criteria",
+    "admission-policy-process",
+    "prospectus-brochures",
+    "admission-desk",
+    "admission-information",
 
-const navigationStructure = [
-  {
-    catSlug: "guidelines",
-    title: "Admission Guidelines",
-    items: [
-      { text: "Admission Policy & Process", slug: "policy-process" },
-      { text: "Prospectus & Brochures", slug: "prospectus-brochures" },
-      { text: "Eligibility Criteria", slug: "eligibility-criteria" },
-    ]
-  },
-  {
-    catSlug: "finance-support",
-    title: "Finance & Aid",
-    items: [
-      { text: "Fee Structure", slug: "fee-structure" },
-      { text: "Scholarships & Freeships", slug: "scholarships-freeships" },
-    ]
-  },
-  {
-    catSlug: "records-compliance",
-    title: "Handbooks & Records",
-    items: [
-      { text: "Student Handbook", slug: "student-handbook" },
-      { text: "Admission Statistics", slug: "admission-statistics" },
-    ]
-  }
-];
+    // Backward-compatible & friendly aliases
+    "programmes",
+    "intake",
+    "eligibility",
+    "policy-process",
+    "process",
+    "prospectus",
+    "brochures",
+    "desk",
+    "contact",
+    "information",
+    "records",
+    "fee-structure",
+    "scholarships-freeships",
+    "student-handbook",
+    "admission-statistics",
+    "guidelines",
+    "procedure",
+    "rules-regulations",
+  ];
 
-interface PageProps {
-  params: Promise<{ slug?: string[] }>;
+  return [{ slug: [] }, ...slugs.map((slug) => ({ slug: [slug] }))];
 }
 
-export default function AdmissionsPage({ params }: PageProps) {
-  const resolvedParams = use(params);
-  const pathname = usePathname();
+interface AdmissionsPageProps {
+  params: Promise<{
+    slug?: string[];
+  }>;
+}
 
-  // Default fallback route if no slug exists (e.g., visiting just /admissions)
-  const currentSlug = resolvedParams?.slug?.[0] || "policy-process";
+export default async function AdmissionsPage({ params }: AdmissionsPageProps) {
+  // Await the async params as required by Next.js 15+
+  const resolvedParams = await params;
+  const activeSlug = resolvedParams?.slug?.[0] || "";
 
-  // Function to render the appropriate component based on the slug
-  const renderContent = () => {
-    switch (currentSlug) {
-      case "policy-process":
-        return <AdmissionPolicyProcess />;
-      case "prospectus-brochures":
-        return <ProspectusBrochures />;
-      case "eligibility-criteria":
-        return <EligibilityCriteria />;
-      case "fee-structure":
-        return <FeeStructure />;
-      case "scholarships-freeships":
-        return <ScholarshipsFreeships />;
-      case "student-handbook":
-        return <StudentHandbook />;
-      case "admission-statistics":
-        return <AdmissionStatistics />;
-      default:
-        return <AdmissionPolicyProcess />;
-    }
-  };
+  // Fetch dynamic admissions portal data from Sanity
+  const portalData = await getAdmissionsPortalData();
 
   return (
-    <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* Main Content Container */}
-      <div className="max-w-[1600px] mx-auto py-10 px-4 sm:px-6 lg:px-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-
-          {/* A. Left Sidebar Sticky Navigation */}
-          <aside className="lg:col-span-3 xl:col-span-3">
-            <div className="sticky top-28 flex flex-col gap-8 max-h-[calc(100vh-9rem)] overflow-y-auto pr-2">
-
-              {/* Navigation Box */}
-              <div className="bg-white border border-slate-200/70 rounded-[2.5rem] p-6 shadow-sm relative overflow-hidden">
-                <div className="flex flex-col gap-1 border-b border-slate-100 pb-4 mb-5">
-                  <h1 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Admissions</h1>
-                  <span className="text-[11px] uppercase font-bold tracking-widest text-slate-400">Enrollment Portal</span>
-                </div>
-
-                <nav className="flex flex-col gap-8 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-                  {navigationStructure.map((group, idx) => (
-                    <div key={idx} className="flex flex-col gap-3">
-                      <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400/90 border-l-2 border-slate-200 pl-2.5 leading-none">
-                        {group.title}
-                      </h4>
-                      <ul className="flex flex-col gap-1.5">
-                        {group.items.map((item, i) => {
-                          const fullHref = `/admissions/${item.slug}`;
-                          const isActive = currentSlug === item.slug;
-
-                          return (
-                            <li key={i}>
-                              <Link
-                                href={fullHref}
-                                className={`group w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border ${isActive
-                                  ? "bg-[#002147] text-white border-transparent font-bold shadow-md translate-x-1"
-                                  : "bg-transparent hover:bg-slate-50 text-slate-600 hover:text-[#002147] border-transparent hover:border-slate-100 hover:translate-x-0.5"
-                                  }`}
-                              >
-                                <span className="truncate">{item.text}</span>
-                                <ArrowRight className={`h-3.5 w-3.5 shrink-0 transform transition-all ${isActive ? "opacity-100 translate-x-0" : "opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
-                                  }`} />
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
-                </nav>
-              </div>
-
-              {/* Sidebar Contact Card */}
-              <div className="bg-gradient-to-br from-[#002147] to-[#0c478a] text-white rounded-[2rem] p-6 shadow-sm relative overflow-hidden group">
-                <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4 pointer-events-none group-hover:scale-105 transition-transform">
-                  <GraduationCap className="h-40 w-40" />
-                </div>
-                <div className="relative z-10 flex flex-col gap-4 font-sans">
-                  <h4 className="font-outfit font-black text-lg tracking-tight">Have Enrollment Questions?</h4>
-                  <p className="text-blue-100/80 text-xs leading-relaxed font-medium">
-                    Connect directly with our regional admission counselors for help on filling applications or ICET codes.
-                  </p>
-                  <div className="flex flex-col gap-2.5 border-t border-white/10 pt-4 text-xs">
-                    <a href="tel:+918632231381" className="flex items-center gap-2.5 hover:text-blue-200 font-black transition-colors">
-                      <Phone className="h-4 w-4 text-blue-300" /> +91 863 2231381
-                    </a>
-                    <a href="mailto:info@stannscollege.com" className="flex items-center gap-2.5 hover:text-blue-200 font-black transition-colors">
-                      <Mail className="h-4 w-4 text-blue-300" /> admissions@stannscollege.com
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </aside>
-
-          {/* B. Right Dynamic Component Content */}
-          <main className="lg:col-span-9 xl:col-span-9 min-h-[500px]">
-            {/* Sub-text Box */}
-            <SubtextBox 
-              subtext={admissionsSubtexts[currentSlug] || "Committed to inclusive, merit-based admissions with transparent guidelines, comprehensive scholarships, and dedicated student support for aspiring women scholars."} 
-              className="mb-8"
-            />
-            {renderContent()}
-          </main>
-
-        </div>
-      </div>
+    <div className="bg-[#f8fafc] min-h-screen animate-fadeIn select-none">
+      <AdmissionsClientPortal activeSlug={activeSlug} initialData={portalData} />
     </div>
   );
 }
+

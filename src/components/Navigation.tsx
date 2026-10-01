@@ -562,28 +562,27 @@ export default function Navigation() {
 
   const admissionsCategories = [
     {
-      title: "I. Admission Guidelines",
+      title: "I. Programmes & Eligibility",
+      icon: GraduationCap,
+      items: [
+        { text: "A. Programmes Offered", slug: "programmes-offered" },
+        { text: "B. Eligibility Criteria", slug: "eligibility-criteria" },
+      ]
+    },
+    {
+      title: "II. Policy & Publications",
       icon: ShieldCheck,
       items: [
-        { text: "Admission Policy & Process", slug: "policy-process" },
-        { text: "Prospectus & Brochures", slug: "prospectus-brochures" },
-        { text: "Eligibility Criteria", slug: "eligibility-criteria" },
+        { text: "C. Admission Policy & Process", slug: "policy-process" },
+        { text: "D. Prospectus & Brochures", slug: "prospectus-brochures" },
       ]
     },
     {
-      title: "II. Finance & Aid",
-      icon: LineChart,
+      title: "III. Desk & Yearly Records",
+      icon: Phone,
       items: [
-        { text: "Fee Structure", slug: "fee-structure" },
-        { text: "Scholarships & Freeships", slug: "scholarships-freeships" },
-      ]
-    },
-    {
-      title: "III. Records & Handbooks",
-      icon: BookOpen,
-      items: [
-        { text: "Student Handbook", slug: "student-handbook" },
-        { text: "Admission Statistics", slug: "admission-statistics" },
+        { text: "E. Admission Desk", slug: "admission-desk" },
+        { text: "F. Admission Information", slug: "admission-information" },
       ]
     }
   ];

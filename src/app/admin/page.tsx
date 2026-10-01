@@ -13,6 +13,7 @@ import { ResearchManager } from "@/components/admin/ResearchManager";
 import { PlacementsManager } from "@/components/admin/PlacementsManager";
 import { StudentSupportManager } from "@/components/admin/StudentSupportManager";
 import { FacultyProfilesManager } from "@/components/admin/FacultyProfilesManager";
+import { AdmissionsManager } from "@/components/admin/AdmissionsManager";
 import {
   Calendar,
   Bell,
@@ -32,6 +33,7 @@ import {
   Briefcase,
   HeartHandshake,
   GraduationCap,
+  ClipboardList,
 } from "lucide-react";
 
 interface AdminUser {
@@ -50,10 +52,18 @@ const ADMIN_MODULES = [
     component: HeroBannersManager,
   },
   {
+    id: "admissions-management",
+    label: "Admissions Portal & Intake",
+    badge: "Live Sanity Sync",
+    icon: GraduationCap,
+    description: "Manage UG & PG intake quotas, eligibility criteria, admission policy, prospectus, required documents PDFs, and statutory compliance registers.",
+    component: AdmissionsManager,
+  },
+  {
     id: "faculty-profiles",
     label: "Faculty Profiles & Directory",
     badge: "Live Sanity Sync",
-    icon: GraduationCap,
+    icon: Users,
     description: "Create, edit, and manage comprehensive faculty profiles, academic qualifications, research, publications, and directory listings.",
     component: FacultyProfilesManager,
   },
