@@ -33,6 +33,7 @@ import {
   Shield,
   Lightbulb,
 } from "lucide-react";
+import { calculateFacultyExperience } from "@/lib/faculty-utils";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 interface Publication {
@@ -322,24 +323,28 @@ function QualificationsSection({ p }: { p: FacultyProfile }) {
 
 function ExperienceSection({ p }: { p: FacultyProfile }) {
   const exp = p.professionalExperience || [];
+  const totalExp = calculateFacultyExperience(p.dateOfJoining, undefined, p.totalExperience);
+  const teachingExp = calculateFacultyExperience(p.dateOfJoining, undefined, p.teachingExperience);
+  const showSummary = (totalExp && totalExp !== "—") || (teachingExp && teachingExp !== "—") || (p.industryExperience && p.industryExperience !== "—");
+
   return (
     <div>
       {/* Summary Cards */}
-      {(p.totalExperience || p.teachingExperience || p.industryExperience) && (
+      {showSummary && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          {p.totalExperience && (
+          {totalExp && totalExp !== "—" && (
             <div className="bg-gradient-to-br from-[#002147] to-[#083b75] text-white rounded-3xl p-5 text-center">
-              <div className="font-outfit font-black text-3xl">{p.totalExperience}</div>
+              <div className="font-outfit font-black text-3xl">{totalExp}</div>
               <div className="text-blue-200 font-semibold text-xs mt-1 uppercase tracking-wider">Total Experience</div>
             </div>
           )}
-          {p.teachingExperience && (
+          {teachingExp && teachingExp !== "—" && (
             <div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-5 text-center">
-              <div className="font-outfit font-black text-3xl text-indigo-700">{p.teachingExperience}</div>
+              <div className="font-outfit font-black text-3xl text-indigo-700">{teachingExp}</div>
               <div className="text-indigo-400 font-semibold text-xs mt-1 uppercase tracking-wider">Teaching Exp.</div>
             </div>
           )}
-          {p.industryExperience && (
+          {p.industryExperience && p.industryExperience !== "—" && (
             <div className="bg-emerald-50 border border-emerald-100 rounded-3xl p-5 text-center">
               <div className="font-outfit font-black text-3xl text-emerald-700">{p.industryExperience}</div>
               <div className="text-emerald-400 font-semibold text-xs mt-1 uppercase tracking-wider">Industry Exp.</div>
@@ -855,10 +860,12 @@ export default function FacultyProfilePage({ profile: p }: FacultyProfilePagePro
     { url: p.personalWebsite, icon: Globe, label: "Website", color: "bg-slate-700 hover:bg-slate-800" },
   ].filter((l) => !!l.url);
 
+  const dynamicExp = calculateFacultyExperience(p.dateOfJoining, undefined, p.totalExperience || p.teachingExperience);
   const identityBadges = [
     { icon: Mail, label: "Email", value: p.officialEmail },
     { icon: MapPin, label: "Office", value: p.officeLocation },
     { icon: Calendar, label: "Joined", value: p.dateOfJoining },
+    { icon: Briefcase, label: "Experience", value: dynamicExp !== "—" ? dynamicExp : undefined },
     { icon: Briefcase, label: "Employment", value: p.employmentType },
     { icon: GraduationCap, label: "Qualification", value: p.highestQualification },
   ].filter((b) => !!b.value);

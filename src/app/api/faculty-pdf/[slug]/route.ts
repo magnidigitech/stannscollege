@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { FACULTY_DATA } from "@/components/faculty/staticData";
 import { getFacultyProfile } from "@/lib/sanity";
+import { calculateFacultyExperience } from "@/lib/faculty-utils";
 import fs from "fs";
 import path from "path";
 
@@ -77,10 +78,8 @@ export async function GET(
     if (!experience) experience = "—";
     if (!employeeId) employeeId = "—";
 
-    // Clean experience format
-    if (experience && !experience.toLowerCase().includes("yr") && experience !== "—") {
-      experience = `${experience} Years`;
-    }
+    // Dynamic experience calculation based on DOJ
+    experience = calculateFacultyExperience(dateOfJoining, undefined, experience);
 
     // Create PDF document using pdf-lib
     const pdfDoc = await PDFDocument.create();

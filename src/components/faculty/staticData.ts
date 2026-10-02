@@ -1,7 +1,6 @@
-/**
- * Complete Structured Static Data for Faculty & Staff Portal
- * Extracted and structured directly from "6.Faculty.docx" & Institutional Records
- */
+import { calculateFacultyExperience, parseDateString } from "@/lib/faculty-utils";
+
+export { calculateFacultyExperience, parseDateString };
 
 export interface FacultyMember {
   sNo: number;
@@ -1341,57 +1340,61 @@ export const FACULTY_DATA = {
       {
         sNo: 1,
         employeeId: "SACW-VF-001",
-        name: "Prof. K. Rama Krishna Rao",
-        designation: "Visiting Professor",
-        department: "Computer Science & AI",
-        qualification: "M.Tech., Ph.D., Post-Doc (USA)",
-        dateOfJoining: "10-06-2022",
-        experience: "25",
+        name: "Dr. V. Vani",
+        designation: "Adjunct Faculty",
+        department: "Department of MBA",
+        qualification: "MBA, Ph.D",
+        dateOfJoining: "01-03-2022",
+        experience: "4",
         staffType: "visiting" as const,
-        slug: "prof-k-rama-krishna-rao",
-        specialization: "Artificial Intelligence, Data Analytics & Machine Learning",
+        slug: "dr-v-vani",
+        specialization: "Business Administration & Management Studies",
+        imageUrl: "/images/Crest_Logo.png",
         profilePdfUrl: "/documents/faculty/Faculty_Website_Profile_View.pdf"
       },
       {
         sNo: 2,
         employeeId: "SACW-VF-002",
-        name: "Dr. V. Sudhakar Reddy",
-        designation: "Adjunct Professor",
-        department: "Commerce & Management",
-        qualification: "M.Com., M.B.A., Ph.D., FCA",
-        dateOfJoining: "15-07-2021",
-        experience: "22",
+        name: "Miss Hima Bindu",
+        designation: "Competitive Examinations Coaching Trainer",
+        department: "Data Valley Pvt.Ltd.",
+        qualification: "M.Sc",
+        dateOfJoining: "03-06-2026",
+        experience: "3",
         staffType: "visiting" as const,
-        slug: "dr-v-sudhakar-reddy",
-        specialization: "Corporate Taxation, Strategic Financial Management & IFRS",
+        slug: "miss-hima-bindu",
+        specialization: "Competitive Examinations & Technical Skills Training",
+        imageUrl: "/images/Crest_Logo.png",
         profilePdfUrl: "/documents/faculty/Faculty_Website_Profile_View.pdf"
       },
       {
         sNo: 3,
         employeeId: "SACW-VF-003",
-        name: "Dr. Mary Anuradha Fernandez",
-        designation: "Visiting Faculty / Resource Person",
-        department: "Life Sciences & Biotechnology",
-        qualification: "M.Sc., Ph.D., CSIR-NET",
-        dateOfJoining: "01-08-2023",
-        experience: "18",
+        name: "Mrs. Padma",
+        designation: "Guest Faculty",
+        department: "Department of Computer Science & Applications",
+        qualification: "MCA",
+        dateOfJoining: "01-07-2026",
+        experience: "10",
         staffType: "visiting" as const,
-        slug: "dr-mary-anuradha-fernandez",
-        specialization: "Molecular Biology, Immunology & Recombinant DNA Technology",
+        slug: "mrs-padma",
+        specialization: "Computer Applications & Software Development",
+        imageUrl: "/images/Crest_Logo.png",
         profilePdfUrl: "/documents/faculty/Faculty_Website_Profile_View.pdf"
       },
       {
         sNo: 4,
         employeeId: "SACW-VF-004",
-        name: "Mr. P. Venkata Subbaiah",
-        designation: "Industry Expert & Adjunct Faculty",
-        department: "Physics & Electronics",
-        qualification: "M.Sc., M.Phil. (VLSI)",
-        dateOfJoining: "05-09-2022",
-        experience: "15",
+        name: "Miss Anuja",
+        designation: "Guest Faculty",
+        department: "Department of Biotechnology",
+        qualification: "M.Sc",
+        dateOfJoining: "01-07-2026",
+        experience: "10",
         staffType: "visiting" as const,
-        slug: "mr-p-venkata-subbaiah",
-        specialization: "Embedded Systems, IoT & Nanoelectronics",
+        slug: "miss-anuja",
+        specialization: "Biotechnology & Applied Biological Sciences",
+        imageUrl: "/images/Crest_Logo.png",
         profilePdfUrl: "/documents/faculty/Faculty_Website_Profile_View.pdf"
       }
     ]

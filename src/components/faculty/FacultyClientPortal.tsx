@@ -29,7 +29,8 @@ import {
   Image as ImageIcon,
   ChevronLeft,
   ChevronRight,
-  Info
+  Info,
+  Clock
 } from "lucide-react";
 import AboutSidebar, { SidebarCategory } from "@/components/about/AboutSidebar";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
@@ -41,7 +42,8 @@ import {
   NonTeachingMember,
   DepartmentItem,
   FacultyEventAlbum,
-  FacultyEventMedia
+  FacultyEventMedia,
+  calculateFacultyExperience
 } from "@/components/faculty/staticData";
 
 const DEFAULT_PDF = "/documents/faculty/Faculty_Website_Profile_View.pdf";
@@ -371,12 +373,26 @@ export default function FacultyClientPortal({
   const [fdpArchiveModalOpen, setFdpArchiveModalOpen] = useState(false);
   const [fdpArchiveSearchQuery, setFdpArchiveSearchQuery] = useState("");
 
+  // Certificates Status Popup Modal state
+  const [certificateStatusModal, setCertificateStatusModal] = useState<{ year: string; title?: string } | null>(null);
+
   const handleOpenPdf = (url?: string, title?: string) => {
     const validUrl = url && url.trim() && url !== "#" ? url.trim() : DEFAULT_PDF;
     const cleanUrl = getCleanPdfUrl(validUrl, title);
     setCurrentPdfUrl(cleanUrl);
     setCurrentPdfTitle(title || "Faculty Document");
     setPdfModalOpen(true);
+  };
+
+  const handleViewCertificates = (certificatesUrl?: string, year?: string, title?: string) => {
+    if (certificatesUrl && certificatesUrl.trim() && certificatesUrl !== "#") {
+      handleOpenPdf(certificatesUrl, `${year || ""} FDP & Seminars Certificates`.trim());
+    } else {
+      setCertificateStatusModal({
+        year: year || "Current",
+        title: title || `Academic Year ${year || ""} FDP & Seminars Certificates`
+      });
+    }
   };
 
   // Live policy documents from Sanity / API
@@ -529,10 +545,19 @@ export default function FacultyClientPortal({
     return map;
   }, [teachingStaff]);
 
-  // Visiting Faculty computed list
+  // Visiting & Adjunct Faculty computed list
   const visitingStaff = useMemo(() => {
+    const DUMMY_VISITING_NAMES = [
+      "prof. k. rama krishna rao",
+      "dr. v. sudhakar reddy",
+      "dr. mary anuradha fernandez",
+      "mr. p. venkata subbaiah"
+    ];
+
     const dynamicVisiting = (initialMembers || []).filter(
-      (m: any) => m.staffType === "visiting"
+      (m: any) =>
+        m.staffType === "visiting" &&
+        !DUMMY_VISITING_NAMES.includes((m.name || m.facultyName || "").trim().toLowerCase())
     );
     const staticVisiting = FACULTY_DATA.visitingFaculty?.members || [];
     const combined: any[] = [];
@@ -546,14 +571,14 @@ export default function FacultyClientPortal({
           sNo: combined.length + 1,
           employeeId: m.employeeId || m.facultyId || `SACW-VF-${String(combined.length + 1).padStart(3, "0")}`,
           name: m.name || m.facultyName,
-          designation: m.designation || "Visiting Professor",
-          department: m.department || "Specialized Academic / Industry Expert",
+          designation: m.designation || "Adjunct Faculty",
+          department: m.department || "Academic Department",
           qualification: m.qualification || m.highestQualification || "Postgraduate / Doctoral",
           dateOfJoining: m.dateOfJoining || "—",
           experience: m.experience || m.totalExperience || "—",
           specialization: m.specialization || (Array.isArray(m.areaOfExpertise) ? m.areaOfExpertise.join(", ") : m.areaOfExpertise) || "",
           profilePdfUrl: m.profilePdfUrl || m.facultyProfilePdfUrl || DEFAULT_PDF,
-          imageUrl: m.imageUrl || m.profilePhotoUrl || "",
+          imageUrl: m.imageUrl || m.profilePhotoUrl || "/images/Crest_Logo.png",
         });
       }
     });
@@ -565,7 +590,7 @@ export default function FacultyClientPortal({
         const normName = normalizeKey(m.name);
         const empId = (m.employeeId || "").trim().toUpperCase();
 
-        let photo = m.imageUrl || "";
+        let photo = m.imageUrl || "/images/Crest_Logo.png";
         if (empId && profilePhotoMap[empId]) photo = profilePhotoMap[empId];
         else if (profilePhotoMap[normName]) photo = profilePhotoMap[normName];
 
@@ -576,7 +601,7 @@ export default function FacultyClientPortal({
         combined.push({
           ...m,
           sNo: combined.length + 1,
-          imageUrl: photo || m.imageUrl,
+          imageUrl: photo || "/images/Crest_Logo.png",
           profilePdfUrl: pdf || m.profilePdfUrl || DEFAULT_PDF,
         });
       }
@@ -850,7 +875,7 @@ export default function FacultyClientPortal({
                                         {m.dateOfJoining}
                                       </td>
                                       <td className="px-4 py-3 text-center font-semibold text-slate-700 text-xs whitespace-nowrap">
-                                        {m.experience} {m.experience && !m.experience.includes("Yr") && !m.experience.includes("—") ? "Yrs" : ""}
+                                        {calculateFacultyExperience(m.dateOfJoining, (m as any).rejoiningDate, m.experience, { suffix: true, short: true })}
                                       </td>
                                     </tr>
                                   );
@@ -1005,8 +1030,7 @@ export default function FacultyClientPortal({
                                             </p>
                                             <p>
                                               <span className="font-bold text-slate-800">Teaching Experience:</span>{" "}
-                                              {member.experience}
-                                              {member.experience && !member.experience.includes("Year") && !member.experience.includes("Yr") && !member.experience.includes("—") ? " Years" : ""}
+                                              {calculateFacultyExperience(member.dateOfJoining, member.rejoiningDate, member.experience)}
                                             </p>
                                           </div>
                                         </div>
@@ -1167,7 +1191,9 @@ export default function FacultyClientPortal({
                                     <td className="px-4 py-3 text-center font-medium text-slate-600 whitespace-nowrap text-[12px]">
                                       {m.dateOfJoining || "—"}
                                     </td>
-                                    <td className="px-4 py-3 text-center font-extrabold text-[#002147] whitespace-nowrap">{m.experience || "—"}</td>
+                                    <td className="px-4 py-3 text-center font-extrabold text-[#002147] whitespace-nowrap">
+                                      {calculateFacultyExperience(m.dateOfJoining, undefined, m.experience, { suffix: true, short: true })}
+                                    </td>
                                   </tr>
                                 );
                               })}
@@ -1243,7 +1269,7 @@ export default function FacultyClientPortal({
                                   </p>
                                   <p>
                                     <span className="font-bold text-slate-800">Experience:</span>{" "}
-                                    {member.experience} {member.experience && !member.experience.includes("Year") && !member.experience.includes("Yr") && !member.experience.includes("—") ? " Years" : ""}
+                                    {calculateFacultyExperience(member.dateOfJoining, undefined, member.experience)}
                                   </p>
                                   {member.specialization && (
                                     <p className="sm:col-span-2">
@@ -1297,13 +1323,41 @@ export default function FacultyClientPortal({
                         className="border-2 border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-6"
                         style={{ backgroundColor: "var(--card-main-bg, #ffffff)" }}
                       >
-                        <div className="border-b border-slate-100 pb-3">
-                          <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
-                            Faculty Recruitment Policy &amp; Selection Process
-                          </h4>
-                          <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">
-                            {FACULTY_DATA.recruitment.description}
-                          </p>
+                        <div className="border-b border-slate-100 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <h4 className="font-outfit text-blue-600 font-extrabold text-base md:text-lg uppercase tracking-wider">
+                              E. Faculty Recruitment &amp; Selection
+                            </h4>
+                            <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1.5 leading-relaxed">
+                              {FACULTY_DATA.recruitment.description}
+                            </p>
+                          </div>
+
+                          {/* Human Resource Policy Document Button on Right Side */}
+                          <div className="shrink-0 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleOpenPdf(
+                                  hrPolicyDoc.fileUrl,
+                                  "Human Resource Policy Document - St. Ann's College for Women"
+                                )
+                              }
+                              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer whitespace-nowrap"
+                              title="View Human Resource Policy Document PDF"
+                            >
+                              <FileText className="w-4 h-4 text-blue-300" />
+                              <span>Human Resource Policy Document</span>
+                            </button>
+                            <a
+                              href={hrPolicyDoc.fileUrl}
+                              download
+                              className="inline-flex items-center justify-center p-2.5 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 transition-all shadow-sm active:scale-95"
+                              title="Download HR Policy Document PDF"
+                            >
+                              <Download className="w-4 h-4" />
+                            </a>
+                          </div>
                         </div>
 
                         {/* Recruitment Pillars */}
@@ -1326,46 +1380,6 @@ export default function FacultyClientPortal({
                               </div>
                             </div>
                           ))}
-                        </div>
-
-                        {/* Official PDF Document Card */}
-                        <div className="p-5 bg-blue-50/60 border border-blue-200/80 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                          <div className="flex items-center gap-3.5">
-                            <div className="w-11 h-11 rounded-xl bg-[#002147] text-white flex items-center justify-center shrink-0 shadow">
-                              <FileText className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <h5 className="font-outfit font-black text-[#002147] text-base">
-                                {hrPolicyDoc.title}
-                              </h5>
-                              <p className="text-slate-600 text-xs font-medium mt-0.5">
-                                {hrPolicyDoc.subtitle}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto">
-                            <button
-                              onClick={() =>
-                                handleOpenPdf(
-                                  hrPolicyDoc.fileUrl,
-                                  "Human Resource Policy - St. Ann's College for Women"
-                                )
-                              }
-                              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow transition-all active:scale-95 cursor-pointer"
-                            >
-                              <Eye className="w-4 h-4" />
-                              View PDF Document
-                            </button>
-                            <a
-                              href={hrPolicyDoc.fileUrl}
-                              download
-                              className="inline-flex items-center justify-center p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 transition-all shadow-sm"
-                              title="Download HR Policy PDF"
-                            >
-                              <Download className="w-4 h-4" />
-                            </a>
-                          </div>
                         </div>
                       </div>
                     )}
@@ -1460,11 +1474,11 @@ export default function FacultyClientPortal({
                                   {/* View Certificates Button Beside Document */}
                                   <button
                                     onClick={() => {
-                                      if (report.certificatesUrl && report.certificatesUrl.trim() && report.certificatesUrl !== "#") {
-                                        handleOpenPdf(report.certificatesUrl, `${report.year} FDP Certificates`);
-                                      } else {
-                                        setToastMessage(`Certificates for Academic Year ${report.year} will be updated soon.`);
-                                      }
+                                      handleViewCertificates(
+                                        report.certificatesUrl,
+                                        report.year,
+                                        `Academic Year ${report.year} - FDP & Seminars Certificates`
+                                      );
                                     }}
                                     className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
                                     title="View Verified FDP & Seminars Certificates"
@@ -2373,16 +2387,30 @@ export default function FacultyClientPortal({
                         </p>
                       </div>
 
-                      <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between gap-2">
+                      <div className="mt-4 pt-3 border-t border-slate-200/60 flex flex-wrap items-center gap-2">
                         <button
                           onClick={() => {
                             setFdpArchiveModalOpen(false);
                             handleOpenPdf(report.fileUrl, report.title);
                           }}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow-sm transition-all"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold shadow-sm transition-all"
                         >
                           <Eye className="w-3.5 h-3.5" />
-                          View Report PDF
+                          <span>View Report</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setFdpArchiveModalOpen(false);
+                            handleViewCertificates(
+                              report.certificatesUrl,
+                              report.year,
+                              `Academic Year ${report.year} - FDP & Seminars Certificates`
+                            );
+                          }}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm transition-all"
+                        >
+                          <Award className="w-3.5 h-3.5" />
+                          <span>Certificates</span>
                         </button>
                         <a
                           href={report.fileUrl}
@@ -2531,7 +2559,7 @@ export default function FacultyClientPortal({
                   <li className="flex items-start gap-2">
                     <span className="text-slate-900 font-bold">•</span>
                     <div>
-                      <strong>Total Teaching / Professional Experience:</strong> {selectedProfile.experience ? `${selectedProfile.experience} ${!selectedProfile.experience.toString().includes("Yr") && !selectedProfile.experience.toString().includes("Year") && selectedProfile.experience !== "—" ? "Years" : ""}` : "—"}
+                      <strong>Total Teaching / Professional Experience:</strong> {calculateFacultyExperience(selectedProfile.dateOfJoining, selectedProfile.rejoiningDate, selectedProfile.experience)}
                     </div>
                   </li>
                 </ul>
@@ -2768,6 +2796,62 @@ export default function FacultyClientPortal({
           >
             <X className="w-4 h-4" />
           </button>
+        </div>
+      )}
+
+      {/* CERTIFICATES STATUS POPUP MODAL */}
+      {certificateStatusModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn select-none">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-scaleUp flex flex-col">
+            {/* Header Banner */}
+            <div className="relative bg-[#002147] text-white px-6 py-5 text-center shadow-md">
+              <button
+                onClick={() => setCertificateStatusModal(null)}
+                className="absolute right-4 top-4 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 cursor-pointer"
+                title="Close Popup"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-300 flex items-center justify-center mx-auto mb-2 shadow-inner">
+                <Award className="w-6 h-6" />
+              </div>
+              <h3 className="font-outfit font-black text-lg sm:text-xl text-white">
+                FDP &amp; Seminars Certificates
+              </h3>
+              <p className="text-blue-200 text-xs mt-0.5">
+                Academic Year {certificateStatusModal.year}
+              </p>
+            </div>
+
+            {/* Gold Stripe */}
+            <div className="h-1 w-full bg-amber-500 shrink-0" />
+
+            {/* Body Content */}
+            <div className="p-6 text-center space-y-4">
+              <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-5 text-center">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-black uppercase tracking-wider mb-2">
+                  <Clock className="w-3.5 h-3.5" /> Document Status
+                </div>
+                <p className="text-slate-800 font-bold text-sm sm:text-base leading-snug">
+                  Certificates for Academic Year {certificateStatusModal.year}
+                </p>
+                <p className="text-amber-700 font-extrabold text-sm sm:text-base mt-1">
+                  Will be updated soon.
+                </p>
+                <p className="text-slate-500 text-xs font-medium mt-2 leading-relaxed">
+                  The institutional records and verified faculty participation certificates for this academic cycle are currently being compiled and will be available for online preview.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setCertificateStatusModal(null)}
+                className="w-full py-3 rounded-xl bg-[#002147] hover:bg-[#003366] text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
