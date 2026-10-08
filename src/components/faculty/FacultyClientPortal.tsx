@@ -819,18 +819,18 @@ export default function FacultyClientPortal({
                           </div>
                         </div>
 
-                        {/* Full-Width Table with Zero Horizontal Overflow */}
-                        <div className="rounded-2xl border border-slate-200 bg-white shadow-inner overflow-hidden">
-                          <table className="w-full border-collapse text-left font-sans text-xs">
+                        {/* Full-Width Scrollable Table */}
+                        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-inner">
+                          <table className="w-full border-collapse text-left font-sans text-xs min-w-[760px]">
                             <thead>
                               <tr className="bg-[#002147] text-white font-outfit text-[11px] sm:text-xs font-black uppercase tracking-wider">
-                                <th className="px-3 py-3.5 text-center w-12">S.No.</th>
-                                <th className="px-4 py-3.5 min-w-[200px]">Name of the Employee</th>
-                                <th className="px-3 py-3.5 min-w-[170px]">Designation</th>
+                                <th className="px-3 py-3.5 text-center w-12 shrink-0">S.No.</th>
+                                <th className="px-4 py-3.5 min-w-[220px]">Name of the Employee</th>
+                                <th className="px-3 py-3.5 min-w-[160px]">Designation</th>
                                 <th className="px-3 py-3.5 min-w-[130px]">Department</th>
                                 <th className="px-3 py-3.5 min-w-[130px]">Qualification</th>
-                                <th className="px-4 py-3.5 text-center whitespace-nowrap">Date of Joining</th>
-                                <th className="px-4 py-3.5 text-center whitespace-nowrap">Experience</th>
+                                <th className="px-4 py-3.5 text-center whitespace-nowrap min-w-[120px]">Date of Joining</th>
+                                <th className="px-4 py-3.5 text-center whitespace-nowrap min-w-[100px]">Experience</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs">
@@ -855,11 +855,13 @@ export default function FacultyClientPortal({
                                             institutionalRole: m.institutionalRole || (m.designation.includes("Principal") ? "Principal, St. Ann's College for Women" : m.designation.includes("HOD") ? `Head of the Department, ${m.department}` : `${m.designation}, St. Ann's College for Women`),
                                             committeeRoles: m.committeeRoles && m.committeeRoles.length > 0 ? m.committeeRoles : []
                                           })}
-                                          className="text-[#002147] hover:text-blue-700 hover:underline inline-flex items-center gap-1.5 font-bold text-left cursor-pointer transition-colors group/btn"
+                                          className="w-full flex items-center justify-between gap-2.5 text-[#002147] hover:text-blue-700 cursor-pointer transition-colors group/btn text-left"
                                           title={`Click to view profile of ${m.name}`}
                                         >
-                                          <span>{m.name}</span>
-                                          <Eye className="w-3.5 h-3.5 text-blue-600 opacity-60 group-hover/btn:opacity-100 group-hover/btn:scale-110 transition-all shrink-0" />
+                                          <span className="font-bold group-hover/btn:underline">{m.name}</span>
+                                          <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-md bg-blue-50/80 text-blue-600 group-hover/btn:bg-blue-600 group-hover/btn:text-white transition-all shadow-2xs">
+                                            <Eye className="w-3.5 h-3.5 transition-transform group-hover/btn:scale-110" />
+                                          </span>
                                         </button>
                                       </td>
                                       <td className="px-3 py-3 font-semibold text-slate-700 text-xs">

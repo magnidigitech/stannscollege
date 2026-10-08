@@ -18,6 +18,12 @@ out
 *.log
 *.tmp
 
+# Ignore Folder (Organized reference docs, raw assets, old versions, and scratch data)
+ignore folder/
+/ignore folder/
+"ignore folder"/
+ignore\ folder/
+
 # Local Workspace Temps
 faculty-temp/
 student-temp/
@@ -46,6 +52,9 @@ public/videos/
 # Local migration caches
 scripts/sanity-upload-cache.json
 scripts/disclosures-upload-cache.json
+scripts/*-doc-text.txt
+scripts/*-doc-html.html
+scripts/organize-ignore-folder.js
 
 # Scratch script directory
 scratch/

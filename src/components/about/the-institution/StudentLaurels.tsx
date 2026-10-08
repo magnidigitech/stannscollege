@@ -23,10 +23,10 @@ export async function StudentLaurels() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
-              Student Laurels & Awards
+              Student Achievements & Laurels
             </h2>
             <p className="mt-2 text-rose-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
-              A Legacy of Academic Excellence — Nurturing scholars who reach the pinnacle of success.
+              Pratibha Awards & Gold Medals — Nurturing scholars who reach the pinnacle of academic success.
             </p>
           </div>
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-rose-500/10 border border-rose-400/30 text-rose-200 backdrop-blur-md shadow-inner">
@@ -38,36 +38,40 @@ export async function StudentLaurels() {
       {/* Legacy Narrative Paragraphs */}
       <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
         <h3 className="font-outfit text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
-          A Tradition of Merit
+          Student Laurels: A Legacy of Academic Excellence
         </h3>
         <p className="leading-relaxed font-normal text-slate-600 text-sm md:text-base">
           At St. Ann’s College for Women, we believe that academic brilliance is the harvest of disciplined effort, intellectual curiosity, and a value-based learning environment. Our institution has a long-standing tradition of nurturing scholars who consistently reach the pinnacle of academic success.
         </p>
         <p className="mt-4 leading-relaxed font-normal text-slate-600 text-sm md:text-base">
-          We take immense pride in celebrating the &quot;St. Ann’s Stars&quot;—our outstanding achievers who have brought great distinction to the college through Pratibha Puraskar Awards, University Ranks, and Gold Medals. Their success is a testament to the academic rigor fostered by our dedicated faculty and the unwavering perseverance of our students in their pursuit of excellence.
+          We take immense pride in celebrating the &quot;St. Ann’s Stars&quot;—our outstanding achievers who have brought great distinction to the college through Pratibha Puraskar Awards, University Ranks, and Gold Medals. These students embody our core motto: Educate • Enrich • Empower. Their success is a testament to the academic rigor fostered by our dedicated faculty and the unwavering perseverance of our students in their pursuit of excellence.
         </p>
       </div>
 
       {/* Laurels Data Grid / Table */}
       <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
         <h3 className="font-outfit text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
-          Historical Student Achievers
+          Pratibha Awards & Gold Medals Roster
         </h3>
         <div className="overflow-x-auto mt-6">
-          <table className="w-full text-left border-collapse min-w-[600px]">
+          <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50/80">
+                <th className="py-3 px-3 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider text-center w-14">S. No</th>
                 <th className="py-3 px-4 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider">Academic Year</th>
                 <th className="py-3 px-4 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider">Group</th>
-                <th className="py-3 px-4 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider">Name of Student</th>
+                <th className="py-3 px-4 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider">Hall Ticket Number</th>
+                <th className="py-3 px-4 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider">Name of the Student</th>
                 <th className="py-3 px-4 font-outfit text-xs font-black text-slate-700 uppercase tracking-wider">Achievement</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs md:text-sm text-slate-600">
               {laurelsList.map((st: any, i: number) => (
                 <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="py-3 px-4 font-sans font-bold text-slate-800">{st.year}</td>
+                  <td className="py-3 px-3 font-sans font-bold text-slate-400 text-center">{st.sNo || i + 1}</td>
+                  <td className="py-3 px-4 font-sans font-bold text-slate-800 whitespace-nowrap">{st.year}</td>
                   <td className="py-3 px-4 font-sans font-medium text-slate-600">{st.group}</td>
+                  <td className="py-3 px-4 font-sans font-semibold text-slate-500">{st.hallTicketNumber || "—"}</td>
                   <td className="py-3 px-4 font-outfit font-bold text-slate-800">{st.studentName}</td>
                   <td className="py-3 px-4 font-sans font-semibold text-rose-600 flex items-center gap-1.5 leading-tight">
                     <Trophy className="h-4 w-4 text-rose-500 shrink-0" /> {st.achievement}

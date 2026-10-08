@@ -150,10 +150,7 @@ export function BasicInstitutionalInfo() {
             <div>
               <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Office Timings</span>
               <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
-                8:30 AM – 5:00 PM (Mon - Fri)
-              </p>
-              <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
-                8:30 AM - 2:00 PM (Sat)
+                9:00 a.m. to 4:30 p.m.
               </p>
             </div>
           </div>
@@ -161,7 +158,7 @@ export function BasicInstitutionalInfo() {
           <div className="flex items-start gap-4 p-4 hover:bg-slate-50/80 border border-transparent hover:border-slate-100 rounded-2xl transition-all">
             <Phone className="h-5 w-5 text-indigo-600 mt-1 shrink-0" />
             <div>
-              <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Contact Numbers</span>
+              <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Office Contact Numbers</span>
               <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1 leading-normal">
                 0863-2236470<br />
                 73821 04655<br />
@@ -173,15 +170,12 @@ export function BasicInstitutionalInfo() {
           <div className="flex items-start gap-4 p-4 hover:bg-slate-50/80 border border-transparent hover:border-slate-100 rounded-2xl transition-all">
             <Mail className="h-5 w-5 text-indigo-600 mt-1 shrink-0" />
             <div>
-              <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Email & Digital</span>
+              <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Email ID</span>
               <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
                 st_anns_coll@yahoo.co.in
               </p>
-              <p className="font-sans text-sm md:text-base font-bold text-slate-700 mt-1">
-                stannscollegegnt@gmail.com
-              </p>
               <p className="font-sans text-xs font-semibold text-slate-400 mt-0.5 leading-normal">
-                General administration and student support
+                Official Institutional Inquiries & Correspondence
               </p>
             </div>
           </div>

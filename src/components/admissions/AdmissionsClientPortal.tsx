@@ -59,7 +59,7 @@ import {
 export const ADMISSIONS_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   {
     catSlug: "programmes-eligibility",
-    title: "A & B. Programmes & Eligibility",
+    title: "A. Programmes & Eligibility",
     sectionId: "subpage-programmes-eligibility",
     items: [
       {
@@ -71,7 +71,7 @@ export const ADMISSIONS_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   },
   {
     catSlug: "admission-policy-process",
-    title: "C. Admission Policy & Process",
+    title: "B. Admission Policy & Process",
     sectionId: "subpage-admission-policy-process",
     items: [
       {
@@ -83,7 +83,7 @@ export const ADMISSIONS_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   },
   {
     catSlug: "prospectus-brochures",
-    title: "D. Prospectus & Brochures",
+    title: "C. Prospectus & Brochures",
     sectionId: "subpage-prospectus-brochures",
     items: [
       {
@@ -95,7 +95,7 @@ export const ADMISSIONS_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   },
   {
     catSlug: "admission-desk",
-    title: "E. Admission Desk",
+    title: "D. Admission Desk",
     sectionId: "subpage-admission-desk",
     items: [
       {
@@ -107,7 +107,7 @@ export const ADMISSIONS_SIDEBAR_CATEGORIES: SidebarCategory[] = [
   },
   {
     catSlug: "admission-information",
-    title: "F. Admission Information",
+    title: "E. Admission Information",
     sectionId: "subpage-admission-information",
     items: [
       {
@@ -227,6 +227,25 @@ export default function AdmissionsClientPortal({
     }
   }, [activeSlug]);
 
+  const scrollToActiveSubpage = () => {
+    if (typeof window === "undefined") return;
+    const sectionEl =
+      document.getElementById("admissions-active-subpage-section") ||
+      document.getElementById("admissions-active-subpage");
+    if (sectionEl) {
+      const header = document.getElementById("main-header");
+      const currentHeight = header
+        ? header.getBoundingClientRect().height || header.offsetHeight
+        : 140;
+      const elementPosition = sectionEl.getBoundingClientRect().top + window.pageYOffset;
+      const targetScrollY = elementPosition - currentHeight - 16;
+      window.scrollTo({
+        top: Math.max(0, targetScrollY),
+        behavior: "smooth",
+      });
+    }
+  };
+
   const handleSidebarClick = useCallback((id: string) => {
     const targetSubpage = id.startsWith("subpage-") ? id : SLUG_TO_SUBPAGE_MAP[id] || id;
     setActiveSubpage(targetSubpage);
@@ -234,18 +253,9 @@ export default function AdmissionsClientPortal({
     const slug = SUBPAGE_TO_SLUG[targetSubpage] || "programmes-eligibility";
     if (typeof window !== "undefined") {
       window.history.pushState(null, "", `/admissions/${slug}`);
-      
-      const contentTarget = document.getElementById("admissions-active-subpage");
-      if (contentTarget) {
-        const header = document.getElementById("main-header");
-        const headerHeight = header ? (header.getBoundingClientRect().height || header.offsetHeight) : 225;
-        const elementPosition = contentTarget.getBoundingClientRect().top + window.pageYOffset;
-        const targetScrollY = elementPosition - headerHeight - 20;
-        window.scrollTo({
-          top: Math.max(0, targetScrollY),
-          behavior: "smooth",
-        });
-      }
+      setTimeout(() => {
+        scrollToActiveSubpage();
+      }, 50);
     }
   }, []);
 
@@ -366,12 +376,12 @@ export default function AdmissionsClientPortal({
                 </SubtextBox>
 
                 {/* ========================================================================= */}
-                {/* SUBPAGE 1: A & B - PROGRAMMES OFFERED & ELIGIBILITY CRITERIA              */}
+                {/* SUBPAGE 1: A - PROGRAMMES OFFERED & ELIGIBILITY CRITERIA                  */}
                 {/* ========================================================================= */}
                 {activeSubpage === "subpage-programmes-eligibility" && (
                   <section
-                    id="subpage-programmes-eligibility"
-                    className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                    id="admissions-active-subpage-section"
+                    className="scroll-mt-36 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                     style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                   >
                     {/* Full-Width Section Header Banner */}
@@ -784,12 +794,12 @@ export default function AdmissionsClientPortal({
                 )}
 
                 {/* ========================================================================= */}
-                {/* SUBPAGE 2: C - ADMISSION POLICY & PROCESS                                 */}
+                {/* SUBPAGE 2: B - ADMISSION POLICY & PROCESS                                 */}
                 {/* ========================================================================= */}
                 {activeSubpage === "subpage-admission-policy-process" && (
                   <section
-                    id="subpage-admission-policy-process"
-                    className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                    id="admissions-active-subpage-section"
+                    className="scroll-mt-36 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                     style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                   >
                     {/* Full-Width Section Header Banner */}
@@ -1097,12 +1107,12 @@ export default function AdmissionsClientPortal({
                 )}
 
                 {/* ========================================================================= */}
-                {/* SUBPAGE 3: D - PROSPECTUS & BROCHURES                                     */}
+                {/* SUBPAGE 3: C - PROSPECTUS & BROCHURES                                     */}
                 {/* ========================================================================= */}
                 {activeSubpage === "subpage-prospectus-brochures" && (
                   <section
-                    id="subpage-prospectus-brochures"
-                    className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                    id="admissions-active-subpage-section"
+                    className="scroll-mt-36 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                     style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                   >
                     {/* Full-Width Section Header Banner */}
@@ -1161,17 +1171,6 @@ export default function AdmissionsClientPortal({
                           >
                             <Eye className="h-4 w-4 text-amber-300" />
                             <span>View Prospectus PDF</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setPreviewModalUrl(admissionDocuments.prospectusPdf || DEFAULT_PDF);
-                              setPreviewModalTitle("College Prospectus 2025–26");
-                            }}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
-                          >
-                            <BookOpen className="h-4 w-4 text-blue-700" />
-                            <span>Preview in Modal / Flipbook</span>
                           </button>
                           <a
                             href={getCleanPdfUrl(admissionDocuments.prospectusPdf || DEFAULT_PDF, "College Prospectus 2025–26", true)}
@@ -1295,12 +1294,12 @@ export default function AdmissionsClientPortal({
                 )}
 
                 {/* ========================================================================= */}
-                {/* SUBPAGE 4: E - ADMISSION DESK                                             */}
+                {/* SUBPAGE 4: D - ADMISSION DESK                                             */}
                 {/* ========================================================================= */}
                 {activeSubpage === "subpage-admission-desk" && (
                   <section
-                    id="subpage-admission-desk"
-                    className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                    id="admissions-active-subpage-section"
+                    className="scroll-mt-36 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                     style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                   >
                     {/* Full-Width Section Header Banner */}
@@ -1462,12 +1461,12 @@ export default function AdmissionsClientPortal({
                 )}
 
                 {/* ========================================================================= */}
-                {/* SUBPAGE 5: F - ADMISSION INFORMATION (TABLE 3)                            */}
+                {/* SUBPAGE 5: E - ADMISSION INFORMATION (TABLE 3)                            */}
                 {/* ========================================================================= */}
                 {activeSubpage === "subpage-admission-information" && (
                   <section
-                    id="subpage-admission-information"
-                    className="scroll-mt-52 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
+                    id="admissions-active-subpage-section"
+                    className="scroll-mt-36 border-2 border-slate-200/90 rounded-[2.5rem] overflow-hidden shadow-sm transition-colors duration-200 animate-fadeIn"
                     style={{ backgroundColor: "var(--section-container-bg, #eaeff5)" }}
                   >
                     {/* Full-Width Section Header Banner */}

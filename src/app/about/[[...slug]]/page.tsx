@@ -50,20 +50,20 @@ const aboutSubtexts: Record<string, string> = {
 };
 
 const categoryMapping: Record<string, string> = {
-  "the-institution": "I. The Institution",
+  "the-institution": "A. The Institution",
   "statutory-affiliations-recognitions": "II. Statutory Affiliations & Recognitions",
   "governance-administration": "III. Governance & Administration"
 };
 
 const itemsMapping: Record<string, string> = {
   "basic-institutional-information": "Basic Institutional Information",
-  "history-of-the-college": "History of the College",
-  "vision-mission-and-core-values": "Vision, Mission, and Core Values",
+  "history-of-the-college": "History & Milestones",
+  "vision-mission-and-core-values": "Emblem, Motto, Tagline, Vision, Mission & Core Values",
   "institutional-awards-recognitions": "Institutional Awards & Recognitions",
-  "student-laurels": "Student Laurels",
+  "student-laurels": "Student Achievements & Laurels",
   "institutional-distinctiveness": "Institutional Distinctiveness",
   "head-of-the-institution": "Head of the Institution",
-  "legacy-of-leadership": "A Legacy of Leadership",
+  "legacy-of-leadership": "Legacy of Leadership",
   "apsche-orders": "APSCHE Orders",
   "anu-affiliation-orders-ug-pg": "ANU Affiliation Orders (UG & PG)",
   "aicte-approvals": "AICTE Approvals",

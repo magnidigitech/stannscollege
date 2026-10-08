@@ -24,16 +24,16 @@ export type AboutCategory = SidebarCategory;
 export const ABOUT_CATEGORIES: SidebarCategory[] = [
   {
     catSlug: "the-institution",
-    title: "I. The Institution",
+    title: "A. The Institution",
     items: [
       { text: "Basic Institutional Information", slug: "basic-institutional-information" },
-      { text: "History of the College", slug: "history-of-the-college" },
-      { text: "Vision, Mission, and Core Values", slug: "vision-mission-and-core-values" },
+      { text: "History & Milestones", slug: "history-of-the-college" },
+      { text: "Emblem, Motto, Tagline, Vision, Mission & Core Values", slug: "vision-mission-and-core-values" },
       { text: "Institutional Awards & Recognitions", slug: "institutional-awards-recognitions" },
-      { text: "Student Laurels", slug: "student-laurels" },
+      { text: "Student Achievements & Laurels", slug: "student-laurels" },
       { text: "Institutional Distinctiveness", slug: "institutional-distinctiveness" },
       { text: "Head of the Institution", slug: "head-of-the-institution" },
-      { text: "A Legacy of Leadership", slug: "legacy-of-leadership" },
+      { text: "Legacy of Leadership", slug: "legacy-of-leadership" },
     ],
   },
   {

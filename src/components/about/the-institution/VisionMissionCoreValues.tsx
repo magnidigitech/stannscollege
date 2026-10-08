@@ -49,7 +49,7 @@ export function VisionMissionCoreValues() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
-              Institutional Identity & Framework
+              Emblem, Motto, Tagline, Vision, Mission & Core Values
             </h2>
             <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
               Educate • Enrich • Empower — Where Knowledge Ignites Empowerment
