@@ -58,41 +58,6 @@ export function toSlug(text: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-function DropdownHeaderBanner({
-  title,
-  href,
-  buttonText,
-  icon: Icon,
-  onNavigate,
-}: {
-  title: string;
-  href: string;
-  buttonText: string;
-  icon: React.ComponentType<{ className?: string }>;
-  onNavigate: () => void;
-}) {
-  return (
-    <div className="col-span-full mb-2 p-4 rounded-2xl bg-gradient-to-r from-[#002147] to-blue-900 text-white flex items-center justify-between shadow-md">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-amber-300" />
-        </div>
-        <div>
-          <h3 className="font-bold text-sm tracking-tight">{title}</h3>
-          <p className="text-[11px] text-blue-200/80">Direct access to institutional frameworks, portals &amp; regulatory filings</p>
-        </div>
-      </div>
-      <Link
-        href={href}
-        onClick={onNavigate}
-        className="px-4 py-2 rounded-xl bg-amber-400 text-[#002147] hover:bg-amber-300 font-bold text-xs transition-colors flex items-center gap-1.5 shadow-xs"
-      >
-        <span>{buttonText}</span>
-        <ArrowRight className="w-3.5 h-3.5" />
-      </Link>
-    </div>
-  );
-}
 
 export default function Navigation() {
   // Desktop Menu Hover State with debounce
@@ -343,27 +308,33 @@ export default function Navigation() {
 
   const iqacCategories = [
     {
-      title: "I. Quality Framework",
+      title: "1. Quality Framework",
+      fullTitle: "1. Quality Framework & Accreditations",
       icon: ShieldCheck,
+      href: "/quality-assurance",
       items: [
         { text: "About IQAC Cell", href: "/quality-assurance/iqac" },
         { text: "AQAR Annual Quality Reports", href: "/quality-assurance/aqar" },
-        { text: "NAAC Accreditation Details", href: "/quality-assurance/naac" },
+        { text: "NAAC Accreditation (A+ Grade)", href: "/quality-assurance/naac" },
         { text: "NAAC Peer Team Portal", href: "/naac-peer-team" },
       ]
     },
     {
-      title: "II. Quality Processes",
+      title: "2. Quality Processes",
+      fullTitle: "2. Quality Initiatives & Audits",
       icon: Lightbulb,
+      href: "/quality-assurance/quality-initiatives",
       items: [
-        { text: "Quality Initiatives", href: "/quality-assurance/quality-initiatives" },
+        { text: "Quality Initiatives & Benchmarks", href: "/quality-assurance/quality-initiatives" },
         { text: "Academic & Administrative Audit (AAA)", href: "/quality-assurance/audit" },
         { text: "Feedback System & Action Taken", href: "/quality-assurance/feedback" },
       ]
     },
     {
-      title: "III. Evaluation & Media",
+      title: "3. Evaluation & Media",
+      fullTitle: "3. Surveys, Gallery & Contact",
       icon: BookOpen,
+      href: "/quality-assurance/gallery",
       items: [
         { text: "Student Satisfaction Surveys", href: "/quality-assurance/surveys" },
         { text: "IQAC Activity Gallery", href: "/quality-assurance/gallery" },
@@ -562,27 +533,51 @@ export default function Navigation() {
 
   const admissionsCategories = [
     {
-      title: "I. Programmes & Eligibility",
+      title: "1. Programmes & Eligibility",
+      fullTitle: "1. Programmes & Eligibility",
       icon: GraduationCap,
+      href: "/admissions/programmes-eligibility",
       items: [
-        { text: "A. Programmes Offered", slug: "programmes-offered" },
-        { text: "B. Eligibility Criteria", slug: "eligibility-criteria" },
+        { text: "Programmes Offered (UG & PG)", href: "/admissions/programmes-offered" },
+        { text: "Eligibility Criteria & Requirements", href: "/admissions/eligibility-criteria" },
+        { text: "Approved Intake & Seat Matrix", href: "/admissions/programmes-eligibility" },
+        { text: "Fee Structure & Scholarships", href: "/admissions/programmes-eligibility" },
       ]
     },
     {
-      title: "II. Policy & Publications",
+      title: "2. Admission Policy & Process",
+      fullTitle: "2. Admission Policy & Process",
       icon: ShieldCheck,
+      href: "/admissions/admission-policy-process",
       items: [
-        { text: "C. Admission Policy & Process", slug: "policy-process" },
-        { text: "D. Prospectus & Brochures", slug: "prospectus-brochures" },
+        { text: "Admission Policy Framework", href: "/admissions/admission-policy-process" },
+        { text: "Application Process & Guidelines", href: "/admissions/admission-policy-process" },
+        { text: "Required Documents Checklist", href: "/admissions/admission-policy-process" },
+        { text: "Rules & Code of Conduct", href: "/admissions/admission-policy-process" },
       ]
     },
     {
-      title: "III. Desk & Yearly Records",
-      icon: Phone,
+      title: "3. Prospectus & Brochures",
+      fullTitle: "3. Prospectus & Brochures",
+      icon: BookOpen,
+      href: "/admissions/prospectus-brochures",
       items: [
-        { text: "E. Admission Desk", slug: "admission-desk" },
-        { text: "F. Admission Information", slug: "admission-information" },
+        { text: "College Prospectus (Digital)", href: "/admissions/prospectus-brochures" },
+        { text: "Department Course Pamphlets", href: "/admissions/prospectus-brochures" },
+        { text: "Student Handbook & Guidelines", href: "/admissions/prospectus-brochures" },
+        { text: "Academic Information Brochures", href: "/admissions/prospectus-brochures" },
+      ]
+    },
+    {
+      title: "4. Helpdesk & Statutory Records",
+      fullTitle: "4. Helpdesk & Statutory Records",
+      icon: Phone,
+      href: "/admissions/admission-desk",
+      items: [
+        { text: "Admission Helpdesk & Desk Info", href: "/admissions/admission-desk" },
+        { text: "Helpline Numbers & Office Timings", href: "/admissions/admission-desk" },
+        { text: "Statutory Admission Records (Table 3)", href: "/admissions/admission-information" },
+        { text: "Sanctioned vs Enrolled Statistics", href: "/admissions/admission-information" },
       ]
     }
   ];
@@ -638,59 +633,69 @@ export default function Navigation() {
 
   const supportCategories = [
     {
-      title: "I. Support & Welfare Services",
+      title: "1. Support & Welfare Services",
+      fullTitle: "1. Support & Welfare Services",
       icon: HeartHandshake,
+      href: "/student-support/anti-ragging",
       items: [
-        { text: "Anti-Ragging Committee", slug: "anti-ragging" },
-        { text: "Grievance Redressal / Ombudsperson", slug: "grievance-redressal" },
-        { text: "Internal Complaints Committee (ICC)", slug: "internal-complaints" },
-        { text: "Women Empowerment Cell", slug: "women-empowerment" },
-        { text: "Equal Opportunity (SC/ST/Minority)", slug: "equal-opportunity" },
-        { text: "Student Counselling Cell", slug: "student-counselling" },
-        { text: "Mentor–Mentee System", slug: "mentor-mentee" },
-        { text: "Parent Association", slug: "parent-association" },
-        { text: "Student Welfare & Scholarships", slug: "scholarships-welfare" },
-        { text: "Support for Divyangjan Students", slug: "divyangjan-support" },
-        { text: "Student Feedback & Satisfaction", slug: "student-feedback" },
+        { text: "Anti-Ragging Committee", href: "/student-support/anti-ragging" },
+        { text: "Grievance Redressal / Ombudsperson", href: "/student-support/grievance-redressal" },
+        { text: "Internal Complaints Committee (ICC)", href: "/student-support/internal-complaints" },
+        { text: "Women Empowerment Cell", href: "/student-support/women-empowerment" },
+        { text: "Equal Opportunity (SC/ST/Minority)", href: "/student-support/equal-opportunity" },
+        { text: "Student Counselling Cell", href: "/student-support/student-counselling" },
+        { text: "Mentor–Mentee System", href: "/student-support/mentor-mentee" },
+        { text: "Parent Association", href: "/student-support/parent-association" },
+        { text: "Student Welfare & Scholarships", href: "/student-support/scholarships-welfare" },
+        { text: "Support for Divyangjan Students", href: "/student-support/divyangjan-support" },
+        { text: "Student Feedback & Satisfaction", href: "/student-support/student-feedback" },
       ]
     },
     {
-      title: "II. Sports & Games",
+      title: "2. Sports & Games",
+      fullTitle: "2. Sports & Games",
       icon: Trophy,
+      href: "/student-support/sports-facilities",
       items: [
-        { text: "Sports Facilities & Playing Areas", slug: "sports-facilities" },
-        { text: "Intramural Sports Competitions", slug: "sports-competitions" },
-        { text: "Inter-Collegiate Tournaments", slug: "sports-achievements" },
-        { text: "University / State / National Level", slug: "sports-achievements" },
-        { text: "Self-Defense & Personal Safety", slug: "self-defense-safety" },
-        { text: "Fitness, Yoga & Wellness", slug: "fitness-wellness" },
-        { text: "Sports Reports & Gallery", slug: "sports-gallery" },
+        { text: "Sports Facilities & Playing Areas", href: "/student-support/sports-facilities" },
+        { text: "Intramural Sports Competitions", href: "/student-support/sports-competitions" },
+        { text: "Inter-Collegiate Tournaments", href: "/student-support/sports-achievements" },
+        { text: "University / State / National Level", href: "/student-support/sports-achievements" },
+        { text: "Self-Defense & Personal Safety", href: "/student-support/self-defense-safety" },
+        { text: "Fitness, Yoga & Wellness", href: "/student-support/fitness-wellness" },
+        { text: "Sports Reports & Gallery", href: "/student-support/sports-gallery" },
       ]
     },
     {
-      title: "III. Extension & Outreach",
+      title: "3. Extension & Outreach",
+      fullTitle: "3. Extension & Outreach",
       icon: Flag,
+      href: "/student-support/nss-activities",
       items: [
-        { text: "National Service Scheme (NSS)", slug: "nss-activities" },
-        { text: "National Cadet Corps (NCC)", slug: "ncc-activities" },
-        { text: "Red Ribbon Club (RRC)", slug: "red-ribbon-club" },
-        { text: "Mother Gnanamma Outreach", slug: "mother-gnanamma" },
-        { text: "Eco Club & Environment", slug: "eco-club" },
-        { text: "Community Outreach (UBA)", slug: "unnat-bharat-abhiyan" },
+        { text: "National Service Scheme (NSS)", href: "/student-support/nss-activities" },
+        { text: "National Cadet Corps (NCC)", href: "/student-support/ncc-activities" },
+        { text: "Red Ribbon Club (RRC)", href: "/student-support/red-ribbon-club" },
+        { text: "Mother Gnanamma Outreach", href: "/student-support/mother-gnanamma" },
+        { text: "Eco Club & Environment", href: "/student-support/eco-club" },
+        { text: "Community Outreach (UBA)", href: "/student-support/unnat-bharat-abhiyan" },
       ]
     },
     {
-      title: "IV. Workshops & Seminars",
+      title: "4. Workshops & Seminars",
+      fullTitle: "4. Workshops & Seminars",
       icon: Compass,
+      href: "/student-support/workshops-seminars",
       items: [
-        { text: "Workshops & Skill Seminars", slug: "workshops-seminars" },
+        { text: "Workshops & Skill Seminars", href: "/student-support/workshops-seminars" },
       ]
     },
     {
-      title: "V. Student Laurels & Ranks",
+      title: "5. Student Laurels & Ranks",
+      fullTitle: "5. Student Laurels & Ranks",
       icon: Award,
+      href: "/student-support/student-achievements",
       items: [
-        { text: "Student Laurels & University Ranks", slug: "student-achievements" },
+        { text: "Student Laurels & University Ranks", href: "/student-support/student-achievements" },
       ]
     }
   ];
@@ -801,160 +806,191 @@ export default function Navigation() {
 
   const placementsCategories = [
     {
-      title: "I. Training & Placement Cell",
+      title: "1. Training & Placement Cell",
+      fullTitle: "1. Training & Placement Cell",
       icon: Briefcase,
+      href: "/placements/about-cell",
       items: [
-        { text: "About Training & Placement Cell", slug: "about-cell" },
-        { text: "Placements & Recruitment", slug: "placements-recruitment" },
-        { text: "APSSDC", slug: "apssdc" },
-        { text: "Skill Development Training Areas", slug: "skill-development-areas" },
-        { text: "Internships & Industry Exposure", slug: "internships-industry-exposure" },
-        { text: "Competitive Exam Coaching", slug: "competitive-exam-coaching" }
+        { text: "About Training & Placement Cell", href: "/placements/about-cell" },
+        { text: "Placements & Recruitment", href: "/placements/placements-recruitment" },
+        { text: "APSSDC Skill Programs", href: "/placements/apssdc" },
+        { text: "Skill Development Training Areas", href: "/placements/skill-development-areas" },
+        { text: "Internships & Industry Exposure", href: "/placements/internships-industry-exposure" },
+        { text: "Competitive Exam Coaching", href: "/placements/competitive-exam-coaching" }
       ]
     },
     {
-      title: "II. Industry Linkages",
+      title: "2. Industry Linkages & MoUs",
+      fullTitle: "2. Industry Linkages & MoUs",
       icon: Handshake,
+      href: "/placements/industry-professional-engagement",
       items: [
-        { text: "Industry & Professional Engagement", slug: "industry-professional-engagement" },
-        { text: "MoUs – Memoranda of Understanding", slug: "mous" }
+        { text: "Industry & Professional Engagement", href: "/placements/industry-professional-engagement" },
+        { text: "MoUs – Memoranda of Understanding", href: "/placements/mous" }
       ]
     },
     {
-      title: "III. Internationalization & Global Outreach",
+      title: "3. Global Outreach",
+      fullTitle: "3. International Collaborations",
       icon: Globe2,
+      href: "/placements/international-collaborations-global-engagement",
       items: [
-        { text: "International Collaborations & Global Engagement", slug: "international-collaborations-global-engagement" }
+        { text: "International Collaborations & Global Engagement", href: "/placements/international-collaborations-global-engagement" }
       ]
     }
   ];
 
   const aboutCategories = [
     {
-      title: "I. The Institution",
+      title: "1. The Institution",
+      fullTitle: "1. The Institution",
       icon: Building,
+      href: "/about/the-institution/basic-institutional-information",
       items: [
-        "Basic Institutional Information",
-        "History of the College",
-        "Vision, Mission, and Core Values",
-        "Institutional Awards & Recognitions",
-        "Student Laurels",
-        "Institutional Distinctiveness",
-        "Head of the Institution",
-        "Legacy of Leadership",
-      ],
+        { text: "Basic Institutional Information", href: "/about/the-institution/basic-institutional-information" },
+        { text: "History & Milestones", href: "/about/the-institution/history-of-the-college" },
+        { text: "Emblem, Motto, Vision & Mission", href: "/about/the-institution/vision-mission-and-core-values" },
+        { text: "Institutional Awards & Recognitions", href: "/about/the-institution/institutional-awards-recognitions" },
+        { text: "Student Achievements & Laurels", href: "/about/the-institution/student-laurels" },
+        { text: "Institutional Distinctiveness", href: "/about/the-institution/institutional-distinctiveness" },
+        { text: "Head of the Institution", href: "/about/the-institution/head-of-the-institution" },
+        { text: "Legacy of Leadership", href: "/about/the-institution/legacy-of-leadership" },
+      ]
     },
     {
-      title: "II. Statutory Affiliations & Recognitions",
+      title: "2. Statutory Affiliations & Recognitions",
+      fullTitle: "2. Statutory Affiliations & Recognitions",
       icon: ShieldCheck,
+      href: "/about/statutory-affiliations-recognitions/apsche-orders",
       items: [
-        "APSCHE Orders",
-        "ANU Affiliation Orders (UG & PG)",
-        "AICTE Approvals",
-        "UGC 2(f)",
-        "AISHE Certificates",
-        "NAAC Accreditation",
-        "NIRF",
-        "NAAC Peer Team",
-      ],
+        { text: "APSCHE Orders", href: "/about/statutory-affiliations-recognitions/apsche-orders" },
+        { text: "ANU Affiliation Orders (UG & PG)", href: "/about/statutory-affiliations-recognitions/anu-affiliation-orders-ug-pg" },
+        { text: "AICTE Approvals", href: "/about/statutory-affiliations-recognitions/aicte-approvals" },
+        { text: "UGC Section 2(f)", href: "/about/statutory-affiliations-recognitions/ugc-2f" },
+        { text: "AISHE Certificates", href: "/about/statutory-affiliations-recognitions/aishe-certificates" },
+        { text: "NAAC Accreditation (A+ Grade)", href: "/about/statutory-affiliations-recognitions/naac-accreditation" },
+        { text: "NIRF Reports", href: "/about/statutory-affiliations-recognitions/nirf" },
+        { text: "NAAC Peer Team Portal", href: "/naac-peer-team" },
+      ]
     },
     {
-      title: "III. Governance & Administration",
+      title: "3. Governance & Administration",
+      fullTitle: "3. Governance & Administration",
       icon: Users,
+      href: "/about/governance-administration/governing-body",
       items: [
-        "Governing Body",
-        "Organogram",
-        "Key Functionaries & IQAC",
-        "Statutory & Non-Statutory Committees",
-        "Institutional Policies",
-        "Strategic Development Plan",
-        "Code of Conduct",
-      ],
-    },
-  ];
-
-  const academicsCol1 = [
-    {
-      title: "I. Academic Programmes",
-      cat: "academic-programmes",
-      items: [
-        { text: "Undergraduate (UG) Programmes", slug: "undergraduate-programmes" },
-        { text: "Postgraduate (PG) Programmes", slug: "postgraduate-programmes" },
-        { text: "Industry-Integrated Courses", slug: "industry-integrated-courses" }
-      ]
-    },
-    {
-      title: "II. Curriculum & Academic Planning",
-      cat: "curriculum-academic-planning",
-      items: [
-        { text: "Curriculum Framework", slug: "curriculum-framework" },
-        { text: "Innovative & Interdisciplinary Offerings", slug: "innovative-interdisciplinary-offerings" },
-        { text: "Academic Calendar (UG & PG)", slug: "academic-calendar-ug-pg" },
-        { text: "Academic Implementation Plan (AIP)", slug: "academic-implementation-plan-aip" },
-        { text: "Time Tables", slug: "time-tables" }
+        { text: "Governing Body", href: "/about/governance-administration/governing-body" },
+        { text: "Organogram", href: "/about/governance-administration/organogram" },
+        { text: "Key Functionaries & IQAC", href: "/about/governance-administration/key-functionaries-iqac" },
+        { text: "Statutory & Non-Statutory Committees", href: "/about/governance-administration/statutory-non-statutory-committees" },
+        { text: "Institutional Policies", href: "/about/governance-administration/institutional-policies" },
+        { text: "Strategic Development Plan", href: "/strategic-plans-and-future-directions" },
+        { text: "Code of Conduct", href: "/about/governance-administration/code-of-conduct" },
       ]
     }
   ];
 
-  const academicsCol2 = [
+  const academicsCategories = [
     {
-      title: "IV. Value-Added Learning",
-      cat: "value-added-learning",
+      title: "1. Academic Programmes",
+      fullTitle: "1. Academic Programmes",
+      icon: GraduationCap,
+      href: "/academics/academic-programmes/undergraduate-programmes",
       items: [
-        { text: "Add-on Courses", slug: "add-on-courses" },
-        { text: "Certificate Courses", slug: "certificate-courses" },
-        { text: "Value-Added Courses", slug: "value-added-courses" }
+        { text: "Undergraduate (UG) Programmes", href: "/academics/academic-programmes/undergraduate-programmes" },
+        { text: "Postgraduate (PG) Programmes", href: "/academics/academic-programmes/postgraduate-programmes" },
+        { text: "Industry-Integrated Courses", href: "/academics/academic-programmes/industry-integrated-courses" }
       ]
     },
     {
-      title: "V. Teaching & Learning",
-      cat: "teaching-learning",
+      title: "2. Curriculum & Planning",
+      fullTitle: "2. Curriculum & Academic Planning",
+      icon: BookOpen,
+      href: "/academics/curriculum-academic-planning/curriculum-framework",
       items: [
-        { text: "Pedagogy & Learning Methodologies", slug: "pedagogy-learning-methodologies" },
-        { text: "Learning Management System (LMS)", slug: "learning-management-system-lms" },
-        { text: "Student-Centric Methods", slug: "student-centric-methods" }
+        { text: "Curriculum Framework", href: "/academics/curriculum-academic-planning/curriculum-framework" },
+        { text: "Innovative & Interdisciplinary Offerings", href: "/academics/curriculum-academic-planning/innovative-interdisciplinary-offerings" },
+        { text: "Academic Calendar (UG & PG)", href: "/academics/curriculum-academic-planning/academic-calendar-ug-pg" },
+        { text: "Academic Implementation Plan (AIP)", href: "/academics/curriculum-academic-planning/academic-implementation-plan-aip" },
+        { text: "Time Tables", href: "/academics/curriculum-academic-planning/time-tables" }
       ]
     },
     {
-      title: "VI. Outcome-Based Education",
-      cat: "outcome-based-education",
+      title: "3. Science & Computing Departments",
+      fullTitle: "3. Science & Computing Departments",
+      icon: Cpu,
+      href: "/academics/departments",
       items: [
-        { text: "Programme Outcomes (POs)", slug: "programme-outcomes-pos" },
-        { text: "Course Outcomes (COs)", slug: "course-outcomes-cos" },
-        { text: "Programme Specific Outcomes (PSOs)", slug: "programme-specific-outcomes-psos" }
+        { text: "1. Dept. of Computer Applications (BCA)", href: "/academics/departments/department-of-computer-applications-bca" },
+        { text: "2. Dept. of Computer Science (CS & AI)", href: "/academics/departments/department-of-computer-science-cs-artificial-intelligence" },
+        { text: "3. Dept. of MCA", href: "/academics/departments/department-of-mca" },
+        { text: "4. Dept. of Mathematics", href: "/academics/departments/department-of-mathematics" },
+        { text: "5. Dept. of Physics", href: "/academics/departments/department-of-physics" },
+        { text: "6. Dept. of Statistics", href: "/academics/departments/department-of-statistics" },
+        { text: "7. Dept. of Chemistry", href: "/academics/departments/department-of-chemistry" }
       ]
     },
     {
-      title: "VII. Academic Quality Indicators",
-      cat: "academic-quality-indicators",
+      title: "4. Life Sciences, Commerce & Languages",
+      fullTitle: "4. Life Sciences, Commerce & Languages",
+      icon: Building2,
+      href: "/academics/departments",
       items: [
-        { text: "Student–Teacher Ratio", slug: "student-teacher-ratio" },
-        { text: "Internal Assessment & Evaluation", slug: "internal-assessment-evaluation" },
-        { text: "Academic Performance Indicators", slug: "academic-performance-indicators" }
+        { text: "8. Dept. of Biotechnology", href: "/academics/departments/department-of-biotechnology" },
+        { text: "9. Dept. of Microbiology", href: "/academics/departments/department-of-microbiology" },
+        { text: "10. Dept. of Botany", href: "/academics/departments/department-of-botany" },
+        { text: "11. Dept. of Commerce", href: "/academics/departments/department-of-commerce" },
+        { text: "12. Dept. of MBA", href: "/academics/departments/department-of-mba" },
+        { text: "13. Dept. of English", href: "/academics/departments/department-of-english" },
+        { text: "14. Oriental Languages (Tel/San/Hin)", href: "/academics/departments/department-of-oriental-languages-telugu-sanskrit-hindi" },
+        { text: "✦ All 14 Departments Overview Hub", href: "/academics/departments" }
+      ]
+    },
+    {
+      title: "5. Value-Added Learning",
+      fullTitle: "5. Value-Added Learning",
+      icon: Award,
+      href: "/academics/value-added-learning/add-on-courses",
+      items: [
+        { text: "Add-on Courses", href: "/academics/value-added-learning/add-on-courses" },
+        { text: "Certificate Courses", href: "/academics/value-added-learning/certificate-courses" },
+        { text: "Value-Added Courses", href: "/academics/value-added-learning/value-added-courses" }
+      ]
+    },
+    {
+      title: "6. Teaching & Learning",
+      fullTitle: "6. Teaching & Learning Methodologies",
+      icon: Lightbulb,
+      href: "/academics/teaching-learning/pedagogy-learning-methodologies",
+      items: [
+        { text: "Pedagogy & Learning Methodologies", href: "/academics/teaching-learning/pedagogy-learning-methodologies" },
+        { text: "Learning Management System (LMS)", href: "/academics/teaching-learning/learning-management-system-lms" },
+        { text: "Student-Centric Methods", href: "/academics/teaching-learning/student-centric-methods" }
+      ]
+    },
+    {
+      title: "7. Outcome-Based Education",
+      fullTitle: "7. Outcome-Based Education (OBE)",
+      icon: LineChart,
+      href: "/academics/outcome-based-education/programme-outcomes-pos",
+      items: [
+        { text: "Programme Outcomes (POs / PSOs)", href: "/academics/outcome-based-education/programme-outcomes-pos" },
+        { text: "Course Outcomes (COs)", href: "/academics/outcome-based-education/course-outcomes-cos" },
+        { text: "Academic Quality Indicators", href: "/academics/academic-quality-indicators/student-teacher-ratio" }
       ]
     }
   ];
 
-  const academicsCol3 = {
-    title: "III. Departments",
-    cat: "departments",
-    items: [
-      { text: "1. Dept of Commerce", slug: "department-of-commerce" },
-      { text: "2. BCA Applications", slug: "department-of-computer-applications-bca" },
-      { text: "3. Computer Science & AI", slug: "department-of-computer-science-cs-artificial-intelligence" },
-      { text: "4. Dept of Mathematics", slug: "department-of-mathematics" },
-      { text: "5. Dept of Physics", slug: "department-of-physics" },
-      { text: "6. Dept of Statistics", slug: "department-of-statistics" },
-      { text: "7. Dept of Chemistry", slug: "department-of-chemistry" },
-      { text: "8. Dept of Biotechnology", slug: "department-of-biotechnology" },
-      { text: "9. Dept of Microbiology", slug: "department-of-microbiology" },
-      { text: "10. Dept of Botany", slug: "department-of-botany" },
-      { text: "11. Dept of MCA", slug: "department-of-mca" },
-      { text: "12. Dept of MBA", slug: "department-of-mba" },
-      { text: "13. Dept of English", slug: "department-of-english" },
-      { text: "14. Oriental Languages", slug: "department-of-oriental-languages-telugu-sanskrit-hindi" }
-    ]
-  };
+  const academicsColumns = [
+    // Column 1: I & II
+    [academicsCategories[0], academicsCategories[1]],
+    // Column 2: III Science & IT Departments
+    [academicsCategories[2]],
+    // Column 3: IV Life Sciences, Mgmt & Arts Departments
+    [academicsCategories[3]],
+    // Column 4: V, VI, VII
+    [academicsCategories[4], academicsCategories[5], academicsCategories[6]]
+  ];
 
   return (
     <div ref={navContainerRef} className="w-full flex flex-col font-sans select-none relative">
@@ -1007,7 +1043,7 @@ export default function Navigation() {
 
             {activeMenu === "about" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("about")}
                 onMouseLeave={handleMouseLeave}
@@ -1016,43 +1052,32 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="About Us"
-                  href="/about"
-                  buttonText="Visit About Us Main Page"
-                  icon={Building}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {aboutCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                        {cat.fullTitle || cat.title}
                       </h4>
-                    </div>
+                    </Link>
                     <div className="flex flex-col gap-1">
-                      {cat.items.map((item, idx) => {
-                        const catSlug = toSlug(cat.title);
-                        const itemSlug = toSlug(item);
-                        const href = itemSlug === "strategic-development-plan"
-                          ? "/strategic-plans-and-future-directions"
-                          : itemSlug === "naac-peer-team"
-                            ? "/naac-peer-team"
-                            : `/about/${catSlug}/${itemSlug}`;
-                        return (
-                          <Link
-                            key={idx}
-                            href={href}
-                            onClick={() => setActiveMenu(null)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
-                          >
-                            {item}
-                          </Link>
-                        );
-                      })}
+                      {cat.items.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
+                        >
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 ))}
@@ -1077,7 +1102,7 @@ export default function Navigation() {
 
             {activeMenu === "academics" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-12 gap-8 cursor-default max-h-[75vh] overflow-y-auto animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("academics")}
                 onMouseLeave={handleMouseLeave}
@@ -1086,95 +1111,39 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Academic Programmes & Departments"
-                  href="/academics"
-                  buttonText="Visit Academics Main Page"
-                  icon={GraduationCap}
-                  onNavigate={() => setActiveMenu(null)}
-                />
-
-                {/* Column 1: I and II */}
-                <div className="md:col-span-4 flex flex-col gap-6">
-                  {academicsCol1.map((cat, i) => (
-                    <div key={i} className="flex flex-col gap-3 border-b border-slate-50 pb-4 last:border-0">
-                      <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 text-[#002147] border border-[#002147]/10">
-                          <GraduationCap className="h-3.5 w-3.5" />
-                        </span>
-                        <h4 className="font-outfit font-black text-slate-800 text-xs uppercase tracking-wider">{cat.title}</h4>
+                {academicsColumns.map((col, colIdx) => (
+                  <div key={colIdx} className="flex flex-col gap-5">
+                    {col.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-2.5">
+                        <Link
+                          href={cat.href}
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-center gap-2 border-b border-slate-100 pb-2 group/header hover:text-blue-900 transition-colors"
+                        >
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                            <cat.icon className="h-3.5 w-3.5" />
+                          </span>
+                          <span className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                            {cat.fullTitle || cat.title}
+                          </span>
+                        </Link>
+                        <div className="flex flex-col gap-1">
+                          {cat.items.map((item, idx) => (
+                            <Link
+                              key={idx}
+                              href={item.href}
+                              onClick={() => setActiveMenu(null)}
+                              className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1 rounded-lg transition-all flex items-center justify-between group/link"
+                            >
+                              <span>{item.text}</span>
+                              <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex flex-col gap-1">
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={`/academics/${cat.cat}/${item.slug}`}
-                            onClick={() => setActiveMenu(null)}
-                            className="text-[11px] font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/70 px-2 py-1 rounded transition-all leading-snug"
-                          >
-                            {item.text}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Column 2: III Departments */}
-                <div className="md:col-span-4 flex flex-col gap-4 bg-[#002147]/[0.02] border border-slate-100 rounded-2xl p-5">
-                  <Link
-                    href="/academics/departments"
-                    onClick={() => setActiveMenu(null)}
-                    className="flex items-center gap-2 pb-2 border-b border-[#002147]/10 hover:opacity-80 transition-opacity group cursor-pointer"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#002147] text-white">
-                      <BookOpen className="h-3.5 w-3.5" />
-                    </span>
-                    <div className="flex items-center gap-1">
-                      <h4 className="font-outfit font-black text-[#002147] text-xs uppercase tracking-wider">{academicsCol3.title}</h4>
-                      <ArrowRight className="h-3 w-3 text-[#002147] opacity-0 group-hover:opacity-100 transform group-hover:translate-x-0.5 transition-all" />
-                    </div>
-                  </Link>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
-                    {academicsCol3.items.map((item, idx) => (
-                      <Link
-                        key={idx}
-                        href={`/academics/${academicsCol3.cat}/${item.slug}`}
-                        onClick={() => setActiveMenu(null)}
-                        className="text-[10px] font-bold text-slate-600 hover:text-[#002147] hover:bg-white border border-transparent hover:border-slate-200/50 p-1.5 rounded transition-all truncate leading-snug"
-                      >
-                        {item.text}
-                      </Link>
                     ))}
                   </div>
-                </div>
-
-                {/* Column 3: IV, V, VI, VII */}
-                <div className="md:col-span-4 flex flex-col gap-5">
-                  {academicsCol2.map((cat, i) => (
-                    <div key={i} className="flex flex-col gap-2 border-b border-slate-50 last:border-0 pb-3 last:pb-0">
-                      <div className="flex items-center gap-2 pb-1 border-b border-slate-100">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
-                          <Lightbulb className="h-3 w-3" />
-                        </span>
-                        <h4 className="font-outfit font-black text-slate-800 text-[10px] uppercase tracking-wider">{cat.title}</h4>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={`/academics/${cat.cat}/${item.slug}`}
-                            onClick={() => setActiveMenu(null)}
-                            className="text-[11px] font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/70 px-2 py-1 rounded transition-all leading-snug"
-                          >
-                            {item.text}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
+                ))}
               </div>
             )}
           </div>
@@ -1196,7 +1165,7 @@ export default function Navigation() {
 
             {activeMenu === "admissions" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("admissions")}
                 onMouseLeave={handleMouseLeave}
@@ -1205,32 +1174,30 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Admissions & Enrolment Portal"
-                  href="/admissions"
-                  buttonText="Visit Admissions Main Page"
-                  icon={BookOpen}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {admissionsCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                        {cat.fullTitle || cat.title}
                       </h4>
-                    </div>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
-                          href={`/admissions/${item.slug}`}
+                          href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1377,7 +1344,7 @@ export default function Navigation() {
 
             {activeMenu === "support" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("support")}
                 onMouseLeave={handleMouseLeave}
@@ -1387,24 +1354,29 @@ export default function Navigation() {
                 }}
               >
                 {supportCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                        {cat.fullTitle || cat.title}
                       </h4>
-                    </div>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
-                          href={`/student-support/${item.slug}`}
+                          href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1431,7 +1403,7 @@ export default function Navigation() {
 
             {activeMenu === "placements" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn max-h-[75vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("placements")}
                 onMouseLeave={handleMouseLeave}
@@ -1441,24 +1413,29 @@ export default function Navigation() {
                 }}
               >
                 {placementsCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                        {cat.fullTitle || cat.title}
                       </h4>
-                    </div>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
-                          href={`/placements/${item.slug}`}
+                          href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1513,7 +1490,7 @@ export default function Navigation() {
 
             {activeMenu === "research" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("research")}
                 onMouseLeave={handleMouseLeave}
@@ -1523,28 +1500,29 @@ export default function Navigation() {
                 }}
               >
                 {researchCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <Link
-                        href={cat.href}
-                        onClick={() => setActiveMenu(null)}
-                        className="font-outfit font-black text-slate-800 text-sm leading-tight hover:text-[#002147] transition-colors"
-                      >
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
                         {cat.fullTitle || cat.title}
-                      </Link>
-                    </div>
+                      </h4>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
                           href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1631,7 +1609,7 @@ export default function Navigation() {
 
             {activeMenu === "iqac" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-default animate-fadeIn"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("iqac")}
                 onMouseLeave={handleMouseLeave}
@@ -1640,32 +1618,30 @@ export default function Navigation() {
                   e.nativeEvent.stopImmediatePropagation();
                 }}
               >
-                <DropdownHeaderBanner
-                  title="Internal Quality Assurance Cell (IQAC)"
-                  href="/quality-assurance"
-                  buttonText="Visit IQAC Main Page"
-                  icon={ShieldCheck}
-                  onNavigate={() => setActiveMenu(null)}
-                />
                 {iqacCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <h4 className="font-outfit font-black text-slate-800 text-sm leading-tight">
-                        {cat.title}
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                        {cat.fullTitle || cat.title}
                       </h4>
-                    </div>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
                           href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1692,7 +1668,7 @@ export default function Navigation() {
 
             {activeMenu === "mandatory" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("mandatory")}
                 onMouseLeave={handleMouseLeave}
@@ -1702,28 +1678,29 @@ export default function Navigation() {
                 }}
               >
                 {mandatoryCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <Link
-                        href={cat.href}
-                        onClick={() => setActiveMenu(null)}
-                        className="font-outfit font-black text-slate-800 text-sm leading-tight hover:text-[#002147] transition-colors"
-                      >
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
                         {cat.fullTitle || cat.title}
-                      </Link>
-                    </div>
+                      </h4>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
                           href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1750,7 +1727,7 @@ export default function Navigation() {
 
             {activeMenu === "strategic" && (
               <div
-                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
+                className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
                 onMouseEnter={() => handleMouseEnter("strategic")}
                 onMouseLeave={handleMouseLeave}
@@ -1760,28 +1737,29 @@ export default function Navigation() {
                 }}
               >
                 {strategicCategories.map((cat, i) => (
-                  <div key={i} className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147]">
-                        <cat.icon className="h-4 w-4" />
+                  <div key={i} className="flex flex-col gap-3">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setActiveMenu(null)}
+                      className="flex items-center gap-2 border-b border-slate-100 pb-2.5 group/header hover:text-blue-900 transition-colors"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                        <cat.icon className="h-3.5 w-3.5" />
                       </span>
-                      <Link
-                        href={cat.href}
-                        onClick={() => setActiveMenu(null)}
-                        className="font-outfit font-black text-slate-800 text-sm leading-tight hover:text-[#002147] transition-colors"
-                      >
+                      <h4 className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
                         {cat.fullTitle || cat.title}
-                      </Link>
-                    </div>
+                      </h4>
+                    </Link>
                     <div className="flex flex-col gap-1">
                       {cat.items.map((item, idx) => (
                         <Link
                           key={idx}
                           href={item.href}
                           onClick={() => setActiveMenu(null)}
-                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/60 px-3 py-1.5 rounded-lg transition-all"
+                          className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1.5 rounded-lg transition-all flex items-center justify-between group/link"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -1875,26 +1853,24 @@ export default function Navigation() {
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                     {aboutCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-2">
-                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider border-b border-slate-50 pb-1">{cat.title}</span>
-                        {cat.items.map((item, idx) => {
-                          const itemSlug = toSlug(item);
-                          const href = itemSlug === "strategic-development-plan"
-                            ? "/strategic-plans-and-future-directions"
-                            : itemSlug === "naac-peer-team"
-                              ? "/naac-peer-team"
-                              : `/about/${toSlug(cat.title)}/${itemSlug}`;
-                          return (
-                            <Link
-                              key={idx}
-                              href={href}
-                              onClick={() => setMobileOpen(false)}
-                              className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-1"
-                            >
-                              • {item}
-                            </Link>
-                          );
-                        })}
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
+                        {cat.items.map((item, idx) => (
+                          <Link
+                            key={idx}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
+                          >
+                            • {item.text}
+                          </Link>
+                        ))}
                       </div>
                     ))}
                   </div>
@@ -1920,26 +1896,27 @@ export default function Navigation() {
                       <span>Visit Academics Main Page</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
-                    <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Academic Programmes</span>
-                      {academicsCol1[0].items.map((item, idx) => (
-                        <Link key={idx} href={`/academics/academic-programmes/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Academic Planning</span>
-                      {academicsCol1[1].items.map((item, idx) => (
-                        <Link key={idx} href={`/academics/curriculum-academic-planning/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">Departments</span>
-                      <div className="grid grid-cols-1 gap-1">
-                        {academicsCol3.items.map((item, idx) => (
-                          <Link key={idx} href={`/academics/departments/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-[11px] font-semibold text-slate-500 py-1">• {item.text}</Link>
+                    {academicsCategories.map((cat, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
+                        {cat.items.map((item, idx) => (
+                          <Link
+                            key={idx}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
+                          >
+                            • {item.text}
+                          </Link>
                         ))}
                       </div>
-                    </div>
+                    ))}
                   </div>
                 )}
               </div>
@@ -1965,9 +1942,22 @@ export default function Navigation() {
                     </Link>
                     {admissionsCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
-                          <Link key={idx} href={`/admissions/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                          <Link
+                            key={idx}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
+                          >
+                            • {item.text}
+                          </Link>
                         ))}
                       </div>
                     ))}
@@ -2057,11 +2047,32 @@ export default function Navigation() {
                 </button>
                 {mSupport && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/student-support"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Student Support Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {supportCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
-                          <Link key={idx} href={`/student-support/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                          <Link
+                            key={idx}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
+                          >
+                            • {item.text}
+                          </Link>
                         ))}
                       </div>
                     ))}
@@ -2080,11 +2091,32 @@ export default function Navigation() {
                 </button>
                 {mPlacements && (
                   <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
+                    <Link
+                      href="/placements"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
+                    >
+                      <span>Visit Placements Main Page</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                     {placementsCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
-                          <Link key={idx} href={`/placements/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
+                          <Link
+                            key={idx}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
+                          >
+                            • {item.text}
+                          </Link>
                         ))}
                       </div>
                     ))}
@@ -2150,7 +2182,13 @@ export default function Navigation() {
                     </Link>
                     {alumniCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
                           <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
                         ))}
@@ -2181,7 +2219,13 @@ export default function Navigation() {
                     </Link>
                     {iqacCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
                           <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
                         ))}
@@ -2212,7 +2256,13 @@ export default function Navigation() {
                     </Link>
                     {mandatoryCategories.map((cat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <span className="text-[10px] font-black uppercase text-[#002147] tracking-wider">{cat.title}</span>
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
+                        >
+                          {cat.fullTitle || cat.title}
+                        </Link>
                         {cat.items.map((item, idx) => (
                           <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
                         ))}
