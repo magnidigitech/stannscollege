@@ -14,6 +14,7 @@ import { PlacementsManager } from "@/components/admin/PlacementsManager";
 import { StudentSupportManager } from "@/components/admin/StudentSupportManager";
 import { FacultyProfilesManager } from "@/components/admin/FacultyProfilesManager";
 import { AdmissionsManager } from "@/components/admin/AdmissionsManager";
+import { QualityAssuranceManager } from "@/components/admin/QualityAssuranceManager";
 import {
   Calendar,
   Bell,
@@ -122,6 +123,14 @@ const ADMIN_MODULES = [
     icon: ShieldCheck,
     description: "Manage, update, and upload official statutory tables, AICTE/APSCHE orders, AISHE/NIRF reports, and RTI records.",
     component: MandatoryDisclosuresManager,
+  },
+  {
+    id: "quality-assurance",
+    label: "Quality Assurance & Accreditation",
+    badge: "AQAR, NAAC & Quality Cells",
+    icon: ShieldCheck,
+    description: "Manage AQAR annual reports by academic year, NAAC accreditation cycles, criteria, metrics, IQAC steering committee, and statutory audits.",
+    component: QualityAssuranceManager,
   },
   {
     id: "strategic-plans",

@@ -63,8 +63,7 @@ const defaultCommittees: Committee[] = [
   { sNo: 38, name: "Tours & Travels Committee", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
   { sNo: 39, name: "Training & Placement Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
   { sNo: 40, name: "Universal Human Values (UHV) Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
-  { sNo: 41, name: "Women Empowerment Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] },
-  { sNo: 42, name: "Qunatumn Innovation Centre (QIC)", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] }
+  { sNo: 41, name: "Women Empowerment Cell", constitutionOrderUrl: "/documents/committees/college-committees-2025-2026.pdf", activitiesReports: [{ title: "Activities & Reports 2025–2026", fileUrl: "/documents/committees/college-committees-2025-2026.pdf" }] }
 ];
 
 const defaultYearwiseLists: YearwiseList[] = [

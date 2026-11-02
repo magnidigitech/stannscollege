@@ -31,31 +31,27 @@ export const ABOUT_CATEGORIES: SidebarCategory[] = [
       { text: "Emblem, Motto, Tagline, Vision, Mission & Core Values", slug: "vision-mission-and-core-values" },
       { text: "Institutional Awards & Recognitions", slug: "institutional-awards-recognitions" },
       { text: "Student Achievements & Laurels", slug: "student-laurels" },
-      { text: "Institutional Distinctiveness", slug: "institutional-distinctiveness" },
       { text: "Head of the Institution", slug: "head-of-the-institution" },
       { text: "Legacy of Leadership", slug: "legacy-of-leadership" },
     ],
   },
   {
     catSlug: "statutory-affiliations-recognitions",
-    title: "II. Statutory Affiliations & Recognitions",
+    title: "B. Affiliations, Approvals, Accreditation & Recognitions",
     items: [
-      { text: "APSCHE Orders", slug: "apsche-orders" },
-      { text: "ANU Affiliation Orders", slug: "anu-affiliation-orders-ug-pg" },
-      { text: "AICTE Approvals", slug: "aicte-approvals" },
-      { text: "UGC 2(f)", slug: "ugc-2f" },
-      { text: "AISHE Certificates", slug: "aishe-certificates" },
-      { text: "NAAC Accreditation", slug: "naac-accreditation" },
-      { text: "NIRF", slug: "nirf" },
+      { text: "Affiliated to Acharya Nagarjuna University (ANU)", slug: "anu", id: "anu" },
+      { text: "Approved by AICTE", slug: "aicte", id: "aicte" },
+      { text: "Recognised under Section 2(f) of UGC Act", slug: "ugc", id: "ugc" },
+      { text: "Accredited by NAAC", slug: "naac", id: "naac" },
     ],
   },
   {
     catSlug: "governance-administration",
-    title: "III. Governance & Administration",
+    title: "C. Governance & Administration",
     items: [
       { text: "Governing Body", slug: "governing-body" },
       { text: "Organogram", slug: "organogram" },
-      { text: "Key Functionaries & IQAC", slug: "key-functionaries-iqac" },
+      { text: "Key Functionaries", slug: "key-functionaries" },
       { text: "Statutory & Non-Statutory Committees", slug: "statutory-non-statutory-committees" },
       { text: "Institutional Policies", slug: "institutional-policies" },
       { text: "Strategic Development Plan", slug: "strategic-development-plan" },
@@ -214,15 +210,18 @@ export default function AboutSidebar({
                   ));
 
                 const handleClick = (e: React.MouseEvent) => {
-                  if (item.id) {
+                  if (item.id && currentCatSlug === cat.catSlug) {
                     e.preventDefault();
                     scrollToTarget(item.id);
+                    if (typeof window !== "undefined") {
+                      window.history.pushState(null, "", `#${item.id}`);
+                    }
                     if (onItemClick) onItemClick(item.id);
                   }
                 };
 
                 const href = item.id
-                  ? `#${item.id}`
+                  ? (currentCatSlug === cat.catSlug ? `#${item.id}` : `/about/${cat.catSlug}#${item.id}`)
                   : item.slug === "strategic-development-plan"
                     ? "/strategic-plans-and-future-directions"
                     : `/about/${cat.catSlug}/${item.slug}`;

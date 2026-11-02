@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { GoverningBody } from "./governance-administration/GoverningBody";
 import { Organogram } from "./governance-administration/Organogram";
 import { KeyFunctionaries } from "./governance-administration/KeyFunctionaries";
-import { Iqac } from "./governance-administration/Iqac";
 import { StatutoryCommittees } from "./governance-administration/StatutoryCommittees";
 import { InstitutionalPolicies } from "./governance-administration/InstitutionalPolicies";
 import { CodeOfConduct } from "./governance-administration/CodeOfConduct";
 import { StrategicDevelopmentPlan } from "./governance-administration/StrategicDevelopmentPlan";
-import { ShieldCheck, Sparkles, UserCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 export function GovernanceAdministration({
   itemSlug,
@@ -23,8 +21,6 @@ export function GovernanceAdministration({
   if (itemSlug === "strategic-development-plan") {
     return <StrategicDevelopmentPlan />;
   }
-  const [activeTab, setActiveTab] = useState<"functionaries" | "iqac">("functionaries");
-
   if (itemSlug === "governing-body") {
     return <GoverningBody />;
   }
@@ -33,37 +29,8 @@ export function GovernanceAdministration({
     return <Organogram />;
   }
 
-  if (itemSlug === "key-functionaries-iqac") {
-    return (
-      <div className="flex flex-col gap-6 select-none">
-        {/* Tab Switcher */}
-        <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-2xl max-w-md border border-slate-200/40 select-none">
-          <button
-            onClick={() => setActiveTab("functionaries")}
-            className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs md:text-sm font-bold transition-all ${
-              activeTab === "functionaries"
-                ? "bg-white text-indigo-700 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <UserCheck className="h-4 w-4" /> Key Functionaries
-          </button>
-          <button
-            onClick={() => setActiveTab("iqac")}
-            className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs md:text-sm font-bold transition-all ${
-              activeTab === "iqac"
-                ? "bg-white text-indigo-700 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Sparkles className="h-4 w-4" /> IQAC
-          </button>
-        </div>
-
-        {activeTab === "functionaries" && <KeyFunctionaries />}
-        {activeTab === "iqac" && <Iqac />}
-      </div>
-    );
+  if (itemSlug === "key-functionaries" || itemSlug === "key-functionaries-iqac") {
+    return <KeyFunctionaries />;
   }
 
   if (itemSlug === "statutory-non-statutory-committees") {

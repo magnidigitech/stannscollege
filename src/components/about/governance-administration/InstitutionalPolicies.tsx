@@ -1,261 +1,427 @@
 "use client";
 
-import { ShieldCheck, Award, GraduationCap, CheckCircle, Award as Medal, Sparkles, BookOpen, Compass, Target, Settings, Layers, ClipboardCheck, ArrowUpRight } from "lucide-react";
-import { useState, useEffect } from "react";
-import { CurriculumPolicyDetail } from "../policy/academic-curriculum-policies/CurriculumPolicyDetail";
-import { TeachingPolicyDetail } from "../policy/academic-curriculum-policies/TeachingPolicyDetail";
+import React, { useState } from "react";
+import { 
+  ShieldCheck, 
+  FileText, 
+  Download, 
+  Eye, 
+  BookOpen, 
+  Award, 
+  Users, 
+  Compass, 
+  Briefcase, 
+  DollarSign, 
+  Building2, 
+  Leaf, 
+  Sparkles,
+  ChevronDown,
+  Layers
+} from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+
+interface PolicyItem {
+  sNo: number;
+  name: string;
+  pdfUrl: string;
+  isRealDoc?: boolean;
+}
+
+interface PolicySubsection {
+  letter: string;
+  title: string;
+  policies: PolicyItem[];
+}
+
+interface PolicySection {
+  id: string;
+  roman: string;
+  title: string;
+  icon: any;
+  subsections?: PolicySubsection[];
+  policies?: PolicyItem[];
+}
+
+const POLICY_SECTIONS: PolicySection[] = [
+  {
+    id: "academic-curriculum",
+    roman: "I",
+    title: "Academic & Curriculum Policies",
+    icon: BookOpen,
+    policies: [
+      { sNo: 1, name: "Curriculum Implementation and Delivery Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, name: "Teaching–Learning and Pedagogy Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, name: "Academic Planning and Academic Calendar Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, name: "Examination and Continuous Assessment Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 5, name: "Outcome-Based Education (OBE) Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 6, name: "Feedback and Stakeholder Participation Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 7, name: "Internship, Experiential Learning and Skill Development Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 8, name: "Value-Added and Certificate Courses Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  {
+    id: "student-support",
+    roman: "II",
+    title: "Student Support & Welfare Policies",
+    icon: Users,
+    subsections: [
+      {
+        letter: "A",
+        title: "Statutory and Regulatory Policies",
+        policies: [
+          { sNo: 1, name: "Anti-Ragging Policy", pdfUrl: "/documents/student-support/1.Anti Ragging Policy.pdf", isRealDoc: true },
+          { sNo: 2, name: "Internal Complaints Committee (ICC) / Prevention of Sexual Harassment (POSH) Policy", pdfUrl: "/documents/student-support/2.Internal Complaints Committee (ICC) & POSH Policy.pdf", isRealDoc: true },
+          { sNo: 3, name: "Student Grievance Redressal Policy", pdfUrl: "/documents/student-support/3.Greaivance Reddrassal Policy.pdf", isRealDoc: true },
+          { sNo: 4, name: "Code of Conduct and Discipline Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 5, name: "Zero Tolerance Policy Against Ragging, Harassment and Discrimination", pdfUrl: "/documents/DefaultFile_1.pdf" }
+        ]
+      },
+      {
+        letter: "B",
+        title: "Student Welfare & Inclusiveness Policies",
+        policies: [
+          { sNo: 6, name: "Equal Opportunity, SC/ST, Minority and Inclusive Education Policy", pdfUrl: "/documents/student-support/6.EOC SC ST Minority Policy.pdf", isRealDoc: true },
+          { sNo: 7, name: "Women Empowerment and Gender Sensitization Policy", pdfUrl: "/documents/student-support/Woment Empowerment Cell Policy 2026.pdf", isRealDoc: true },
+          { sNo: 8, name: "Divyangjan Support Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 9, name: "Student Welfare, Counseling and Wellness Policy", pdfUrl: "/documents/student-support/9.Student Welfare,Counselling & Welness Polciy.pdf", isRealDoc: true }
+        ]
+      },
+      {
+        letter: "C",
+        title: "Academic Support & Mentoring Policies",
+        policies: [
+          { sNo: 10, name: "Mentoring and Student Induction Policy", pdfUrl: "/documents/student-support/Mentor & Mentee Committee Guidelines.pdf", isRealDoc: true },
+          { sNo: 11, name: "Scholarships, Freeships and Financial Assistance Policy", pdfUrl: "/documents/student-support/Scholarships,Freeships & Financial Assistance Polciy.pdf", isRealDoc: true },
+          { sNo: 12, name: "Slow and Advanced Learners Support Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+        ]
+      },
+      {
+        letter: "D",
+        title: "Career Development & Student Progression Policies",
+        policies: [
+          { sNo: 13, name: "Career Guidance, Training and Placement Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 14, name: "Alumni Engagement and Student Progression Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 15, name: "Student Leadership and Participation Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+        ]
+      },
+      {
+        letter: "E",
+        title: "Safety, Ethics & Health Policies",
+        policies: [
+          { sNo: 16, name: "Campus Safety and Security Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 17, name: "Health, Hygiene and Wellness Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 18, name: "Cyber Safety and Digital Ethics Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+          { sNo: 19, name: "Tobacco-Free and Substance Abuse Prevention Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "research-innovation",
+    roman: "III",
+    title: "Research, Innovation & Extension Policies",
+    icon: Sparkles,
+    policies: [
+      { sNo: 1, name: "Research Promotion and Development Policy", pdfUrl: "/documents/research/1.Rsearch Promotion & Development Policy.pdf", isRealDoc: true },
+      { sNo: 2, name: "Innovation and Incubation Policy", pdfUrl: "/documents/research/Institution_Innovation_Cell_Policy.pdf", isRealDoc: true },
+      { sNo: 3, name: "Entrepreneurship Development Policy", pdfUrl: "/documents/research/Entrepreneurship_Policy.pdf", isRealDoc: true },
+      { sNo: 4, name: "Intellectual Property Rights (IPR) Policy", pdfUrl: "/documents/research/Intellectual_Property_Rights_IPR_Policy.pdf", isRealDoc: true },
+      { sNo: 5, name: "Consultancy, Collaboration and MoU Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 6, name: "Extension Activities and Community Engagement Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 7, name: "NSS and Institutional Social Responsibility Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  {
+    id: "governance-management",
+    roman: "IV",
+    title: "Governance & Institutional Management Policies",
+    icon: Compass,
+    policies: [
+      { sNo: 1, name: "Institutional Governance and Leadership Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, name: "Decentralization and Participative Management Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, name: "E-Governance and Digital Administration Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, name: "Internal Quality Assurance Cell (IQAC) Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 5, name: "Strategic Perspective and Development Plan Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 6, name: "Code of Professional Ethics and Conduct Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 7, name: "Disaster Management Plan", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  {
+    id: "human-resources",
+    roman: "V",
+    title: "Human Resource Management Policies",
+    icon: Briefcase,
+    policies: [
+      { sNo: 1, name: "Recruitment, Selection and Promotion Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, name: "Faculty Development and Training Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, name: "Faculty Performance Appraisal Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, name: "Leave, Service Rules and Welfare Policy", pdfUrl: "/documents/faculty/Human_Resource_Policy.pdf", isRealDoc: true },
+      { sNo: 5, name: "Staff Grievance Redressal Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  {
+    id: "financial-management",
+    roman: "VI",
+    title: "Financial Management Policies",
+    icon: DollarSign,
+    policies: [
+      { sNo: 1, name: "Financial Management Policy", pdfUrl: "/documents/policies/Financial_Management_Policy.pdf", isRealDoc: true },
+      { sNo: 2, name: "SOP (Standard Operating Procedure)", pdfUrl: "/documents/policies/Purchase_Procurement_Policy_SOP.pdf", isRealDoc: true },
+      { sNo: 3, name: "Purchase Policy", pdfUrl: "/documents/policies/Purchase_Procurement_Policy_SOP.pdf", isRealDoc: true }
+    ]
+  },
+  {
+    id: "infrastructure-learning",
+    roman: "VII",
+    title: "Infrastructure & Learning Resources Policies",
+    icon: Building2,
+    policies: [
+      { sNo: 1, name: "Infrastructure Development and Augmentation Policy", pdfUrl: "/documents/policies/Infrastructure_Development_Augmentation_Policy.pdf", isRealDoc: true },
+      { sNo: 2, name: "IT Infrastructure and Digital Learning Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, name: "Library and Knowledge Resource Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, name: "Maintenance of Physical and Academic Facilities Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  {
+    id: "environment-sustainability",
+    roman: "VIII",
+    title: "Environment & Sustainability Policies",
+    icon: Leaf,
+    policies: [
+      { sNo: 1, name: "Green Campus and Environmental Sustainability Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, name: "Waste Management Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, name: "Energy Conservation and Renewable Energy Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, name: "Water Conservation and Management Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 5, name: "Environmental Audit & Sustainability Monitoring Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  {
+    id: "quality-assurance",
+    roman: "IX",
+    title: "Quality Assurance & Accreditation Policies",
+    icon: Award,
+    policies: [
+      { sNo: 1, name: "Continuous Quality Improvement Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, name: "Documentation, Data Management and AQAR Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, name: "Academic and Administrative Audit (AAA) Policy", pdfUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, name: "Best Practices and Institutional Distinctiveness Policy", pdfUrl: "/documents/DefaultFile_1.pdf" }
+    ]
+  }
+];
 
 export function InstitutionalPolicies() {
-  const [selectedPolicy, setSelectedPolicy] = useState<"main" | "curriculum" | "teaching">("main");
-  const [openIds, setOpenIds] = useState<number[]>([0]);
+  const [activeSectionId, setActiveSectionId] = useState<string>(POLICY_SECTIONS[0].id);
+  const [previewPdf, setPreviewPdf] = useState<{ url: string; title: string } | null>(null);
 
-  const categories = [
-    {
-      title: "1. Academic & Curriculum Policies",
-      points: [
-        "Curriculum Planning and Development Policy (CBCS/OBE)",
-        "Teaching–Learning and Pedagogy Policy",
-        "Academic Calendar and Academic Planning Policy",
-        "Feedback and Stakeholder Engagement Policy",
-        "Examination and Assessment Policy",
-        "Outcome-Based Education (OBE) Implementation Policy",
-        "Value-Added and Certificate Courses Policy",
-        "Internship and Experiential Learning Policy"
-      ]
-    },
-    {
-      title: "2. Research, Innovation & Extension Policies",
-      points: [
-        "Research Promotion and Development Policy",
-        "Intellectual Property Rights (IPR) Policy",
-        "Innovation, Incubation Policy",
-        "Entrepreneurship Policy",
-        "Collaboration, MoU & Consultancy Policy"
-      ]
-    },
-    {
-      title: "3. Student Support & Welfare Policies",
-      points: [
-        "Student Induction and Mentoring Policy",
-        "Student Support, Scholarships and Financial Aid Policy",
-        "Career Guidance, Training and Placement Policy",
-        "Student Grievance Redressal Policy",
-        "Anti-Ragging Policy",
-        "Student Welfare and Counseling Policy",
-        "Alumni Engagement and Progression Policy"
-      ]
-    },
-    {
-      title: "4. Governance & Institutional Management Policies",
-      points: [
-        "Institutional Governance and Leadership Policy",
-        "Code of Conduct Policy (Students, Faculty and Staff)",
-        "E-Governance and Digital Administration Policy",
-        "Strategic Perspective Plan (2024–2030)",
-        "Internal Quality Assurance Cell (IQAC) Policy",
-        "Decentralization and Participative Management Policy"
-      ]
-    },
-    {
-      title: "5. Human Resource Management Policies",
-      points: [
-        "Recruitment, Selection and Promotion Policy",
-        "Faculty Development and Training Policy",
-        "Performance Appraisal Policy (PBAS/API)",
-        "Leave, Service Rules and Welfare Policy",
-        "Staff Welfare and Professional Ethics Policy"
-      ]
-    },
-    {
-      title: "6. Financial Management Policies",
-      points: [
-        "Financial Management and Resource Mobilization Policy",
-        "Budget Planning and Financial Control Policy",
-        "Audit and Compliance Policy",
-        "Procurement and Purchase Policy",
-        "Financial Transparency and Utilization Policy"
-      ]
-    },
-    {
-      title: "7. Infrastructure & Learning Resources Policies",
-      points: [
-        "Infrastructure Development and Augmentation Policy",
-        "IT Infrastructure and Digital Learning Policy",
-        "Library and Knowledge Resource Policy",
-        "Maintenance of Physical and Academic Facilities Policy",
-        "Campus Safety and Security Policy"
-      ]
-    },
-    {
-      title: "8. Gender Equity & Inclusivity Policies",
-      points: [
-        "Gender Equity and Sensitization Policy",
-        "Prevention of Sexual Harassment Policy (POSH – ICC)",
-        "Equal Opportunity and Inclusive Education Policy",
-        "Divyangjan (Differently-Abled) Support Policy",
-        "Women Empowerment and Development Policy"
-      ]
-    },
-    {
-      title: "9. Environment & Sustainability Policies",
-      points: [
-        "Green Campus and Environmental Sustainability Policy",
-        "Waste Management Policy",
-        "Energy Conservation and Renewable Energy Policy",
-        "Water Conservation and Management Policy",
-        "Green Audit and Environmental Monitoring Policy"
-      ]
-    },
-    {
-      title: "10. Extension, Outreach & Social Responsibility Policies",
-      points: [
-        "Extension Activities and Community Engagement Policy",
-        "NSS and Institutional Social Responsibility Policy",
-        "Outreach Programs and Social Impact Policy"
-      ]
-    },
-    {
-      title: "11. Quality Assurance & NAAC Policies",
-      points: [
-        "Internal Quality Assurance and Enhancement Policy",
-        "Continuous Quality Improvement Policy",
-        "Best Practices and Institutional Distinctiveness Policy",
-        "Documentation, Data Management and AQAR Policy",
-        "Academic and Administrative Audit (AAA) Policy"
-      ]
-    }
-  ];
-
-  const mandatoryPolicies = [
-    "Anti-Ragging Policy",
-    "Sexual Harassment Prevention Policy (ICC)",
-    "Student Grievance Redressal Policy",
-    "Code of Conduct",
-    "Equal Opportunity Policy"
-  ];
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
-      setOpenIds(categories.map((_, idx) => idx));
-    }
-  }, []);
-
-  const toggleAccordion = (idx: number) => {
-    setOpenIds((prev) =>
-      prev.includes(idx) ? prev.filter((id) => id !== idx) : [...prev, idx]
-    );
+  const handleOpenPdf = (pdfUrl: string, title: string) => {
+    setPreviewPdf({ url: pdfUrl, title });
   };
 
-  if (selectedPolicy === "curriculum") {
-    return <CurriculumPolicyDetail onBack={() => setSelectedPolicy("main")} />;
-  }
+  const handleCloseModal = () => {
+    setPreviewPdf(null);
+  };
 
-  if (selectedPolicy === "teaching") {
-    return <TeachingPolicyDetail onBack={() => setSelectedPolicy("main")} />;
-  }
+  const selectedSection = POLICY_SECTIONS.find((s) => s.id === activeSectionId) || POLICY_SECTIONS[0];
 
   return (
-    <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
-      {/* Dark Gradient Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+    <div className="flex flex-col gap-10 font-sans select-none animate-fadeIn">
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
+            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-500/20 backdrop-blur-md border border-indigo-400/30 px-3.5 py-1 text-xs font-bold text-indigo-200 tracking-wider uppercase mb-3">
+              <ShieldCheck className="h-3.5 w-3.5" /> Policy Framework
+            </div>
+            <h2 className="font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight">
               Institutional Policies
             </h2>
-            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
-              Enforcing strict, transparent, and fair policies governing all facets of our educational mission. This framework supports continuous quality enhancement and academic integrity.
+            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-2xl font-normal leading-relaxed">
+              Comprehensive governance frameworks framed in accordance with UGC, NAAC, and APSCHE guidelines to uphold transparency, academic rigor, ethical practices, and continuous institutional development.
             </p>
           </div>
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
-            <ClipboardCheck className="h-6 w-6 animate-pulse" />
-          </span>
-        </div>
-      </div>
-
-      {/* Mandatory Statutory Policies Callout Card */}
-      <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white p-6 md:p-8 rounded-3xl shadow-md border border-indigo-800/40 hover:shadow-lg transition-all flex flex-col justify-between">
-        <div>
-          <h4 className="font-outfit text-lg md:text-xl font-black text-indigo-300 border-b border-indigo-800/80 pb-3 mb-4 flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5 animate-pulse" /> Mandatory Statutory Policies
-          </h4>
-          <p className="text-indigo-100/80 text-xs md:text-sm font-medium mb-5 select-none">
-            Strictly highlighted for compliance and regulatory clarity.
-          </p>
-
-          <div className="flex flex-wrap gap-2.5">
-            {mandatoryPolicies.map((policy, idx) => (
-              <span
-                key={idx}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 px-4 py-2 text-xs md:text-sm font-bold text-indigo-100 transition-all select-none"
-              >
-                <CheckCircle className="h-4 w-4 text-indigo-300 shrink-0" />
-                {policy}
-              </span>
-            ))}
+          <div className="shrink-0 flex items-center gap-3">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
+              <FileText className="h-6 w-6 animate-pulse" />
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Accordions Category List - using same styling as Detail view */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm flex flex-col gap-4">
-        {categories.map((cat, index) => (
-          <div
-            key={index}
-            className={`overflow-hidden border transition-all duration-300 rounded-2xl ${openIds.includes(index)
-                ? "bg-indigo-50/20 border-indigo-200/80 shadow-md"
-                : "bg-white border-slate-100 hover:border-indigo-100 hover:shadow-sm"
-              }`}
-          >
-            <button
-              onClick={() => toggleAccordion(index)}
-              className="w-full flex items-center justify-between px-6 py-4 outline-none text-left select-none"
-            >
-              <div className="flex items-center gap-3">
-                <span className="flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100/60 text-indigo-600 text-xs shrink-0 select-none">
-                  <Layers className="h-4 w-4 text-indigo-600" />
-                </span>
-                <h4 className="font-outfit font-black text-slate-800 text-sm md:text-base group-hover:text-indigo-600 transition-colors">
-                  {cat.title}
-                </h4>
-              </div>
-            </button>
+      {/* Official Narrative Callout */}
+      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm">
+        <h3 className="font-outfit text-lg md:text-xl font-black text-slate-900 border-b border-slate-100 pb-3 mb-4 select-none">
+          Policy Framework & Regulatory Governance
+        </h3>
+        <p className="font-sans text-sm md:text-base text-slate-600 leading-relaxed font-normal">
+          St. Ann’s College for Women is committed to maintaining transparency, academic excellence, ethical practices, inclusiveness, and quality assurance in all institutional activities. The Institutional Policies of the college are framed in accordance with the guidelines of UGC, NAAC, APSCHE, and other regulatory bodies to ensure effective governance, student welfare, research promotion, environmental sustainability, and continuous institutional development. These policies provide a structured framework for the smooth and effective functioning of the institution.
+        </p>
+      </div>
 
-            {openIds.includes(index) && (
-              <div className="px-6 pb-5 pt-2 border-t border-indigo-100/40 animate-fadeIn">
-                <div className="flex flex-col gap-2.5">
-                  {cat.points.map((point, idx) => {
-                    const isCurriculum = index === 0 && idx === 0;
-                    const isTeaching = index === 0 && idx === 1;
-                    return (
-                      <div
-                        key={idx}
-                        onClick={() => {
-                          if (isCurriculum) setSelectedPolicy("curriculum");
-                          if (isTeaching) setSelectedPolicy("teaching");
-                        }}
-                        className={`flex items-start gap-2 text-xs md:text-sm font-normal text-slate-600 leading-relaxed p-1.5 rounded-xl transition-all ${isCurriculum || isTeaching
-                            ? "cursor-pointer hover:bg-indigo-50/60 hover:text-indigo-700 font-bold border border-transparent hover:border-indigo-100/50"
-                            : ""
-                          }`}
-                      >
-                        <CheckCircle
-                          className={`h-4 w-4 mt-0.5 shrink-0 ${isCurriculum || isTeaching
-                              ? "text-indigo-600 animate-pulse"
-                              : "text-indigo-500"
-                            }`}
-                        />
-                        <span>{point}</span>
-                      </div>
-                    );
-                  })}
+      {/* Dropdown Section Selector */}
+      <div className="bg-white border border-slate-200/70 p-5 md:p-6 rounded-3xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] shadow-sm shrink-0">
+            <Layers className="h-5 w-5" />
+          </span>
+          <div>
+            <label htmlFor="policy-section-dropdown" className="block text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Select Policy Category
+            </label>
+            <h4 className="font-outfit text-sm md:text-base font-black text-slate-800 leading-tight mt-0.5">
+              Choose an Institutional Policy Section
+            </h4>
+          </div>
+        </div>
+
+        <div className="relative w-full md:w-auto min-w-[320px] lg:min-w-[440px]">
+          <select
+            id="policy-section-dropdown"
+            value={activeSectionId}
+            onChange={(e) => setActiveSectionId(e.target.value)}
+            className="w-full appearance-none bg-slate-50/90 hover:bg-slate-100/90 border border-slate-200/90 rounded-2xl py-3 px-4 pr-11 text-xs md:text-sm font-bold text-slate-800 focus:outline-none focus:border-[#002147] focus:ring-2 focus:ring-[#002147]/10 transition-all cursor-pointer shadow-sm"
+          >
+            {POLICY_SECTIONS.map((sec) => (
+              <option key={sec.id} value={sec.id} className="text-slate-800 font-medium py-1.5">
+                {sec.roman}. {sec.title}
+              </option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#002147]">
+            <ChevronDown className="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+
+      {/* Selected Section Table */}
+      <div className="bg-white border border-slate-200/70 rounded-3xl p-6 md:p-8 shadow-sm hover:shadow-md transition-all">
+        {/* Section Header */}
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-700 shadow-sm shrink-0">
+            <selectedSection.icon className="h-5 w-5" />
+          </span>
+          <div>
+            <h3 className="font-outfit text-lg md:text-xl font-black text-slate-900 leading-snug">
+              {selectedSection.roman}. {selectedSection.title}
+            </h3>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Official Institutional Policies
+            </span>
+          </div>
+        </div>
+
+        {/* If section has subsections (e.g. Student Support II.A - II.E) */}
+        {selectedSection.subsections ? (
+          <div className="flex flex-col gap-8">
+            {selectedSection.subsections.map((sub) => (
+              <div key={sub.letter} className="flex flex-col gap-3">
+                <h4 className="font-outfit text-sm md:text-base font-bold text-[#002147] flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-50 text-indigo-700 text-xs font-black">
+                    {sub.letter}
+                  </span>
+                  {sub.title}
+                </h4>
+
+                {/* Table of policies */}
+                <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-slate-50/30">
+                  <table className="min-w-full divide-y divide-slate-100 text-left text-xs md:text-sm">
+                    <thead className="bg-slate-50/80 font-outfit text-slate-700">
+                      <tr>
+                        <th className="px-4 py-3 font-black text-center w-14">S.No</th>
+                        <th className="px-6 py-3 font-black">Name of the Policy</th>
+                        <th className="px-6 py-3 font-black text-right w-44">Document</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-600 bg-white">
+                      {sub.policies.map((pol) => (
+                        <tr key={pol.sNo} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="px-4 py-3.5 text-center font-bold text-slate-400">
+                            {pol.sNo}
+                          </td>
+                          <td className="px-6 py-3.5 font-semibold text-slate-800">
+                            {pol.name}
+                          </td>
+                          <td className="px-6 py-3.5 text-right whitespace-nowrap">
+                            <div className="inline-flex items-center gap-2 justify-end">
+                              <button
+                                onClick={() => handleOpenPdf(pol.pdfUrl, pol.name)}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white border border-indigo-200/60 hover:border-transparent font-bold text-xs transition-all shadow-sm"
+                              >
+                                <Eye className="h-3.5 w-3.5" /> View PDF
+                              </button>
+                              <a
+                                href={pol.pdfUrl}
+                                download
+                                className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                                title="Direct Download"
+                              >
+                                <Download className="h-3.5 w-3.5" />
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            )}
+            ))}
           </div>
-        ))}
+        ) : (
+          /* Flat policies list for sections without subsections */
+          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-slate-50/30">
+            <table className="min-w-full divide-y divide-slate-100 text-left text-xs md:text-sm">
+              <thead className="bg-slate-50/80 font-outfit text-slate-700">
+                <tr>
+                  <th className="px-4 py-3 font-black text-center w-14">S.No</th>
+                  <th className="px-6 py-3 font-black">Name of the Policy</th>
+                  <th className="px-6 py-3 font-black text-right w-44">Document</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 text-slate-600 bg-white">
+                {selectedSection.policies?.map((pol) => (
+                  <tr key={pol.sNo} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="px-4 py-3.5 text-center font-bold text-slate-400">
+                      {pol.sNo}
+                    </td>
+                    <td className="px-6 py-3.5 font-semibold text-slate-800">
+                      {pol.name}
+                    </td>
+                    <td className="px-6 py-3.5 text-right whitespace-nowrap">
+                      <div className="inline-flex items-center gap-2 justify-end">
+                        <button
+                          onClick={() => handleOpenPdf(pol.pdfUrl, pol.name)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white border border-indigo-200/60 hover:border-transparent font-bold text-xs transition-all shadow-sm"
+                        >
+                          <Eye className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                        <a
+                          href={pol.pdfUrl}
+                          download
+                          className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                          title="Direct Download"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
+
+      {/* File Preview Modal */}
+      {previewPdf && (
+        <FilePreviewModal
+          isOpen={true}
+          onClose={handleCloseModal}
+          fileUrl={previewPdf.url}
+          title={previewPdf.title}
+        />
+      )}
     </div>
   );
 }

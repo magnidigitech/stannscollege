@@ -10,7 +10,7 @@ export default function AboutClientFallback() {
     {
       catSlug: "the-institution",
       title: "A. The Institution",
-      description: "Our history, core values, distinctive character, and visionary path since 1997.",
+      description: "Our history, core values, and visionary educational path since 1997.",
       icon: Building,
       items: [
         { text: "Basic Institutional Information", slug: "basic-institutional-information" },
@@ -18,35 +18,32 @@ export default function AboutClientFallback() {
         { text: "Emblem, Motto, Tagline, Vision, Mission & Core Values", slug: "vision-mission-and-core-values" },
         { text: "Institutional Awards & Recognitions", slug: "institutional-awards-recognitions" },
         { text: "Student Achievements & Laurels", slug: "student-laurels" },
-        { text: "Institutional Distinctiveness", slug: "institutional-distinctiveness" },
         { text: "Head of the Institution", slug: "head-of-the-institution" },
         { text: "Legacy of Leadership", slug: "legacy-of-leadership" },
       ],
     },
     {
       catSlug: "statutory-affiliations-recognitions",
-      title: "II. Statutory Affiliations & Recognitions",
+      title: "B. Affiliations, Approvals, Accreditation & Recognitions",
       description: "Accreditation, official recognition, and statutory compliance frameworks.",
       icon: ShieldCheck,
       items: [
-        { text: "APSCHE Orders", slug: "apsche-orders" },
-        { text: "ANU Affiliation Orders (UG & PG)", slug: "anu-affiliation-orders-ug-pg" },
-        { text: "AICTE Approvals", slug: "aicte-approvals" },
-        { text: "UGC 2(f)", slug: "ugc-2f" },
-        { text: "AISHE Certificates", slug: "aishe-certificates" },
-        { text: "NAAC Accreditation", slug: "naac-accreditation" },
-        { text: "NIRF", slug: "nirf" },
+        { text: "Affiliated to Acharya Nagarjuna University (ANU)", slug: "anu", href: "/about/statutory-affiliations-recognitions#anu" },
+        { text: "Approved by AICTE", slug: "aicte", href: "/about/statutory-affiliations-recognitions#aicte" },
+        { text: "Recognised under Section 2(f) of UGC Act", slug: "ugc", href: "/about/statutory-affiliations-recognitions#ugc" },
+        { text: "Accredited by NAAC", slug: "naac", href: "/about/statutory-affiliations-recognitions#naac" },
+        { text: "View Detailed Statutory Disclosures →", href: "/mandatory-disclosures" },
       ],
     },
     {
       catSlug: "governance-administration",
-      title: "III. Governance & Administration",
+      title: "C. Governance & Administration",
       description: "Our governing body, administration policies, functions, and key committees.",
       icon: Users,
       items: [
         { text: "Governing Body", slug: "governing-body" },
         { text: "Organogram", slug: "organogram" },
-        { text: "Key Functionaries & IQAC", slug: "key-functionaries-iqac" },
+        { text: "Key Functionaries", slug: "key-functionaries" },
         { text: "Statutory & Non-Statutory Committees", slug: "statutory-non-statutory-committees" },
         { text: "Institutional Policies", slug: "institutional-policies" },
         { text: "Strategic Development Plan", slug: "strategic-development-plan" },
@@ -101,14 +98,16 @@ export default function AboutClientFallback() {
 
                 {/* Sub items list inside column */}
                 <div className="flex flex-col gap-2">
-                  {cat.items.map((item) => {
-                    const href = item.slug === "strategic-development-plan"
+                  {cat.items.map((item, idx) => {
+                    const href = (item as any).href
+                      ? (item as any).href
+                      : item.slug === "strategic-development-plan"
                       ? "/strategic-plans-and-future-directions"
                       : `/about/${cat.catSlug}/${item.slug}`;
 
                     return (
                       <Link
-                        key={item.slug}
+                        key={item.slug || idx}
                         href={href}
                         className="group flex items-center justify-between text-left p-3.5 bg-slate-50/40 hover:bg-[#002147]/5 hover:border-[#002147]/20 border border-slate-100/60 rounded-2xl transition-all duration-300 select-none cursor-pointer"
                       >

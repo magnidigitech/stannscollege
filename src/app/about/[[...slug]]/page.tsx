@@ -8,7 +8,6 @@ import { HistoryOfTheCollege } from "@/components/about/the-institution/HistoryO
 import { VisionMissionCoreValues } from "@/components/about/the-institution/VisionMissionCoreValues";
 import { InstitutionalAwards } from "@/components/about/the-institution/InstitutionalAwards";
 import { StudentLaurels } from "@/components/about/the-institution/StudentLaurels";
-import { InstitutionalDistinctiveness } from "@/components/about/the-institution/InstitutionalDistinctiveness";
 import { HeadOfTheInstitution } from "@/components/about/the-institution/HeadOfTheInstitution";
 import { LegacyOfLeadership } from "@/components/about/the-institution/LegacyOfLeadership";
 import AboutClientFallback from "@/components/about/AboutClientFallback";
@@ -31,7 +30,6 @@ const aboutSubtexts: Record<string, string> = {
   "vision-mission-and-core-values": "Guiding principles, aspirational horizons, and enduring values of St. Ann's College for Women.",
   "institutional-awards-recognitions": "Honors, recognitions, and accolades celebrating institutional excellence.",
   "student-laurels": "Exemplary triumphs and distinguished achievements of our scholars in state, national, and international arenas.",
-  "institutional-distinctiveness": "Pioneering women empowerment through holistic education, character formation, and social transformation.",
   "head-of-the-institution": "Leadership and administrative guidance steering St. Ann's College for Women towards excellence.",
   "legacy-of-leadership": "Honoring the visionary leaders whose dedication and wisdom shaped our institutional heritage.",
   "apsche-orders": "Statutory state government orders and higher education council approvals.",
@@ -43,7 +41,9 @@ const aboutSubtexts: Record<string, string> = {
   "nirf": "National Institutional Ranking Framework (NIRF) annual data reports.",
   "governing-body": "Constitution, members, and meeting resolutions of the Governing Body.",
   "organogram": "Institutional governance structure and administrative hierarchy.",
-  "key-functionaries-iqac": "Administrative leadership, statutory officers, and IQAC coordinating team.",
+  "key-functionaries": "Visionary leaders, provincial superiors, and administrative officers steering St. Ann's College for Women.",
+  "key-functionaries-iqac": "Visionary leaders, provincial superiors, and administrative officers steering St. Ann's College for Women.",
+  "statutory-affiliations-recognitions": "St. Ann’s College for Women, Gorantla, Guntur is a recognized higher education institution committed to academic quality, regulatory compliance and institutional excellence.",
   "statutory-non-statutory-committees": "Statutory and non-statutory committees ensuring effective institutional governance.",
   "institutional-policies": "Official policy documents governing academics, research, admissions, and administration.",
   "code-of-conduct": "Professional ethics, behavioural guidelines, and code of conduct for faculty, staff, and students."
@@ -51,8 +51,8 @@ const aboutSubtexts: Record<string, string> = {
 
 const categoryMapping: Record<string, string> = {
   "the-institution": "A. The Institution",
-  "statutory-affiliations-recognitions": "II. Statutory Affiliations & Recognitions",
-  "governance-administration": "III. Governance & Administration"
+  "statutory-affiliations-recognitions": "B. Affiliations, Approvals, Accreditation & Recognitions",
+  "governance-administration": "C. Governance & Administration"
 };
 
 const itemsMapping: Record<string, string> = {
@@ -61,7 +61,6 @@ const itemsMapping: Record<string, string> = {
   "vision-mission-and-core-values": "Emblem, Motto, Tagline, Vision, Mission & Core Values",
   "institutional-awards-recognitions": "Institutional Awards & Recognitions",
   "student-laurels": "Student Achievements & Laurels",
-  "institutional-distinctiveness": "Institutional Distinctiveness",
   "head-of-the-institution": "Head of the Institution",
   "legacy-of-leadership": "Legacy of Leadership",
   "apsche-orders": "APSCHE Orders",
@@ -73,7 +72,12 @@ const itemsMapping: Record<string, string> = {
   "nirf": "NIRF",
   "governing-body": "Governing Body",
   "organogram": "Organogram",
-  "key-functionaries-iqac": "Key Functionaries & IQAC",
+  "key-functionaries": "Key Functionaries",
+  "key-functionaries-iqac": "Key Functionaries",
+  "anu": "Affiliated to Acharya Nagarjuna University (ANU)",
+  "aicte": "Approved by AICTE",
+  "ugc": "Recognised under Section 2(f) of UGC Act",
+  "naac": "Accredited by NAAC",
   "statutory-non-statutory-committees": "Statutory & Non-Statutory Committees",
   "institutional-policies": "Institutional Policies",
   "strategic-development-plan": "Strategic Development Plan",
@@ -151,6 +155,10 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
     redirect("/strategic-plans-and-future-directions");
   }
 
+  if (itemSlug === "institutional-distinctiveness") {
+    redirect("/about/the-institution/basic-institutional-information");
+  }
+
   const activeCategory = catSlug ? categoryMapping[catSlug] || catSlug : null;
   const activeItem = itemSlug ? itemsMapping[itemSlug] || itemSlug : null;
 
@@ -178,6 +186,36 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
 
   // Dynamic 2-column Grid Layout for Sections to maximize right-hand empty space
   // Dynamic Grid Layout for Sections with Sidebar
+  // Section B: Unified single page with anchor scrolling
+  if (catSlug === "statutory-affiliations-recognitions") {
+    const pageSubtext = "St. Ann’s College for Women, Gorantla, Guntur is a recognized higher education institution committed to academic quality, regulatory compliance and institutional excellence.";
+
+    return (
+      <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+            {/* Desktop Sidebar */}
+            <div className="lg:col-span-3">
+              <AboutSidebar currentCatSlug="statutory-affiliations-recognitions" currentItemSlug={itemSlug || "anu"} />
+            </div>
+
+            {/* Unified Section B Content */}
+            <div className="lg:col-span-9 mb-16 flex flex-col justify-between">
+              <div>
+                <SubtextBox subtext={pageSubtext} className="mb-8" />
+                <StatutoryAffiliations
+                  anuAffiliations={anuAffiliationsList}
+                  aicteApprovals={aicteApprovalsList}
+                  naacCertificates={naacCertificatesList}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (catSlug && itemSlug) {
     const pageTitle = itemsMapping[itemSlug] || activeItem || "About Us";
     const pageSubtext = aboutSubtexts[itemSlug] || "St. Ann’s College for Women, Gorantla, Guntur, established in 1997, is committed to higher educational distinction, moral integrity, academic rigor, and the holistic empowerment of young women.";
@@ -205,21 +243,8 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
                       {itemSlug === "vision-mission-and-core-values" && <VisionMissionCoreValues />}
                       {itemSlug === "institutional-awards-recognitions" && <InstitutionalAwards />}
                       {itemSlug === "student-laurels" && <StudentLaurels />}
-                      {itemSlug === "institutional-distinctiveness" && <InstitutionalDistinctiveness />}
                       {itemSlug === "head-of-the-institution" && <HeadOfTheInstitution />}
                       {itemSlug === "legacy-of-leadership" && <LegacyOfLeadership />}
-                    </>
-                  )}
-                  {catSlug === "statutory-affiliations-recognitions" && (
-                    <>
-                      {itemSlug === "apsche-orders" && <ApscheOrders apscheOrders={apscheOrdersList} />}
-                      {itemSlug === "anu-affiliation-orders-ug-pg" && <AnuAffiliations anuAffiliations={anuAffiliationsList} />}
-                      {itemSlug === "aicte-approvals" && <AicteApprovals aicteApprovals={aicteApprovalsList} />}
-                      {itemSlug === "ugc-2f" && <Ugc2f />}
-                      {itemSlug === "nirf" && <NirfReports nirfReports={nirfReportsList} />}
-                      {(itemSlug === "naac-certificates" || itemSlug === "naac-certficates" || itemSlug === "naac-accreditation") && <NaacCertificates naacCertificates={naacCertificatesList} />}
-                      {(itemSlug === "aishe-mhrd" || itemSlug === "aishe-certificates") && <AisheCertifications aisheCertifications={aisheCertificationsList} />}
-                      {itemSlug !== "apsche-orders" && itemSlug !== "anu-affiliation-orders-ug-pg" && itemSlug !== "aicte-approvals" && itemSlug !== "ugc-2f" && itemSlug !== "nirf" && itemSlug !== "naac-certificates" && itemSlug !== "naac-certficates" && itemSlug !== "naac-accreditation" && itemSlug !== "aishe-mhrd" && itemSlug !== "aishe-certificates" && <StatutoryAffiliations itemSlug={itemSlug} />}
                     </>
                   )}
                   {catSlug === "governance-administration" && (
@@ -239,14 +264,5 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
     );
   }
 
-  return (
-    <AboutClientFallback
-      apscheOrdersList={apscheOrdersList}
-      anuAffiliationsList={anuAffiliationsList}
-      aicteApprovalsList={aicteApprovalsList}
-      nirfReportsList={nirfReportsList}
-      naacCertificatesList={naacCertificatesList}
-      aisheCertificationsList={aisheCertificationsList}
-    />
-  );
+  return <AboutClientFallback />;
 }

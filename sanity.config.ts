@@ -1218,6 +1218,15 @@ export default defineConfig({
         ]
       },
       {
+        name: "qualityAssurancePortal",
+        title: "Quality Assurance & Accreditation Portal",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "lastUpdated", title: "Last Updated", type: "string" },
+        ]
+      },
+      {
         name: "academicProgramme",
         title: "Academic Programme",
         type: "document",

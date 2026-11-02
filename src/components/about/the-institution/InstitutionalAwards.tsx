@@ -61,22 +61,22 @@ export function InstitutionalAwards() {
     {
       date: "March 1, 2026",
       title: "Sustainable Bharath 2047 Conclave Certificate",
-      desc: "Participation Certificate in the National Conclave on Research & Deep Technologies by the Research Heights Foundation, Hyderabad."
+      desc: "Awarded a Participation Certificate in the National Conclave on Research & Deep Technologies for Sustainable Bharath 2047 by the Research Heights Foundation, Hyderabad. This recognizes our commitment to aligning higher education with emerging technologies and national development goals."
     },
     {
       date: "December 3, 2025",
       title: "TOP 10 MCA Colleges in AP",
-      desc: "Ranked among the TOP 10 MCA Colleges in Andhra Pradesh by The Higher Education Review Magazine, Bangalore."
+      desc: "Ranked among the TOP 10 MCA Colleges in Andhra Pradesh by The Higher Education Review Magazine, Bangalore, recognizing our program quality and student success."
     },
     {
       date: "June 30, 2024",
       title: "NAAC 'A' Grade Accreditation",
-      desc: "Secured prestigious NAAC 'A' Grade Accreditation with a CGPA of 3.09."
+      desc: "Secured NAAC 'A' Grade Accreditation (CGPA 3.09)."
     },
     {
       date: "September 26, 2023",
       title: "Red Cross Recognition",
-      desc: "Received Certificate of Appreciation from the Red Cross Blood Centre for voluntary blood donation."
+      desc: "Received a Certificate of Appreciation from the Red Cross Blood Centre for our commitment to voluntary blood donation."
     },
     {
       date: "July 12, 2023",
@@ -89,7 +89,7 @@ export function InstitutionalAwards() {
     {
       date: "March 12, 2022",
       title: "Silver Jubilee Celebration",
-      desc: "Celebrated 25 years of empowering women through high-end professional and value-based education."
+      desc: "Celebrated our Silver Jubilee, marking 25 years of empowering women through higher education."
     },
     {
       date: "2022",
@@ -114,7 +114,7 @@ export function InstitutionalAwards() {
     {
       date: "August 12, 2018",
       title: "Guntur 5K Freedom Run",
-      desc: "Recognized by the Guntur Municipal Corporation with an Appreciation Certificate."
+      desc: "Recognized by the Guntur Municipal Corporation with an Appreciation Certificate for active participation in the Guntur 5K Freedom Run."
     },
     {
       date: "September 16, 2017",
@@ -134,7 +134,7 @@ export function InstitutionalAwards() {
     {
       date: "September 11, 2008",
       title: "ANU PG Certificate of Merit",
-      desc: "Awarded Certificate of Merit (Second Prize) for Best Performing Professional PG College by Acharya Nagarjuna University."
+      desc: "Awarded the Certificate of Merit (Second Prize) for Best Performing Professional PG College by Acharya Nagarjuna University."
     }
   ];
 
@@ -173,7 +173,7 @@ export function InstitutionalAwards() {
         </p>
         <div className="p-4 bg-teal-50/50 border border-teal-100/60 rounded-2xl">
           <p className="text-xs md:text-sm font-semibold text-teal-900 leading-relaxed">
-            The successful Peer Team Visit (June 12-14, 2024), led by Dr. Devinder Kumar, Dr. Mufeed Ahmad, and Dr. Anjali Kulkarni, validated our strengths in teaching, research, and institutional culture.
+            The successful Peer Team Visit (June 12-14, 2024), led by Dr. Devinder Kumar, Dr. Mufeed Ahmad, and Dr. Anjali Kulkarni, validated our strengths in teaching, research, and institutional culture. This 'A' Grade serves as a beacon of quality for our future endeavors.
           </p>
         </div>
 

@@ -1,11 +1,17 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardCheck, ShieldCheck, Award, Target, FileText, MessageSquare, BarChart, Image as ImageIcon, Phone, ArrowRight, BookOpen, Mail } from "lucide-react";
+import { 
+  ClipboardCheck, ShieldCheck, Award, Target, FileText, 
+  MessageSquare, BarChart, Image as ImageIcon, Phone, 
+  ArrowRight, BookOpen, Mail, ChevronDown 
+} from "lucide-react";
 import { ContentRenderer } from "@/components/quality-assurance/ContentRenderer";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
+import defaultQaData from "@/components/quality-assurance/quality-assurance-data.json";
+import { QualityAssuranceData } from "@/types/quality-assurance";
 
 const navigationStructure = [
   {
@@ -45,8 +51,43 @@ export default function QualityAssurancePage({ params }: PageProps) {
   const resolvedParams = use(params);
   const pathname = usePathname();
 
-  // Default fallback route
-  const currentSlug = resolvedParams?.slug?.[0] || "iqac";
+  // Primary section slug and sub-slug (academic year or NAAC cycle)
+  const mainSlug = resolvedParams?.slug?.[0] || "iqac";
+  const subSlug = resolvedParams?.slug?.[1];
+
+  // Dynamic QA Dataset for sidebar sub-items
+  const [qaData, setQaData] = useState<QualityAssuranceData>(defaultQaData as unknown as QualityAssuranceData);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/quality-assurance")
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data && isMounted) {
+          setQaData(res.data);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const isAqarActive = mainSlug === "aqar";
+  const isNaacActive = mainSlug === "naac";
+
+  // Active year & cycle
+  const currentAqarYear = (isAqarActive && subSlug)
+    ? subSlug
+    : (qaData.aqarReports?.[0]?.year || "2023-2024");
+
+  const currentNaacCycle = (isNaacActive && subSlug)
+    ? subSlug
+    : (qaData.naacCycles?.[0]?.cycleId || "cycle-1");
+
+  // Track accordion expand states in sidebar
+  const [aqarExpanded, setAqarExpanded] = useState<boolean>(() => mainSlug === "aqar");
+  const [naacExpanded, setNaacExpanded] = useState<boolean>(() => mainSlug === "naac");
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
@@ -110,17 +151,158 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
                     <div className="flex flex-col gap-1 mt-1">
                       {group.items.map((item, i) => {
-                        const fullHref = `/quality-assurance/${item.slug}`;
-                        const isActive = currentSlug === item.slug;
+                        const isAqarItem = item.slug === "aqar";
+                        const isNaacItem = item.slug === "naac";
+                        const isActive = mainSlug === item.slug;
                         const ItemIcon = item.icon;
 
+                        // AQAR expandable item with sub-items
+                        if (isAqarItem) {
+                          return (
+                            <div key={i} className="flex flex-col">
+                              <button
+                                type="button"
+                                onClick={() => setAqarExpanded((prev) => !prev)}
+                                className={`w-full group font-sans text-xs md:text-sm py-2.5 px-3 rounded-xl transition-all duration-200 flex items-center justify-between select-none cursor-pointer text-left ${
+                                  isActive
+                                    ? "font-bold shadow-xs text-white"
+                                    : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1 font-semibold"
+                                }`}
+                                style={
+                                  isActive
+                                    ? {
+                                        background: "var(--sidebar-bg, #1e40af)",
+                                        borderColor: "var(--sidebar-border, #1e40af)",
+                                        color: "var(--sidebar-text, #ffffff)",
+                                        boxShadow: "0 2px 8px -1px rgba(30, 64, 175, 0.25)"
+                                      }
+                                    : undefined
+                                }
+                              >
+                                <div className="flex items-center gap-2.5 truncate">
+                                  <ItemIcon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-500 group-hover:text-blue-600"}`} />
+                                  <span className="truncate">{item.text}</span>
+                                </div>
+                                <ChevronDown
+                                  className={`h-3.5 w-3.5 transition-transform duration-200 shrink-0 ${
+                                    aqarExpanded ? "rotate-180" : ""
+                                  } ${isActive ? "text-white" : "text-slate-400 group-hover:text-blue-700"}`}
+                                />
+                              </button>
+
+                              {/* Sub-items list for AQAR academic years */}
+                              {aqarExpanded && qaData.aqarReports && qaData.aqarReports.length > 0 && (
+                                <div className="ml-4 pl-3 border-l-2 border-indigo-200/80 flex flex-col gap-1 mt-1 mb-1.5 animate-fade-in">
+                                  {qaData.aqarReports.map((rep) => {
+                                    const isSelectedYear = isActive && currentAqarYear === rep.year;
+                                    return (
+                                      <Link
+                                        key={rep.year}
+                                        href={`/quality-assurance/aqar/${rep.year}`}
+                                        className={`text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-between select-none ${
+                                          isSelectedYear
+                                            ? "bg-[#002147] text-white font-black shadow-xs"
+                                            : "text-slate-700 hover:text-blue-900 hover:bg-white/90 font-medium"
+                                        }`}
+                                      >
+                                        <span className="flex items-center gap-2 truncate">
+                                          <span
+                                            className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                                              isSelectedYear ? "bg-emerald-400" : "bg-slate-400"
+                                            }`}
+                                          />
+                                          <span className="truncate">{rep.year}</span>
+                                        </span>
+                                        {isSelectedYear && (
+                                          <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0" />
+                                        )}
+                                      </Link>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
+
+                        // NAAC expandable item with sub-items
+                        if (isNaacItem) {
+                          return (
+                            <div key={i} className="flex flex-col">
+                              <button
+                                type="button"
+                                onClick={() => setNaacExpanded((prev) => !prev)}
+                                className={`w-full group font-sans text-xs md:text-sm py-2.5 px-3 rounded-xl transition-all duration-200 flex items-center justify-between select-none cursor-pointer text-left ${
+                                  isActive
+                                    ? "font-bold shadow-xs text-white"
+                                    : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1 font-semibold"
+                                }`}
+                                style={
+                                  isActive
+                                    ? {
+                                        background: "var(--sidebar-bg, #1e40af)",
+                                        borderColor: "var(--sidebar-border, #1e40af)",
+                                        color: "var(--sidebar-text, #ffffff)",
+                                        boxShadow: "0 2px 8px -1px rgba(30, 64, 175, 0.25)"
+                                      }
+                                    : undefined
+                                }
+                              >
+                                <div className="flex items-center gap-2.5 truncate">
+                                  <ItemIcon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-500 group-hover:text-blue-600"}`} />
+                                  <span className="truncate">{item.text}</span>
+                                </div>
+                                <ChevronDown
+                                  className={`h-3.5 w-3.5 transition-transform duration-200 shrink-0 ${
+                                    naacExpanded ? "rotate-180" : ""
+                                  } ${isActive ? "text-white" : "text-slate-400 group-hover:text-blue-700"}`}
+                                />
+                              </button>
+
+                              {/* Sub-items list for NAAC Cycles */}
+                              {naacExpanded && qaData.naacCycles && qaData.naacCycles.length > 0 && (
+                                <div className="ml-4 pl-3 border-l-2 border-indigo-200/80 flex flex-col gap-1 mt-1 mb-1.5 animate-fade-in">
+                                  {qaData.naacCycles.map((cycle) => {
+                                    const isSelectedCycle = isActive && currentNaacCycle === cycle.cycleId;
+                                    return (
+                                      <Link
+                                        key={cycle.cycleId}
+                                        href={`/quality-assurance/naac/${cycle.cycleId}`}
+                                        className={`text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-between select-none ${
+                                          isSelectedCycle
+                                            ? "bg-[#002147] text-white font-black shadow-xs"
+                                            : "text-slate-700 hover:text-blue-900 hover:bg-white/90 font-medium"
+                                        }`}
+                                      >
+                                        <span className="flex items-center gap-2 truncate">
+                                          <span
+                                            className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                                              isSelectedCycle ? "bg-emerald-400" : "bg-slate-400"
+                                            }`}
+                                          />
+                                          <span className="truncate">{cycle.cycleName}</span>
+                                        </span>
+                                        {isSelectedCycle && (
+                                          <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0" />
+                                        )}
+                                      </Link>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
+
+                        // Standard navigation item
+                        const fullHref = `/quality-assurance/${item.slug}`;
                         return (
                           <Link
                             key={i}
                             href={fullHref}
                             className={`group font-sans text-xs md:text-sm py-2.5 px-3 rounded-xl transition-all duration-200 flex items-center justify-between select-none ${
                               isActive
-                                ? "font-bold shadow-xs"
+                                ? "font-bold shadow-xs text-white"
                                 : "text-slate-700 hover:text-blue-800 hover:bg-white/80 hover:translate-x-1.5 font-semibold"
                             }`}
                             style={
@@ -188,7 +370,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
             <SubtextBox>
               Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
             </SubtextBox>
-            <ContentRenderer slug={currentSlug} />
+            <ContentRenderer slug={mainSlug} subSlug={subSlug} portalData={qaData} />
           </main>
 
         </div>
