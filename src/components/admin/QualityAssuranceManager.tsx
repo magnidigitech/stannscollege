@@ -76,10 +76,15 @@ export function QualityAssuranceManager() {
   // Expanded sections tracking
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(["1.1", "2.1", "3.1", "4.1", "5.1", "6.1", "7.1"]));
 
-  const toggleSection = (secNum: string) => {
+  const toggleSection = (secKey: string, secNum?: string) => {
     const next = new Set(expandedSections);
-    if (next.has(secNum)) next.delete(secNum);
-    else next.add(secNum);
+    const isOpen = next.has(secKey) || (secNum ? next.has(secNum) : false);
+    if (isOpen) {
+      next.delete(secKey);
+      if (secNum) next.delete(secNum);
+    } else {
+      next.add(secKey);
+    }
     setExpandedSections(next);
   };
 
@@ -707,10 +712,13 @@ export function QualityAssuranceManager() {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                  {crit.sections?.map((sec) => (
-                    <div key={sec.number} className="border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/40">
+                  {crit.sections?.map((sec, secIdx) => {
+                    const sectionKey = `aqar_sec_${crit.id}_${sec.number}_${secIdx}`;
+                    const isOpen = expandedSections.has(sectionKey) || expandedSections.has(sec.number);
+                    return (
+                    <div key={sectionKey} className="border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/40">
                       <div
-                        onClick={() => toggleSection(sec.number)}
+                        onClick={() => toggleSection(sectionKey, sec.number)}
                         className="p-4 bg-slate-50 hover:bg-slate-100/80 transition-colors flex items-center justify-between cursor-pointer border-b border-slate-200/60"
                       >
                         <div className="flex items-center gap-3">
@@ -725,14 +733,16 @@ export function QualityAssuranceManager() {
                           <span className="text-xs text-slate-400 font-semibold">
                             {sec.metrics?.length || 0} Metrics
                           </span>
-                          <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${expandedSections.has(sec.number) ? "rotate-180" : ""}`} />
+                          <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
                         </div>
                       </div>
 
-                      {expandedSections.has(sec.number) && (
+                      {isOpen && (
                         <div className="p-4 md:p-6 flex flex-col gap-6 bg-white">
-                          {sec.metrics?.map((metric) => (
-                            <div key={metric.number} className="p-4 border border-slate-100 rounded-2xl bg-slate-50/30 flex flex-col gap-4">
+                          {sec.metrics?.map((metric, metricIdx) => {
+                            const metricKey = `metric_${sectionKey}_${metric.number}_${metricIdx}`;
+                            return (
+                            <div key={metricKey} className="p-4 border border-slate-100 rounded-2xl bg-slate-50/30 flex flex-col gap-4">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                                 <div>
                                   <span className="text-xs font-black text-indigo-600 block">Metric {metric.number}</span>
@@ -757,8 +767,10 @@ export function QualityAssuranceManager() {
                                 <p className="text-xs text-slate-400 italic">No supporting documents uploaded for this metric yet.</p>
                               ) : (
                                 <div className="flex flex-col gap-3">
-                                  {metric.documents?.map((doc, dIdx) => (
-                                    <div key={dIdx} className="p-3 bg-white border border-slate-200/60 rounded-xl flex flex-col gap-2">
+                                  {metric.documents?.map((doc, dIdx) => {
+                                    const docKey = `doc_${metricKey}_${doc.label || dIdx}_${dIdx}`;
+                                    return (
+                                    <div key={docKey} className="p-3 bg-white border border-slate-200/60 rounded-xl flex flex-col gap-2">
                                       <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                           <FileText className="h-4 w-4 text-slate-400" />
@@ -798,7 +810,7 @@ export function QualityAssuranceManager() {
                                       {doc.subDocuments && doc.subDocuments.length > 0 && (
                                         <div className="mt-2 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5">
                                           {doc.subDocuments.map((sub, sIdx) => (
-                                            <div key={sIdx} className="flex items-center justify-between text-xs py-1 px-2 bg-slate-50 rounded-lg">
+                                            <div key={`sub_${docKey}_${sub.name || sIdx}_${sIdx}`} className="flex items-center justify-between text-xs py-1 px-2 bg-slate-50 rounded-lg">
                                               <span className="font-medium text-slate-700 truncate max-w-[280px]">
                                                 {sub.name} {sub.year ? `(${sub.year})` : ""}
                                               </span>
@@ -821,15 +833,18 @@ export function QualityAssuranceManager() {
                                         </div>
                                       )}
                                     </div>
-                                  ))}
+                                    );
+                                  })}
                                 </div>
                               )}
                             </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -963,10 +978,13 @@ export function QualityAssuranceManager() {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                  {crit.sections?.map((sec) => (
-                    <div key={sec.number} className="border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/40">
+                  {crit.sections?.map((sec, secIdx) => {
+                    const sectionKey = `naac_sec_${crit.id}_${sec.number}_${secIdx}`;
+                    const isOpen = expandedSections.has(sectionKey) || expandedSections.has(sec.number);
+                    return (
+                    <div key={sectionKey} className="border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/40">
                       <div
-                        onClick={() => toggleSection(sec.number)}
+                        onClick={() => toggleSection(sectionKey, sec.number)}
                         className="p-4 bg-slate-50 hover:bg-slate-100/80 transition-colors flex items-center justify-between cursor-pointer border-b border-slate-200/60"
                       >
                         <div className="flex items-center gap-3">
@@ -981,14 +999,16 @@ export function QualityAssuranceManager() {
                           <span className="text-xs text-slate-400 font-semibold">
                             {sec.metrics?.length || 0} Metrics
                           </span>
-                          <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${expandedSections.has(sec.number) ? "rotate-180" : ""}`} />
+                          <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
                         </div>
                       </div>
 
-                      {expandedSections.has(sec.number) && (
+                      {isOpen && (
                         <div className="p-4 md:p-6 flex flex-col gap-6 bg-white">
-                          {sec.metrics?.map((metric) => (
-                            <div key={metric.number} className="p-4 border border-slate-100 rounded-2xl bg-slate-50/30 flex flex-col gap-4">
+                          {sec.metrics?.map((metric, metricIdx) => {
+                            const metricKey = `metric_${sectionKey}_${metric.number}_${metricIdx}`;
+                            return (
+                            <div key={metricKey} className="p-4 border border-slate-100 rounded-2xl bg-slate-50/30 flex flex-col gap-4">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                                 <div>
                                   <span className="text-xs font-black text-indigo-600 block">Metric {metric.number}</span>
@@ -1013,8 +1033,10 @@ export function QualityAssuranceManager() {
                                 <p className="text-xs text-slate-400 italic">No supporting documents uploaded for this metric yet.</p>
                               ) : (
                                 <div className="flex flex-col gap-3">
-                                  {metric.documents?.map((doc, dIdx) => (
-                                    <div key={dIdx} className="p-3 bg-white border border-slate-200/60 rounded-xl flex flex-col gap-2">
+                                  {metric.documents?.map((doc, dIdx) => {
+                                    const docKey = `doc_${metricKey}_${doc.label || dIdx}_${dIdx}`;
+                                    return (
+                                    <div key={docKey} className="p-3 bg-white border border-slate-200/60 rounded-xl flex flex-col gap-2">
                                       <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                           <FileText className="h-4 w-4 text-slate-400" />
@@ -1054,7 +1076,7 @@ export function QualityAssuranceManager() {
                                       {doc.subDocuments && doc.subDocuments.length > 0 && (
                                         <div className="mt-2 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5">
                                           {doc.subDocuments.map((sub, sIdx) => (
-                                            <div key={sIdx} className="flex items-center justify-between text-xs py-1 px-2 bg-slate-50 rounded-lg">
+                                            <div key={`sub_${docKey}_${sub.name || sIdx}_${sIdx}`} className="flex items-center justify-between text-xs py-1 px-2 bg-slate-50 rounded-lg">
                                               <span className="font-medium text-slate-700 truncate max-w-[280px]">
                                                 {sub.name} {sub.year ? `(${sub.year})` : ""}
                                               </span>
@@ -1077,15 +1099,18 @@ export function QualityAssuranceManager() {
                                         </div>
                                       )}
                                     </div>
-                                  ))}
+                                    );
+                                  })}
                                 </div>
                               )}
                             </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );

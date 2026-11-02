@@ -11,7 +11,7 @@
           "title": "Criterion I - Curricular Aspects",
           "sections": [
             {
-              "number": "Section",
+              "number": "1.1",
               "title": "Key Indicator – 1.1 Curricular Planning and Implementation",
               "metrics": [
                 {
@@ -61,7 +61,7 @@
               "_key": "633092a97b83"
             },
             {
-              "number": "Section",
+              "number": "1.2",
               "title": "Key Indicator-1.2 Academi c Flexibility",
               "metrics": [
                 {
@@ -119,7 +119,7 @@
               "_key": "78618145dc0c"
             },
             {
-              "number": "Section",
+              "number": "1.3",
               "title": "Key Indicator- 1.3 Curriculum Enrichment",
               "metrics": [
                 {
@@ -354,7 +354,7 @@
               "_key": "5f8cfa513354"
             },
             {
-              "number": "Section",
+              "number": "1.4",
               "title": "Key Indicator- 1.4 Feedback System",
               "metrics": [
                 {
@@ -397,7 +397,7 @@
           "title": "Criterion II - Teaching-Learning and Evaluation",
           "sections": [
             {
-              "number": "Section",
+              "number": "2.1",
               "title": "Key Indicator- 2.1 Student Enrolment and Profile",
               "metrics": [
                 {
@@ -444,7 +444,7 @@
               "_key": "a37420e0a850"
             },
             {
-              "number": "Section",
+              "number": "2.2",
               "title": "Key Indicator- 2.2. Catering to Student Diversity",
               "metrics": [
                 {
@@ -469,7 +469,7 @@
               "_key": "cab4850b4090"
             },
             {
-              "number": "Section",
+              "number": "2.3",
               "title": "Key Indicator -2.3. Teaching Learning Process",
               "metrics": [
                 {
@@ -538,7 +538,7 @@
               "_key": "dd330a317ddf"
             },
             {
-              "number": "Section",
+              "number": "2.4",
               "title": "Key Indicator -2.4. Teacher Profile and Quality",
               "metrics": [
                 {
@@ -591,7 +591,7 @@
               "_key": "7daee3db627a"
             },
             {
-              "number": "Section",
+              "number": "2.5",
               "title": "Key Indicator - 2.5. Evaluation Process and Reforms",
               "metrics": [
                 {
@@ -632,7 +632,7 @@
               "_key": "4285fda97d43"
             },
             {
-              "number": "Section",
+              "number": "2.6",
               "title": "Key Indicator - 2.6. Student Performance and Learning Outcome",
               "metrics": [
                 {
@@ -707,7 +707,7 @@
               "_key": "97d7a7e220a5"
             },
             {
-              "number": "Section",
+              "number": "2.7",
               "title": "Key Indicator - 2.7. Student Satisfaction Survey",
               "metrics": [
                 {
@@ -727,7 +727,7 @@
           "title": "Criterion III - Research, Innovations and Extension",
           "sections": [
             {
-              "number": "Section",
+              "number": "3.1",
               "title": "Key Indicator 3.1 - Resource Mobilization for Research",
               "metrics": [
                 {
@@ -790,7 +790,7 @@
               "_key": "6421fdb8c2aa"
             },
             {
-              "number": "Section",
+              "number": "3.2",
               "title": "Key Indicator 3.2 - Research Publication and Awards",
               "metrics": [
                 {
@@ -831,7 +831,7 @@
               "_key": "1698e847109f"
             },
             {
-              "number": "Section",
+              "number": "3.3",
               "title": "Key Indicator 3.3 - Extension Activities",
               "metrics": [
                 {
@@ -910,7 +910,7 @@
               "_key": "77fa6cc875a9"
             },
             {
-              "number": "Section",
+              "number": "3.4",
               "title": "Key Indicator 3.4 - Collaboration (20)",
               "metrics": [
                 {
@@ -963,7 +963,7 @@
           "title": "Criterion IV - Infrastructure and Learning Resources",
           "sections": [
             {
-              "number": "Section",
+              "number": "4.1",
               "title": "Key Indicator- 4.1 Physical Facilities",
               "metrics": [
                 {
@@ -1022,7 +1022,7 @@
               "_key": "7aae411538f3"
             },
             {
-              "number": "Section",
+              "number": "4.2",
               "title": "Key Indicator- 4.2 Library as a learning Resource",
               "metrics": [
                 {
@@ -1076,7 +1076,7 @@
               "_key": "9090a1f1f210"
             },
             {
-              "number": "Section",
+              "number": "4.3",
               "title": "Key Indicator- 4.3 IT Infrastructure",
               "metrics": [
                 {
@@ -1123,7 +1123,7 @@
               "_key": "16cde39dcad8"
             },
             {
-              "number": "Section",
+              "number": "4.4",
               "title": "Key Indicator- 4.4 Maintenance of Campus Infrastructure",
               "metrics": [
                 {
@@ -1160,7 +1160,7 @@
           "title": "Criterion V - Student Support and Progression",
           "sections": [
             {
-              "number": "Section",
+              "number": "5.1",
               "title": "Key Indicator - 5.1 Student Support",
               "metrics": [
                 {
@@ -1282,7 +1282,7 @@
               "_key": "2e76f3c6ac3d"
             },
             {
-              "number": "Section",
+              "number": "5.2",
               "title": "Key Indicator- 5.2 Student Progression",
               "metrics": [
                 {
@@ -1374,7 +1374,7 @@
               "_key": "e352aa497d65"
             },
             {
-              "number": "Section",
+              "number": "5.3",
               "title": "Key Indicator- 5.3 Student Participation and Activities",
               "metrics": [
                 {
@@ -1442,7 +1442,7 @@
               "_key": "8395e8e5f16b"
             },
             {
-              "number": "Section",
+              "number": "5.4",
               "title": "Key Indicator- 5.4 Alumni Engagement",
               "metrics": [
                 {
@@ -1519,7 +1519,7 @@
           "title": "Criterion VI - Governance, Leadership and Management",
           "sections": [
             {
-              "number": "Section",
+              "number": "6.1",
               "title": "Key Indicator- 6.1 Institutional Vision and Leadership",
               "metrics": [
                 {
@@ -1549,7 +1549,7 @@
               "_key": "b42215bd23c9"
             },
             {
-              "number": "Section",
+              "number": "6.2",
               "title": "Key Indicator- 6.2 Strategy Development and Deployment",
               "metrics": [
                 {
@@ -1617,7 +1617,7 @@
               "_key": "efdf37d369a4"
             },
             {
-              "number": "Section",
+              "number": "6.3",
               "title": "Key Indicator- 6.3 Faculty Empowerment Strategies",
               "metrics": [
                 {
@@ -1687,7 +1687,7 @@
               "_key": "f8dbc27c1e28"
             },
             {
-              "number": "Section",
+              "number": "6.4",
               "title": "Key Indicator- 6.4 Financial Management and Resource Mobilization",
               "metrics": [
                 {
@@ -1723,7 +1723,7 @@
               "_key": "efd54a20dc70"
             },
             {
-              "number": "Section",
+              "number": "6.5",
               "title": "Key Indicator- 6.5 Internal Quality Assurance System",
               "metrics": [
                 {
@@ -1772,7 +1772,7 @@
           "title": "Criterion VII - Institutional Values and Best Practices",
           "sections": [
             {
-              "number": "Section",
+              "number": "7.1",
               "title": "Key Indicator - 7.1 Institutional Values and Social Responsibilities",
               "metrics": [
                 {
@@ -1972,7 +1972,7 @@
               "_key": "c3f51d99ebb6"
             },
             {
-              "number": "Section",
+              "number": "7.2",
               "title": "Key Indicator - 7.2 Best Practices",
               "metrics": [
                 {
@@ -2040,11 +2040,11 @@
               "_key": "a5794f1aa4c4"
             },
             {
-              "number": "Section",
+              "number": "2.2",
               "title": "2.2 Number of seats earmarked for reserved category as per GOI/ State Govt. rule during the year",
               "metrics": [
                 {
-                  "number": "Section",
+                  "number": "2.2",
                   "title": "2.2 Number of seats earmarked for reserved category as per GOI/ State Govt. rule during the year",
                   "documents": [
                     {
@@ -2088,11 +2088,11 @@
               "_key": "60530fdce0e2"
             },
             {
-              "number": "Section",
+              "number": "3.1",
               "title": "3.1 Number of full-time teachers during the year",
               "metrics": [
                 {
-                  "number": "Section",
+                  "number": "3.1",
                   "title": "3.1 Number of full-time teachers during the year",
                   "documents": [
                     {
@@ -2136,13 +2136,13 @@
               "_key": "1d8e815df106"
             },
             {
-              "number": "Section",
+              "number": "4.1",
               "title": "4.1 Total number of Class rooms and Seminar halls",
               "metrics": [],
               "_key": "32fb1117c0ac"
             },
             {
-              "number": "Section",
+              "number": "4.2",
               "title": "4.2 Total expenditure excluding salary during the year (INR in lakhs)",
               "metrics": [],
               "_key": "a95f91e0452e"
