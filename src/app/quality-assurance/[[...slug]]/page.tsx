@@ -5,40 +5,46 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
   ClipboardCheck, ShieldCheck, Award, Target, FileText, 
-  MessageSquare, BarChart, Image as ImageIcon, Phone, 
-  ArrowRight, BookOpen, Mail, ChevronDown 
+  Sparkles, Clock, Image as ImageIcon, Phone, 
+  ArrowRight, Mail, ChevronDown 
 } from "lucide-react";
 import { ContentRenderer } from "@/components/quality-assurance/ContentRenderer";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
 import defaultQaData from "@/components/quality-assurance/quality-assurance-data.json";
 import { QualityAssuranceData } from "@/types/quality-assurance";
 
+// Normalized slug helper
+function normalizeQaSlug(rawSlug?: string): string {
+  if (!rawSlug || rawSlug === "iqac" || rawSlug === "about-iqac") return "about-iqac";
+  if (rawSlug === "naac" || rawSlug === "naac-cycle-1") return "naac-cycle-1";
+  if (rawSlug === "aqar" || rawSlug === "aqar-reports") return "aqar-reports";
+  if (rawSlug === "meetings" || rawSlug === "iqac-meetings-planning") return "iqac-meetings-planning";
+  if (rawSlug === "audit" || rawSlug === "quality-initiatives" || rawSlug === "feedback" || rawSlug === "surveys" || rawSlug === "iqac-audits-enhancement") return "iqac-audits-enhancement";
+  if (rawSlug === "gallery" || rawSlug === "iqac-gallery") return "iqac-gallery";
+  if (rawSlug === "best-practices") return "best-practices";
+  if (rawSlug === "institutional-distinctiveness") return "institutional-distinctiveness";
+  return rawSlug;
+}
+
 const navigationStructure = [
   {
-    catSlug: "core-quality",
-    title: "I. Quality Framework",
+    catSlug: "iqac-initiatives",
+    title: "IQAC & ITS INITIATIVES",
     items: [
-      { text: "About IQAC", slug: "iqac", icon: ClipboardCheck },
-      { text: "AQAR Reports", slug: "aqar", icon: FileText },
-      { text: "NAAC Accreditation", slug: "naac", icon: ShieldCheck },
+      { text: "1. About IQAC", slug: "about-iqac", icon: ClipboardCheck },
+      { text: "2. IQAC Meetings & Quality Planning", slug: "iqac-meetings-planning", icon: Clock },
+      { text: "3. IQAC Audits & Quality Enhancement", slug: "iqac-audits-enhancement", icon: Award },
+      { text: "4. Best Practices", slug: "best-practices", icon: Target },
+      { text: "5. Institutional Distinctiveness", slug: "institutional-distinctiveness", icon: Sparkles },
+      { text: "6. IQAC Gallery", slug: "iqac-gallery", icon: ImageIcon },
     ]
   },
   {
-    catSlug: "processes",
-    title: "II. Quality Processes",
+    catSlug: "naac-accreditation",
+    title: "NAAC & ACCREDITATION",
     items: [
-      { text: "Quality Initiatives", slug: "quality-initiatives", icon: Target },
-      { text: "Audit Reports", slug: "audit", icon: Award },
-      { text: "Feedback System", slug: "feedback", icon: MessageSquare },
-    ]
-  },
-  {
-    catSlug: "outcomes",
-    title: "III. Evaluation & Media",
-    items: [
-      { text: "Surveys & Evaluation", slug: "surveys", icon: BarChart },
-      { text: "IQAC Gallery", slug: "gallery", icon: ImageIcon },
-      { text: "Contact IQAC", slug: "contact", icon: Phone },
+      { text: "A. NAAC Accreditation – Cycle I", slug: "naac-cycle-1", icon: ShieldCheck },
+      { text: "B. AQAR – Annual Quality Assurance Reports", slug: "aqar-reports", icon: FileText },
     ]
   }
 ];
@@ -52,7 +58,8 @@ export default function QualityAssurancePage({ params }: PageProps) {
   const pathname = usePathname();
 
   // Primary section slug and sub-slug (academic year or NAAC cycle)
-  const mainSlug = resolvedParams?.slug?.[0] || "iqac";
+  const rawMainSlug = resolvedParams?.slug?.[0] || "about-iqac";
+  const mainSlug = normalizeQaSlug(rawMainSlug);
   const subSlug = resolvedParams?.slug?.[1];
 
   // Dynamic QA Dataset for sidebar sub-items
@@ -73,8 +80,8 @@ export default function QualityAssurancePage({ params }: PageProps) {
     };
   }, []);
 
-  const isAqarActive = mainSlug === "aqar";
-  const isNaacActive = mainSlug === "naac";
+  const isAqarActive = mainSlug === "aqar-reports";
+  const isNaacActive = mainSlug === "naac-cycle-1";
 
   // Active year & cycle
   const currentAqarYear = (isAqarActive && subSlug)
@@ -86,12 +93,12 @@ export default function QualityAssurancePage({ params }: PageProps) {
     : (qaData.naacCycles?.[0]?.cycleId || "cycle-1");
 
   // Track accordion expand states in sidebar
-  const [aqarExpanded, setAqarExpanded] = useState<boolean>(() => mainSlug === "aqar");
-  const [naacExpanded, setNaacExpanded] = useState<boolean>(() => mainSlug === "naac");
+  const [aqarExpanded, setAqarExpanded] = useState<boolean>(() => isAqarActive);
+  const [naacExpanded, setNaacExpanded] = useState<boolean>(() => isNaacActive);
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
-      {/* 2. Main Content Container (Sidebar on Left, Data Elements on Right) */}
+      {/* Main Content Container (Sidebar on Left, Data Elements on Right) */}
       <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
@@ -124,13 +131,13 @@ export default function QualityAssurancePage({ params }: PageProps) {
                     className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider truncate leading-tight"
                     style={{ color: "var(--sidebar-text, #ffffff)" }}
                   >
-                    Quality Assurance &amp; IQAC
+                    Quality Assurance
                   </h1>
                   <span
                     className="text-[10px] sm:text-[11px] opacity-85 font-medium truncate mt-0.5"
                     style={{ color: "var(--sidebar-text, #ffffff)" }}
                   >
-                    Quality Assurance &amp; Accreditation
+                    IQAC &amp; Accreditation Portal
                   </span>
                 </div>
               </div>
@@ -151,8 +158,8 @@ export default function QualityAssurancePage({ params }: PageProps) {
 
                     <div className="flex flex-col gap-1 mt-1">
                       {group.items.map((item, i) => {
-                        const isAqarItem = item.slug === "aqar";
-                        const isNaacItem = item.slug === "naac";
+                        const isAqarItem = item.slug === "aqar-reports";
+                        const isNaacItem = item.slug === "naac-cycle-1";
                         const isActive = mainSlug === item.slug;
                         const ItemIcon = item.icon;
 
@@ -198,7 +205,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
                                     return (
                                       <Link
                                         key={rep.year}
-                                        href={`/quality-assurance/aqar/${rep.year}`}
+                                        href={`/quality-assurance/aqar-reports/${rep.year}`}
                                         className={`text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-between select-none ${
                                           isSelectedYear
                                             ? "bg-[#002147] text-white font-black shadow-xs"
@@ -267,7 +274,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
                                     return (
                                       <Link
                                         key={cycle.cycleId}
-                                        href={`/quality-assurance/naac/${cycle.cycleId}`}
+                                        href={`/quality-assurance/naac-cycle-1/${cycle.cycleId}`}
                                         className={`text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-between select-none ${
                                           isSelectedCycle
                                             ? "bg-[#002147] text-white font-black shadow-xs"

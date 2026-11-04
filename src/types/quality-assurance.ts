@@ -104,6 +104,104 @@ export interface QualitySurveyDoc {
   fileUrl: string;
 }
 
+export interface IqacYearCommitteeDoc {
+  year: string;
+  pdfUrl: string;
+  label?: string;
+}
+
+export interface IqacYearMeetingRow {
+  year: string;
+  m1Minutes?: string;
+  m1Atr?: string;
+  m2Minutes?: string;
+  m2Atr?: string;
+  m3Minutes?: string;
+  m3Atr?: string;
+  m4Minutes?: string;
+  m4Atr?: string;
+}
+
+export interface IqacActionPlanRow {
+  year: string;
+  planUrl: string;
+}
+
+export interface IqacAnnualReportRow {
+  year: string;
+  reportUrl: string;
+}
+
+export interface AaaAuditRow {
+  year: string;
+  reportUrl: string;
+  atrUrl: string;
+}
+
+export interface GreenAuditRow {
+  year: string;
+  reportUrl: string;
+  atrUrl: string;
+}
+
+export interface QualityInitiativeRow {
+  year: string;
+  title: string;
+  docUrl: string;
+}
+
+export interface QualityEnhancementMeasureRow {
+  year: string;
+  title: string;
+  docUrl: string;
+}
+
+export interface CqiActivityRow {
+  year: string;
+  title: string;
+  docUrl: string;
+}
+
+export interface BestPracticeRow {
+  year: string;
+  practice1Title: string;
+  practice1Url: string;
+  practice2Title: string;
+  practice2Url: string;
+}
+
+export interface InstitutionalDistinctivenessRow {
+  year: string;
+  title: string;
+  docUrl: string;
+}
+
+export interface IqacGalleryRow {
+  year: string;
+  title: string;
+  galleryUrl: string;
+  images?: string[];
+}
+
+export interface NaacMasterDocRow {
+  sNo: number;
+  title: string;
+  docUrl: string;
+  actionText?: string;
+}
+
+export interface ExtendedProfileDocRow {
+  sNo: string;
+  title: string;
+  docUrl: string;
+}
+
+export interface AqarMasterReportRow {
+  year: string;
+  aqarUrl: string;
+  supportingDocsAvailable: boolean;
+}
+
 export interface QualityAssuranceData {
   aqarReports: AqarYearReport[];
   naacCycles: NaacCycleReport[];
@@ -113,5 +211,22 @@ export interface QualityAssuranceData {
   auditReports: QualityAuditDoc[];
   feedbackSystem: QualityFeedbackDoc[];
   surveysAndEvaluations: QualitySurveyDoc[];
+
+  // Document 10 specific additions
+  iqacCommitteeYears?: IqacYearCommitteeDoc[];
+  iqacMeetingsTable?: IqacYearMeetingRow[];
+  iqacActionPlans?: IqacActionPlanRow[];
+  iqacAnnualReportsTable?: IqacAnnualReportRow[];
+  aaaAuditsTable?: AaaAuditRow[];
+  greenAuditsTable?: GreenAuditRow[];
+  qualityInitiativesTable?: QualityInitiativeRow[];
+  qualityEnhancementTable?: QualityEnhancementMeasureRow[];
+  cqiActivitiesTable?: CqiActivityRow[];
+  bestPracticesTable?: BestPracticeRow[];
+  institutionalDistinctivenessTable?: InstitutionalDistinctivenessRow[];
+  iqacGalleryTable?: IqacGalleryRow[];
+  naacMasterDocs?: NaacMasterDocRow[];
+  extendedProfileDocs?: ExtendedProfileDocRow[];
+  aqarMasterReports?: AqarMasterReportRow[];
 }
 
