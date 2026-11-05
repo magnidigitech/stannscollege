@@ -76,7 +76,13 @@ const ensureDocument10Fields = (loadedData: any): QualityAssuranceData => {
     ...fallback,
     ...loadedData,
     iqacCommitteeYears: loadedData?.iqacCommitteeYears?.length ? loadedData.iqacCommitteeYears : fallback.iqacCommitteeYears || [],
-    iqacMeetingsTable: loadedData?.iqacMeetingsTable?.length ? loadedData.iqacMeetingsTable : fallback.iqacMeetingsTable || [],
+    iqacMeetingsTable: (loadedData?.iqacMeetingsTable?.length ? loadedData.iqacMeetingsTable : fallback.iqacMeetingsTable || []).map((m: any) => ({
+      ...m,
+      m1Doc: m.m1Doc || m.m1Minutes || "/documents/DefaultFile_1.pdf",
+      m2Doc: m.m2Doc || m.m2Minutes || "/documents/DefaultFile_1.pdf",
+      m3Doc: m.m3Doc || m.m3Minutes || "/documents/DefaultFile_1.pdf",
+      m4Doc: m.m4Doc || m.m4Minutes || "/documents/DefaultFile_1.pdf"
+    })),
     iqacActionPlans: loadedData?.iqacActionPlans?.length ? loadedData.iqacActionPlans : fallback.iqacActionPlans || [],
     iqacAnnualReportsTable: loadedData?.iqacAnnualReportsTable?.length ? loadedData.iqacAnnualReportsTable : fallback.iqacAnnualReportsTable || [],
     aaaAuditsTable: loadedData?.aaaAuditsTable?.length ? loadedData.aaaAuditsTable : fallback.aaaAuditsTable || [],
@@ -86,7 +92,7 @@ const ensureDocument10Fields = (loadedData: any): QualityAssuranceData => {
     cqiActivitiesTable: loadedData?.cqiActivitiesTable?.length ? loadedData.cqiActivitiesTable : fallback.cqiActivitiesTable || [],
     bestPracticesTable: loadedData?.bestPracticesTable?.length ? loadedData.bestPracticesTable : fallback.bestPracticesTable || [],
     institutionalDistinctivenessTable: loadedData?.institutionalDistinctivenessTable?.length ? loadedData.institutionalDistinctivenessTable : fallback.institutionalDistinctivenessTable || [],
-    iqacGalleryTable: loadedData?.iqacGalleryTable?.length ? loadedData.iqacGalleryTable : fallback.iqacGalleryTable || [],
+    iqacGalleryTable: Array.isArray(loadedData?.iqacGalleryTable) ? loadedData.iqacGalleryTable : fallback.iqacGalleryTable || [],
     naacMasterDocs: loadedData?.naacMasterDocs?.length ? loadedData.naacMasterDocs : fallback.naacMasterDocs || [],
     extendedProfileDocs: loadedData?.extendedProfileDocs?.length ? loadedData.extendedProfileDocs : fallback.extendedProfileDocs || [],
     aqarMasterReports: loadedData?.aqarMasterReports?.length ? loadedData.aqarMasterReports : fallback.aqarMasterReports || []
@@ -685,6 +691,10 @@ export function QualityAssuranceManager() {
     if (!newYear) return;
     const newRow: IqacYearMeetingRow = {
       year: newYear,
+      m1Doc: "/documents/DefaultFile_1.pdf",
+      m2Doc: "/documents/DefaultFile_1.pdf",
+      m3Doc: "/documents/DefaultFile_1.pdf",
+      m4Doc: "/documents/DefaultFile_1.pdf",
       m1Minutes: "/documents/DefaultFile_1.pdf",
       m1Atr: "/documents/DefaultFile_1.pdf",
       m2Minutes: "/documents/DefaultFile_1.pdf",
@@ -1336,10 +1346,10 @@ export function QualityAssuranceManager() {
                     <thead>
                       <tr className="border-b border-slate-200 bg-slate-50 text-slate-700 font-bold uppercase tracking-wider">
                         <th className="py-3 px-3">Academic Year</th>
-                        <th className="py-3 px-3">Meeting 1 (Min / ATR)</th>
-                        <th className="py-3 px-3">Meeting 2 (Min / ATR)</th>
-                        <th className="py-3 px-3">Meeting 3 (Min / ATR)</th>
-                        <th className="py-3 px-3">Meeting 4 (Min / ATR)</th>
+                        <th className="py-3 px-3">Meeting I (Minutes | ATR)</th>
+                        <th className="py-3 px-3">Meeting II (Minutes | ATR)</th>
+                        <th className="py-3 px-3">Meeting III (Minutes | ATR)</th>
+                        <th className="py-3 px-3">Meeting IV (Minutes | ATR)</th>
                         <th className="py-3 px-3 text-right">Action</th>
                       </tr>
                     </thead>
@@ -1348,52 +1358,52 @@ export function QualityAssuranceManager() {
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3 px-3 font-black text-[#002147] whitespace-nowrap text-sm">{row.year}</td>
                           <td className="py-3 px-3">
-                            <MeetingCellPair
-                              year={row.year}
-                              mNum={1}
-                              minUrl={row.m1Minutes}
-                              atrUrl={row.m1Atr}
-                              onUpdateMin={(val) => updateMeetingField(idx, "m1Minutes", val)}
-                              onUpdateAtr={(val) => updateMeetingField(idx, "m1Atr", val)}
+                            <PdfUploadCell
+                              url={row.m1Doc || row.m1Minutes || ""}
+                              title={`${row.year} Meeting I (Minutes & ATR)`}
+                              onUpdate={(val) => {
+                                updateMeetingField(idx, "m1Doc", val);
+                                updateMeetingField(idx, "m1Minutes", val);
+                              }}
                               onPreview={handlePreview}
                               handleFileUpload={handleFileUpload}
                               uploading={uploading}
                             />
                           </td>
                           <td className="py-3 px-3">
-                            <MeetingCellPair
-                              year={row.year}
-                              mNum={2}
-                              minUrl={row.m2Minutes}
-                              atrUrl={row.m2Atr}
-                              onUpdateMin={(val) => updateMeetingField(idx, "m2Minutes", val)}
-                              onUpdateAtr={(val) => updateMeetingField(idx, "m2Atr", val)}
+                            <PdfUploadCell
+                              url={row.m2Doc || row.m2Minutes || ""}
+                              title={`${row.year} Meeting II (Minutes & ATR)`}
+                              onUpdate={(val) => {
+                                updateMeetingField(idx, "m2Doc", val);
+                                updateMeetingField(idx, "m2Minutes", val);
+                              }}
                               onPreview={handlePreview}
                               handleFileUpload={handleFileUpload}
                               uploading={uploading}
                             />
                           </td>
                           <td className="py-3 px-3">
-                            <MeetingCellPair
-                              year={row.year}
-                              mNum={3}
-                              minUrl={row.m3Minutes}
-                              atrUrl={row.m3Atr}
-                              onUpdateMin={(val) => updateMeetingField(idx, "m3Minutes", val)}
-                              onUpdateAtr={(val) => updateMeetingField(idx, "m3Atr", val)}
+                            <PdfUploadCell
+                              url={row.m3Doc || row.m3Minutes || ""}
+                              title={`${row.year} Meeting III (Minutes & ATR)`}
+                              onUpdate={(val) => {
+                                updateMeetingField(idx, "m3Doc", val);
+                                updateMeetingField(idx, "m3Minutes", val);
+                              }}
                               onPreview={handlePreview}
                               handleFileUpload={handleFileUpload}
                               uploading={uploading}
                             />
                           </td>
                           <td className="py-3 px-3">
-                            <MeetingCellPair
-                              year={row.year}
-                              mNum={4}
-                              minUrl={row.m4Minutes}
-                              atrUrl={row.m4Atr}
-                              onUpdateMin={(val) => updateMeetingField(idx, "m4Minutes", val)}
-                              onUpdateAtr={(val) => updateMeetingField(idx, "m4Atr", val)}
+                            <PdfUploadCell
+                              url={row.m4Doc || row.m4Minutes || ""}
+                              title={`${row.year} Meeting IV (Minutes & ATR)`}
+                              onUpdate={(val) => {
+                                updateMeetingField(idx, "m4Doc", val);
+                                updateMeetingField(idx, "m4Minutes", val);
+                              }}
                               onPreview={handlePreview}
                               handleFileUpload={handleFileUpload}
                               uploading={uploading}

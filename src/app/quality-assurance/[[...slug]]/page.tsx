@@ -57,13 +57,15 @@ export default function QualityAssurancePage({ params }: PageProps) {
   const resolvedParams = use(params);
   const pathname = usePathname();
 
-  // Primary section slug and sub-slug (academic year or NAAC cycle)
-  const rawMainSlug = resolvedParams?.slug?.[0] || "about-iqac";
-  const mainSlug = normalizeQaSlug(rawMainSlug);
-  const subSlug = resolvedParams?.slug?.[1];
-
   // Dynamic QA Dataset for sidebar sub-items
   const [qaData, setQaData] = useState<QualityAssuranceData>(defaultQaData as unknown as QualityAssuranceData);
+
+  const rawMainSlug = resolvedParams?.slug?.[0] || "about-iqac";
+  const hasGallery = Boolean(qaData.iqacGalleryTable && qaData.iqacGalleryTable.length > 0);
+  const mainSlug = (normalizeQaSlug(rawMainSlug) === "iqac-gallery" && !hasGallery)
+    ? "about-iqac"
+    : normalizeQaSlug(rawMainSlug);
+  const subSlug = resolvedParams?.slug?.[1];
 
   useEffect(() => {
     let isMounted = true;
@@ -157,7 +159,12 @@ export default function QualityAssurancePage({ params }: PageProps) {
                     </div>
 
                     <div className="flex flex-col gap-1 mt-1">
-                      {group.items.map((item, i) => {
+                      {group.items
+                        .filter((item) => {
+                          if (item.slug === "iqac-gallery" && !hasGallery) return false;
+                          return true;
+                        })
+                        .map((item, i) => {
                         const isAqarItem = item.slug === "aqar-reports";
                         const isNaacItem = item.slug === "naac-cycle-1";
                         const isActive = mainSlug === item.slug;

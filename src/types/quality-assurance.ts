@@ -112,6 +112,10 @@ export interface IqacYearCommitteeDoc {
 
 export interface IqacYearMeetingRow {
   year: string;
+  m1Doc?: string;
+  m2Doc?: string;
+  m3Doc?: string;
+  m4Doc?: string;
   m1Minutes?: string;
   m1Atr?: string;
   m2Minutes?: string;

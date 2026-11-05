@@ -9979,7 +9979,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2025–2026",
@@ -9990,7 +9994,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2024–2025",
@@ -10001,7 +10009,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2023–2024",
@@ -10012,7 +10024,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2022–2023",
@@ -10023,7 +10039,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2021–2022",
@@ -10034,7 +10054,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2020–2021",
@@ -10045,7 +10069,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2019–2020",
@@ -10056,7 +10084,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     },
     {
       "year": "2018–2019",
@@ -10067,7 +10099,11 @@
       "m3Minutes": "/documents/DefaultFile_1.pdf",
       "m3Atr": "/documents/DefaultFile_1.pdf",
       "m4Minutes": "/documents/DefaultFile_1.pdf",
-      "m4Atr": "/documents/DefaultFile_1.pdf"
+      "m4Atr": "/documents/DefaultFile_1.pdf",
+      "m1Doc": "/documents/DefaultFile_1.pdf",
+      "m2Doc": "/documents/DefaultFile_1.pdf",
+      "m3Doc": "/documents/DefaultFile_1.pdf",
+      "m4Doc": "/documents/DefaultFile_1.pdf"
     }
   ],
   "iqacActionPlans": [
@@ -10299,23 +10335,7 @@
       "docUrl": "/documents/DefaultFile_1.pdf"
     }
   ],
-  "iqacGalleryTable": [
-    {
-      "year": "2025–2026",
-      "title": "Quality Assurance Events, Workshops & Review Gallery",
-      "galleryUrl": "/naac-peer-team"
-    },
-    {
-      "year": "2024–2025",
-      "title": "NAAC Peer Team Visit & Academic Quality Moments",
-      "galleryUrl": "/naac-peer-team"
-    },
-    {
-      "year": "2023–2024",
-      "title": "FDPs, Quality Orientation & Stakeholder Interaction Gallery",
-      "galleryUrl": "/naac-peer-team"
-    }
-  ],
+  "iqacGalleryTable": [],
   "naacMasterDocs": [
     {
       "sNo": 1,

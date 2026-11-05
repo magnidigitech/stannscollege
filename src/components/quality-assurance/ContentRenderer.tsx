@@ -208,6 +208,8 @@ export const ContentRenderer = ({
 
   // 6. IQAC Gallery
   if (slug === "iqac-gallery" || slug === "gallery") {
+    const hasGallery = Boolean(activeData.iqacGalleryTable && activeData.iqacGalleryTable.length > 0);
+    if (!hasGallery) return null;
     return (
       <IqacGalleryRenderer
         qaData={activeData}
@@ -596,11 +598,11 @@ function IqacMeetingsPlanningRenderer({
               <h3 className="font-outfit font-black text-xl md:text-2xl text-[#002147] tracking-tight">
                 IQAC Meetings &amp; Action Taken Reports (ATRs)
               </h3>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">
-                4 quarterly meetings conducted per academic year with validated minutes and action taken records.
+              <p className="text-xs text-slate-500 font-medium mt-1 max-w-3xl leading-relaxed">
+                Action Taken Reports document the implementation and follow-up of decisions and recommendations made during IQAC meetings and quality initiatives. They provide evidence of progress, compliance, and continuous quality improvement.
               </p>
             </div>
-            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 shrink-0">
               9 Academic Years (2018–19 to 2026–27)
             </span>
           </div>
@@ -610,114 +612,100 @@ function IqacMeetingsPlanningRenderer({
               <table className="w-full text-left border-collapse">
                 <thead className="bg-[#002147] text-white">
                   <tr>
-                    <th className="px-4 py-3.5 font-outfit text-xs uppercase tracking-wider font-bold">S.No</th>
-                    <th className="px-4 py-3.5 font-outfit text-xs uppercase tracking-wider font-bold">Academic Year</th>
-                    <th className="px-4 py-3.5 font-outfit text-xs uppercase tracking-wider font-bold text-center">Meeting 1</th>
-                    <th className="px-4 py-3.5 font-outfit text-xs uppercase tracking-wider font-bold text-center">Meeting 2</th>
-                    <th className="px-4 py-3.5 font-outfit text-xs uppercase tracking-wider font-bold text-center">Meeting 3</th>
-                    <th className="px-4 py-3.5 font-outfit text-xs uppercase tracking-wider font-bold text-center">Meeting 4</th>
+                    <th rowSpan={2} className="px-4 py-3 font-outfit text-xs uppercase tracking-wider font-bold border-r border-white/10 text-center">
+                      S.No
+                    </th>
+                    <th rowSpan={2} className="px-5 py-3 font-outfit text-xs uppercase tracking-wider font-bold border-r border-white/10">
+                      Academic Year
+                    </th>
+                    <th className="px-4 py-2.5 font-outfit text-xs uppercase tracking-wider font-bold text-center border-r border-white/10">
+                      Meeting I
+                    </th>
+                    <th className="px-4 py-2.5 font-outfit text-xs uppercase tracking-wider font-bold text-center border-r border-white/10">
+                      Meeting II
+                    </th>
+                    <th className="px-4 py-2.5 font-outfit text-xs uppercase tracking-wider font-bold text-center border-r border-white/10">
+                      Meeting III
+                    </th>
+                    <th className="px-4 py-2.5 font-outfit text-xs uppercase tracking-wider font-bold text-center">
+                      Meeting IV
+                    </th>
+                  </tr>
+                  <tr className="bg-[#001733] text-blue-200 text-[11px] font-bold">
+                    <th className="px-3 py-1.5 text-center border-r border-white/10 tracking-wide">
+                      Minutes | ATR
+                    </th>
+                    <th className="px-3 py-1.5 text-center border-r border-white/10 tracking-wide">
+                      Minutes | ATR
+                    </th>
+                    <th className="px-3 py-1.5 text-center border-r border-white/10 tracking-wide">
+                      Minutes | ATR
+                    </th>
+                    <th className="px-3 py-1.5 text-center tracking-wide">
+                      Minutes | ATR
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-xs">
                   {meetingsTable.map((row, idx) => (
                     <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="px-4 py-3.5 font-bold text-slate-500">{idx + 1}</td>
-                      <td className="px-4 py-3.5 font-black text-[#002147] whitespace-nowrap text-sm">{row.year}</td>
+                      <td className="px-4 py-3.5 font-bold text-slate-500 text-center">{idx + 1}</td>
+                      <td className="px-5 py-3.5 font-black text-[#002147] whitespace-nowrap text-sm">{row.year}</td>
                       
-                      {/* Meeting 1 */}
-                      <td className="px-3 py-3 text-center">
-                        <div className="inline-flex gap-1.5 justify-center">
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m1Minutes || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 1 Minutes`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200"
-                          >
-                            Minutes
-                          </button>
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m1Atr || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 1 ATR`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white font-bold transition-all border border-emerald-200"
-                          >
-                            ATR
-                          </button>
-                        </div>
+                      {/* Meeting I */}
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => {
+                            setActivePdfUrl(row.m1Doc || row.m1Minutes || DEFAULT_PDF);
+                            setActivePdfTitle(`${row.year} – Meeting I (Minutes & ATR)`);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200 shadow-4xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>View</span>
+                        </button>
                       </td>
 
-                      {/* Meeting 2 */}
-                      <td className="px-3 py-3 text-center">
-                        <div className="inline-flex gap-1.5 justify-center">
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m2Minutes || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 2 Minutes`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200"
-                          >
-                            Minutes
-                          </button>
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m2Atr || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 2 ATR`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white font-bold transition-all border border-emerald-200"
-                          >
-                            ATR
-                          </button>
-                        </div>
+                      {/* Meeting II */}
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => {
+                            setActivePdfUrl(row.m2Doc || row.m2Minutes || DEFAULT_PDF);
+                            setActivePdfTitle(`${row.year} – Meeting II (Minutes & ATR)`);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200 shadow-4xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>View</span>
+                        </button>
                       </td>
 
-                      {/* Meeting 3 */}
-                      <td className="px-3 py-3 text-center">
-                        <div className="inline-flex gap-1.5 justify-center">
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m3Minutes || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 3 Minutes`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200"
-                          >
-                            Minutes
-                          </button>
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m3Atr || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 3 ATR`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white font-bold transition-all border border-emerald-200"
-                          >
-                            ATR
-                          </button>
-                        </div>
+                      {/* Meeting III */}
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => {
+                            setActivePdfUrl(row.m3Doc || row.m3Minutes || DEFAULT_PDF);
+                            setActivePdfTitle(`${row.year} – Meeting III (Minutes & ATR)`);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200 shadow-4xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>View</span>
+                        </button>
                       </td>
 
-                      {/* Meeting 4 */}
-                      <td className="px-3 py-3 text-center">
-                        <div className="inline-flex gap-1.5 justify-center">
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m4Minutes || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 4 Minutes`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200"
-                          >
-                            Minutes
-                          </button>
-                          <button
-                            onClick={() => {
-                              setActivePdfUrl(row.m4Atr || DEFAULT_PDF);
-                              setActivePdfTitle(`${row.year} – Meeting 4 ATR`);
-                            }}
-                            className="px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white font-bold transition-all border border-emerald-200"
-                          >
-                            ATR
-                          </button>
-                        </div>
+                      {/* Meeting IV */}
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => {
+                            setActivePdfUrl(row.m4Doc || row.m4Minutes || DEFAULT_PDF);
+                            setActivePdfTitle(`${row.year} – Meeting IV (Minutes & ATR)`);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold transition-all border border-blue-200 shadow-4xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>View</span>
+                        </button>
                       </td>
 
                     </tr>
@@ -1530,6 +1518,7 @@ function IqacGalleryRenderer({
 }) {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const galleryRows = qaData.iqacGalleryTable || [];
+  if (galleryRows.length === 0) return null;
 
   const sampleGalleryPhotos = [
     { title: "NAAC Peer Team Welcome Ceremony", desc: "Honouring the NAAC peer team dignitaries during the Cycle-I assessment visit.", src: "/images/naac/naac-1.jpg" },
