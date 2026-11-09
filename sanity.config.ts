@@ -1227,6 +1227,15 @@ export default defineConfig({
         ]
       },
       {
+        name: "academicsPortal",
+        title: "Academics & Programmes Portal",
+        type: "document",
+        fields: [
+          { name: "title", title: "Title", type: "string" },
+          { name: "lastUpdated", title: "Last Updated", type: "string" },
+        ]
+      },
+      {
         name: "academicProgramme",
         title: "Academic Programme",
         type: "document",

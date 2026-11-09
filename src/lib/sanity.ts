@@ -2518,3 +2518,17 @@ export async function getAdmissionsPortalData() {
 
 
 
+
+export async function getAcademicsPortalData() {
+  try {
+    const query = `*[_type == "academicsPortal" && !(_id in path("drafts.**"))][0]`;
+    const data = await sanityClient.fetch(query);
+    if (data && data.portalData) {
+      return data.portalData;
+    }
+    return null;
+  } catch (err) {
+    console.error("Sanity fetch error (getAcademicsPortalData):", err);
+    return null;
+  }
+}

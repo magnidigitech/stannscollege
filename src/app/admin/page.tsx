@@ -14,6 +14,7 @@ import { PlacementsManager } from "@/components/admin/PlacementsManager";
 import { StudentSupportManager } from "@/components/admin/StudentSupportManager";
 import { FacultyProfilesManager } from "@/components/admin/FacultyProfilesManager";
 import { AdmissionsManager } from "@/components/admin/AdmissionsManager";
+import { AcademicsManager } from "@/components/admin/AcademicsManager";
 import { QualityAssuranceManager } from "@/components/admin/QualityAssuranceManager";
 import {
   Calendar,
@@ -35,6 +36,7 @@ import {
   HeartHandshake,
   GraduationCap,
   ClipboardList,
+  BookOpen,
 } from "lucide-react";
 
 interface AdminUser {
@@ -59,6 +61,14 @@ const ADMIN_MODULES = [
     icon: GraduationCap,
     description: "Manage UG & PG intake quotas, eligibility criteria, admission policy, prospectus, required documents PDFs, and statutory compliance registers.",
     component: AdmissionsManager,
+  },
+  {
+    id: "academics-management",
+    label: "Academics & Programmes",
+    badge: "7 Categories & Sub-Pages",
+    icon: BookOpen,
+    description: "Manage UG & PG programmes, intake quotas, academic calendars, timetables, curriculum & syllabus, regulations, ILMS evidence, and sub-pages.",
+    component: AcademicsManager,
   },
   {
     id: "faculty-profiles",

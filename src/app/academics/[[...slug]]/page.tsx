@@ -190,15 +190,16 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     rawCat;
 
   const [deptsOpen, setDeptsOpen] = useState<boolean>(true);
-
-  if (!catSlug) {
-    return <AcademicsClientFallback />;
-  }
-
   const isAllDeptsRoot = catSlug === "departments" && !itemSlug;
 
-  if (!isAllDeptsRoot && !itemSlug) {
-    return <AcademicsClientFallback />;
+  if (!catSlug || (!isAllDeptsRoot && !itemSlug)) {
+    return (
+      <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn font-sans">
+        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12 pt-4 sm:pt-6 pb-12 sm:pb-16">
+          <AcademicsClientFallback />
+        </div>
+      </div>
+    );
   }
 
   // Logic to render individual content component
@@ -259,7 +260,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
   return (
     <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn font-sans">
-      <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12 py-8 sm:py-12">
+      <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12 pt-4 sm:pt-6 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
           
           {/* Left Navigation Sidebar for Desktop */}

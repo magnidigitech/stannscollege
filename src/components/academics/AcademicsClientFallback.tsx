@@ -117,20 +117,20 @@ export default function AcademicsClientFallback() {
   ];
 
   return (
-    <div className="flex flex-col gap-10 font-sans animate-fadeIn">
+    <div className="flex flex-col gap-8 font-sans animate-fadeIn">
       {/* Hero Welcome Banner */}
-      <div className="bg-gradient-to-br from-[#002147] via-[#002d5c] to-indigo-950 rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-xl border border-white/10">
+      <div className="bg-gradient-to-br from-[#002147] via-[#002d5c] to-indigo-950 rounded-[2rem] py-6 px-6 sm:px-8 md:py-8 md:px-12 text-white relative overflow-hidden shadow-xl border border-white/10">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-          <GraduationCap className="h-[450px] w-[450px]" />
+          <GraduationCap className="h-[350px] w-[350px]" />
         </div>
-        <div className="relative z-10 flex flex-col gap-4 max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-xs font-black tracking-wider uppercase w-fit text-blue-100">
-            <Sparkles className="h-3.5 w-3.5 text-amber-300" /> Academic Portal
+        <div className="relative z-10 flex flex-col gap-3 max-w-5xl pr-4 lg:pr-16">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3.5 py-1 text-[11px] font-black tracking-wider uppercase w-fit text-blue-100">
+            <Sparkles className="h-3 w-3 text-amber-300" /> Academic Portal
           </span>
-          <h2 className="font-outfit text-3xl md:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="font-outfit text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-snug">
             Academic Excellence &amp; Holistic Development
           </h2>
-          <p className="text-blue-100/90 text-sm md:text-base font-normal leading-relaxed">
+          <p className="text-blue-100/90 text-xs sm:text-sm font-normal leading-relaxed">
             St. Ann&apos;s College for Women provides career-oriented, research-infused undergraduate and postgraduate curricula designed to foster intellectual growth, global competency, and ethical leadership in accordance with Acharya Nagarjuna University and NEP 2020 guidelines.
           </p>
         </div>
