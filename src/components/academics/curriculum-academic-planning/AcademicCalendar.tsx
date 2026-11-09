@@ -1,64 +1,84 @@
 "use client";
 
-import { Calendar, CheckCircle, FileText, ExternalLink } from "lucide-react";
+import React, { useState } from "react";
+import { Calendar, FileText, Download, CheckCircle, Clock } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import academicsData from "../academics-data.json";
 
 export function AcademicCalendar() {
-  const years = ["2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028", "2029-2030"];
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const handleViewPdf = (type: string, year: string, prog: string) => {
-    alert(`Viewing PDF for: ${type} - ${prog} (${year})`);
-  };
+  const ugCalendar = academicsData.academicCalendar.ug;
+  const pgCalendar = academicsData.academicCalendar.pg;
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">
       {/* Header */}
       <div>
         <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 flex items-center gap-2 mb-2">
-          <Calendar className="h-4 w-4 text-[#002147]" /> Curriculum & Academic Planning
+          <Calendar className="h-4 w-4 text-[#002147]" /> Category B: Academic Regulations &amp; Resources
         </span>
-        <h2 className="font-outfit text-3xl font-black tracking-tight text-[#002147]">
-          Academic Planning & Calendars
+        <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight text-[#002147]">
+          Academic Calendar
         </h2>
         <div className="h-1 w-20 bg-[#002147] rounded-full mt-4"></div>
       </div>
 
-      <p className="text-slate-600 text-sm md:text-base leading-relaxed font-medium">
-        The Academic Calendar provides a comprehensive schedule of all academic activities for Undergraduate and Postgraduate programmes.
-      </p>
+      <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-3xl text-slate-700 text-sm md:text-base leading-relaxed font-medium">
+        The College follows the Academic Calendar prescribed by <strong className="text-[#002147]">Acharya Nagarjuna University (ANU)</strong> for its Undergraduate and Postgraduate programmes. Based on the University schedule, the College prepares its <strong className="text-[#002147]">Annual Institutional Plan (AIP)</strong> to plan and monitor academic, co-curricular, extracurricular and institutional activities.
+      </div>
 
-      {/* Section 1: ANU Academic Calendar */}
-      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden mt-2">
-        <div className="p-6 border-b border-slate-100 bg-[#002147]/[0.02] flex flex-col gap-1">
-          <h3 className="font-outfit text-base font-black text-[#002147]">ANU Academic Calendar</h3>
-          <span className="text-xs text-slate-400 font-bold uppercase tracking-wide">(Affiliated to Acharya Nagarjuna University)</span>
+      {/* Table 1: Undergraduate (UG) Programmes */}
+      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-[#002147] flex items-center justify-center text-white">
+              <Calendar className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-outfit text-base font-bold text-[#002147]">Undergraduate (UG) Programmes</h3>
+              <p className="text-xs text-slate-500 font-medium">ANU Academic Calendar &amp; College Annual Institutional Plan (AIP)</p>
+            </div>
+          </div>
+          <span className="text-xs font-bold bg-[#002147]/10 text-[#002147] px-3 py-1 rounded-full">
+            UG Schedule
+          </span>
         </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs md:text-sm font-sans">
+          <table className="w-full text-left text-xs md:text-sm">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 font-bold uppercase tracking-wider">
-                <th className="py-3.5 px-6">Academic Year</th>
-                <th className="py-3.5 px-6 text-center">UG Calendar</th>
-                <th className="py-3.5 px-6 text-center">PG Calendar</th>
+              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
+                <th className="py-4 px-6 font-bold uppercase tracking-wider min-w-[180px]">Academic Year</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">ANU Academic Calendar</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">College Annual Institutional Plan (AIP)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-semibold">
-              {years.map((year) => (
-                <tr key={year} className="hover:bg-slate-50/50 transition-all">
-                  <td className="py-4 px-6 font-bold text-slate-700">{year}</td>
+            <tbody className="divide-y divide-slate-100">
+              {ugCalendar.map((row) => (
+                <tr key={row.year} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-800">{row.year}</td>
                   <td className="py-4 px-6 text-center">
                     <button
-                      onClick={() => handleViewPdf("ANU", year, "UG")}
-                      className="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700 hover:underline text-xs font-bold bg-indigo-50 px-3.5 py-1.5 rounded-full transition-all"
+                      onClick={() => {
+                        setPreviewUrl(row.anuCalendarUrl);
+                        setPreviewTitle(`UG ANU Academic Calendar (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
                     >
-                      <FileText className="h-3 w-3" /> View PDF
+                      <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
                   <td className="py-4 px-6 text-center">
                     <button
-                      onClick={() => handleViewPdf("ANU", year, "PG")}
-                      className="inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 hover:underline text-xs font-bold bg-teal-50 px-3.5 py-1.5 rounded-full transition-all"
+                      onClick={() => {
+                        setPreviewUrl(row.aipUrl);
+                        setPreviewTitle(`UG College AIP (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors cursor-pointer"
                     >
-                      <FileText className="h-3 w-3" /> View PDF
+                      <Download className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
                 </tr>
@@ -68,39 +88,56 @@ export function AcademicCalendar() {
         </div>
       </div>
 
-      {/* Section 2: Institutional Academic Implementation Plan (AIP) */}
-      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden mt-2">
-        <div className="p-6 border-b border-slate-100 bg-[#002147]/[0.02] flex flex-col gap-1">
-          <h3 className="font-outfit text-base font-black text-[#002147]">Institutional Academic Implementation Plan (AIP)</h3>
-          <span className="text-xs text-slate-400 font-bold uppercase tracking-wide">Detailed internal schedules</span>
+      {/* Table 2: Postgraduate (PG) Programmes */}
+      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-teal-700 flex items-center justify-center text-white">
+              <Clock className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-outfit text-base font-bold text-slate-800">Postgraduate (PG) Programmes</h3>
+              <p className="text-xs text-slate-500 font-medium">ANU Academic Calendar &amp; College Annual Institutional Plan (AIP)</p>
+            </div>
+          </div>
+          <span className="text-xs font-bold bg-teal-100 text-teal-800 px-3 py-1 rounded-full">
+            PG Schedule
+          </span>
         </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs md:text-sm font-sans">
+          <table className="w-full text-left text-xs md:text-sm">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 font-bold uppercase tracking-wider">
-                <th className="py-3.5 px-6">Academic Year</th>
-                <th className="py-3.5 px-6 text-center">UG Calendar</th>
-                <th className="py-3.5 px-6 text-center">PG Calendar</th>
+              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
+                <th className="py-4 px-6 font-bold uppercase tracking-wider min-w-[180px]">Academic Year</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">ANU Academic Calendar</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">College Annual Institutional Plan (AIP)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-semibold">
-              {years.map((year) => (
-                <tr key={year} className="hover:bg-slate-50/50 transition-all">
-                  <td className="py-4 px-6 font-bold text-slate-700">{year}</td>
+            <tbody className="divide-y divide-slate-100">
+              {pgCalendar.map((row) => (
+                <tr key={row.year} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-800">{row.year}</td>
                   <td className="py-4 px-6 text-center">
                     <button
-                      onClick={() => handleViewPdf("Institutional", year, "UG")}
-                      className="inline-flex items-center gap-1.5 text-[#002147] hover:bg-[#002147]/10 text-xs font-bold bg-[#002147]/5 px-3.5 py-1.5 rounded-full transition-all"
+                      onClick={() => {
+                        setPreviewUrl(row.anuCalendarUrl);
+                        setPreviewTitle(`PG ANU Academic Calendar (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
                     >
-                      <FileText className="h-3 w-3" /> View PDF
+                      <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
                   <td className="py-4 px-6 text-center">
                     <button
-                      onClick={() => handleViewPdf("Institutional", year, "PG")}
-                      className="inline-flex items-center gap-1.5 text-purple-700 hover:text-purple-800 hover:bg-purple-100 text-xs font-bold bg-purple-50 px-3.5 py-1.5 rounded-full transition-all"
+                      onClick={() => {
+                        setPreviewUrl(row.aipUrl);
+                        setPreviewTitle(`PG College AIP (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors cursor-pointer"
                     >
-                      <FileText className="h-3 w-3" /> View PDF
+                      <Download className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
                 </tr>
@@ -110,13 +147,12 @@ export function AcademicCalendar() {
         </div>
       </div>
 
-      {/* Footer Statement */}
-      <div className="flex items-center gap-3 p-5 bg-emerald-50 border border-emerald-100 rounded-2xl mt-2">
-        <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-        <p className="text-emerald-800 font-semibold text-xs md:text-sm leading-snug">
-          Ensures transparency, effective planning, and timely execution of academic activities.
-        </p>
-      </div>
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Document Preview"}
+      />
     </div>
   );
 }

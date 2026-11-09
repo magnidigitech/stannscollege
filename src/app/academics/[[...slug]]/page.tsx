@@ -1,9 +1,9 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GraduationCap, Sparkles, Phone, Mail, ArrowRight } from "lucide-react";
+import { GraduationCap, Sparkles, Phone, Mail, ArrowRight, ChevronDown, ChevronRight, Building, BookOpen, Lightbulb, Award, ShieldCheck } from "lucide-react";
 
 import AcademicsClientFallback from "@/components/academics/AcademicsClientFallback";
 import { SubtextBox } from "@/components/ui/Heading1Notch";
@@ -11,107 +11,121 @@ import { SubtextBox } from "@/components/ui/Heading1Notch";
 // Component Imports
 import { UndergraduateProgrammes } from "@/components/academics/academic-programmes/UndergraduateProgrammes";
 import { PostgraduateProgrammes } from "@/components/academics/academic-programmes/PostgraduateProgrammes";
-import { IndustryIntegratedCourses } from "@/components/academics/academic-programmes/IndustryIntegratedCourses";
 
-import { CurriculumFramework } from "@/components/academics/curriculum-academic-planning/CurriculumFramework";
-import { InnovativeInterdisciplinaryOfferings } from "@/components/academics/curriculum-academic-planning/InnovativeInterdisciplinaryOfferings";
 import { AcademicCalendar } from "@/components/academics/curriculum-academic-planning/AcademicCalendar";
-import { AcademicImplementationPlan } from "@/components/academics/curriculum-academic-planning/AcademicImplementationPlan";
 import { Timetables } from "@/components/academics/curriculum-academic-planning/Timetables";
+import { CurriculumSyllabus } from "@/components/academics/curriculum-academic-planning/CurriculumSyllabus";
+import { AcademicRegulations } from "@/components/academics/curriculum-academic-planning/AcademicRegulations";
+import { IlmsSystem } from "@/components/academics/curriculum-academic-planning/IlmsSystem";
 
 import { DepartmentDetail } from "@/components/academics/departments/DepartmentDetail";
 import { AllDepartmentsHub } from "@/components/academics/departments/AllDepartmentsHub";
-import { ValueAddedLearning } from "@/components/academics/value-added-learning/ValueAddedLearning";
 import { DepartmentUpdateForm } from "@/components/academics/departments/DepartmentUpdateForm";
 
-import { PedagogyMethodologies } from "@/components/academics/teaching-learning/PedagogyMethodologies";
-import { LearningManagementSystem } from "@/components/academics/teaching-learning/LearningManagementSystem";
-import { StudentCentricMethods } from "@/components/academics/teaching-learning/StudentCentricMethods";
-
-import { OutcomeBasedEducation } from "@/components/academics/outcome-based-education/OutcomeBasedEducation";
-import { AcademicQualityIndicators } from "@/components/academics/academic-quality-indicators/AcademicQualityIndicators";
+import { TeachingLearningRenderer } from "@/components/academics/teaching-learning/TeachingLearningRenderer";
+import { ExaminationEvaluationRenderer } from "@/components/academics/examination-evaluation/ExaminationEvaluationRenderer";
+import { AcademicEnrichmentRenderer } from "@/components/academics/academic-enrichment/AcademicEnrichmentRenderer";
+import { AcademicQualityOutcomesRenderer } from "@/components/academics/academic-quality-outcomes/AcademicQualityOutcomesRenderer";
 
 const navigationStructure = [
   {
     catSlug: "academic-programmes",
-    title: "I. Academic Programmes",
+    title: "A. Academic Programmes",
+    icon: GraduationCap,
     items: [
       { text: "Undergraduate (UG) Programmes", slug: "undergraduate-programmes" },
-      { text: "Postgraduate (PG) Programmes", slug: "postgraduate-programmes" },
-      { text: "Industry-Integrated Courses", slug: "industry-integrated-courses" }
+      { text: "Postgraduate (PG) Programmes", slug: "postgraduate-programmes" }
     ]
   },
   {
     catSlug: "curriculum-academic-planning",
-    title: "II. Curriculum & Academic Planning",
+    title: "B. Academic Regulations & Resources",
+    icon: BookOpen,
     items: [
-      { text: "Curriculum Framework", slug: "curriculum-framework" },
-      { text: "Innovative & Interdisciplinary Offerings", slug: "innovative-interdisciplinary-offerings" },
-      { text: "Academic Calendar (UG & PG)", slug: "academic-calendar-ug-pg" },
-      { text: "Academic Implementation Plan (AIP)", slug: "academic-implementation-plan-aip" },
-      { text: "Time Tables", slug: "time-tables" }
+      { text: "Academic Calendar", slug: "academic-calendar" },
+      { text: "Time Tables", slug: "timetables" },
+      { text: "Curriculum & Syllabus", slug: "curriculum-syllabus" },
+      { text: "Academic Regulations", slug: "academic-regulations" },
+      { text: "ILMS – Integrated Learning Management System", slug: "ilms-system" }
     ]
   },
   {
     catSlug: "departments",
-    title: "III. Departments",
+    title: "C. Departments (Dropdown Menu)",
+    isDropdown: true,
+    icon: Building,
     items: [
       { text: "1. Department of Commerce", slug: "department-of-commerce" },
-      { text: "2. Department of Computer Applications (BCA)", slug: "department-of-computer-applications-bca" },
-      { text: "3. Department of Computer Science (CS & AI)", slug: "department-of-computer-science-cs-artificial-intelligence" },
-      { text: "4. Department of Mathematics", slug: "department-of-mathematics" },
-      { text: "5. Department of Physics", slug: "department-of-physics" },
-      { text: "6. Department of Statistics", slug: "department-of-statistics" },
-      { text: "7. Department of Chemistry", slug: "department-of-chemistry" },
-      { text: "8. Department of Biotechnology", slug: "department-of-biotechnology" },
-      { text: "9. Department of Microbiology", slug: "department-of-microbiology" },
-      { text: "10. Department of Botany", slug: "department-of-botany" },
-      { text: "11. Department of MCA", slug: "department-of-mca" },
-      { text: "12. Department of MBA", slug: "department-of-mba" },
-      { text: "13. Department of English", slug: "department-of-english" },
-      { text: "14. Oriental Languages (Tel/San/Hin)", slug: "department-of-oriental-languages-telugu-sanskrit-hindi" },
+      { text: "2. Dept. of Computer Science & Applications", slug: "department-of-computer-science-applications" },
+      { text: "3. Department of Mathematics", slug: "department-of-mathematics" },
+      { text: "4. Department of Physics", slug: "department-of-physics" },
+      { text: "5. Department of Statistics", slug: "department-of-statistics" },
+      { text: "6. Department of Biotechnology", slug: "department-of-biotechnology" },
+      { text: "7. Department of Microbiology", slug: "department-of-microbiology" },
+      { text: "8. Department of Botany", slug: "department-of-botany" },
+      { text: "9. Department of Chemistry", slug: "department-of-chemistry" },
+      { text: "10. Department of English", slug: "department-of-english" },
+      { text: "11. Department of Oriental Languages", slug: "department-of-oriental-languages" },
+      { text: "12. Department of MCA", slug: "department-of-mca" },
+      { text: "13. Department of MBA", slug: "department-of-mba" },
       { text: "⚙️ Manage Content", slug: "update" }
     ]
   },
   {
-    catSlug: "value-added-learning",
-    title: "IV. Value-Added Learning",
-    items: [
-      { text: "Add-on Courses", slug: "add-on-courses" },
-      { text: "Certificate Courses", slug: "certificate-courses" },
-      { text: "Value-Added Courses", slug: "value-added-courses" }
-    ]
-  },
-  {
     catSlug: "teaching-learning",
-    title: "V. Teaching & Learning",
+    title: "D. Teaching & Learning",
+    icon: Lightbulb,
     items: [
-      { text: "Pedagogy & Learning Methodologies", slug: "pedagogy-learning-methodologies" },
-      { text: "Learning Management System (LMS)", slug: "learning-management-system-lms" },
-      { text: "Student-Centric Methods", slug: "student-centric-methods" }
+      { text: "Teaching-Learning Practices", slug: "teaching-learning-practices" },
+      { text: "Innovative Teaching Practices", slug: "innovative-teaching-practices" },
+      { text: "Experiential & Participative Learning", slug: "experiential-participative-learning" },
+      { text: "ICT-Enabled Teaching", slug: "ict-enabled-teaching" },
+      { text: "Student-Centric Learning", slug: "student-centric-learning" }
     ]
   },
   {
-    catSlug: "outcome-based-education",
-    title: "VI. Outcome-Based Education",
+    catSlug: "examination-evaluation",
+    title: "E. Examination & Evaluation",
+    icon: Award,
     items: [
-      { text: "Programme Outcomes (POs)", slug: "programme-outcomes-pos" },
-      { text: "Course Outcomes (COs)", slug: "course-outcomes-cos" },
-      { text: "Programme Specific Outcomes (PSOs)", slug: "programme-specific-outcomes-psos" }
+      { text: "Examination System", slug: "examination-system" },
+      { text: "Continuous Internal Assessment (CIA)", slug: "continuous-internal-assessment" },
+      { text: "University Examinations", slug: "university-examinations" },
+      { text: "Results & Performance", slug: "results-performance" },
+      { text: "Examination Regulations", slug: "examination-regulations" }
     ]
   },
   {
-    catSlug: "academic-quality-indicators",
-    title: "VII. Academic Quality Indicators",
+    catSlug: "academic-enrichment",
+    title: "F. Academic Enrichment",
+    icon: Sparkles,
     items: [
-      { text: "Student–Teacher Ratio", slug: "student-teacher-ratio" },
-      { text: "Internal Assessment & Evaluation", slug: "internal-assessment-evaluation" },
-      { text: "Academic Performance Indicators", slug: "academic-performance-indicators" }
+      { text: "Value-Added Courses (VAC)", slug: "value-added-courses" },
+      { text: "Certificate Programmes", slug: "certificate-courses" },
+      { text: "Skill Development Programmes", slug: "skill-development-programmes" },
+      { text: "Guest Lectures & Workshops", slug: "guest-lectures-workshops" },
+      { text: "Seminars & Conferences", slug: "seminars-conferences" },
+      { text: "Academic Collaborations", slug: "academic-collaborations" }
+    ]
+  },
+  {
+    catSlug: "academic-quality-outcomes",
+    title: "G. Academic Quality & Outcomes",
+    icon: ShieldCheck,
+    items: [
+      { text: "Programme Outcomes (POs)", slug: "programme-outcomes" },
+      { text: "Programme Specific Outcomes (PSOs)", slug: "programme-specific-outcomes" },
+      { text: "Course Outcomes (COs)", slug: "course-outcomes" },
+      { text: "CO–PO/PSO Mapping", slug: "co-po-pso-mapping" },
+      { text: "Attainment of Outcomes", slug: "attainment-of-outcomes" },
+      { text: "Academic & Administrative Audit (AAA)", slug: "academic-audit" }
     ]
   }
 ];
 
-function AcademicsSidebar() {
+function AcademicsSidebar({ catSlug, itemSlug }: { catSlug?: string; itemSlug?: string }) {
+  const [departmentsOpen, setDepartmentsOpen] = useState(catSlug === "departments" || true);
+
   return (
     <div className="flex flex-col gap-6 sticky top-24 select-none font-sans">
       
@@ -166,8 +180,16 @@ interface PageProps {
 export default function AcademicsDynamicPage({ params }: PageProps) {
   const { slug } = use(params);
 
-  const catSlug = slug?.[0];
+  const rawCat = slug?.[0];
   const itemSlug = slug?.[1];
+
+  // Normalized category slug
+  const catSlug = rawCat === "academic-regulations-resources" ? "curriculum-academic-planning" :
+    rawCat === "value-added-learning" ? "academic-enrichment" :
+    rawCat === "outcome-based-education" || rawCat === "academic-quality-indicators" ? "academic-quality-outcomes" :
+    rawCat;
+
+  const [deptsOpen, setDeptsOpen] = useState<boolean>(true);
 
   if (!catSlug) {
     return <AcademicsClientFallback />;
@@ -182,44 +204,38 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
   // Logic to render individual content component
   const renderMainContent = () => {
     if (catSlug === "academic-programmes") {
-      if (itemSlug === "undergraduate-programmes") return <UndergraduateProgrammes />;
-      if (itemSlug === "postgraduate-programmes") return <PostgraduateProgrammes />;
-      if (itemSlug === "industry-integrated-courses") return <IndustryIntegratedCourses />;
+      if (itemSlug === "undergraduate-programmes" || itemSlug === "undergraduate") return <UndergraduateProgrammes />;
+      if (itemSlug === "postgraduate-programmes" || itemSlug === "postgraduate") return <PostgraduateProgrammes />;
     }
+
     if (catSlug === "curriculum-academic-planning") {
-      if (itemSlug === "curriculum-framework") return <CurriculumFramework />;
-      if (itemSlug === "innovative-interdisciplinary-offerings") return <InnovativeInterdisciplinaryOfferings />;
-      if (itemSlug === "academic-calendar-ug-pg") return <AcademicCalendar />;
-      if (itemSlug === "academic-implementation-plan-aip") return <AcademicImplementationPlan />;
-      if (itemSlug === "time-tables") return <Timetables />;
+      if (itemSlug === "academic-calendar" || itemSlug === "academic-calendar-ug-pg") return <AcademicCalendar />;
+      if (itemSlug === "timetables" || itemSlug === "time-tables") return <Timetables />;
+      if (itemSlug === "curriculum-syllabus" || itemSlug === "curriculum-framework" || itemSlug === "innovative-interdisciplinary-offerings") return <CurriculumSyllabus />;
+      if (itemSlug === "academic-regulations" || itemSlug === "academic-implementation-plan-aip") return <AcademicRegulations />;
+      if (itemSlug === "ilms-system" || itemSlug === "learning-management-system-lms") return <IlmsSystem />;
     }
+
     if (catSlug === "departments") {
       if (isAllDeptsRoot) return <AllDepartmentsHub />;
       if (itemSlug === "update") return <DepartmentUpdateForm />;
       return <DepartmentDetail itemSlug={itemSlug || ""} />;
     }
-    if (catSlug === "value-added-learning") {
-      // Maps all 3 sub-items to ValueAddedLearning component
-      if (["add-on-courses", "certificate-courses", "value-added-courses"].includes(itemSlug || "")) {
-        return <ValueAddedLearning />;
-      }
-    }
+
     if (catSlug === "teaching-learning") {
-      if (itemSlug === "pedagogy-learning-methodologies") return <PedagogyMethodologies />;
-      if (itemSlug === "learning-management-system-lms") return <LearningManagementSystem />;
-      if (itemSlug === "student-centric-methods") return <StudentCentricMethods />;
+      return <TeachingLearningRenderer subSlug={itemSlug} />;
     }
-    if (catSlug === "outcome-based-education") {
-      // Maps all 3 sub-items (POs, COs, PSOs) to OutcomeBasedEducation component
-      if (["programme-outcomes-pos", "course-outcomes-cos", "programme-specific-outcomes-psos"].includes(itemSlug || "")) {
-        return <OutcomeBasedEducation />;
-      }
+
+    if (catSlug === "examination-evaluation") {
+      return <ExaminationEvaluationRenderer subSlug={itemSlug} />;
     }
-    if (catSlug === "academic-quality-indicators") {
-      // Maps all 3 sub-items to AcademicQualityIndicators component
-      if (["student-teacher-ratio", "internal-assessment-evaluation", "academic-performance-indicators"].includes(itemSlug || "")) {
-        return <AcademicQualityIndicators />;
-      }
+
+    if (catSlug === "academic-enrichment") {
+      return <AcademicEnrichmentRenderer subSlug={itemSlug} />;
+    }
+
+    if (catSlug === "academic-quality-outcomes") {
+      return <AcademicQualityOutcomesRenderer subSlug={itemSlug} />;
     }
     
     return <AcademicsClientFallback />;
@@ -253,57 +269,93 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
                 <GraduationCap className="h-5 w-5" />
               </span>
               <div className="flex flex-col min-w-0">
-                <h1 className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider text-white truncate leading-tight">
+                <Link href="/academics" className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider text-white truncate leading-tight hover:underline">
                   Academics
-                </h1>
+                </Link>
                 <span className="text-[10px] sm:text-[11px] text-blue-100/80 font-medium truncate mt-0.5">
                   Academic Modules &amp; Programs
                 </span>
               </div>
             </div>
-            <div className="flex flex-col gap-6 mt-1">
-              {navigationStructure.map((group) => (
-                <div key={group.catSlug} className="flex flex-col gap-1.5">
-                  {group.catSlug === "departments" ? (
-                    <Link 
-                      href="/academics/departments"
-                      className={`font-outfit text-[10px] font-black uppercase tracking-widest px-2 hover:text-[#002147] transition-colors flex items-center justify-between group cursor-pointer ${
-                        isAllDeptsRoot ? 'text-[#002147] border-l-2 border-[#002147] pl-1.5' : 'text-slate-400'
-                      }`}
-                    >
-                      <span>{group.title}</span>
-                      {isAllDeptsRoot ? (
-                        <span className="h-1 w-1.5 bg-[#002147] rounded-full animate-pulse shrink-0"></span>
-                      ) : (
-                        <ArrowRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            <div className="flex flex-col gap-5 mt-1">
+              {navigationStructure.map((group) => {
+                const isGroupActive = catSlug === group.catSlug;
+
+                if (group.isDropdown) {
+                  return (
+                    <div key={group.catSlug} className="flex flex-col gap-1.5 border-y border-slate-100 py-3 my-1">
+                      <div className="flex items-center justify-between px-2">
+                        <Link
+                          href="/academics/departments"
+                          className={`font-outfit text-[11px] font-black uppercase tracking-wider hover:text-[#002147] transition-colors flex items-center gap-2 ${
+                            isAllDeptsRoot ? "text-[#002147]" : "text-slate-600"
+                          }`}
+                        >
+                          <Building className="h-3.5 w-3.5 text-[#002147]" />
+                          <span>C. Departments</span>
+                        </Link>
+                        <button
+                          onClick={() => setDeptsOpen(!deptsOpen)}
+                          className="p-1 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-[#002147] transition-colors cursor-pointer"
+                          title={deptsOpen ? "Collapse Departments Menu" : "Expand Departments Menu"}
+                        >
+                          {deptsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                        </button>
+                      </div>
+
+                      {deptsOpen && (
+                        <div className="flex flex-col gap-1 pl-2 border-l-2 border-indigo-100/60 ml-3 mt-1 animate-fadeIn">
+                          {group.items.map((item) => {
+                            const isActive = catSlug === group.catSlug && itemSlug === item.slug;
+                            return (
+                              <Link
+                                key={item.slug}
+                                href={`/academics/${group.catSlug}/${item.slug}`}
+                                className={`font-sans text-xs p-2 rounded-xl transition-all border border-transparent flex items-center justify-between select-none ${
+                                  isActive
+                                    ? "bg-[#002147]/10 border-[#002147]/20 text-[#002147] font-black shadow-xs"
+                                    : "text-slate-600 hover:bg-slate-50 hover:text-[#002147] font-bold"
+                                }`}
+                              >
+                                <span className="truncate pr-1 text-[11px] leading-tight">{item.text}</span>
+                                {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#002147] shrink-0 animate-pulse"></span>}
+                              </Link>
+                            );
+                          })}
+                        </div>
                       )}
-                    </Link>
-                  ) : (
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={group.catSlug} className="flex flex-col gap-1.5">
                     <span className="font-outfit text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">
                       {group.title}
                     </span>
-                  )}
-                  <div className="flex flex-col gap-1">
-                    {group.items.map((item) => {
-                      const isActive = catSlug === group.catSlug && itemSlug === item.slug;
-                      return (
-                        <Link
-                          key={item.slug}
-                          href={`/academics/${group.catSlug}/${item.slug}`}
-                          className={`font-sans text-xs p-2.5 rounded-xl transition-all border border-transparent flex items-center justify-between select-none ${
-                            isActive
-                              ? 'bg-[#002147]/10 border-[#002147]/20 text-[#002147] font-black shadow-sm'
-                              : 'text-slate-600 hover:bg-slate-50 hover:text-[#002147] font-bold'
-                          }`}
-                        >
-                          <span className="truncate pr-2 leading-tight">{item.text}</span>
-                          {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#002147] shrink-0 animate-pulse"></span>}
-                        </Link>
-                      );
-                    })}
+                    <div className="flex flex-col gap-1">
+                      {group.items.map((item) => {
+                        const isActive = catSlug === group.catSlug && itemSlug === item.slug;
+                        return (
+                          <Link
+                            key={item.slug}
+                            href={`/academics/${group.catSlug}/${item.slug}`}
+                            className={`font-sans text-xs p-2.5 rounded-xl transition-all border border-transparent flex items-center justify-between select-none ${
+                              isActive
+                                ? "bg-[#002147]/10 border-[#002147]/20 text-[#002147] font-black shadow-xs"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-[#002147] font-bold"
+                            }`}
+                          >
+                            <span className="truncate pr-2 leading-tight">{item.text}</span>
+                            {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#002147] shrink-0 animate-pulse"></span>}
+                          </Link>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -318,7 +370,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
             
             {/* Mini Sidebar Widgets Display at bottom on mobile/desktop as layout backup */}
             <div className="border-t border-slate-200/60 pt-8 mt-4">
-              <AcademicsSidebar />
+              <AcademicsSidebar catSlug={catSlug} itemSlug={itemSlug} />
             </div>
           </div>
 

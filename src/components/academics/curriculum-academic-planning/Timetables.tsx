@@ -1,76 +1,84 @@
 "use client";
 
-import { Clock, FileText, LayoutGrid, ListOrdered, ExternalLink } from "lucide-react";
+import React, { useState } from "react";
+import { Clock, FileText, Download, Calendar } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import academicsData from "../academics-data.json";
 
 export function Timetables() {
-  const years = ["2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028", "2029-2030"];
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const handleViewPdf = (type: string, year: string, category: string) => {
-    alert(`Requesting ${type} Timetable for ${category} in ${year}`);
-  };
+  const ugTimetables = academicsData.timetables.ug;
+  const pgTimetables = academicsData.timetables.pg;
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">
       {/* Header */}
       <div>
         <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 flex items-center gap-2 mb-2">
-          <Clock className="h-4 w-4 text-[#002147]" /> Curriculum & Academic Planning
+          <Clock className="h-4 w-4 text-[#002147]" /> Category B: Academic Regulations &amp; Resources
         </span>
-        <h2 className="font-outfit text-3xl font-black tracking-tight text-[#002147]">
-          Timetables
+        <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight text-[#002147]">
+          Time Tables
         </h2>
         <div className="h-1 w-20 bg-[#002147] rounded-full mt-4"></div>
       </div>
 
-      <p className="text-slate-600 text-sm md:text-base leading-relaxed font-medium">
-        The institution prepares and publishes well-organized timetables to ensure smooth and efficient conduct of academic activities.
-      </p>
+      <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-3xl text-slate-700 text-sm md:text-base leading-relaxed font-medium">
+        The College publishes centrally prepared semester-wise class timetables for UG and PG programmes to ensure systematic scheduling and effective implementation of academic activities.
+      </div>
 
-      {/* Section 1: Detailed Timetables */}
+      {/* UG Time Tables */}
       <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 bg-[#002147]/[0.02] flex items-center gap-3">
-          <div className="h-8 w-8 bg-indigo-50 rounded-lg text-indigo-600 flex items-center justify-center border border-indigo-100">
-            <LayoutGrid className="h-4 w-4" />
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-[#002147] flex items-center justify-center text-white">
+              <Calendar className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-outfit text-base font-bold text-[#002147]">Undergraduate (UG) Programmes</h3>
+              <p className="text-xs text-slate-500 font-medium">Semester-wise centrally prepared timetables for odd and even semesters</p>
+            </div>
           </div>
-          <h3 className="font-outfit text-base font-black text-[#002147]">UG & PG Programmes – Timetables</h3>
+          <span className="text-xs font-bold bg-[#002147]/10 text-[#002147] px-3 py-1 rounded-full">
+            UG Timetables
+          </span>
         </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-[11px] md:text-xs font-sans border-collapse">
+          <table className="w-full text-left text-xs md:text-sm">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 text-[10px] font-black uppercase tracking-wider">
-                <th rowSpan={2} className="py-4 px-4 border-r border-slate-100 text-center align-middle w-24">Year</th>
-                <th colSpan={2} className="py-2.5 px-4 border-b border-r border-slate-100 text-center">UG Programmes</th>
-                <th colSpan={2} className="py-2.5 px-4 border-b border-slate-100 text-center">PG Programmes</th>
-              </tr>
-              <tr className="bg-slate-50/40 text-slate-500 border-b border-slate-100 font-bold">
-                <th className="py-2 px-4 border-r border-slate-100 text-center text-indigo-700 bg-indigo-50/30">Odd Sem (I, III, V)</th>
-                <th className="py-2 px-4 border-r border-slate-100 text-center text-indigo-700 bg-indigo-50/10">Even Sem (II, IV, VI)</th>
-                <th className="py-2 px-4 border-r border-slate-100 text-center text-teal-700 bg-teal-50/30">Odd Sem (I, III)</th>
-                <th className="py-2 px-4 text-center text-teal-700 bg-teal-50/10">Even Sem (II, IV)</th>
+              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
+                <th className="py-4 px-6 font-bold uppercase tracking-wider min-w-[180px]">Academic Year</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">I, III &amp; V Semesters (Odd Semesters)</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">II, IV &amp; VI Semesters (Even Semesters)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-              {years.map((year) => (
-                <tr key={year} className="hover:bg-slate-50/50 transition-all">
-                  <td className="py-4 px-4 text-center border-r border-slate-100 font-black text-slate-800 text-xs bg-slate-50/20">{year}</td>
-                  <td className="py-3 px-4 text-center border-r border-slate-100">
-                    <button onClick={() => handleViewPdf("Detailed", year, "UG Odd Sem")} className="inline-flex items-center gap-1 text-indigo-600 hover:underline">
-                      <FileText className="h-2.5 w-2.5" /> PDF
+            <tbody className="divide-y divide-slate-100">
+              {ugTimetables.map((row) => (
+                <tr key={row.year} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-800">{row.year}</td>
+                  <td className="py-4 px-6 text-center">
+                    <button
+                      onClick={() => {
+                        setPreviewUrl(row.oddSemUrl);
+                        setPreviewTitle(`UG Timetable - I, III & V Semesters (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
+                    >
+                      <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
-                  <td className="py-3 px-4 text-center border-r border-slate-100">
-                    <button onClick={() => handleViewPdf("Detailed", year, "UG Even Sem")} className="inline-flex items-center gap-1 text-indigo-600 hover:underline">
-                      <FileText className="h-2.5 w-2.5" /> PDF
-                    </button>
-                  </td>
-                  <td className="py-3 px-4 text-center border-r border-slate-100">
-                    <button onClick={() => handleViewPdf("Detailed", year, "PG Odd Sem")} className="inline-flex items-center gap-1 text-teal-600 hover:underline">
-                      <FileText className="h-2.5 w-2.5" /> PDF
-                    </button>
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <button onClick={() => handleViewPdf("Detailed", year, "PG Even Sem")} className="inline-flex items-center gap-1 text-teal-600 hover:underline">
-                      <FileText className="h-2.5 w-2.5" /> PDF
+                  <td className="py-4 px-6 text-center">
+                    <button
+                      onClick={() => {
+                        setPreviewUrl(row.evenSemUrl);
+                        setPreviewTitle(`UG Timetable - II, IV & VI Semesters (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer"
+                    >
+                      <Download className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
                 </tr>
@@ -80,38 +88,56 @@ export function Timetables() {
         </div>
       </div>
 
-      {/* Section 2: Central Timetables */}
+      {/* PG Time Tables */}
       <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 bg-[#002147]/[0.02] flex items-center gap-3">
-          <div className="h-8 w-8 bg-purple-50 rounded-lg text-purple-600 flex items-center justify-center border border-purple-100">
-            <ListOrdered className="h-4 w-4" />
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-teal-700 flex items-center justify-center text-white">
+              <Clock className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-outfit text-base font-bold text-slate-800">Postgraduate (PG) Programmes</h3>
+              <p className="text-xs text-slate-500 font-medium">Semester-wise timetables for MCA and MBA professional cohorts</p>
+            </div>
           </div>
-          <h3 className="font-outfit text-base font-black text-[#002147]">UG & PG Programmes – Central Timetables</h3>
+          <span className="text-xs font-bold bg-teal-100 text-teal-800 px-3 py-1 rounded-full">
+            PG Timetables
+          </span>
         </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-[11px] md:text-xs font-sans border-collapse">
+          <table className="w-full text-left text-xs md:text-sm">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 text-[10px] font-black uppercase tracking-wider">
-                <th rowSpan={2} className="py-4 px-4 border-r border-slate-100 text-center align-middle w-24">Year</th>
-                <th colSpan={2} className="py-2.5 px-4 border-b border-slate-100 text-center bg-[#002147]/5 text-[#002147]">Central Timetable Documents</th>
-              </tr>
-              <tr className="bg-slate-50/40 text-slate-500 border-b border-slate-100 font-bold">
-                <th className="py-2 px-4 border-r border-slate-100 text-center">Odd Semesters</th>
-                <th className="py-2 px-4 text-center">Even Semesters</th>
+              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
+                <th className="py-4 px-6 font-bold uppercase tracking-wider min-w-[180px]">Academic Year</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">I &amp; III Semesters (Odd Semesters)</th>
+                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">II &amp; IV Semesters (Even Semesters)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-              {years.map((year) => (
-                <tr key={year} className="hover:bg-slate-50/50 transition-all">
-                  <td className="py-4 px-4 text-center border-r border-slate-100 font-black text-slate-800 text-xs bg-slate-50/20">{year}</td>
-                  <td className="py-3 px-4 text-center border-r border-slate-100">
-                    <button onClick={() => handleViewPdf("Central", year, "Odd Sem")} className="inline-flex items-center gap-1.5 text-[#002147] font-bold hover:underline bg-[#002147]/5 hover:bg-[#002147]/10 px-3 py-1 rounded-full">
-                      <FileText className="h-3 w-3" /> View PDF
+            <tbody className="divide-y divide-slate-100">
+              {pgTimetables.map((row) => (
+                <tr key={row.year} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-800">{row.year}</td>
+                  <td className="py-4 px-6 text-center">
+                    <button
+                      onClick={() => {
+                        setPreviewUrl(row.oddSemUrl);
+                        setPreviewTitle(`PG Timetable - I & III Semesters (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
+                    >
+                      <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
-                  <td className="py-3 px-4 text-center">
-                    <button onClick={() => handleViewPdf("Central", year, "Even Sem")} className="inline-flex items-center gap-1.5 text-[#002147] font-bold hover:underline bg-[#002147]/5 hover:bg-[#002147]/10 px-3 py-1 rounded-full">
-                      <FileText className="h-3 w-3" /> View PDF
+                  <td className="py-4 px-6 text-center">
+                    <button
+                      onClick={() => {
+                        setPreviewUrl(row.evenSemUrl);
+                        setPreviewTitle(`PG Timetable - II & IV Semesters (${row.year})`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer"
+                    >
+                      <Download className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
                 </tr>
@@ -120,6 +146,13 @@ export function Timetables() {
           </table>
         </div>
       </div>
+
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Document Preview"}
+      />
     </div>
   );
 }

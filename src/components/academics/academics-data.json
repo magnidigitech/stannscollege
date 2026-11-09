@@ -1,0 +1,703 @@
+{
+  "ugProgrammes": [
+    {
+      "sNo": 1,
+      "name": "B.Com. Honours-General",
+      "sanctionedIntake": 20,
+      "convenerQuota": 14,
+      "managementQuota": 6,
+      "ewsQuota": 2,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2d7aee60b73c4d7f7fa0833a4faeef8e539d0fcb.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/66a014909a80e1c27be639ea2fbc3538dd40ceea-1414x2000.png"
+    },
+    {
+      "sNo": 2,
+      "name": "B.Com. Honours-Computer Applications",
+      "sanctionedIntake": 105,
+      "convenerQuota": 74,
+      "managementQuota": 31,
+      "ewsQuota": 11,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/34685ffcb6dfd15ee3628bb67468ae3aebe82173.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/122097e33dc7ec6332152862d2948c2642a4a3fe-1414x2000.png"
+    },
+    {
+      "sNo": 3,
+      "name": "BCA Honours-Computer Applications",
+      "sanctionedIntake": 60,
+      "convenerQuota": 42,
+      "managementQuota": 18,
+      "ewsQuota": 6,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2ecb31ea67b313cae6d231aee4bb358f28fa605d.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/f08f804fcb0773f27ae2ebc2a129efeeaa558cb7-1414x2000.png"
+    },
+    {
+      "sNo": 4,
+      "name": "B.Sc. Honours -Computer Science",
+      "sanctionedIntake": 35,
+      "convenerQuota": 25,
+      "managementQuota": 10,
+      "ewsQuota": 4,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/793b8908f0e5aa3aa2bc6d859b8beec4608c02c6.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/9ee8397a7a2faaa0aa37e89e083c6b222955f053-1414x2000.png"
+    },
+    {
+      "sNo": 5,
+      "name": "B.Sc. Honours -Artificial Intelligence",
+      "sanctionedIntake": 60,
+      "convenerQuota": 42,
+      "managementQuota": 18,
+      "ewsQuota": 6,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/54653f5ff990089f81dfc34e845f2759e6fb6660.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/eb87747e09ea9ba41829e061df8d8c9735d6480e-1414x2000.png"
+    },
+    {
+      "sNo": 6,
+      "name": "B.Sc. Honours -Mathematics",
+      "sanctionedIntake": 25,
+      "convenerQuota": 18,
+      "managementQuota": 7,
+      "ewsQuota": 3,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/62a74421b8f04c62fa3ee11ce3bc49cf13993d3d.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/e7fa56a29be85a9ee07593d6e5a6a6f671bcf2fa-1414x2000.png"
+    },
+    {
+      "sNo": 7,
+      "name": "B.Sc. Honours -Physics",
+      "sanctionedIntake": 25,
+      "convenerQuota": 18,
+      "managementQuota": 7,
+      "ewsQuota": 3,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/d30b4ec74a9cf41d8e124898144fc6b66ca5bce9.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/bfae0b82f07d2c3df49520e5e04278a5482381bc-1414x2000.png"
+    },
+    {
+      "sNo": 8,
+      "name": "B.Sc. Honours -Statistics",
+      "sanctionedIntake": 25,
+      "convenerQuota": 18,
+      "managementQuota": 7,
+      "ewsQuota": 3,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/1715696144e59fdb634a4714fbfefec70e80e181.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/d229df58a43f82068472ea0887df7a3c3997db12-1414x2000.png"
+    },
+    {
+      "sNo": 9,
+      "name": "B.Sc. Honours-Biotechnology",
+      "sanctionedIntake": 25,
+      "convenerQuota": 18,
+      "managementQuota": 7,
+      "ewsQuota": 3,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e95318dbbcce5b2110c7fb5a7e3ce72bb657155d.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/1daecf892892ee3970ea01d2cfdf1f52b65103c8-1414x2000.png"
+    },
+    {
+      "sNo": 10,
+      "name": "B.Sc. Honours -Microbiology",
+      "sanctionedIntake": 25,
+      "convenerQuota": 18,
+      "managementQuota": 7,
+      "ewsQuota": 3,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/04117bfaef4b77c3a07c1b525281a7b458fbbf2a.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/be9013e2f59fa0f5454b5f884a441e8fdfbb2ef2-1414x2000.png"
+    },
+    {
+      "sNo": 11,
+      "name": "B.Sc. Honours-Chemistry",
+      "sanctionedIntake": 20,
+      "convenerQuota": 14,
+      "managementQuota": 6,
+      "ewsQuota": 2,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/54f57564d6ddae3c42878bf44f9ea771d9263152.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/cb52bb78f99478f69201fc51c2777174db27cbb0-1414x2000.png"
+    }
+  ],
+  "pgProgrammes": [
+    {
+      "sNo": 1,
+      "name": "MCA – Master of Computer Applications",
+      "sanctionedIntake": 60,
+      "convenerQuota": 42,
+      "managementQuota": 18,
+      "ewsQuota": 6,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/6280cefa985df85ea933b4d45d8b2d7dd93fcb64.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/e7811210459c5d0ba4c9a622f6bfce404945d8ba-1414x2000.png"
+    },
+    {
+      "sNo": 2,
+      "name": "MBA – Master of Business Administration",
+      "sanctionedIntake": 60,
+      "convenerQuota": 42,
+      "managementQuota": 18,
+      "ewsQuota": 6,
+      "aboutDocumentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/a4773cbb42bf27a1a2b27150a581e285a8bf1291.pdf",
+      "brochureUrl": "https://cdn.sanity.io/images/fhjwqub5/production/68c85a21faeb30d4a7c8be0ddc0b11fb9e190352-1414x2000.png"
+    }
+  ],
+  "academicCalendar": {
+    "ug": [
+      { "year": "2026–2027", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2025–2026", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2024–2025", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2023–2024", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "pg": [
+      { "year": "2026–2027", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2025–2026", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2024–2025", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2023–2024", "anuCalendarUrl": "/documents/DefaultFile_1.pdf", "aipUrl": "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  "timetables": {
+    "ug": [
+      { "year": "2026–2027", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2025–2026", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2024–2025", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2023–2024", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "pg": [
+      { "year": "2026–2027", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2025–2026", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2024–2025", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" },
+      { "year": "2023–2024", "oddSemUrl": "/documents/DefaultFile_1.pdf", "evenSemUrl": "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  "curriculumSyllabus": {
+    "ugFrameworkCurrent": [
+      { "sNo": 1, "title": "Curriculum Framework of B.A./B.Com./B.B.A. (Honours)", "applicableFrom": "A.Y. 2025–26", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "Curriculum Framework of B.Sc./BCA (Honours)", "applicableFrom": "A.Y. 2025–26", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "ugFrameworkPrevious": [
+      { "sNo": 1, "title": "Previous UG Curriculum Framework / Regulations", "applicableFrom": "A.Y. 2024–25", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "Previous UG Curriculum Framework / Regulations", "applicableFrom": "A.Y. 2023–24", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 3, "title": "Previous UG Curriculum Framework / Regulations", "applicableFrom": "A.Y. 2022–23", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 4, "title": "Previous UG Curriculum Framework / Regulations", "applicableFrom": "A.Y. 2021–22", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 5, "title": "CBCS Curriculum Framework", "applicableFrom": "2020–21 onwards", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "ugSingleMajor": [
+      { "sNo": 1, "title": "B.Com. Honours – General", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "B.Com. Honours – Computer Applications", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 3, "title": "BCA Honours -Computer Applications", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 4, "title": "B.Sc. Honours – Computer Science", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 5, "title": "B.Sc. Honours – Artificial Intelligence", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 6, "title": "B.Sc. Honours – Mathematics", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 7, "title": "B.Sc. Honours – Physics", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 8, "title": "B.Sc. Honours – Statistics", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 9, "title": "B.Sc. Honours – Biotechnology", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 10, "title": "B.Sc. Honours – Microbiology", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 11, "title": "B.Sc. Honours – Chemistry", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "minorCourses": [
+      { "sNo": 1, "title": "Business Management", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "Statistics", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 3, "title": "Physics", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 4, "title": "Mathematics", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 5, "title": "Computer Science", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 6, "title": "Botany", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "aeccCourses": [
+      { "sNo": 1, "title": "General English", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "General Telugu", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 3, "title": "General Sanskrit", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 4, "title": "General Hindi", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "multidisciplinaryCourses": {
+      "sem1Note": "No Multidisciplinary course is offered in Semester 1",
+      "sem2": [
+        { "sNo": 1, "title": "Introduction to Social Work", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 2, "title": "Principles of Psychology", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 3, "title": "Indian History", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 4, "title": "Principles of Biological Sciences", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 5, "title": "Principles of Chemical Sciences", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 6, "title": "Principles of Physical Sciences", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "sem3": [
+        { "sNo": 1, "title": "Introduction to Public Administration", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 2, "title": "Principles of Management", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 3, "title": "Principles of Accounting", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 4, "title": "Basic Electronics", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 5, "title": "Health and Hygine", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 6, "title": "Basic Mathematics", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "sem4": [
+        { "sNo": 1, "title": "Fundamentals of Economics", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 2, "title": "Indian Philosophy", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 3, "title": "Performing Arts", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 4, "title": "Introduction to Geography", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 5, "title": "Basic Statistics", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 6, "title": "Introduction to Nanotechnology", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ]
+    },
+    "skillCourses": {
+      "sem1": [
+        { "sNo": 1, "title": "Introduction to Artificial Intelligence", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "sem2": [
+        { "sNo": 1, "title": "Applications of Artificial Intelligence", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "sem3and4": [
+        { "sNo": 1, "title": "Design Thinking", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 2, "title": "Business Forecasting", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 3, "title": "Cyber Security", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 4, "title": "Data Analytics", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 5, "title": "Digital Marketing", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 6, "title": "Information and Communication Technology", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 7, "title": "Project Management", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "sNo": 8, "title": "Tourism Guidance", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ]
+    },
+    "vacCourses": [
+      { "sNo": 1, "title": "Environment Education", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "cspAndInternship": [
+      { "sNo": 1, "title": "Community Service Project", "timing": "At the End of I Year – II Semester (During Summer Vacation) - Minimum 80 hours with 1 Credit", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "Internship/Apprenticeship/OJT – On-the-Job Training", "timing": "Semester Internship during III Year – VI Semester - A minimum of 180 Hours (8 weeks) with 3 Credits", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ],
+    "pgSyllabus": [
+      { "sNo": 1, "title": "Master of Computer Applications (MCA)", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "Master of Business Administration (MBA)", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  "academicRegulations": [
+    { "year": "2026–27", "docUrl": "/documents/DefaultFile_1.pdf" },
+    { "year": "2025–26", "docUrl": "/documents/DefaultFile_1.pdf" },
+    { "year": "2024–25", "docUrl": "/documents/DefaultFile_1.pdf" }
+  ],
+  "ilms": {
+    "functions": [
+      { "title": "Course-wise Learning Resources", "desc": "Organized access to lecture materials, notes, presentations, e-content, videos and other resources relevant to courses." },
+      { "title": "Academic Resource Sharing", "desc": "Faculty can share supplementary materials and references to support classroom instruction and student learning." },
+      { "title": "Learning Activities", "desc": "Supports the sharing of assignments, quizzes, activities and other academic tasks, wherever applicable." },
+      { "title": "Assessment Support", "desc": "Facilitates online quizzes, tests and other digital assessment activities, wherever applicable." },
+      { "title": "Academic Communication", "desc": "Supports the dissemination of course-related instructions, announcements, schedules and learning information." },
+      { "title": "Student Learning Support", "desc": "Enables students to access learning resources for preparation, revision and self-directed learning beyond classroom hours." },
+      { "title": "Faculty–Student Engagement", "desc": "Supports digital interaction and academic communication between faculty and students." },
+      { "title": "Digital Academic Repository", "desc": "Provides organized digital access to course-related and institutional learning resources." },
+      { "title": "ICT-Enabled Teaching", "desc": "Complements conventional classroom teaching through appropriate use of digital resources and technology." }
+    ],
+    "qualityCycle": [
+      "Access to Resources",
+      "Learning Engagement",
+      "Continuous Learning",
+      "Academic Support"
+    ],
+    "reports": [
+      { "sNo": 1, "title": "ILMS Annual Report", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 2, "title": "ILMS Usage Statistics / Analytics Report", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 3, "title": "Course-wise ILMS / Digital Resource Details", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 4, "title": "Faculty Participation / Usage Report", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 5, "title": "Sample Digital Learning Resources", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 6, "title": "Sample Digital Learning Activities / Assessments", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 7, "title": "ILMS Orientation / Capacity-Building Record", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 8, "title": "Student Usage / Feedback Analysis", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 9, "title": "ILMS Screenshots / System Evidence", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+      { "sNo": 10, "title": "IQAC Review / Quality Enhancement Record", "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" }
+    ]
+  },
+  "departments": [
+    {
+      "id": "department-of-commerce",
+      "name": "Department of Commerce",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Commerce was established in 1997 with the establishment of St. Ann’s College for Women, Gorantla, Guntur. The Department provides quality education in Commerce with focus on knowledge, skills, employability, and professional competencies. Through student-centred and application-oriented teaching, the Department promotes practical learning, communication, leadership, and participation in academic and extension activities. It strives to empower women students for higher education, employment, entrepreneurship, and responsible citizenship.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-computer-science-applications",
+      "name": "Department of Computer Science & Applications",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Computer Science & Applications provides state-of-the-art computational education, preparing students for cutting-edge careers in software development, data science, artificial intelligence, and cloud architectures. The department emphasizes programming excellence, algorithmic thinking, and modern software engineering practices.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-mathematics",
+      "name": "Department of Mathematics",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Mathematics nurtures analytical rigor, logical deduction, and mathematical modeling capabilities. Students are equipped with strong foundations in pure and applied mathematics, preparing them for research, competitive examinations, data analysis, and academia.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-physics",
+      "name": "Department of Physics",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Physics provides comprehensive scientific training through modern experimental laboratories and solid theoretical curriculum. It promotes scientific enquiry, critical thinking, and innovation in experimental physics and electronics.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-statistics",
+      "name": "Department of Statistics",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Statistics specializes in data analysis, probability theory, statistical inference, and actuarial sciences. With hands-on computational lab training, students gain valuable proficiency in modern statistical packages and quantitative analytics.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-biotechnology",
+      "name": "Department of Biotechnology",
+      "established": "2002",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Biotechnology blends biological science with cutting-edge technological innovations. Equipped with advanced molecular biology and tissue culture laboratories, it trains students in genetic engineering, immunology, and industrial biotechnology.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-microbiology",
+      "name": "Department of Microbiology",
+      "established": "2000",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Microbiology fosters hands-on mastery in bacteriology, virology, mycology, and medical microbiology. Students engage in microbiological assays, diagnostic methods, and bio-processing research in fully equipped specialized laboratories.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-botany",
+      "name": "Department of Botany",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Botany provides in-depth education in plant taxonomy, physiology, ecology, phytochemistry, and environmental conservation. Through botanical gardens, herbariums, and field excursions, students explore biological biodiversity and sustainable development.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-chemistry",
+      "name": "Department of Chemistry",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Chemistry imparts rigorous training in organic, inorganic, and physical chemistry. Featuring modern synthesis and analytical labs, the department prepares students for pharmaceuticals, chemical research, and industrial testing careers.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-english",
+      "name": "Department of English",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of English develops linguistic fluency, critical analysis, and professional communication skills. Through state-of-the-art language laboratory sessions, literature seminars, and soft-skill workshops, the department cultivates articulate, confident women leaders.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-oriental-languages",
+      "name": "Department of Oriental Languages",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Oriental Languages offers rich academic immersion in Telugu, Sanskrit, and Hindi. It fosters literary appreciation, cultural heritage, linguistic accuracy, and creative writing abilities.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-mca",
+      "name": "Department of MCA",
+      "established": "2001",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of MCA provides AICTE-approved postgraduate education in software engineering, enterprise systems, database management, and mobile architectures. It emphasizes live industry projects, internships, and technical research.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-mba",
+      "name": "Department of MBA",
+      "established": "2003",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of MBA offers AICTE-approved postgraduate education focusing on finance, human resource management, marketing, and entrepreneurship. Through corporate internships, case study pedagogy, and business simulation workshops, it prepares future business leaders.",
+      "activityReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "annualReports": [
+        { "year": "2025–2026", "docUrl": "/documents/DefaultFile_1.pdf" },
+        { "year": "2024–2025", "docUrl": "/documents/DefaultFile_1.pdf" }
+      ],
+      "galleryImages": []
+    }
+  ],
+  "teachingLearning": {
+    "teachingLearningPractices": {
+      "title": "Teaching-Learning Practices",
+      "summary": "Teaching is supported through classroom instruction, discussions, presentations, seminars, assignments, tutorials, and continuous academic guidance.",
+      "highlights": [
+        "Interactive lectures and structured classroom presentations",
+        "Group discussions and collaborative peer learning circles",
+        "Tutorial sessions for concept reinforcement and doubts clearance",
+        "Continuous academic mentoring and periodic feedback"
+      ]
+    },
+    "innovativeTeachingPractices": {
+      "title": "Innovative Teaching Practices",
+      "summary": "Faculty members adopt innovative and activity-based methods such as case studies, group activities, problem-solving exercises, demonstrations, and interactive learning.",
+      "highlights": [
+        "Case study analysis for critical thinking and problem resolution",
+        "Hands-on demonstration models and simulated laboratory setups",
+        "Mind-mapping, peer presentations, and interactive quizzes",
+        "Flipped classroom model and project-based assignments"
+      ]
+    },
+    "experientialParticipativeLearning": {
+      "title": "Experiential & Participative Learning",
+      "summary": "Students engage in projects, field visits, internships, practical activities, workshops, seminars, and group-based learning to connect classroom knowledge with real-world applications.",
+      "highlights": [
+        "Mandatory industrial internships and institutional on-the-job training",
+        "Community Service Projects (CSP) addressing local societal needs",
+        "Educational field trips and industrial plant visits",
+        "Student-led seminars, symposiums, and exhibitions"
+      ]
+    },
+    "ictEnabledTeaching": {
+      "title": "ICT-Enabled Teaching",
+      "summary": "Digital tools and ICT resources are integrated into teaching through presentations, digital learning resources, online platforms, multimedia content, and other technology-enabled learning practices.",
+      "highlights": [
+        "Smart interactive classrooms equipped with multimedia projectors",
+        "Integrated Learning Management System (ILMS) for course materials",
+        "Online repositories, NPTEL/SWAYAM e-learning integrations",
+        "Virtual laboratories and computer-assisted simulations"
+      ]
+    },
+    "studentCentricLearning": {
+      "title": "Student-Centric Learning",
+      "summary": "The College promotes active student participation, collaborative learning, mentoring, individual academic support, and opportunities for skill development, with emphasis on the diverse learning needs of students.",
+      "highlights": [
+        "Proactive identification of slow and advanced learners",
+        "One-on-one mentor-mentee counseling system",
+        "Customized learning pathways and remedial coaching sessions",
+        "Encouragement of student self-directed initiatives and leadership"
+      ]
+    }
+  },
+  "examinationEvaluation": {
+    "examinationSystem": {
+      "title": "Examination System",
+      "summary": "The College follows a transparent, systematic, and student-oriented examination and evaluation system in accordance with the regulations of Acharya Nagarjuna University.",
+      "highlights": [
+        "Strict adherence to ANU examination calendars and schedules",
+        "Centralized examination cell overseeing seamless operations",
+        "Robust mechanisms ensuring secrecy, accuracy, and timely conduct",
+        "Well-defined protocols for internal and external evaluations"
+      ]
+    },
+    "continuousInternalAssessment": {
+      "title": "Continuous Internal Assessment (CIA)",
+      "summary": "Students are assessed continuously through internal tests, assignments, seminars, presentations, projects, and other academic activities, as prescribed by the University.",
+      "highlights": [
+        "Periodic mid-semester examinations with centralized question papers",
+        "Skill-oriented assignments and seminar evaluations",
+        "Transparent marks display and grievance redressal at department level",
+        "Formative assessments aligned with Course Outcomes"
+      ]
+    },
+    "universityExaminations": {
+      "title": "University Examinations",
+      "summary": "Semester-end University examinations are conducted as per the schedule, regulations, and procedures prescribed by Acharya Nagarjuna University.",
+      "highlights": [
+        "Standardized university theory and practical examination centers",
+        "Appointed chief superintendents and external university invigilators",
+        "Timely submission of attendance and internal marks to ANU portal",
+        "Strict compliance with university evaluation guidelines"
+      ]
+    },
+    "resultsPerformance": {
+      "title": "Results & Performance",
+      "summary": "Student performance is monitored through internal and university examinations, with results analyzed to identify academic strengths and areas requiring support.",
+      "highlights": [
+        "Comprehensive result analysis conducted by Academic Council & IQAC",
+        "Department-level tracking of course-wise pass percentages",
+        "Remedial intervention plans for subjects requiring improvement",
+        "Recognition and felicitation of academic toppers and rank holders"
+      ]
+    },
+    "examinationRegulations": {
+      "title": "Examination Regulations",
+      "summary": "All examinations are conducted in accordance with the University examination regulations, academic guidelines, and institutional procedures, ensuring fairness, transparency, and academic integrity.",
+      "highlights": [
+        "Zero-tolerance policy towards malpractice and exam irregularities",
+        "Clear university attendance criteria (minimum 75% for exam eligibility)",
+        "Established revaluation and verification procedures under ANU norms",
+        "Institutional examination committee for ethical oversight"
+      ]
+    }
+  },
+  "academicEnrichment": {
+    "valueAddedCourses": {
+      "title": "Value-Added Courses (VAC)",
+      "summary": "Courses are offered to supplement the curriculum and provide additional knowledge and competencies beyond syllabus bounds.",
+      "highlights": [
+        "Interdisciplinary subjects addressing emerging industrial trends",
+        "Values, ethics, environmental consciousness, and life skills",
+        "Structured course modules taught outside regular class hours",
+        "Certificate of completion awarded upon rigorous evaluation"
+      ]
+    },
+    "certificateCourses": {
+      "title": "Certificate Programmes",
+      "summary": "Certificate programmes are conducted to develop job-oriented and domain-specific skills for immediate career readiness.",
+      "highlights": [
+        "Domain-specific training in IT, Commerce, Life Sciences, and Languages",
+        "Curated with inputs from professional trainers and industry experts",
+        "Practical laboratory and project work included in each module",
+        "Enhancement of student resumes for competitive campus placements"
+      ]
+    },
+    "skillDevelopmentProgrammes": {
+      "title": "Skill Development Programmes",
+      "summary": "Students are provided opportunities to develop technical, communication, soft skills, and employability competencies.",
+      "highlights": [
+        "Technical skills in coding, AI tools, data analytics, and office automation",
+        "Soft skills, aptitude training, and interview preparation workshops",
+        "Communication and personality development language labs",
+        "State and national skill development mission partnerships"
+      ]
+    },
+    "guestLecturesWorkshops": {
+      "title": "Guest Lectures & Workshops",
+      "summary": "Experts, academicians, and industry professionals are invited to provide practical insights and exposure to emerging areas.",
+      "highlights": [
+        "Interactive sessions with prominent corporate leaders and researchers",
+        "Hands-on technical workshops with live software tool demos",
+        "Career guidance and competitive exam orientation sessions",
+        "Exposure to current industrial challenges and modern methodologies"
+      ]
+    },
+    "seminarsConferences": {
+      "title": "Seminars & Conferences",
+      "summary": "Seminars, conferences, webinars, and academic interactions are organized to promote knowledge sharing, critical thinking, and academic exposure.",
+      "highlights": [
+        "National and state-level seminars on contemporary academic topics",
+        "Student paper presentation sessions and poster competitions",
+        "Publication of proceedings with registered ISBN numbers",
+        "Cross-departmental multidisciplinary symposiums"
+      ]
+    },
+    "academicCollaborations": {
+      "title": "Academic Collaborations & MoUs",
+      "summary": "The College promotes academic linkages and collaborations with universities, institutions, industry, and other organizations for academic enrichment and student development.",
+      "highlights": [
+        "Active Memorandums of Understanding (MoUs) with industry partners",
+        "Joint research initiatives, guest sessions, and training programmes",
+        "Faculty exchange and student internship placement pipelines",
+        "Collaborative academic outreach and community welfare activities"
+      ]
+    }
+  },
+  "academicQualityOutcomes": {
+    "intro": "The College follows a structured outcome-based education framework to ensure that teaching-learning processes contribute effectively to the academic, professional, and overall development of students.",
+    "pos": {
+      "title": "1. Programme Outcomes (POs)",
+      "desc": "Programme Outcomes define the knowledge, skills, competencies, and attributes that students are expected to acquire upon successful completion of a programme.",
+      "docUrl": "/documents/DefaultFile_1.pdf"
+    },
+    "psos": {
+      "title": "2. Programme Specific Outcomes (PSOs)",
+      "desc": "Programme Specific Outcomes specify the programme-specific knowledge, skills, and competencies that students are expected to develop through their chosen programme.",
+      "docUrl": "/documents/DefaultFile_1.pdf"
+    },
+    "cos": {
+      "title": "3. Course Outcomes (COs)",
+      "desc": "Course Outcomes describe the specific learning outcomes that students are expected to achieve on completion of individual courses.",
+      "docUrl": "/documents/DefaultFile_1.pdf"
+    },
+    "mapping": {
+      "title": "4. CO–PO/PSO Mapping",
+      "desc": "Course Outcomes are mapped with Programme Outcomes and Programme Specific Outcomes to assess the alignment between course-level learning and programme-level outcomes."
+    },
+    "attainment": {
+      "title": "5. Attainment of Outcomes",
+      "desc": "Outcome attainment is assessed through appropriate internal and external assessment methods. The results are analysed and used to identify areas for academic improvement."
+    },
+    "audit": {
+      "title": "6. Academic Audit",
+      "desc": "Academic audits are undertaken to review teaching-learning processes, academic practices, documentation, and quality enhancement measures, supporting continuous improvement.",
+      "docUrl": "/documents/DefaultFile_1.pdf"
+    }
+  }
+}

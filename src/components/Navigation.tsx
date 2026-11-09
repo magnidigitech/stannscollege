@@ -46,7 +46,8 @@ import {
   Music,
   ShieldAlert,
   Leaf,
-  Accessibility
+  Accessibility,
+  Sparkles
 } from "lucide-react";
 
 export function toSlug(text: string) {
@@ -888,104 +889,123 @@ export default function Navigation() {
 
   const academicsCategories = [
     {
-      title: "1. Academic Programmes",
-      fullTitle: "1. Academic Programmes",
+      title: "A. Academic Programmes",
+      fullTitle: "A. Academic Programmes",
       icon: GraduationCap,
       href: "/academics/academic-programmes/undergraduate-programmes",
       items: [
         { text: "Undergraduate (UG) Programmes", href: "/academics/academic-programmes/undergraduate-programmes" },
-        { text: "Postgraduate (PG) Programmes", href: "/academics/academic-programmes/postgraduate-programmes" },
-        { text: "Industry-Integrated Courses", href: "/academics/academic-programmes/industry-integrated-courses" }
+        { text: "Postgraduate (PG) Programmes", href: "/academics/academic-programmes/postgraduate-programmes" }
       ]
     },
     {
-      title: "2. Curriculum & Planning",
-      fullTitle: "2. Curriculum & Academic Planning",
+      title: "B. Regulations & Resources",
+      fullTitle: "B. Academic Regulations & Resources",
       icon: BookOpen,
-      href: "/academics/curriculum-academic-planning/curriculum-framework",
+      href: "/academics/curriculum-academic-planning/academic-calendar",
       items: [
-        { text: "Curriculum Framework", href: "/academics/curriculum-academic-planning/curriculum-framework" },
-        { text: "Innovative & Interdisciplinary Offerings", href: "/academics/curriculum-academic-planning/innovative-interdisciplinary-offerings" },
-        { text: "Academic Calendar (UG & PG)", href: "/academics/curriculum-academic-planning/academic-calendar-ug-pg" },
-        { text: "Academic Implementation Plan (AIP)", href: "/academics/curriculum-academic-planning/academic-implementation-plan-aip" },
-        { text: "Time Tables", href: "/academics/curriculum-academic-planning/time-tables" }
+        { text: "Academic Calendar", href: "/academics/curriculum-academic-planning/academic-calendar" },
+        { text: "Time Tables", href: "/academics/curriculum-academic-planning/timetables" },
+        { text: "Curriculum & Syllabus", href: "/academics/curriculum-academic-planning/curriculum-syllabus" },
+        { text: "Academic Regulations", href: "/academics/curriculum-academic-planning/academic-regulations" },
+        { text: "ILMS – Learning Management", href: "/academics/curriculum-academic-planning/ilms-system" }
       ]
     },
     {
-      title: "3. Science & Computing Departments",
-      fullTitle: "3. Science & Computing Departments",
+      title: "C. Departments (Science & Computing)",
+      fullTitle: "C. Departments (Science & Computing)",
       icon: Cpu,
       href: "/academics/departments",
       items: [
-        { text: "1. Dept. of Computer Applications (BCA)", href: "/academics/departments/department-of-computer-applications-bca" },
-        { text: "2. Dept. of Computer Science (CS & AI)", href: "/academics/departments/department-of-computer-science-cs-artificial-intelligence" },
-        { text: "3. Dept. of MCA", href: "/academics/departments/department-of-mca" },
-        { text: "4. Dept. of Mathematics", href: "/academics/departments/department-of-mathematics" },
-        { text: "5. Dept. of Physics", href: "/academics/departments/department-of-physics" },
-        { text: "6. Dept. of Statistics", href: "/academics/departments/department-of-statistics" },
-        { text: "7. Dept. of Chemistry", href: "/academics/departments/department-of-chemistry" }
+        { text: "1. Dept. of Commerce", href: "/academics/departments/department-of-commerce" },
+        { text: "2. Dept. of CS & Applications", href: "/academics/departments/department-of-computer-science-applications" },
+        { text: "3. Dept. of Mathematics", href: "/academics/departments/department-of-mathematics" },
+        { text: "4. Dept. of Physics", href: "/academics/departments/department-of-physics" },
+        { text: "5. Dept. of Statistics", href: "/academics/departments/department-of-statistics" },
+        { text: "6. Dept. of Chemistry", href: "/academics/departments/department-of-chemistry" }
       ]
     },
     {
-      title: "4. Life Sciences, Commerce & Languages",
-      fullTitle: "4. Life Sciences, Commerce & Languages",
+      title: "C. Departments (Life Sciences, PG & Arts)",
+      fullTitle: "C. Departments (Life Sciences, PG & Arts)",
       icon: Building2,
       href: "/academics/departments",
       items: [
-        { text: "8. Dept. of Biotechnology", href: "/academics/departments/department-of-biotechnology" },
-        { text: "9. Dept. of Microbiology", href: "/academics/departments/department-of-microbiology" },
-        { text: "10. Dept. of Botany", href: "/academics/departments/department-of-botany" },
-        { text: "11. Dept. of Commerce", href: "/academics/departments/department-of-commerce" },
-        { text: "12. Dept. of MBA", href: "/academics/departments/department-of-mba" },
-        { text: "13. Dept. of English", href: "/academics/departments/department-of-english" },
-        { text: "14. Oriental Languages (Tel/San/Hin)", href: "/academics/departments/department-of-oriental-languages-telugu-sanskrit-hindi" },
-        { text: "✦ All 14 Departments Overview Hub", href: "/academics/departments" }
+        { text: "7. Dept. of Biotechnology", href: "/academics/departments/department-of-biotechnology" },
+        { text: "8. Dept. of Microbiology", href: "/academics/departments/department-of-microbiology" },
+        { text: "9. Dept. of Botany", href: "/academics/departments/department-of-botany" },
+        { text: "10. Dept. of English", href: "/academics/departments/department-of-english" },
+        { text: "11. Dept. of Oriental Languages", href: "/academics/departments/department-of-oriental-languages" },
+        { text: "12. Dept. of MCA", href: "/academics/departments/department-of-mca" },
+        { text: "13. Dept. of MBA", href: "/academics/departments/department-of-mba" },
+        { text: "✦ All 13 Departments Overview Hub", href: "/academics/departments" }
       ]
     },
     {
-      title: "5. Value-Added Learning",
-      fullTitle: "5. Value-Added Learning",
-      icon: Award,
-      href: "/academics/value-added-learning/add-on-courses",
-      items: [
-        { text: "Add-on Courses", href: "/academics/value-added-learning/add-on-courses" },
-        { text: "Certificate Courses", href: "/academics/value-added-learning/certificate-courses" },
-        { text: "Value-Added Courses", href: "/academics/value-added-learning/value-added-courses" }
-      ]
-    },
-    {
-      title: "6. Teaching & Learning",
-      fullTitle: "6. Teaching & Learning Methodologies",
+      title: "D. Teaching & Learning",
+      fullTitle: "D. Teaching & Learning Practices",
       icon: Lightbulb,
-      href: "/academics/teaching-learning/pedagogy-learning-methodologies",
+      href: "/academics/teaching-learning/teaching-learning-practices",
       items: [
-        { text: "Pedagogy & Learning Methodologies", href: "/academics/teaching-learning/pedagogy-learning-methodologies" },
-        { text: "Learning Management System (LMS)", href: "/academics/teaching-learning/learning-management-system-lms" },
-        { text: "Student-Centric Methods", href: "/academics/teaching-learning/student-centric-methods" }
+        { text: "Teaching-Learning Practices", href: "/academics/teaching-learning/teaching-learning-practices" },
+        { text: "Innovative Teaching Practices", href: "/academics/teaching-learning/innovative-teaching-practices" },
+        { text: "Experiential Learning", href: "/academics/teaching-learning/experiential-participative-learning" },
+        { text: "ICT-Enabled Teaching", href: "/academics/teaching-learning/ict-enabled-teaching" },
+        { text: "Student-Centric Learning", href: "/academics/teaching-learning/student-centric-learning" }
       ]
     },
     {
-      title: "7. Outcome-Based Education",
-      fullTitle: "7. Outcome-Based Education (OBE)",
-      icon: LineChart,
-      href: "/academics/outcome-based-education/programme-outcomes-pos",
+      title: "E. Examination & Evaluation",
+      fullTitle: "E. Examination & Evaluation",
+      icon: Award,
+      href: "/academics/examination-evaluation/examination-system",
       items: [
-        { text: "Programme Outcomes (POs / PSOs)", href: "/academics/outcome-based-education/programme-outcomes-pos" },
-        { text: "Course Outcomes (COs)", href: "/academics/outcome-based-education/course-outcomes-cos" },
-        { text: "Academic Quality Indicators", href: "/academics/academic-quality-indicators/student-teacher-ratio" }
+        { text: "Examination System", href: "/academics/examination-evaluation/examination-system" },
+        { text: "Continuous Internal Assessment (CIA)", href: "/academics/examination-evaluation/continuous-internal-assessment" },
+        { text: "University Examinations", href: "/academics/examination-evaluation/university-examinations" },
+        { text: "Results & Performance", href: "/academics/examination-evaluation/results-performance" },
+        { text: "Examination Regulations", href: "/academics/examination-evaluation/examination-regulations" }
+      ]
+    },
+    {
+      title: "F. Academic Enrichment",
+      fullTitle: "F. Academic Enrichment",
+      icon: Sparkles,
+      href: "/academics/academic-enrichment/value-added-courses",
+      items: [
+        { text: "Value-Added Courses (VAC)", href: "/academics/academic-enrichment/value-added-courses" },
+        { text: "Certificate Programmes", href: "/academics/academic-enrichment/certificate-courses" },
+        { text: "Skill Development Programmes", href: "/academics/academic-enrichment/skill-development-programmes" },
+        { text: "Guest Lectures & Workshops", href: "/academics/academic-enrichment/guest-lectures-workshops" },
+        { text: "Seminars & Conferences", href: "/academics/academic-enrichment/seminars-conferences" },
+        { text: "Academic Collaborations", href: "/academics/academic-enrichment/academic-collaborations" }
+      ]
+    },
+    {
+      title: "G. Quality & Outcomes",
+      fullTitle: "G. Academic Quality & Outcomes",
+      icon: ShieldCheck,
+      href: "/academics/academic-quality-outcomes/programme-outcomes",
+      items: [
+        { text: "Programme Outcomes (POs)", href: "/academics/academic-quality-outcomes/programme-outcomes" },
+        { text: "Programme Specific Outcomes (PSOs)", href: "/academics/academic-quality-outcomes/programme-specific-outcomes" },
+        { text: "Course Outcomes (COs)", href: "/academics/academic-quality-outcomes/course-outcomes" },
+        { text: "CO–PO/PSO Mapping", href: "/academics/academic-quality-outcomes/co-po-pso-mapping" },
+        { text: "Attainment of Outcomes", href: "/academics/academic-quality-outcomes/attainment-of-outcomes" },
+        { text: "Academic & Administrative Audit (AAA)", href: "/academics/academic-quality-outcomes/academic-audit" }
       ]
     }
   ];
 
   const academicsColumns = [
-    // Column 1: I & II
+    // Column 1: A & B
     [academicsCategories[0], academicsCategories[1]],
-    // Column 2: III Science & IT Departments
-    [academicsCategories[2]],
-    // Column 3: IV Life Sciences, Mgmt & Arts Departments
-    [academicsCategories[3]],
-    // Column 4: V, VI, VII
-    [academicsCategories[4], academicsCategories[5], academicsCategories[6]]
+    // Column 2: C1 & D
+    [academicsCategories[2], academicsCategories[4]],
+    // Column 3: C2 & E
+    [academicsCategories[3], academicsCategories[5]],
+    // Column 4: F & G
+    [academicsCategories[6], academicsCategories[7]]
   ];
 
   return (

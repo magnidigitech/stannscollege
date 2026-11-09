@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { getDepartment } from "@/lib/sanity";
 import { 
-  Building, Target, GraduationCap, Briefcase, Award, Handshake, Users, BookOpen, Image as ImageIcon, CheckCircle2, Compass, HeartHandshake, Trophy, BarChart3, Settings, Sparkles, Loader2, ArrowRight
+  Building, Target, GraduationCap, Briefcase, Award, Handshake, Users, BookOpen, Image as ImageIcon, CheckCircle2, Compass, HeartHandshake, Trophy, BarChart3, Settings, Sparkles, Loader2, ArrowRight, FileText, Download
 } from "lucide-react";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+import academicsData from "../academics-data.json";
 
 interface DepartmentDetailProps {
   itemSlug: string;
@@ -13,21 +15,55 @@ interface DepartmentDetailProps {
 export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
+
+  let normalizedSlug = itemSlug;
+  if (itemSlug === "department-of-computer-applications-bca" || itemSlug === "department-of-computer-science-cs-artificial-intelligence") {
+    normalizedSlug = "department-of-computer-science-applications";
+  } else if (itemSlug === "department-of-oriental-languages-telugu-sanskrit-hindi") {
+    normalizedSlug = "department-of-oriental-languages";
+  }
+
+  const staticDept = academicsData.departments.find((d: any) => d.id === normalizedSlug || d.id === itemSlug);
 
   useEffect(() => {
     async function loadData() {
       setLoading(true);
       try {
-        const result = await getDepartment(itemSlug);
-        setData(result);
+        const result = await getDepartment(normalizedSlug);
+        if (result && result.name) {
+          setData(result);
+        } else if (staticDept) {
+          setData({
+            name: staticDept.name,
+            established: staticDept.established,
+            description: staticDept.description,
+            tagline: `Empowering Women in ${staticDept.name.replace("Department of ", "")}`,
+            vision: `To achieve academic and research excellence in ${staticDept.name.replace("Department of ", "")}, nurturing global competency, innovation, and ethical leadership.`,
+            mission: [
+              "To impart rigorous conceptual foundations and practical experiential learning",
+              "To foster innovation, problem-solving abilities, and continuous self-development",
+              "To promote industry-academia collaboration, internships, and skill training",
+              "To cultivate ethical values and social responsibility for women empowerment"
+            ]
+          });
+        }
       } catch (err) {
         console.error("Failed to load department detail:", err);
+        if (staticDept) {
+          setData({
+            name: staticDept.name,
+            established: staticDept.established,
+            description: staticDept.description
+          });
+        }
       } finally {
         setLoading(false);
       }
     }
     loadData();
-  }, [itemSlug]);
+  }, [normalizedSlug, itemSlug]);
 
   if (loading) {
     return (
@@ -70,6 +106,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
               “{data.tagline}”
             </p>
           )}
+          <div className="pt-3">
+            <button
+              onClick={() => {
+                setPreviewUrl(staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf");
+                setPreviewTitle(`${data.name} - Department Profile / Overview`);
+              }}
+              className="inline-flex items-center gap-2 bg-white text-[#002147] hover:bg-blue-50 px-4 py-2.5 rounded-xl text-xs font-black shadow-md transition-all active:scale-95 cursor-pointer"
+            >
+              <FileText className="h-4 w-4 text-[#002147]" /> Department Profile / Overview PDF
+            </button>
+          </div>
         </div>
       </div>
 
@@ -120,6 +167,71 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Activity Reports & Annual Reports (as specified in Reference Document) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white border border-slate-200/80 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-4">
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="h-10 w-10 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-xs">
+              <FileText className="h-5 w-5" />
+            </div>
+            <div>
+              <h4 className="font-outfit text-lg font-bold text-[#002147]">Activity Reports – Year-wise</h4>
+              <p className="text-xs text-slate-500 font-medium">Departmental student, faculty and academic activities</p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            {(staticDept?.activityReports || [
+              { year: "2025–2026", docUrl: "/documents/DefaultFile_1.pdf" },
+              { year: "2024–2025", docUrl: "/documents/DefaultFile_1.pdf" }
+            ]).map((rep: any, idx: number) => (
+              <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                <span className="font-bold text-xs md:text-sm text-slate-700">Academic Year {rep.year}</span>
+                <button
+                  onClick={() => {
+                    setPreviewUrl(rep.docUrl);
+                    setPreviewTitle(`${data.name} - Activity Report (${rep.year})`);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
+                >
+                  <FileText className="h-3.5 w-3.5" /> View Report
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white border border-slate-200/80 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-4">
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="h-10 w-10 rounded-2xl bg-teal-700 text-white flex items-center justify-center shadow-xs">
+              <BarChart3 className="h-5 w-5" />
+            </div>
+            <div>
+              <h4 className="font-outfit text-lg font-bold text-teal-950">Annual Reports – Year-wise</h4>
+              <p className="text-xs text-slate-500 font-medium">Comprehensive annual audit and outcome reports</p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            {(staticDept?.annualReports || [
+              { year: "2025–2026", docUrl: "/documents/DefaultFile_1.pdf" },
+              { year: "2024–2025", docUrl: "/documents/DefaultFile_1.pdf" }
+            ]).map((rep: any, idx: number) => (
+              <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                <span className="font-bold text-xs md:text-sm text-slate-700">Academic Year {rep.year}</span>
+                <button
+                  onClick={() => {
+                    setPreviewUrl(rep.docUrl);
+                    setPreviewTitle(`${data.name} - Annual Report (${rep.year})`);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer"
+                >
+                  <FileText className="h-3.5 w-3.5" /> View Report
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -919,14 +1031,14 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         </div>
       </div>
 
-      {/* 13. Photo Gallery */}
-      {data.gallery && data.gallery.length > 0 ? (
+      {/* 13. Photo Gallery - Invisible if empty */}
+      {data.gallery && data.gallery.length > 0 && (
         <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col gap-8">
           <div className="flex items-center gap-4 mb-2">
             <div className="h-12 w-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-md border border-[#002147]/20">
               <ImageIcon className="h-6 w-6" />
             </div>
-            <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments & Galleries</h4>
+            <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments &amp; Galleries</h4>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {data.gallery.map((item: any, i: number) => {
@@ -962,27 +1074,14 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             })}
           </div>
         </div>
-      ) : (
-        <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col gap-6">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="h-12 w-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-md border border-[#002147]/20">
-              <ImageIcon className="h-6 w-6" />
-            </div>
-            <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments & Galleries</h4>
-          </div>
-          <p className="text-slate-700 text-base md:text-lg font-semibold leading-relaxed max-w-3xl">
-            Check memorable highlights of academic summits, co-curricular programs, extension meets and industry visits organized by the department.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 font-outfit mt-2">
-            {["Academics", "Skill Labs", "Student Meets", "Outreach"].map((gallery, i) => (
-              <div key={i} className="aspect-[4/3] bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col items-center justify-center p-6 text-center gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group">
-                <ImageIcon className="h-8 w-8 text-slate-300 group-hover:text-[#002147] transition-colors" />
-                <span className="font-bold text-slate-850 text-xs md:text-sm uppercase tracking-wider leading-tight">{gallery}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       )}
+
+      <FilePreviewModal
+        isOpen={!!previewUrl}
+        onClose={() => setPreviewUrl(null)}
+        fileUrl={previewUrl || ""}
+        title={previewTitle || "Document Preview"}
+      />
 
     </div>
   );

@@ -1,272 +1,203 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import Link from "next/link";
 import {
   GraduationCap, BookOpen, Building, Award, Lightbulb, Settings, LineChart,
-  ChevronRight, X, Sparkles, CheckCircle
+  ChevronRight, Sparkles, CheckCircle, ArrowRight, ShieldCheck, Scale, Compass, Users
 } from "lucide-react";
-import { SubtextBox } from "@/components/ui/Heading1Notch";
-
-// Individual Component Imports
-import { UndergraduateProgrammes } from "./academic-programmes/UndergraduateProgrammes";
-import { PostgraduateProgrammes } from "./academic-programmes/PostgraduateProgrammes";
-import { IndustryIntegratedCourses } from "./academic-programmes/IndustryIntegratedCourses";
-
-import { CurriculumFramework } from "./curriculum-academic-planning/CurriculumFramework";
-import { InnovativeInterdisciplinaryOfferings } from "./curriculum-academic-planning/InnovativeInterdisciplinaryOfferings";
-import { AcademicCalendar } from "./curriculum-academic-planning/AcademicCalendar";
-import { AcademicImplementationPlan } from "./curriculum-academic-planning/AcademicImplementationPlan";
-import { Timetables } from "./curriculum-academic-planning/Timetables";
-
-import { DepartmentDetail } from "./departments/DepartmentDetail";
-import { ValueAddedLearning } from "./value-added-learning/ValueAddedLearning";
-
-import { PedagogyMethodologies } from "./teaching-learning/PedagogyMethodologies";
-import { LearningManagementSystem } from "./teaching-learning/LearningManagementSystem";
-import { StudentCentricMethods } from "./teaching-learning/StudentCentricMethods";
-
-import { OutcomeBasedEducation } from "./outcome-based-education/OutcomeBasedEducation";
-import { AcademicQualityIndicators } from "./academic-quality-indicators/AcademicQualityIndicators";
 
 export default function AcademicsClientFallback() {
-  const [activeModal, setActiveModal] = useState<{ catSlug: string; itemSlug: string; text: string } | null>(null);
-
   const categories = [
     {
       catSlug: "academic-programmes",
-      title: "I. Academic Programmes",
-      description: "Undergraduate, Postgraduate and industrial courses mapping professional progression.",
+      title: "A. Academic Programmes",
+      badge: "UG & PG Quotas",
+      description: "Undergraduate Single Major honours programmes and AICTE-approved postgraduate professional degrees (MCA & MBA).",
       icon: GraduationCap,
+      href: "/academics/academic-programmes/undergraduate-programmes",
       items: [
         { text: "Undergraduate (UG) Programmes", slug: "undergraduate-programmes" },
-        { text: "Postgraduate (PG) Programmes", slug: "postgraduate-programmes" },
-        { text: "Industry-Integrated Courses", slug: "industry-integrated-courses" }
+        { text: "Postgraduate (PG) Programmes", slug: "postgraduate-programmes" }
       ]
     },
     {
       catSlug: "curriculum-academic-planning",
-      title: "II. Curriculum & Academic Planning",
-      description: "Frameworks, interdisciplinary offerings, calendars, AIP and comprehensive timetables.",
+      title: "B. Academic Regulations & Resources",
+      badge: "Syllabus & Calendars",
+      description: "Academic calendars, semester timetables, NEP 2020 single-major syllabus, regulations, and the Integrated Learning Management System (ILMS).",
       icon: BookOpen,
+      href: "/academics/curriculum-academic-planning/academic-calendar",
       items: [
-        { text: "Curriculum Framework", slug: "curriculum-framework" },
-        { text: "Innovative Offerings", slug: "innovative-interdisciplinary-offerings" },
-        { text: "Academic Calendar", slug: "academic-calendar-ug-pg" },
-        { text: "Implementation Plan (AIP)", slug: "academic-implementation-plan-aip" },
-        { text: "Timetables", slug: "time-tables" }
+        { text: "Academic Calendar", slug: "academic-calendar" },
+        { text: "Time Tables", slug: "timetables" },
+        { text: "Curriculum & Syllabus", slug: "curriculum-syllabus" },
+        { text: "Academic Regulations", slug: "academic-regulations" },
+        { text: "ILMS – Learning Management System", slug: "ilms-system" }
       ]
     },
     {
       catSlug: "departments",
-      title: "III. Departments",
-      description: "14 distinct departments fostering specialized training and core research.",
+      title: "C. Academic Departments",
+      badge: "13 Departments",
+      description: "Thirteen dynamic academic departments driving specialized learning, computational labs, scientific research, and professional training.",
       icon: Building,
+      href: "/academics/departments",
       items: [
-        { text: "Department of Commerce", slug: "department-of-commerce" },
-        { text: "Computer Science (CS & AI)", slug: "department-of-computer-science-cs-artificial-intelligence" },
-        { text: "Computer Applications (BCA)", slug: "department-of-computer-applications-bca" },
-        { text: "Department of MCA", slug: "department-of-mca" },
-        { text: "Department of MBA", slug: "department-of-mba" }
-      ]
-    },
-    {
-      catSlug: "value-added-learning",
-      title: "IV. Value-Added Learning",
-      description: "Skill enhancement via practical Add-on, Value-added and Certificate certifications.",
-      icon: Award,
-      items: [
-        { text: "Value-Added Learning Overview", slug: "value-added-learning-courses" }
+        { text: "1. Department of Commerce", slug: "department-of-commerce" },
+        { text: "2. Dept. of Computer Science & Applications", slug: "department-of-computer-science-applications" },
+        { text: "3. Department of Mathematics", slug: "department-of-mathematics" },
+        { text: "4. Department of Physics", slug: "department-of-physics" },
+        { text: "12. Department of MCA", slug: "department-of-mca" },
+        { text: "13. Department of MBA", slug: "department-of-mba" }
       ]
     },
     {
       catSlug: "teaching-learning",
-      title: "V. Teaching & Learning",
-      description: "Pedagogy methodologies, interactive LMS platforms, and student-centric methods.",
+      title: "D. Teaching & Learning",
+      badge: "Student-Centric",
+      description: "Innovative classroom methodologies, experiential learning, field projects, ICT integrations, and remedial support systems.",
       icon: Lightbulb,
+      href: "/academics/teaching-learning/teaching-learning-practices",
       items: [
-        { text: "Pedagogy & Methodologies", slug: "pedagogy-learning-methodologies" },
-        { text: "LMS Integration", slug: "learning-management-system-lms" },
-        { text: "Student-Centric Methods", slug: "student-centric-methods" }
+        { text: "Teaching-Learning Practices", slug: "teaching-learning-practices" },
+        { text: "Innovative Teaching Practices", slug: "innovative-teaching-practices" },
+        { text: "Experiential & Participative Learning", slug: "experiential-participative-learning" },
+        { text: "ICT-Enabled Teaching", slug: "ict-enabled-teaching" },
+        { text: "Student-Centric Learning", slug: "student-centric-learning" }
       ]
     },
     {
-      catSlug: "outcome-based-education",
-      title: "VI. Outcome-Based Education",
-      description: "Mapping Programme Outcomes (POs), Course Outcomes (COs) and PSOs frameworks.",
-      icon: Settings,
+      catSlug: "examination-evaluation",
+      title: "E. Examination & Evaluation",
+      badge: "Transparent Assessment",
+      description: "Standardized evaluation architecture, Continuous Internal Assessment (CIA), semester-end university exams, and ethical conduct.",
+      icon: Award,
+      href: "/academics/examination-evaluation/examination-system",
       items: [
-        { text: "Outcome-Based Education (OBE)", slug: "programme-outcomes-pos" }
+        { text: "Examination System", slug: "examination-system" },
+        { text: "Continuous Internal Assessment (CIA)", slug: "continuous-internal-assessment" },
+        { text: "University Examinations", slug: "university-examinations" },
+        { text: "Results & Performance", slug: "results-performance" },
+        { text: "Examination Regulations", slug: "examination-regulations" }
       ]
     },
     {
-      catSlug: "academic-quality-indicators",
-      title: "VII. Academic Quality Indicators",
-      description: "Auditing Student-Teacher ratios, evaluation methods and quality compliance metrics.",
-      icon: LineChart,
+      catSlug: "academic-enrichment",
+      title: "F. Academic Enrichment",
+      badge: "Beyond Syllabus",
+      description: "Value-added courses, domain certificate programmes, technical skill development, industry workshops, and national seminars.",
+      icon: Sparkles,
+      href: "/academics/academic-enrichment/value-added-courses",
       items: [
-        { text: "Academic Quality Indicators", slug: "student-teacher-ratio" }
+        { text: "Value-Added Courses (VAC)", slug: "value-added-courses" },
+        { text: "Certificate Programmes", slug: "certificate-courses" },
+        { text: "Skill Development Programmes", slug: "skill-development-programmes" },
+        { text: "Guest Lectures & Workshops", slug: "guest-lectures-workshops" },
+        { text: "Seminars & Conferences", slug: "seminars-conferences" },
+        { text: "Academic Collaborations", slug: "academic-collaborations" }
+      ]
+    },
+    {
+      catSlug: "academic-quality-outcomes",
+      title: "G. Academic Quality & Outcomes",
+      badge: "OBE & AAA Audits",
+      description: "Outcome-Based Education framework mapping Programme Outcomes (POs), PSOs, Course Outcomes (COs), attainment, and Academic Audits.",
+      icon: ShieldCheck,
+      href: "/academics/academic-quality-outcomes/programme-outcomes",
+      items: [
+        { text: "Programme Outcomes (POs)", slug: "programme-outcomes" },
+        { text: "Programme Specific Outcomes (PSOs)", slug: "programme-specific-outcomes" },
+        { text: "Course Outcomes (COs)", slug: "course-outcomes" },
+        { text: "CO–PO/PSO Mapping", slug: "co-po-pso-mapping" },
+        { text: "Attainment of Outcomes", slug: "attainment-of-outcomes" },
+        { text: "Academic & Administrative Audit (AAA)", slug: "academic-audit" }
       ]
     }
   ];
 
-  const openModal = (catSlug: string, itemSlug: string, text: string) => {
-    setActiveModal({ catSlug, itemSlug, text });
-  };
-
-  const closeModal = () => {
-    setActiveModal(null);
-  };
-
-  const renderPopupContent = () => {
-    if (!activeModal) return null;
-    const { catSlug, itemSlug } = activeModal;
-
-    if (catSlug === "academic-programmes") {
-      switch (itemSlug) {
-        case "undergraduate-programmes": return <UndergraduateProgrammes />;
-        case "postgraduate-programmes": return <PostgraduateProgrammes />;
-        case "industry-integrated-courses": return <IndustryIntegratedCourses />;
-      }
-    }
-    if (catSlug === "curriculum-academic-planning") {
-      switch (itemSlug) {
-        case "curriculum-framework": return <CurriculumFramework />;
-        case "innovative-interdisciplinary-offerings": return <InnovativeInterdisciplinaryOfferings />;
-        case "academic-calendar-ug-pg": return <AcademicCalendar />;
-        case "academic-implementation-plan-aip": return <AcademicImplementationPlan />;
-        case "time-tables": return <Timetables />;
-      }
-    }
-    if (catSlug === "departments") {
-      return <DepartmentDetail itemSlug={itemSlug} />;
-    }
-    if (catSlug === "value-added-learning") {
-      return <ValueAddedLearning />;
-    }
-    if (catSlug === "teaching-learning") {
-      switch (itemSlug) {
-        case "pedagogy-learning-methodologies": return <PedagogyMethodologies />;
-        case "learning-management-system-lms": return <LearningManagementSystem />;
-        case "student-centric-methods": return <StudentCentricMethods />;
-      }
-    }
-    if (catSlug === "outcome-based-education") {
-      return <OutcomeBasedEducation />;
-    }
-    if (catSlug === "academic-quality-indicators") {
-      return <AcademicQualityIndicators />;
-    }
-
-    return <p className="text-slate-500 font-sans p-4">Section details being aggregated...</p>;
-  };
-
   return (
-    <div className="bg-slate-50/50 min-h-screen select-none font-sans">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
-        {/* Sub-text Box */}
-        <SubtextBox 
-          subtext="Robust education ecosystems mapping curriculum frameworks, outcomes assessment, specialized 14 departments and comprehensive ICT pedagogical delivery mechanisms." 
-          className="mb-8"
-        />
-
-        {/* Banner Image Area */}
-        <div className="relative w-full h-[320px] md:h-[400px] mb-16 rounded-[2rem] overflow-hidden border border-slate-200/80 shadow-lg">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-          <img
-            src="/images/courses/slider1.jpg"
-            alt="St. Ann's Academics"
-            className="w-full h-full object-cover"
-            onError={(e) => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80"; }}
-          />
-          <div className="absolute bottom-8 left-8 z-20 text-white">
-            <h2 className="font-outfit text-2xl md:text-4xl font-black">Excellence in Action</h2>
-            <p className="text-xs md:text-sm font-semibold mt-1 text-slate-200">Adhering strictly to statutory compliance & modern pedagogy</p>
-          </div>
+    <div className="flex flex-col gap-10 font-sans animate-fadeIn">
+      {/* Hero Welcome Banner */}
+      <div className="bg-gradient-to-br from-[#002147] via-[#002d5c] to-indigo-950 rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-xl border border-white/10">
+        <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
+          <GraduationCap className="h-[450px] w-[450px]" />
         </div>
-
-        {/* Categories Grid Block */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            return (
-              <div key={cat.catSlug} className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-0.5 hover:border-[#002147]/20 transition-all duration-300 flex flex-col gap-6">
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#002147]/5 text-[#002147] border border-[#002147]/10 shadow-inner">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <h3 className="font-outfit text-lg md:text-xl font-black text-slate-800 leading-tight">{cat.title}</h3>
-                  </div>
-                  <p className="text-xs font-medium text-slate-500 leading-relaxed min-h-[36px]">{cat.description}</p>
-                </div>
-                <div className="h-px bg-slate-100 w-full" />
-                <div className="flex flex-col gap-2">
-                  {cat.items.map((sub) => (
-                    <button
-                      key={sub.slug}
-                      onClick={() => openModal(cat.catSlug, sub.slug, sub.text)}
-                      className="group flex items-center justify-between text-left p-3 bg-slate-50/50 hover:bg-[#002147]/5 border border-slate-100/60 rounded-xl transition-all duration-200 select-none"
-                    >
-                      <span className="font-sans text-xs md:text-sm font-bold text-slate-700 group-hover:text-[#002147]">{sub.text}</span>
-                      <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-[#002147] group-hover:translate-x-0.5 transition-all" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+        <div className="relative z-10 flex flex-col gap-4 max-w-3xl">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-xs font-black tracking-wider uppercase w-fit text-blue-100">
+            <Sparkles className="h-3.5 w-3.5 text-amber-300" /> Academic Portal
+          </span>
+          <h2 className="font-outfit text-3xl md:text-5xl font-black tracking-tight leading-tight">
+            Academic Excellence &amp; Holistic Development
+          </h2>
+          <p className="text-blue-100/90 text-sm md:text-base font-normal leading-relaxed">
+            St. Ann&apos;s College for Women provides career-oriented, research-infused undergraduate and postgraduate curricula designed to foster intellectual growth, global competency, and ethical leadership in accordance with Acharya Nagarjuna University and NEP 2020 guidelines.
+          </p>
         </div>
-
       </div>
 
-      {/* Popup Modal */}
-      {activeModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white max-w-5xl w-full rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden relative max-h-[90vh] flex flex-col animate-scaleUp">
-            {/* Header / Banner in the Popup - Styled with St. Ann's Branding */}
-            <div className="relative bg-[#002147] px-6 py-4 text-white flex items-center justify-between border-b border-white/10 flex-shrink-0">
-              <div className="flex items-center gap-4">
-                <img
-                  src="/images/collegelogo.png"
-                  alt="St. Ann's Logo"
-                  className="h-12 w-auto object-contain select-none bg-white rounded-xl p-1 shadow-sm"
-                />
-                <div className="h-8 w-px bg-white/20 hidden sm:block" />
-                <div className="flex flex-col">
-                  <span className="font-outfit text-sm md:text-lg font-black tracking-tight leading-tight select-none uppercase text-white">
-                    St. Ann&apos;s College for Women
-                  </span>
-                  <span className="font-sans text-[10px] md:text-xs font-semibold text-slate-300 tracking-wide select-none">
-                    Run by the Society of St Anne
+      {/* Grid of 7 Categories with Direct Subpage Links (NO MODAL POPUP) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {categories.map((cat) => {
+          const Icon = cat.icon;
+          return (
+            <div
+              key={cat.catSlug}
+              className="bg-white border border-slate-200/80 rounded-[2rem] p-7 shadow-xs hover:shadow-lg hover:border-[#002147]/30 transition-all flex flex-col justify-between gap-6 group"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div className="h-12 w-12 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 group-hover:bg-[#002147] group-hover:text-white transition-all shadow-xs">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200/60">
+                    {cat.badge}
                   </span>
                 </div>
+
+                <div>
+                  <h3 className="font-outfit text-lg font-black text-slate-850 group-hover:text-[#002147] transition-colors leading-snug">
+                    {cat.title}
+                  </h3>
+                  <p className="mt-2 text-slate-500 text-xs font-medium leading-relaxed">
+                    {cat.description}
+                  </p>
+                </div>
+
+                {/* Direct Subpage Link List */}
+                <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-100">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Sub-Pages:</span>
+                  <div className="flex flex-col gap-1">
+                    {cat.items.map((item) => (
+                      <Link
+                        key={item.slug}
+                        href={
+                          cat.catSlug === "departments"
+                            ? `/academics/departments/${item.slug}`
+                            : `/academics/${cat.catSlug}/${item.slug}`
+                        }
+                        className="inline-flex items-center justify-between text-xs font-bold text-slate-700 hover:text-[#002147] hover:bg-slate-50 p-2 rounded-xl transition-all group/item"
+                      >
+                        <span className="truncate pr-2">{item.text}</span>
+                        <ArrowRight className="h-3 w-3 text-slate-400 group-hover/item:text-[#002147] group-hover/item:translate-x-1 transition-all shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={closeModal}
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 hover:scale-105 transition-all active:scale-95 duration-200"
+
+              {/* Category Primary Subpage Action */}
+              <Link
+                href={cat.href}
+                className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-50 hover:bg-[#002147] text-slate-700 hover:text-white text-xs font-bold transition-all shadow-xs group-hover:bg-[#002147] group-hover:text-white"
               >
-                <X className="h-5 w-5 text-white" />
-              </button>
+                <span>Explore Section</span>
+                <ChevronRight className="h-4 w-4" />
+              </Link>
             </div>
-
-            {/* Modal Body with Scrolling */}
-            <div className="flex-1 overflow-y-auto p-6 md:p-10 bg-slate-50/40">
-              {renderPopupContent()}
-            </div>
-
-            {/* Modal Footer */}
-            <div className="border-t border-slate-100 p-5 bg-white flex justify-end flex-shrink-0">
-              <button
-                onClick={closeModal}
-                className="px-6 py-2.5 bg-[#002147] hover:bg-indigo-950 text-white font-sans font-bold text-xs md:text-sm rounded-xl transition-all active:scale-95 shadow-md"
-              >
-                Done / Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
+          );
+        })}
+      </div>
     </div>
   );
 }
