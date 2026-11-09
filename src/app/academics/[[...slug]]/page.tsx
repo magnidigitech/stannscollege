@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GraduationCap, Sparkles, Phone, Mail, ArrowRight, ChevronDown, ChevronRight, Building, BookOpen, Lightbulb, Award, ShieldCheck } from "lucide-react";
@@ -190,7 +190,38 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     rawCat;
 
   const [deptsOpen, setDeptsOpen] = useState<boolean>(true);
+  const [headerHeight, setHeaderHeight] = useState<number>(140);
   const isAllDeptsRoot = catSlug === "departments" && !itemSlug;
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const header = document.getElementById("main-header");
+      if (header) {
+        const height = header.getBoundingClientRect().height || header.offsetHeight;
+        if (height > 0) {
+          setHeaderHeight(Math.ceil(height));
+        }
+      }
+    };
+
+    updateHeaderHeight();
+
+    let observer: ResizeObserver | null = null;
+    const header = document.getElementById("main-header");
+    if (header && typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(() => updateHeaderHeight());
+      observer.observe(header);
+    }
+
+    window.addEventListener("resize", updateHeaderHeight);
+    window.addEventListener("scroll", updateHeaderHeight, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      window.removeEventListener("scroll", updateHeaderHeight);
+      if (observer) observer.disconnect();
+    };
+  }, []);
 
   if (!catSlug || (!isAllDeptsRoot && !itemSlug)) {
     return (
@@ -264,22 +295,32 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
           
           {/* Left Navigation Sidebar for Desktop */}
-          <div className="lg:col-span-3 flex flex-col gap-6 sticky top-24 select-none h-fit max-h-[calc(100vh-140px)] overflow-y-auto bg-white border border-slate-200/60 p-5 rounded-[2rem] shadow-sm pr-3">
-            <div className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3.5 shadow-sm bg-[#002147] border border-[#002147]/20 shrink-0">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs shadow-inner">
-                <GraduationCap className="h-5 w-5" />
-              </span>
-              <div className="flex flex-col min-w-0">
-                <Link href="/academics" className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider text-white truncate leading-tight hover:underline">
-                  Academics
-                </Link>
-                <span className="text-[10px] sm:text-[11px] text-blue-100/80 font-medium truncate mt-0.5">
-                  Academic Modules &amp; Programs
+          <div
+            className="lg:col-span-3 flex flex-col sticky select-none h-fit overflow-hidden bg-white border border-slate-200/80 rounded-[2rem] shadow-sm z-20"
+            style={{
+              top: `${headerHeight + 16}px`,
+              maxHeight: `calc(100vh - ${headerHeight + 32}px)`,
+            }}
+          >
+            {/* Pinned Top Banner Header - Always fixed at top of sidebar card */}
+            <div className="p-4 sm:p-5 pb-3.5 shrink-0 bg-white border-b border-slate-100">
+              <div className="text-white px-4 py-3.5 rounded-2xl flex items-center gap-3.5 shadow-sm bg-[#002147] border border-[#002147]/20">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white shrink-0 backdrop-blur-xs shadow-inner">
+                  <GraduationCap className="h-5 w-5" />
                 </span>
+                <div className="flex flex-col min-w-0">
+                  <Link href="/academics" className="font-outfit text-sm sm:text-base font-black uppercase tracking-wider text-white truncate leading-tight hover:underline">
+                    Academics
+                  </Link>
+                  <span className="text-[10px] sm:text-[11px] text-blue-100/80 font-medium truncate mt-0.5">
+                    Academic Modules &amp; Programs
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col gap-5 mt-1">
+            {/* Scrollable Categories List */}
+            <div className="p-4 sm:p-5 pt-3 overflow-y-auto flex-1 flex flex-col gap-5 scrollbar-thin scrollbar-thumb-slate-200">
               {navigationStructure.map((group) => {
                 const isGroupActive = catSlug === group.catSlug;
 
