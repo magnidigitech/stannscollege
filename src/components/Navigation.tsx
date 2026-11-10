@@ -61,33 +61,27 @@ export function toSlug(text: string) {
 
 
 export default function Navigation() {
-  // Desktop Menu Hover State with debounce
+  // Desktop Menu Click State
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleMouseEnter = (menuName: string) => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setActiveMenu(menuName);
-  };
-
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setActiveMenu(null);
-    }, 180);
+  const toggleMenu = (menuName: string) => {
+    setActiveMenu((prev) => (prev === menuName ? null : menuName));
   };
 
   // Close dropdown on outside click or escape key
   useEffect(() => {
     const handleDocumentClick = (e: MouseEvent) => {
-      const target = e.target as Node;
+      const target = e.target as HTMLElement | null;
       // If the clicked target was unmounted/detached during React re-render, ignore
       if (!target || !document.body.contains(target)) return;
 
-      if (navContainerRef.current && !navContainerRef.current.contains(target)) {
-        setActiveMenu(null);
+      // Ignore clicks on menu trigger buttons or inside active dropdowns
+      if (target.closest("[data-nav-item]") || target.closest("[data-nav-dropdown]")) {
+        return;
       }
+
+      setActiveMenu(null);
     };
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -1043,26 +1037,23 @@ export default function Navigation() {
           </Link>
 
           {/* 2. About Us */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("about")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/about"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit About Us Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="about"
+              onClick={() => toggleMenu("about")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="About Us"
+              aria-expanded={activeMenu === "about"}
             >
               About Us
-            </Link>
+            </button>
 
             {activeMenu === "about" && (
               <div
+                data-nav-dropdown="about"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("about")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1102,26 +1093,23 @@ export default function Navigation() {
           </div>
 
           {/* 3. Academics */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("academics")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/academics"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Academics Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="academics"
+              onClick={() => toggleMenu("academics")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Academics"
+              aria-expanded={activeMenu === "academics"}
             >
               Academics
-            </Link>
+            </button>
 
             {activeMenu === "academics" && (
               <div
+                data-nav-dropdown="academics"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("academics")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1165,26 +1153,23 @@ export default function Navigation() {
           </div>
 
           {/* 4. Admissions */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("admissions")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/admissions"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Admissions Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="admissions"
+              onClick={() => toggleMenu("admissions")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Admissions"
+              aria-expanded={activeMenu === "admissions"}
             >
               Admissions
-            </Link>
+            </button>
 
             {activeMenu === "admissions" && (
               <div
+                data-nav-dropdown="admissions"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("admissions")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1224,26 +1209,23 @@ export default function Navigation() {
           </div>
 
           {/* 5. Infrastructure */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("infra")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/infrastructure"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Infrastructure Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="infra"
+              onClick={() => toggleMenu("infra")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Infrastructure"
+              aria-expanded={activeMenu === "infra"}
             >
               Infrastructure
-            </Link>
+            </button>
 
             {activeMenu === "infra" && (
               <div
+                data-nav-dropdown="infra"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("infra")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1282,26 +1264,23 @@ export default function Navigation() {
           </div>
 
           {/* 6. Faculty */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("faculty")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/faculty"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Faculty Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="faculty"
+              onClick={() => toggleMenu("faculty")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Faculty"
+              aria-expanded={activeMenu === "faculty"}
             >
               Faculty
-            </Link>
+            </button>
 
             {activeMenu === "faculty" && (
               <div
+                data-nav-dropdown="faculty"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[80vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("faculty")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1344,26 +1323,23 @@ export default function Navigation() {
           </div>
 
           {/* 7. Student Support Services */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("support")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/student-support"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Student Support Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="support"
+              onClick={() => toggleMenu("support")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Student Support Services"
+              aria-expanded={activeMenu === "support"}
             >
               Student Support Services
-            </Link>
+            </button>
 
             {activeMenu === "support" && (
               <div
+                data-nav-dropdown="support"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("support")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1403,26 +1379,23 @@ export default function Navigation() {
           </div>
 
           {/* 8. Placements & Industry Linkages */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("placements")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/placements"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Placements Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="placements"
+              onClick={() => toggleMenu("placements")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Placements & Industry Linkages"
+              aria-expanded={activeMenu === "placements"}
             >
               Placements & Industry Linkages
-            </Link>
+            </button>
 
             {activeMenu === "placements" && (
               <div
+                data-nav-dropdown="placements"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("placements")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1490,26 +1463,23 @@ export default function Navigation() {
 
 
           {/* Research & Innovation (Moved here to balance Row 1 & Row 2 spacing perfectly!) */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("research")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/research-innovation"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Research & Innovation Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="research"
+              onClick={() => toggleMenu("research")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Research & Innovation"
+              aria-expanded={activeMenu === "research"}
             >
               Research & Innovation
-            </Link>
+            </button>
 
             {activeMenu === "research" && (
               <div
+                data-nav-dropdown="research"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("research")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1550,26 +1520,23 @@ export default function Navigation() {
 
 
           {/* 10. Alumni */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("alumni")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/alumni"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Alumni Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="alumni"
+              onClick={() => toggleMenu("alumni")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Alumni"
+              aria-expanded={activeMenu === "alumni"}
             >
               Alumni
-            </Link>
+            </button>
 
             {activeMenu === "alumni" && (
               <div
+                data-nav-dropdown="alumni"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("alumni")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1609,26 +1576,23 @@ export default function Navigation() {
           </div>
 
           {/* 11. IQAC, Quality Assurance & Accreditation */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("iqac")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/quality-assurance"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Quality Assurance Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="iqac"
+              onClick={() => toggleMenu("iqac")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Quality Assurance & Accreditation"
+              aria-expanded={activeMenu === "iqac"}
             >
               Quality Assurance & Accreditation
-            </Link>
+            </button>
 
             {activeMenu === "iqac" && (
               <div
+                data-nav-dropdown="iqac"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("iqac")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1668,26 +1632,23 @@ export default function Navigation() {
           </div>
 
           {/* 12. Mandatory Disclosures & Compliance */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("mandatory")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/mandatory-disclosures"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Mandatory Disclosures Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="mandatory"
+              onClick={() => toggleMenu("mandatory")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Mandatory Disclosures & Compliance"
+              aria-expanded={activeMenu === "mandatory"}
             >
               Mandatory Disclosures & Compliance
-            </Link>
+            </button>
 
             {activeMenu === "mandatory" && (
               <div
+                data-nav-dropdown="mandatory"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("mandatory")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();
@@ -1727,26 +1688,23 @@ export default function Navigation() {
           </div>
 
           {/* 13. Strategic Plans & Future Directions */}
-          <div
-            className="flex items-center group/nav"
-            onMouseEnter={() => handleMouseEnter("strategic")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link
-              href="/strategic-plans-and-future-directions"
-              onClick={() => setActiveMenu(null)}
-              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none"
-              title="Visit Strategic Plans Page"
+          <div className="flex items-center group/nav">
+            <button
+              type="button"
+              data-nav-item="strategic"
+              onClick={() => toggleMenu("strategic")}
+              className="cursor-pointer text-inherit transition-all duration-200 py-1 whitespace-nowrap select-none hover:opacity-85 font-medium outline-none bg-transparent border-0 p-0 text-inherit font-[inherit] text-[inherit]"
+              title="Strategic Plans & Future Directions"
+              aria-expanded={activeMenu === "strategic"}
             >
               Strategic Plans & Future Directions
-            </Link>
+            </button>
 
             {activeMenu === "strategic" && (
               <div
+                data-nav-dropdown="strategic"
                 className="absolute top-full left-0 w-full !bg-white !opacity-100 border border-slate-200/60 shadow-2xl rounded-3xl p-8 z-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 cursor-default animate-fadeIn max-h-[82vh] overflow-y-auto"
                 style={{ backgroundColor: "#ffffff", opacity: 1, zIndex: 100 }}
-                onMouseEnter={() => handleMouseEnter("strategic")}
-                onMouseLeave={handleMouseLeave}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.nativeEvent.stopImmediatePropagation();

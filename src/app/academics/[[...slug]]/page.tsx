@@ -275,7 +275,23 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
   // Determine page title and subtext
   let pageTitle = "Academics";
-  const pageSubtext = "Providing career-oriented, research-infused undergraduate, postgraduate, and professional curricula designed to foster intellectual growth, global competency, and ethical leadership.";
+  let pageSubtext = "Providing career-oriented, research-infused undergraduate, postgraduate, and professional curricula designed to foster intellectual growth, global competency, and ethical leadership.";
+
+  if (catSlug === "academic-programmes") {
+    pageSubtext = "St. Ann’s College for Women offers diverse UG and PG programmes for academic and professional excellence. UG programmes follow the Single Major system from 2023–2024, aligned with NEP 2020. MCA and MBA are professional programmes approved by AICTE.";
+  } else if (catSlug === "curriculum-academic-planning") {
+    pageSubtext = "The College follows the prescribed curriculum and academic framework of the competent academic and statutory authorities and provides the complete programme-wise syllabus for Undergraduate (UG) and Postgraduate (PG) programmes.";
+  } else if (catSlug === "departments") {
+    pageSubtext = "Thirteen dynamic academic departments driving specialized learning, computational labs, scientific research, and professional training.";
+  } else if (catSlug === "teaching-learning") {
+    pageSubtext = "St. Ann’s College for Women follows student-centred, participative, and outcome-oriented teaching-learning practices to support academic achievement and holistic development.";
+  } else if (catSlug === "examination-evaluation") {
+    pageSubtext = "The College follows a transparent, systematic, and student-oriented examination and evaluation system in accordance with the regulations of Acharya Nagarjuna University.";
+  } else if (catSlug === "academic-enrichment") {
+    pageSubtext = "The College provides opportunities beyond the prescribed curriculum to enhance students’ knowledge, skills, employability, and overall development.";
+  } else if (catSlug === "academic-quality-outcomes") {
+    pageSubtext = "The College follows an outcome-based education approach to ensure that teaching-learning processes contribute to the achievement of clearly defined academic and developmental outcomes.";
+  }
 
   if (isAllDeptsRoot) {
     pageTitle = "Academic Departments";

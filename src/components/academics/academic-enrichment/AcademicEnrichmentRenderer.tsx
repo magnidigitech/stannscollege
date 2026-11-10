@@ -50,7 +50,7 @@ export function AcademicEnrichmentRenderer({ subSlug }: AcademicEnrichmentRender
       {/* Header */}
       <div>
         <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 flex items-center gap-2 mb-2">
-          <Sparkles className="h-4 w-4 text-[#002147]" /> Category F: Academic Enrichment
+          <Sparkles className="h-4 w-4 text-[#002147]" /> Academic Enrichment
         </span>
         <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight text-[#002147]">
           {currentTopic ? currentTopic.title : "Academic Enrichment & Beyond-Curriculum Offerings"}

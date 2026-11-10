@@ -46,7 +46,7 @@ export function TeachingLearningRenderer({ subSlug }: TeachingLearningRendererPr
       {/* Header */}
       <div>
         <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 flex items-center gap-2 mb-2">
-          <Lightbulb className="h-4 w-4 text-[#002147]" /> Category D: Teaching &amp; Learning
+          <Lightbulb className="h-4 w-4 text-[#002147]" /> Teaching &amp; Learning
         </span>
         <h2 className="font-outfit text-2xl sm:text-3xl font-black tracking-tight text-[#002147]">
           {currentTopic ? currentTopic.title : "Teaching & Learning Practices"}
