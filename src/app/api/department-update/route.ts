@@ -1,8 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
 import crypto from "crypto";
+import fs from "fs";
+import path from "path";
 
-const DEPARTMENT_PASSWORD = "Stannsf@2026";
+const DEFAULT_PASSWORDS: Record<string, string> = {
+  "department-of-commerce": "commerce@2026",
+  "department-of-computer-science-applications": "computerscience@2026",
+  "department-of-computer-applications-bca": "computerscience@2026",
+  "department-of-computer-science-cs-artificial-intelligence": "computerscience@2026",
+  "department-of-mathematics": "mathematics@2026",
+  "department-of-physics": "physics@2026",
+  "department-of-statistics": "statistics@2026",
+  "department-of-biotechnology": "biotechnology@2026",
+  "department-of-microbiology": "microbiology@2026",
+  "department-of-botany": "botany@2026",
+  "department-of-chemistry": "chemistry@2026",
+  "department-of-english": "english@2026",
+  "department-of-oriental-languages": "orientallanguages@2026",
+  "department-of-oriental-languages-telugu-sanskrit-hindi": "orientallanguages@2026",
+  "department-of-mca": "mca@2026",
+  "department-of-mba": "mba@2026",
+};
+
+const MASTER_PASSWORD = "Stannsf@2026";
+
+function getDepartmentPassword(deptId: string): string {
+  try {
+    const filePath = path.join(process.cwd(), "src/components/academics/academics-data.json");
+    if (fs.existsSync(filePath)) {
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      const json = JSON.parse(fileContent);
+      if (json.departmentPasswords && json.departmentPasswords[deptId]) {
+        return json.departmentPasswords[deptId];
+      }
+    }
+  } catch (err) {
+    console.error("Error reading department passwords from file:", err);
+  }
+  return DEFAULT_PASSWORDS[deptId] || MASTER_PASSWORD;
+}
+
 const PROJECT_ID = "fhjwqub5";
 
 function getWriteClient() {
@@ -17,13 +55,23 @@ function getWriteClient() {
   });
 }
 
-async function uploadAsset(client: any, file: File) {
+async function uploadAsset(client: any, file: File): Promise<{ id: string; url: string }> {
   const buffer = Buffer.from(await file.arrayBuffer());
   const asset = await client.assets.upload("image", buffer, {
     filename: file.name,
     contentType: file.type || "image/jpeg",
   });
-  return asset._id;
+  return { id: asset._id, url: asset.url };
+}
+
+function generateSlug(text: string): string {
+  return (text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/^(dr|mr|mrs|ms|miss|prof|sr)\.?\s+/gi, "")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 function addKeysToObj(obj: any) {
@@ -57,8 +105,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Department and password required." }, { status: 400 });
     }
 
-    if (password !== DEPARTMENT_PASSWORD) {
-      return NextResponse.json({ success: false, error: "Incorrect password. Access denied." }, { status: 401 });
+    const expectedPassword = getDepartmentPassword(selectedDeptId);
+    if (password !== expectedPassword && password !== MASTER_PASSWORD) {
+      return NextResponse.json({ success: false, error: "Incorrect password for this department. Access denied." }, { status: 401 });
     }
 
     let departmentData: Record<string, any> = {};
@@ -79,12 +128,12 @@ export async function POST(req: NextRequest) {
       
       if (imageFile && imageFile.size > 0) {
         // Upload the new image file to Sanity
-        const assetId = await uploadAsset(client, imageFile);
+        const uploaded = await uploadAsset(client, imageFile);
         gallery[i].image = {
           _type: "image",
           asset: {
             _type: "reference",
-            _ref: assetId,
+            _ref: uploaded.id,
           },
         };
       }
@@ -92,6 +141,106 @@ export async function POST(req: NextRequest) {
 
     // Set updated gallery array back into the document data
     departmentData.gallery = gallery;
+
+    // ── Process faculty member photo uploads & sync with central Sanity facultyProfileNew
+    const facultyMembers = Array.isArray(departmentData.facultyMembers) ? departmentData.facultyMembers : [];
+    const deptCanonicalName = selectedDeptId.replace("department-of-", "").replace(/-/g, " ");
+
+    for (let i = 0; i < facultyMembers.length; i++) {
+      const member = facultyMembers[i];
+      if (!member || !member.name?.trim()) continue;
+
+      const photoKey = `facultyPhoto_${i}`;
+      const photoFile = formData.get(photoKey) as File | null;
+      let uploadedPhoto: { id: string; url: string } | null = null;
+
+      if (photoFile && photoFile.size > 0) {
+        try {
+          uploadedPhoto = await uploadAsset(client, photoFile);
+          member.imageUrl = uploadedPhoto.url;
+          member.photoAssetId = uploadedPhoto.id;
+        } catch (err: any) {
+          console.warn(`[department-update] Failed to upload photo for ${member.name}:`, err.message);
+        }
+      }
+
+      // Upsert into central faculty collection in Sanity: facultyProfileNew
+      try {
+        const autoSlug = generateSlug(member.name);
+        const docId = member._id || `facultyProfile-${autoSlug || Date.now()}`;
+        const profileDoc: Record<string, any> = {
+          _id: docId,
+          _type: "facultyProfileNew",
+          facultyName: member.name.trim(),
+          slug: { _type: "slug", current: member.slug || autoSlug || `faculty-${Date.now()}` },
+          staffType: member.staffType || "teaching",
+          designation: member.designation?.trim() || "Faculty Member",
+          department: member.department?.trim() || deptCanonicalName,
+          facultyId: member.employeeId?.trim() || member.facultyId?.trim() || "",
+          gender: member.gender || "Female",
+          dateOfBirth: member.dateOfBirth || null,
+          dateOfJoining: member.dateOfJoining?.trim() || "",
+          rejoiningDate: member.rejoiningDate?.trim() || "",
+          employmentType: member.employmentType || "Regular",
+          officialEmail: member.email?.trim() || member.officialEmail?.trim() || "",
+          contactNumber: member.phone?.trim() || member.contactNumber?.trim() || "",
+          officeLocation: member.officeLocation?.trim() || "",
+          highestQualification: member.qualification?.trim() || member.highestQualification?.trim() || "",
+          totalExperience: member.experience?.toString() || member.totalExperience?.toString() || "",
+          teachingExperience: member.teachingExperience?.toString() || "",
+          industryExperience: member.industryExperience?.toString() || "",
+          frsId: member.frsId?.trim() || "",
+          aicteId: member.aicteId?.trim() || "",
+          shortBio: member.shortBio || "",
+          careerObjective: member.careerObjective || "",
+          teachingPhilosophy: member.teachingPhilosophy || "",
+          areaOfExpertise: Array.isArray(member.areaOfExpertise)
+            ? member.areaOfExpertise
+            : member.specialization ? [member.specialization] : [],
+          languagesKnown: Array.isArray(member.languagesKnown)
+            ? member.languagesKnown
+            : member.languages ? member.languages.split(",").map((s: string) => s.trim()).filter(Boolean) : [],
+          researchAreas: Array.isArray(member.researchAreas)
+            ? member.researchAreas
+            : member.researchInterests ? [member.researchInterests] : [],
+          researchInterests: member.researchInterests || (Array.isArray(member.researchAreas) ? member.researchAreas.join(", ") : ""),
+          booksPublished: Array.isArray(member.booksPublished)
+            ? member.booksPublished
+            : member.booksSummary ? [member.booksSummary] : [],
+          linkedinUrl: member.linkedinUrl?.trim() || "",
+          googleScholarUrl: member.googleScholarUrl?.trim() || "",
+          orcidId: member.orcidId?.trim() || "",
+          scopusId: member.scopusId?.trim() || "",
+          researchGateUrl: member.researchGateUrl?.trim() || "",
+          personalWebsite: member.personalWebsite?.trim() || "",
+          showOnWebsite: member.showOnWebsite !== undefined ? Boolean(member.showOnWebsite) : true,
+        };
+
+        if (uploadedPhoto) {
+          profileDoc.profilePhoto = {
+            _type: "image",
+            asset: {
+              _type: "reference",
+              _ref: uploadedPhoto.id,
+            },
+          };
+        } else if (member.photoAssetId) {
+          profileDoc.profilePhoto = {
+            _type: "image",
+            asset: {
+              _type: "reference",
+              _ref: member.photoAssetId,
+            },
+          };
+        }
+
+        await client.createOrReplace(profileDoc as any);
+      } catch (err: any) {
+        console.warn(`[department-update] Failed to sync faculty member "${member.name}":`, err.message);
+      }
+    }
+
+    departmentData.facultyMembers = facultyMembers;
 
     // Ensure all array items have unique keys before submitting
     addKeysToObj(departmentData);

@@ -351,9 +351,48 @@ export default function FacultyClientPortal({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDeptFilter, setSelectedDeptFilter] = useState("All");
   const [activeNonTeachingTab, setActiveNonTeachingTab] = useState<"administrative" | "technical" | "support" | "contingent">("administrative");
-  const [selectedDeptCard, setSelectedDeptCard] = useState<string>(
-    FACULTY_DATA.departments[0]?.name || "1. Department of Commerce"
-  );
+
+  const findDeptFromParam = (deptParam: string | null) => {
+    if (!deptParam) return null;
+    const p = deptParam.trim().toLowerCase();
+    const pNormalized = p.replace(/[-_&]/g, " ");
+    return FACULTY_DATA.departments.find((d) => {
+      const slugMatch = d.slug.toLowerCase() === p;
+      const idMatch = d.id.toLowerCase().includes(p);
+      const nameMatch = d.name.toLowerCase().includes(p);
+      const normalizedNameMatch = d.name.toLowerCase().replace(/[-_&]/g, " ").includes(pNormalized);
+      return slugMatch || idMatch || nameMatch || normalizedNameMatch;
+    });
+  };
+
+  const [selectedDeptCard, setSelectedDeptCard] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const deptParam = params.get("dept");
+      const matched = findDeptFromParam(deptParam);
+      if (matched) return matched.name;
+    }
+    return FACULTY_DATA.departments[0]?.name || "1. Department of Commerce";
+  });
+
+  // Sync selected department and tab if URL query ?dept=... is provided
+  useEffect(() => {
+    const syncDeptFromUrl = () => {
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const deptParam = params.get("dept");
+        const matched = findDeptFromParam(deptParam);
+        if (matched) {
+          setSelectedDeptCard(matched.name);
+          setCurrentTab("department-wise");
+        }
+      }
+    };
+
+    syncDeptFromUrl();
+    window.addEventListener("popstate", syncDeptFromUrl);
+    return () => window.removeEventListener("popstate", syncDeptFromUrl);
+  }, [activeSlug]);
 
   // PDF Preview Modal state
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
@@ -920,7 +959,16 @@ export default function FacultyClientPortal({
                           <div className="relative min-w-[280px] sm:min-w-[360px]">
                             <select
                               value={selectedDeptCard}
-                              onChange={(e) => setSelectedDeptCard(e.target.value)}
+                              onChange={(e) => {
+                                const newName = e.target.value;
+                                setSelectedDeptCard(newName);
+                                if (typeof window !== "undefined") {
+                                  const matched = FACULTY_DATA.departments.find((d) => d.name === newName);
+                                  if (matched) {
+                                    window.history.replaceState(null, "", `/faculty/department-wise?dept=${encodeURIComponent(matched.slug)}`);
+                                  }
+                                }
+                              }}
                               className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl pl-4 pr-10 py-2.5 text-xs sm:text-sm font-extrabold text-[#002147] focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147] appearance-none cursor-pointer shadow-sm"
                             >
                               {FACULTY_DATA.departments.map((dept) => (

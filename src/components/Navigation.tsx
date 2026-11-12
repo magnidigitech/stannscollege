@@ -893,7 +893,7 @@ export default function Navigation() {
       ]
     },
     {
-      title: "B. Regulations & Resources",
+      title: "B. Academic Regulations & Resources",
       fullTitle: "B. Academic Regulations & Resources",
       icon: BookOpen,
       href: "/academics/curriculum-academic-planning/academic-calendar",
@@ -902,48 +902,25 @@ export default function Navigation() {
         { text: "Time Tables", href: "/academics/curriculum-academic-planning/timetables" },
         { text: "Curriculum & Syllabus", href: "/academics/curriculum-academic-planning/curriculum-syllabus" },
         { text: "Academic Regulations", href: "/academics/curriculum-academic-planning/academic-regulations" },
-        { text: "ILMS – Learning Management", href: "/academics/curriculum-academic-planning/ilms-system" }
+        { text: "ILMS – Integrated Learning Management System", href: "/academics/curriculum-academic-planning/ilms-system" }
       ]
     },
     {
-      title: "C. Departments (Science & Computing)",
-      fullTitle: "C. Departments (Science & Computing)",
-      icon: Cpu,
-      href: "/academics/departments",
-      items: [
-        { text: "1. Dept. of Commerce", href: "/academics/departments/department-of-commerce" },
-        { text: "2. Dept. of CS & Applications", href: "/academics/departments/department-of-computer-science-applications" },
-        { text: "3. Dept. of Mathematics", href: "/academics/departments/department-of-mathematics" },
-        { text: "4. Dept. of Physics", href: "/academics/departments/department-of-physics" },
-        { text: "5. Dept. of Statistics", href: "/academics/departments/department-of-statistics" },
-        { text: "6. Dept. of Chemistry", href: "/academics/departments/department-of-chemistry" }
-      ]
-    },
-    {
-      title: "C. Departments (Life Sciences, PG & Arts)",
-      fullTitle: "C. Departments (Life Sciences, PG & Arts)",
+      title: "C. Departments",
+      fullTitle: "C. Departments",
       icon: Building2,
       href: "/academics/departments",
-      items: [
-        { text: "7. Dept. of Biotechnology", href: "/academics/departments/department-of-biotechnology" },
-        { text: "8. Dept. of Microbiology", href: "/academics/departments/department-of-microbiology" },
-        { text: "9. Dept. of Botany", href: "/academics/departments/department-of-botany" },
-        { text: "10. Dept. of English", href: "/academics/departments/department-of-english" },
-        { text: "11. Dept. of Oriental Languages", href: "/academics/departments/department-of-oriental-languages" },
-        { text: "12. Dept. of MCA", href: "/academics/departments/department-of-mca" },
-        { text: "13. Dept. of MBA", href: "/academics/departments/department-of-mba" },
-        { text: "✦ All 13 Departments Overview Hub", href: "/academics/departments" }
-      ]
+      items: []
     },
     {
       title: "D. Teaching & Learning",
-      fullTitle: "D. Teaching & Learning Practices",
+      fullTitle: "D. Teaching & Learning",
       icon: Lightbulb,
       href: "/academics/teaching-learning/teaching-learning-practices",
       items: [
         { text: "Teaching-Learning Practices", href: "/academics/teaching-learning/teaching-learning-practices" },
         { text: "Innovative Teaching Practices", href: "/academics/teaching-learning/innovative-teaching-practices" },
-        { text: "Experiential Learning", href: "/academics/teaching-learning/experiential-participative-learning" },
+        { text: "Experiential & Participative Learning", href: "/academics/teaching-learning/experiential-participative-learning" },
         { text: "ICT-Enabled Teaching", href: "/academics/teaching-learning/ict-enabled-teaching" },
         { text: "Student-Centric Learning", href: "/academics/teaching-learning/student-centric-learning" }
       ]
@@ -967,8 +944,8 @@ export default function Navigation() {
       icon: Sparkles,
       href: "/academics/academic-enrichment/value-added-courses",
       items: [
-        { text: "Value-Added Courses (VAC)", href: "/academics/academic-enrichment/value-added-courses" },
-        { text: "Certificate Programmes", href: "/academics/academic-enrichment/certificate-courses" },
+        { text: "Value-Added Courses", href: "/academics/academic-enrichment/value-added-courses" },
+        { text: "Certificate Courses", href: "/academics/academic-enrichment/certificate-courses" },
         { text: "Skill Development Programmes", href: "/academics/academic-enrichment/skill-development-programmes" },
         { text: "Guest Lectures & Workshops", href: "/academics/academic-enrichment/guest-lectures-workshops" },
         { text: "Seminars & Conferences", href: "/academics/academic-enrichment/seminars-conferences" },
@@ -976,7 +953,7 @@ export default function Navigation() {
       ]
     },
     {
-      title: "G. Quality & Outcomes",
+      title: "G. Academic Quality & Outcomes",
       fullTitle: "G. Academic Quality & Outcomes",
       icon: ShieldCheck,
       href: "/academics/academic-quality-outcomes/programme-outcomes",
@@ -986,7 +963,7 @@ export default function Navigation() {
         { text: "Course Outcomes (COs)", href: "/academics/academic-quality-outcomes/course-outcomes" },
         { text: "CO–PO/PSO Mapping", href: "/academics/academic-quality-outcomes/co-po-pso-mapping" },
         { text: "Attainment of Outcomes", href: "/academics/academic-quality-outcomes/attainment-of-outcomes" },
-        { text: "Academic & Administrative Audit (AAA)", href: "/academics/academic-quality-outcomes/academic-audit" }
+        { text: "Academic Audit", href: "/academics/academic-quality-outcomes/academic-audit" }
       ]
     }
   ];
@@ -994,12 +971,12 @@ export default function Navigation() {
   const academicsColumns = [
     // Column 1: A & B
     [academicsCategories[0], academicsCategories[1]],
-    // Column 2: C1 & D
-    [academicsCategories[2], academicsCategories[4]],
-    // Column 3: C2 & E
-    [academicsCategories[3], academicsCategories[5]],
-    // Column 4: F & G
-    [academicsCategories[6], academicsCategories[7]]
+    // Column 2: C & D
+    [academicsCategories[2], academicsCategories[3]],
+    // Column 3: E & F
+    [academicsCategories[4], academicsCategories[5]],
+    // Column 4: G
+    [academicsCategories[6]]
   ];
 
   return (
@@ -1022,9 +999,9 @@ export default function Navigation() {
         }}
       >
         <nav
-          className="flex items-center justify-between w-full max-w-[1460px] mx-auto text-inherit"
+          className="flex items-center justify-between w-full max-w-[1260px] mx-auto px-4 sm:px-6 text-inherit"
           style={{
-            gap: "var(--topnav-spacing, 14px)",
+            gap: "var(--topnav-spacing, 12px)",
             fontFamily: "inherit",
             fontSize: "inherit",
             fontWeight: "inherit"
@@ -1122,28 +1099,35 @@ export default function Navigation() {
                         <Link
                           href={cat.href}
                           onClick={() => setActiveMenu(null)}
-                          className="flex items-center gap-2 border-b border-slate-100 pb-2 group/header hover:text-blue-900 transition-colors"
+                          className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 group/header hover:text-blue-900 transition-colors"
                         >
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
-                            <cat.icon className="h-3.5 w-3.5" />
-                          </span>
-                          <span className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
-                            {cat.fullTitle || cat.title}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#002147]/5 border border-[#002147]/10 text-[#002147] group-hover/header:bg-[#002147] group-hover/header:text-white transition-all">
+                              <cat.icon className="h-3.5 w-3.5" />
+                            </span>
+                            <span className="font-outfit font-black text-slate-800 text-xs sm:text-sm leading-tight group-hover/header:text-[#002147]">
+                              {cat.fullTitle || cat.title}
+                            </span>
+                          </div>
+                          {cat.items.length === 0 && (
+                            <ChevronRight className="h-4 w-4 text-slate-400 group-hover/header:text-[#002147] group-hover/header:translate-x-0.5 transition-all shrink-0" />
+                          )}
                         </Link>
-                        <div className="flex flex-col gap-1">
-                          {cat.items.map((item, idx) => (
-                            <Link
-                              key={idx}
-                              href={item.href}
-                              onClick={() => setActiveMenu(null)}
-                              className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1 rounded-lg transition-all flex items-center justify-between group/link"
-                            >
-                              <span>{item.text}</span>
-                              <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
-                            </Link>
-                          ))}
-                        </div>
+                        {cat.items.length > 0 && (
+                          <div className="flex flex-col gap-1">
+                            {cat.items.map((item, idx) => (
+                              <Link
+                                key={idx}
+                                href={item.href}
+                                onClick={() => setActiveMenu(null)}
+                                className="text-xs font-semibold text-slate-500 hover:text-[#002147] hover:bg-slate-50/80 px-2.5 py-1 rounded-lg transition-all flex items-center justify-between group/link"
+                              >
+                                <span>{item.text}</span>
+                                <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-blue-600 shrink-0" />
+                              </Link>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -1452,9 +1436,9 @@ export default function Navigation() {
         }}
       >
         <nav
-          className="flex items-center justify-between w-full max-w-[1460px] mx-auto text-inherit"
+          className="flex items-center justify-between w-full max-w-[1260px] mx-auto px-4 sm:px-6 text-inherit"
           style={{
-            gap: "var(--topnav-spacing, 14px)",
+            gap: "var(--topnav-spacing, 12px)",
             fontFamily: "inherit",
             fontSize: "inherit",
             fontWeight: "inherit"
@@ -1842,7 +1826,7 @@ export default function Navigation() {
                             onClick={() => setMobileOpen(false)}
                             className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
                           >
-                            • {item.text}
+                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
                           </Link>
                         ))}
                       </div>
@@ -1886,7 +1870,7 @@ export default function Navigation() {
                             onClick={() => setMobileOpen(false)}
                             className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
                           >
-                            • {item.text}
+                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
                           </Link>
                         ))}
                       </div>
@@ -1930,7 +1914,7 @@ export default function Navigation() {
                             onClick={() => setMobileOpen(false)}
                             className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
                           >
-                            • {item.text}
+                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
                           </Link>
                         ))}
                       </div>
@@ -2045,7 +2029,7 @@ export default function Navigation() {
                             onClick={() => setMobileOpen(false)}
                             className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
                           >
-                            • {item.text}
+                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
                           </Link>
                         ))}
                       </div>
@@ -2089,7 +2073,7 @@ export default function Navigation() {
                             onClick={() => setMobileOpen(false)}
                             className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
                           >
-                            • {item.text}
+                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
                           </Link>
                         ))}
                       </div>

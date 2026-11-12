@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShieldCheck, FileText, Download, CheckCircle, Scale } from "lucide-react";
+import { Scale, FileText } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
@@ -10,13 +10,6 @@ export function AcademicRegulations() {
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
   const regulations = academicsData.academicRegulations;
-
-  const statutoryBodies = [
-    { title: "Acharya Nagarjuna University (ANU)", desc: "Affiliating university guidelines, academic calendars, curriculum structures, and evaluation norms." },
-    { title: "University Grants Commission (UGC)", desc: "National quality mandates, CBCS/NEP 2020 guidelines, faculty credentials, and credit frameworks." },
-    { title: "All India Council for Technical Education (AICTE)", desc: "Technical norms, curriculum benchmarks, and infrastructural ratios for MCA and MBA." },
-    { title: "Andhra Pradesh Council of Higher Education (APSCHE)", desc: "State higher education policies, single major regulations, and admission criteria." }
-  ];
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">
@@ -31,61 +24,44 @@ export function AcademicRegulations() {
         <div className="h-1 w-20 bg-[#002147] rounded-full mt-4"></div>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-3xl text-slate-700 text-sm md:text-base leading-relaxed font-medium">
-        The College follows the rules, regulations, guidelines and academic norms prescribed by <strong className="text-[#002147]">Acharya Nagarjuna University (ANU)</strong>, <strong className="text-[#002147]">University Grants Commission (UGC)</strong>, <strong className="text-[#002147]">All India Council for Technical Education (AICTE)</strong>, <strong className="text-[#002147]">Andhra Pradesh Council of Higher Education (APSCHE)</strong> and other competent statutory and regulatory authorities, as applicable to the respective programmes and from time to time. The College also follows its approved institutional academic policies and regulations.
-      </div>
-
-      {/* Statutory Bodies Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {statutoryBodies.map((body, idx) => (
-          <div key={idx} className="bg-white border border-slate-200/60 p-5 rounded-3xl shadow-sm flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
-              <h4 className="font-outfit text-sm font-bold text-[#002147]">{body.title}</h4>
-            </div>
-            <p className="text-xs text-slate-500 font-medium leading-relaxed pl-6">{body.desc}</p>
-          </div>
-        ))}
-      </div>
-
       {/* Year-wise Academic Regulations */}
-      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-[#002147] flex items-center justify-center text-white">
-              <FileText className="h-5 w-5" />
+      <div className="bg-white border-2 border-slate-200/90 rounded-3xl shadow-sm overflow-hidden">
+        {/* Table Title Banner */}
+        <div className="p-5 sm:p-6 border-b border-[#001733] bg-[#002147] text-white flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-inner">
+              <FileText className="h-5 w-5 text-amber-300" />
             </div>
-            <div>
-              <h3 className="font-outfit text-base font-bold text-[#002147]">Year-wise Academic Regulations</h3>
-              <p className="text-xs text-slate-500 font-medium">Complete regulatory frameworks, admission policies, and code of conduct</p>
-            </div>
+            <h3 className="font-outfit text-base sm:text-lg font-black text-white leading-tight">
+              Year-wise Academic Regulations
+            </h3>
           </div>
-          <span className="text-xs font-bold bg-[#002147]/10 text-[#002147] px-3 py-1 rounded-full">
-            Official Decrees
-          </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs md:text-sm">
+          <table className="w-full text-left text-xs md:text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 font-bold uppercase tracking-wider">
-                <th className="py-4 px-6 w-20 text-center">S. No.</th>
-                <th className="py-4 px-6">Academic Year</th>
-                <th className="py-4 px-6 text-center">Regulatory Document</th>
+              <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                <th className="py-3.5 px-3 text-center w-14 text-slate-600 font-bold border-r border-slate-200">S. No.</th>
+                <th className="py-3.5 px-5 min-w-[260px] text-[#002147] font-black border-r border-slate-200">Academic Year</th>
+                <th className="py-3.5 px-4 text-center font-bold text-slate-700">Regulatory Document</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {regulations.map((reg, idx) => (
-                <tr key={reg.year} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-4 px-6 text-center font-bold text-slate-400">{idx + 1}</td>
-                  <td className="py-4 px-6 font-bold text-slate-800">Academic Regulations ({reg.year})</td>
-                  <td className="py-4 px-6 text-center">
+                <tr
+                  key={reg.year}
+                  className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}
+                >
+                  <td className="py-3.5 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
+                  <td className="py-3.5 px-5 font-bold text-slate-900 border-r border-slate-100">Academic Regulations ({reg.year})</td>
+                  <td className="py-3.5 px-4 text-center font-semibold">
                     <button
                       onClick={() => {
                         setPreviewUrl(reg.docUrl);
                         setPreviewTitle(`Academic Regulations (${reg.year})`);
                       }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
                     >
                       <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
@@ -106,4 +82,3 @@ export function AcademicRegulations() {
     </div>
   );
 }
-

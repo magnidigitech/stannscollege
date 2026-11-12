@@ -25,41 +25,42 @@ export function Timetables() {
         <div className="h-1 w-20 bg-[#002147] rounded-full mt-4"></div>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-3xl text-slate-700 text-sm md:text-base leading-relaxed font-medium">
-        The College publishes centrally prepared semester-wise class timetables for UG and PG programmes to ensure systematic scheduling and effective implementation of academic activities.
-      </div>
-
       {/* UG Time Tables */}
-      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-[#002147] flex items-center justify-center text-white">
-              <Calendar className="h-5 w-5" />
+      <div className="bg-white border-2 border-slate-200/90 rounded-3xl shadow-sm overflow-hidden">
+        {/* Table Title Banner */}
+        <div className="p-5 sm:p-6 border-b border-[#001733] bg-[#002147] text-white flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-inner">
+              <Calendar className="h-5 w-5 text-amber-300" />
             </div>
             <div>
-              <h3 className="font-outfit text-base font-bold text-[#002147]">Undergraduate (UG) Programmes</h3>
-              <p className="text-xs text-slate-500 font-medium">Semester-wise centrally prepared timetables for odd and even semesters</p>
+              <h3 className="font-outfit text-base sm:text-lg font-black text-white leading-tight">
+                Undergraduate (UG) Programmes
+              </h3>
+              <p className="text-xs text-blue-200/90 font-medium mt-1">
+                Semester-wise centrally prepared timetables for odd and even semesters
+              </p>
             </div>
           </div>
-          <span className="text-xs font-bold bg-[#002147]/10 text-[#002147] px-3 py-1 rounded-full">
+          <span className="text-xs font-bold bg-white/10 text-white border border-white/20 px-3.5 py-1.5 rounded-full">
             UG Timetables
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs md:text-sm">
+          <table className="w-full text-left text-xs md:text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
-                <th className="py-4 px-6 font-bold uppercase tracking-wider min-w-[180px]">Academic Year</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">I, III &amp; V Semesters (Odd Semesters)</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">II, IV &amp; VI Semesters (Even Semesters)</th>
+              <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                <th className="py-3.5 px-6 min-w-[180px] border-r border-slate-200">Academic Year</th>
+                <th className="py-3.5 px-6 text-center border-r border-slate-200">I, III &amp; V Semesters (Odd Semesters)</th>
+                <th className="py-3.5 px-6 text-center">II, IV &amp; VI Semesters (Even Semesters)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {ugTimetables.map((row) => (
-                <tr key={row.year} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-4 px-6 font-bold text-slate-800">{row.year}</td>
-                  <td className="py-4 px-6 text-center">
+              {ugTimetables.map((row, idx) => (
+                <tr key={row.year} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                  <td className="py-3.5 px-6 font-bold text-slate-800 border-r border-slate-100">{row.year}</td>
+                  <td className="py-3.5 px-6 text-center border-r border-slate-100">
                     <button
                       onClick={() => {
                         setPreviewUrl(row.oddSemUrl);
@@ -70,7 +71,7 @@ export function Timetables() {
                       <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
-                  <td className="py-4 px-6 text-center">
+                  <td className="py-3.5 px-6 text-center">
                     <button
                       onClick={() => {
                         setPreviewUrl(row.evenSemUrl);
@@ -89,36 +90,41 @@ export function Timetables() {
       </div>
 
       {/* PG Time Tables */}
-      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-teal-700 flex items-center justify-center text-white">
-              <Clock className="h-5 w-5" />
+      <div className="bg-white border-2 border-slate-200/90 rounded-3xl shadow-sm overflow-hidden">
+        {/* Table Title Banner */}
+        <div className="p-5 sm:p-6 border-b border-[#001733] bg-[#002147] text-white flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-inner">
+              <Clock className="h-5 w-5 text-amber-300" />
             </div>
             <div>
-              <h3 className="font-outfit text-base font-bold text-slate-800">Postgraduate (PG) Programmes</h3>
-              <p className="text-xs text-slate-500 font-medium">Semester-wise timetables for MCA and MBA professional cohorts</p>
+              <h3 className="font-outfit text-base sm:text-lg font-black text-white leading-tight">
+                Postgraduate (PG) Programmes (MCA &amp; MBA)
+              </h3>
+              <p className="text-xs text-blue-200/90 font-medium mt-1">
+                Semester-wise timetables for MCA and MBA professional cohorts
+              </p>
             </div>
           </div>
-          <span className="text-xs font-bold bg-teal-100 text-teal-800 px-3 py-1 rounded-full">
+          <span className="text-xs font-bold bg-white/10 text-white border border-white/20 px-3.5 py-1.5 rounded-full">
             PG Timetables
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs md:text-sm">
+          <table className="w-full text-left text-xs md:text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100">
-                <th className="py-4 px-6 font-bold uppercase tracking-wider min-w-[180px]">Academic Year</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">I &amp; III Semesters (Odd Semesters)</th>
-                <th className="py-4 px-6 font-bold uppercase tracking-wider text-center">II &amp; IV Semesters (Even Semesters)</th>
+              <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                <th className="py-3.5 px-6 min-w-[180px] border-r border-slate-200">Academic Year</th>
+                <th className="py-3.5 px-6 text-center border-r border-slate-200">I &amp; III Semesters (Odd Semesters)</th>
+                <th className="py-3.5 px-6 text-center">II &amp; IV Semesters (Even Semesters)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {pgTimetables.map((row) => (
-                <tr key={row.year} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-4 px-6 font-bold text-slate-800">{row.year}</td>
-                  <td className="py-4 px-6 text-center">
+              {pgTimetables.map((row, idx) => (
+                <tr key={row.year} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                  <td className="py-3.5 px-6 font-bold text-slate-800 border-r border-slate-100">{row.year}</td>
+                  <td className="py-3.5 px-6 text-center border-r border-slate-100">
                     <button
                       onClick={() => {
                         setPreviewUrl(row.oddSemUrl);
@@ -129,7 +135,7 @@ export function Timetables() {
                       <FileText className="h-3.5 w-3.5" /> View / Download
                     </button>
                   </td>
-                  <td className="py-4 px-6 text-center">
+                  <td className="py-3.5 px-6 text-center">
                     <button
                       onClick={() => {
                         setPreviewUrl(row.evenSemUrl);

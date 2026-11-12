@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { MonitorPlay, FileText, CheckCircle, ArrowRight, Sparkles, Layers, BarChart3 } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { MonitorPlay, FileText, ChevronDown, BarChart3, Layers } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
@@ -10,6 +10,48 @@ export function IlmsSystem() {
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
   const ilmsData = academicsData.ilms;
+
+  // Extract all available years from reports or use default range starting from 2023–2024
+  const availableYears = useMemo(() => {
+    const rawYears = (ilmsData?.reports || []).map((r: any) => r.year);
+    const unique = Array.from(new Set(rawYears)).filter(Boolean) as string[];
+    const fallbackYears = ["2026–2027", "2025–2026", "2024–2025", "2023–2024"];
+    const merged = Array.from(new Set([...unique, ...fallbackYears]));
+    // Sort descending by year
+    return merged.sort((a, b) => b.localeCompare(a));
+  }, [ilmsData]);
+
+  // Default to 2025–2026 or the first available year
+  const [selectedYear, setSelectedYear] = useState<string>(() => {
+    return availableYears.includes("2025–2026") ? "2025–2026" : availableYears[0] || "2025–2026";
+  });
+
+  // Filter reports by selected academic year; if empty for a year, provide the 10 standard slots
+  const filteredReports = useMemo(() => {
+    const matched = (ilmsData?.reports || []).filter((r: any) => r.year === selectedYear);
+    if (matched.length > 0) return matched;
+
+    // Standard 10 document metrics template
+    const defaultTemplates = [
+      "ILMS Annual Report",
+      "ILMS Usage Statistics / Analytics Report",
+      "Course-wise ILMS / Digital Resource Details",
+      "Faculty Participation / Usage Report",
+      "Sample Digital Learning Resources",
+      "Sample Digital Learning Activities / Assessments",
+      "ILMS Orientation / Capacity-Building Record",
+      "Student Usage / Feedback Analysis",
+      "ILMS Screenshots / System Evidence",
+      "IQAC Review / Quality Enhancement Record"
+    ];
+
+    return defaultTemplates.map((title, idx) => ({
+      sNo: idx + 1,
+      title,
+      year: selectedYear,
+      docUrl: "/documents/DefaultFile_1.pdf"
+    }));
+  }, [ilmsData, selectedYear]);
 
   return (
     <div className="flex flex-col gap-10 animate-fadeIn">
@@ -24,33 +66,32 @@ export function IlmsSystem() {
         <div className="h-1 w-20 bg-[#002147] rounded-full mt-4"></div>
       </div>
 
-      {/* Main Narrative */}
-      <div className="bg-slate-50 border border-slate-200/60 p-6 md:p-8 rounded-3xl flex flex-col gap-4 text-slate-700 text-sm md:text-base leading-relaxed font-medium">
-        <p>
-          St. Ann’s College for Women promotes the use of digital technologies to strengthen teaching-learning processes and provide students and faculty with convenient access to academic resources. The <strong className="text-[#002147]">Integrated Learning Management System (ILMS)</strong> serves as a digital academic platform for organizing and sharing course-related resources, supporting learning activities, and facilitating academic engagement beyond the conventional classroom.
-        </p>
-        <p>
-          The ILMS complements classroom teaching by providing structured access to digital learning resources and supporting ICT-enabled, learner-centric and blended teaching-learning practices.
-        </p>
-      </div>
-
-      {/* Key Academic Support through ILMS (9 Functions) */}
-      <div className="flex flex-col gap-4">
+      {/* Key Academic Support through ILMS (3x3 Grid with Highlighted Names) */}
+      <div className="flex flex-col gap-5">
         <div>
-          <h3 className="font-outfit text-lg font-bold text-[#002147]">Key Academic Support through ILMS</h3>
-          <p className="text-xs text-slate-500 font-medium">The ILMS facilitates 9 specialized digital academic functions across all departments</p>
+          <h3 className="font-outfit text-xl sm:text-2xl font-black text-[#002147]">
+            Key Academic Support through ILMS
+          </h3>
+          <p className="text-xs text-slate-500 font-medium mt-1">
+            The ILMS facilitates nine specialized academic functions to enhance teaching-learning and student engagement:
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {ilmsData.functions.map((fn, idx) => (
-            <div key={idx} className="bg-white border border-slate-200/60 p-5 rounded-3xl shadow-sm flex flex-col gap-2 hover:border-[#002147]/20 transition-all">
-              <div className="flex items-center gap-2">
-                <span className="h-6 w-6 rounded-lg bg-[#002147]/10 text-[#002147] font-black text-xs flex items-center justify-center shrink-0">
-                  {idx + 1}
+            <div
+              key={idx}
+              className="bg-white border-2 border-slate-200/90 hover:border-[#002147] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col gap-3"
+            >
+              <div className="flex items-start gap-3">
+                <span className="h-8 w-8 rounded-xl bg-[#002147] text-white font-outfit font-black text-xs flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                  {String(idx + 1).padStart(2, "0")}
                 </span>
-                <h4 className="font-outfit text-sm font-bold text-slate-800">{fn.title}</h4>
+                <h4 className="font-outfit text-sm sm:text-[15px] font-black text-[#002147] leading-snug group-hover:text-blue-900 transition-colors">
+                  {fn.title}
+                </h4>
               </div>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed pl-8">
+              <p className="text-xs text-slate-600 font-medium leading-relaxed pl-11">
                 {fn.desc}
               </p>
             </div>
@@ -58,74 +99,99 @@ export function IlmsSystem() {
         </div>
       </div>
 
-      {/* ILMS Usage and Quality Enhancement (Quality Cycle) */}
-      <div className="bg-gradient-to-br from-[#002147] to-indigo-950 text-white rounded-3xl p-6 md:p-8 flex flex-col gap-6 shadow-md relative overflow-hidden">
-        <div className="relative z-10 flex flex-col gap-3">
-          <div className="flex items-center gap-2 text-indigo-200 text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="h-4 w-4 text-emerald-400" /> Continuous Development &amp; Auditing
-          </div>
-          <h3 className="font-outfit text-xl font-bold">ILMS Usage and Quality Enhancement</h3>
-          <p className="text-blue-100/90 text-xs md:text-sm font-normal leading-relaxed max-w-3xl">
+      {/* ILMS Usage and Quality Enhancement (4-Step Process without Arrow Marks) */}
+      <div className="bg-gradient-to-br from-[#002147] via-[#002b5c] to-indigo-950 text-white rounded-3xl p-6 sm:p-8 flex flex-col gap-6 shadow-md border-2 border-[#001733] relative overflow-hidden">
+        <div className="relative z-10 flex flex-col gap-2">
+          <h3 className="font-outfit text-xl sm:text-2xl font-black text-white">
+            ILMS Usage and Quality Enhancement
+          </h3>
+          <p className="text-blue-100/90 text-xs sm:text-sm font-normal leading-relaxed max-w-3xl">
             The College encourages the appropriate use of ILMS as part of its continuous efforts to enhance the quality of teaching and learning. The College periodically reviews the use of digital learning resources and maintains relevant records as part of its academic and quality-assurance processes.
           </p>
         </div>
 
-        {/* Quality Cycle Step Flow */}
+        {/* 4-Step Process Cards (Clean Text, No Arrow Marks) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
           {ilmsData.qualityCycle.map((step, idx) => (
-            <div key={idx} className="bg-white/10 backdrop-blur-xs border border-white/15 p-4 rounded-2xl flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="h-7 w-7 rounded-xl bg-white/20 text-white font-black text-xs flex items-center justify-center">
-                  0{idx + 1}
-                </span>
-                <span className="font-outfit text-xs font-bold text-white tracking-wide">{step}</span>
-              </div>
-              {idx < ilmsData.qualityCycle.length - 1 && (
-                <ArrowRight className="h-4 w-4 text-indigo-300 hidden lg:block" />
-              )}
+            <div
+              key={idx}
+              className="bg-white/10 backdrop-blur-xs border border-white/20 p-4 rounded-2xl flex items-center gap-3.5 hover:bg-white/15 transition-all shadow-inner"
+            >
+              <span className="h-8 w-8 rounded-xl bg-white/20 text-white font-outfit font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
+                0{idx + 1}
+              </span>
+              <span className="font-outfit text-xs sm:text-sm font-black text-white tracking-wide">
+                {step}
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Reports & Evidence Table (10 Rows for 2025–2026) */}
-      <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-[#002147] flex items-center justify-center text-white">
-              <BarChart3 className="h-5 w-5" />
+      {/* Reports & Evidence Table with Year Dropdown Selector */}
+      <div className="bg-white border-2 border-slate-200/90 rounded-3xl shadow-sm overflow-hidden">
+        {/* Table Title Banner with Academic Year Dropdown on the right */}
+        <div className="p-5 sm:p-6 border-b border-[#001733] bg-[#002147] text-white flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-inner">
+              <BarChart3 className="h-5 w-5 text-amber-300" />
             </div>
             <div>
-              <h3 className="font-outfit text-base font-bold text-[#002147]">Reports &amp; Evidence (Academic Year 2025–2026)</h3>
-              <p className="text-xs text-slate-500 font-medium">Maintained supporting records demonstrating ILMS implementation and academic analytics</p>
+              <h3 className="font-outfit text-base sm:text-lg font-black text-white leading-tight">
+                Reports &amp; Evidence
+              </h3>
             </div>
           </div>
-          <span className="text-xs font-bold bg-[#002147]/10 text-[#002147] px-3 py-1 rounded-full">
-            10 Documents
-          </span>
+
+          {/* Academic Year Dropdown Selector (Beside Heading, Replacing Document Badge) */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs font-bold text-blue-200 uppercase tracking-wider hidden sm:inline">
+              Academic Year:
+            </span>
+            <div className="relative">
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="appearance-none bg-white text-[#002147] font-outfit font-black text-xs sm:text-sm pl-4 pr-9 py-2 rounded-xl border border-white/30 shadow-md cursor-pointer hover:bg-slate-50 transition-all outline-none"
+              >
+                {availableYears.map((yr) => (
+                  <option key={yr} value={yr} className="text-slate-800 font-bold">
+                    {yr}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="h-4 w-4 text-[#002147] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+          </div>
         </div>
 
+        {/* Option 1 Styled Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs md:text-sm">
+          <table className="w-full text-left text-xs md:text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 font-bold uppercase tracking-wider">
-                <th className="py-4 px-6 w-16 text-center">S. No.</th>
-                <th className="py-4 px-6">Document / Evidence</th>
-                <th className="py-4 px-6 text-center">Academic Year</th>
-                <th className="py-4 px-6 text-center">View / Download</th>
+              <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                <th className="py-3.5 px-3 text-center w-14 text-slate-600 font-bold border-r border-slate-200">S. No.</th>
+                <th className="py-3.5 px-5 min-w-[300px] text-[#002147] font-black border-r border-slate-200">Document / Evidence</th>
+                <th className="py-3.5 px-4 text-center font-bold text-slate-700">View / Download</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {ilmsData.reports.map((row) => (
-                <tr key={row.sNo} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-4 px-6 text-center font-bold text-slate-400">{row.sNo}</td>
-                  <td className="py-4 px-6 font-bold text-slate-800">{row.title}</td>
-                  <td className="py-4 px-6 text-center font-semibold text-slate-600">{row.year}</td>
-                  <td className="py-4 px-6 text-center">
+              {filteredReports.map((row: any, idx: number) => (
+                <tr
+                  key={row.sNo || idx}
+                  className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}
+                >
+                  <td className="py-3.5 px-3 text-center font-bold text-slate-500 border-r border-slate-100">
+                    {row.sNo || idx + 1}
+                  </td>
+                  <td className="py-3.5 px-5 font-bold text-slate-900 border-r border-slate-100">
+                    {row.title}
+                  </td>
+                  <td className="py-3.5 px-4 text-center font-semibold">
                     <button
                       onClick={() => {
                         setPreviewUrl(row.docUrl);
-                        setPreviewTitle(`${row.title} (${row.year})`);
+                        setPreviewTitle(`${row.title} (${selectedYear})`);
                       }}
                       className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
                     >
@@ -148,4 +214,3 @@ export function IlmsSystem() {
     </div>
   );
 }
-

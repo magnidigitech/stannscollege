@@ -25,10 +25,6 @@ export function AcademicCalendar() {
         <div className="h-1 w-20 bg-[#002147] rounded-full mt-4"></div>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-3xl text-slate-700 text-sm md:text-base leading-relaxed font-medium">
-        The College follows the Academic Calendar prescribed by <strong className="text-[#002147]">Acharya Nagarjuna University (ANU)</strong> for its Undergraduate and Postgraduate programmes. Based on the University schedule, the College prepares its <strong className="text-[#002147]">Annual Institutional Plan (AIP)</strong> to plan and monitor academic, co-curricular, extracurricular and institutional activities.
-      </div>
-
       {/* Table 1: Undergraduate (UG) Programmes */}
       <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-wrap gap-4">
@@ -96,7 +92,7 @@ export function AcademicCalendar() {
               <Clock className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-outfit text-base font-bold text-slate-800">Postgraduate (PG) Programmes</h3>
+              <h3 className="font-outfit text-base font-bold text-slate-800">Postgraduate (PG) Programmes (MCA &amp; MBA)</h3>
               <p className="text-xs text-slate-500 font-medium">ANU Academic Calendar &amp; College Annual Institutional Plan (AIP)</p>
             </div>
           </div>

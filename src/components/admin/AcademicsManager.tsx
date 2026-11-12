@@ -30,9 +30,38 @@ import {
   Info,
   CheckCircle2,
   Search,
+  Key,
+  Copy,
+  EyeOff,
+  Lock,
+  RotateCcw,
 } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import defaultAcademicsData from "@/components/academics/academics-data.json";
+
+interface AcademicDepartmentConfig {
+  id: string;
+  slug: string;
+  name: string;
+  defaultPass: string;
+  aliases?: string[];
+}
+
+const ACADEMIC_DEPARTMENTS_LIST: AcademicDepartmentConfig[] = [
+  { id: "1", slug: "department-of-commerce", name: "Department of Commerce", defaultPass: "commerce@2026" },
+  { id: "2", slug: "department-of-computer-science-applications", name: "Dept. of Computer Science & Applications", defaultPass: "computerscience@2026", aliases: ["department-of-computer-applications-bca", "department-of-computer-science-cs-artificial-intelligence"] },
+  { id: "3", slug: "department-of-mathematics", name: "Department of Mathematics", defaultPass: "mathematics@2026" },
+  { id: "4", slug: "department-of-physics", name: "Department of Physics", defaultPass: "physics@2026" },
+  { id: "5", slug: "department-of-statistics", name: "Department of Statistics", defaultPass: "statistics@2026" },
+  { id: "6", slug: "department-of-biotechnology", name: "Department of Biotechnology", defaultPass: "biotechnology@2026" },
+  { id: "7", slug: "department-of-microbiology", name: "Department of Microbiology", defaultPass: "microbiology@2026" },
+  { id: "8", slug: "department-of-botany", name: "Department of Botany", defaultPass: "botany@2026" },
+  { id: "9", slug: "department-of-chemistry", name: "Department of Chemistry", defaultPass: "chemistry@2026" },
+  { id: "10", slug: "department-of-english", name: "Department of English", defaultPass: "english@2026" },
+  { id: "11", slug: "department-of-oriental-languages", name: "Department of Oriental Languages", defaultPass: "orientallanguages@2026", aliases: ["department-of-oriental-languages-telugu-sanskrit-hindi"] },
+  { id: "12", slug: "department-of-mca", name: "Department of MCA", defaultPass: "mca@2026" },
+  { id: "13", slug: "department-of-mba", name: "Department of MBA", defaultPass: "mba@2026" },
+];
 
 interface Programme {
   sNo: number;
@@ -80,9 +109,9 @@ interface RegulationEntry {
 
 interface IlmsEntry {
   sNo: number;
-  metric: string;
-  description: string;
-  documentUrl: string;
+  title: string;
+  year: string;
+  docUrl: string;
 }
 
 export function AcademicsManager() {
@@ -103,6 +132,7 @@ export function AcademicsManager() {
   const [calendarType, setCalendarType] = useState<"ug" | "pg" | "aip">("ug");
   const [timetableSemester, setTimetableSemester] = useState<"odd" | "even">("odd");
   const [syllabusType, setSyllabusType] = useState<"ug" | "pg">("ug");
+  const [ilmsYear, setIlmsYear] = useState<string>("2025–2026");
 
   // Filter search
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -117,6 +147,84 @@ export function AcademicsManager() {
   // File Preview Modal
   const [previewFile, setPreviewFile] = useState<{ url: string; title: string } | null>(null);
 
+  // Department Password Management States
+  const [visiblePasswords, setVisiblePasswords] = useState<Record<string, boolean>>({});
+  const [copiedDept, setCopiedDept] = useState<string | null>(null);
+  const [deptSearch, setDeptSearch] = useState<string>("");
+  const [passwordSaving, setPasswordSaving] = useState<boolean>(false);
+  const [passwordSaveSuccess, setPasswordSaveSuccess] = useState<boolean>(false);
+
+  const handlePasswordChange = (deptSlug: string, newPassword: string, aliases?: string[]) => {
+    setData((prev: any) => {
+      const currentPasswords = { ...(prev?.departmentPasswords || {}) };
+      currentPasswords[deptSlug] = newPassword;
+      if (aliases && aliases.length > 0) {
+        aliases.forEach((alias) => {
+          currentPasswords[alias] = newPassword;
+        });
+      }
+      return {
+        ...prev,
+        departmentPasswords: currentPasswords,
+      };
+    });
+  };
+
+  const handleResetPassword = (deptSlug: string, defaultPassword: string, aliases?: string[]) => {
+    handlePasswordChange(deptSlug, defaultPassword, aliases);
+  };
+
+  const handleResetAllPasswords = () => {
+    if (!window.confirm("Are you sure you want to reset all department passwords to their default 'departmentname@2026' pattern?")) {
+      return;
+    }
+    const resetMap: Record<string, string> = {};
+    ACADEMIC_DEPARTMENTS_LIST.forEach((d) => {
+      resetMap[d.slug] = d.defaultPass;
+      if (d.aliases) {
+        d.aliases.forEach((alias) => {
+          resetMap[alias] = d.defaultPass;
+        });
+      }
+    });
+    setData((prev: any) => ({
+      ...prev,
+      departmentPasswords: resetMap,
+    }));
+  };
+
+  const handleSavePasswordsDirectly = async () => {
+    setPasswordSaving(true);
+    setPasswordSaveSuccess(false);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/academics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setPasswordSaveSuccess(true);
+        setTimeout(() => setPasswordSaveSuccess(false), 4000);
+      } else {
+        setError(json.error || "Failed to save department passwords.");
+      }
+    } catch (err: any) {
+      setError(err.message || "Network error while saving department passwords.");
+    } finally {
+      setPasswordSaving(false);
+    }
+  };
+
+  const handleCopyPassword = (deptSlug: string, pass: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(pass);
+      setCopiedDept(deptSlug);
+      setTimeout(() => setCopiedDept(null), 2500);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -128,7 +236,16 @@ export function AcademicsManager() {
       const res = await fetch("/api/admin/academics");
       const json = await res.json();
       if (json.success && json.data) {
-        setData(json.data);
+        const mergedData = { ...json.data };
+        if (!mergedData.departmentPasswords) {
+          const defaultPassMap: Record<string, string> = {};
+          ACADEMIC_DEPARTMENTS_LIST.forEach((d) => {
+            defaultPassMap[d.slug] = d.defaultPass;
+            if (d.aliases) d.aliases.forEach((a) => (defaultPassMap[a] = d.defaultPass));
+          });
+          mergedData.departmentPasswords = defaultPassMap;
+        }
+        setData(mergedData);
       } else {
         setData(defaultAcademicsData);
       }
@@ -253,10 +370,10 @@ export function AcademicsManager() {
       });
     } else if (type === "ilms") {
       setEditingItem({
-        sNo: 1,
-        metric: "ILMS 4.2.1",
-        description: "Library Automation System",
-        documentUrl: "",
+        sNo: (data?.ilms?.reports?.filter((r: any) => r.year === ilmsYear).length || 0) + 1,
+        title: "",
+        year: ilmsYear,
+        docUrl: "/documents/DefaultFile_1.pdf",
       });
     }
     setModalOpen(true);
@@ -335,7 +452,7 @@ export function AcademicsManager() {
       }
       setData({ ...data, academicRegulations: updated });
     } else if (modalType === "ilms") {
-      const updated = [...(data?.ilms?.reportsEvidence || [])];
+      const updated = [...(data?.ilms?.reports || [])];
       if (editIndex !== null) {
         updated[editIndex] = editingItem;
       } else {
@@ -345,7 +462,7 @@ export function AcademicsManager() {
         ...data,
         ilms: {
           ...data.ilms,
-          reportsEvidence: updated,
+          reports: updated,
         },
       });
     }
@@ -386,10 +503,10 @@ export function AcademicsManager() {
       const updated = data.academicRegulations.filter((_: any, i: number) => i !== index);
       setData({ ...data, academicRegulations: updated });
     } else if (type === "ilms") {
-      const updated = data.ilms.reportsEvidence.filter((_: any, i: number) => i !== index);
+      const updated = data.ilms.reports.filter((_: any, i: number) => i !== index);
       setData({
         ...data,
-        ilms: { ...data.ilms, reportsEvidence: updated },
+        ilms: { ...data.ilms, reports: updated },
       });
     }
   };
@@ -1055,16 +1172,40 @@ export function AcademicsManager() {
           {/* Sub-view: ILMS */}
           {resourceSubTab === "ilms" && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-outfit text-base font-black text-slate-800">
-                  ILMS (Integrated Learning Management System) Reports &amp; Evidence
-                </h3>
-                <button
-                  onClick={() => openAddModal("ilms")}
-                  className="px-4 py-2 bg-[#002147] hover:bg-[#003366] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
-                >
-                  <Plus className="w-4 h-4" /> Add Evidence Metric
-                </button>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h3 className="font-outfit text-base font-black text-slate-800">
+                    ILMS (Integrated Learning Management System) Reports &amp; Evidence
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium">
+                    Filter by Academic Year to view, edit, add, or upload supporting compliance documents.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Academic Year Selector */}
+                  <div className="flex items-center bg-slate-100 p-1 rounded-xl gap-1">
+                    {["2026–2027", "2025–2026", "2024–2025", "2023–2024"].map((yr) => (
+                      <button
+                        key={yr}
+                        onClick={() => setIlmsYear(yr)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                          ilmsYear === yr
+                            ? "bg-[#002147] text-white shadow-xs"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+                        }`}
+                      >
+                        {yr}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => openAddModal("ilms")}
+                    className="px-4 py-2 bg-[#002147] hover:bg-[#003366] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  >
+                    <Plus className="w-4 h-4" /> Add Document
+                  </button>
+                </div>
               </div>
 
               <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
@@ -1072,48 +1213,67 @@ export function AcademicsManager() {
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase text-[11px]">
                       <th className="py-3 px-4 w-12 text-center">S.No</th>
-                      <th className="py-3 px-4">Metric No</th>
-                      <th className="py-3 px-6">Description</th>
-                      <th className="py-3 px-4 text-center">Evidence Document</th>
+                      <th className="py-3 px-6">Document / Evidence Title</th>
+                      <th className="py-3 px-4 text-center">Academic Year</th>
+                      <th className="py-3 px-4 text-center">Document</th>
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {(data?.ilms?.reportsEvidence || []).map((il: IlmsEntry, idx: number) => (
-                      <tr key={idx} className="hover:bg-slate-50/80">
-                        <td className="py-3 px-4 text-center text-slate-400 font-bold">{il.sNo || idx + 1}</td>
-                        <td className="py-3 px-4 font-bold text-[#002147]">{il.metric}</td>
-                        <td className="py-3 px-6 font-semibold text-slate-800">{il.description}</td>
-                        <td className="py-3 px-4 text-center">
-                          {il.documentUrl ? (
-                            <button
-                              onClick={() => setPreviewFile({ url: il.documentUrl, title: `${il.metric} - Evidence` })}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-bold text-[11px]"
-                            >
-                              <FileText className="w-3 h-3" /> View Evidence
-                            </button>
-                          ) : (
-                            <span className="text-slate-300 italic">No Document</span>
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() => openEditModal("ilms", il, idx)}
-                              className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
-                            >
-                              <Edit2 className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => deleteItem("ilms", idx)}
-                              className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {(() => {
+                      const allReports = data?.ilms?.reports || [];
+                      const yearReports = allReports
+                        .map((item: any, globalIdx: number) => ({ item, globalIdx }))
+                        .filter(({ item }: any) => item.year === ilmsYear);
+
+                      if (yearReports.length === 0) {
+                        return (
+                          <tr>
+                            <td colSpan={5} className="py-8 text-center text-slate-400 font-medium">
+                              No documents recorded for academic year {ilmsYear}. Click &ldquo;Add Document&rdquo; above.
+                            </td>
+                          </tr>
+                        );
+                      }
+
+                      return yearReports.map(({ item, globalIdx }: any, rowIdx: number) => (
+                        <tr key={globalIdx} className="hover:bg-slate-50/80">
+                          <td className="py-3 px-4 text-center text-slate-400 font-bold">{item.sNo || rowIdx + 1}</td>
+                          <td className="py-3 px-6 font-bold text-[#002147]">{item.title}</td>
+                          <td className="py-3 px-4 text-center font-semibold text-slate-600">{item.year}</td>
+                          <td className="py-3 px-4 text-center">
+                            {item.docUrl ? (
+                              <button
+                                onClick={() => setPreviewFile({ url: item.docUrl, title: `${item.title} (${item.year})` })}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-bold text-[11px]"
+                              >
+                                <FileText className="w-3 h-3" /> View Document
+                              </button>
+                            ) : (
+                              <span className="text-slate-300 italic">No Document</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
+                              <button
+                                onClick={() => openEditModal("ilms", item, globalIdx)}
+                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                title="Edit Document"
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => deleteItem("ilms", globalIdx)}
+                                className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition"
+                                title="Delete Document"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ));
+                    })()}
                   </tbody>
                 </table>
               </div>
@@ -1127,6 +1287,7 @@ export function AcademicsManager() {
       {/* ========================================================================= */}
       {activeTab === "C" && (
         <div className="space-y-6">
+          {/* Section Banner */}
           <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-2 max-w-xl">
               <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
@@ -1136,57 +1297,256 @@ export function AcademicsManager() {
                 Department Content &amp; Staff Administration
               </h3>
               <p className="text-slate-500 text-xs leading-relaxed">
-                Academic departments have their dedicated self-service update portal where Department Heads can upload annual reports, faculty profiles, and departmental achievements.
+                Academic departments have their dedicated self-service update portal where Department Heads can upload annual reports, faculty profiles, and departmental achievements using their departmental password.
               </p>
             </div>
             <div className="flex items-center gap-3">
               <Link
                 href="/academics/departments/update"
                 target="_blank"
-                className="px-5 py-3 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold transition flex items-center gap-2 shadow-sm"
+                className="px-5 py-3 rounded-xl bg-[#002147] hover:bg-[#003366] text-white text-xs font-bold transition flex items-center gap-2 shadow-sm shrink-0"
               >
                 <Edit2 className="w-4 h-4" /> Open Department Update Portal
               </Link>
             </div>
           </div>
 
-          {/* Department Directory Quick Links */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { id: "1", name: "Department of Commerce", slug: "department-of-commerce" },
-              { id: "2", name: "Dept. of Computer Science & Applications", slug: "department-of-computer-science-applications" },
-              { id: "3", name: "Department of Mathematics", slug: "department-of-mathematics" },
-              { id: "4", name: "Department of Physics", slug: "department-of-physics" },
-              { id: "5", name: "Department of Statistics", slug: "department-of-statistics" },
-              { id: "6", name: "Department of Biotechnology", slug: "department-of-biotechnology" },
-              { id: "7", name: "Department of Microbiology", slug: "department-of-microbiology" },
-              { id: "8", name: "Department of Botany", slug: "department-of-botany" },
-              { id: "9", name: "Department of Chemistry", slug: "department-of-chemistry" },
-              { id: "10", name: "Department of English", slug: "department-of-english" },
-              { id: "11", name: "Department of Oriental Languages", slug: "department-of-oriental-languages" },
-              { id: "12", name: "Department of MCA", slug: "department-of-mca" },
-              { id: "13", name: "Department of MBA", slug: "department-of-mba" },
-            ].map((dept) => (
-              <div
-                key={dept.id}
-                className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between gap-4 hover:border-[#002147]/40 transition"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-slate-100 text-[#002147] font-black text-xs flex items-center justify-center shrink-0">
-                    {dept.id}
+          {/* Department Passwords Management Card */}
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+            {/* Header */}
+            <div className="p-6 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-gradient-to-r from-slate-50 via-white to-slate-50">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
+                    <Key className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-slate-800 text-xs truncate">{dept.name}</h4>
+                  <h4 className="font-outfit text-base font-black text-slate-900">
+                    Department Update Portal Passwords
+                  </h4>
+                  <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                    Editable by Admin
+                  </span>
                 </div>
-                <Link
-                  href={`/academics/departments/${dept.slug}`}
-                  target="_blank"
-                  className="p-1.5 text-slate-400 hover:text-[#002147] hover:bg-slate-100 rounded-lg transition shrink-0"
-                  title="View Public Page"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
+                <p className="text-xs text-slate-500 font-medium">
+                  Default password format: <span className="font-mono font-bold text-[#002147]">[deptname]@2026</span>. Department heads use this password to authenticate at <code className="text-[#002147] font-semibold">/academics/departments/update</code>.
+                </p>
               </div>
-            ))}
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                <div className="relative">
+                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search department..."
+                    value={deptSearch}
+                    onChange={(e) => setDeptSearch(e.target.value)}
+                    className="pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#002147]/20 focus:border-[#002147]"
+                  />
+                  {deptSearch && (
+                    <button
+                      onClick={() => setDeptSearch("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleResetAllPasswords}
+                  className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                  title="Reset all passwords to default departmentname@2026 format"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
+                  Reset Defaults
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSavePasswordsDirectly}
+                  disabled={passwordSaving}
+                  className="px-4 py-1.5 rounded-xl bg-[#002147] hover:bg-[#00387a] disabled:opacity-60 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+                >
+                  {passwordSaving ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-3.5 h-3.5 text-white" />
+                      <span>Save Passwords</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Success Banner */}
+            {passwordSaveSuccess && (
+              <div className="m-4 p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-2 text-emerald-800 text-xs font-bold animate-fadeIn">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Department passwords saved successfully and published live!</span>
+              </div>
+            )}
+
+            {/* Passwords Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider text-[10px] border-b border-slate-200">
+                    <th className="py-3 px-4 w-12 text-center">S. No.</th>
+                    <th className="py-3 px-4 min-w-[200px]">Department</th>
+                    <th className="py-3 px-4 min-w-[180px]">Portal Identifier (Slug)</th>
+                    <th className="py-3 px-4 min-w-[280px]">Update Password (Editable)</th>
+                    <th className="py-3 px-4 text-right w-44">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {ACADEMIC_DEPARTMENTS_LIST
+                    .filter((d) => {
+                      if (!deptSearch.trim()) return true;
+                      const q = deptSearch.toLowerCase();
+                      return d.name.toLowerCase().includes(q) || d.slug.toLowerCase().includes(q);
+                    })
+                    .map((dept) => {
+                      const currentPass = data?.departmentPasswords?.[dept.slug] ?? dept.defaultPass;
+                      const isVisible = !!visiblePasswords[dept.slug];
+                      const isCopied = copiedDept === dept.slug;
+
+                      return (
+                        <tr key={dept.slug} className="hover:bg-slate-50/70 transition-colors">
+                          <td className="py-3 px-4 text-center font-bold text-slate-400">
+                            {dept.id}
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-2">
+                              <span className="font-extrabold text-slate-900">{dept.name}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="font-mono text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                              {dept.slug}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-1.5 max-w-sm">
+                              <div className="relative flex-1">
+                                <input
+                                  type={isVisible ? "text" : "password"}
+                                  value={currentPass}
+                                  onChange={(e) => handlePasswordChange(dept.slug, e.target.value, dept.aliases)}
+                                  className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-xl px-3 py-1.5 pr-8 text-xs font-mono font-bold text-[#002147] focus:outline-none focus:ring-1 focus:ring-[#002147]/20 shadow-xs"
+                                  placeholder="Set password"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setVisiblePasswords((prev) => ({
+                                      ...prev,
+                                      [dept.slug]: !prev[dept.slug],
+                                    }))
+                                  }
+                                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                                  title={isVisible ? "Hide Password" : "Show Password"}
+                                >
+                                  {isVisible ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                                </button>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => handleCopyPassword(dept.slug, currentPass)}
+                                className={`p-1.5 rounded-lg border transition shrink-0 ${
+                                  isCopied
+                                    ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                                    : "bg-white text-slate-500 hover:text-[#002147] hover:bg-slate-50 border-slate-200"
+                                }`}
+                                title={isCopied ? "Copied!" : "Copy password to clipboard"}
+                              >
+                                {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleResetPassword(dept.slug, dept.defaultPass, dept.aliases)}
+                                className="p-1.5 rounded-lg bg-white text-slate-400 hover:text-amber-600 hover:bg-amber-50 border border-slate-200 transition shrink-0"
+                                title={`Reset to default (${dept.defaultPass})`}
+                              >
+                                <RotateCcw className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Link
+                                href="/academics/departments/update"
+                                target="_blank"
+                                className="px-2.5 py-1 text-[11px] font-bold text-[#002147] bg-blue-50 hover:bg-blue-100 rounded-lg transition inline-flex items-center gap-1 border border-blue-100"
+                                title="Open Update Portal in new tab"
+                              >
+                                <Lock className="w-3 h-3" /> Login
+                              </Link>
+                              <Link
+                                href={`/academics/departments/${dept.slug}`}
+                                target="_blank"
+                                className="p-1.5 text-slate-400 hover:text-[#002147] hover:bg-slate-100 rounded-lg transition shrink-0"
+                                title="View Public Page"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Security Note Footer */}
+            <div className="p-4 bg-slate-50/70 border-t border-slate-150 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-medium">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-indigo-600 shrink-0" />
+                <span>
+                  Passwords are saved to the persistent academics database. Department heads can only edit their authorized department.
+                </span>
+              </div>
+              <span className="text-slate-400 font-mono text-[10px]">
+                Master Admin Override: Active
+              </span>
+            </div>
+          </div>
+
+          {/* Department Directory Quick Links */}
+          <div className="space-y-3">
+            <h4 className="font-outfit text-sm font-bold text-slate-700 uppercase tracking-wider">
+              Public Department Pages Directory
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {ACADEMIC_DEPARTMENTS_LIST.map((dept) => (
+                <div
+                  key={dept.id}
+                  className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between gap-4 hover:border-[#002147]/40 transition"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 text-[#002147] font-black text-xs flex items-center justify-center shrink-0">
+                      {dept.id}
+                    </div>
+                    <h4 className="font-bold text-slate-800 text-xs truncate">{dept.name}</h4>
+                  </div>
+                  <Link
+                    href={`/academics/departments/${dept.slug}`}
+                    target="_blank"
+                    className="p-1.5 text-slate-400 hover:text-[#002147] hover:bg-slate-100 rounded-lg transition shrink-0"
+                    title="View Public Page"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -1736,25 +2096,26 @@ export function AcademicsManager() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Metric No
+                    Document / Evidence Title
                   </label>
                   <input
                     type="text"
-                    value={editingItem?.metric || ""}
-                    onChange={(e) => setEditingItem({ ...editingItem, metric: e.target.value })}
+                    value={editingItem?.title || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
                     className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold"
-                    placeholder="e.g. ILMS 4.2.1"
+                    placeholder="e.g. ILMS Annual Report"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Metric Description
+                    Academic Year
                   </label>
                   <input
                     type="text"
-                    value={editingItem?.description || ""}
-                    onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+                    value={editingItem?.year || ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, year: e.target.value })}
                     className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold"
+                    placeholder="e.g. 2025–2026"
                   />
                 </div>
                 <div>
@@ -1764,8 +2125,8 @@ export function AcademicsManager() {
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
-                      value={editingItem?.documentUrl || ""}
-                      onChange={(e) => setEditingItem({ ...editingItem, documentUrl: e.target.value })}
+                      value={editingItem?.docUrl || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, docUrl: e.target.value })}
                       className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
                       placeholder="Paste PDF URL or upload..."
                     />
@@ -1776,7 +2137,7 @@ export function AcademicsManager() {
                         type="file"
                         accept="application/pdf"
                         className="hidden"
-                        onChange={(e) => handleFileUpload(e, "documentUrl")}
+                        onChange={(e) => handleFileUpload(e, "docUrl")}
                       />
                     </label>
                   </div>

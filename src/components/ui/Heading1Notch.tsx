@@ -19,7 +19,7 @@ export function Heading1Notch({ title, className = "", children }: Heading1Notch
 
 
 export interface SubtextBoxProps {
-  subtext?: string | null;
+  subtext?: React.ReactNode;
   className?: string;
   children?: React.ReactNode;
   variant?: "default" | "tricolor";

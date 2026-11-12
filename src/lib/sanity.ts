@@ -274,33 +274,83 @@ export async function getDepartment(slug: string) {
       description,
       vision,
       mission,
+      overviewDocUrl,
       programmes,
+      curriculumDocuments,
       facultyMembers,
       passPercentage,
-      valueAddedCourses,
+      placements,
       mous,
-      mouActivities,
+      activities,
+      activitiesList,
+      annualReports,
+      activitiesSummary,
       studentAchievements,
       academicAchievements,
-      placements,
-      bestPractices,
-      activitiesList,
-      activitiesSummary,
-      internships,
-      activities,
-      infrastructure,
-      careerOpps,
-      bestPracticesImpact,
-      gallery,
-      otherStudentAchievements,
-      focusOnWomenEmpowerment,
-      overallApproach
+      universityRanks,
+      customTables,
+      gallery
     }`;
     const data = await sanityClient.fetch(query, { slug });
     if (data && data.name) return data;
   } catch (err) {
     console.error("Sanity fetch error (department):", err);
   }
+
+  const STANDARD_CURRICULUM_DOCS = [
+    { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
+    { sNo: 2, particular: "Course Syllabi", documentUrl: "/documents/DefaultFile_1.pdf" },
+    { sNo: 3, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+    { sNo: 4, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+    { sNo: 5, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+    { sNo: 6, particular: "Academic Regulations & Evaluation Guidelines", documentUrl: "/documents/DefaultFile_1.pdf" },
+  ];
+
+  const ALL_DEPARTMENT_PROGRAMMES: Record<string, Array<{ sNo: number; name: string; intake: string | number; counseling: string | number; management: string | number }>> = {
+    "department-of-commerce": [
+      { sNo: 1, name: "B.Com. Honours – General", intake: 20, counseling: 14, management: 6 },
+      { sNo: 2, name: "B.Com. Honours – Computer Applications", intake: 105, counseling: 74, management: 31 },
+      { sNo: 3, name: "Bachelor of Business Administration (BBA)", intake: "-", counseling: "-", management: "-" },
+    ],
+    "department-of-computer-science-applications": [
+      { sNo: 1, name: "BCA Honours – Computer Applications", intake: 60, counseling: 42, management: 18 },
+      { sNo: 2, name: "B.Sc. Honours – Computer Science", intake: 35, counseling: 25, management: 10 },
+      { sNo: 3, name: "B.Sc. Honours – Artificial Intelligence", intake: 60, counseling: 42, management: 18 }
+    ],
+    "department-of-mathematics": [
+      { sNo: 1, name: "B.Sc. Honours – Mathematics", intake: 25, counseling: 18, management: 7 }
+    ],
+    "department-of-physics": [
+      { sNo: 1, name: "B.Sc. Honours – Physics", intake: 25, counseling: 18, management: 7 }
+    ],
+    "department-of-statistics": [
+      { sNo: 1, name: "B.Sc. Honours – Statistics", intake: 25, counseling: 18, management: 7 }
+    ],
+    "department-of-biotechnology": [
+      { sNo: 1, name: "B.Sc. Honours – Biotechnology", intake: 25, counseling: 18, management: 7 }
+    ],
+    "department-of-microbiology": [
+      { sNo: 1, name: "B.Sc. Honours – Microbiology", intake: 25, counseling: 18, management: 7 }
+    ],
+    "department-of-botany": [
+      { sNo: 1, name: "B.Sc. Honours – Botany", intake: "-", counseling: "-", management: "-" }
+    ],
+    "department-of-chemistry": [
+      { sNo: 1, name: "B.Sc. Honours – Chemistry", intake: 20, counseling: 14, management: 6 }
+    ],
+    "department-of-english": [
+      { sNo: 1, name: "B.A. Honours – English Literature", intake: "-", counseling: "-", management: "-" }
+    ],
+    "department-of-oriental-languages": [
+      { sNo: 1, name: "Language Programmes (Telugu, Sanskrit, Hindi)", intake: "-", counseling: "-", management: "-" }
+    ],
+    "department-of-mca": [
+      { sNo: 1, name: "MCA – Master of Computer Applications", intake: 60, counseling: 42, management: 18 }
+    ],
+    "department-of-mba": [
+      { sNo: 1, name: "MBA – Master of Business Administration", intake: 60, counseling: 42, management: 18 }
+    ]
+  };
 
   // Fallback static data map
   if (slug === "department-of-commerce") {
@@ -317,130 +367,91 @@ export async function getDepartment(slug: string) {
         "To develop socially responsible individuals with global outlook",
         "To prepare students to meet modern challenges with confidence and competence",
       ],
-      programmes: [
-        { title: "B.Com Honours (General)", intake: "20 (14 Convener + 6 Management)", duration: "3 Years (6 Semesters)" },
-        { title: "B.Com Honours (Comp Apps)", intake: "80 (56 Convener + 24 Management)", duration: "3 Years (6 Semesters)" },
-      ],
-      valueAddedCourses: [
-        { sNo: 1, title: "Tally & GST Accounting", duration: "40 Hours", agency: "Nitya Computers" },
-        { sNo: 2, title: "Income Tax Practice", duration: "---", agency: "Tax Consultant" },
-        { sNo: 3, title: "Banking & Financial Services", duration: "---", agency: "Bank Officials" },
-        { sNo: 4, title: "Digital Marketing & E-Commerce", duration: "---", agency: "Industry Trainer" },
-        { sNo: 5, title: "Entrepreneurship Development Programme", duration: "---", agency: "ED Cell" },
-      ],
-      mous: [
-        { title: "ABC Chartered Accountants Firm", type: "MoU", duration: "3 Years", purpose: "GST & Accounting Training" }
-      ],
-      bestPractices: [
-        {
-          title: "1. GST & Accounting Practical Training",
-          category: "Skill-Oriented Learning Initiative",
-          objectives: ["Provide hands-on training in GST & accounting practices", "Enhance employability in accounting, taxation, and finance", "Bridge gap between theoretical knowledge and industry requirements"],
-          practice: ["Training in GST concepts, billing, and return filing procedures", "Hands-on sessions using accounting software such as Tally", "Workshops by practicing accountants and tax consultants"],
-          success: ["Students gaining practical competency in GST & accounting", "Increased placement opportunities in accounting firms"]
-        },
-        {
-          title: "2. Entrepreneurship & Small Business Development",
-          category: "Entrepreneurial Mindset",
-          objectives: ["Develop entrepreneurial mindset among students", "Promote self-employment and local business initiatives", "Build leadership and managerial skills"],
-          practice: ["Business plan competitions and startup idea presentations", "Workshops on small business management and digital marketing", "Interaction with local entrepreneurs and women business owners"],
-          success: ["Students presenting innovative business ideas", "Alumni initiating small business ventures"]
-        },
-        {
-          title: "3. Financial Literacy & Community Outreach Programme",
-          category: "Social Responsibility",
-          objectives: ["Promote financial awareness in rural communities", "Educate students on practical financial management", "Encourage social responsibility"],
-          practice: ["Conducting financial literacy camps in nearby villages", "Awareness programmes on savings, budgeting, and digital payments", "Student participation in outreach and extension activities"],
-          success: ["Increased awareness among community participants", "Active student involvement in outreach programmes"]
-        }
-      ],
-      activities: [
-        { label: "Academic Enrichment", desc: "Seminars, guest lectures, and workshops on accounting, taxation, and finance." },
-        { label: "Skill Development", desc: "Tally & GST training sessions, and interview preparation workshops." },
-        { label: "Student-Centric", desc: "Business quizzes, debates, commerce exhibitions and project displays." },
-        { label: "Extension & Outreach", desc: "Financial literacy programmes and consumer awareness campaigns in rural areas." },
-        { label: "Industry Interaction", desc: "Industrial visits, internships and interaction sessions with entrepreneurs." }
-      ],
-      infrastructure: [
-        "Commerce Lab / Computer Lab",
-        "ICT-enabled classrooms",
-        "Library resources (books, journals)",
-        "Internet & digital learning facilities"
-      ],
-      careerOpps: [
-        "Accounting & Taxation",
-        "Banking & Finance",
-        "Entrepreneurship",
-        "Higher Education (M.Com, MBA, CA, etc.)"
-      ],
+      overviewDocUrl: "/documents/DefaultFile_1.pdf",
+      programmes: ALL_DEPARTMENT_PROGRAMMES["department-of-commerce"],
+      curriculumDocuments: STANDARD_CURRICULUM_DOCS,
       facultyMembers: [
         { name: "Mrs. M. Prameela", designation: "Head of the Department & Assistant Professor", qualification: "M.Com, MBA, (Ph.D)", experience: "18 Years", email: "commerce.hod@stannscollege.org" },
         { name: "Dr. K. Srilatha", designation: "Assistant Professor", qualification: "M.Com, Ph.D", experience: "12 Years", email: "srilatha.k@stannscollege.org" }
       ],
       passPercentage: [
-        { year: "2025-2026", programme: "B.Com Honours General", finalYearStudents: "20", studentsPassed: "20", percentage: "100%" },
-        { year: "2025-2026", programme: "B.Com Honours CA", finalYearStudents: "78", studentsPassed: "74", percentage: "94.8%" },
-        { year: "2024-2025", programme: "B.Com Honours CA", finalYearStudents: "80", studentsPassed: "76", percentage: "95%" }
+        { sNo: 1, year: "2024-2025", finalYearStudents: "98", studentsPassed: "94", percentage: "95.9%" },
+        { sNo: 2, year: "2023-2024", finalYearStudents: "92", studentsPassed: "89", percentage: "96.7%" },
+        { sNo: 3, year: "2022-2023", finalYearStudents: "88", studentsPassed: "85", percentage: "96.5%" }
       ],
       placements: [
-        { year: "2024-2025", finalYearStudents: "85", studentsPlaced: "68", highestSalary: "6.5 LPA", averageSalary: "3.2 LPA", percentage: "80%" },
-        { year: "2023-2024", finalYearStudents: "78", studentsPlaced: "60", highestSalary: "5.8 LPA", averageSalary: "3.0 LPA", percentage: "77%" }
+        { sNo: 1, year: "2024-2025", studentsPlaced: "68", highestSalary: "6.5 LPA", averageSalary: "3.2 LPA", percentage: "80%" },
+        { sNo: 2, year: "2023-2024", studentsPlaced: "60", highestSalary: "5.8 LPA", averageSalary: "3.0 LPA", percentage: "77%" }
       ],
-      bestPracticesImpact: [
-        "Promotes experiential and student-centric learning",
-        "Enhances employability and entrepreneurial readiness",
-        "Strengthens practical knowledge in commerce disciplines",
-        "Encourages community engagement and social responsibility",
-        "Aligns with NAAC quality indicators and outcome-based education"
+      mous: [
+        { sNo: 1, organization: "Sri Venkateswara Accounting Solutions", duration: "3 Years (2024–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
       ],
-      otherStudentAchievements: [
-        "Winners of District-level Business Plan Competition 2025",
-        "Active student representation in State-level Young Entrepreneurs Summit"
+      activities: [
+        { sNo: 1, title: "State-Level Commerce Fest 'VANIJYA 2025'", date: "18-01-2025", participants: "240", reportUrl: "/documents/DefaultFile_1.pdf" },
+        { sNo: 2, title: "Workshop on GST E-Filing & Compliance", date: "12-10-2024", participants: "115", reportUrl: "/documents/DefaultFile_1.pdf" }
       ],
-      focusOnWomenEmpowerment: "The Department of Commerce actively prioritizes women empowerment and employability by integrating professional training, entrepreneurship initiatives, and career guidance tailored to women's leadership in business and finance.",
-      overallApproach: "Through these year-round activities, the Department of Commerce ensures a balanced focus on academic excellence, skill development, industry exposure, and community engagement, aligning with NAAC quality benchmarks and outcome-based education."
+      studentAchievements: [
+        { sNo: 1, studentName: "K. Divya Teja", eventName: "National Commerce Olympiad", level: "National", prize: "1st Prize", certificateUrl: "/documents/DefaultFile_1.pdf" }
+      ],
+      universityRanks: [
+        { sNo: 1, studentName: "P. Lakshmi Prasanna", programme: "B.Com Honours (CA)", rank: "1st Rank (Gold Medal)", year: "2023-2024", certificateUrl: "/documents/DefaultFile_1.pdf" }
+      ],
+      annualReports: [
+        { sNo: 1, year: "2024-2025", activitiesCount: "14", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" }
+      ],
+      customTables: [],
+      gallery: []
     };
   }
 
-  // Generic Fallback to ensure page compiles dynamically
-  const prettyName = slug
+  // Generic Fallback for all other 12 departments
+  const normalizedDeptSlug = slug === "department-of-computer-applications-bca" || slug === "department-of-computer-science-cs-artificial-intelligence"
+    ? "department-of-computer-science-applications"
+    : slug === "department-of-oriental-languages-telugu-sanskrit-hindi"
+    ? "department-of-oriental-languages"
+    : slug;
+
+  const prettyName = normalizedDeptSlug
     .replace("department-of-", "")
     .split("-")
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
 
+  const defaultDeptProgrammes = ALL_DEPARTMENT_PROGRAMMES[normalizedDeptSlug] || [
+    { sNo: 1, name: `${prettyName} Honours Programme`, intake: "-", counseling: "-", management: "-" }
+  ];
+
   return {
     name: `Department of ${prettyName === "Mca" ? "MCA" : prettyName === "Mba" ? "MBA" : prettyName}`,
     established: "1997-98",
     tagline: "Facilitating holistic student empowerment & development",
-    description: `The Department of ${prettyName === "Mca" ? "MCA" : prettyName === "Mba" ? "MBA" : prettyName} is dedicated to providing premium education, offering modern state-of-the-art theoretical frameworks and extensive experiential workloads to prepare upcoming cohorts for standard industrial tracks.`,
-    vision: "To develop global competencies in students through value-oriented education and innovative practical platforms.",
+    description: `The Department of ${prettyName === "Mca" ? "MCA" : prettyName === "Mba" ? "MBA" : prettyName} is dedicated to providing high-quality education, state-of-the-art experiential learning, and preparing women students for impactful leadership and distinguished careers.`,
+    vision: "To achieve academic excellence with a strong commitment to quality education, skill development, and holistic empowerment of women.",
     mission: [
-      "To nurture skill sets tailored towards active industrial expectations",
-      "To provide experimental laboratory and computational infrastructure",
-      "To guide research avenues for modern challenges in the ecosystem",
-      "To encourage extension and societal-focused initiatives"
+      "To empower students with deep theoretical foundations and practical competencies",
+      "To nurture analytical thinking, entrepreneurial mindset, and research capability",
+      "To foster ethical values, leadership qualities, and global competitiveness"
     ],
-    programmes: [
-      { 
-        title: prettyName.includes("Mca") ? "Master of Computer Applications" : prettyName.includes("Mba") ? "Master of Business Administration" : `B.Sc / B.Com Honours (${prettyName})`, 
-        intake: "TBD", 
-        duration: prettyName.includes("Mc") || prettyName.includes("Mb") ? "2 Years" : "3 Years" 
-      }
+    overviewDocUrl: "/documents/DefaultFile_1.pdf",
+    programmes: defaultDeptProgrammes,
+    curriculumDocuments: STANDARD_CURRICULUM_DOCS,
+    facultyMembers: [],
+    passPercentage: [
+      { sNo: 1, year: "2024-2025", finalYearStudents: "45", studentsPassed: "42", percentage: "93.3%" },
+      { sNo: 2, year: "2023-2024", finalYearStudents: "40", studentsPassed: "38", percentage: "95.0%" }
     ],
-    valueAddedCourses: [],
+    placements: [
+      { sNo: 1, year: "2024-2025", studentsPlaced: "32", highestSalary: "5.5 LPA", averageSalary: "3.2 LPA", percentage: "75%" }
+    ],
     mous: [],
-    bestPractices: [],
     activities: [],
-    infrastructure: [
-      "Equipped Laboratories",
-      "ICT-enabled Lecture Halls",
-      "Departmental Learning Resources"
+    studentAchievements: [],
+    universityRanks: [],
+    annualReports: [
+      { sNo: 1, year: "2024-2025", activitiesCount: "8", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" }
     ],
-    careerOpps: [
-      "Professional Placement Sectors",
-      "Postgraduate Academics & Research Pathways"
-    ]
+    customTables: [],
+    gallery: []
   };
 }
 

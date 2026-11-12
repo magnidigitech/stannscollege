@@ -1,23 +1,92 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { getDepartment } from "@/lib/sanity";
+import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { 
-  Building, Target, GraduationCap, Briefcase, Award, Handshake, Users, BookOpen, Image as ImageIcon, CheckCircle2, Compass, HeartHandshake, Trophy, BarChart3, Settings, Sparkles, Loader2, ArrowRight, FileText, Download
+  Building, Users, FileText, ArrowRight, X, ChevronLeft, ChevronRight, Maximize2, ExternalLink 
 } from "lucide-react";
+import { SubtextBox } from "@/components/ui/Heading1Notch";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
-import academicsData from "../academics-data.json";
+import academicsData from "@/components/academics/academics-data.json";
+import { getDepartment } from "@/lib/sanity";
+
+interface PhotoItem {
+  url: string;
+}
+
+interface ProgrammeItem {
+  sNo: number;
+  name: string;
+  intake: string | number;
+  counseling: string | number;
+  management: string | number;
+}
+
+const departmentProgrammesMap: Record<string, ProgrammeItem[]> = {
+  "department-of-computer-science-applications": [
+    { sNo: 1, name: "BCA Honours – Computer Applications", intake: 60, counseling: 42, management: 18 },
+    { sNo: 2, name: "B.Sc. Honours – Computer Science", intake: 35, counseling: 25, management: 10 },
+    { sNo: 3, name: "B.Sc. Honours – Artificial Intelligence", intake: 60, counseling: 42, management: 18 }
+  ],
+  "department-of-mathematics": [
+    { sNo: 1, name: "B.Sc. Honours – Mathematics", intake: 25, counseling: 18, management: 7 }
+  ],
+  "department-of-physics": [
+    { sNo: 1, name: "B.Sc. Honours – Physics", intake: 25, counseling: 18, management: 7 }
+  ],
+  "department-of-statistics": [
+    { sNo: 1, name: "B.Sc. Honours – Statistics", intake: 25, counseling: 18, management: 7 }
+  ],
+  "department-of-biotechnology": [
+    { sNo: 1, name: "B.Sc. Honours – Biotechnology", intake: 25, counseling: 18, management: 7 }
+  ],
+  "department-of-microbiology": [
+    { sNo: 1, name: "B.Sc. Honours – Microbiology", intake: 25, counseling: 18, management: 7 }
+  ],
+  "department-of-botany": [
+    { sNo: 1, name: "B.Sc. Honours – Botany", intake: "-", counseling: "-", management: "-" }
+  ],
+  "department-of-chemistry": [
+    { sNo: 1, name: "B.Sc. Honours – Chemistry", intake: 20, counseling: 14, management: 6 }
+  ],
+  "department-of-english": [
+    { sNo: 1, name: "B.A. Honours – English Literature", intake: "-", counseling: "-", management: "-" }
+  ],
+  "department-of-oriental-languages": [
+    { sNo: 1, name: "Language Programmes (Telugu, Sanskrit, Hindi)", intake: "-", counseling: "-", management: "-" }
+  ],
+  "department-of-mca": [
+    { sNo: 1, name: "MCA – Master of Computer Applications", intake: 60, counseling: 42, management: 18 }
+  ],
+  "department-of-mba": [
+    { sNo: 1, name: "MBA – Master of Business Administration", intake: 60, counseling: 42, management: 18 }
+  ]
+};
+
+const deptToFacultySlugMap: Record<string, string> = {
+  "department-of-commerce": "commerce",
+  "department-of-computer-science-applications": "computer-science",
+  "department-of-computer-applications-bca": "computer-science",
+  "department-of-computer-science-cs-artificial-intelligence": "computer-science",
+  "department-of-mathematics": "mathematics",
+  "department-of-physics": "physics",
+  "department-of-statistics": "statistics",
+  "department-of-biotechnology": "biotechnology",
+  "department-of-microbiology": "microbiology",
+  "department-of-botany": "botany",
+  "department-of-chemistry": "chemistry",
+  "department-of-english": "english",
+  "department-of-oriental-languages": "oriental-languages",
+  "department-of-oriental-languages-telugu-sanskrit-hindi": "oriental-languages",
+  "department-of-mca": "mca",
+  "department-of-mba": "mba",
+};
 
 interface DepartmentDetailProps {
   itemSlug: string;
 }
 
 export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [previewTitle, setPreviewTitle] = useState<string>("");
-
   let normalizedSlug = itemSlug;
   if (itemSlug === "department-of-computer-applications-bca" || itemSlug === "department-of-computer-science-cs-artificial-intelligence") {
     normalizedSlug = "department-of-computer-science-applications";
@@ -27,1061 +96,937 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
 
   const staticDept = academicsData.departments.find((d: any) => d.id === normalizedSlug || d.id === itemSlug);
 
+  const deptName = staticDept?.name || "Academic Department";
+  const introParagraph = staticDept?.description || `The ${deptName} is committed to academic excellence, state-of-the-art experiential learning, and preparing women students for impactful leadership and distinguished careers.`;
+  const overviewPdf = staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
+
+  const [dynamicDept, setDynamicDept] = useState<any>(null);
+
   useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      try {
-        const result = await getDepartment(normalizedSlug);
-        if (result && result.name) {
-          setData(result);
-        } else if (staticDept) {
-          setData({
-            name: staticDept.name,
-            established: staticDept.established,
-            description: staticDept.description,
-            tagline: `Empowering Women in ${staticDept.name.replace("Department of ", "")}`,
-            vision: `To achieve academic and research excellence in ${staticDept.name.replace("Department of ", "")}, nurturing global competency, innovation, and ethical leadership.`,
-            mission: [
-              "To impart rigorous conceptual foundations and practical experiential learning",
-              "To foster innovation, problem-solving abilities, and continuous self-development",
-              "To promote industry-academia collaboration, internships, and skill training",
-              "To cultivate ethical values and social responsibility for women empowerment"
-            ]
-          });
-        }
-      } catch (err) {
-        console.error("Failed to load department detail:", err);
-        if (staticDept) {
-          setData({
-            name: staticDept.name,
-            established: staticDept.established,
-            description: staticDept.description
-          });
-        }
-      } finally {
-        setLoading(false);
-      }
+    getDepartment(normalizedSlug).then((data) => {
+      if (data) setDynamicDept(data);
+    }).catch((err) => console.error("Error loading department dynamic data:", err));
+  }, [normalizedSlug]);
+
+  const defaultProgrammes: ProgrammeItem[] = departmentProgrammesMap[normalizedSlug] || [
+    { sNo: 1, name: `${deptName} Honours Programme`, intake: "-", counseling: "-", management: "-" }
+  ];
+
+  const hasValidDynamicProgrammes = Array.isArray(dynamicDept?.programmes) &&
+    dynamicDept.programmes.length > 0 &&
+    dynamicDept.programmes.every((p: any) => p.counseling !== undefined && p.management !== undefined && p.intake !== "TBD");
+
+  const programmes: ProgrammeItem[] = hasValidDynamicProgrammes ? dynamicDept.programmes : defaultProgrammes;
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
+
+  const [curriculumYear, setCurriculumYear] = useState<string>("2025–2026");
+  const [curriculumProg, setCurriculumProg] = useState<string>(programmes[0]?.name || "Undergraduate Programme");
+
+  // Keep curriculumProg synced if department changes
+  useEffect(() => {
+    if (programmes[0]?.name) {
+      setCurriculumProg(programmes[0].name);
     }
-    loadData();
-  }, [normalizedSlug, itemSlug]);
+  }, [normalizedSlug]);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-        <Loader2 className="h-10 w-10 text-[#002147] animate-spin" />
-        <p className="text-slate-500 font-sans font-bold text-base">Syncing Department Profile...</p>
-      </div>
-    );
-  }
+  const [lightboxData, setLightboxData] = useState<{
+    title?: string;
+    photos: PhotoItem[];
+    currentIndex: number;
+  } | null>(null);
 
-  if (!data) {
-    return (
-      <div className="bg-red-50 border border-red-100 rounded-[2rem] p-10 text-center text-red-950 font-sans flex flex-col items-center gap-4 shadow-sm">
-        <Building className="h-12 w-12 text-red-600" />
-        <h3 className="font-outfit font-black text-2xl">Profile Not Found</h3>
-        <p className="font-semibold text-base opacity-80 max-w-md">
-          We were unable to locate data for this specific department namespace. Please verify the identifier.
-        </p>
-      </div>
-    );
-  }
+  const handleOpenPdf = (url: string, title: string) => {
+    setPreviewUrl(url || "/documents/DefaultFile_1.pdf");
+    setPreviewTitle(title);
+  };
+
+  const handleNextPhoto = useCallback(() => {
+    if (!lightboxData) return;
+    setLightboxData(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        currentIndex: (prev.currentIndex + 1) % prev.photos.length
+      };
+    });
+  }, [lightboxData]);
+
+  const handlePrevPhoto = useCallback(() => {
+    if (!lightboxData) return;
+    setLightboxData(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        currentIndex: (prev.currentIndex - 1 + prev.photos.length) % prev.photos.length
+      };
+    });
+  }, [lightboxData]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lightboxData) return;
+      if (e.key === "ArrowRight") handleNextPhoto();
+      if (e.key === "ArrowLeft") handlePrevPhoto();
+      if (e.key === "Escape") setLightboxData(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxData, handleNextPhoto, handlePrevPhoto]);
+
+  // Gallery images support (from static data or dummy fallback)
+  const uploadedPhotos: string[] = (staticDept?.galleryImages && Array.isArray(staticDept.galleryImages) && staticDept.galleryImages.length > 0)
+    ? staticDept.galleryImages
+    : [];
+
+  const dummyCollegePhoto: PhotoItem = {
+    url: "/images/infrastructure/campus-buildings/img-1.jpg"
+  };
+
+  const hasUploadedPhotos = uploadedPhotos.length > 0;
+  const galleryItems: PhotoItem[] = hasUploadedPhotos
+    ? uploadedPhotos.map((url: string) => ({ url }))
+    : [dummyCollegePhoto];
 
   return (
-    <div className="flex flex-col gap-16 animate-fadeIn font-sans pb-12">
-      
-      {/* 1. Dynamic Header Banner */}
-      <div className="bg-gradient-to-br from-[#002147] to-[#0e50a3] rounded-3xl p-6 md:p-10 text-white relative overflow-hidden shadow-lg">
-        <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-          <Building className="h-[500px] w-[500px]" />
-        </div>
-        <div className="relative z-10 flex flex-col gap-2 md:max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 font-black text-[10px] md:text-xs uppercase tracking-widest bg-white/15 backdrop-blur px-4 py-1.5 rounded-full w-fit shadow-inner text-blue-50">
-            <Sparkles className="h-3.5 w-3.5 text-amber-300" /> Established {data.established || "1997-98"}
+    <div className="flex flex-col gap-3.5 sm:gap-4 animate-fadeIn font-sans pb-12">
+
+      {/* ============================================================== */}
+      {/* 1. DEPARTMENT HEADING (Option A - Standard Site-Wide Header)    */}
+      {/* ============================================================== */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200/80 pb-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+            <Building className="h-3.5 w-3.5 text-[#002147]" /> Academic Department
           </span>
-          <h2 className="font-outfit text-2xl md:text-4xl font-black tracking-tight leading-tight drop-shadow-sm">
-            {data.name}
+          <h1 className="font-outfit text-2xl sm:text-3xl md:text-4xl font-black text-[#002147] tracking-tight">
+            {deptName}
+          </h1>
+          <div className="h-1 w-16 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <button
+          onClick={() => handleOpenPdf(overviewPdf, `${deptName} - Departmental Profile`)}
+          className="inline-flex items-center justify-center gap-2 bg-[#002147] hover:bg-[#00387a] text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0 self-start sm:self-auto"
+        >
+          <FileText className="h-4 w-4" /> View Departmental Profile (PDF)
+        </button>
+      </div>
+
+      {/* ============================================================== */}
+      {/* 2. QUOTE BOX WITH AUTHENTIC INTRO PARAGRAPH                    */}
+      {/* ============================================================== */}
+      <SubtextBox
+        className="!p-4 sm:!p-5 !rounded-2xl"
+        subtext={introParagraph}
+      />
+
+      {/* ============================================================== */}
+      {/* PROGRAMMES OFFERED                                             */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Programmes Offered
           </h2>
-          {data.tagline && (
-            <p className="text-blue-100/80 font-semibold text-sm md:text-base mt-2 italic border-l-4 border-blue-200/40 pl-5 py-1">
-              “{data.tagline}”
-            </p>
-          )}
-          <div className="pt-3">
-            <button
-              onClick={() => {
-                setPreviewUrl(staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf");
-                setPreviewTitle(`${data.name} - Department Profile / Overview`);
-              }}
-              className="inline-flex items-center gap-2 bg-white text-[#002147] hover:bg-blue-50 px-4 py-2.5 rounded-xl text-xs font-black shadow-md transition-all active:scale-95 cursor-pointer"
-            >
-              <FileText className="h-4 w-4 text-[#002147]" /> Department Profile / Overview PDF
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. About Section */}
-      <div className="flex flex-col gap-8">
-        <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-          <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-            <Compass className="h-6 w-6" />
-          </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">About & Institutional Vision</h3>
-        </div>
-        
-        <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col gap-10">
-          <div className="prose prose-slate max-w-none">
-            <p className="text-slate-700 font-medium leading-relaxed text-base md:text-[18px]">
-              {data.description}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-8 mt-2">
-            {/* Vision Row */}
-            <div className="bg-indigo-50/40 border border-indigo-100/80 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row gap-6 items-start hover:shadow-md hover:border-indigo-200 transition-all">
-              <div className="h-14 w-14 shrink-0 rounded-2xl bg-white border border-indigo-100 text-indigo-600 flex items-center justify-center shadow-sm">
-                <Compass className="h-7 w-7" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h4 className="font-outfit font-black text-indigo-950 text-xl md:text-2xl tracking-tight">Vision Statement</h4>
-                <p className="text-slate-700 font-semibold text-base md:text-lg leading-relaxed max-w-5xl">
-                  {data.vision}
-                </p>
-              </div>
-            </div>
-
-            {/* Mission Row */}
-            <div className="bg-teal-50/40 border border-teal-100/80 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row gap-6 items-start hover:shadow-md hover:border-teal-200 transition-all">
-              <div className="h-14 w-14 shrink-0 rounded-2xl bg-white border border-teal-100 text-teal-700 flex items-center justify-center shadow-sm">
-                <Target className="h-7 w-7" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h4 className="font-outfit font-black text-teal-950 text-xl md:text-2xl tracking-tight">Mission Statement</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mt-2 max-w-5xl">
-                  {(data.mission || []).map((pt: string, i: number) => (
-                    <div key={i} className="flex items-start gap-3.5 text-slate-700 font-semibold text-base md:text-[17px] leading-relaxed">
-                      <CheckCircle2 className="h-5 w-5 text-teal-600 mt-1 flex-shrink-0" />
-                      <span>{pt}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Activity Reports & Annual Reports (as specified in Reference Document) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white border border-slate-200/80 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-4">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="h-10 w-10 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-xs">
-              <FileText className="h-5 w-5" />
-            </div>
-            <div>
-              <h4 className="font-outfit text-lg font-bold text-[#002147]">Activity Reports – Year-wise</h4>
-              <p className="text-xs text-slate-500 font-medium">Departmental student, faculty and academic activities</p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-3">
-            {(staticDept?.activityReports || [
-              { year: "2025–2026", docUrl: "/documents/DefaultFile_1.pdf" },
-              { year: "2024–2025", docUrl: "/documents/DefaultFile_1.pdf" }
-            ]).map((rep: any, idx: number) => (
-              <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="font-bold text-xs md:text-sm text-slate-700">Academic Year {rep.year}</span>
-                <button
-                  onClick={() => {
-                    setPreviewUrl(rep.docUrl);
-                    setPreviewTitle(`${data.name} - Activity Report (${rep.year})`);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer"
-                >
-                  <FileText className="h-3.5 w-3.5" /> View Report
-                </button>
-              </div>
-            ))}
-          </div>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-4">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="h-10 w-10 rounded-2xl bg-teal-700 text-white flex items-center justify-center shadow-xs">
-              <BarChart3 className="h-5 w-5" />
-            </div>
-            <div>
-              <h4 className="font-outfit text-lg font-bold text-teal-950">Annual Reports – Year-wise</h4>
-              <p className="text-xs text-slate-500 font-medium">Comprehensive annual audit and outcome reports</p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-3">
-            {(staticDept?.annualReports || [
-              { year: "2025–2026", docUrl: "/documents/DefaultFile_1.pdf" },
-              { year: "2024–2025", docUrl: "/documents/DefaultFile_1.pdf" }
-            ]).map((rep: any, idx: number) => (
-              <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="font-bold text-xs md:text-sm text-slate-700">Academic Year {rep.year}</span>
-                <button
-                  onClick={() => {
-                    setPreviewUrl(rep.docUrl);
-                    setPreviewTitle(`${data.name} - Annual Report (${rep.year})`);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer"
-                >
-                  <FileText className="h-3.5 w-3.5" /> View Report
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Programmes Offered (SEPARATED) */}
-      <div className="flex flex-col gap-8">
-        <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-          <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-            <GraduationCap className="h-6 w-6" />
-          </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Programmes Offered</h3>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col gap-6">
-          <h4 className="font-outfit font-black text-slate-800 text-lg mb-2 flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-[#002147]" /> Specialized Academic Pathways
-          </h4>
-          <div className="flex flex-col gap-5">
-            {(data.programmes || []).map((p: any, idx: number) => (
-              <div key={idx} className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white border-2 border-slate-100 hover:border-[#002147]/30 p-8 rounded-[2rem] hover:shadow-md transition-all relative overflow-hidden group">
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#002147] opacity-80 group-hover:opacity-100"></div>
-                <div className="flex items-center gap-4 z-10 pl-2">
-                  <div className="h-12 w-12 rounded-2xl bg-[#002147]/5 border border-[#002147]/10 text-[#002147] flex items-center justify-center shadow-sm shrink-0">
-                    <GraduationCap className="h-6 w-6" />
-                  </div>
-                  <h4 className="font-outfit text-xl md:text-2xl font-black text-slate-900 tracking-tight">{p.title}</h4>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 z-10">
-                  <div className="bg-[#002147]/5 border border-[#002147]/10 text-[#002147] px-6 py-3.5 rounded-2xl font-bold text-sm md:text-base flex items-center gap-3 shadow-sm min-w-[240px]">
-                    <Users className="h-5 w-5 opacity-80 shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase tracking-wider font-black opacity-60">Intake Capacity</span>
-                      <span className="leading-tight">{p.intake}</span>
-                    </div>
-                  </div>
-                  <div className="bg-emerald-50 border border-emerald-100 text-emerald-900 px-6 py-3.5 rounded-2xl font-bold text-sm md:text-base flex items-center gap-3 shadow-sm min-w-[200px]">
-                    <BookOpen className="h-5 w-5 text-emerald-700 shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase tracking-wider font-black text-emerald-700 opacity-80">Course Duration</span>
-                      <span className="leading-tight">{p.duration}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Faculty Profiles */}
-      {data.facultyMembers && data.facultyMembers.length > 0 && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <Users className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Departmental Faculty Directory</h3>
-          </div>
-
-          <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-base font-sans">
-                <thead>
-                  <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                    <th className="py-4 px-8 text-center w-20">S.No</th>
-                    <th className="py-4 px-8">Name of the Faculty</th>
-                    <th className="py-4 px-8">Designation</th>
-                    <th className="py-4 px-8">Qualifications</th>
-                    <th className="py-4 px-8 text-center">Experience</th>
-                    <th className="py-4 px-8">Email ID</th>
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                  <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Name of the Programme</th>
+                  <th className="py-3 px-4 text-center bg-[#001733] text-amber-300 font-black border-r border-[#003366]">Sanctioned Intake</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Counseling Seats</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold">Management Seats</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {programmes.map((p, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{p.sNo}</td>
+                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{p.name}</td>
+                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{p.intake}</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{p.counseling}</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700">{p.management}</td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                  {data.facultyMembers.map((fac: any, i: number) => (
-                    <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="py-5 px-8 text-center text-slate-400 font-black">{i + 1}</td>
-                      <td className="py-5 px-8 font-black text-[#002147] text-base">{fac.name}</td>
-                      <td className="py-5 px-8 text-slate-600">{fac.designation}</td>
-                      <td className="py-5 px-8 text-slate-650">{fac.qualification}</td>
-                      <td className="py-5 px-8 text-center text-slate-500">{fac.experience || "---"}</td>
-                      <td className="py-5 px-8 font-medium">
-                        {fac.email ? (
-                          <a href={`mailto:${fac.email}`} className="text-indigo-600 hover:text-indigo-800 hover:underline">
-                            {fac.email}
-                          </a>
-                        ) : (
-                          "---"
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 5. Pass Percentages & Placement Summary */}
-      {((data.passPercentage && data.passPercentage.length > 0) || (data.placements && data.placements.length > 0)) && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <BarChart3 className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Academic Results & Placements</h3>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            {data.passPercentage && data.passPercentage.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Outgoing Batch Pass Percentage</span>
-                  <span className="bg-indigo-100 text-indigo-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Results Log</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8">Academic Year</th>
-                        <th className="py-4 px-8">Programme</th>
-                        <th className="py-4 px-8 text-center">No. of Final Year Students</th>
-                        <th className="py-4 px-8 text-center">No. of Students Passed</th>
-                        <th className="py-4 px-8 text-center">Pass Percentage</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.passPercentage.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.year}</td>
-                          <td className="py-5 px-8 text-slate-650">{item.programme}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.finalYearStudents || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.studentsPassed || "---"}</td>
-                          <td className="py-5 px-8 text-center">
-                            <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-sm font-black">
-                              {item.percentage || "0%"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {data.placements && data.placements.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Year-wise Placement Summary</span>
-                  <span className="bg-[#002147]/5 text-[#002147] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Placement History</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8">Academic Year</th>
-                        <th className="py-4 px-8 text-center">Final Year Students</th>
-                        <th className="py-4 px-8 text-center">Students Placed</th>
-                        <th className="py-4 px-8 text-center">Highest Salary (LPA)</th>
-                        <th className="py-4 px-8 text-center">Average Salary (LPA)</th>
-                        <th className="py-4 px-8 text-center">Placement Percentage</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-805">
-                      {data.placements.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.year}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.finalYearStudents || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-550">{item.studentsPlaced || "---"}</td>
-                          <td className="py-5 px-8 text-center text-emerald-800 font-bold">{item.highestSalary || "---"}</td>
-                          <td className="py-5 px-8 text-center text-indigo-700 font-bold">{item.averageSalary || "---"}</td>
-                          <td className="py-5 px-8 text-center">
-                            <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-800 text-sm font-black">
-                              {item.percentage || "0%"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 6. Value Added Offerings & Internships */}
-      {((data.valueAddedCourses && data.valueAddedCourses.length > 0) || (data.internships && data.internships.length > 0)) && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <Award className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Courses & Internships</h3>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            {data.valueAddedCourses && data.valueAddedCourses.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Value-Added & Certificate Courses</span>
-                  <span className="bg-emerald-100 text-emerald-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Curriculum Offerings</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8">Course Title</th>
-                        <th className="py-4 px-8 text-center">Duration</th>
-                        <th className="py-4 px-8">From - To</th>
-                        <th className="py-4 px-8 text-center">Academic Year</th>
-                        <th className="py-4 px-8 text-center">Students Enrolled</th>
-                        <th className="py-4 px-8 text-center">Certificate Issued</th>
-                        <th className="py-4 px-8">Collaborating Agency</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.valueAddedCourses.map((course: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{course.sNo || i + 1}</td>
-                          <td className="py-5 px-8 font-black text-[#002147] text-base">{course.title}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{course.duration || "---"}</td>
-                          <td className="py-5 px-8 text-slate-500">{course.fromTo || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{course.academicYear || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{course.studentsEnrolled || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{course.certificateIssued || "---"}</td>
-                          <td className="py-5 px-8 font-bold text-teal-800">{course.agency || "---"}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {data.internships && data.internships.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Student Internships & Field Work</span>
-                  <span className="bg-amber-100 text-amber-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Industrial Projects</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8 text-center">Academic Year</th>
-                        <th className="py-4 px-8">Name of the Student</th>
-                        <th className="py-4 px-8">Duration</th>
-                        <th className="py-4 px-8">Name of the Organization</th>
-                        <th className="py-4 px-8">Area of Work</th>
-                        <th className="py-4 px-8">Programme</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.internships.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.year}</td>
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.name}</td>
-                          <td className="py-5 px-8 text-slate-500">{item.duration || "---"}</td>
-                          <td className="py-5 px-8 font-bold text-teal-800">{item.organization}</td>
-                          <td className="py-5 px-8 text-slate-600">{item.areaOfWork || "---"}</td>
-                          <td className="py-5 px-8 text-slate-500">{item.programme || "---"}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 7. MoUs & MoU Activities */}
-      {((data.mous && data.mous.length > 0) || (data.mouActivities && data.mouActivities.length > 0)) && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <Handshake className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Partnerships & Collaborations</h3>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            {data.mous && data.mous.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {data.mous.map((mou: any, i: number) => (
-                  <div key={i} className="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between gap-6 relative overflow-hidden group hover:border-[#002147]/30 hover:shadow-md transition-all">
-                    <div className="flex flex-col gap-4">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm border border-blue-100 shrink-0">
-                            <Handshake className="h-5 w-5" />
-                          </div>
-                          <h4 className="font-outfit font-black text-slate-900 text-lg leading-tight">{mou.title}</h4>
-                        </div>
-                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider border ${
-                          mou.status?.toLowerCase() === "active" 
-                            ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
-                            : "bg-slate-50 border-slate-200 text-slate-500"
-                        }`}>
-                          {mou.status || "Active"}
-                        </span>
-                      </div>
-                      <div className="text-sm md:text-base text-slate-600 flex flex-col gap-2 font-semibold pt-2 border-t border-slate-100">
-                        <span><span className="font-black text-slate-450 uppercase text-xs tracking-wider mr-2">Type:</span> {mou.type || "MoU"}</span>
-                        <span><span className="font-black text-slate-450 uppercase text-xs tracking-wider mr-2">Signed on:</span> {mou.dateOfSigning || "---"}</span>
-                        <span><span className="font-black text-slate-450 uppercase text-xs tracking-wider mr-2">Term:</span> {mou.duration || "---"}</span>
-                        <p className="mt-2 text-[#002147]"><span className="font-black text-slate-450 block mb-1 uppercase text-xs tracking-wider">Purpose & Scope:</span> {mou.purpose}</p>
-                      </div>
-                    </div>
-                    {mou.documentUrl && (
-                      <a href={mou.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 font-bold text-sm mt-4 hover:underline">
-                        <BookOpen className="h-4 w-4" /> View Linkage Document <ArrowRight className="h-3 w-3" />
-                      </a>
-                    )}
-                  </div>
                 ))}
-              </div>
-            )}
-
-            {data.mouActivities && data.mouActivities.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">MoU Activities Conducted</span>
-                  <span className="bg-teal-100 text-teal-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Activity Logs</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8">Partner Organization</th>
-                        <th className="py-4 px-8">Activity Conducted</th>
-                        <th className="py-4 px-8 text-center">Date</th>
-                        <th className="py-4 px-8 text-center">No. of Participants</th>
-                        <th className="py-4 px-8">Document</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.mouActivities.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.organization}</td>
-                          <td className="py-5 px-8 text-slate-650">{item.activity}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.date || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.participants || "---"}</td>
-                          <td className="py-5 px-8">
-                            {item.documentUrl ? (
-                              <a href={item.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 hover:underline">
-                                <BookOpen className="h-4 w-4" /> View PDF
-                              </a>
-                            ) : (
-                              "---"
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 8. Student Achievements & Ranks */}
-      {((data.studentAchievements && data.studentAchievements.length > 0) || (data.academicAchievements && data.academicAchievements.length > 0)) && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <Trophy className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Student Laurels & Ranks</h3>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            {data.studentAchievements && data.studentAchievements.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Co-Curricular / Extracurricular Achievements</span>
-                  <span className="bg-emerald-100 text-emerald-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Laurels Log</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8 text-center">Date</th>
-                        <th className="py-4 px-8">Student Name</th>
-                        <th className="py-4 px-8">Activity / Competition</th>
-                        <th className="py-4 px-8">Level</th>
-                        <th className="py-4 px-8">Achievement</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.studentAchievements.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.date || "---"}</td>
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.name}</td>
-                          <td className="py-5 px-8 text-slate-650">{item.activity}</td>
-                          <td className="py-5 px-8 text-slate-500">{item.level || "---"}</td>
-                          <td className="py-5 px-8 text-emerald-800 font-bold">{item.achievement}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {data.academicAchievements && data.academicAchievements.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Academic University Ranks & Awards</span>
-                  <span className="bg-amber-100 text-amber-955 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Academic Honors</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8 text-center">Academic Year</th>
-                        <th className="py-4 px-8">Student Name</th>
-                        <th className="py-4 px-8">Programme</th>
-                        <th className="py-4 px-8">University Rank / Award</th>
-                        <th className="py-4 px-8 text-center">Marks/Percentage/CGPA</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-850">
-                      {data.academicAchievements.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.year}</td>
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.name}</td>
-                          <td className="py-5 px-8 text-slate-650">{item.programme}</td>
-                          <td className="py-5 px-8 text-emerald-805 font-bold">{item.award}</td>
-                          <td className="py-5 px-8 text-center text-teal-800 font-black">{item.marks || "---"}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {/* Other Student Achievements */}
-            {data.otherStudentAchievements && data.otherStudentAchievements.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-6 shadow-sm">
-                <span className="font-outfit font-black text-slate-800 text-lg border-b border-slate-100 pb-3 block">
-                  Other Student Achievements
-                </span>
-                <ul className="flex flex-col gap-3.5 max-w-4xl">
-                  {data.otherStudentAchievements.map((item: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3.5 text-slate-705 font-semibold text-base md:text-[17px] leading-relaxed">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-1 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Focus on Women Empowerment & Employability */}
-            {data.focusOnWomenEmpowerment && (
-              <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-4 shadow-sm">
-                <span className="font-outfit font-black text-[#002147] text-lg border-b border-[#002147]/20 pb-3 block">
-                  Focus on Women Empowerment & Employability
-                </span>
-                <p className="text-slate-700 font-semibold leading-relaxed text-base md:text-[17px]">
-                  {data.focusOnWomenEmpowerment}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 9. Quality Assurance & Best Practices */}
-      {data.bestPractices && data.bestPractices.length > 0 && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <HeartHandshake className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Quality Initiatives & Best Practices</h3>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            <div className="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-lg">
-              <div className="absolute top-0 right-0 bg-white/5 h-80 w-80 rounded-full transform translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
-              <div className="relative z-10 flex flex-col gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur border border-white/20 px-4 py-1.5 text-xs font-black tracking-widest uppercase w-fit text-indigo-100">
-                  <Sparkles className="h-3.5 w-3.5 text-amber-400" /> Continuous Quality Assessment
-                </span>
-                <h3 className="font-outfit text-xl md:text-2xl font-black mt-2 tracking-tight">Outcome-Based Education Framework</h3>
-                <p className="text-slate-300 text-base md:text-lg leading-relaxed font-semibold max-w-4xl mt-1">
-                  Adopting need-based, skill-oriented, and socially relevant practices aligned with NAAC standards. Emphasis is placed on experiential learning, employability, and community engagement.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8">
-              {data.bestPractices.map((practice: any, idx: number) => (
-                <div key={idx} className="bg-white border-2 border-slate-100 hover:border-indigo-105 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-md transition-all">
-                  <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/40 flex flex-col gap-1">
-                    <h4 className="font-outfit text-lg md:text-xl font-black text-[#002147]">{practice.title}</h4>
-                    <span className="text-xs uppercase tracking-widest text-indigo-650 font-black">{practice.category}</span>
-                  </div>
-                  <div className="flex flex-col divide-y divide-slate-100 font-sans">
-                    
-                    {/* Context Description */}
-                    {practice.context && (
-                      <div className="p-8 md:p-10 bg-indigo-50/10">
-                        <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-3 border-l-4 border-indigo-400 pl-3">Context</span>
-                        <p className="text-slate-700 font-medium leading-relaxed text-base md:text-[17px]">
-                          {practice.context}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Objectives */}
-                    {practice.objectives && practice.objectives.length > 0 && (
-                      <div className="p-8 md:p-10">
-                        <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-4 border-l-4 border-[#002147] pl-3">Objectives</span>
-                        <ul className="flex flex-col gap-3.5 max-w-4xl">
-                          {practice.objectives.map((o: string, i: number) => (
-                            <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
-                              <span className="h-2.5 w-2.5 rounded-full bg-[#002147] mt-2 shrink-0"></span>
-                              <span>{o}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* The Practice */}
-                    {practice.practice && practice.practice.length > 0 && (
-                      <div className="p-8 md:p-10 bg-slate-50/30">
-                        <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-4 border-l-4 border-[#002147] pl-3">The Practice</span>
-                        <ul className="flex flex-col gap-3.5 max-w-4xl">
-                          {practice.practice.map((p: string, i: number) => (
-                            <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
-                              <span className="h-2.5 w-2.5 rounded-full bg-[#002147] mt-2 shrink-0"></span>
-                              <span>{p}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Evidence of Success */}
-                    {practice.success && practice.success.length > 0 && (
-                      <div className="p-8 md:p-10 bg-emerald-50/40">
-                        <span className="text-xs font-black uppercase tracking-widest text-emerald-800 flex items-center gap-2 mb-4 border-l-4 border-emerald-600 pl-3">
-                          <Award className="h-5 w-5 text-emerald-600" /> Evidence of Success
-                        </span>
-                        <ul className="flex flex-col gap-3.5 max-w-4xl text-emerald-950 font-bold text-base md:text-[18px] leading-relaxed">
-                          {practice.success.map((s: string, i: number) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <span className="h-2.5 w-2.5 rounded-full bg-emerald-600 mt-2 shrink-0"></span>
-                              <span>{s}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Problems Encountered */}
-                    {practice.problems && practice.problems.length > 0 && (
-                      <div className="p-8 md:p-10 bg-red-50/30">
-                        <span className="text-xs font-black uppercase tracking-widest text-red-955/80 flex items-center gap-2 mb-4 border-l-4 border-red-400 pl-3">
-                          Problems Encountered & Resources Required
-                        </span>
-                        <ul className="flex flex-col gap-3.5 max-w-4xl">
-                          {practice.problems.map((prob: string, i: number) => (
-                            <li key={i} className="flex items-start gap-3 font-semibold text-slate-700 text-base md:text-[17px] leading-relaxed">
-                              <span className="h-2.5 w-2.5 rounded-full bg-red-400 mt-2 shrink-0"></span>
-                              <span>{prob}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Overall Impact of Best Practices */}
-            {data.bestPracticesImpact && data.bestPracticesImpact.length > 0 && (
-              <div className="bg-slate-50 border border-slate-200 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-6 shadow-sm mt-4">
-                <h4 className="font-outfit font-black text-[#002147] text-lg border-b border-slate-200 pb-3">
-                  Overall Impact of Best Practices
-                </h4>
-                <ul className="flex flex-col gap-3.5 max-w-4xl">
-                  {data.bestPracticesImpact.map((item: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3.5 text-slate-700 font-semibold text-base md:text-[17px] leading-relaxed">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-1 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 10. Departmental Activities Logs */}
-      {((data.activitiesList && data.activitiesList.length > 0) || (data.activitiesSummary && data.activitiesSummary.length > 0)) && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <BookOpen className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Activities log & Summaries</h3>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            {data.activitiesList && data.activitiesList.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Departmental Activities Log</span>
-                  <span className="bg-[#002147]/5 text-[#002147] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Events Ledger</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8 text-center">Date</th>
-                        <th className="py-4 px-8">Title of the Activity</th>
-                        <th className="py-4 px-8">Type of Activity</th>
-                        <th className="py-4 px-8">Resource Persons / Organization</th>
-                        <th className="py-4 px-8 text-center">No. of Participants</th>
-                        <th className="py-4 px-8">Document</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-800">
-                      {data.activitiesList.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.date || "---"}</td>
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.title}</td>
-                          <td className="py-5 px-8 text-slate-650">{item.type}</td>
-                          <td className="py-5 px-8 text-slate-700">{item.resourcePerson || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.participants || "---"}</td>
-                          <td className="py-5 px-8">
-                            {item.documentUrl ? (
-                              <a href={item.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-650 hover:text-indigo-805 hover:underline">
-                                <BookOpen className="h-4 w-4" /> View PDF
-                              </a>
-                            ) : (
-                              "---"
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {data.activitiesSummary && data.activitiesSummary.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden">
-                <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <span className="font-outfit font-black text-slate-800 text-lg">Category-wise Annual Summary of Activities</span>
-                  <span className="bg-indigo-100 text-indigo-950 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Annual Summary</span>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-base font-sans">
-                    <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-black border-b border-slate-200 uppercase tracking-widest text-xs">
-                        <th className="py-4 px-8 text-center w-20">S.No</th>
-                        <th className="py-4 px-8 text-center">Academic Year</th>
-                        <th className="py-4 px-8">Category of Activity</th>
-                        <th className="py-4 px-8 text-center">No. of Activities Conducted</th>
-                        <th className="py-4 px-8 text-center">No. of Students Benefited</th>
-                        <th className="py-4 px-8">Key Activities Conducted</th>
-                        <th className="py-4 px-8">Document</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-850">
-                      {data.activitiesSummary.map((item: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-5 px-8 text-center text-slate-400 font-black">{item.sNo || i + 1}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.year}</td>
-                          <td className="py-5 px-8 font-black text-[#002147]">{item.category}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.count || "---"}</td>
-                          <td className="py-5 px-8 text-center text-slate-500">{item.studentsBenefited || "---"}</td>
-                          <td className="py-5 px-8 text-slate-600">{item.keyActivities || "---"}</td>
-                          <td className="py-5 px-8">
-                            {item.documentUrl ? (
-                              <a href={item.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-indigo-650 hover:text-indigo-805 hover:underline">
-                                <BookOpen className="h-4 w-4" /> View PDF
-                              </a>
-                            ) : (
-                              "---"
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 11. Activities Category Pillars */}
-      {data.activities && data.activities.length > 0 && (
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-            <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-              <Trophy className="h-6 w-6" />
-            </div>
-            <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Activities & Engagement</h3>
-          </div>
-
-          <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 flex flex-col gap-6 shadow-sm">
-            <h4 className="font-outfit font-black text-[#002147] text-lg pb-2 border-b border-slate-100">Core Strategic Activity Pillars</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {data.activities.map((cat: any, i: number) => (
-                <div key={i} className="bg-slate-50/80 border border-slate-200/70 p-6 md:p-8 rounded-3xl flex flex-col gap-3 hover:bg-white hover:shadow-md transition-all">
-                  <h4 className="font-outfit font-black text-slate-900 text-base md:text-lg">{cat.label}</h4>
-                  <p className="text-slate-655 text-sm md:text-base leading-relaxed font-semibold">{cat.desc}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Overall Approach */}
-            {data.overallApproach && (
-              <div className="mt-8 pt-6 border-t border-slate-100">
-                <span className="text-xs font-black uppercase tracking-widest text-[#002147]/60 block mb-3 pl-1">
-                  Overall Approach
-                </span>
-                <p className="text-slate-700 font-semibold leading-relaxed text-base md:text-[17px]">
-                  {data.overallApproach}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 12. Facilities & Careers */}
-      <div className="flex flex-col gap-8">
-        <div className="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
-          <div className="h-11 w-11 rounded-2xl bg-[#002147]/5 text-[#002147] flex items-center justify-center border border-[#002147]/10 shadow-sm shrink-0">
-            <Settings className="h-6 w-6" />
-          </div>
-          <h3 className="font-outfit text-2xl font-black text-[#002147] tracking-tight">Facilities & Assets</h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Assets */}
-          <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-6">
-            <h4 className="font-outfit font-black text-slate-805 text-xl flex items-center gap-3">
-              <Settings className="h-5 w-5 text-[#002147]" /> Physical Infrastructure
-            </h4>
-            <div className="grid grid-cols-1 gap-3">
-              {(data.infrastructure || []).map((item: string, i: number) => (
-                <div key={i} className="flex items-center gap-3.5 px-5 py-4 bg-slate-50 border border-slate-200/80 rounded-2xl text-slate-800 font-bold text-sm md:text-base shadow-sm">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Progression */}
-          <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col gap-6">
-            <h4 className="font-outfit font-black text-slate-805 text-xl flex items-center gap-3">
-              <Briefcase className="h-5 w-5 text-[#002147]" /> Career Pathways
-            </h4>
-            <div className="grid grid-cols-1 gap-3">
-              {(data.careerOpps || []).map((item: string, i: number) => (
-                <div key={i} className="flex items-center gap-3.5 px-5 py-4 bg-[#002147]/5 border border-[#002147]/10 rounded-2xl text-[#002147] font-bold text-sm md:text-base shadow-sm">
-                  <GraduationCap className="h-5 w-5 shrink-0" />
-                  {item}
-                </div>
-              ))}
-            </div>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      {/* 13. Photo Gallery - Invisible if empty */}
-      {data.gallery && data.gallery.length > 0 && (
-        <div className="bg-[#002147]/5 border border-[#002147]/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col gap-8">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="h-12 w-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-md border border-[#002147]/20">
-              <ImageIcon className="h-6 w-6" />
+      {/* ============================================================== */}
+      {/* FACULTY DIRECTORY                                              */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Faculty Directory
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[#002147]/40 transition-all">
+          <div className="flex items-start gap-3.5">
+            <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-[#002147]/5 text-[#002147] flex items-center justify-center shrink-0 border border-[#002147]/10">
+              <Users className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <h4 className="font-outfit text-xl md:text-2xl font-black text-[#002147] tracking-tight">Captured Moments &amp; Galleries</h4>
+            <div className="flex flex-col">
+              <h3 className="font-outfit text-sm sm:text-base font-black text-[#002147]">
+                {deptName} Faculty Directory
+              </h3>
+              <p className="text-xs text-slate-600 font-medium max-w-2xl leading-relaxed mt-0.5">
+                Access full faculty profiles with academic qualifications, designations, experience, research specializations, and departmental portfolios on the centralized Department-Wise Faculty roster.
+              </p>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {data.gallery.map((item: any, i: number) => {
-              const ref = item.image?.asset?._ref;
-              let url = "";
-              if (ref) {
-                const parts = ref.split("-");
-                if (parts.length >= 4) {
-                  const id = parts[1];
-                  const dimensions = parts[2];
-                  const extension = parts[3];
-                  url = `https://cdn.sanity.io/images/fhjwqub5/production/${id}-${dimensions}.${extension}`;
-                }
-              }
-              return (
-                <div key={i} className="flex flex-col gap-3 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm group hover:shadow-md transition-all">
-                  <div className="aspect-[4/3] w-full bg-slate-100 rounded-xl overflow-hidden relative">
-                    {url ? (
-                      <img src={url} alt={item.caption || "Gallery Image"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-350">
-                        <ImageIcon className="h-10 w-10" />
-                      </div>
-                    )}
-                  </div>
-                  {item.caption && (
-                    <span className="font-bold text-slate-700 text-xs md:text-sm leading-snug px-1">
-                      {item.caption}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
+
+          <Link
+            href={`/faculty/department-wise?dept=${encodeURIComponent(deptToFacultySlugMap[normalizedSlug] || normalizedSlug.replace("department-of-", ""))}`}
+            className="inline-flex items-center justify-center gap-2 bg-[#002147] hover:bg-[#00387a] text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0 self-start sm:self-auto"
+          >
+            View Faculty Profiles <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* CURRICULUM & LEARNING OUTCOMES                                 */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div>
+            <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+              Curriculum &amp; Learning Outcomes
+            </h2>
+            <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={curriculumYear}
+                onChange={(e) => setCurriculumYear(e.target.value)}
+                aria-label="Select Academic Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="2026–2027">2026–2027</option>
+                <option value="2025–2026">2025–2026</option>
+                <option value="2024–2025">2024–2025</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Programme:</span>
+              <select
+                value={curriculumProg}
+                onChange={(e) => setCurriculumProg(e.target.value)}
+                aria-label="Select Programme"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                {programmes.map((p, idx) => (
+                  <option key={idx} value={p.name}>{p.name}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="p-3 px-4 sm:px-5 border-b border-[#001733] bg-[#002147] text-white">
+            <span className="text-xs font-black text-white uppercase tracking-wider">
+              {curriculumProg} ({curriculumYear})
+            </span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                  <th className="py-3 px-3 text-center w-14 text-slate-600 font-bold border-r border-slate-200">S. No.</th>
+                  <th className="py-3 px-5 text-[#002147] font-black border-r border-slate-200">Particulars</th>
+                  <th className="py-3 px-4 text-center font-bold text-slate-700 w-36">Document</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[
+                  "Programme Structure & Curriculum",
+                  "Course Outcomes (COs)",
+                  "Programme Outcomes (POs) & PSOs",
+                  "Course Evaluation Scheme & Weightage",
+                  "Learning Resources & Textbooks",
+                  "Academic Regulations & Grading"
+                ].map((particular, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
+                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{particular}</td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `${particular} - ${curriculumProg}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Document
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* OUTGOING BATCH – STUDENT STRENGTH AND PASS PERCENTAGE          */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Outgoing Batch – Student Strength and Pass Percentage
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {programmes.map((p, pIdx) => (
+            <div key={pIdx} className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+              <div className="p-3 px-4 sm:px-5 border-b border-[#001733] bg-[#002147] text-white">
+                <h3 className="font-outfit text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+                  {p.name}
+                </h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+                  <thead>
+                    <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                      <th className="py-3 px-3 text-center w-14 text-slate-600 font-bold border-r border-slate-200">S. No.</th>
+                      <th className="py-3 px-4 text-center text-[#002147] font-black border-r border-slate-200">Academic Year</th>
+                      <th className="py-3 px-4 text-center text-slate-700 font-bold border-r border-slate-200">Number of Final Year Students</th>
+                      <th className="py-3 px-4 text-center text-slate-700 font-bold border-r border-slate-200">Number of Students Passed</th>
+                      <th className="py-3 px-4 text-center bg-blue-100/90 text-[#002147] font-black">Pass Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {[
+                      { year: "2024–2025", students: "-", passed: "-", percent: "-" },
+                      { year: "2023–2024", students: "-", passed: "-", percent: "-" },
+                      { year: "2022–2023", students: "-", passed: "-", percent: "-" }
+                    ].map((row, rIdx) => (
+                      <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                        <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{rIdx + 1}</td>
+                        <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                        <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.students}</td>
+                        <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.passed}</td>
+                        <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.percent}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* YEAR-WISE PLACEMENT SUMMARY                                    */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Year-wise Placement Summary
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {programmes.map((p, pIdx) => (
+            <div key={pIdx} className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+              <div className="p-3 px-4 sm:px-5 border-b border-[#001733] bg-[#002147] text-white">
+                <h3 className="font-outfit text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+                  {p.name}
+                </h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+                  <thead>
+                    <tr className="bg-slate-100 text-[#002147] font-outfit uppercase tracking-wider text-[11px] font-bold border-b-2 border-slate-200">
+                      <th className="py-3 px-3 text-center w-14 text-slate-600 font-bold border-r border-slate-200">S. No.</th>
+                      <th className="py-3 px-4 text-center text-[#002147] font-black border-r border-slate-200">Academic Year</th>
+                      <th className="py-3 px-4 text-center text-slate-700 font-bold border-r border-slate-200">Number of Students Placed</th>
+                      <th className="py-3 px-4 text-center text-slate-700 font-bold border-r border-slate-200">Highest Salary (LPA)</th>
+                      <th className="py-3 px-4 text-center text-slate-700 font-bold border-r border-slate-200">Average Salary (LPA)</th>
+                      <th className="py-3 px-4 text-center bg-blue-100/90 text-[#002147] font-black">Placement Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {[
+                      { year: "2024–2025", placed: "-", highest: "-", avg: "-", percent: "-" },
+                      { year: "2023–2024", placed: "-", highest: "-", avg: "-", percent: "-" },
+                      { year: "2022–2023", placed: "-", highest: "-", avg: "-", percent: "-" }
+                    ].map((row, rIdx) => (
+                      <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                        <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{rIdx + 1}</td>
+                        <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                        <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.placed}</td>
+                        <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.highest}</td>
+                        <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.avg}</td>
+                        <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.percent}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* MOUS – MEMORANDUM OF UNDERSTANDING                             */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            MOUs – Memorandum of Understanding
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                  <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Name of the Organization</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Duration / Validity Period</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-36">MoU Documents</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">MoU Activity Report</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[1, 2, 3].map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row}</td>
+                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center border-r border-slate-100">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `MoU Document - Organization ${row}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View MoU
+                      </button>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `MoU Activity Report - Organization ${row}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Activity Report
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* ACTIVITIES, EVENTS, PROGRAMMES & CELEBRATIONS                  */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Activities, Events, Programmes &amp; Celebrations
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                  <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Title of Activity / Event</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Date</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">No. of Participants</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-40">Activity Report</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[1, 2, 3].map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row}</td>
+                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Activity Report ${row}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Report
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* STUDENT EXTERNAL ACHIEVEMENTS, PARTICIPATION & REPRESENTATION   */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Student External Achievements, Participation &amp; Representation
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                  <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Name of the Student</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Name of the Activity / Event</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">State / National / Inter-University</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Prize / Participation</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-36">Certificate</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[1, 2, 3].map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row}</td>
+                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">-</td>
+                    <td className="py-3 px-5 font-medium text-slate-800 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Certificate - Achievement ${row}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Certificate
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* UNIVERSITY RANKS & ACADEMIC ACHIEVEMENTS                       */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            University Ranks &amp; Academic Achievements
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                  <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Name of the Student</th>
+                  <th className="py-3 px-5 text-white font-black border-r border-[#003366]">Programme</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">University Rank / Gold Medal</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Academic Year</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-36">Certificate</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[1, 2, 3].map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row}</td>
+                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">-</td>
+                    <td className="py-3 px-5 font-medium text-slate-800 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">-</td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Certificate - University Rank ${row}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Certificate
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* YEAR-WISE ANNUAL ACTIVITY REPORTS                              */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Year-wise Annual Activity Reports
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+              <thead>
+                <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                  <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
+                  <th className="py-3 px-4 text-center text-white font-black border-r border-[#003366]">Academic Year</th>
+                  <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Number of Activities Conducted</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-40">Annual Activity Report</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Supporting Documents</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[
+                  { year: "2025–2026", count: "-" },
+                  { year: "2024–2025", count: "-" },
+                  { year: "2023–2024", count: "-" }
+                ].map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
+                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.count}</td>
+                    <td className="py-3 px-4 text-center border-r border-slate-100">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Annual Activity Report (${row.year})`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Report
+                      </button>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Supporting Documents (${row.year})`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> View Documents
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* CUSTOM DEPARTMENT TABLES                                       */}
+      {/* ============================================================== */}
+      {Array.isArray(dynamicDept?.customTables) && dynamicDept.customTables.length > 0 && (
+        dynamicDept.customTables.map((tbl: any, tblIdx: number) => {
+          const columns: string[] = Array.isArray(tbl.columns) ? tbl.columns : [];
+          const rows: any[] = Array.isArray(tbl.rows) ? tbl.rows : [];
+          if (columns.length === 0 && rows.length === 0) return null;
+
+          return (
+            <div key={tbl.id || tbl._key || tblIdx} className="flex flex-col gap-1.5">
+              <div>
+                <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+                  {tbl.title || `Additional Table ${tblIdx + 1}`}
+                </h2>
+                {tbl.description && (
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">{tbl.description}</p>
+                )}
+                <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+              </div>
+
+              <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs sm:text-sm border-collapse font-sans">
+                    <thead>
+                      <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold border-b border-[#001733]">
+                        {columns.map((colName, cIdx) => (
+                          <th
+                            key={cIdx}
+                            className={`py-3 px-4 ${
+                              cIdx === 0 && (colName.toLowerCase().includes("s. no") || colName.toLowerCase().includes("sno"))
+                                ? "w-14 text-center border-r border-[#003366] text-blue-100"
+                                : cIdx === columns.length - 1
+                                ? "text-center text-blue-100"
+                                : "border-r border-[#003366] text-blue-100"
+                            }`}
+                          >
+                            {colName}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {rows.length === 0 ? (
+                        <tr>
+                          <td colSpan={columns.length || 1} className="py-6 text-center text-xs text-slate-400 italic">
+                            No records published in this table yet.
+                          </td>
+                        </tr>
+                      ) : (
+                        rows.map((rowItem: any, rIdx: number) => {
+                          const cells: string[] = Array.isArray(rowItem)
+                            ? rowItem
+                            : Array.isArray(rowItem?.cells)
+                            ? rowItem.cells
+                            : [];
+                          const isEven = rIdx % 2 === 1;
+
+                          return (
+                            <tr
+                              key={rowItem._key || rIdx}
+                              className={`${isEven ? "bg-slate-50/60" : "bg-white"} hover:bg-blue-50/40 transition-colors`}
+                            >
+                              {columns.map((colName, cIdx) => {
+                                const rawVal = cells[cIdx] || "";
+                                const trimmed = typeof rawVal === "string" ? rawVal.trim() : String(rawVal || "");
+                                const isDoc =
+                                  trimmed.endsWith(".pdf") ||
+                                  trimmed.startsWith("/documents/") ||
+                                  trimmed.startsWith("/uploads/") ||
+                                  trimmed.includes(".pdf?") ||
+                                  trimmed.includes("drive.google.com");
+                                const isWebUrl = !isDoc && (trimmed.startsWith("http://") || trimmed.startsWith("https://"));
+                                const isSno = cIdx === 0 && (colName.toLowerCase().includes("s. no") || colName.toLowerCase().includes("sno"));
+
+                                return (
+                                  <td
+                                    key={cIdx}
+                                    className={`py-3 px-4 ${
+                                      cIdx < columns.length - 1 ? "border-r border-slate-100" : ""
+                                    } ${isSno ? "text-center font-bold text-slate-500" : ""}`}
+                                  >
+                                    {isDoc ? (
+                                      <div className="flex justify-center">
+                                        <button
+                                          onClick={() => handleOpenPdf(trimmed, `${colName} - ${tbl.title || "Document"}`)}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                                        >
+                                          <FileText className="h-3.5 w-3.5" /> View Document
+                                        </button>
+                                      </div>
+                                    ) : isWebUrl ? (
+                                      <div className="flex justify-center">
+                                        <a
+                                          href={trimmed}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-800 underline transition-colors"
+                                        >
+                                          Visit Link <ExternalLink className="h-3.5 w-3.5" />
+                                        </a>
+                                      </div>
+                                    ) : (
+                                      <span className={isSno ? "text-slate-500 font-bold" : "text-slate-800 font-medium"}>
+                                        {trimmed || "-"}
+                                      </span>
+                                    )}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          );
+        })
       )}
 
+      {/* ============================================================== */}
+      {/* PHOTO GALLERY                                                  */}
+      {/* ============================================================== */}
+      <div className="flex flex-col gap-2">
+        <div>
+          <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
+            Photo Gallery
+          </h2>
+          <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
+        </div>
+
+        {hasUploadedPhotos ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-1">
+            {galleryItems.map((photo, idx) => (
+              <div
+                key={idx}
+                onClick={() =>
+                  setLightboxData({
+                    title: `${deptName} Photo`,
+                    photos: galleryItems,
+                    currentIndex: idx
+                  })
+                }
+                className="bg-slate-100 border border-slate-200/90 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-all group cursor-pointer aspect-[4/3] relative"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.url}
+                  alt={`${deptName} Photo ${idx + 1}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-black/40 text-white backdrop-blur-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Maximize2 className="h-3 w-3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* When empty: show exactly 1 college dummy photo so it won't appear empty */
+          <div className="mt-1 max-w-sm sm:max-w-md w-full">
+            <div
+              onClick={() =>
+                setLightboxData({
+                  title: "St. Ann's College for Women – Main Campus",
+                  photos: [dummyCollegePhoto],
+                  currentIndex: 0
+                })
+              }
+              className="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all group cursor-pointer aspect-[16/10] relative"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={dummyCollegePhoto.url}
+                alt="St. Ann's College for Women Campus"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute top-2.5 right-2.5 z-10">
+                <span className="inline-flex items-center gap-1 bg-[#002147]/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md backdrop-blur-xs border border-white/20">
+                  <Maximize2 className="h-3 w-3 text-amber-300" /> Click to enlarge
+                </span>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-3 pt-6 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex items-end justify-between gap-2 z-10">
+                <span className="text-white text-xs sm:text-sm font-bold truncate drop-shadow-sm">
+                  St. Ann’s College for Women – Main Campus
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* PDF Document Preview Modal */}
       <FilePreviewModal
         isOpen={!!previewUrl}
         onClose={() => setPreviewUrl(null)}
         fileUrl={previewUrl || ""}
         title={previewTitle || "Document Preview"}
       />
+
+      {/* Interactive Lightbox Modal */}
+      {lightboxData && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn select-none"
+          onClick={() => setLightboxData(null)}
+        >
+          <div
+            className="bg-slate-950 rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col relative border border-slate-800"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-3 px-5 border-b border-slate-800 bg-slate-900/80">
+              <div className="flex items-center gap-2.5 truncate pr-3">
+                {lightboxData.title && (
+                  <span className="font-outfit font-bold text-sm text-white truncate">
+                    {lightboxData.title}
+                  </span>
+                )}
+                {lightboxData.photos.length > 1 && (
+                  <span className="bg-white/10 text-blue-200 text-xs font-bold px-2.5 py-0.5 rounded-full shrink-0">
+                    {lightboxData.currentIndex + 1} / {lightboxData.photos.length}
+                  </span>
+                )}
+              </div>
+              <button
+                onClick={() => setLightboxData(null)}
+                className="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer shrink-0"
+                aria-label="Close photo preview"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="relative h-[65vh] sm:h-[72vh] bg-black flex items-center justify-center overflow-hidden">
+              {lightboxData.photos.length > 1 && (
+                <button
+                  onClick={handlePrevPhoto}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition-all cursor-pointer border border-white/20 active:scale-90"
+                  aria-label="Previous photo"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+              )}
+
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                key={lightboxData.currentIndex}
+                src={lightboxData.photos[lightboxData.currentIndex]?.url}
+                alt={lightboxData.title || "Department Photo"}
+                className="max-h-full max-w-full object-contain animate-fadeIn"
+              />
+
+              {lightboxData.photos.length > 1 && (
+                <button
+                  onClick={handleNextPhoto}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition-all cursor-pointer border border-white/20 active:scale-90"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              )}
+            </div>
+
+            {lightboxData.photos.length > 1 && (
+              <div className="p-2.5 px-4 bg-slate-900 border-t border-slate-800 flex items-center justify-center gap-2 overflow-x-auto">
+                {lightboxData.photos.map((p, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() =>
+                      setLightboxData((prev) => (prev ? { ...prev, currentIndex: idx } : null))
+                    }
+                    className={`h-10 w-14 rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
+                      idx === lightboxData.currentIndex
+                        ? "border-amber-400 scale-105 shadow-md"
+                        : "border-slate-700 opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.url} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   );
