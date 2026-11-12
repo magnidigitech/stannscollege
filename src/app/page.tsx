@@ -51,6 +51,8 @@ import {
   getNotices,
   getStudentHandbooks,
   getAcademicProgrammes,
+  getCollegeBrochures,
+  getCollegeProspectus,
 } from "@/lib/sanity";
 import {
   getEventLifecycle,
@@ -548,6 +550,8 @@ export default function HomePage() {
   const [programsTab, setProgramsTab] = useState<"all" | "ug" | "pg">("all");
   const [studentHandbooks, setStudentHandbooks] = useState<any[]>(fallbackHandbooks);
   const [academicProgrammes, setAcademicProgrammes] = useState<any[]>([]);
+  const [brochures, setBrochures] = useState<any[]>(fallbackBrochures);
+  const [prospectusList, setProspectusList] = useState<any[]>([]);
   const [previewModalFile, setPreviewModalFile] = useState<{ url: string; title: string } | null>(null);
   const [handbookSearch, setHandbookSearch] = useState<string>("");
   const [handbookYearFilter, setHandbookYearFilter] = useState<string>("ALL");
@@ -669,7 +673,7 @@ export default function HomePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [magsData, newsData, bannersData, galleryData, eventsData, noticesData, handbooksData, programmesData] = await Promise.all([
+        const [magsData, newsData, bannersData, galleryData, eventsData, noticesData, handbooksData, programmesData, brochuresData, prospectusData] = await Promise.all([
           getCollegeMagazines(),
           getNewsletters(),
           getHomeBanners(),
@@ -678,6 +682,8 @@ export default function HomePage() {
           getNotices(),
           getStudentHandbooks(),
           getAcademicProgrammes(),
+          getCollegeBrochures(),
+          getCollegeProspectus(),
         ]);
 
         if (magsData && magsData.length > 0) setMagazines(magsData);
@@ -691,6 +697,8 @@ export default function HomePage() {
           if (validHandbooks.length > 0) setStudentHandbooks(validHandbooks);
         }
         if (programmesData && programmesData.length > 0) setAcademicProgrammes(programmesData);
+        if (brochuresData && brochuresData.length > 0) setBrochures(brochuresData);
+        if (prospectusData && prospectusData.length > 0) setProspectusList(prospectusData);
       } catch (err) {
         console.error("Error loading home page Sanity data:", err);
       }
@@ -1846,7 +1854,7 @@ export default function HomePage() {
 
                   {/* Brochures Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {fallbackBrochures.map((b) => (
+                    {brochures.map((b: any) => (
                       <div
                         key={b.id}
                         className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs hover:shadow-xl hover:border-purple-300 transition-all flex flex-col justify-between group"

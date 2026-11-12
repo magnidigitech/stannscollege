@@ -668,7 +668,9 @@ export async function getStrategicPlan() {
 export async function getStudentHandbooks() {
   try {
     const query = `*[_type == "studentHandbook" && !(_id in path("drafts.**"))] | order(order asc) {
+      _id,
       year,
+      title,
       "fileUrl": file.asset->url,
       order
     }`;
@@ -676,6 +678,48 @@ export async function getStudentHandbooks() {
     return data || [];
   } catch (err) {
     console.error("Sanity fetch error (student handbooks):", err);
+    return [];
+  }
+}
+
+export async function getCollegeBrochures() {
+  try {
+    const query = `*[_type == "collegeBrochure" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      subtitle,
+      academicYear,
+      category,
+      description,
+      "fileUrl": file.asset->url,
+      "coverUrl": coverImage.asset->url,
+      isImage,
+      displayOrder
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (college brochures):", err);
+    return [];
+  }
+}
+
+export async function getCollegeProspectus() {
+  try {
+    const query = `*[_type == "collegeProspectus" && !(_id in path("drafts.**"))] | order(displayOrder asc) {
+      _id,
+      title,
+      academicYear,
+      description,
+      "fileUrl": file.asset->url,
+      isCurrent,
+      highlights,
+      displayOrder
+    }`;
+    const data = await sanityClient.fetch(query);
+    return data || [];
+  } catch (err) {
+    console.error("Sanity fetch error (college prospectus):", err);
     return [];
   }
 }

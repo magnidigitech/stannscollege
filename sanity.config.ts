@@ -1328,8 +1328,44 @@ export default defineConfig({
         type: "document",
         fields: [
           { name: "year", title: "Academic Year", type: "string" },
+          { name: "title", title: "Handbook Title", type: "string" },
           { name: "file", title: "Handbook PDF File", type: "file" },
           { name: "order", title: "Sorting Order", type: "number" }
+        ]
+      },
+      {
+        name: "collegeBrochure",
+        title: "College & Course Brochures",
+        type: "document",
+        fields: [
+          { name: "title", title: "Brochure Title", type: "string" },
+          { name: "subtitle", title: "Subtitle / Tagline", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "category", title: "Category", type: "string" },
+          { name: "description", title: "Description", type: "text", rows: 3 },
+          { name: "file", title: "Brochure PDF / Document", type: "file" },
+          { name: "coverImage", title: "Cover Image / Flyer Image", type: "image", options: { hotspot: true } },
+          { name: "isImage", title: "Is Flyer Image", type: "boolean", initialValue: false },
+          { name: "displayOrder", title: "Display Order", type: "number" }
+        ]
+      },
+      {
+        name: "collegeProspectus",
+        title: "Admissions Prospectus",
+        type: "document",
+        fields: [
+          { name: "title", title: "Prospectus Title", type: "string" },
+          { name: "academicYear", title: "Academic Year", type: "string" },
+          { name: "description", title: "Description", type: "text", rows: 3 },
+          { name: "file", title: "Prospectus PDF File", type: "file" },
+          { name: "isCurrent", title: "Is Current Official Edition", type: "boolean", initialValue: true },
+          {
+            name: "highlights",
+            title: "Prospectus Highlights",
+            type: "array",
+            of: [{ type: "string" }]
+          },
+          { name: "displayOrder", title: "Display Order", type: "number" }
         ]
       },
       {

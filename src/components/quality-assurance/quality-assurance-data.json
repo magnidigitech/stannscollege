@@ -10335,7 +10335,18 @@
       "docUrl": "/documents/DefaultFile_1.pdf"
     }
   ],
-  "iqacGalleryTable": [],
+  "iqacGalleryTable": [
+    {
+      "year": "2024–2025",
+      "title": "NAAC Peer Team Assessment Visit & Institutional Gallery",
+      "galleryUrl": "/naac-peer-team"
+    },
+    {
+      "year": "2024–2025",
+      "title": "IQAC Faculty Enrichment & Quality Orientation Workshop",
+      "galleryUrl": "/naac-peer-team"
+    }
+  ],
   "naacMasterDocs": [
     {
       "sNo": 1,
