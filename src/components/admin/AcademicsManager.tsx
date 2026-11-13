@@ -91,33 +91,58 @@ interface AcademicDepartmentConfig {
 }
 
 const ACADEMIC_DEPARTMENTS_LIST: AcademicDepartmentConfig[] = [
+  { id: "1", slug: "department-of-commerce", name: "1. Department of Commerce", defaultPass: "commerce@2026" },
+  { id: "2", slug: "department-of-bca", name: "2. BCA – Bachelor of Computer Applications", defaultPass: "bca@2026", aliases: ["department-of-computer-applications-bca"] },
+  { id: "3", slug: "department-of-computer-science", name: "3. Computer Science", defaultPass: "computerscience@2026", aliases: ["department-of-computer-science-applications"] },
+  { id: "4", slug: "department-of-artificial-intelligence", name: "4. Artificial Intelligence (AI)", defaultPass: "ai@2026", aliases: ["department-of-computer-science-cs-artificial-intelligence"] },
+  { id: "5", slug: "department-of-mathematics", name: "5. Department of Mathematics", defaultPass: "mathematics@2026" },
+  { id: "6", slug: "department-of-physics", name: "6. Department of Physics", defaultPass: "physics@2026" },
+  { id: "7", slug: "department-of-statistics", name: "7. Department of Statistics", defaultPass: "statistics@2026" },
+  { id: "8", slug: "department-of-biotechnology", name: "8. Department of Biotechnology", defaultPass: "biotechnology@2026" },
+  { id: "9", slug: "department-of-microbiology", name: "9. Department of Microbiology", defaultPass: "microbiology@2026" },
+  { id: "10", slug: "department-of-botany", name: "10. Department of Botany", defaultPass: "botany@2026" },
+  { id: "11", slug: "department-of-chemistry", name: "11. Department of Chemistry", defaultPass: "chemistry@2026" },
+  { id: "12", slug: "department-of-mca", name: "12. Department of MCA", defaultPass: "mca@2026" },
+  { id: "13", slug: "department-of-mba", name: "13. Department of MBA", defaultPass: "mba@2026" },
+  { id: "14", slug: "department-of-english", name: "14. Department of English", defaultPass: "english@2026" },
+  { id: "15", slug: "department-of-telugu-wing", name: "15. Telugu Wing (Oriental Languages)", defaultPass: "telugu@2026", aliases: ["department-of-oriental-languages"] },
+  { id: "16", slug: "department-of-sanskrit-hindi-wing", name: "16. Sanskrit & Hindi Wing (Oriental Languages)", defaultPass: "sanskirthindi@2026", aliases: ["department-of-oriental-languages-telugu-sanskrit-hindi"] },
+];
 
-  { id: "1", slug: "department-of-commerce", name: "Department of Commerce", defaultPass: "commerce@2026" },
+interface InstitutionalCommitteeConfig {
+  id: string;
+  slug: string;
+  name: string;
+  scope: string;
+  defaultPass: string;
+  liveUrl: string;
+}
 
-  { id: "2", slug: "department-of-computer-science-applications", name: "Dept. of Computer Science & Applications", defaultPass: "computerscience@2026", aliases: ["department-of-computer-applications-bca", "department-of-computer-science-cs-artificial-intelligence"] },
-
-  { id: "3", slug: "department-of-mathematics", name: "Department of Mathematics", defaultPass: "mathematics@2026" },
-
-  { id: "4", slug: "department-of-physics", name: "Department of Physics", defaultPass: "physics@2026" },
-
-  { id: "5", slug: "department-of-statistics", name: "Department of Statistics", defaultPass: "statistics@2026" },
-
-  { id: "6", slug: "department-of-biotechnology", name: "Department of Biotechnology", defaultPass: "biotechnology@2026" },
-
-  { id: "7", slug: "department-of-microbiology", name: "Department of Microbiology", defaultPass: "microbiology@2026" },
-
-  { id: "8", slug: "department-of-botany", name: "Department of Botany", defaultPass: "botany@2026" },
-
-  { id: "9", slug: "department-of-chemistry", name: "Department of Chemistry", defaultPass: "chemistry@2026" },
-
-  { id: "10", slug: "department-of-english", name: "Department of English", defaultPass: "english@2026" },
-
-  { id: "11", slug: "department-of-oriental-languages", name: "Department of Oriental Languages", defaultPass: "orientallanguages@2026", aliases: ["department-of-oriental-languages-telugu-sanskrit-hindi"] },
-
-  { id: "12", slug: "department-of-mca", name: "Department of MCA", defaultPass: "mca@2026" },
-
-  { id: "13", slug: "department-of-mba", name: "Department of MBA", defaultPass: "mba@2026" },
-
+const INSTITUTIONAL_COMMITTEES_LIST: InstitutionalCommitteeConfig[] = [
+  {
+    id: "PUB",
+    slug: "publications",
+    name: "College Publications & Media Cell",
+    scope: "The Chronicle Newsletters, Annite Magazines, Student Handbook & Course Flyers",
+    defaultPass: "publications@2026",
+    liveUrl: "/admissions"
+  },
+  {
+    id: "EVT",
+    slug: "events",
+    name: "Events & Activities Committee",
+    scope: "Upcoming & Past Events, Celebrations, Photo Gallery & Reports",
+    defaultPass: "events@2026",
+    liveUrl: "/campus-life/events"
+  },
+  {
+    id: "NOTC",
+    slug: "notices",
+    name: "Notice Board & Circulars Hub",
+    scope: "Official Announcements, Examination Circulars & Timetable Releases",
+    defaultPass: "notices@2026",
+    liveUrl: "/campus-life/events"
+  }
 ];
 
 interface Programme {
@@ -321,7 +346,7 @@ export function AcademicsManager({
 
   const handleResetAllPasswords = () => {
 
-    if (!window.confirm("Are you sure you want to reset all department passwords to their default 'departmentname@2026' pattern?")) {
+    if (!window.confirm("Are you sure you want to reset all department and committee passwords to their default 'entity@2026' pattern?")) {
 
       return;
 
@@ -342,6 +367,12 @@ export function AcademicsManager({
         });
 
       }
+
+    });
+
+    INSTITUTIONAL_COMMITTEES_LIST.forEach((c) => {
+
+      resetMap[c.slug] = c.defaultPass;
 
     });
 
@@ -449,7 +480,25 @@ export function AcademicsManager({
 
           });
 
+          INSTITUTIONAL_COMMITTEES_LIST.forEach((c) => {
+
+            defaultPassMap[c.slug] = c.defaultPass;
+
+          });
+
           mergedData.departmentPasswords = defaultPassMap;
+
+        } else {
+
+          INSTITUTIONAL_COMMITTEES_LIST.forEach((c) => {
+
+            if (!mergedData.departmentPasswords[c.slug]) {
+
+              mergedData.departmentPasswords[c.slug] = c.defaultPass;
+
+            }
+
+          });
 
         }
 
@@ -2103,7 +2152,7 @@ export function AcademicsManager({
 
               <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
 
-                13 Academic Departments
+                16 Academic Departments
 
               </span>
 
@@ -2465,7 +2514,7 @@ export function AcademicsManager({
 
                               <Link
 
-                                href="/academics/departments/update"
+                                href={`/academics/departments/update?dept=${dept.slug}`}
 
                                 target="_blank"
 
@@ -2535,6 +2584,174 @@ export function AcademicsManager({
 
             </div>
 
+          </div>
+
+          {/* Institutional Committees & Media Cells Passwords */}
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+            <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-amber-50/60 via-indigo-50/40 to-white">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-md bg-amber-100 text-amber-900 font-extrabold text-[10px] uppercase tracking-wider">
+                    Specialized Portals
+                  </span>
+                  <span className="text-xs font-semibold text-slate-500">• Single-Password Self-Service Access</span>
+                </div>
+                <h3 className="font-outfit text-lg font-black text-slate-900 mt-1">
+                  Institutional Committees &amp; Media Cell Passwords (3)
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5 max-w-2xl">
+                  Dedicated self-service login credentials for Publications (The Chronicle newsletters, Annite magazines, Student Handbooks &amp; Course Brochures), Events &amp; Activities, and Notice Board &amp; Circulars.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={handleSavePasswordsDirectly}
+                  disabled={passwordSaving}
+                  className="px-4 py-2 bg-[#002147] hover:bg-[#00387a] disabled:opacity-60 text-white rounded-xl text-xs font-bold transition shadow-xs inline-flex items-center gap-2 cursor-pointer"
+                >
+                  {passwordSaving ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Saving...</span>
+                    </>
+                  ) : passwordSaveSuccess ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-300" />
+                      <span>Saved!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Save All Passwords</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="bg-slate-50/80 border-b border-slate-150 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+                    <th className="py-3 px-4 text-center w-16">Code</th>
+                    <th className="py-3 px-4">Committee / Media Cell</th>
+                    <th className="py-3 px-4">Portal Identifier</th>
+                    <th className="py-3 px-4 min-w-[280px]">Access Password</th>
+                    <th className="py-3 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {INSTITUTIONAL_COMMITTEES_LIST.map((comm) => {
+                    const currentPass = data?.departmentPasswords?.[comm.slug] ?? comm.defaultPass;
+                    const isVisible = !!visiblePasswords[comm.slug];
+                    const isCopied = copiedDept === comm.slug;
+
+                    return (
+                      <tr key={comm.slug} className="hover:bg-slate-50/70 transition-colors">
+                        <td className="py-3.5 px-4 text-center">
+                          <span className="font-extrabold text-[11px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md">
+                            {comm.id}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <div>
+                            <span className="font-extrabold text-slate-900 block">{comm.name}</span>
+                            <span className="text-[11px] text-slate-500 font-medium">{comm.scope}</span>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                            {comm.slug}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-1.5 max-w-sm">
+                            <div className="relative flex-1">
+                              <input
+                                type={isVisible ? "text" : "password"}
+                                value={currentPass}
+                                onChange={(e) => handlePasswordChange(comm.slug, e.target.value)}
+                                className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-xl px-3 py-1.5 pr-8 text-xs font-mono font-bold text-[#002147] focus:outline-none focus:ring-1 focus:ring-[#002147]/20 shadow-xs"
+                                placeholder="Set password"
+                              />
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setVisiblePasswords((prev) => ({
+                                    ...prev,
+                                    [comm.slug]: !prev[comm.slug],
+                                  }))
+                                }
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                                title={isVisible ? "Hide Password" : "Show Password"}
+                              >
+                                {isVisible ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              </button>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => handleCopyPassword(comm.slug, currentPass)}
+                              className={`p-1.5 rounded-lg border transition shrink-0 ${
+                                isCopied
+                                  ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                                  : "bg-white text-slate-500 hover:text-[#002147] hover:bg-slate-50 border-slate-200"
+                              }`}
+                              title={isCopied ? "Copied!" : "Copy password to clipboard"}
+                            >
+                              {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleResetPassword(comm.slug, comm.defaultPass)}
+                              className="p-1.5 rounded-lg bg-white text-slate-400 hover:text-amber-600 hover:bg-amber-50 border border-slate-200 transition shrink-0"
+                              title={`Reset to default (${comm.defaultPass})`}
+                            >
+                              <RotateCcw className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <Link
+                              href={`/academics/departments/update?role=${comm.slug}`}
+                              target="_blank"
+                              className="px-2.5 py-1 text-[11px] font-bold text-[#002147] bg-indigo-50 hover:bg-indigo-100 rounded-lg transition inline-flex items-center gap-1 border border-indigo-200"
+                              title="Open Portal Login in new tab"
+                            >
+                              <Lock className="w-3 h-3" /> Login as Cell
+                            </Link>
+                            <Link
+                              href={comm.liveUrl}
+                              target="_blank"
+                              className="p-1.5 text-slate-400 hover:text-[#002147] hover:bg-slate-100 rounded-lg transition shrink-0"
+                              title="View Public Page"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="p-4 bg-slate-50/70 border-t border-slate-150 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-medium">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>
+                  Committee credentials grant direct upload and management access to Sanity CMS collections for right drawer media, events, and notices.
+                </span>
+              </div>
+              <span className="text-slate-400 font-mono text-[10px]">
+                Global Master Password: Active
+              </span>
+            </div>
           </div>
 
           {/* Department Directory Quick Links */}

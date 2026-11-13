@@ -6,9 +6,12 @@ import path from "path";
 
 const DEFAULT_PASSWORDS: Record<string, string> = {
   "department-of-commerce": "commerce@2026",
+  "department-of-bca": "bca@2026",
+  "department-of-computer-science": "computerscience@2026",
+  "department-of-artificial-intelligence": "ai@2026",
   "department-of-computer-science-applications": "computerscience@2026",
-  "department-of-computer-applications-bca": "computerscience@2026",
-  "department-of-computer-science-cs-artificial-intelligence": "computerscience@2026",
+  "department-of-computer-applications-bca": "bca@2026",
+  "department-of-computer-science-cs-artificial-intelligence": "ai@2026",
   "department-of-mathematics": "mathematics@2026",
   "department-of-physics": "physics@2026",
   "department-of-statistics": "statistics@2026",
@@ -17,10 +20,15 @@ const DEFAULT_PASSWORDS: Record<string, string> = {
   "department-of-botany": "botany@2026",
   "department-of-chemistry": "chemistry@2026",
   "department-of-english": "english@2026",
+  "department-of-telugu-wing": "telugu@2026",
+  "department-of-sanskrit-hindi-wing": "sanskirthindi@2026",
   "department-of-oriental-languages": "orientallanguages@2026",
   "department-of-oriental-languages-telugu-sanskrit-hindi": "orientallanguages@2026",
   "department-of-mca": "mca@2026",
   "department-of-mba": "mba@2026",
+  "publications": "publications@2026",
+  "events": "events@2026",
+  "notices": "notices@2026",
 };
 
 const MASTER_PASSWORD = "Stannsf@2026";
@@ -142,8 +150,34 @@ export async function POST(req: NextRequest) {
     // Set updated gallery array back into the document data
     departmentData.gallery = gallery;
 
-    // ── Process faculty member photo uploads & sync with central Sanity facultyProfileNew
-    const facultyMembers = Array.isArray(departmentData.facultyMembers) ? departmentData.facultyMembers : [];
+    // ── Deduplicate faculty members array
+    const cleanFacultyMap = new Map<string, any>();
+    const normNameClean = (n: string) => (n || "").toLowerCase().replace(/^(dr|mr|mrs|ms|miss|prof|sr)\.?\s*/gi, "").replace(/[^\w\s]/gi, "").replace(/\s+/g, " ").trim();
+    for (const m of (Array.isArray(departmentData.facultyMembers) ? departmentData.facultyMembers : [])) {
+      if (!m || !m.name?.trim()) continue;
+      const empId = (m.employeeId || "").trim().toUpperCase();
+      const nName = normNameClean(m.name);
+      let matchKey: string | null = null;
+      if (empId && cleanFacultyMap.has(`EMP:${empId}`)) matchKey = `EMP:${empId}`;
+      else if (nName && cleanFacultyMap.has(`NAME:${nName}`)) matchKey = `NAME:${nName}`;
+      else {
+        for (const [k, v] of cleanFacultyMap.entries()) {
+          const vEmp = (v.employeeId || "").trim().toUpperCase();
+          const vName = normNameClean(v.name);
+          if ((empId && vEmp && empId === vEmp) || (nName && vName && nName === vName)) {
+            matchKey = k;
+            break;
+          }
+        }
+      }
+      if (matchKey) {
+        const exist = cleanFacultyMap.get(matchKey);
+        cleanFacultyMap.set(matchKey, { ...exist, ...m, imageUrl: m.imageUrl || exist.imageUrl, photoAssetId: m.photoAssetId || exist.photoAssetId });
+      } else {
+        cleanFacultyMap.set(empId ? `EMP:${empId}` : `NAME:${nName}`, m);
+      }
+    }
+    const facultyMembers = Array.from(cleanFacultyMap.values());
     const deptCanonicalName = selectedDeptId.replace("department-of-", "").replace(/-/g, " ");
 
     for (let i = 0; i < facultyMembers.length; i++) {

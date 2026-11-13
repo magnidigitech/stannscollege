@@ -8,6 +8,7 @@ interface DepartmentCardData {
   id: string;
   name: string;
   shortName: string;
+  subtext?: string;
   quote: string;
   imageUrl: string;
   established?: string;
@@ -23,12 +24,31 @@ const departmentHubCards: DepartmentCardData[] = [
     established: "1997"
   },
   {
-    id: "department-of-computer-science-applications",
-    name: "Department of Computer Science & Applications",
-    shortName: "Computer Science",
-    quote: "“Innovating algorithms, transforming software, and shaping the digital future with computational excellence.”",
+    id: "department-of-bca",
+    name: "BCA – Bachelor of Computer Applications",
+    shortName: "BCA",
+    subtext: "Under Dept. of Computer Science & Applications",
+    quote: "“Empowering students in full-stack computing, enterprise software architectures, and web application design.”",
     imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800",
     established: "1997"
+  },
+  {
+    id: "department-of-computer-science",
+    name: "Computer Science",
+    shortName: "Computer Science",
+    subtext: "Under Dept. of Computer Science & Applications",
+    quote: "“Innovating algorithms, transforming software, and shaping the digital future with computational excellence.”",
+    imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800",
+    established: "1997"
+  },
+  {
+    id: "department-of-artificial-intelligence",
+    name: "Artificial Intelligence (AI)",
+    shortName: "Artificial Intelligence (AI)",
+    subtext: "Under Dept. of Computer Science & Applications",
+    quote: "“Pioneering deep learning, neural networks, natural language processing, and next-generation cognitive systems.”",
+    imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800",
+    established: "2023"
   },
   {
     id: "department-of-mathematics",
@@ -87,22 +107,6 @@ const departmentHubCards: DepartmentCardData[] = [
     established: "1997"
   },
   {
-    id: "department-of-english",
-    name: "Department of English",
-    shortName: "English",
-    quote: "“To delight and to instruct is the end of all learning – François Rabelais”",
-    imageUrl: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800",
-    established: "1997"
-  },
-  {
-    id: "department-of-oriental-languages",
-    name: "Department of Oriental Languages",
-    shortName: "Oriental Languages",
-    quote: "“Desa Bhashalandu Telugu Lessa – Preserving classical languages, culture, and rich heritage.”",
-    imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800",
-    established: "1997"
-  },
-  {
     id: "department-of-mca",
     name: "Department of MCA",
     shortName: "Master of Computer Applications",
@@ -117,6 +121,33 @@ const departmentHubCards: DepartmentCardData[] = [
     quote: "“Cultivating visionary executives, strategic minds, and transformative business leaders.”",
     imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800",
     established: "2008"
+  },
+  {
+    id: "department-of-english",
+    name: "Department of English",
+    shortName: "English",
+    subtext: "Under Dept. of Oriental Languages",
+    quote: "“To delight and to instruct is the end of all learning – François Rabelais”",
+    imageUrl: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800",
+    established: "1997"
+  },
+  {
+    id: "department-of-telugu-wing",
+    name: "Telugu Wing",
+    shortName: "Telugu Wing",
+    subtext: "Under Dept. of Oriental Languages",
+    quote: "“Desa Bhashalandu Telugu Lessa – Preserving classical languages, culture, and rich heritage.”",
+    imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800",
+    established: "1997"
+  },
+  {
+    id: "department-of-sanskrit-hindi-wing",
+    name: "Sanskrit & Hindi Wing",
+    shortName: "Sanskrit & Hindi Wing",
+    subtext: "Under Dept. of Oriental Languages",
+    quote: "“Fostering classical Sanskrit wisdom and national Hindi literature and linguistics.”",
+    imageUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800",
+    established: "1997"
   }
 ];
 
@@ -137,7 +168,7 @@ export function AllDepartmentsHub() {
         </p>
       </div>
 
-      {/* Grid of 13 Department Cards matching Image 2 style */}
+      {/* Grid of 16 Department Cards matching Image 2 style */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
         {departmentHubCards.map((dept) => (
           <Link
@@ -157,11 +188,16 @@ export function AllDepartmentsHub() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/30 group-hover:opacity-0 transition-opacity duration-300" />
 
             {/* Top Content: Department Name & Authentic Quote */}
-            <div className="relative z-10 flex flex-col gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
+            <div className="relative z-10 flex flex-col gap-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
+              {dept.subtext && (
+                <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded-md w-fit border border-amber-300/30">
+                  {dept.subtext}
+                </span>
+              )}
               <h3 className="font-outfit text-xl sm:text-2xl font-black text-white tracking-wide leading-tight group-hover:text-blue-100 transition-colors">
                 {dept.shortName}
               </h3>
-              <p className="text-slate-100 text-xs sm:text-sm font-medium leading-relaxed line-clamp-3">
+              <p className="text-slate-100 text-xs sm:text-sm font-medium leading-relaxed line-clamp-3 mt-0.5">
                 {dept.quote}
               </p>
             </div>

@@ -119,7 +119,7 @@
   "pgProgrammes": [
     {
       "sNo": 1,
-      "name": "MCA – Master of Computer Applications",
+      "name": "MCA \u2013 Master of Computer Applications",
       "sanctionedIntake": 60,
       "convenerQuota": 42,
       "managementQuota": 18,
@@ -129,7 +129,7 @@
     },
     {
       "sNo": 2,
-      "name": "MBA – Master of Business Administration",
+      "name": "MBA \u2013 Master of Business Administration",
       "sanctionedIntake": 60,
       "convenerQuota": 42,
       "managementQuota": 18,
@@ -141,44 +141,44 @@
   "academicCalendar": {
     "ug": [
       {
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       }
     ],
     "pg": [
       {
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "anuCalendarUrl": "/documents/DefaultFile_1.pdf",
         "aipUrl": "/documents/DefaultFile_1.pdf"
       }
@@ -187,44 +187,44 @@
   "timetables": {
     "ug": [
       {
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       }
     ],
     "pg": [
       {
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       },
       {
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "oddSemUrl": "/documents/DefaultFile_1.pdf",
         "evenSemUrl": "/documents/DefaultFile_1.pdf"
       }
@@ -235,13 +235,13 @@
       {
         "sNo": 1,
         "title": "Curriculum Framework of B.A./B.Com./B.B.A. (Honours)",
-        "applicableFrom": "A.Y. 2025–26",
+        "applicableFrom": "A.Y. 2025\u201326",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
         "title": "Curriculum Framework of B.Sc./BCA (Honours)",
-        "applicableFrom": "A.Y. 2025–26",
+        "applicableFrom": "A.Y. 2025\u201326",
         "docUrl": "/documents/DefaultFile_1.pdf"
       }
     ],
@@ -249,43 +249,43 @@
       {
         "sNo": 1,
         "title": "Previous UG Curriculum Framework / Regulations",
-        "applicableFrom": "A.Y. 2024–25",
+        "applicableFrom": "A.Y. 2024\u201325",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
         "title": "Previous UG Curriculum Framework / Regulations",
-        "applicableFrom": "A.Y. 2023–24",
+        "applicableFrom": "A.Y. 2023\u201324",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 3,
         "title": "Previous UG Curriculum Framework / Regulations",
-        "applicableFrom": "A.Y. 2022–23",
+        "applicableFrom": "A.Y. 2022\u201323",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 4,
         "title": "Previous UG Curriculum Framework / Regulations",
-        "applicableFrom": "A.Y. 2021–22",
+        "applicableFrom": "A.Y. 2021\u201322",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 5,
         "title": "CBCS Curriculum Framework",
-        "applicableFrom": "2020–21 onwards",
+        "applicableFrom": "2020\u201321 onwards",
         "docUrl": "/documents/DefaultFile_1.pdf"
       }
     ],
     "ugSingleMajor": [
       {
         "sNo": 1,
-        "title": "B.Com. Honours – General",
+        "title": "B.Com. Honours \u2013 General",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b46d86e6c244fc3132d7ec3425a8f22be761bd64.pdf"
       },
       {
         "sNo": 2,
-        "title": "B.Com. Honours – Computer Applications",
+        "title": "B.Com. Honours \u2013 Computer Applications",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/5892649ce84a73d5ddcb8598fc643b30087761a0.pdf"
       },
       {
@@ -295,42 +295,42 @@
       },
       {
         "sNo": 4,
-        "title": "B.Sc. Honours – Computer Science",
+        "title": "B.Sc. Honours \u2013 Computer Science",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/840d3f132864de2876a917cd5f2d3f88caa655c0.pdf"
       },
       {
         "sNo": 5,
-        "title": "B.Sc. Honours – Artificial Intelligence",
+        "title": "B.Sc. Honours \u2013 Artificial Intelligence",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/d9c6b5cb1ba27bfb83aeebbca9633e87131cf983.pdf"
       },
       {
         "sNo": 6,
-        "title": "B.Sc. Honours – Mathematics",
+        "title": "B.Sc. Honours \u2013 Mathematics",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/20977a63551636968da368c8f257c5d72ffb12fc.pdf"
       },
       {
         "sNo": 7,
-        "title": "B.Sc. Honours – Physics",
+        "title": "B.Sc. Honours \u2013 Physics",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/9a5a5fc305641fd353937e0cb0d815b7fe9f0429.pdf"
       },
       {
         "sNo": 8,
-        "title": "B.Sc. Honours – Statistics",
+        "title": "B.Sc. Honours \u2013 Statistics",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/7c4caea336861704a9baa91d4d1e5db58c831d22.pdf"
       },
       {
         "sNo": 9,
-        "title": "B.Sc. Honours – Biotechnology",
+        "title": "B.Sc. Honours \u2013 Biotechnology",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/464d23fee6f59c38e5ab6c43d26ce07a10f8750c.pdf"
       },
       {
         "sNo": 10,
-        "title": "B.Sc. Honours – Microbiology",
+        "title": "B.Sc. Honours \u2013 Microbiology",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e695e09ecc68d206a00c54e26b43907f9d32465c.pdf"
       },
       {
         "sNo": 11,
-        "title": "B.Sc. Honours – Chemistry",
+        "title": "B.Sc. Honours \u2013 Chemistry",
         "docUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c238d73cc07c5ec0b78fcd914c99494ef47f7e3d.pdf"
       }
     ],
@@ -556,13 +556,13 @@
       {
         "sNo": 1,
         "title": "Community Service Project",
-        "timing": "At the End of I Year – II Semester (During Summer Vacation) - Minimum 80 hours with 1 Credit",
+        "timing": "At the End of I Year \u2013 II Semester (During Summer Vacation) - Minimum 80 hours with 1 Credit",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
-        "title": "Internship/Apprenticeship/OJT – On-the-Job Training",
-        "timing": "Semester Internship during III Year – VI Semester - A minimum of 180 Hours (8 weeks) with 3 Credits",
+        "title": "Internship/Apprenticeship/OJT \u2013 On-the-Job Training",
+        "timing": "Semester Internship during III Year \u2013 VI Semester - A minimum of 180 Hours (8 weeks) with 3 Credits",
         "docUrl": "/documents/DefaultFile_1.pdf"
       }
     ],
@@ -581,15 +581,15 @@
   },
   "academicRegulations": [
     {
-      "year": "2026–27",
+      "year": "2026\u201327",
       "docUrl": "/documents/DefaultFile_1.pdf"
     },
     {
-      "year": "2025–26",
+      "year": "2025\u201326",
       "docUrl": "/documents/DefaultFile_1.pdf"
     },
     {
-      "year": "2024–25",
+      "year": "2024\u201325",
       "docUrl": "/documents/DefaultFile_1.pdf"
     }
   ],
@@ -620,7 +620,7 @@
         "desc": "Enables students to access learning resources for preparation, revision and self-directed learning beyond classroom hours."
       },
       {
-        "title": "Faculty–Student Engagement",
+        "title": "Faculty\u2013Student Engagement",
         "desc": "Supports digital interaction and academic communication between faculty and students."
       },
       {
@@ -642,241 +642,241 @@
       {
         "sNo": 1,
         "title": "ILMS Annual Report",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
         "title": "ILMS Usage Statistics / Analytics Report",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 3,
         "title": "Course-wise ILMS / Digital Resource Details",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 4,
         "title": "Faculty Participation / Usage Report",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 5,
         "title": "Sample Digital Learning Resources",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 6,
         "title": "Sample Digital Learning Activities / Assessments",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 7,
         "title": "ILMS Orientation / Capacity-Building Record",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 8,
         "title": "Student Usage / Feedback Analysis",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 9,
         "title": "ILMS Screenshots / System Evidence",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 10,
         "title": "IQAC Review / Quality Enhancement Record",
-        "year": "2026–2027",
+        "year": "2026\u20132027",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 1,
         "title": "ILMS Annual Report",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
         "title": "ILMS Usage Statistics / Analytics Report",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 3,
         "title": "Course-wise ILMS / Digital Resource Details",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 4,
         "title": "Faculty Participation / Usage Report",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 5,
         "title": "Sample Digital Learning Resources",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 6,
         "title": "Sample Digital Learning Activities / Assessments",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 7,
         "title": "ILMS Orientation / Capacity-Building Record",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 8,
         "title": "Student Usage / Feedback Analysis",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 9,
         "title": "ILMS Screenshots / System Evidence",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 10,
         "title": "IQAC Review / Quality Enhancement Record",
-        "year": "2025–2026",
+        "year": "2025\u20132026",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 1,
         "title": "ILMS Annual Report",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
         "title": "ILMS Usage Statistics / Analytics Report",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 3,
         "title": "Course-wise ILMS / Digital Resource Details",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 4,
         "title": "Faculty Participation / Usage Report",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 5,
         "title": "Sample Digital Learning Resources",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 6,
         "title": "Sample Digital Learning Activities / Assessments",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 7,
         "title": "ILMS Orientation / Capacity-Building Record",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 8,
         "title": "Student Usage / Feedback Analysis",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 9,
         "title": "ILMS Screenshots / System Evidence",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 10,
         "title": "IQAC Review / Quality Enhancement Record",
-        "year": "2024–2025",
+        "year": "2024\u20132025",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 1,
         "title": "ILMS Annual Report",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 2,
         "title": "ILMS Usage Statistics / Analytics Report",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 3,
         "title": "Course-wise ILMS / Digital Resource Details",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 4,
         "title": "Faculty Participation / Usage Report",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 5,
         "title": "Sample Digital Learning Resources",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 6,
         "title": "Sample Digital Learning Activities / Assessments",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 7,
         "title": "ILMS Orientation / Capacity-Building Record",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 8,
         "title": "Student Usage / Feedback Analysis",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 9,
         "title": "ILMS Screenshots / System Evidence",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       },
       {
         "sNo": 10,
         "title": "IQAC Review / Quality Enhancement Record",
-        "year": "2023–2024",
+        "year": "2023\u20132024",
         "docUrl": "/documents/DefaultFile_1.pdf"
       }
     ]
@@ -887,80 +887,139 @@
       "name": "Department of Commerce",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Commerce was established in 1997 with the establishment of St. Ann’s College for Women, Gorantla, Guntur. The Department provides quality education in Commerce with focus on knowledge, skills, employability, and professional competencies. Through student-centred and application-oriented teaching, the Department promotes practical learning, communication, leadership, and participation in academic and extension activities. It strives to empower women students for higher education, employment, entrepreneurship, and responsible citizenship.",
+      "description": "The Department of Commerce is committed to imparting quality education in commerce, accounting, finance, taxation and business management.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "galleryImages": []
     },
     {
-      "id": "department-of-computer-science-applications",
-      "name": "Department of Computer Science & Applications",
+      "id": "department-of-bca",
+      "name": "BCA \u2013 Bachelor of Computer Applications",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Computer Science & Applications provides state-of-the-art computational education, preparing students for cutting-edge careers in software development, data science, artificial intelligence, and cloud architectures. The department emphasizes programming excellence, algorithmic thinking, and modern software engineering practices.",
+      "description": "The BCA programme under the Department of Computer Science & Applications provides industry-aligned computing education, software development skills, full-stack programming, and cloud technologies.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
-      "galleryImages": []
+      "galleryImages": [],
+      "subtext": "(Under the Department of Computer Science & Applications)"
+    },
+    {
+      "id": "department-of-computer-science",
+      "name": "Computer Science",
+      "established": "1997",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Computer Science wing fosters algorithmic thinking, software engineering, databases, networking, and core computer science fundamentals for modern technological careers.",
+      "activityReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "annualReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "galleryImages": [],
+      "subtext": "(Under the Department of Computer Science & Applications)"
+    },
+    {
+      "id": "department-of-artificial-intelligence",
+      "name": "Artificial Intelligence (AI)",
+      "established": "2023",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Artificial Intelligence wing equips students with deep expertise in machine learning, neural networks, natural language processing, computer vision, and intelligent automated systems.",
+      "activityReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "annualReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "galleryImages": [],
+      "subtext": "(Under the Department of Computer Science & Applications)"
     },
     {
       "id": "department-of-mathematics",
       "name": "Department of Mathematics",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Mathematics nurtures analytical rigor, logical deduction, and mathematical modeling capabilities. Students are equipped with strong foundations in pure and applied mathematics, preparing them for research, competitive examinations, data analysis, and academia.",
+      "description": "The Department of Mathematics is committed to fostering mathematical knowledge, analytical thinking and problem-solving skills among students. The department aims to develop logical reasoning, quantitative aptitude and computational abilities through effective teaching and experiential learning.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -971,24 +1030,24 @@
       "name": "Department of Physics",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Physics provides comprehensive scientific training through modern experimental laboratories and solid theoretical curriculum. It promotes scientific enquiry, critical thinking, and innovation in experimental physics and electronics.",
+      "description": "The Department of Physics provides comprehensive exposure to classical mechanics, thermodynamics, quantum physics, electronics, optics, and experimental laboratory sciences.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -999,24 +1058,24 @@
       "name": "Department of Statistics",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Statistics specializes in data analysis, probability theory, statistical inference, and actuarial sciences. With hands-on computational lab training, students gain valuable proficiency in modern statistical packages and quantitative analytics.",
+      "description": "The Department of Statistics empowers students in probability theory, statistical inference, data analytics, biostatistics, and quantitative decision-making methodologies.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -1025,26 +1084,26 @@
     {
       "id": "department-of-biotechnology",
       "name": "Department of Biotechnology",
-      "established": "2002",
+      "established": "2003",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Biotechnology blends biological science with cutting-edge technological innovations. Equipped with advanced molecular biology and tissue culture laboratories, it trains students in genetic engineering, immunology, and industrial biotechnology.",
+      "description": "The Department of Biotechnology offers high-end molecular biology training, genetic engineering, tissue culture, bioinformatics, and bioprocess technology.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -1053,26 +1112,26 @@
     {
       "id": "department-of-microbiology",
       "name": "Department of Microbiology",
-      "established": "2000",
+      "established": "2003",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Microbiology fosters hands-on mastery in bacteriology, virology, mycology, and medical microbiology. Students engage in microbiological assays, diagnostic methods, and bio-processing research in fully equipped specialized laboratories.",
+      "description": "The Department of Microbiology provides rigorous scientific training in microbial genetics, immunology, virology, industrial microbiology, and diagnostic procedures.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -1083,24 +1142,24 @@
       "name": "Department of Botany",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Botany provides in-depth education in plant taxonomy, physiology, ecology, phytochemistry, and environmental conservation. Through botanical gardens, herbariums, and field excursions, students explore biological biodiversity and sustainable development.",
+      "description": "The Department of Botany specializes in plant taxonomy, physiology, ecology, phytochemistry, herbal science, and biodiversity conservation.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -1111,24 +1170,80 @@
       "name": "Department of Chemistry",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Chemistry imparts rigorous training in organic, inorganic, and physical chemistry. Featuring modern synthesis and analytical labs, the department prepares students for pharmaceuticals, chemical research, and industrial testing careers.",
+      "description": "The Department of Chemistry imparts robust foundational and advanced knowledge in organic, inorganic, physical, and analytical chemistry with hands-on laboratory experimentation.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-mca",
+      "name": "MCA \u2013 Master of Computer Applications",
+      "established": "2001",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Master of Computer Applications (MCA) provides advanced post-graduate education in enterprise application development, software engineering, cloud computing, and AI architectures.",
+      "activityReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "annualReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "galleryImages": []
+    },
+    {
+      "id": "department-of-mba",
+      "name": "MBA \u2013 Master of Business Administration",
+      "established": "2008",
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "description": "The Department of Master of Business Administration (MBA) nurtures visionary business leaders, strategic thinkers, and finance, marketing, and human resource executives.",
+      "activityReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        }
+      ],
+      "annualReports": [
+        {
+          "year": "2025\u20132026",
+          "docUrl": "/documents/DefaultFile_1.pdf"
+        },
+        {
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
@@ -1139,112 +1254,87 @@
       "name": "Department of English",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of English develops linguistic fluency, critical analysis, and professional communication skills. Through state-of-the-art language laboratory sessions, literature seminars, and soft-skill workshops, the department cultivates articulate, confident women leaders.",
+      "description": "The Department of English focuses on English literature, language phonetics, communicative proficiency, critical thinking, and soft skills development.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
-      "galleryImages": []
+      "galleryImages": [],
+      "subtext": "(Under the Department of Oriental Languages)"
     },
     {
-      "id": "department-of-oriental-languages",
-      "name": "Department of Oriental Languages",
+      "id": "department-of-telugu-wing",
+      "name": "Telugu Wing",
       "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of Oriental Languages offers rich academic immersion in Telugu, Sanskrit, and Hindi. It fosters literary appreciation, cultural heritage, linguistic accuracy, and creative writing abilities.",
+      "description": "The Telugu Wing preserves and promotes classical Telugu literature, grammar, cultural heritage, poetry, and linguistic excellence under the Department of Oriental Languages.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
-      "galleryImages": []
+      "galleryImages": [],
+      "subtext": "(Under the Department of Oriental Languages)"
     },
     {
-      "id": "department-of-mca",
-      "name": "Department of MCA",
-      "established": "2001",
+      "id": "department-of-sanskrit-hindi-wing",
+      "name": "Sanskrit & Hindi Wing",
+      "established": "1997",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of MCA provides AICTE-approved postgraduate education in software engineering, enterprise systems, database management, and mobile architectures. It emphasizes live industry projects, internships, and technical research.",
+      "description": "The Sanskrit & Hindi Wing provides classical Sanskrit and national language Hindi literary education, epics, grammar, translation studies, and comparative linguistics.",
       "activityReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
       "annualReports": [
         {
-          "year": "2025–2026",
+          "year": "2025\u20132026",
           "docUrl": "/documents/DefaultFile_1.pdf"
         },
         {
-          "year": "2024–2025",
+          "year": "2024\u20132025",
           "docUrl": "/documents/DefaultFile_1.pdf"
         }
       ],
-      "galleryImages": []
-    },
-    {
-      "id": "department-of-mba",
-      "name": "Department of MBA",
-      "established": "2003",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "description": "The Department of MBA offers AICTE-approved postgraduate education focusing on finance, human resource management, marketing, and entrepreneurship. Through corporate internships, case study pedagogy, and business simulation workshops, it prepares future business leaders.",
-      "activityReports": [
-        {
-          "year": "2025–2026",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "year": "2024–2025",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "annualReports": [
-        {
-          "year": "2025–2026",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "year": "2024–2025",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "galleryImages": []
+      "galleryImages": [],
+      "subtext": "(Under the Department of Oriental Languages)"
     }
   ],
   "teachingLearning": {
@@ -1365,7 +1455,7 @@
       "docUrl": "/documents/DefaultFile_1.pdf"
     },
     "mapping": {
-      "title": "CO–PO/PSO Mapping",
+      "title": "CO\u2013PO/PSO Mapping",
       "desc": "Course Outcomes are mapped with Programme Outcomes and Programme Specific Outcomes to assess the alignment between course-level learning and programme-level outcomes."
     },
     "attainment": {
@@ -1394,6 +1484,14 @@
     "department-of-oriental-languages": "orientallanguages@2026",
     "department-of-oriental-languages-telugu-sanskrit-hindi": "orientallanguages@2026",
     "department-of-mca": "mca@2026",
-    "department-of-mba": "mba@2026"
+    "department-of-mba": "mba@2026",
+    "department-of-bca": "bca@2026",
+    "department-of-computer-science": "computerscience@2026",
+    "department-of-artificial-intelligence": "artificialintelligence@2026",
+    "department-of-telugu-wing": "teluguwing@2026",
+    "department-of-sanskrit-hindi-wing": "sanskrithindiwing@2026",
+    "publications": "publications@2026",
+    "events": "events@2026",
+    "notices": "notices@2026"
   }
 }

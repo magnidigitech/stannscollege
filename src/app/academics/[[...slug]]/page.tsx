@@ -57,19 +57,22 @@ const navigationStructure = [
     isDropdown: true,
     icon: Building,
     items: [
-      { text: "• Dept. of Commerce", slug: "department-of-commerce" },
-      { text: "• Dept. of Computer Science & Applications", slug: "department-of-computer-science-applications" },
-      { text: "• Dept. of Mathematics", slug: "department-of-mathematics" },
-      { text: "• Dept. of Physics", slug: "department-of-physics" },
-      { text: "• Dept. of Statistics", slug: "department-of-statistics" },
-      { text: "• Dept. of Biotechnology", slug: "department-of-biotechnology" },
-      { text: "• Dept. of Microbiology", slug: "department-of-microbiology" },
-      { text: "• Dept. of Botany", slug: "department-of-botany" },
-      { text: "• Dept. of Chemistry", slug: "department-of-chemistry" },
-      { text: "• Dept. of English", slug: "department-of-english" },
-      { text: "• Dept. of Oriental Languages", slug: "department-of-oriental-languages" },
-      { text: "• Dept. of MCA", slug: "department-of-mca" },
-      { text: "• Dept. of MBA", slug: "department-of-mba" }
+      { text: "1. Dept. of Commerce", slug: "department-of-commerce" },
+      { text: "2. BCA – Bachelor of Computer Applications", slug: "department-of-bca" },
+      { text: "3. Computer Science", slug: "department-of-computer-science" },
+      { text: "4. Artificial Intelligence (AI)", slug: "department-of-artificial-intelligence" },
+      { text: "5. Dept. of Mathematics", slug: "department-of-mathematics" },
+      { text: "6. Dept. of Physics", slug: "department-of-physics" },
+      { text: "7. Dept. of Statistics", slug: "department-of-statistics" },
+      { text: "8. Dept. of Biotechnology", slug: "department-of-biotechnology" },
+      { text: "9. Dept. of Microbiology", slug: "department-of-microbiology" },
+      { text: "10. Dept. of Botany", slug: "department-of-botany" },
+      { text: "11. Dept. of Chemistry", slug: "department-of-chemistry" },
+      { text: "12. Dept. of MCA", slug: "department-of-mca" },
+      { text: "13. Dept. of MBA", slug: "department-of-mba" },
+      { text: "14. Dept. of English", slug: "department-of-english" },
+      { text: "15. Telugu Wing", slug: "department-of-telugu-wing" },
+      { text: "16. Sanskrit & Hindi Wing", slug: "department-of-sanskrit-hindi-wing" }
     ]
   },
   {
@@ -303,7 +306,6 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     if (catSlug === "departments") {
       if (isAllDeptsRoot) return <AllDepartmentsHub />;
       if (itemSlug === "update") return <DepartmentUpdateForm />;
-      if (itemSlug === "department-of-commerce") return <DepartmentOfCommerce />;
       return <DepartmentDetail itemSlug={itemSlug || ""} />;
     }
 
@@ -369,7 +371,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     if (itemSlug === "department-of-commerce") {
       pageSubtext = "The Department of Commerce is committed to imparting quality education in commerce, accounting, finance, taxation and business management, empowering students with analytical, entrepreneurial, and financial skills.";
     } else {
-      pageSubtext = "Thirteen dynamic academic departments driving specialized learning, computational labs, scientific research, and professional training.";
+      pageSubtext = "Sixteen dynamic academic departments driving specialized learning, computational labs, scientific research, and professional training.";
     }
   } else if (catSlug === "teaching-learning") {
     if (itemSlug === "teaching-learning-practices") {

@@ -18,6 +18,9 @@ function getReadClient() {
 
 const DEPT_MAP: Record<string, { name: string; slug: string }> = {
   "department-of-commerce": { name: "Commerce", slug: "commerce" },
+  "department-of-bca": { name: "Computer Science", slug: "computer-science" },
+  "department-of-computer-science": { name: "Computer Science", slug: "computer-science" },
+  "department-of-artificial-intelligence": { name: "Computer Science", slug: "computer-science" },
   "department-of-computer-science-applications": { name: "Computer Science", slug: "computer-science" },
   "department-of-computer-applications-bca": { name: "Computer Science", slug: "computer-science" },
   "department-of-computer-science-cs-artificial-intelligence": { name: "Computer Science", slug: "computer-science" },
@@ -29,6 +32,8 @@ const DEPT_MAP: Record<string, { name: string; slug: string }> = {
   "department-of-botany": { name: "Botany", slug: "botany" },
   "department-of-chemistry": { name: "Chemistry", slug: "chemistry" },
   "department-of-english": { name: "English", slug: "english" },
+  "department-of-telugu-wing": { name: "Oriental Languages", slug: "oriental-languages" },
+  "department-of-sanskrit-hindi-wing": { name: "Oriental Languages", slug: "oriental-languages" },
   "department-of-oriental-languages": { name: "Oriental Languages", slug: "oriental-languages" },
   "department-of-oriental-languages-telugu-sanskrit-hindi": { name: "Oriental Languages", slug: "oriental-languages" },
   "department-of-mca": { name: "MCA", slug: "mca" },
@@ -39,9 +44,74 @@ function normalizeName(name: string): string {
   return (name || "")
     .toLowerCase()
     .trim()
-    .replace(/^(dr|mr|mrs|ms|miss|prof|sr)\.?\s+/gi, "")
+    .replace(/^(dr|mr|mrs|ms|miss|prof|sr)\.?\s*/gi, "")
     .replace(/[^\w\s]/gi, "")
-    .replace(/\s+/g, " ");
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function findExistingKey(map: Map<string, any>, empId: string, name: string): string | null {
+  const normEmpId = (empId || "").trim().toUpperCase();
+  const normName = normalizeName(name);
+
+  if (normEmpId && map.has(`EMP:${normEmpId}`)) return `EMP:${normEmpId}`;
+  if (normName && map.has(`NAME:${normName}`)) return `NAME:${normName}`;
+
+  for (const [key, val] of map.entries()) {
+    const valEmpId = (val.employeeId || "").trim().toUpperCase();
+    const valNormName = normalizeName(val.name);
+    if (normEmpId && valEmpId && normEmpId === valEmpId) {
+      return key;
+    }
+    if (normName && valNormName && normName === valNormName) {
+      return key;
+    }
+  }
+
+  return null;
+}
+
+function upsertMember(map: Map<string, any>, m: any) {
+  const normEmpId = (m.employeeId || "").trim().toUpperCase();
+  const normName = normalizeName(m.name);
+  const existingKey = findExistingKey(map, normEmpId, m.name);
+
+  if (existingKey) {
+    const existing = map.get(existingKey)!;
+    map.set(existingKey, {
+      ...existing,
+      ...m,
+      name: m.name || existing.name,
+      employeeId: m.employeeId || existing.employeeId || "",
+      designation: m.designation || existing.designation || "Lecturer",
+      qualification: m.qualification || existing.qualification || "Postgraduate",
+      experience: m.experience || existing.experience || "—",
+      imageUrl: m.imageUrl || existing.imageUrl || "",
+      photoAssetId: m.photoAssetId || existing.photoAssetId,
+      profilePdfUrl: m.profilePdfUrl || existing.profilePdfUrl || "",
+      specialization: m.specialization || existing.specialization || "",
+      email: m.email || existing.email || "",
+      dateOfJoining: m.dateOfJoining || existing.dateOfJoining || "",
+      rejoiningDate: m.rejoiningDate || existing.rejoiningDate || "",
+    });
+  } else {
+    const newKey = normEmpId ? `EMP:${normEmpId}` : `NAME:${normName}`;
+    map.set(newKey, {
+      name: m.name,
+      designation: m.designation || "Lecturer",
+      qualification: m.qualification || "Postgraduate",
+      experience: m.experience || "—",
+      email: m.email || "",
+      employeeId: m.employeeId || "",
+      dateOfJoining: m.dateOfJoining || "",
+      rejoiningDate: m.rejoiningDate || "",
+      imageUrl: m.imageUrl || "",
+      photoAssetId: m.photoAssetId || null,
+      profilePdfUrl: m.profilePdfUrl || "",
+      specialization: m.specialization || "",
+      slug: m.slug || "",
+    });
+  }
 }
 
 export async function GET(req: NextRequest) {
@@ -139,59 +209,32 @@ export async function GET(req: NextRequest) {
 
     // Seed from static teachingFaculty
     staticTeaching.forEach((m) => {
-      const key = normalizeName(m.name);
-      memberMap.set(key, {
-        name: m.name,
-        designation: m.designation || "Lecturer",
-        qualification: m.qualification || "Postgraduate",
-        experience: m.experience || "—",
-        email: m.email || "",
-        employeeId: m.employeeId || "",
-        dateOfJoining: m.dateOfJoining || "",
-        rejoiningDate: m.rejoiningDate || "",
-        imageUrl: m.imageUrl || "",
-        profilePdfUrl: m.profilePdfUrl || "",
-        specialization: m.specialization || "",
-        slug: m.slug || "",
-      });
+      upsertMember(memberMap, m);
     });
 
     // Merge static dept.members
     if (staticDept && Array.isArray(staticDept.members)) {
       staticDept.members.forEach((m: any) => {
-        const key = normalizeName(m.name);
-        const existing = memberMap.get(key) || {};
-        memberMap.set(key, {
-          ...existing,
-          name: m.name,
-          designation: m.designation || existing.designation || "Lecturer",
-          qualification: m.qualification || existing.qualification || "Postgraduate",
-          experience: m.experience || existing.experience || "—",
-          employeeId: m.employeeId || existing.employeeId || "",
-          dateOfJoining: m.dateOfJoining || existing.dateOfJoining || "",
-          rejoiningDate: m.rejoiningDate || existing.rejoiningDate || "",
-        });
+        upsertMember(memberMap, m);
       });
     }
 
-    // Overlay live Sanity profiles (overwrites or adds new)
+    // Overlay live Sanity profiles (overwrites or adds new, preserving images)
     matchingSanity.forEach((sp) => {
-      const key = normalizeName(sp.name);
-      const existing = memberMap.get(key) || {};
-      memberMap.set(key, {
-        ...existing,
+      upsertMember(memberMap, {
         ...sp,
         _id: sp._id,
-        name: sp.name || existing.name,
-        designation: sp.designation || existing.designation || "Faculty Member",
-        qualification: sp.qualification || existing.qualification || "",
-        experience: sp.experience || existing.experience || "",
-        email: sp.email || existing.email || "",
-        employeeId: sp.employeeId || existing.employeeId || "",
-        dateOfJoining: sp.dateOfJoining || existing.dateOfJoining || "",
-        imageUrl: sp.imageUrl || existing.imageUrl || "",
-        profilePdfUrl: sp.profilePdfUrl || existing.profilePdfUrl || "",
-        specialization: sp.specialization || existing.specialization || "",
+        name: sp.name,
+        designation: sp.designation,
+        qualification: sp.qualification,
+        experience: sp.experience,
+        email: sp.email,
+        employeeId: sp.employeeId,
+        dateOfJoining: sp.dateOfJoining,
+        imageUrl: sp.imageUrl,
+        photoAssetId: sp.photoAssetId,
+        profilePdfUrl: sp.profilePdfUrl,
+        specialization: sp.specialization,
       });
     });
 

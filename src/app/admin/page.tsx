@@ -216,7 +216,7 @@ const ADMIN_NAV_GROUPS: AdminNavGroup[] = [
       {
         id: "academics-C",
         label: "C. Academic Departments",
-        badge: "13 Depts",
+        badge: "16 Depts",
         icon: Building,
         description: "Manage department portals, faculty allocations, and department-specific document registers.",
         component: AcademicsManager,

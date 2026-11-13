@@ -140,7 +140,7 @@ export const FACULTY_DATA = {
     {
       sNo: 4,
       employeeId: "SACW-004",
-      name: "Mrs.Jonnalagadda Prameela Rani",
+      name: "Mrs. Jonnalagadda Prameela Rani",
       designation: "HOD",
       department: "Commerce",
       qualification: "M.Com, M. Phil",
@@ -164,7 +164,7 @@ export const FACULTY_DATA = {
     {
       sNo: 6,
       employeeId: "SACW-001",
-      name: "Mrs.Meka Anjana Devi",
+      name: "Mrs. Meka Anjana Devi",
       designation: "Lecturer",
       department: "Commerce",
       qualification: "M.Com, M. Phil",
@@ -176,7 +176,7 @@ export const FACULTY_DATA = {
     {
       sNo: 7,
       employeeId: "SACW-006",
-      name: "Mr.Chaganti Rama Rao",
+      name: "Mr. Chaganti Rama Rao",
       designation: "HOD",
       department: "Physics",
       qualification: "M.Sc,M.Phil,B.Ed",
