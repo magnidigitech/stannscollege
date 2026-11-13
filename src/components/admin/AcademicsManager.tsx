@@ -544,37 +544,25 @@ export function AcademicsManager({
       }
 
       const res = await fetch("/api/admin/upload", {
-
         method: "POST",
-
         body: formData,
-
       });
 
       const json = await res.json();
+      const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
 
-      if (json.success && json.url) {
-
+      if (json.success && uploadedUrl) {
         if (editingItem) {
-
-          setEditingItem({ ...editingItem, [targetField]: json.url });
-
+          setEditingItem({ ...editingItem, [targetField]: uploadedUrl });
         }
-
       } else {
-
         alert(json.error || "File upload failed.");
-
       }
-
     } catch (err: any) {
-
       alert("Error uploading file: " + err.message);
-
     } finally {
-
       setIsUploading(false);
-
+      e.target.value = "";
     }
 
   };

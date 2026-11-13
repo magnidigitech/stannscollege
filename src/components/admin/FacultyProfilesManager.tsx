@@ -981,17 +981,13 @@ export function FacultyProfilesManager() {
       });
 
       const data = await res.json();
+      const uploadedUrl = data.url || data.fileUrl || data.asset?.url;
 
-      if (data.success && data.url) {
-
-        setDocFormData((prev) => ({ ...prev, fileUrl: data.url }));
-
+      if (data.success && uploadedUrl) {
+        setDocFormData((prev) => ({ ...prev, fileUrl: uploadedUrl }));
         showNotification("PDF uploaded successfully to Sanity CDN.");
-
       } else {
-
         throw new Error(data.error || "Upload failed");
-
       }
 
     } catch (err: any) {
@@ -1037,17 +1033,13 @@ export function FacultyProfilesManager() {
       });
 
       const data = await res.json();
+      const uploadedUrl = data.url || data.fileUrl || data.asset?.url;
 
-      if (data.success && data.url) {
-
-        setDocFormData((prev) => ({ ...prev, certificatesUrl: data.url }));
-
+      if (data.success && uploadedUrl) {
+        setDocFormData((prev) => ({ ...prev, certificatesUrl: uploadedUrl }));
         showNotification("Certificates PDF uploaded successfully to Sanity CDN.");
-
       } else {
-
         throw new Error(data.error || "Upload failed");
-
       }
 
     } catch (err: any) {

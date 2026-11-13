@@ -227,25 +227,18 @@ export function ResearchManager({
       });
 
       const json = await res.json();
+      const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
+      const uploadedAssetId = json.assetId || json.asset?._id || json.id;
 
-      if (json.success && json.url) {
-
+      if (json.success && uploadedUrl) {
         setFormState((prev: any) => ({
-
           ...prev,
-
-          [fieldName]: json.url,
-
-          [`${fieldName.replace("Url", "")}AssetId`]: json.assetId || json.id,
-
+          [fieldName]: uploadedUrl,
+          [`${fieldName.replace("Url", "")}AssetId`]: uploadedAssetId,
         }));
-
         notify("File uploaded successfully!", "success");
-
       } else {
-
         notify(json.error || "File upload failed.", "error");
-
       }
 
     } catch (err) {

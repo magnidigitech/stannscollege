@@ -10,8 +10,13 @@ function checkAdminAuth(req: NextRequest): boolean {
   return verifyAdminSessionToken(token) !== null;
 }
 
+export const dynamic = "force-dynamic";
+
 function getSanityClient() {
-  const token = process.env.SANITY_WRITE_TOKEN;
+  const token =
+    process.env.SANITY_WRITE_TOKEN ||
+    process.env.SANITY_API_TOKEN ||
+    process.env.SANITY_TOKEN;
   if (!token) {
     throw new Error("SANITY_WRITE_TOKEN environment variable is not configured.");
   }
@@ -59,6 +64,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      url: asset.url,
+      fileUrl: asset.url,
+      assetId: asset._id,
       asset: {
         _id: asset._id,
         url: asset.url,

@@ -533,14 +533,13 @@ export function StudentSupportManager({
       });
 
       const json = await res.json();
+      const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
 
-      if (!json.success || !json.url) {
-
+      if (!json.success || !uploadedUrl) {
         throw new Error(json.error || "Upload failed");
-
       }
 
-      handleUpdateWelfareCellField(field, json.url);
+      handleUpdateWelfareCellField(field, uploadedUrl);
 
     } catch (err: any) {
 
@@ -595,20 +594,16 @@ export function StudentSupportManager({
         });
 
         const json = await res.json();
+        const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
 
-        if (json.success && json.url) {
-
+        if (json.success && uploadedUrl) {
           const autoTitle = groupData.title.trim()
-
             ? (total > 1 ? `${groupData.title.trim()} (${i + 1})` : groupData.title.trim())
-
             : file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
 
           uploadedImages.push({
-
             id: `img-${Date.now()}-${i}`,
-
-            url: json.url,
+            url: uploadedUrl,
 
             title: autoTitle,
 

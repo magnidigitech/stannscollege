@@ -245,23 +245,17 @@ export function MandatoryDisclosuresManager({
       });
 
       const json = await res.json();
+      const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
+      const uploadedAssetId = json.assetId || json.asset?._id;
 
-      if (json.success && json.url) {
-
+      if (json.success && uploadedUrl) {
         setEditingItem((prev: any) => ({
-
           ...prev,
-
-          [fieldName]: json.url,
-
-          [fieldName === "secondFileUrl" ? "secondAssetId" : "assetId"]: json.assetId,
-
+          [fieldName]: uploadedUrl,
+          [fieldName === "secondFileUrl" ? "secondAssetId" : "assetId"]: uploadedAssetId,
         }));
-
       } else {
-
         alert(json.error || "Failed to upload PDF file to Sanity.");
-
       }
 
     } catch (err: any) {
@@ -905,27 +899,19 @@ export function MandatoryDisclosuresManager({
                               formData.append("type", "file");
 
                               const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-
                               const json = await res.json();
+                              const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
+                              const uploadedAssetId = json.assetId || json.asset?._id;
 
-                              if (json.success && json.url) {
-
+                              if (json.success && uploadedUrl) {
                                 setData({
-
                                   ...data,
-
                                   institutionalProfile: {
-
                                     ...(data.institutionalProfile || {}),
-
-                                    sanctionedOrderFileUrl: json.url,
-
-                                    sanctionedOrderAssetId: json.assetId,
-
+                                    sanctionedOrderFileUrl: uploadedUrl,
+                                    sanctionedOrderAssetId: uploadedAssetId,
                                   }
-
                                 });
-
                               }
 
                             } catch (err) {

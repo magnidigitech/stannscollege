@@ -433,17 +433,13 @@ export function QualityAssuranceManager({
       });
 
       const json = await res.json();
+      const uploadedUrl = json.url || json.fileUrl || json.asset?.url;
 
-      if (json.success && json.url) {
-
-        return json.url;
-
+      if (json.success && uploadedUrl) {
+        return uploadedUrl;
       } else {
-
         alert(json.error || "Upload failed.");
-
         return null;
-
       }
 
     } catch (err: any) {
