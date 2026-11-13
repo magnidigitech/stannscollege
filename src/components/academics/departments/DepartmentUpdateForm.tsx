@@ -1077,19 +1077,12 @@ export function DepartmentUpdateForm() {
             </button>
           </form>
 
-          <div className="text-center pt-2 border-t border-slate-100 flex items-center justify-center gap-4 text-xs text-slate-500 font-semibold">
+          <div className="text-center pt-2 border-t border-slate-100">
             <Link 
               href="/academics" 
-              className="inline-flex items-center gap-1.5 hover:text-[#002147] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-[#002147] font-semibold transition-colors"
             >
-              <ArrowLeft className="w-3.5 h-3.5" /> Academics Hub
-            </Link>
-            <span>•</span>
-            <Link 
-              href="/admin" 
-              className="inline-flex items-center gap-1.5 hover:text-[#002147] transition-colors"
-            >
-              <Lock className="w-3.5 h-3.5" /> Super Admin
+              <ArrowLeft className="w-3.5 h-3.5" /> Return to Academics
             </Link>
           </div>
         </div>
