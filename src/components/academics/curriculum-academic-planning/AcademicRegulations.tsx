@@ -1,15 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Scale, FileText } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function AcademicRegulations() {
+interface AcademicRegulationsProps {
+  data?: typeof academicsData.academicRegulations;
+}
+
+export function AcademicRegulations({ data: incomingData }: AcademicRegulationsProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const regulations = academicsData.academicRegulations;
+  const [regulations, setRegulations] = useState<typeof academicsData.academicRegulations>(incomingData || academicsData.academicRegulations);
+
+  useEffect(() => {
+    if (incomingData) {
+      setRegulations(incomingData);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && json?.data?.academicRegulations) {
+            setRegulations(json.data.academicRegulations);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live regulations data:", err));
+    }
+  }, [incomingData]);
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">

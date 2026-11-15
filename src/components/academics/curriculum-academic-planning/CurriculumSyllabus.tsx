@@ -1,15 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BookOpen, FileText, Download, CheckCircle, Layers, Sparkles, Award, ClipboardList } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function CurriculumSyllabus() {
+interface CurriculumSyllabusProps {
+  data?: typeof academicsData.curriculumSyllabus;
+}
+
+export function CurriculumSyllabus({ data: incomingData }: CurriculumSyllabusProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const data = academicsData.curriculumSyllabus;
+  const [data, setData] = useState<typeof academicsData.curriculumSyllabus>(incomingData || academicsData.curriculumSyllabus);
+
+  useEffect(() => {
+    if (incomingData) {
+      setData(incomingData);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && json?.data?.curriculumSyllabus) {
+            setData(json.data.curriculumSyllabus);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live curriculum data:", err));
+    }
+  }, [incomingData]);
 
   return (
     <div className="flex flex-col gap-10 animate-fadeIn">

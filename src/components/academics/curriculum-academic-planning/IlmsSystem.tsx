@@ -1,15 +1,34 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { MonitorPlay, FileText, ChevronDown, BarChart3, Layers } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function IlmsSystem() {
+interface IlmsSystemProps {
+  data?: typeof academicsData.ilms;
+}
+
+export function IlmsSystem({ data: incomingData }: IlmsSystemProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const ilmsData = academicsData.ilms;
+  const [ilmsData, setIlmsData] = useState<typeof academicsData.ilms>(incomingData || academicsData.ilms);
+
+  useEffect(() => {
+    if (incomingData) {
+      setIlmsData(incomingData);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && (json?.data?.ilms || json?.data?.ilmsSystem)) {
+            setIlmsData(json.data.ilms || json.data.ilmsSystem);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live ILMS data:", err));
+    }
+  }, [incomingData]);
 
   // Extract all available years from reports or use default range starting from 2023–2024
   const availableYears = useMemo(() => {

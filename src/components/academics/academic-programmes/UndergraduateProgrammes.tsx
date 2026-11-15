@@ -1,17 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GraduationCap, ClipboardList, FileText, Download } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function UndergraduateProgrammes() {
+interface UndergraduateProgrammesProps {
+  data?: any[];
+}
+
+export function UndergraduateProgrammes({ data }: UndergraduateProgrammesProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const intakeData = academicsData.ugProgrammes;
+  const [intakeData, setIntakeData] = useState<any[]>(data || academicsData.ugProgrammes);
 
-  const totalSanctioned = intakeData.reduce((acc, item) => acc + (item.sanctionedIntake || 0), 0);
+  useEffect(() => {
+    if (data && Array.isArray(data) && data.length > 0) {
+      setIntakeData(data);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && Array.isArray(json?.data?.ugProgrammes)) {
+            setIntakeData(json.data.ugProgrammes);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live UG programmes data:", err));
+    }
+  }, [data]);
+
+  const totalSanctioned = intakeData.reduce((acc, item) => acc + (item.sanctionedIntake || item.intake || 0), 0);
   const totalConvener = intakeData.reduce((acc, item) => acc + (item.convenerQuota || 0), 0);
   const totalManagement = intakeData.reduce((acc, item) => acc + (item.managementQuota || 0), 0);
   const totalEws = intakeData.reduce((acc, item) => acc + (item.ewsQuota || 0), 0);

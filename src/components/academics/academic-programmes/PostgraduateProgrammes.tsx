@@ -1,17 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GraduationCap, ClipboardList, FileText, Download } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function PostgraduateProgrammes() {
+interface PostgraduateProgrammesProps {
+  data?: any[];
+}
+
+export function PostgraduateProgrammes({ data }: PostgraduateProgrammesProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const pgIntakeData = academicsData.pgProgrammes;
+  const [pgIntakeData, setPgIntakeData] = useState<any[]>(data || academicsData.pgProgrammes);
 
-  const totalSanctioned = pgIntakeData.reduce((acc, item) => acc + (item.sanctionedIntake || 0), 0);
+  useEffect(() => {
+    if (data && Array.isArray(data) && data.length > 0) {
+      setPgIntakeData(data);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && Array.isArray(json?.data?.pgProgrammes)) {
+            setPgIntakeData(json.data.pgProgrammes);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live PG programmes data:", err));
+    }
+  }, [data]);
+
+  const totalSanctioned = pgIntakeData.reduce((acc, item) => acc + (item.sanctionedIntake || item.intake || 0), 0);
   const totalConvener = pgIntakeData.reduce((acc, item) => acc + (item.convenerQuota || 0), 0);
   const totalManagement = pgIntakeData.reduce((acc, item) => acc + (item.managementQuota || 0), 0);
   const totalEws = pgIntakeData.reduce((acc, item) => acc + (item.ewsQuota || 0), 0);

@@ -186,6 +186,24 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
   const [headerHeight, setHeaderHeight] = useState<number>(140);
   const isAllDeptsRoot = catSlug === "departments" && !itemSlug;
 
+  const [portalData, setPortalData] = useState<any>(academicsData);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/academics", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((json) => {
+        if (isMounted && json?.success && json?.data) {
+          setPortalData(json.data);
+        }
+      })
+      .catch((err) => console.warn("Failed to load live academics data:", err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const sidebarScrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-expand departments menu when navigating to any department
@@ -291,16 +309,23 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
   // Logic to render individual content component
   const renderMainContent = () => {
     if (catSlug === "academic-programmes") {
-      if (itemSlug === "undergraduate-programmes" || itemSlug === "undergraduate") return <UndergraduateProgrammes />;
-      if (itemSlug === "postgraduate-programmes" || itemSlug === "postgraduate") return <PostgraduateProgrammes />;
+      if (itemSlug === "undergraduate-programmes" || itemSlug === "undergraduate") 
+        return <UndergraduateProgrammes data={portalData?.ugProgrammes} />;
+      if (itemSlug === "postgraduate-programmes" || itemSlug === "postgraduate") 
+        return <PostgraduateProgrammes data={portalData?.pgProgrammes} />;
     }
 
     if (catSlug === "curriculum-academic-planning") {
-      if (itemSlug === "academic-calendar" || itemSlug === "academic-calendar-ug-pg") return <AcademicCalendar />;
-      if (itemSlug === "timetables" || itemSlug === "time-tables") return <Timetables />;
-      if (itemSlug === "curriculum-syllabus" || itemSlug === "curriculum-framework" || itemSlug === "innovative-interdisciplinary-offerings") return <CurriculumSyllabus />;
-      if (itemSlug === "academic-regulations" || itemSlug === "academic-implementation-plan-aip") return <AcademicRegulations />;
-      if (itemSlug === "ilms-system" || itemSlug === "learning-management-system-lms") return <IlmsSystem />;
+      if (itemSlug === "academic-calendar" || itemSlug === "academic-calendar-ug-pg") 
+        return <AcademicCalendar data={portalData?.academicCalendar} />;
+      if (itemSlug === "timetables" || itemSlug === "time-tables") 
+        return <Timetables data={portalData?.timetables} />;
+      if (itemSlug === "curriculum-syllabus" || itemSlug === "curriculum-framework" || itemSlug === "innovative-interdisciplinary-offerings") 
+        return <CurriculumSyllabus data={portalData?.curriculumSyllabus} />;
+      if (itemSlug === "academic-regulations" || itemSlug === "academic-implementation-plan-aip") 
+        return <AcademicRegulations data={portalData?.academicRegulations} />;
+      if (itemSlug === "ilms-system" || itemSlug === "learning-management-system-lms") 
+        return <IlmsSystem data={portalData?.ilms || portalData?.ilmsSystem} />;
     }
 
     if (catSlug === "departments") {

@@ -1,16 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, FileText, Download, CheckCircle, Clock } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function AcademicCalendar() {
+interface AcademicCalendarProps {
+  data?: { ug?: any[]; pg?: any[] };
+}
+
+export function AcademicCalendar({ data }: AcademicCalendarProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const ugCalendar = academicsData.academicCalendar.ug;
-  const pgCalendar = academicsData.academicCalendar.pg;
+  const [calendarData, setCalendarData] = useState(data || academicsData.academicCalendar);
+
+  useEffect(() => {
+    if (data && (data.ug || data.pg)) {
+      setCalendarData(data);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && json?.data?.academicCalendar) {
+            setCalendarData(json.data.academicCalendar);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live calendar data:", err));
+    }
+  }, [data]);
+
+  const ugCalendar = calendarData?.ug || [];
+  const pgCalendar = calendarData?.pg || [];
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">

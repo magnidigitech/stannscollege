@@ -2581,7 +2581,7 @@ export async function getAdmissionsPortalData() {
 export async function getAcademicsPortalData() {
   try {
     const query = `*[_type == "academicsPortal" && !(_id in path("drafts.**"))][0]`;
-    const data = await sanityClient.fetch(query);
+    const data = await sanityClient.fetch(query, {}, { useCdn: false });
     if (data && data.portalData) {
       return data.portalData;
     }

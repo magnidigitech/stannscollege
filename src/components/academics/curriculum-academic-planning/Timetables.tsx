@@ -1,16 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Clock, FileText, Download, Calendar } from "lucide-react";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 import academicsData from "../academics-data.json";
 
-export function Timetables() {
+interface TimetablesProps {
+  data?: { ug?: any[]; pg?: any[] };
+}
+
+export function Timetables({ data }: TimetablesProps = {}) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const ugTimetables = academicsData.timetables.ug;
-  const pgTimetables = academicsData.timetables.pg;
+  const [timetablesData, setTimetablesData] = useState(data || academicsData.timetables);
+
+  useEffect(() => {
+    if (data && (data.ug || data.pg)) {
+      setTimetablesData(data);
+    } else {
+      fetch("/api/academics", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && json?.data?.timetables) {
+            setTimetablesData(json.data.timetables);
+          }
+        })
+        .catch((err) => console.warn("Failed to load live timetables data:", err));
+    }
+  }, [data]);
+
+  const ugTimetables = timetablesData?.ug || [];
+  const pgTimetables = timetablesData?.pg || [];
 
   return (
     <div className="flex flex-col gap-8 animate-fadeIn">
