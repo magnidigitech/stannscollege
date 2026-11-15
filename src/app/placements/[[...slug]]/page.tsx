@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export function generateStaticParams() {
   const slugs = [
     // 9 Canonical Sections from 8.Placements & Industry Linkages.docx

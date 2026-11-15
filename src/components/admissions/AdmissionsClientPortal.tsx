@@ -202,15 +202,32 @@ export default function AdmissionsClientPortal({
   const [imageLightboxTitle, setImageLightboxTitle] = useState<string>("");
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState<boolean>(false);
 
-  // Data resolution: dynamic Sanity data with static fallback
-  const ugProgrammes: ProgrammeIntake[] = initialData?.ugProgrammes || UG_PROGRAMMES_INTAKE;
-  const pgProgrammes: ProgrammeIntake[] = initialData?.pgProgrammes || PG_PROGRAMMES_INTAKE;
-  const ugEligibility: EligibilityItem[] = initialData?.ugEligibility || UG_ELIGIBILITY_CRITERIA;
-  const pgEligibility: EligibilityItem[] = initialData?.pgEligibility || PG_ELIGIBILITY_CRITERIA;
-  const admissionDocuments = initialData?.documents || ADMISSION_DOCUMENTS;
-  const deskInfo = initialData?.deskInfo || ADMISSION_DESK_INFO;
+  // Dynamic live portal state with static fallback
+  const [admissionsData, setAdmissionsData] = useState<any>(initialData || null);
+
+  useEffect(() => {
+    if (initialData) {
+      setAdmissionsData(initialData);
+    }
+    fetch("/api/admissions")
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.success && res.data) {
+          setAdmissionsData(res.data);
+        }
+      })
+      .catch(() => {});
+  }, [initialData]);
+
+  const activeData = admissionsData || initialData;
+  const ugProgrammes: ProgrammeIntake[] = activeData?.ugProgrammes || UG_PROGRAMMES_INTAKE;
+  const pgProgrammes: ProgrammeIntake[] = activeData?.pgProgrammes || PG_PROGRAMMES_INTAKE;
+  const ugEligibility: EligibilityItem[] = activeData?.ugEligibility || UG_ELIGIBILITY_CRITERIA;
+  const pgEligibility: EligibilityItem[] = activeData?.pgEligibility || PG_ELIGIBILITY_CRITERIA;
+  const admissionDocuments = activeData?.documents || ADMISSION_DOCUMENTS;
+  const deskInfo = activeData?.deskInfo || ADMISSION_DESK_INFO;
   const yearlyRecords: AdmissionYearlyRecord[] =
-    initialData?.yearlyRecords || ADMISSION_YEARLY_RECORDS;
+    activeData?.yearlyRecords || ADMISSION_YEARLY_RECORDS;
 
   // Sync state when incoming activeSlug prop changes
   useEffect(() => {

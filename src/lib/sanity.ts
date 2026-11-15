@@ -6,7 +6,7 @@ export const sanityClient = createClient({
   dataset: "production",
   apiVersion: "2024-03-01",
   token: "sk2B6oq7TV44M3rCRTu17hThjlyGyarJzispWzZsPMcc6LUgrAcxlKKYnJPiSPCizWCGIkwCCYmXTwzDHZaVTxrDkyhFAyxNnStQZj6wCcxo0z1aaz4tnH8vgMPApmF5Z8u7rXN87IVVPA1rYJPX4VoDSDF4ekCdENzvyRLSraWWowOhBKOw",
-  useCdn: true,
+  useCdn: false,
 });
 
 // Default/mock data fallback functions

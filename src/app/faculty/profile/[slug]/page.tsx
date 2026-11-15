@@ -8,6 +8,9 @@ interface ProfilePageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Dynamic SEO metadata per faculty member
 export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
   const { slug } = await params;

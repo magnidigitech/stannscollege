@@ -12,11 +12,12 @@ function getSanityClient() {
     dataset: DATASET,
     apiVersion: "2024-03-01",
     token: token || undefined,
-    useCdn: true,
+    useCdn: false,
   });
 }
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {
@@ -36,12 +37,33 @@ export async function GET() {
         certificatesUrl: d.certificatesUrl || "",
         displayOrder: d.displayOrder || 0,
       }));
-      return NextResponse.json({ success: true, documents: formatted });
+      return NextResponse.json(
+        { success: true, documents: formatted },
+        {
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+          },
+        }
+      );
     }
 
-    return NextResponse.json({ success: true, documents: DEFAULT_FACULTY_POLICY_DOCS });
+    return NextResponse.json(
+      { success: true, documents: DEFAULT_FACULTY_POLICY_DOCS },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+        },
+      }
+    );
   } catch (err: any) {
     console.error("Failed to fetch public faculty policy documents:", err);
-    return NextResponse.json({ success: true, documents: DEFAULT_FACULTY_POLICY_DOCS });
+    return NextResponse.json(
+      { success: true, documents: DEFAULT_FACULTY_POLICY_DOCS },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+        },
+      }
+    );
   }
 }

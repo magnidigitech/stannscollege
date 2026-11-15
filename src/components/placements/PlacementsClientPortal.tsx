@@ -182,8 +182,26 @@ interface PlacementsClientPortalProps {
 
 export default function PlacementsClientPortal({
   activeSlug: initialSlug = "",
-  placementsData
+  placementsData: initialPlacementsData
 }: PlacementsClientPortalProps) {
+  const [livePlacementsData, setLivePlacementsData] = useState<any>(initialPlacementsData || null);
+
+  useEffect(() => {
+    if (initialPlacementsData) {
+      setLivePlacementsData(initialPlacementsData);
+    }
+    fetch("/api/placements")
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.success && res.data) {
+          setLivePlacementsData(res.data);
+        }
+      })
+      .catch(() => {});
+  }, [initialPlacementsData]);
+
+  const placementsData = livePlacementsData || initialPlacementsData;
+
   const [activeSectionId, setActiveSectionId] = useState<string>("sec-about-cell");
   const [activePdfUrl, setActivePdfUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState("");

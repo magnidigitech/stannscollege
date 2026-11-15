@@ -8,6 +8,9 @@ import {
   getStudentSupportPortalData,
 } from "@/lib/sanity";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Student Support Services | St. Ann's College for Women",
   description: "Explore our dedicated student support cells, including Mentor-Mentee systems, counseling, Grievance Redressal, ICC, and skill development platforms.",

@@ -3,6 +3,9 @@ import { getFacultyMembers, getFacultySections, getAllFacultyProfiles, getFacult
 import FacultyClientPortal from "@/components/faculty/FacultyClientPortal";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Faculty & Staff | St. Ann's College for Women",
   description: "Meet our highly qualified and dedicated faculty, teaching, and non-teaching staff who drive academic excellence and innovation.",

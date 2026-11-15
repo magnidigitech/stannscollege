@@ -148,20 +148,19 @@ export default function StudentSupportClientPortal({
   const [activeSectionId, setActiveSectionId] = useState<string>("sec-welfare-services");
   const [portal, setPortal] = useState<any>(portalData || STUDENT_SUPPORT_DATA);
 
-  // Sync when incoming server portalData changes or fetch client-side if missing
+  // Sync when incoming server portalData changes and fetch client-side for instant updates
   useEffect(() => {
     if (portalData) {
       setPortal(portalData);
-    } else {
-      fetch("/api/admin/student-support")
-        .then((res) => res.json())
-        .then((res) => {
-          if (res && res.success && res.data) {
-            setPortal(res.data);
-          }
-        })
-        .catch(() => {});
     }
+    fetch("/api/student-support")
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.success && res.data) {
+          setPortal(res.data);
+        }
+      })
+      .catch(() => {});
   }, [portalData]);
 
   // State for View All Archive Modal

@@ -2,6 +2,9 @@ import { Sparkles, Award, Users, CheckCircle, GraduationCap, ArrowRight, ShieldC
 import Link from "next/link";
 import { getFaculty, getAffiliations, getApscheOrders, getAnuAffiliations, getAicteApprovals, getNirfReports, getNaacCertificates, getAisheCertifications, getCommittees, getCommitteeYearwiseLists } from "@/lib/sanity";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Modularized individual page components for Category I
 import { BasicInstitutionalInfo } from "@/components/about/the-institution/BasicInstitutionalInfo";
 import { HistoryOfTheCollege } from "@/components/about/the-institution/HistoryOfTheCollege";
