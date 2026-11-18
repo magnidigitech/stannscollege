@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
 import crypto from "crypto";
-import fs from "fs";
-import path from "path";
+import { getAcademicsPortalData } from "@/lib/sanity";
 
 const DEFAULT_PASSWORDS: Record<string, string> = {
   "department-of-commerce": "commerce@2026",
@@ -33,18 +32,14 @@ const DEFAULT_PASSWORDS: Record<string, string> = {
 
 const MASTER_PASSWORD = "Stannsf@2026";
 
-function getDepartmentPassword(deptId: string): string {
+async function getDepartmentPassword(deptId: string): Promise<string> {
   try {
-    const filePath = path.join(process.cwd(), "src/components/academics/academics-data.json");
-    if (fs.existsSync(filePath)) {
-      const fileContent = fs.readFileSync(filePath, "utf8");
-      const json = JSON.parse(fileContent);
-      if (json.departmentPasswords && json.departmentPasswords[deptId]) {
-        return json.departmentPasswords[deptId];
-      }
+    const portalData = await getAcademicsPortalData();
+    if (portalData && portalData.departmentPasswords && portalData.departmentPasswords[deptId]) {
+      return portalData.departmentPasswords[deptId];
     }
   } catch (err) {
-    console.error("Error reading department passwords from file:", err);
+    console.error("Error reading live department passwords from Sanity:", err);
   }
   return DEFAULT_PASSWORDS[deptId] || MASTER_PASSWORD;
 }
@@ -113,7 +108,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Department and password required." }, { status: 400 });
     }
 
-    const expectedPassword = getDepartmentPassword(selectedDeptId);
+    const expectedPassword = await getDepartmentPassword(selectedDeptId);
     if (password !== expectedPassword && password !== MASTER_PASSWORD) {
       return NextResponse.json({ success: false, error: "Incorrect password for this department. Access denied." }, { status: 401 });
     }

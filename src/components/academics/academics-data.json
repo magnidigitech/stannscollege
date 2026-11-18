@@ -1478,31 +1478,5 @@
       "docUrl": "/documents/DefaultFile_1.pdf",
       "title": "Programme Specific Outcomes (PSOs)"
     }
-  },
-  "departmentPasswords": {
-    "department-of-commerce": "commerce@2026",
-    "department-of-computer-science-applications": "computerscience@2026",
-    "department-of-computer-applications-bca": "computerscience@2026",
-    "department-of-computer-science-cs-artificial-intelligence": "computerscience@2026",
-    "department-of-mathematics": "mathematics@2026",
-    "department-of-physics": "physics@2026",
-    "department-of-statistics": "statistics@2026",
-    "department-of-biotechnology": "biotechnology@2026",
-    "department-of-microbiology": "microbiology@2026",
-    "department-of-botany": "botany@2026",
-    "department-of-chemistry": "chemistry@2026",
-    "department-of-english": "english@2026",
-    "department-of-oriental-languages": "orientallanguages@2026",
-    "department-of-oriental-languages-telugu-sanskrit-hindi": "orientallanguages@2026",
-    "department-of-mca": "mca@2026",
-    "department-of-mba": "mba@2026",
-    "department-of-bca": "bca@2026",
-    "department-of-computer-science": "computerscience@2026",
-    "department-of-artificial-intelligence": "artificialintelligence@2026",
-    "department-of-telugu-wing": "teluguwing@2026",
-    "department-of-sanskrit-hindi-wing": "sanskrithindiwing@2026",
-    "publications": "publications@2026",
-    "events": "events@2026",
-    "notices": "notices@2026"
   }
 }

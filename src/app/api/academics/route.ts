@@ -9,10 +9,14 @@ export async function GET() {
   try {
     const portalData = await getAcademicsPortalData();
     if (portalData) {
+      // Strip out private department passwords before sending to public visitors
+      const publicData = { ...portalData };
+      delete (publicData as any).departmentPasswords;
+
       return NextResponse.json(
         {
           success: true,
-          data: portalData,
+          data: publicData,
           source: "sanity",
         },
         {
@@ -26,10 +30,13 @@ export async function GET() {
     console.error("Error fetching live academics data in /api/academics:", err);
   }
 
+  const publicFallback = { ...defaultAcademicsData };
+  delete (publicFallback as any).departmentPasswords;
+
   return NextResponse.json(
     {
       success: true,
-      data: defaultAcademicsData,
+      data: publicFallback,
       source: "fallback",
     },
     {
