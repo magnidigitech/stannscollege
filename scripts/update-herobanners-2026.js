@@ -24,9 +24,10 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-const DEFAULT_TOKEN =
-  "sk2B6oq7TV44M3rCRTu17hThjlyGyarJzispWzZsPMcc6LUgrAcxlKKYnJPiSPCizWCGIkwCCYmXTwzDHZaVTxrDkyhFAyxNnStQZj6wCcxo0z1aaz4tnH8vgMPApmF5Z8u7rXN87IVVPA1rYJPX4VoDSDF4ekCdENzvyRLSraWWowOhBKOw";
-const token = SANITY_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN || DEFAULT_TOKEN;
+const token = SANITY_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN;
+if (!token) {
+  console.warn("⚠️ WARNING: SANITY_WRITE_TOKEN not found in .env or environment variables.");
+}
 
 const client = createClient({
   projectId: "fhjwqub5",

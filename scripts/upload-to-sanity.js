@@ -7,13 +7,10 @@ const { createClient } = require("@sanity/client");
 const PROJECT_ID = "fhjwqub5";
 const DATASET = "production";
 const API_VERSION = "2024-03-01";
-const DEFAULT_TOKEN = "sk2B6oq7TV44M3rCRTu17hThjlyGyarJzispWzZsPMcc6LUgrAcxlKKYnJPiSPCizWCGIkwCCYmXTwzDHZaVTxrDkyhFAyxNnStQZj6wCcxo0z1aaz4tnH8vgMPApmF5Z8u7rXN87IVVPA1rYJPX4VoDSDF4ekCdENzvyRLSraWWowOhBKOw";
-
-const token = process.env.SANITY_WRITE_TOKEN || DEFAULT_TOKEN;
+const token = process.env.SANITY_WRITE_TOKEN;
 
 if (!process.env.SANITY_WRITE_TOKEN) {
   console.warn("\x1b[33m%s\x1b[0m", "⚠️ WARNING: SANITY_WRITE_TOKEN environment variable not set.");
-  console.warn("\x1b[33m%s\x1b[0m", "Using the default token. If this token does not have write permissions, the upload will fail.");
   console.warn("\x1b[33m%s\x1b[0m", "Please set it via: export SANITY_WRITE_TOKEN=\"your-write-token-here\"");
   console.log("");
 }

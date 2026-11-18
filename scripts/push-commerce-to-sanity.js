@@ -4,12 +4,10 @@ const crypto = require("crypto");
 const PROJECT_ID = "fhjwqub5";
 const DATASET = "production";
 const API_VERSION = "2024-03-01";
-const DEFAULT_TOKEN = "sk2B6oq7TV44M3rCRTu17hThjlyGyarJzispWzZsPMcc6LUgrAcxlKKYnJPiSPCizWCGIkwCCYmXTwzDHZaVTxrDkyhFAyxNnStQZj6wCcxo0z1aaz4tnH8vgMPApmF5Z8u7rXN87IVVPA1rYJPX4VoDSDF4ekCdENzvyRLSraWWowOhBKOw";
-
-const token = process.env.SANITY_WRITE_TOKEN || DEFAULT_TOKEN;
+const token = process.env.SANITY_WRITE_TOKEN;
 
 if (!process.env.SANITY_WRITE_TOKEN) {
-  console.warn("⚠️ WARNING: SANITY_WRITE_TOKEN environment variable not set. Using default token.");
+  console.warn("⚠️ WARNING: SANITY_WRITE_TOKEN environment variable not set. Please set it via: export SANITY_WRITE_TOKEN=\"your-token\"");
 }
 
 const client = createClient({
