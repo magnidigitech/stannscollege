@@ -13,12 +13,14 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
   display: "swap",
+  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -37,11 +39,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} antialiased scroll-smooth`} suppressHydrationWarning>
-      <head>
-        <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-        <meta httpEquiv="Pragma" content="no-cache" />
-        <meta httpEquiv="Expires" content="0" />
-      </head>
       <body className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col justify-between selection:bg-indigo-50 selection:text-indigo-900" suppressHydrationWarning>
 
 
