@@ -54,6 +54,26 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
     return getCleanPdfUrl(fileUrl, title);
   }, [fileUrl, title]);
 
+  const downloadUrl = React.useMemo(() => {
+    return getCleanPdfUrl(fileUrl, title, true);
+  }, [fileUrl, title]);
+
+  const isMobile = React.useMemo(() => {
+    if (typeof window === "undefined") return false;
+    const ua = navigator.userAgent || "";
+    return (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+      windowSize.width < 768
+    );
+  }, [windowSize]);
+
+  const mobileIframeUrl = React.useMemo(() => {
+    if (isMobile && fileUrl && (fileUrl.startsWith("http://") || fileUrl.startsWith("https://"))) {
+      return `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+    }
+    return `${cleanPdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=Fit`;
+  }, [isMobile, fileUrl, cleanPdfUrl]);
+
   // Handle window resizing
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -310,49 +330,120 @@ export function FilePreviewModal({ isOpen, onClose, fileUrl, title }: FilePrevie
       {/* ========================================================= */}
       {isPdf && viewMode === "standard" && (
         <div className="relative w-full h-full flex flex-col bg-slate-950 overflow-hidden">
-          {/* Native Browser PDF Iframe with Clean Sanitized Filename Header */}
-          <iframe
-            src={`${cleanPdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=Fit`}
-            className="w-full h-full border-none bg-slate-900"
-            title={title}
-          />
+          {/* Top Bar for PDF controls & branding */}
+          <div className="bg-slate-900/95 backdrop-blur-md px-4 py-2.5 text-white flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-3">
+              <span className="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-400 shrink-0">
+                <FileText className="h-4 w-4" />
+              </span>
+              <h4 className="font-outfit text-xs md:text-sm font-bold tracking-tight leading-tight select-none truncate text-white">
+                {title || "Document Preview"}
+              </h4>
+            </div>
 
-          {/* Floating Action Controls on Bottom Right */}
-          <div className="absolute bottom-5 right-6 z-50 flex items-center gap-2.5">
-            {/* Flipbook View Toggle Button */}
-            <button
-              type="button"
-              onClick={() => setViewMode("flipbook")}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-900/90 hover:bg-indigo-600 text-white text-xs font-bold transition-all shadow-2xl backdrop-blur-md border border-white/20 hover:scale-105 active:scale-95 cursor-pointer group"
-              title="Switch to Interactive 3D Flipbook Reader"
-            >
-              <BookOpen className="h-3.5 w-3.5 text-amber-300 group-hover:text-white" />
-              <span>Flipbook View</span>
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Flipbook View Toggle Button (desktop/tablet) */}
+              <button
+                type="button"
+                onClick={() => setViewMode("flipbook")}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white text-xs font-bold transition-all border border-white/10 hover:scale-105 active:scale-95 cursor-pointer group"
+                title="Switch to Interactive 3D Flipbook Reader"
+              >
+                <BookOpen className="h-3.5 w-3.5 text-amber-300 group-hover:text-white" />
+                <span>Flipbook View</span>
+              </button>
 
-            {/* New Tab Button */}
-            <a
-              href={cleanPdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-900/90 hover:bg-[#002147] text-white text-xs font-bold transition-all shadow-2xl backdrop-blur-md border border-white/20 hover:scale-105 active:scale-95 cursor-pointer"
-              title="Open PDF in new browser tab"
-            >
-              <ExternalLink className="h-3.5 w-3.5 text-sky-300" />
-              <span className="hidden sm:inline">New Tab</span>
-            </a>
+              {/* Fullscreen / New Tab Button */}
+              <a
+                href={cleanPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm border border-indigo-400/30 hover:scale-105 active:scale-95 cursor-pointer"
+                title="Open PDF fullscreen in new tab"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Fullscreen</span>
+              </a>
 
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900/90 hover:bg-rose-600 text-white text-xs font-bold transition-all shadow-2xl backdrop-blur-md border border-white/20 hover:scale-105 active:scale-95 cursor-pointer group"
-              aria-label="Close PDF Viewer"
-              title="Close (Esc)"
-            >
-              <X className="h-4 w-4 text-slate-300 group-hover:text-white" />
-              <span>Close</span>
-            </button>
+              {/* Download Button */}
+              <a
+                href={downloadUrl}
+                download
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all border border-white/10 hover:scale-105 active:scale-95 cursor-pointer"
+                title="Download PDF"
+              >
+                <Download className="h-3.5 w-3.5 text-slate-300" />
+                <span className="hidden md:inline">Download</span>
+              </a>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-bold transition-all shadow-sm border border-rose-400/30 hover:scale-105 active:scale-95 cursor-pointer group ml-1"
+                aria-label="Close PDF Viewer"
+                title="Close (Esc)"
+              >
+                <X className="h-4 w-4 text-white" />
+                <span className="hidden sm:inline">Close</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Info Strip */}
+          {isMobile && (
+            <div className="bg-indigo-950/90 px-3 py-1.5 text-indigo-200 text-[11px] flex items-center justify-between border-b border-indigo-900/50 shrink-0">
+              <span className="truncate pr-2">📱 Mobile Mode • Viewing multi-page document</span>
+              <a
+                href={cleanPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-300 hover:underline font-bold shrink-0 flex items-center gap-1"
+              >
+                <span>Open Fullscreen</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          )}
+
+          {/* Native / Mobile-adaptive Iframe */}
+          <div className="relative flex-1 w-full h-full bg-slate-900">
+            <iframe
+              src={mobileIframeUrl}
+              className="w-full h-full border-none bg-slate-900"
+              title={title}
+            />
+
+            {/* Mobile Bottom Floating Action Pill */}
+            {isMobile && (
+              <div className="absolute bottom-4 inset-x-4 z-50 flex items-center justify-center gap-2 pointer-events-auto">
+                <a
+                  href={cleanPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 max-w-[220px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-indigo-600/95 hover:bg-indigo-500 text-white font-bold text-xs shadow-2xl backdrop-blur-md border border-indigo-400/30 active:scale-95 transition-all text-center"
+                >
+                  <ExternalLink className="h-3.5 w-3.5 text-amber-300" />
+                  <span>Open Fullscreen</span>
+                </a>
+                <a
+                  href={downloadUrl}
+                  download
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800 text-slate-200 font-bold text-xs shadow-2xl backdrop-blur-md border border-white/20 active:scale-95 transition-all"
+                >
+                  <Download className="h-3.5 w-3.5 text-sky-300" />
+                  <span>Download</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex items-center justify-center p-2.5 rounded-full bg-slate-900/95 hover:bg-rose-600 text-white shadow-2xl backdrop-blur-md border border-white/20 active:scale-95 transition-all"
+                  aria-label="Close"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
