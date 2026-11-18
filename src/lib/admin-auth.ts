@@ -149,27 +149,57 @@ export function createAdminSessionToken(user: SanityMemberUser, maxAgeDays = 7):
 
 /**
  * Verifies a signed session token. Returns the session payload if valid and unexpired.
+ * Gracefully handles all malformed, corrupted, or altered tokens without throwing.
  */
 export function verifyAdminSessionToken(token: string): AdminSession | null {
-  if (!token || !token.includes(".")) return null;
-  const [payloadB64, signature] = token.split(".");
-  if (!payloadB64 || !signature) return null;
-
-  const secret = getAuthSecret();
-  const expectedSignature = crypto.createHmac("sha256", secret).update(payloadB64).digest("base64url");
-
-  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
-    return null;
-  }
-
   try {
-    const payload: AdminSession = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf-8"));
+    if (!token || typeof token !== "string" || !token.includes(".")) {
+      return null;
+    }
+
+    const parts = token.split(".");
+    if (parts.length !== 2) {
+      return null;
+    }
+
+    const [payloadB64, signature] = parts;
+    if (!payloadB64 || !signature) {
+      return null;
+    }
+
+    const secret = getAuthSecret();
+    const expectedSignature = crypto
+      .createHmac("sha256", secret)
+      .update(payloadB64)
+      .digest("base64url");
+
+    const sigBuf = Buffer.from(signature, "utf-8");
+    const expectedBuf = Buffer.from(expectedSignature, "utf-8");
+
+    // Guard against crypto.timingSafeEqual RangeError when buffer lengths differ
+    if (sigBuf.length !== expectedBuf.length) {
+      return null;
+    }
+
+    if (!crypto.timingSafeEqual(sigBuf, expectedBuf)) {
+      return null;
+    }
+
+    const payloadRaw = Buffer.from(payloadB64, "base64url").toString("utf-8");
+    const payload: AdminSession = JSON.parse(payloadRaw);
+
+    if (!payload || typeof payload !== "object") {
+      return null;
+    }
+
     const now = Math.floor(Date.now() / 1000);
-    if (payload.exp && payload.exp < now) {
+    if (payload.exp && typeof payload.exp === "number" && payload.exp < now) {
       return null; // Expired
     }
+
     return payload;
   } catch {
+    // Malformed base64, invalid JSON, or invalid characters will never crash the server
     return null;
   }
 }
