@@ -74,8 +74,16 @@ export async function POST(req: NextRequest) {
         .trim();
 
     const gmailUser = cleanCredential(process.env.GMAIL_USER) || "stannsofficegorantla@gmail.com";
-    const gmailAppPassword = cleanCredential(process.env.GMAIL_APP_PASSWORD) || "bujcmngktmmfhcjk";
+    const gmailAppPassword = cleanCredential(process.env.GMAIL_APP_PASSWORD);
     const receiverEmail = cleanCredential(process.env.CONTACT_RECEIVER_EMAIL) || "stannsofficegorantla@gmail.com";
+
+    if (!gmailAppPassword) {
+      console.error("GMAIL_APP_PASSWORD is not configured in environment variables.");
+      return NextResponse.json(
+        { error: "Email delivery service is currently unconfigured. Please contact the Admissions office directly at 0863-2236470 or st_anns_coll@yahoo.co.in." },
+        { status: 503 }
+      );
+    }
 
     // Nodemailer transporter with direct SSL on port 465
     const transporter = nodemailer.createTransport({
