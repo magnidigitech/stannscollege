@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
  
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://stannscollegeforwomen.ac.in';
+
   return {
     rules: {
       userAgent: '*',
@@ -23,6 +25,6 @@ export default function robots(): MetadataRoute.Robots {
         '/academics/departments/update/',
       ],
     },
-    sitemap: 'https://stannscollegeforwomen.org/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

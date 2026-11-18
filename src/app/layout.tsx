@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://stannscollegeforwomen.ac.in"),
   title: "St. Ann's College for Women, Gorantla",
   description: "Fostering premium education, empowerment, and academic excellence for women in Guntur, AP.",
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function RootLayout({

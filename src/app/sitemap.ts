@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://stannscollegeforwomen.org';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://stannscollegeforwomen.ac.in';
 
   // 1. Root and standard static routes
   const staticPaths = [
