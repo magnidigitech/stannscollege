@@ -120,4 +120,5 @@ CHA_2140.JPG
 /*.jpeg
 *.doc
 *.docx
+!public/images/research/**
 
