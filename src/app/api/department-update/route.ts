@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
 import crypto from "crypto";
+import fs from "fs";
+import path from "path";
 import { getAcademicsPortalData } from "@/lib/sanity";
 
 const DEFAULT_PASSWORDS: Record<string, string> = {
@@ -276,6 +278,34 @@ export async function POST(req: NextRequest) {
 
     // Write to Sanity CMS
     await client.createOrReplace(departmentData as any);
+
+    // Keep local academics-data.json synchronized as fallback cache
+    try {
+      const filePath = path.join(process.cwd(), "src", "components", "academics", "academics-data.json");
+      if (fs.existsSync(filePath)) {
+        const raw = fs.readFileSync(filePath, "utf-8");
+        const json = JSON.parse(raw);
+        if (Array.isArray(json.departments)) {
+          const idx = json.departments.findIndex((d: any) => d.id === selectedDeptId);
+          if (idx !== -1) {
+            json.departments[idx] = {
+              ...json.departments[idx],
+              description: departmentData.description || json.departments[idx].description,
+              results: departmentData.results || departmentData.passPercentage || json.departments[idx].results,
+              achievements: departmentData.studentAchievements || json.departments[idx].achievements,
+              activities: departmentData.activities || departmentData.activitiesList || json.departments[idx].activities,
+              bestPractices: departmentData.bestPractices || json.departments[idx].bestPractices,
+              certificateCourses: departmentData.certificateCourses || json.departments[idx].certificateCourses,
+              mous: departmentData.mous || json.departments[idx].mous,
+              annualReports: departmentData.annualReports || json.departments[idx].annualReports,
+            };
+            fs.writeFileSync(filePath, JSON.stringify(json, null, 2), "utf-8");
+          }
+        }
+      }
+    } catch (cacheErr: any) {
+      console.warn("[department-update] Local cache sync warning:", cacheErr.message);
+    }
 
     return NextResponse.json({
       success: true,

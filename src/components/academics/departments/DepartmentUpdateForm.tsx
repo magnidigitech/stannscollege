@@ -10,6 +10,7 @@ import {
   Newspaper, Bell, CalendarDays
 } from "lucide-react";
 import { getDepartment } from "@/lib/sanity";
+import academicsData from "@/components/academics/academics-data.json";
 import QuickDrawersManager from "@/components/admin/QuickDrawersManager";
 import EventsManager from "@/components/admin/EventsManager";
 import NoticesManager from "@/components/admin/NoticesManager";
@@ -169,6 +170,20 @@ export function DepartmentUpdateForm() {
     }
   }, []);
 
+  const isLanguageWing = [
+    "department-of-english",
+    "department-of-telugu-wing",
+    "department-of-sanskrit-hindi-wing",
+    "department-of-oriental-languages",
+    "department-of-oriental-languages-telugu-sanskrit-hindi"
+  ].includes(selectedDeptId);
+
+  const languageName = selectedDeptId === "department-of-english"
+    ? "English"
+    : selectedDeptId === "department-of-telugu-wing"
+    ? "Telugu"
+    : "Sanskrit & Hindi";
+
   // 1. Core Profile Details
   const [established, setEstablished] = useState("");
   const [tagline, setTagline] = useState("");
@@ -246,12 +261,15 @@ export function DepartmentUpdateForm() {
   const [passPercentage, setPassPercentage] = useState<Array<{ 
     sNo?: number; 
     year: string; 
-    intake: string;
-    admitted: string;
-    discontinued: string;
-    appeared: string;
-    passed: string;
-    percentage: string;
+    intake?: string;
+    admitted?: string;
+    discontinued?: string;
+    appeared?: string;
+    passed?: string;
+    percentage?: string;
+    courseName?: string;
+    programme?: string;
+    semester?: string;
   }>>([]);
 
   // 6. University Ranks & Academic Achievements (Section 5 in Ref Doc - 9 cols)
@@ -345,6 +363,7 @@ export function DepartmentUpdateForm() {
   const [studentAchievements, setStudentAchievements] = useState<Array<{ 
     sNo?: number; 
     date: string;
+    year?: string;
     studentName: string; 
     programme: string;
     achievement: string;
@@ -440,7 +459,24 @@ export function DepartmentUpdateForm() {
         }
 
         // 2. Curriculum Documents
-        if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
+        if (isLanguageWing) {
+          const langAdjective = selectedDeptId === "department-of-english"
+            ? "English Language"
+            : selectedDeptId === "department-of-telugu-wing"
+            ? "Telugu Language"
+            : "Sanskrit & Hindi Language";
+
+          if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
+            setCurriculumDocuments(data.curriculumDocuments);
+          } else {
+            setCurriculumDocuments([
+              { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "/documents/DefaultFile_1.pdf" },
+              { sNo: 2, particular: `${langAdjective} Course-wise Syllabus`, documentUrl: "/documents/DefaultFile_1.pdf" },
+              { sNo: 3, particular: "Course Outcomes (COs) – Semester-wise", documentUrl: "/documents/DefaultFile_1.pdf" },
+              { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "/documents/DefaultFile_1.pdf" },
+            ]);
+          }
+        } else if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
           setCurriculumDocuments(data.curriculumDocuments);
         } else {
           setCurriculumDocuments([
@@ -454,7 +490,36 @@ export function DepartmentUpdateForm() {
         }
 
         // 3. Results (Pass %) - 8 cols
-        if (Array.isArray(data.passPercentage) && data.passPercentage.length > 0) {
+        if (isLanguageWing) {
+          const staticDept = (academicsData.departments as any[]).find((d: any) => d.id === selectedDeptId);
+          const staticResults = staticDept?.results || [];
+          const sourceResults = (Array.isArray(data.passPercentage) && data.passPercentage.length > 0 && (data.passPercentage[0]?.courseName || data.passPercentage[0]?.semester))
+            ? data.passPercentage
+            : (Array.isArray(data.results) && data.results.length > 0)
+            ? data.results
+            : staticResults;
+
+          if (Array.isArray(sourceResults) && sourceResults.length > 0) {
+            setPassPercentage(sourceResults.map((p: any, i: number) => ({
+              sNo: i + 1,
+              year: p.year || "2025–2026",
+              courseName: p.courseName || p.name || `General ${languageName}`,
+              programme: p.programme || "B.Sc / B.Com / BCA",
+              semester: p.semester || "Semester I & II",
+              appeared: (p.appeared ?? "-").toString(),
+              passed: (p.passed ?? "-").toString(),
+              percentage: (p.passPercentage ?? p.percentage ?? "").toString(),
+              intake: "-",
+              admitted: "-",
+              discontinued: "-"
+            })));
+          } else {
+            setPassPercentage([
+              { sNo: 1, year: "2025–2026", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "310", passed: "304", percentage: "98.06%", intake: "-", admitted: "-", discontinued: "-" },
+              { sNo: 2, year: "2024–2025", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "295", passed: "288", percentage: "97.63%", intake: "-", admitted: "-", discontinued: "-" }
+            ]);
+          }
+        } else if (Array.isArray(data.passPercentage) && data.passPercentage.length > 0) {
           setPassPercentage(data.passPercentage.map((p: any, i: number) => ({
             sNo: i + 1,
             year: p.year || "",
@@ -642,7 +707,34 @@ export function DepartmentUpdateForm() {
         }
 
         // 12. Student External Achievements - 10 cols
-        if (Array.isArray(data.studentAchievements) && data.studentAchievements.length > 0) {
+        if (isLanguageWing) {
+          const staticDept = (academicsData.departments as any[]).find((d: any) => d.id === selectedDeptId);
+          const staticAchievements = staticDept?.achievements || [];
+          const sourceAchievements = (Array.isArray(data.studentAchievements) && data.studentAchievements.length > 0)
+            ? data.studentAchievements
+            : staticAchievements;
+
+          if (Array.isArray(sourceAchievements) && sourceAchievements.length > 0) {
+            setStudentAchievements(sourceAchievements.map((s: any, i: number) => ({
+              sNo: i + 1,
+              date: s.date || s.year || "2025–2026",
+              year: s.year || "2025–2026",
+              studentName: s.studentName || s.name || "",
+              programme: s.programme || s.class || "B.Sc / B.Com",
+              achievement: s.achievement || s.participation || "Merit Award",
+              eventName: s.eventName || s.event || "Literary Contest",
+              level: s.level || "State",
+              org: s.org || "State Level Event",
+              award: s.award || "First Prize",
+              certificateUrl: s.certificateUrl || s.docUrl || "/documents/DefaultFile_1.pdf"
+            })));
+          } else {
+            setStudentAchievements([
+              { sNo: 1, date: "18-01-2026", year: "2025–2026", studentName: "K. Sneha", programme: "II B.Sc. (MSCS)", achievement: "State Elocution Winner", eventName: "Inter-Collegiate Literary Fest", level: "State", org: "State Level Fest", award: "First Prize & Cash Award", certificateUrl: "/documents/DefaultFile_1.pdf" },
+              { sNo: 2, date: "12-11-2025", year: "2024–2025", studentName: "M. Harshitha", programme: "III B.Com. (CA)", achievement: "Essay Writing Excellence", eventName: "University Literary Celebrations", level: "University", org: "University Contest", award: "Outstanding Merit Certificate", certificateUrl: "/documents/DefaultFile_1.pdf" }
+            ]);
+          }
+        } else if (Array.isArray(data.studentAchievements) && data.studentAchievements.length > 0) {
           setStudentAchievements(data.studentAchievements.map((s: any, i: number) => ({
             sNo: i + 1,
             date: s.date || "",
@@ -794,21 +886,23 @@ export function DepartmentUpdateForm() {
       vision,
       mission,
       overviewDocUrl,
-      programmes,
+      programmes: isLanguageWing ? [] : programmes,
       curriculumDocuments,
       facultyMembers: dedupedMembers,
       passPercentage,
-      universityRanks,
-      placements,
-      higherEducation,
-      competitiveExams,
+      results: isLanguageWing ? passPercentage : undefined,
+      universityRanks: isLanguageWing ? [] : universityRanks,
+      placements: isLanguageWing ? [] : placements,
+      higherEducation: isLanguageWing ? [] : higherEducation,
+      competitiveExams: isLanguageWing ? [] : competitiveExams,
       mous,
       bestPractices,
       certificateCourses,
       activities,
+      activitiesList: activities,
       studentAchievements,
       annualReports,
-      customTables: sanitizedCustomTables,
+      customTables: isLanguageWing ? [] : sanitizedCustomTables,
       gallery: galleryPayload
     };
 
@@ -1225,9 +1319,22 @@ export function DepartmentUpdateForm() {
           {/* SECTION 1: CORE PROFILE DETAILS                                */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
-            <div className="border-b border-slate-100 pb-3">
-              <h2 className="font-outfit font-black text-lg text-[#002147]">1. Department Core Profile</h2>
-              <p className="text-xs text-slate-500 font-medium">Basic information displayed at the top of your department page.</p>
+            <div className="border-b border-slate-100 pb-3 flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <h2 className="font-outfit font-black text-lg text-[#002147]">
+                  {isLanguageWing ? "Department Core Profile & Overview" : "1. Department Core Profile"}
+                </h2>
+                {isLanguageWing && (
+                  <span className="text-[10px] font-bold text-slate-700 italic bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200">
+                    (Under the Department of Oriental Languages)
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-slate-500 font-medium">
+                {isLanguageWing
+                  ? "Basic information, official introductory profile, and departmental PDF displayed on your page."
+                  : "Basic information displayed at the top of your department page."}
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1364,6 +1471,7 @@ export function DepartmentUpdateForm() {
           {/* ============================================================== */}
           {/* SECTION 2: PROGRAMMES OFFERED (6 COLS IN REF DOC)              */}
           {/* ============================================================== */}
+          {!isLanguageWing && (
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
@@ -1486,6 +1594,7 @@ export function DepartmentUpdateForm() {
               </table>
             </div>
           </div>
+          )}
 
           {/* ============================================================== */}
           {/* SECTION 3: FACULTY DIRECTORY (WITH LIVE DEDUPLICATION)          */}
@@ -1494,7 +1603,7 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">3. Faculty Directory</h2>
+                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "1. Faculty Directory" : "3. Faculty Directory"}</h2>
                   <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
                     Live Deduplicated &amp; Synced
                   </span>
@@ -1814,35 +1923,57 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">5. Outgoing Batch – Student Strength and Pass Percentage</h2>
-                <p className="text-xs text-slate-500 font-medium">Year-wise intake, admitted, discontinued, appeared, passed, and pass percentage (8 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">
+                  {isLanguageWing ? "3. Student Strength, Results & Pass Percentage" : "5. Outgoing Batch – Student Strength and Pass Percentage"}
+                </h2>
+                <p className="text-xs text-slate-500 font-medium">
+                  {isLanguageWing
+                    ? `Course-wise results of ${languageName} language courses offered across various programmes (8 columns).`
+                    : "Year-wise intake, admitted, discontinued, appeared, passed, and pass percentage (8 columns)."}
+                </p>
               </div>
               <button
                 type="button"
                 onClick={() => setPassPercentage([
                   ...passPercentage,
-                  { sNo: passPercentage.length + 1, year: "2025–2026", intake: "60", admitted: "58", discontinued: "1", appeared: "57", passed: "56", percentage: "98.24%" }
+                  isLanguageWing
+                    ? { sNo: passPercentage.length + 1, year: "2025–2026", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "310", passed: "304", percentage: "98.06%" }
+                    : { sNo: passPercentage.length + 1, year: "2025–2026", intake: "60", admitted: "58", discontinued: "1", appeared: "57", passed: "56", percentage: "98.24%" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
-                <Plus className="w-3.5 h-3.5" /> Add Academic Year
+                <Plus className="w-3.5 h-3.5" /> {isLanguageWing ? "Add Course Result" : "Add Academic Year"}
               </button>
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-slate-200">
               <table className="w-full text-left text-xs border-collapse font-sans">
                 <thead>
-                  <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
-                    <th className="py-3 px-3 text-center w-14 text-blue-100 border-r border-[#003366]">S. No.</th>
-                    <th className="py-3 px-3 min-w-[130px] text-white border-r border-[#003366]">Academic Year</th>
-                    <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">Sanctioned Intake</th>
-                    <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Admitted</th>
-                    <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Discontinued</th>
-                    <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Appeared</th>
-                    <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Passed</th>
-                    <th className="py-3 px-3 text-center min-w-[120px] text-amber-300 font-bold border-r border-[#003366]">Pass Percentage</th>
-                    <th className="py-3 px-2 text-center w-12 text-white">Del</th>
-                  </tr>
+                  {isLanguageWing ? (
+                    <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
+                      <th className="py-3 px-3 text-center w-14 text-blue-100 border-r border-[#003366]">S. No.</th>
+                      <th className="py-3 px-3 min-w-[120px] text-white border-r border-[#003366]">Academic Year</th>
+                      <th className="py-3 px-3 min-w-[200px] text-white border-r border-[#003366]">Name of the Course</th>
+                      <th className="py-3 px-3 min-w-[140px] text-white border-r border-[#003366]">Programme / Class</th>
+                      <th className="py-3 px-3 min-w-[120px] text-white border-r border-[#003366]">Semester</th>
+                      <th className="py-3 px-3 text-center min-w-[90px] text-white border-r border-[#003366]">No. Appeared</th>
+                      <th className="py-3 px-3 text-center min-w-[90px] text-white border-r border-[#003366]">No. Passed</th>
+                      <th className="py-3 px-3 text-center min-w-[110px] text-amber-300 font-bold border-r border-[#003366]">Pass %</th>
+                      <th className="py-3 px-2 text-center w-12 text-white">Del</th>
+                    </tr>
+                  ) : (
+                    <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
+                      <th className="py-3 px-3 text-center w-14 text-blue-100 border-r border-[#003366]">S. No.</th>
+                      <th className="py-3 px-3 min-w-[130px] text-white border-r border-[#003366]">Academic Year</th>
+                      <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">Sanctioned Intake</th>
+                      <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Admitted</th>
+                      <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Discontinued</th>
+                      <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Appeared</th>
+                      <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">No. Passed</th>
+                      <th className="py-3 px-3 text-center min-w-[120px] text-amber-300 font-bold border-r border-[#003366]">Pass Percentage</th>
+                      <th className="py-3 px-2 text-center w-12 text-white">Del</th>
+                    </tr>
+                  )}
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {passPercentage.map((item, idx) => (
@@ -1861,84 +1992,169 @@ export function DepartmentUpdateForm() {
                           className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none"
                         />
                       </td>
-                      <td className="py-2 px-2 text-center border-r border-slate-100">
-                        <input
-                          type="text"
-                          placeholder="60"
-                          value={item.intake}
-                          onChange={(e) => {
-                            const next = [...passPercentage];
-                            next[idx].intake = e.target.value;
-                            setPassPercentage(next);
-                          }}
-                          className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
-                        />
-                      </td>
-                      <td className="py-2 px-2 text-center border-r border-slate-100">
-                        <input
-                          type="text"
-                          placeholder="58"
-                          value={item.admitted}
-                          onChange={(e) => {
-                            const next = [...passPercentage];
-                            next[idx].admitted = e.target.value;
-                            setPassPercentage(next);
-                          }}
-                          className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
-                        />
-                      </td>
-                      <td className="py-2 px-2 text-center border-r border-slate-100">
-                        <input
-                          type="text"
-                          placeholder="1"
-                          value={item.discontinued}
-                          onChange={(e) => {
-                            const next = [...passPercentage];
-                            next[idx].discontinued = e.target.value;
-                            setPassPercentage(next);
-                          }}
-                          className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
-                        />
-                      </td>
-                      <td className="py-2 px-2 text-center border-r border-slate-100">
-                        <input
-                          type="text"
-                          placeholder="57"
-                          value={item.appeared}
-                          onChange={(e) => {
-                            const next = [...passPercentage];
-                            next[idx].appeared = e.target.value;
-                            setPassPercentage(next);
-                          }}
-                          className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
-                        />
-                      </td>
-                      <td className="py-2 px-2 text-center border-r border-slate-100">
-                        <input
-                          type="text"
-                          placeholder="56"
-                          value={item.passed}
-                          onChange={(e) => {
-                            const next = [...passPercentage];
-                            next[idx].passed = e.target.value;
-                            setPassPercentage(next);
-                          }}
-                          className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs font-bold text-slate-900 focus:outline-none"
-                        />
-                      </td>
-                      <td className="py-2 px-2 text-center border-r border-slate-100">
-                        <input
-                          type="text"
-                          placeholder="98.24%"
-                          value={item.percentage}
-                          onChange={(e) => {
-                            const next = [...passPercentage];
-                            next[idx].percentage = e.target.value;
-                            setPassPercentage(next);
-                          }}
-                          className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs font-black text-[#002147] focus:outline-none"
-                        />
-                      </td>
+                      {isLanguageWing ? (
+                        <>
+                          <td className="py-2 px-2 border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder={`e.g. General ${languageName}`}
+                              value={item.courseName || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].courseName = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="e.g. B.Sc / B.Com / BCA"
+                              value={item.programme || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].programme = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="e.g. Semester I & II"
+                              value={item.semester || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].semester = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="310"
+                              value={item.appeared || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].appeared = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="304"
+                              value={item.passed || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].passed = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="98.06%"
+                              value={item.percentage || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].percentage = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs font-bold text-emerald-700 focus:outline-none"
+                            />
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="60"
+                              value={item.intake || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].intake = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="58"
+                              value={item.admitted || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].admitted = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="1"
+                              value={item.discontinued || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].discontinued = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="57"
+                              value={item.appeared || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].appeared = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs text-slate-800 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="56"
+                              value={item.passed || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].passed = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs font-bold text-slate-900 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-2 px-2 text-center border-r border-slate-100">
+                            <input
+                              type="text"
+                              placeholder="98.24%"
+                              value={item.percentage || ""}
+                              onChange={(e) => {
+                                const next = [...passPercentage];
+                                next[idx].percentage = e.target.value;
+                                setPassPercentage(next);
+                              }}
+                              className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-1 text-xs font-black text-[#002147] focus:outline-none"
+                            />
+                          </td>
+                        </>
+                      )}
                       <td className="py-2 px-2 text-center">
                         <button
                           type="button"
@@ -1953,7 +2169,9 @@ export function DepartmentUpdateForm() {
                   {passPercentage.length === 0 && (
                     <tr>
                       <td colSpan={9} className="text-center py-6 text-slate-400 italic">
-                        No results records added yet. Click &apos;Add Academic Year&apos; above.
+                        {isLanguageWing
+                          ? "No course results added yet. Click 'Add Course Result' above."
+                          : "No results added yet. Click 'Add Academic Year' above."}
                       </td>
                     </tr>
                   )}
@@ -1962,7 +2180,9 @@ export function DepartmentUpdateForm() {
             </div>
           </div>
 
-          {/* ============================================================== */}
+          {!isLanguageWing && (
+          <>
+{/* ============================================================== */}
           {/* SECTION 6: UNIVERSITY RANKS & ACHIEVEMENTS (9 COLS)             */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
@@ -2709,13 +2929,16 @@ export function DepartmentUpdateForm() {
             </div>
           </div>
 
+                    </>
+          )}
+
           {/* ============================================================== */}
           {/* SECTION 10: MOUS – MEMORANDUM OF UNDERSTANDING (5 COLS)         */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">10. MOUs – Memorandum of Understanding</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "8. Memoranda of Understanding (MoUs) & Collaborations" : "10. MOUs – Memorandum of Understanding"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Industry and institutional partnerships signed by the department (5 columns).</p>
               </div>
               <button
@@ -2880,7 +3103,7 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">11. Departmental Best Practices</h2>
+                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "6. Departmental Best Practices" : "11. Departmental Best Practices"}</h2>
                   <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                     Standard Section 10
                   </span>
@@ -3075,7 +3298,7 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">12. Departmental Add-on / Certificate Courses</h2>
+                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "7. Departmental Add-on / Value-Added / Certificate Courses" : "12. Departmental Add-on / Certificate Courses"}</h2>
                   <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                     Standard Section 11
                   </span>
@@ -3272,7 +3495,7 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">13. Departmental Activities &amp; Celebrations</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "5. Departmental Activities, Events, Programmes & Celebrations" : "13. Departmental Activities & Celebrations"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Workshops, national seminars, guest lectures, and student festivals (6 columns).</p>
               </div>
               <button
@@ -3424,8 +3647,16 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">14. Student External Achievements, Participation &amp; Representation</h2>
-                <p className="text-xs text-slate-500 font-medium">Inter-collegiate, state, and national awards won by department students (10 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">
+                  {isLanguageWing
+                    ? `4. Student Achievements in ${languageName} Language & Literary Activities`
+                    : "14. Student External Achievements, Participation & Representation"}
+                </h2>
+                <p className="text-xs text-slate-500 font-medium">
+                  {isLanguageWing
+                    ? `Awards, accolades, and participation of students in literary competitions, elocution, poetry recitation, and fests.`
+                    : "Inter-collegiate, state, and national awards won by department students (10 columns)."}
+                </p>
               </div>
               <button
                 type="button"
@@ -3631,7 +3862,7 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">15. Year-wise Annual Activity Reports</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "9. Year-wise Annual Activity Reports" : "15. Year-wise Annual Activity Reports"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Consolidated annual department activity reports and supporting documents (5 columns).</p>
               </div>
               <button
@@ -3792,6 +4023,7 @@ export function DepartmentUpdateForm() {
           {/* ============================================================== */}
           {/* SECTION 16: DYNAMIC CUSTOM TABLES                              */}
           {/* ============================================================== */}
+          {!isLanguageWing && (
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
@@ -3930,13 +4162,15 @@ export function DepartmentUpdateForm() {
             )}
           </div>
 
+                    )}
+
           {/* ============================================================== */}
           {/* SECTION 17: DEPARTMENT PHOTO & VIDEO GALLERY (YEAR-WISE FILTER)*/}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">17. Department Photo &amp; Video Gallery</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "10. Department Photo & Video Gallery" : "17. Department Photo & Video Gallery"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Upload photographs with academic year, event title, and date for the public photo gallery.</p>
               </div>
               <label className="px-3.5 py-1.5 bg-[#002147] hover:bg-[#00387a] text-white rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs cursor-pointer active:scale-95">
