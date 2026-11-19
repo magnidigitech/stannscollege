@@ -20,6 +20,7 @@ import { AcademicRegulations } from "@/components/academics/curriculum-academic-
 import { IlmsSystem } from "@/components/academics/curriculum-academic-planning/IlmsSystem";
 
 import { DepartmentDetail } from "@/components/academics/departments/DepartmentDetail";
+import { LanguageDepartmentDetail } from "@/components/academics/departments/LanguageDepartmentDetail";
 import { DepartmentOfCommerce } from "@/components/academics/departments/DepartmentOfCommerce";
 import { AllDepartmentsHub } from "@/components/academics/departments/AllDepartmentsHub";
 import { DepartmentUpdateForm } from "@/components/academics/departments/DepartmentUpdateForm";
@@ -331,6 +332,15 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     if (catSlug === "departments") {
       if (isAllDeptsRoot) return <AllDepartmentsHub />;
       if (itemSlug === "update") return <DepartmentUpdateForm />;
+      if ([
+        "department-of-english",
+        "department-of-telugu-wing",
+        "department-of-sanskrit-hindi-wing",
+        "department-of-oriental-languages",
+        "department-of-oriental-languages-telugu-sanskrit-hindi"
+      ].includes(itemSlug || "")) {
+        return <LanguageDepartmentDetail itemSlug={itemSlug || ""} />;
+      }
       return <DepartmentDetail itemSlug={itemSlug || ""} />;
     }
 
