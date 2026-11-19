@@ -33,7 +33,9 @@ const departmentSubtextMap: Record<string, string> = {
   "department-of-computer-science": "(Under the Department of Computer Science & Applications)",
   "department-of-artificial-intelligence": "(Under the Department of Computer Science & Applications)",
   "department-of-english": "(Under the Department of Oriental Languages)",
+  "department-of-telugu": "(Under the Department of Oriental Languages)",
   "department-of-telugu-wing": "(Under the Department of Oriental Languages)",
+  "department-of-sanskrit-hindi": "(Under the Department of Oriental Languages)",
   "department-of-sanskrit-hindi-wing": "(Under the Department of Oriental Languages)",
 };
 
@@ -86,14 +88,20 @@ const departmentProgrammesMap: Record<string, ProgrammeItem[]> = {
   "department-of-english": [
     { sNo: 1, name: "B.A. Honours – English Literature & Foundation Courses", type: "UG Language & Literature", intake: "-", counseling: "-", management: "-" }
   ],
+  "department-of-telugu": [
+    { sNo: 1, name: "Classical & Modern Telugu Language Courses", type: "UG Language", intake: "-", counseling: "-", management: "-" }
+  ],
   "department-of-telugu-wing": [
-    { sNo: 1, name: "Classical & Modern Telugu Language Courses", type: "UG Language Wing", intake: "-", counseling: "-", management: "-" }
+    { sNo: 1, name: "Classical & Modern Telugu Language Courses", type: "UG Language", intake: "-", counseling: "-", management: "-" }
+  ],
+  "department-of-sanskrit-hindi": [
+    { sNo: 1, name: "Classical Sanskrit & National Hindi Language Courses", type: "UG Language", intake: "-", counseling: "-", management: "-" }
   ],
   "department-of-sanskrit-hindi-wing": [
-    { sNo: 1, name: "Classical Sanskrit & National Hindi Language Courses", type: "UG Language Wing", intake: "-", counseling: "-", management: "-" }
+    { sNo: 1, name: "Classical Sanskrit & National Hindi Language Courses", type: "UG Language", intake: "-", counseling: "-", management: "-" }
   ],
   "department-of-oriental-languages": [
-    { sNo: 1, name: "Language Programmes (Telugu, Sanskrit, Hindi)", type: "UG Language Wing", intake: "-", counseling: "-", management: "-" }
+    { sNo: 1, name: "Language Programmes (Telugu, Sanskrit, Hindi)", type: "UG Language", intake: "-", counseling: "-", management: "-" }
   ]
 };
 
@@ -113,7 +121,9 @@ const deptToFacultySlugMap: Record<string, string> = {
   "department-of-botany": "botany",
   "department-of-chemistry": "chemistry",
   "department-of-english": "english",
+  "department-of-telugu": "oriental-languages",
   "department-of-telugu-wing": "oriental-languages",
+  "department-of-sanskrit-hindi": "oriental-languages",
   "department-of-sanskrit-hindi-wing": "oriental-languages",
   "department-of-oriental-languages": "oriental-languages",
   "department-of-oriental-languages-telugu-sanskrit-hindi": "oriental-languages",
@@ -132,8 +142,10 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
     normalizedSlug = "department-of-bca";
   } else if (itemSlug === "department-of-computer-science-cs-artificial-intelligence") {
     normalizedSlug = "department-of-artificial-intelligence";
-  } else if (itemSlug === "department-of-oriental-languages-telugu-sanskrit-hindi") {
-    normalizedSlug = "department-of-telugu-wing";
+  } else if (itemSlug === "department-of-oriental-languages-telugu-sanskrit-hindi" || itemSlug === "department-of-telugu-wing") {
+    normalizedSlug = "department-of-telugu";
+  } else if (itemSlug === "department-of-sanskrit-hindi-wing" || itemSlug === "department-of-oriental-languages") {
+    normalizedSlug = "department-of-sanskrit-hindi";
   }
 
   const staticDept = academicsData.departments.find((d: any) => d.id === normalizedSlug || d.id === itemSlug);

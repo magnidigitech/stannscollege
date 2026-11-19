@@ -105,8 +105,8 @@ const ACADEMIC_DEPARTMENTS_LIST: AcademicDepartmentConfig[] = [
   { id: "12", slug: "department-of-mca", name: "12. Department of MCA", defaultPass: "mca@2026" },
   { id: "13", slug: "department-of-mba", name: "13. Department of MBA", defaultPass: "mba@2026" },
   { id: "14", slug: "department-of-english", name: "14. Department of English", defaultPass: "english@2026" },
-  { id: "15", slug: "department-of-telugu-wing", name: "15. Telugu Wing (Oriental Languages)", defaultPass: "telugu@2026", aliases: ["department-of-oriental-languages"] },
-  { id: "16", slug: "department-of-sanskrit-hindi-wing", name: "16. Sanskrit & Hindi Wing (Oriental Languages)", defaultPass: "sanskirthindi@2026", aliases: ["department-of-oriental-languages-telugu-sanskrit-hindi"] },
+  { id: "15", slug: "department-of-telugu", name: "15. Telugu (Oriental Languages)", defaultPass: "telugu@2026", aliases: ["department-of-telugu-wing", "department-of-oriental-languages"] },
+  { id: "16", slug: "department-of-sanskrit-hindi", name: "16. Sanskrit & Hindi (Oriental Languages)", defaultPass: "sanskirthindi@2026", aliases: ["department-of-sanskrit-hindi-wing", "department-of-oriental-languages-telugu-sanskrit-hindi"] },
 ];
 
 interface InstitutionalCommitteeConfig {

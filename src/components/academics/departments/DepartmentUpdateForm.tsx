@@ -51,8 +51,8 @@ const DEPARTMENTS: DepartmentConfig[] = [
   { id: "department-of-mca", name: "12. Department of MCA (Master of Computer Applications)", code: "MCA", category: "department" },
   { id: "department-of-mba", name: "13. Department of MBA (Master of Business Administration)", code: "MBA", category: "department" },
   { id: "department-of-english", name: "14. Department of English", subtitle: "Under the Department of Oriental Languages", code: "ENGL", category: "department" },
-  { id: "department-of-telugu-wing", name: "15. Telugu Wing", subtitle: "Under the Department of Oriental Languages", code: "TELU", category: "department" },
-  { id: "department-of-sanskrit-hindi-wing", name: "16. Sanskrit & Hindi Wing", subtitle: "Under the Department of Oriental Languages", code: "SANS", category: "department" }
+  { id: "department-of-telugu", name: "15. Telugu", subtitle: "Under the Department of Oriental Languages", code: "TELU", category: "department" },
+  { id: "department-of-sanskrit-hindi", name: "16. Sanskrit & Hindi", subtitle: "Under the Department of Oriental Languages", code: "SANS", category: "department" }
 ];
 
 const INSTITUTIONAL_COMMITTEES: DepartmentConfig[] = [
@@ -172,7 +172,9 @@ export function DepartmentUpdateForm() {
 
   const isLanguageWing = [
     "department-of-english",
+    "department-of-telugu",
     "department-of-telugu-wing",
+    "department-of-sanskrit-hindi",
     "department-of-sanskrit-hindi-wing",
     "department-of-oriental-languages",
     "department-of-oriental-languages-telugu-sanskrit-hindi"
@@ -180,7 +182,7 @@ export function DepartmentUpdateForm() {
 
   const languageName = selectedDeptId === "department-of-english"
     ? "English"
-    : selectedDeptId === "department-of-telugu-wing"
+    : (selectedDeptId === "department-of-telugu" || selectedDeptId === "department-of-telugu-wing")
     ? "Telugu"
     : "Sanskrit & Hindi";
 
@@ -462,7 +464,7 @@ export function DepartmentUpdateForm() {
         if (isLanguageWing) {
           const langAdjective = selectedDeptId === "department-of-english"
             ? "English Language"
-            : selectedDeptId === "department-of-telugu-wing"
+            : (selectedDeptId === "department-of-telugu" || selectedDeptId === "department-of-telugu-wing")
             ? "Telugu Language"
             : "Sanskrit & Hindi Language";
 

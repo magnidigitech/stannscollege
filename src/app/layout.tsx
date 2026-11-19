@@ -46,17 +46,17 @@ export default function RootLayout({
         {/* Top Announcement Bar - Rendered across all pages */}
         <AnnouncementBar />
 
-        {/* Sticky Header: Logo Bar + Navigation (stays fixed together at the top on scroll) */}
+        {/* Sticky Header: On desktop both Logo Bar + Navigation stay sticky. On mobile, Logo Bar scrolls off so only sleek Navigation sticks. */}
         <header
           id="main-header"
-          className="sticky top-0 z-50 shadow-md select-none transition-colors duration-200"
+          className="md:sticky md:top-0 z-50 shadow-md select-none transition-colors duration-200"
         >
           {/* Top bar with College Logo, Accreditations & Apply Now */}
           <TopLogoBar />
 
-          {/* Navigation Bar below top logo bar */}
+          {/* Navigation Bar below top logo bar - Sticks to top on mobile */}
           <div
-            className="w-full border-b border-t select-none transition-colors duration-200"
+            className="sticky top-0 md:static z-50 w-full border-b border-t select-none transition-colors duration-200 shadow-sm md:shadow-none"
             style={{
               backgroundColor: "#000080",
               borderColor: "rgba(255, 255, 255, 0.12)"

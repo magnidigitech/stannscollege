@@ -97,6 +97,7 @@ export default function QualityAssurancePage({ params }: PageProps) {
   // Track accordion expand states in sidebar
   const [aqarExpanded, setAqarExpanded] = useState<boolean>(() => isAqarActive);
   const [naacExpanded, setNaacExpanded] = useState<boolean>(() => isNaacActive);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
@@ -104,8 +105,8 @@ export default function QualityAssurancePage({ params }: PageProps) {
       <div className="max-w-[1600px] mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
 
-          {/* Left: Redesigned Collegiate Sidebar */}
-          <aside className="lg:col-span-3">
+          {/* Left: Redesigned Collegiate Sidebar (Desktop Only) */}
+          <aside className="hidden lg:block lg:col-span-3">
             <div
               className="sticky select-none h-fit overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-6"
               style={{
@@ -380,7 +381,70 @@ export default function QualityAssurancePage({ params }: PageProps) {
           </aside>
 
           {/* Right: Dynamic Component Content */}
-          <main className="lg:col-span-9 flex flex-col gap-10 mb-16">
+          <main className="lg:col-span-9 flex flex-col gap-6 sm:gap-10 mb-16">
+            {/* Mobile Section Switcher Bar */}
+            <div className="block lg:hidden bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-1">
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                className="w-full px-4 py-3 bg-[#1e40af] text-white flex items-center justify-between gap-3 text-left transition-colors cursor-pointer select-none"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 text-white shrink-0">
+                    <ShieldCheck className="h-4 w-4" />
+                  </span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-[10px] uppercase font-bold text-blue-200 tracking-wider">
+                      Quality Assurance
+                    </span>
+                    <span className="text-xs font-black text-white truncate">
+                      {mainSlug ? mainSlug.replace(/-/g, " ").toUpperCase() : "Select Topic"}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0 bg-white/15 px-2.5 py-1 rounded-lg text-[11px] font-bold">
+                  <span>{mobileNavOpen ? "Close Menu" : "Switch Topic"}</span>
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${mobileNavOpen ? "rotate-180" : ""}`} />
+                </div>
+              </button>
+
+              {mobileNavOpen && (
+                <div className="p-3.5 max-h-[60vh] overflow-y-auto bg-slate-50 border-t border-slate-200 flex flex-col gap-3.5 animate-fadeIn">
+                  {navigationStructure.map((group, idx) => (
+                    <div key={idx} className="flex flex-col gap-1.5">
+                      <span className="font-outfit text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">
+                        {group.title}
+                      </span>
+                      <div className="flex flex-col gap-1">
+                        {group.items.map((item, i) => {
+                          const isActive = mainSlug === item.slug;
+                          const ItemIcon = item.icon;
+                          return (
+                            <Link
+                              key={i}
+                              href={`/quality-assurance/${item.slug}`}
+                              onClick={() => setMobileNavOpen(false)}
+                              className={`font-sans text-xs p-2.5 rounded-xl transition-all flex items-center justify-between ${
+                                isActive
+                                  ? "bg-[#1e40af] text-white font-black shadow-xs"
+                                  : "text-slate-600 hover:bg-slate-100 font-bold"
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 truncate">
+                                <ItemIcon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
+                                <span className="truncate pr-2 leading-tight">{item.text}</span>
+                              </div>
+                              {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0 animate-pulse" />}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <SubtextBox>
               Dedicated to institutional excellence, quality culture, continuous academic enhancement, and NAAC benchmarks at St. Ann&apos;s College for Women.
             </SubtextBox>

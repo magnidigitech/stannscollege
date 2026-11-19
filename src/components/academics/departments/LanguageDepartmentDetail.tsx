@@ -26,22 +26,24 @@ interface LanguageDepartmentDetailProps {
 export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailProps) {
   // Normalize slug
   let normalizedSlug = itemSlug;
-  if (itemSlug === "department-of-oriental-languages-telugu-sanskrit-hindi") {
-    normalizedSlug = "department-of-telugu-wing";
+  if (itemSlug === "department-of-telugu-wing" || itemSlug === "department-of-oriental-languages-telugu-sanskrit-hindi") {
+    normalizedSlug = "department-of-telugu";
+  } else if (itemSlug === "department-of-sanskrit-hindi-wing" || itemSlug === "department-of-oriental-languages") {
+    normalizedSlug = "department-of-sanskrit-hindi";
   }
 
   const staticDept = academicsData.departments.find(
-    (d: any) => d.id === normalizedSlug || d.id === itemSlug
+    (d: any) => d.id === normalizedSlug || d.id === itemSlug || (normalizedSlug === "department-of-telugu" && d.id === "department-of-telugu-wing") || (normalizedSlug === "department-of-sanskrit-hindi" && d.id === "department-of-sanskrit-hindi-wing")
   );
 
   const isEnglish = normalizedSlug === "department-of-english";
-  const isTelugu = normalizedSlug === "department-of-telugu-wing";
-  const isSanskritHindi = normalizedSlug === "department-of-sanskrit-hindi-wing" || normalizedSlug === "department-of-oriental-languages";
+  const isTelugu = normalizedSlug === "department-of-telugu" || itemSlug === "department-of-telugu-wing";
+  const isSanskritHindi = normalizedSlug === "department-of-sanskrit-hindi" || itemSlug === "department-of-sanskrit-hindi-wing" || normalizedSlug === "department-of-oriental-languages";
 
   const languageLabel = isEnglish ? "English" : isTelugu ? "Telugu" : "Sanskrit & Hindi";
   const languageAdjective = isEnglish ? "English Language" : isTelugu ? "Telugu Language" : "Sanskrit & Hindi Language";
 
-  const deptName = staticDept?.name || (isEnglish ? "Department of English" : isTelugu ? "Telugu Wing" : "Sanskrit & Hindi Wing");
+  const deptName = staticDept?.name || (isEnglish ? "English" : isTelugu ? "Telugu" : "Sanskrit & Hindi");
   const deptSubtext = "(Under the Department of Oriental Languages)";
   const introParagraph = staticDept?.description || "";
   const overviewPdf = staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";

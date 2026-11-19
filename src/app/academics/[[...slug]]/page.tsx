@@ -72,8 +72,8 @@ const navigationStructure = [
       { text: "12. Dept. of MCA", slug: "department-of-mca" },
       { text: "13. Dept. of MBA", slug: "department-of-mba" },
       { text: "14. Dept. of English", slug: "department-of-english" },
-      { text: "15. Telugu Wing", slug: "department-of-telugu-wing" },
-      { text: "16. Sanskrit & Hindi Wing", slug: "department-of-sanskrit-hindi-wing" }
+      { text: "15. Telugu", slug: "department-of-telugu" },
+      { text: "16. Sanskrit & Hindi", slug: "department-of-sanskrit-hindi" }
     ]
   },
   {
@@ -184,6 +184,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
     rawCat;
 
   const [deptsOpen, setDeptsOpen] = useState<boolean>(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
   const [headerHeight, setHeaderHeight] = useState<number>(140);
   const isAllDeptsRoot = catSlug === "departments" && !itemSlug;
 
@@ -334,7 +335,9 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
       if (itemSlug === "update") return <DepartmentUpdateForm />;
       if ([
         "department-of-english",
+        "department-of-telugu",
         "department-of-telugu-wing",
+        "department-of-sanskrit-hindi",
         "department-of-sanskrit-hindi-wing",
         "department-of-oriental-languages",
         "department-of-oriental-languages-telugu-sanskrit-hindi"
@@ -500,7 +503,7 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
           
           {/* Left Navigation Sidebar for Desktop */}
           <div
-            className="lg:col-span-3 flex flex-col sticky select-none h-fit overflow-hidden bg-white border border-slate-200/80 rounded-[2rem] shadow-sm z-20"
+            className="hidden lg:flex lg:col-span-3 flex-col sticky select-none h-fit overflow-hidden bg-white border border-slate-200/80 rounded-[2rem] shadow-sm z-20"
             style={{
               top: `${headerHeight + 16}px`,
               maxHeight: `calc(100vh - ${headerHeight + 32}px)`,
@@ -617,6 +620,65 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
           {/* Main Dynamic Right Component */}
           <div className={`lg:col-span-9 mb-16 flex flex-col ${catSlug === "departments" ? "gap-3.5" : "gap-8"}`}>
+            {/* Mobile Section Switcher Bar */}
+            <div className="block lg:hidden bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-2">
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                className="w-full px-4 py-3 bg-[#002147] text-white flex items-center justify-between gap-3 text-left transition-colors cursor-pointer select-none"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 text-white shrink-0">
+                    <GraduationCap className="h-4 w-4" />
+                  </span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-[10px] uppercase font-bold text-blue-200 tracking-wider">
+                      Academics Navigation
+                    </span>
+                    <span className="text-xs font-black text-white truncate">
+                      {pageTitle || "Select Academic Module"}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0 bg-white/15 px-2.5 py-1 rounded-lg text-[11px] font-bold">
+                  <span>{mobileNavOpen ? "Close Menu" : "Switch Topic"}</span>
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${mobileNavOpen ? "rotate-180" : ""}`} />
+                </div>
+              </button>
+
+              {mobileNavOpen && (
+                <div className="p-3.5 max-h-[60vh] overflow-y-auto bg-slate-50 border-t border-slate-200 flex flex-col gap-3.5 animate-fadeIn">
+                  {navigationStructure.map((group) => (
+                    <div key={group.catSlug} className="flex flex-col gap-1.5">
+                      <span className="font-outfit text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">
+                        {group.title}
+                      </span>
+                      <div className="flex flex-col gap-1">
+                        {group.items.map((item) => {
+                          const isActive = catSlug === group.catSlug && itemSlug === item.slug;
+                          return (
+                            <Link
+                              key={item.slug}
+                              href={`/academics/${group.catSlug}/${item.slug}`}
+                              onClick={() => setMobileNavOpen(false)}
+                              className={`font-sans text-xs p-2.5 rounded-xl transition-all flex items-center justify-between ${
+                                isActive
+                                  ? "bg-[#002147] text-white font-black shadow-xs"
+                                  : "text-slate-600 hover:bg-slate-100 font-bold"
+                              }`}
+                            >
+                              <span className="truncate pr-2 leading-tight">{item.text}</span>
+                              {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0 animate-pulse"></span>}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Sub-text Box (suppressed for all departments because departments render their own heading box first, then quote box) */}
             {catSlug !== "departments" && (
               <SubtextBox subtext={pageSubtext} />

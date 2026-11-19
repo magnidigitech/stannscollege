@@ -1267,11 +1267,11 @@ export default function HomePage() {
         </section>
       {/* ----------------------------------------------------
           FIXED LEFT NOTCH BUTTONS: Social Media Channels
-          (Fixed at middle of screen, persistent on scroll)
+          (Fixed at middle of screen on desktop, hidden on mobile to prevent blocking content)
           ---------------------------------------------------- */}
       <aside
         aria-label="Social Media Channels"
-        className="fixed left-0 top-[60%] -translate-y-1/2 z-30 flex flex-col gap-1.5 select-none items-start"
+        className="hidden lg:flex fixed left-0 top-[60%] -translate-y-1/2 z-30 flex-col gap-1.5 select-none items-start"
       >
         {socialMediaButtons.map((btn) => (
           <a
@@ -1292,11 +1292,11 @@ export default function HomePage() {
 
       {/* ----------------------------------------------------
           FIXED RIGHT NOTCH BUTTONS: Programs, Newsletters, Magazines, Student Handbook, Brochures, Prospectus
-          (Matches left-side social media layout: expands to left on hover with pill shape)
+          (Matches left-side layout: desktop only, hidden on mobile to prevent blocking content)
           ---------------------------------------------------- */}
       <aside
         aria-label="Academic & Publication Shortcuts"
-        className="fixed right-0 top-[60%] -translate-y-1/2 z-30 flex flex-col gap-1.5 select-none items-end"
+        className="hidden lg:flex fixed right-0 top-[60%] -translate-y-1/2 z-30 flex-col gap-1.5 select-none items-end"
       >
         {[
           {

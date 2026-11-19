@@ -132,18 +132,18 @@ const departmentHubCards: DepartmentCardData[] = [
     established: "1997"
   },
   {
-    id: "department-of-telugu-wing",
-    name: "Telugu Wing",
-    shortName: "Telugu Wing",
+    id: "department-of-telugu",
+    name: "Telugu",
+    shortName: "Telugu",
     subtext: "Under Dept. of Oriental Languages",
     quote: "“Desa Bhashalandu Telugu Lessa – Preserving classical languages, culture, and rich heritage.”",
     imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800",
     established: "1997"
   },
   {
-    id: "department-of-sanskrit-hindi-wing",
-    name: "Sanskrit & Hindi Wing",
-    shortName: "Sanskrit & Hindi Wing",
+    id: "department-of-sanskrit-hindi",
+    name: "Sanskrit & Hindi",
+    shortName: "Sanskrit & Hindi",
     subtext: "Under Dept. of Oriental Languages",
     quote: "“Fostering classical Sanskrit wisdom and national Hindi literature and linguistics.”",
     imageUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800",

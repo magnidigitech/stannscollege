@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, ChevronRight } from "lucide-react";
+import { BookOpen, ChevronRight, ChevronDown } from "lucide-react";
 
 export interface SidebarItem {
   text: string;
@@ -133,15 +133,119 @@ export default function AboutSidebar({
     }
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  let activeItemName = "";
+  for (const cat of activeCategories) {
+    const it = cat.items.find(
+      (item) =>
+        (item.id && activeId === item.id) ||
+        (!item.id && (
+          (currentCatSlug === cat.catSlug && currentItemSlug === item.slug) ||
+          (item.slug === "strategic-development-plan" && currentItemSlug === "strategic-development-plan")
+        ))
+    );
+    if (it) {
+      activeItemName = it.text;
+      break;
+    }
+  }
+
   return (
-    <aside
-      className="flex flex-col sticky select-none h-fit overflow-hidden border-2 border-slate-200/90 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 z-20"
-      style={{
-        top: `${headerHeight + 16}px`,
-        maxHeight: `calc(100vh - ${headerHeight + 32}px)`,
-        backgroundColor: "var(--sidebar-container-bg, #eaeff5)"
-      }}
-    >
+    <>
+      {/* Mobile Compact Topic Switcher (Visible ONLY on mobile screens < lg) */}
+      <div className="block lg:hidden w-full bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-6">
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="w-full px-4 py-3 text-white flex items-center justify-between gap-3 text-left transition-colors cursor-pointer select-none"
+          style={{ background: "var(--sidebar-bg, #1e40af)" }}
+        >
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 text-white shrink-0">
+              <BookOpen className="h-4 w-4" />
+            </span>
+            <div className="flex flex-col min-w-0">
+              <span className="text-[10px] uppercase font-bold text-blue-200 tracking-wider truncate">
+                {bannerTitle}
+              </span>
+              <span className="text-xs font-black text-white truncate">
+                {activeItemName || "Select Section / Topic"}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0 bg-white/15 px-2.5 py-1 rounded-lg text-[11px] font-bold">
+            <span>{mobileMenuOpen ? "Close Menu" : "Switch Topic"}</span>
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${mobileMenuOpen ? "rotate-180" : ""}`} />
+          </div>
+        </button>
+
+        {mobileMenuOpen && (
+          <div className="p-3.5 max-h-[60vh] overflow-y-auto bg-slate-50 border-t border-slate-200 flex flex-col gap-3.5 animate-fadeIn">
+            {activeCategories.map((cat) => (
+              <div key={cat.catSlug} className="flex flex-col gap-1.5">
+                <span className="font-outfit text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">
+                  {cat.title}
+                </span>
+                <div className="flex flex-col gap-1">
+                  {cat.items.map((item, idx) => {
+                    const isItemActive =
+                      (item.id && activeId === item.id) ||
+                      (!item.id && (
+                        (currentCatSlug === cat.catSlug && currentItemSlug === item.slug) ||
+                        (item.slug === "strategic-development-plan" && currentItemSlug === "strategic-development-plan")
+                      ));
+
+                    const handleClick = (e: React.MouseEvent) => {
+                      setMobileMenuOpen(false);
+                      if (item.id && currentCatSlug === cat.catSlug) {
+                        e.preventDefault();
+                        scrollToTarget(item.id);
+                        if (typeof window !== "undefined") {
+                          window.history.pushState(null, "", `#${item.id}`);
+                        }
+                        if (onItemClick) onItemClick(item.id);
+                      }
+                    };
+
+                    const href = item.id
+                      ? (currentCatSlug === cat.catSlug ? `#${item.id}` : `/about/${cat.catSlug}#${item.id}`)
+                      : item.slug === "strategic-development-plan"
+                        ? "/strategic-plans-and-future-directions"
+                        : `/about/${cat.catSlug}/${item.slug}`;
+
+                    return (
+                      <Link
+                        key={`m-${cat.catSlug}-${item.id || item.slug || item.text}-${idx}`}
+                        href={href}
+                        onClick={handleClick}
+                        className={`font-sans text-xs p-2.5 rounded-xl transition-all flex items-center justify-between ${
+                          isItemActive
+                            ? "bg-[#1e40af] text-white font-black shadow-xs"
+                            : "text-slate-600 hover:bg-slate-100 font-bold"
+                        }`}
+                      >
+                        <span className="truncate pr-2 leading-tight">{item.text}</span>
+                        {isItemActive && <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0 animate-pulse" />}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Sticky Sidebar (Visible ONLY on desktop screens lg and up) */}
+      <aside
+        className="hidden lg:flex flex-col sticky select-none h-fit overflow-hidden border-2 border-slate-200/90 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 z-20"
+        style={{
+          top: `${headerHeight + 16}px`,
+          maxHeight: `calc(100vh - ${headerHeight + 32}px)`,
+          backgroundColor: "var(--sidebar-container-bg, #eaeff5)"
+        }}
+      >
       {/* Sidebar Top Banner Header - Fixed flush to top & sides with no gap */}
       <div
         className="text-white px-4.5 sm:px-5 py-3.5 sm:py-4 flex items-center gap-3.5 shadow-sm border-b transition-colors duration-200 shrink-0 w-full"
@@ -279,5 +383,6 @@ export default function AboutSidebar({
         )}
       </div>
     </aside>
+    </>
   );
 }
