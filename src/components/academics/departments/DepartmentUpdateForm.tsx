@@ -501,11 +501,17 @@ export function DepartmentUpdateForm() {
         }
 
         // 2. Curriculum Documents & Curriculum By Year
-        if (data.curriculumByYear && typeof data.curriculumByYear === "object") {
-          setCurriculumByYear(data.curriculumByYear);
-        } else {
-          setCurriculumByYear({});
+        let loadedCurriculumByYear: Record<string, any> = {};
+        if (data.curriculumByYearJson) {
+          try {
+            loadedCurriculumByYear = typeof data.curriculumByYearJson === "string"
+              ? JSON.parse(data.curriculumByYearJson)
+              : data.curriculumByYearJson;
+          } catch {}
+        } else if (data.curriculumByYear && typeof data.curriculumByYear === "object") {
+          loadedCurriculumByYear = data.curriculumByYear;
         }
+        setCurriculumByYear(loadedCurriculumByYear);
 
         if (isLanguageWing) {
           const langAdjective = selectedDeptId === "department-of-english"
@@ -937,6 +943,7 @@ export function DepartmentUpdateForm() {
       programmes: isLanguageWing ? [] : programmes,
       curriculumDocuments,
       curriculumByYear,
+      curriculumByYearJson: JSON.stringify(curriculumByYear),
       facultyMembers: dedupedMembers,
       passPercentage,
       results: isLanguageWing ? passPercentage : undefined,

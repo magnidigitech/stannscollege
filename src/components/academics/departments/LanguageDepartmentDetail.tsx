@@ -442,8 +442,32 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {curriculumDocs.map((item, idx) => {
-                  const docItem = dynamicDept?.curriculumByYear?.[curriculumYear]?.find((d: any) => d.sNo === item.sNo)
-                    || (Array.isArray(dynamicDept?.curriculumDocuments) && (dynamicDept.curriculumDocuments.find((d: any) => d.year === curriculumYear && d.sNo === item.sNo) || dynamicDept.curriculumDocuments[idx]));
+                  let yearMap: Record<string, any> = {};
+                  if (dynamicDept?.curriculumByYearJson) {
+                    try {
+                      yearMap = typeof dynamicDept.curriculumByYearJson === "string"
+                        ? JSON.parse(dynamicDept.curriculumByYearJson)
+                        : dynamicDept.curriculumByYearJson;
+                    } catch {}
+                  } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+                    yearMap = dynamicDept.curriculumByYear;
+                  }
+
+                  const normalizeY = (y: string) => (y || "").replace(/[\u2013\u2014]/g, "-").trim();
+                  const targetYearNorm = normalizeY(curriculumYear);
+
+                  let yearList = yearMap[curriculumYear];
+                  if (!yearList) {
+                    for (const key of Object.keys(yearMap)) {
+                      if (normalizeY(key) === targetYearNorm) {
+                        yearList = yearMap[key];
+                        break;
+                      }
+                    }
+                  }
+
+                  const docItem = yearList?.find((d: any) => d.sNo === item.sNo)
+                    || (Array.isArray(dynamicDept?.curriculumDocuments) && (dynamicDept.curriculumDocuments.find((d: any) => normalizeY(d.year) === targetYearNorm && d.sNo === item.sNo) || dynamicDept.curriculumDocuments[idx]));
                   const targetDoc = docItem?.documentUrl || "/documents/DefaultFile_1.pdf";
                   return (
                     <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>

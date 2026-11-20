@@ -278,11 +278,35 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
 
   // Dynamic Curriculum Documents for Table 2 (Curriculum & Learning Outcomes)
   const activeCurriculumDocs = useMemo(() => {
-    if (dynamicDept?.curriculumByYear && dynamicDept.curriculumByYear[table2Year]) {
-      return dynamicDept.curriculumByYear[table2Year];
+    let yearMap: Record<string, any> = {};
+    if (dynamicDept?.curriculumByYearJson) {
+      try {
+        yearMap = typeof dynamicDept.curriculumByYearJson === "string"
+          ? JSON.parse(dynamicDept.curriculumByYearJson)
+          : dynamicDept.curriculumByYearJson;
+      } catch {}
+    } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+      yearMap = dynamicDept.curriculumByYear;
+    }
+
+    const normalizeY = (y: string) => (y || "").replace(/[\u2013\u2014]/g, "-").trim();
+    const targetYearNorm = normalizeY(table2Year);
+
+    let matchedDocs = yearMap[table2Year];
+    if (!matchedDocs) {
+      for (const key of Object.keys(yearMap)) {
+        if (normalizeY(key) === targetYearNorm) {
+          matchedDocs = yearMap[key];
+          break;
+        }
+      }
+    }
+
+    if (Array.isArray(matchedDocs) && matchedDocs.length > 0) {
+      return matchedDocs;
     }
     if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
-      const yearMatch = dynamicDept.curriculumDocuments.filter((d: any) => d.year === table2Year);
+      const yearMatch = dynamicDept.curriculumDocuments.filter((d: any) => normalizeY(d.year) === targetYearNorm);
       if (yearMatch.length > 0) return yearMatch;
       return dynamicDept.curriculumDocuments;
     }

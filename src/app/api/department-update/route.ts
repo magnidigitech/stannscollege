@@ -275,6 +275,19 @@ export async function POST(req: NextRequest) {
 
     departmentData.facultyMembers = facultyMembers;
 
+    // Handle curriculumByYear serialization to prevent Sanity attribute name restrictions (e.g. en-dashes in year keys like "2025–2026")
+    let parsedCurriculumByYear = departmentData.curriculumByYear;
+    if (parsedCurriculumByYear) {
+      departmentData.curriculumByYearJson = typeof parsedCurriculumByYear === "string"
+        ? parsedCurriculumByYear
+        : JSON.stringify(parsedCurriculumByYear);
+      delete departmentData.curriculumByYear;
+    } else if (departmentData.curriculumByYearJson && typeof departmentData.curriculumByYearJson === "string") {
+      try {
+        parsedCurriculumByYear = JSON.parse(departmentData.curriculumByYearJson);
+      } catch {}
+    }
+
     // Ensure all array items have unique keys before submitting
     addKeysToObj(departmentData);
 
@@ -300,6 +313,8 @@ export async function POST(req: NextRequest) {
               certificateCourses: departmentData.certificateCourses || json.departments[idx].certificateCourses,
               mous: departmentData.mous || json.departments[idx].mous,
               annualReports: departmentData.annualReports || json.departments[idx].annualReports,
+              curriculumByYear: parsedCurriculumByYear || json.departments[idx].curriculumByYear,
+              curriculumByYearJson: departmentData.curriculumByYearJson || json.departments[idx].curriculumByYearJson,
             };
             fs.writeFileSync(filePath, JSON.stringify(json, null, 2), "utf-8");
           }
