@@ -276,6 +276,19 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
     return uploadedPhotos.filter(p => p.year === galleryYear);
   }, [uploadedPhotos, galleryYear]);
 
+  // Dynamic Curriculum Documents for Table 2 (Curriculum & Learning Outcomes)
+  const activeCurriculumDocs = useMemo(() => {
+    if (dynamicDept?.curriculumByYear && dynamicDept.curriculumByYear[table2Year]) {
+      return dynamicDept.curriculumByYear[table2Year];
+    }
+    if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
+      const yearMatch = dynamicDept.curriculumDocuments.filter((d: any) => d.year === table2Year);
+      if (yearMatch.length > 0) return yearMatch;
+      return dynamicDept.curriculumDocuments;
+    }
+    return null;
+  }, [dynamicDept, table2Year]);
+
   // Standard Baseline Data for Table 3 (Student Strength & Pass %)
   const table3Data = useMemo(() => {
     let all = [
@@ -731,20 +744,24 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   { sNo: 4, particular: "Course Structure & Syllabus", btnText: "View Syllabus" },
                   { sNo: 5, particular: "Course Outcomes (COs)", btnText: "View PDF" },
                   { sNo: 6, particular: "CO–PO–PSO Mapping", btnText: "View PDF" }
-                ].map((row) => (
-                  <tr key={row.sNo} className={row.sNo % 2 === 1 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.particular}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `${row.particular} (${table2Year}) - ${deptName}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> {row.btnText}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                ].map((row) => {
+                  const docItem = activeCurriculumDocs?.find((d: any) => d.sNo === row.sNo || d.particular?.trim().toLowerCase() === row.particular?.trim().toLowerCase()) || activeCurriculumDocs?.[row.sNo - 1];
+                  const docUrl = docItem?.documentUrl || "/documents/DefaultFile_1.pdf";
+                  return (
+                    <tr key={row.sNo} className={row.sNo % 2 === 1 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.particular}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(docUrl, `${row.particular} (${table2Year}) - ${deptName}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> {row.btnText}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

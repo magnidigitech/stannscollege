@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { 
   Building, CheckCircle2, AlertCircle, Loader2, Plus, Trash2, 
@@ -186,6 +186,12 @@ export function DepartmentUpdateForm() {
     ? "Telugu"
     : "Sanskrit & Hindi";
 
+  const langAdjective = selectedDeptId === "department-of-english"
+    ? "English Language"
+    : (selectedDeptId === "department-of-telugu" || selectedDeptId === "department-of-telugu-wing")
+    ? "Telugu Language"
+    : "Sanskrit & Hindi Language";
+
   // 1. Core Profile Details
   const [established, setEstablished] = useState("");
   const [tagline, setTagline] = useState("");
@@ -252,7 +258,13 @@ export function DepartmentUpdateForm() {
     }
   };
 
-  // 4. Curriculum & Learning Outcomes (Section 3 in Ref Doc)
+  // 3. Curriculum & Learning Outcomes (Section 3 in Ref Doc)
+  const [selectedCurriculumYear, setSelectedCurriculumYear] = useState<string>("2025–2026");
+  const [curriculumByYear, setCurriculumByYear] = useState<Record<string, Array<{
+    sNo: number; 
+    particular: string; 
+    documentUrl: string;
+  }>>>({});
   const [curriculumDocuments, setCurriculumDocuments] = useState<Array<{ 
     sNo: number; 
     particular: string; 
@@ -318,9 +330,10 @@ export function DepartmentUpdateForm() {
     proofDocUrl: string;
   }>>([]);
 
-  // 10. MOUs – Memorandum of Understanding (Section 9 in Ref Doc - 5 cols)
+  // 9. Memoranda of Understanding (MoUs) & Collaborations (Section 9 in Ref Doc - 5 cols)
   const [mous, setMous] = useState<Array<{ 
     sNo?: number; 
+    year?: string;
     organization: string; 
     duration: string; 
     documentUrl: string; 
@@ -351,10 +364,11 @@ export function DepartmentUpdateForm() {
     reportUrl: string;
   }>>([]);
 
-  // 13. Activities, Events, Programmes & Celebrations (Section 12 in Ref Doc - 6 cols)
+  // 12. Departmental Activities, Events, Programmes & Celebrations (Section 12 in Ref Doc - 6 cols)
   const [activities, setActivities] = useState<Array<{ 
     sNo?: number; 
     date: string; 
+    year?: string;
     title: string; 
     category: string;
     participants: string; 
@@ -388,7 +402,7 @@ export function DepartmentUpdateForm() {
   // 16. Dynamic Custom Tables
   const [customTables, setCustomTables] = useState<CustomTable[]>([]);
 
-  // 17. Department Photo & Video Gallery (Section 15 in Ref Doc)
+  // 15. Photo Gallery (Section 15 in Ref Doc)
   const [gallery, setGallery] = useState<Array<{ 
     image?: any; 
     file?: File | null; 
@@ -398,6 +412,32 @@ export function DepartmentUpdateForm() {
     date?: string;
     caption: string; 
   }>>([]);
+
+  // Active curriculum documents for currently selected year in editor
+  const currentCurriculumList: Array<{ sNo: number; particular: string; documentUrl: string }> = useMemo(() => {
+    if (curriculumByYear[selectedCurriculumYear] && curriculumByYear[selectedCurriculumYear].length > 0) {
+      return curriculumByYear[selectedCurriculumYear];
+    }
+    if (curriculumDocuments.length > 0) {
+      return curriculumDocuments;
+    }
+    if (isLanguageWing) {
+      return [
+        { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "/documents/DefaultFile_1.pdf" },
+        { sNo: 2, particular: `${langAdjective} Course-wise Syllabus`, documentUrl: "/documents/DefaultFile_1.pdf" },
+        { sNo: 3, particular: "Course Outcomes (COs) – Semester-wise", documentUrl: "/documents/DefaultFile_1.pdf" },
+        { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "/documents/DefaultFile_1.pdf" },
+      ];
+    }
+    return [
+      { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "/documents/DefaultFile_1.pdf" },
+    ];
+  }, [curriculumByYear, selectedCurriculumYear, curriculumDocuments, isLanguageWing, langAdjective]);
 
   // Handle Login Authentication
   const handleLogin = async (e: React.FormEvent) => {
@@ -460,7 +500,13 @@ export function DepartmentUpdateForm() {
           setProgrammes([]);
         }
 
-        // 2. Curriculum Documents
+        // 2. Curriculum Documents & Curriculum By Year
+        if (data.curriculumByYear && typeof data.curriculumByYear === "object") {
+          setCurriculumByYear(data.curriculumByYear);
+        } else {
+          setCurriculumByYear({});
+        }
+
         if (isLanguageWing) {
           const langAdjective = selectedDeptId === "department-of-english"
             ? "English Language"
@@ -890,6 +936,7 @@ export function DepartmentUpdateForm() {
       overviewDocUrl,
       programmes: isLanguageWing ? [] : programmes,
       curriculumDocuments,
+      curriculumByYear,
       facultyMembers: dedupedMembers,
       passPercentage,
       results: isLanguageWing ? passPercentage : undefined,
@@ -1318,13 +1365,13 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col gap-8">
 
           {/* ============================================================== */}
-          {/* SECTION 1: CORE PROFILE DETAILS                                */}
+          {/* DEPARTMENT CORE PROFILE & OVERVIEW                             */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="border-b border-slate-100 pb-3 flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <h2 className="font-outfit font-black text-lg text-[#002147]">
-                  {isLanguageWing ? "Department Core Profile & Overview" : "1. Department Core Profile"}
+                  Department Core Profile &amp; Overview
                 </h2>
                 {isLanguageWing && (
                   <span className="text-[10px] font-bold text-slate-700 italic bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200">
@@ -1471,13 +1518,13 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 2: PROGRAMMES OFFERED (6 COLS IN REF DOC)              */}
+          {/* SECTION 1: PROGRAMMES OFFERED (6 COLS IN REF DOC)              */}
           {/* ============================================================== */}
           {!isLanguageWing && (
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">2. Programmes Offered</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">1. Programmes Offered</h2>
                 <p className="text-xs text-slate-500 font-medium">Undergraduate and postgraduate programmes offered under this department.</p>
               </div>
               <button
@@ -1599,13 +1646,13 @@ export function DepartmentUpdateForm() {
           )}
 
           {/* ============================================================== */}
-          {/* SECTION 3: FACULTY DIRECTORY (WITH LIVE DEDUPLICATION)          */}
+          {/* SECTION 2: FACULTY DIRECTORY (WITH LIVE DEDUPLICATION)          */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "1. Faculty Directory" : "3. Faculty Directory"}</h2>
+                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "1. Faculty Directory" : "2. Faculty Directory"}</h2>
                   <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
                     Live Deduplicated &amp; Synced
                   </span>
@@ -1823,14 +1870,37 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 4: CURRICULUM & LEARNING OUTCOMES (6-ROW DOCUMENT TABLE)*/}
+          {/* SECTION 3: CURRICULUM & LEARNING OUTCOMES (WITH YEAR SELECTOR) */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
-            <div className="border-b border-slate-100 pb-3">
-              <h2 className="font-outfit font-black text-lg text-[#002147]">4. Curriculum &amp; Learning Outcomes Documents</h2>
-              <p className="text-xs text-slate-500 font-medium">
-                The 6 standard curriculum and syllabus documents displayed in Table 2 of your department page.
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+              <div>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">
+                  {isLanguageWing ? "2. Curriculum & Learning Outcomes" : "3. Curriculum & Learning Outcomes"}
+                </h2>
+                <p className="text-xs text-slate-500 font-medium">
+                  {isLanguageWing
+                    ? "Language curriculum structure, syllabus, course outcomes, and teaching-learning materials."
+                    : "The 6 standard curriculum and syllabus documents displayed in Section 3 / Table 2 of your department page."}
+                </p>
+              </div>
+
+              {/* Year Selector Dropdown */}
+              <div className="flex items-center gap-2 bg-blue-50/60 p-1.5 px-3 rounded-xl border border-blue-200/80 self-start sm:self-auto">
+                <span className="text-xs font-bold text-[#002147] flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-[#002147]" /> Academic Year:
+                </span>
+                <select
+                  value={selectedCurriculumYear}
+                  onChange={(e) => setSelectedCurriculumYear(e.target.value)}
+                  aria-label="Select Curriculum Academic Year"
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-xs cursor-pointer"
+                >
+                  {["2026–2027", "2025–2026", "2024–2025", "2023–2024", "2022–2023", "2021–2022"].map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-slate-200">
@@ -1839,12 +1909,12 @@ export function DepartmentUpdateForm() {
                   <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
                     <th className="py-3 px-3 text-center w-14 text-blue-100 border-r border-[#003366]">S. No.</th>
                     <th className="py-3 px-4 min-w-[280px] text-white border-r border-[#003366]">Particulars</th>
-                    <th className="py-3 px-4 min-w-[320px] text-white border-r border-[#003366]">Document URL / PDF Link</th>
+                    <th className="py-3 px-4 min-w-[320px] text-white border-r border-[#003366]">Document URL / PDF Link ({selectedCurriculumYear})</th>
                     <th className="py-3 px-3 text-center w-24 text-white">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {curriculumDocuments.map((doc, idx) => (
+                  {currentCurriculumList.map((doc: any, idx: number) => (
                     <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/30" : "bg-slate-50/60 hover:bg-blue-50/30"}>
                       <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
                       <td className="py-2.5 px-4 font-bold text-slate-900 border-r border-slate-100">
@@ -1857,14 +1927,17 @@ export function DepartmentUpdateForm() {
                             placeholder="/documents/DefaultFile_1.pdf"
                             value={doc.documentUrl}
                             onChange={(e) => {
-                              const next = [...curriculumDocuments];
-                              next[idx].documentUrl = e.target.value;
-                              setCurriculumDocuments(next);
+                              const updated = currentCurriculumList.map((d: any, i: number) => i === idx ? { ...d, documentUrl: e.target.value } : d);
+                              setCurriculumByYear(prev => ({
+                                ...prev,
+                                [selectedCurriculumYear]: updated
+                              }));
+                              setCurriculumDocuments(updated);
                             }}
                             className="flex-1 bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none"
                           />
                           <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#002147] hover:bg-[#00387a] text-white rounded-lg text-xs font-bold transition cursor-pointer shadow-xs shrink-0 active:scale-95">
-                            {uploadingDocKey === `curriculum_${idx}` ? (
+                            {uploadingDocKey === `curriculum_${selectedCurriculumYear}_${idx}` ? (
                               <>
                                 <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
                                 <span>Uploading...</span>
@@ -1886,11 +1959,14 @@ export function DepartmentUpdateForm() {
                                   handleDocumentUpload(
                                     file,
                                     (url) => {
-                                      const next = [...curriculumDocuments];
-                                      next[idx].documentUrl = url;
-                                      setCurriculumDocuments(next);
+                                      const updated = currentCurriculumList.map((d: any, i: number) => i === idx ? { ...d, documentUrl: url } : d);
+                                      setCurriculumByYear(prev => ({
+                                        ...prev,
+                                        [selectedCurriculumYear]: updated
+                                      }));
+                                      setCurriculumDocuments(updated);
                                     },
-                                    `curriculum_${idx}`
+                                    `curriculum_${selectedCurriculumYear}_${idx}`
                                   );
                                 }
                               }}
@@ -1920,18 +1996,18 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 5: OUTGOING BATCH – RESULTS & PASS % (8 COLS)           */}
+          {/* SECTION 4: STUDENT STRENGTH, RESULTS & PASS PERCENTAGE (8 COLS)*/}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <h2 className="font-outfit font-black text-lg text-[#002147]">
-                  {isLanguageWing ? "3. Student Strength, Results & Pass Percentage" : "5. Outgoing Batch – Student Strength and Pass Percentage"}
+                  {isLanguageWing ? "3. Student Strength, Results & Pass Percentage" : "4. Student Strength, Results & Pass Percentage"}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   {isLanguageWing
                     ? `Course-wise results of ${languageName} language courses offered across various programmes (8 columns).`
-                    : "Year-wise intake, admitted, discontinued, appeared, passed, and pass percentage (8 columns)."}
+                    : "Outgoing Batch – Year-wise intake, admitted, discontinued, appeared, passed, and pass percentage (8 columns)."}
                 </p>
               </div>
               <button
@@ -2185,12 +2261,12 @@ export function DepartmentUpdateForm() {
           {!isLanguageWing && (
           <>
 {/* ============================================================== */}
-          {/* SECTION 6: UNIVERSITY RANKS & ACHIEVEMENTS (9 COLS)             */}
+          {/* SECTION 5: UNIVERSITY RANKS & ACHIEVEMENTS (9 COLS)             */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">6. University Ranks &amp; Academic Achievements</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">5. University Ranks &amp; Academic Achievements</h2>
                 <p className="text-xs text-slate-500 font-medium">Student university ranks, medals, prathibha awards, and certificates (9 columns).</p>
               </div>
               <button
@@ -2379,12 +2455,12 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 7: YEAR-WISE PLACEMENT SUMMARY (6 COLS)                */}
+          {/* SECTION 6: YEAR-WISE PLACEMENT SUMMARY (6 COLS)                */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">7. Year-wise Placement Summary</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">6. Year-wise Placement Summary</h2>
                 <p className="text-xs text-slate-500 font-medium">Outgoing students placed with verified placement offers &amp; percentage (6 columns).</p>
               </div>
               <button
@@ -2414,12 +2490,12 @@ export function DepartmentUpdateForm() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {placements.map((item, idx) => (
-                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/30" : "bg-slate-50/60 hover:bg-blue-50/30"}>
-                      <td className="py-2.5 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
-                      <td className="py-2 px-3 border-r border-slate-100">
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-slate-50/50"}>
+                      <td className="py-2 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
+                      <td className="py-2 px-2 border-r border-slate-100">
                         <input
                           type="text"
-                          placeholder="e.g. 2025–2026"
+                          placeholder="2025–2026"
                           value={item.year}
                           onChange={(e) => {
                             const next = [...placements];
@@ -2531,17 +2607,12 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 8: HIGHER EDUCATION PROGRESSION (7 COLS - NEW)          */}
+          {/* SECTION 7: HIGHER EDUCATION PROGRESSION (7 COLS)                */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">8. Student Progression to Higher Education</h2>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                    Standard Section 7
-                  </span>
-                </div>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">7. Student Progression to Higher Education – Year-wise Summary</h2>
                 <p className="text-xs text-slate-500 font-medium">Students progressing to postgraduate degrees (M.Sc, MCA, MBA, B.Ed) with student lists and admission proof (7 columns).</p>
               </div>
               <button
@@ -2726,17 +2797,12 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 9: COMPETITIVE EXAMINATIONS (6 COLS - NEW)              */}
+          {/* SECTION 8: COMPETITIVE EXAMINATIONS (6 COLS)                    */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">9. Students Qualifying in Competitive Examinations</h2>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                    Standard Section 8
-                  </span>
-                </div>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">8. Students Qualifying in Competitive Examinations – Year-wise Summary</h2>
                 <p className="text-xs text-slate-500 font-medium">Students qualifying in national and state competitive examinations with student lists, certificates, and supporting proof (6 columns).</p>
               </div>
               <button
@@ -2935,19 +3001,19 @@ export function DepartmentUpdateForm() {
           )}
 
           {/* ============================================================== */}
-          {/* SECTION 10: MOUS – MEMORANDUM OF UNDERSTANDING (5 COLS)         */}
+          {/* SECTION 9: MEMORANDA OF UNDERSTANDING (MOUS) & COLLABORATIONS   */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "8. Memoranda of Understanding (MoUs) & Collaborations" : "10. MOUs – Memorandum of Understanding"}</h2>
-                <p className="text-xs text-slate-500 font-medium">Industry and institutional partnerships signed by the department (5 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "8. Memoranda of Understanding (MoUs) & Collaborations" : "9. Memoranda of Understanding (MoUs) & Collaborations"}</h2>
+                <p className="text-xs text-slate-500 font-medium">Industry and institutional partnerships signed by the department (6 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setMous([
                   ...mous,
-                  { sNo: mous.length + 1, organization: "", duration: "3 Years (2024–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: mous.length + 1, year: "2025–2026", organization: "", duration: "3 Years (2024–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -2960,6 +3026,7 @@ export function DepartmentUpdateForm() {
                 <thead>
                   <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
                     <th className="py-3 px-3 text-center w-14 text-blue-100 border-r border-[#003366]">S. No.</th>
+                    <th className="py-3 px-3 min-w-[120px] text-white border-r border-[#003366]">Academic Year</th>
                     <th className="py-3 px-4 min-w-[220px] text-white border-r border-[#003366]">Name of the Organization</th>
                     <th className="py-3 px-4 min-w-[170px] text-white border-r border-[#003366]">Duration / Validity Period</th>
                     <th className="py-3 px-4 min-w-[200px] text-white border-r border-[#003366]">MoU Documents (PDF)</th>
@@ -2971,6 +3038,19 @@ export function DepartmentUpdateForm() {
                   {mous.map((item, idx) => (
                     <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/30" : "bg-slate-50/60 hover:bg-blue-50/30"}>
                       <td className="py-2.5 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{idx + 1}</td>
+                      <td className="py-2 px-2 border-r border-slate-100">
+                        <input
+                          type="text"
+                          placeholder="2025–2026"
+                          value={item.year || "2025–2026"}
+                          onChange={(e) => {
+                            const next = [...mous];
+                            next[idx].year = e.target.value;
+                            setMous(next);
+                          }}
+                          className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none"
+                        />
+                      </td>
                       <td className="py-2 px-3 border-r border-slate-100">
                         <input
                           type="text"
@@ -3099,17 +3179,12 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 11: DEPARTMENTAL BEST PRACTICES (7 COLS - NEW)          */}
+          {/* SECTION 10: DEPARTMENTAL BEST PRACTICES (7 COLS)                */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "6. Departmental Best Practices" : "11. Departmental Best Practices"}</h2>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                    Standard Section 10
-                  </span>
-                </div>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "6. Departmental Best Practices" : "10. Departmental Best Practices"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Distinctive departmental practices, institutional objectives, measurable outcomes, and reports (7 columns).</p>
               </div>
               <button
@@ -3294,17 +3369,12 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 12: ADD-ON / CERTIFICATE COURSES (9 COLS - NEW)         */}
+          {/* SECTION 11: DEPARTMENTAL ADD-ON / VALUE-ADDED / CERTIFICATE COURSES */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "7. Departmental Add-on / Value-Added / Certificate Courses" : "12. Departmental Add-on / Certificate Courses"}</h2>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                    Standard Section 11
-                  </span>
-                </div>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "7. Departmental Add-on / Value-Added / Certificate Courses" : "11. Departmental Add-on / Value-Added / Certificate Courses"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Departmental certificate and value-added courses with course code, duration, enrolled, and certified students (9 columns).</p>
               </div>
               <button
@@ -3492,19 +3562,19 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 13: ACTIVITIES & CELEBRATIONS (6 COLS)                  */}
+          {/* SECTION 12: ACTIVITIES & CELEBRATIONS (7 COLS)                 */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "5. Departmental Activities, Events, Programmes & Celebrations" : "13. Departmental Activities & Celebrations"}</h2>
-                <p className="text-xs text-slate-500 font-medium">Workshops, national seminars, guest lectures, and student festivals (6 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "5. Departmental Activities, Events, Programmes & Celebrations" : "12. Departmental Activities, Events, Programmes & Celebrations"}</h2>
+                <p className="text-xs text-slate-500 font-medium">Workshops, national seminars, guest lectures, and student festivals (7 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setActivities([
                   ...activities,
-                  { sNo: activities.length + 1, date: "", title: "", category: "Academic Celebration", participants: "100", reportUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: activities.length + 1, date: "", year: "2025–2026", title: "", category: "Academic Celebration", participants: "100", reportUrl: "/documents/DefaultFile_1.pdf" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3518,6 +3588,7 @@ export function DepartmentUpdateForm() {
                   <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
                     <th className="py-3 px-3 text-center w-14 text-blue-100 border-r border-[#003366]">S. No.</th>
                     <th className="py-3 px-4 min-w-[130px] text-white border-r border-[#003366]">Date</th>
+                    <th className="py-3 px-3 min-w-[120px] text-white border-r border-[#003366]">Academic Year</th>
                     <th className="py-3 px-4 min-w-[220px] text-white border-r border-[#003366]">Name of the Activity / Programme</th>
                     <th className="py-3 px-4 min-w-[150px] text-white border-r border-[#003366]">Category</th>
                     <th className="py-3 px-3 text-center min-w-[110px] text-white border-r border-[#003366]">Participants</th>
@@ -3540,6 +3611,19 @@ export function DepartmentUpdateForm() {
                             setActivities(next);
                           }}
                           className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none"
+                        />
+                      </td>
+                      <td className="py-2 px-2 border-r border-slate-100">
+                        <input
+                          type="text"
+                          placeholder="2025–2026"
+                          value={item.year || (item.date?.includes("2026") ? "2025–2026" : item.date?.includes("2025") ? "2024–2025" : "2025–2026")}
+                          onChange={(e) => {
+                            const next = [...activities];
+                            next[idx].year = e.target.value;
+                            setActivities(next);
+                          }}
+                          className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none"
                         />
                       </td>
                       <td className="py-2 px-3 border-r border-slate-100">
@@ -3644,7 +3728,7 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 14: STUDENT EXTERNAL ACHIEVEMENTS (10 COLS)             */}
+          {/* SECTION 13: STUDENT EXTERNAL ACHIEVEMENTS (11 COLS)            */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
@@ -3652,19 +3736,19 @@ export function DepartmentUpdateForm() {
                 <h2 className="font-outfit font-black text-lg text-[#002147]">
                   {isLanguageWing
                     ? `4. Student Achievements in ${languageName} Language & Literary Activities`
-                    : "14. Student External Achievements, Participation & Representation"}
+                    : "13. Student External Achievements, Participation & Representation"}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   {isLanguageWing
                     ? `Awards, accolades, and participation of students in literary competitions, elocution, poetry recitation, and fests.`
-                    : "Inter-collegiate, state, and national awards won by department students (10 columns)."}
+                    : "Inter-collegiate, state, and national awards won by department students (11 columns)."}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setStudentAchievements([
                   ...studentAchievements,
-                  { sNo: studentAchievements.length + 1, date: "18-01-2026", studentName: "", programme: "III B.Sc.", achievement: "First Prize & Cash Award", eventName: "", level: "State Level", org: "", award: "Gold Medal & Cash Prize", certificateUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: studentAchievements.length + 1, date: "18-01-2026", year: "2025–2026", studentName: "", programme: "III B.Sc.", achievement: "First Prize & Cash Award", eventName: "", level: "State Level", org: "", award: "Gold Medal & Cash Prize", certificateUrl: "/documents/DefaultFile_1.pdf" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3678,6 +3762,7 @@ export function DepartmentUpdateForm() {
                   <tr className="bg-[#002147] text-white font-outfit uppercase tracking-wider text-[11px] font-bold">
                     <th className="py-3 px-3 text-center w-12 text-blue-100 border-r border-[#003366]">#</th>
                     <th className="py-3 px-3 min-w-[100px] text-white border-r border-[#003366]">Date</th>
+                    <th className="py-3 px-3 min-w-[110px] text-white border-r border-[#003366]">Academic Year</th>
                     <th className="py-3 px-3 min-w-[140px] text-white border-r border-[#003366]">Student Name</th>
                     <th className="py-3 px-3 min-w-[110px] text-white border-r border-[#003366]">Class / Prog</th>
                     <th className="py-3 px-3 min-w-[140px] text-white border-r border-[#003366]">Achievement</th>
@@ -3704,6 +3789,19 @@ export function DepartmentUpdateForm() {
                             setStudentAchievements(next);
                           }}
                           className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs text-slate-800 focus:outline-none"
+                        />
+                      </td>
+                      <td className="py-2 px-2 border-r border-slate-100">
+                        <input
+                          type="text"
+                          placeholder="2025–2026"
+                          value={item.year || (item.date?.includes("2026") ? "2025–2026" : "2024–2025")}
+                          onChange={(e) => {
+                            const next = [...studentAchievements];
+                            next[idx].year = e.target.value;
+                            setStudentAchievements(next);
+                          }}
+                          className="w-full bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none"
                         />
                       </td>
                       <td className="py-2 px-2 border-r border-slate-100">
@@ -3859,12 +3957,12 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 15: YEAR-WISE ANNUAL ACTIVITY REPORTS (5 COLS)          */}
+          {/* SECTION 14: YEAR-WISE ANNUAL ACTIVITY REPORTS (5 COLS)          */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "9. Year-wise Annual Activity Reports" : "15. Year-wise Annual Activity Reports"}</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "9. Year-wise Annual Activity Reports" : "14. Year-wise Annual Activity Reports"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Consolidated annual department activity reports and supporting documents (5 columns).</p>
               </div>
               <button
@@ -4023,14 +4121,14 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 16: DYNAMIC CUSTOM TABLES                              */}
+          {/* ADDITIONAL DEPARTMENT TABLES (CUSTOM)                          */}
           {/* ============================================================== */}
           {!isLanguageWing && (
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">16. Additional Department Tables (Custom)</h2>
+                  <h2 className="font-outfit font-black text-lg text-[#002147]">Additional Department Tables (Optional / Custom)</h2>
                   <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
                     Custom NAAC Data
                   </span>
@@ -4167,12 +4265,12 @@ export function DepartmentUpdateForm() {
                     )}
 
           {/* ============================================================== */}
-          {/* SECTION 17: DEPARTMENT PHOTO & VIDEO GALLERY (YEAR-WISE FILTER)*/}
+          {/* SECTION 15: PHOTO GALLERY (YEAR-WISE FILTER)                   */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "10. Department Photo & Video Gallery" : "17. Department Photo & Video Gallery"}</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "10. Photo Gallery" : "15. Photo Gallery"}</h2>
                 <p className="text-xs text-slate-500 font-medium">Upload photographs with academic year, event title, and date for the public photo gallery.</p>
               </div>
               <label className="px-3.5 py-1.5 bg-[#002147] hover:bg-[#00387a] text-white rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs cursor-pointer active:scale-95">

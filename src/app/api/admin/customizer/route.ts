@@ -115,12 +115,17 @@ export async function GET() {
         version,
         lastUpdated,
         updatedBy,
-        pages
+        pages,
+        pagesJson
       }`,
       { id: DOCUMENT_ID }
     );
 
-    if (!doc || !doc.pages) {
+    const rawPages = doc?.pagesJson
+      ? (typeof doc.pagesJson === "string" ? JSON.parse(doc.pagesJson) : doc.pagesJson)
+      : doc?.pages;
+
+    if (!doc || !rawPages) {
       return NextResponse.json({
         success: true,
         data: INITIAL_CUSTOMIZATION_DATA,
@@ -128,7 +133,7 @@ export async function GET() {
       });
     }
 
-    const mergedPages = mergeWithDefaults(doc.pages);
+    const mergedPages = mergeWithDefaults(rawPages);
 
     const fullData: SiteCustomizationData = {
       version: doc.version || 1,
@@ -188,7 +193,7 @@ export async function POST(req: NextRequest) {
       version: (body.version || 1) + 1,
       lastUpdated: new Date().toISOString(),
       updatedBy: session.email,
-      pages,
+      pagesJson: JSON.stringify(pages),
     };
 
     await client.createOrReplace(docToSave);
