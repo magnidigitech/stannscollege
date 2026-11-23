@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
         url
       },
       isNew,
+      newUntil,
       displayOrder,
       "imageUrl": coalesce(image.asset->url, imageUrl),
       "imageAssetId": image.asset->_id,
@@ -156,6 +157,7 @@ export async function POST(req: NextRequest) {
       documents: docsList.length > 0 ? docsList : undefined,
       pdfFile: docsList[0]?.asset ? { _type: "file", asset: docsList[0].asset } : undefined,
       isNew: notice.isNew !== undefined ? Boolean(notice.isNew) : true,
+      newUntil: notice.newUntil && typeof notice.newUntil === "string" && notice.newUntil.trim() !== "" ? notice.newUntil.trim() : null,
       displayOrder: Number(notice.displayOrder) || 10,
     };
 

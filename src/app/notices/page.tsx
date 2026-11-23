@@ -20,7 +20,28 @@ import {
 import { getNotices } from "@/lib/sanity";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
-function isNoticeNew(dateStr?: string): boolean {
+function isNoticeNew(dateStr?: string, newUntil?: string, isNewFlag?: boolean): boolean {
+  if (isNewFlag === false) return false;
+
+  const now = Date.now();
+
+  // 1. If explicit "newUntil" expiry date is specified
+  if (newUntil && typeof newUntil === "string" && newUntil.trim() !== "") {
+    const val = newUntil.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [year, month, day] = val.split("-").map(Number);
+      const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999).getTime();
+      return now <= endOfDay;
+    }
+    const t = Date.parse(val);
+    if (!isNaN(t)) {
+      const d = new Date(t);
+      d.setHours(23, 59, 59, 999);
+      return now <= d.getTime();
+    }
+  }
+
+  // 2. Fallback: 2-week active window from published date
   if (!dateStr) return false;
 
   let noticeTime = Date.parse(dateStr);
@@ -38,7 +59,6 @@ function isNoticeNew(dateStr?: string): boolean {
 
   if (isNaN(noticeTime)) return false;
 
-  const now = Date.now();
   const diffMs = now - noticeTime;
   const twoWeeksMs = 14 * 24 * 60 * 60 * 1000;
 
@@ -290,9 +310,9 @@ export default function NoticesPage() {
                   className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-all duration-200 group"
                 >
                   <div className="flex items-start gap-3.5 flex-1 min-w-0">
-                    {/* Icon or New Badge: strictly for 2 weeks from date of publishing */}
+                    {/* Icon or New Badge: active until newUntil date or 2-week window */}
                     <div className="shrink-0 mt-0.5">
-                      {isNoticeNew(n.date) ? (
+                      {isNoticeNew(n.date, n.newUntil, n.isNew) ? (
                         <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200 flex items-center gap-1 shadow-2xs">
                           <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                           NEW

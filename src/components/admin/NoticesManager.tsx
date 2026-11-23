@@ -106,6 +106,8 @@ export interface NoticeItem {
 
   isNew?: boolean;
 
+  newUntil?: string;
+
   displayOrder?: number;
 
 }
@@ -126,8 +128,43 @@ const CATEGORIES = [
 
 ];
 
-function isNoticeNew(dateStr?: string): boolean {
+function isNoticeNew(dateStr?: string, newUntil?: string, isNewFlag?: boolean): boolean {
 
+  if (isNewFlag === false) return false;
+
+  const now = Date.now();
+
+  // 1. If explicit "newUntil" expiry date is specified
+  if (newUntil && typeof newUntil === "string" && newUntil.trim() !== "") {
+
+    const val = newUntil.trim();
+
+    // Check if YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+
+      const [year, month, day] = val.split("-").map(Number);
+
+      const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999).getTime();
+
+      return now <= endOfDay;
+
+    }
+
+    const t = Date.parse(val);
+
+    if (!isNaN(t)) {
+
+      const d = new Date(t);
+
+      d.setHours(23, 59, 59, 999);
+
+      return now <= d.getTime();
+
+    }
+
+  }
+
+  // 2. Fallback: 2-week active period from publish date
   if (!dateStr) return false;
 
   let noticeTime = Date.parse(dateStr);
@@ -153,8 +190,6 @@ function isNoticeNew(dateStr?: string): boolean {
   }
 
   if (isNaN(noticeTime)) return false;
-
-  const now = Date.now();
 
   const diffMs = now - noticeTime;
 
@@ -296,7 +331,13 @@ export default function NoticesManager() {
 
     documents: [],
 
+    imageUrl: "",
+
+    imageAssetId: "",
+
     isNew: true,
+
+    newUntil: "",
 
     displayOrder: 1,
 
@@ -337,6 +378,8 @@ export default function NoticesManager() {
       imageAssetId: "",
 
       isNew: true,
+
+      newUntil: "",
 
       displayOrder: notices.length + 1,
 
@@ -431,6 +474,8 @@ export default function NoticesManager() {
       imageAssetId: n.imageAssetId || "",
 
       isNew: n.isNew !== undefined ? n.isNew : true,
+
+      newUntil: n.newUntil || "",
 
       displayOrder: n.displayOrder || 1,
 
@@ -846,7 +891,7 @@ export default function NoticesManager() {
 
   });
 
-  const totalWithNewBadge = notices.filter((n) => isNoticeNew(n.date)).length;
+  const totalWithNewBadge = notices.filter((n) => isNoticeNew(n.date, n.newUntil, n.isNew)).length;
 
   const activeCategoriesCount = new Set(notices.map((n) => n.category).filter(Boolean)).size;
 
@@ -1080,7 +1125,7 @@ export default function NoticesManager() {
 
           {filteredNotices.map((n, idx) => {
 
-            const hasNewBadge = isNoticeNew(n.date);
+            const hasNewBadge = isNoticeNew(n.date, n.newUntil, n.isNew);
 
             const totalLinks = Array.isArray(n.links) && n.links.length > 0 ? n.links.length : (n.linkUrl ? 1 : 0);
 
@@ -1148,7 +1193,15 @@ export default function NoticesManager() {
 
                         <span className="text-[9px] font-extrabold bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
 
-                          ⚡ 2-Week Badge Active
+                          ⚡ NEW Badge Active {n.newUntil ? `until ${n.newUntil}` : ""}
+
+                        </span>
+
+                      ) : n.newUntil ? (
+
+                        <span className="text-[9px] font-semibold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">
+
+                          Standard (Badge Expired)
 
                         </span>
 
@@ -1376,9 +1429,9 @@ export default function NoticesManager() {
 
               </div>
 
-              {/* Date & Category */}
+              {/* Date, Category & NEW Badge Expiry */}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 
                 <div>
 
@@ -1406,7 +1459,7 @@ export default function NoticesManager() {
 
                   <p className="text-[10px] text-slate-400 mt-1">
 
-                    * The &ldquo;NEW&rdquo; starburst badge automatically displays for 2 weeks from this date.
+                    Notice display date.
 
                   </p>
 
@@ -1441,6 +1494,64 @@ export default function NoticesManager() {
                     ))}
 
                   </select>
+
+                  <p className="text-[10px] text-slate-400 mt-1">
+
+                    Filter category.
+
+                  </p>
+
+                </div>
+
+                <div>
+
+                  <div className="flex items-center justify-between mb-1">
+
+                    <label className="block text-[11px] font-bold text-amber-900 flex items-center gap-1">
+
+                      <Sparkles className="w-3 h-3 text-amber-600" />
+
+                      &ldquo;NEW&rdquo; Badge Active Until
+
+                    </label>
+
+                    {formData.newUntil && (
+
+                      <button
+
+                        type="button"
+
+                        onClick={() => setFormData({ ...formData, newUntil: "" })}
+
+                        className="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer"
+
+                      >
+
+                        Clear
+
+                      </button>
+
+                    )}
+
+                  </div>
+
+                  <input
+
+                    type="date"
+
+                    value={formData.newUntil || ""}
+
+                    onChange={(e) => setFormData({ ...formData, newUntil: e.target.value })}
+
+                    className="w-full px-3 py-2 bg-amber-50/50 rounded-xl border border-amber-300 text-xs font-medium focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+
+                  />
+
+                  <p className="text-[10px] text-amber-800/80 mt-1">
+
+                    Shows &ldquo;NEW&rdquo; till this date, then becomes normal.
+
+                  </p>
 
                 </div>
 

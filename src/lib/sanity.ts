@@ -78,6 +78,7 @@ export async function getNotices() {
       category,
       description,
       isNew,
+      newUntil,
       displayOrder,
       linkUrl,
       linkLabel,

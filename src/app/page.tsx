@@ -482,8 +482,29 @@ const defaultNoticesList = [
   },
 ];
 
-// Helper: Returns true only if the notice was published within 2 weeks (14 days)
-function isNoticeNew(dateStr?: string): boolean {
+// Helper: Returns true if the notice badge is active (by newUntil date or 2-week window)
+function isNoticeNew(dateStr?: string, newUntil?: string, isNewFlag?: boolean): boolean {
+  if (isNewFlag === false) return false;
+
+  const now = Date.now();
+
+  // 1. If explicit "newUntil" expiry date is specified
+  if (newUntil && typeof newUntil === "string" && newUntil.trim() !== "") {
+    const val = newUntil.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [year, month, day] = val.split("-").map(Number);
+      const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999).getTime();
+      return now <= endOfDay;
+    }
+    const t = Date.parse(val);
+    if (!isNaN(t)) {
+      const d = new Date(t);
+      d.setHours(23, 59, 59, 999);
+      return now <= d.getTime();
+    }
+  }
+
+  // 2. Fallback: 2-week active window from published date
   if (!dateStr) return false;
 
   let noticeTime = Date.parse(dateStr);
@@ -501,7 +522,6 @@ function isNoticeNew(dateStr?: string): boolean {
 
   if (isNaN(noticeTime)) return false;
 
-  const now = Date.now();
   const diffMs = now - noticeTime;
   const twoWeeksMs = 14 * 24 * 60 * 60 * 1000;
 
@@ -620,6 +640,8 @@ export default function HomePage() {
     category?: string;
     description?: string;
     imageUrl?: string;
+    newUntil?: string;
+    isNew?: boolean;
     links: { title: string; url: string }[];
     documents: { title: string; url: string; originalFilename?: string; fileType?: "pdf" | "image" }[];
   } | null>(null);
@@ -724,6 +746,8 @@ export default function HomePage() {
       category: item.category,
       description: item.description,
       imageUrl: item.imageUrl,
+      newUntil: item.newUntil,
+      isNew: item.isNew,
       links,
       documents,
     });
@@ -1184,7 +1208,7 @@ export default function HomePage() {
                       className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
                     >
                       <div className="shrink-0 flex items-center justify-center min-w-[22px]">
-                        {isNoticeNew(item.date) && <StarburstNewBadge />}
+                        {isNoticeNew(item.date, item.newUntil, item.isNew) && <StarburstNewBadge />}
                       </div>
                       <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
                       <div className="flex-1 min-w-0">
@@ -2394,9 +2418,9 @@ export default function HomePage() {
                   {activeNoticeModal.title}
                 </h4>
 
-                {/* 2. Tags: Date, Category, 2-Week NEW badge */}
+                {/* 2. Tags: Date, Category, NEW badge */}
                 <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
-                  {isNoticeNew(activeNoticeModal.date) && <StarburstNewBadge />}
+                  {isNoticeNew(activeNoticeModal.date, activeNoticeModal.newUntil, activeNoticeModal.isNew) && <StarburstNewBadge />}
                   {activeNoticeModal.date && (
                     <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200/60">
                       <Calendar className="h-3.5 w-3.5 text-rose-600" />
