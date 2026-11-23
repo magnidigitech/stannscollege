@@ -177,9 +177,10 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
-  const handleOpenPdf = (url: string, title: string) => {
-    setPreviewUrl(url || "/documents/DefaultFile_1.pdf");
-    setPreviewTitle(title);
+  const handleOpenPdf = (url?: string, title?: string) => {
+    if (!url) return;
+    setPreviewUrl(url);
+    setPreviewTitle(title || "Document Preview");
   };
 
   // --------------------------------------------------------------------------
@@ -315,34 +316,28 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
 
   // Standard Baseline Data for Table 3 (Student Strength & Pass %)
   const table3Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", intake: "60", admitted: "58", discontinued: "1", appeared: "57", passed: "56", passPct: "98.24%" },
-      { sNo: 2, year: "2024–2025", intake: "60", admitted: "60", discontinued: "2", appeared: "58", passed: "57", passPct: "98.27%" },
-      { sNo: 3, year: "2023–2024", intake: "60", admitted: "59", discontinued: "1", appeared: "58", passed: "58", passPct: "100.00%" }
-    ];
-    if (Array.isArray(dynamicDept?.passPercentage) && dynamicDept.passPercentage.length > 0) {
-      all = dynamicDept.passPercentage.map((p: any, i: number) => ({
+    let all: any[] = [];
+    const dynPass = dynamicDept?.passPercentage || dynamicDept?.results || staticDept?.results;
+    if (Array.isArray(dynPass) && dynPass.length > 0) {
+      all = dynPass.map((p: any, i: number) => ({
         sNo: i + 1,
         year: p.year || "",
-        intake: p.intake ?? p.sanctionedIntake ?? "60",
-        admitted: p.admitted ?? p.admittedStudents ?? "-",
-        discontinued: p.discontinued ?? "-",
-        appeared: p.appeared ?? p.finalYearStudents ?? "-",
-        passed: p.passed ?? p.studentsPassed ?? "-",
-        passPct: p.passPct ?? p.percentage ?? "-"
+        intake: p.intake ?? p.sanctionedIntake ?? "—",
+        admitted: p.admitted ?? p.admittedStudents ?? "—",
+        discontinued: p.discontinued ?? "—",
+        appeared: p.appeared ?? p.finalYearStudents ?? "—",
+        passed: p.passed ?? p.studentsPassed ?? "—",
+        passPct: p.passPct ?? p.percentage ?? "—"
       }));
     }
     if (table3Year === "All") return all;
     return all.filter(r => r.year === table3Year);
-  }, [table3Year, dynamicDept]);
+  }, [table3Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 4 (University Ranks)
   const table4Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2024–2025", studentName: "K. Sowmya", prog: "B.Sc. Honours", regNo: "Y21MATH012", achievement: "University Gold Medal", position: "1st Rank", uni: "Acharya Nagarjuna University", docUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2023–2024", studentName: "P. Bhavani", prog: "B.Sc. Honours", regNo: "Y20MATH045", achievement: "University Prathibha Award", position: "2nd Rank", uni: "Acharya Nagarjuna University", docUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    const dynRanks = dynamicDept?.universityRanks || dynamicDept?.academicAchievements;
+    let all: any[] = [];
+    const dynRanks = dynamicDept?.universityRanks || dynamicDept?.academicAchievements || staticDept?.achievements;
     if (Array.isArray(dynRanks) && dynRanks.length > 0) {
       all = dynRanks.map((r: any, i: number) => ({
         sNo: i + 1,
@@ -353,145 +348,111 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         achievement: r.achievement || r.award || "University Rank",
         position: r.position || r.rank || "Rank",
         uni: r.uni || r.university || "Acharya Nagarjuna University",
-        docUrl: r.docUrl || r.certificateUrl || "/documents/DefaultFile_1.pdf"
+        docUrl: r.docUrl || r.certificateUrl || ""
       }));
     }
     if (table4Year === "All") return all;
     return all.filter(r => r.year === table4Year);
-  }, [table4Year, dynamicDept]);
+  }, [table4Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 5 (Placements)
   const table5Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", finalStudents: "58", placed: "49", pct: "84.48%", docUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2024–2025", finalStudents: "60", placed: "51", pct: "85.00%", docUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, year: "2023–2024", finalStudents: "57", placed: "48", pct: "84.21%", docUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    if (Array.isArray(dynamicDept?.placements) && dynamicDept.placements.length > 0) {
-      all = dynamicDept.placements.map((p: any, i: number) => ({
+    let all: any[] = [];
+    const dynPlacements = dynamicDept?.placements || (staticDept as any)?.placements;
+    if (Array.isArray(dynPlacements) && dynPlacements.length > 0) {
+      all = dynPlacements.map((p: any, i: number) => ({
         sNo: i + 1,
         year: p.year || "",
         finalStudents: p.finalStudents ?? p.finalYearStudents ?? "—",
         placed: p.placed ?? p.studentsPlaced ?? "—",
         pct: p.pct ?? p.percentage ?? "—",
-        docUrl: p.docUrl || p.supportingDocUrl || "/documents/DefaultFile_1.pdf"
+        docUrl: p.docUrl || p.supportingDocUrl || ""
       }));
     }
     if (table5Year === "All") return all;
     return all.filter(r => r.year === table5Year);
-  }, [table5Year, dynamicDept]);
+  }, [table5Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 6 (Higher Education Progression)
   const table6Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", totalOutgoing: "58", progressed: "18", pct: "31.03%", listDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2024–2025", totalOutgoing: "60", progressed: "20", pct: "33.33%", listDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, year: "2023–2024", totalOutgoing: "57", progressed: "17", pct: "29.82%", listDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" },
-      { sNo: 4, year: "2022–2023", totalOutgoing: "55", progressed: "16", pct: "29.09%", listDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" },
-      { sNo: 5, year: "2021–2022", totalOutgoing: "54", progressed: "15", pct: "27.78%", listDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" }
-    ];
-    if (Array.isArray(dynamicDept?.higherEducation) && dynamicDept.higherEducation.length > 0) {
-      all = dynamicDept.higherEducation.map((h: any, i: number) => ({
+    let all: any[] = [];
+    const dynHigher = dynamicDept?.higherEducation || (staticDept as any)?.higherEducation;
+    if (Array.isArray(dynHigher) && dynHigher.length > 0) {
+      all = dynHigher.map((h: any, i: number) => ({
         sNo: i + 1,
         year: h.year || "",
         totalOutgoing: h.totalOutgoing || "—",
         progressed: h.progressed || "—",
         pct: h.percentage || h.pct || "—",
-        listDoc: h.listDocUrl || h.listDoc || "/documents/DefaultFile_1.pdf",
-        proofDoc: h.proofDocUrl || h.proofDoc || "/documents/DefaultFile_1.pdf"
+        listDoc: h.listDocUrl || h.listDoc || "",
+        proofDoc: h.proofDocUrl || h.proofDoc || ""
       }));
     }
     if (table6Year === "All") return all;
     return all.filter(r => r.year === table6Year);
-  }, [table6Year, dynamicDept]);
+  }, [table6Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 7 (Competitive Examinations)
   const table7Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", qualified: "14", listDoc: "/documents/DefaultFile_1.pdf", certDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2024–2025", qualified: "16", listDoc: "/documents/DefaultFile_1.pdf", certDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, year: "2023–2024", qualified: "12", listDoc: "/documents/DefaultFile_1.pdf", certDoc: "/documents/DefaultFile_1.pdf", proofDoc: "/documents/DefaultFile_1.pdf" }
-    ];
-    if (Array.isArray(dynamicDept?.competitiveExams) && dynamicDept.competitiveExams.length > 0) {
-      all = dynamicDept.competitiveExams.map((c: any, i: number) => ({
+    let all: any[] = [];
+    const dynExams = dynamicDept?.competitiveExams || (staticDept as any)?.competitiveExams;
+    if (Array.isArray(dynExams) && dynExams.length > 0) {
+      all = dynExams.map((c: any, i: number) => ({
         sNo: i + 1,
         year: c.year || "",
         qualified: c.qualified || "—",
-        listDoc: c.listDocUrl || c.listDoc || "/documents/DefaultFile_1.pdf",
-        certDoc: c.certDocUrl || c.certDoc || "/documents/DefaultFile_1.pdf",
-        proofDoc: c.proofDocUrl || c.proofDoc || "/documents/DefaultFile_1.pdf"
+        listDoc: c.listDocUrl || c.listDoc || "",
+        certDoc: c.certDocUrl || c.certDoc || "",
+        proofDoc: c.proofDocUrl || c.proofDoc || ""
       }));
     }
     if (table7Year === "All") return all;
     return all.filter(r => r.year === table7Year);
-  }, [table7Year, dynamicDept]);
+  }, [table7Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 8 (MoUs)
   const table8Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", org: "National Mathematics Research Academy", duration: "3 Years (2024–2027)", docUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2024–2025", org: "Centre for Data Science & Analytics Training", duration: "3 Years (2023–2026)", docUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, year: "2023–2024", org: "APSSDC – Andhra Pradesh Skill Development Corporation", duration: "5 Years (2022–2027)", docUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    if (Array.isArray(dynamicDept?.mous) && dynamicDept.mous.length > 0) {
-      all = dynamicDept.mous.map((m: any, i: number) => ({
+    let all: any[] = [];
+    const dynMous = dynamicDept?.mous || (staticDept as any)?.mous;
+    if (Array.isArray(dynMous) && dynMous.length > 0) {
+      all = dynMous.map((m: any, i: number) => ({
         sNo: i + 1,
         year: m.year || "2025–2026",
         org: m.organization || m.title || m.org || "",
         duration: m.duration || "—",
-        docUrl: m.documentUrl || m.docUrl || "/documents/DefaultFile_1.pdf",
-        reportUrl: m.reportUrl || "/documents/DefaultFile_1.pdf"
+        docUrl: m.documentUrl || m.docUrl || "",
+        reportUrl: m.reportUrl || ""
       }));
     }
     if (table8Year === "All") return all;
     return all.filter(r => r.year === table8Year);
-  }, [table8Year, dynamicDept]);
+  }, [table8Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 9 (Best Practices)
   const table9Data = useMemo(() => {
-    let all = [
-      { 
-        sNo: 1, 
-        year: "2025–2026", 
-        title: "Peer-Led Remedial Mathematics Clinics", 
-        objectives: "To strengthen analytical foundations and build computational confidence among non-mathematics and slow learners.",
-        outcomes: "Measurable 22% increase in semester pass percentages and elimination of mathematics anxiety.",
-        reportUrl: "/documents/DefaultFile_1.pdf", 
-        docUrl: "/documents/DefaultFile_1.pdf" 
-      },
-      { 
-        sNo: 2, 
-        year: "2024–2025", 
-        title: "Mathematical Coding with Python & LaTeX", 
-        objectives: "To bridge abstract mathematical formulas with applied algorithmic computing and modern scientific typesetting.",
-        outcomes: "100% of final-year students demonstrated computational project work and LaTeX thesis formulation.",
-        reportUrl: "/documents/DefaultFile_1.pdf", 
-        docUrl: "/documents/DefaultFile_1.pdf" 
-      }
-    ];
-    if (Array.isArray(dynamicDept?.bestPractices) && dynamicDept.bestPractices.length > 0) {
-      all = dynamicDept.bestPractices.map((b: any, i: number) => ({
+    let all: any[] = [];
+    const dynBest = dynamicDept?.bestPractices || (staticDept as any)?.bestPractices;
+    if (Array.isArray(dynBest) && dynBest.length > 0) {
+      all = dynBest.map((b: any, i: number) => ({
         sNo: i + 1,
         year: b.year || "",
         title: b.title || "",
         objectives: b.objectives || "",
         outcomes: b.outcomes || "",
-        reportUrl: b.reportUrl || "/documents/DefaultFile_1.pdf",
-        docUrl: b.docUrl || "/documents/DefaultFile_1.pdf"
+        reportUrl: b.reportUrl || "",
+        docUrl: b.docUrl || ""
       }));
     }
     if (table9Year === "All") return all;
     return all.filter(r => r.year === table9Year);
-  }, [table9Year, dynamicDept]);
+  }, [table9Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 10 (Add-on / Certificate Courses)
   const table10Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", name: "Certificate Course in Vedic Mathematics & Quick Calculation", type: "Certificate Course", code: "MAT-CC-01", duration: "36 Hours", enrolled: "45", certified: "45", reportUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2024–2025", name: "Value-Added Course in Statistical Modeling using R", type: "Value-Added Course", code: "MAT-VAC-02", duration: "40 Hours", enrolled: "42", certified: "42", reportUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    if (Array.isArray(dynamicDept?.certificateCourses) && dynamicDept.certificateCourses.length > 0) {
-      all = dynamicDept.certificateCourses.map((c: any, i: number) => ({
+    let all: any[] = [];
+    const dynCourses = dynamicDept?.certificateCourses || (staticDept as any)?.certificateCourses;
+    if (Array.isArray(dynCourses) && dynCourses.length > 0) {
+      all = dynCourses.map((c: any, i: number) => ({
         sNo: i + 1,
         year: c.year || "",
         name: c.name || "",
@@ -500,21 +461,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         duration: c.duration || "—",
         enrolled: c.enrolled || "—",
         certified: c.certified || "—",
-        reportUrl: c.reportUrl || "/documents/DefaultFile_1.pdf"
+        reportUrl: c.reportUrl || ""
       }));
     }
     if (table10Year === "All") return all;
     return all.filter(r => r.year === table10Year);
-  }, [table10Year, dynamicDept]);
+  }, [table10Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 11 (Activities & Events)
   const table11Data = useMemo(() => {
-    let all = [
-      { sNo: 1, date: "22-12-2025", year: "2025–2026", name: "National Mathematics Day Celebration & Srinivasa Ramanujan Memorial Lecture", category: "Academic Celebration", participants: "185", reportUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, date: "15-09-2025", year: "2025–2026", name: "State-Level Inter-Collegiate Math Olympiad & Quantitative Quiz", category: "Competition", participants: "120", reportUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, date: "28-02-2025", year: "2024–2025", name: "National Science Day – Workshop on Mathematical Modeling in Natural Sciences", category: "Workshop", participants: "140", reportUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    const dynActs = dynamicDept?.activities || dynamicDept?.activitiesList;
+    let all: any[] = [];
+    const dynActs = dynamicDept?.activities || dynamicDept?.activitiesList || (staticDept as any)?.activities;
     if (Array.isArray(dynActs) && dynActs.length > 0) {
       all = dynActs.map((a: any, i: number) => ({
         sNo: i + 1,
@@ -523,21 +480,19 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         name: a.name || a.title || a.label || "",
         category: a.category || "Department Activity",
         participants: a.participants || "—",
-        reportUrl: a.reportUrl || a.documentUrl || "/documents/DefaultFile_1.pdf"
+        reportUrl: a.reportUrl || a.documentUrl || ""
       }));
     }
     if (table11Year === "All") return all;
     return all.filter(r => r.year === table11Year);
-  }, [table11Year, dynamicDept]);
+  }, [table11Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 12 (External Achievements)
   const table12Data = useMemo(() => {
-    let all = [
-      { sNo: 1, date: "18-01-2026", year: "2025–2026", studentName: "M. Kavitha", cls: "III B.Sc.", achievement: "First Prize & Cash Award", event: "State Inter-Collegiate Math Quiz", level: "State Level", org: "Andhra Loyola College, Vijayawada", award: "Gold Medal & ₹5,000 Cash Prize", docUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, date: "12-11-2025", year: "2025–2026", studentName: "R. Sai Tejaswi", cls: "II B.Sc.", achievement: "Second Prize in Paper Presentation", event: "National Seminar on Modern Algebra", level: "National Level", org: "PB Siddhartha College, Vijayawada", award: "Certificate of Merit & Trophy", docUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    if (Array.isArray(dynamicDept?.studentAchievements) && dynamicDept.studentAchievements.length > 0) {
-      all = dynamicDept.studentAchievements.map((s: any, i: number) => ({
+    let all: any[] = [];
+    const dynAch = dynamicDept?.studentAchievements || staticDept?.achievements;
+    if (Array.isArray(dynAch) && dynAch.length > 0) {
+      all = dynAch.map((s: any, i: number) => ({
         sNo: i + 1,
         date: s.date || "",
         year: s.year || (s.date?.includes("2026") ? "2025–2026" : "2024–2025"),
@@ -548,32 +503,28 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         level: s.level || "College Level",
         org: s.org || s.organizer || "—",
         award: s.award || s.prize || "Certificate",
-        docUrl: s.docUrl || s.certificateUrl || "/documents/DefaultFile_1.pdf"
+        docUrl: s.docUrl || s.certificateUrl || ""
       }));
     }
     if (table12Year === "All") return all;
     return all.filter(r => r.year === table12Year);
-  }, [table12Year, dynamicDept]);
+  }, [table12Year, dynamicDept, staticDept]);
 
   // Standard Baseline Data for Table 13 (Annual Activity Reports)
   const table13Data = useMemo(() => {
-    let all = [
-      { sNo: 1, year: "2025–2026", count: "14", reportUrl: "/documents/DefaultFile_1.pdf", proofUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, year: "2024–2025", count: "16", reportUrl: "/documents/DefaultFile_1.pdf", proofUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, year: "2023–2024", count: "15", reportUrl: "/documents/DefaultFile_1.pdf", proofUrl: "/documents/DefaultFile_1.pdf" }
-    ];
-    const dynReports = dynamicDept?.annualReports || dynamicDept?.activitiesSummary;
+    let all: any[] = [];
+    const dynReports = dynamicDept?.annualReports || dynamicDept?.activitiesSummary || (staticDept as any)?.annualReports;
     if (Array.isArray(dynReports) && dynReports.length > 0) {
       all = dynReports.map((r: any, i: number) => ({
         sNo: i + 1,
         year: r.year || "",
         count: r.count || r.activitiesCount || "—",
-        reportUrl: r.reportUrl || r.documentUrl || "/documents/DefaultFile_1.pdf",
-        proofUrl: r.proofUrl || r.supportingDocUrl || "/documents/DefaultFile_1.pdf"
+        reportUrl: r.reportUrl || r.documentUrl || "",
+        proofUrl: r.proofUrl || r.supportingDocUrl || ""
       }));
     }
     return all;
-  }, [dynamicDept]);
+  }, [dynamicDept, staticDept]);
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6 animate-fadeIn font-sans pb-16">
@@ -625,7 +576,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              1. Programmes Offered
+              Programmes Offered
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -667,7 +618,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       <div className="flex flex-col gap-2">
         <div>
           <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-            2. Faculty Directory
+            Faculty Directory
           </h2>
           <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
         </div>
@@ -703,7 +654,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              3. Curriculum &amp; Learning Outcomes
+              Curriculum &amp; Learning Outcomes
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -795,11 +746,12 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 4: STUDENT STRENGTH, RESULTS & PASS PERCENTAGE (TABLE 3)*/}
       {/* ============================================================== */}
+      {table3Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              4. Student Strength, Results &amp; Pass Percentage
+              Student Strength, Results &amp; Pass Percentage
             </h2>
             <p className="text-xs text-slate-500 font-semibold mt-0.5">Outgoing Batch – Student Strength and Pass Percentage</p>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
@@ -854,15 +806,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 5: UNIVERSITY RANKS & ACHIEVEMENTS (TABLE 4 WITH YEAR) */}
       {/* ============================================================== */}
+      {table4Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              5. University Ranks &amp; Academic Achievements
+              University Ranks &amp; Academic Achievements
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -925,15 +879,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 6: YEAR-WISE PLACEMENT SUMMARY (TABLE 5 WITH YEAR)     */}
       {/* ============================================================== */}
+      {table5Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              6. Year-wise Placement Summary
+              Year-wise Placement Summary
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -963,8 +919,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   <th className="py-3 px-4 text-center text-white font-black border-r border-[#003366]">Academic Year</th>
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Final-Year Students</th>
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Students Placed</th>
-                  <th className="py-3 px-4 text-center bg-[#001733] text-amber-300 font-black border-r border-[#003366]">Placement Percentage</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Supporting Documents</th>
+                  <th className="py-3 px-4 text-center bg-[#001733] text-amber-300 font-black">Placement Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -974,15 +929,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                     <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
                     <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.finalStudents}</td>
                     <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.placed}</td>
-                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.pct}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.docUrl, `Placement Evidence (${row.year}) - ${deptName}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
-                    </td>
+                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.pct}</td>
                   </tr>
                 ))}
               </tbody>
@@ -990,15 +937,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 7: STUDENT PROGRESSION TO HIGHER EDUCATION (TABLE 6)   */}
       {/* ============================================================== */}
+      {table6Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              7. Student Progression to Higher Education – Year-wise Summary
+              Student Progression to Higher Education
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1031,8 +980,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Total Outgoing Students</th>
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Students Progressed to Higher Education</th>
                   <th className="py-3 px-4 text-center bg-[#001733] text-amber-300 font-black border-r border-[#003366]">Progression Percentage</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-36">Student List (View PDF)</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Supporting Documents (View PDF)</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-36">Student List (View PDF)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -1043,18 +991,10 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                     <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.totalOutgoing}</td>
                     <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.progressed}</td>
                     <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.pct}</td>
-                    <td className="py-3 px-4 text-center border-r border-slate-100">
+                    <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => handleOpenPdf(row.listDoc, `Student List - Higher Education (${row.year})`)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.proofDoc, `Higher Education Proofs (${row.year})`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
                       >
                         <FileText className="h-3.5 w-3.5" /> View PDF
                       </button>
@@ -1066,15 +1006,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 8: COMPETITIVE EXAMINATIONS SUMMARY (TABLE 7)          */}
       {/* ============================================================== */}
+      {table7Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              8. Students Qualifying in Competitive Examinations – Year-wise Summary
+              Students Qualifying in Competitive Examinations
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1104,8 +1046,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   <th className="py-3 px-4 text-center text-white font-black border-r border-[#003366]">Academic Year</th>
                   <th className="py-3 px-4 text-center bg-[#001733] text-amber-300 font-black border-r border-[#003366]">No. of Students Qualified</th>
                   <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-36">Student List (View PDF)</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-44">Qualifying Certificates (View PDF)</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Supporting Documents (View PDF)</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Qualifying Certificates (View PDF)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -1122,18 +1063,10 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                         <FileText className="h-3.5 w-3.5" /> View PDF
                       </button>
                     </td>
-                    <td className="py-3 px-4 text-center border-r border-slate-100">
+                    <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => handleOpenPdf(row.certDoc, `Certificates (${row.year}) - ${deptName}`)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.proofDoc, `Supporting Docs (${row.year}) - ${deptName}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer shadow-xs"
                       >
                         <FileText className="h-3.5 w-3.5" /> View PDF
                       </button>
@@ -1145,15 +1078,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 9: MEMORANDA OF UNDERSTANDING (TABLE 8 WITH YEAR)      */}
       {/* ============================================================== */}
+      {table8Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              9. Memoranda of Understanding (MoUs) &amp; Collaborations
+              Memoranda of Understanding (MoUs) &amp; Collaborations
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1215,15 +1150,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 10: DEPARTMENTAL BEST PRACTICES (TABLE 9 WITH YEAR)    */}
       {/* ============================================================== */}
+      {table9Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              10. Departmental Best Practices
+              Departmental Best Practices
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1254,8 +1191,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   <th className="py-3 px-4 text-white font-bold border-r border-[#003366]">Title of Best Practice</th>
                   <th className="py-3 px-5 text-blue-100 font-bold border-r border-[#003366]">Objectives of the Practice</th>
                   <th className="py-3 px-5 text-blue-100 font-bold border-r border-[#003366]">Outcomes / Impact</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-36">Best Practice Report</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Supporting Documents</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-36">Best Practice Report</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -1266,18 +1202,10 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                     <td className="py-3 px-4 font-black text-[#002147] border-r border-slate-100">{row.title}</td>
                     <td className="py-3 px-5 text-xs text-slate-700 leading-relaxed border-r border-slate-100">{row.objectives}</td>
                     <td className="py-3 px-5 text-xs text-slate-700 leading-relaxed border-r border-slate-100">{row.outcomes}</td>
-                    <td className="py-3 px-4 text-center border-r border-slate-100">
+                    <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => handleOpenPdf(row.reportUrl, `Best Practice Report - ${row.title}`)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.docUrl, `Supporting Documents - ${row.title}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
                       >
                         <FileText className="h-3.5 w-3.5" /> View PDF
                       </button>
@@ -1289,15 +1217,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 11: ADD-ON / CERTIFICATE COURSES (TABLE 10)            */}
       {/* ============================================================== */}
+      {table10Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              11. Departmental Add-on / Value-Added / Certificate Courses
+              Departmental Add-on / Certificate Courses
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1360,15 +1290,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 12: ACTIVITIES, EVENTS & PROGRAMMES (TABLE 11 WITH YEAR)*/}
       {/* ============================================================== */}
+      {table11Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              12. Departmental Activities, Events, Programmes &amp; Celebrations
+              Departmental Activities, Events &amp; Celebrations
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1425,15 +1357,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 13: STUDENT EXTERNAL ACHIEVEMENTS (TABLE 12 WITH YEAR) */}
       {/* ============================================================== */}
+      {table12Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              13. Student External Achievements, Participation &amp; Representation
+              Student External Achievements &amp; Participation
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -1498,14 +1432,16 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 14: YEAR-WISE ANNUAL ACTIVITY REPORTS (TABLE 13)       */}
       {/* ============================================================== */}
+      {table13Data.length > 0 && (
       <div className="flex flex-col gap-2">
         <div>
           <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-            14. Year-wise Annual Activity Reports
+            Year-wise Annual Activity Reports
           </h2>
           <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
         </div>
@@ -1518,8 +1454,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
                   <th className="py-3 px-4 text-center text-white font-black border-r border-[#003366]">Academic Year</th>
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Total No. of Activities</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 border-r border-[#003366] w-44">Annual Activity Report</th>
-                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Supporting Documents</th>
+                  <th className="py-3 px-4 text-center font-bold text-blue-100 w-44">Annual Activity Report</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -1528,20 +1463,12 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                     <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
                     <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
                     <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.count}</td>
-                    <td className="py-3 px-4 text-center border-r border-slate-100">
+                    <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => handleOpenPdf(row.reportUrl, `Annual Activity Report (${row.year}) - ${deptName}`)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
                       >
                         <FileText className="h-3.5 w-3.5" /> View Report
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.proofUrl, `Supporting Documents (${row.year}) - ${deptName}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View Documents
                       </button>
                     </td>
                   </tr>
@@ -1551,6 +1478,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 15: PHOTO GALLERY (WITH YEAR & CAPTIONS)               */}
@@ -1559,7 +1487,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              15. Photo Gallery
+              Photo Gallery
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>

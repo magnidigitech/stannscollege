@@ -198,7 +198,7 @@ export function DepartmentUpdateForm() {
   const [description, setDescription] = useState("");
   const [vision, setVision] = useState("");
   const [mission, setMission] = useState<string[]>([]);
-  const [overviewDocUrl, setOverviewDocUrl] = useState("/documents/DefaultFile_1.pdf");
+  const [overviewDocUrl, setOverviewDocUrl] = useState("");
 
   // 2. Programmes Offered (Section 1 in Ref Doc)
   const [programmes, setProgrammes] = useState<Array<{ 
@@ -423,19 +423,19 @@ export function DepartmentUpdateForm() {
     }
     if (isLanguageWing) {
       return [
-        { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "/documents/DefaultFile_1.pdf" },
-        { sNo: 2, particular: `${langAdjective} Course-wise Syllabus`, documentUrl: "/documents/DefaultFile_1.pdf" },
-        { sNo: 3, particular: "Course Outcomes (COs) – Semester-wise", documentUrl: "/documents/DefaultFile_1.pdf" },
-        { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "/documents/DefaultFile_1.pdf" },
+        { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "" },
+        { sNo: 2, particular: `${langAdjective} Course-wise Syllabus`, documentUrl: "" },
+        { sNo: 3, particular: "Course Outcomes (COs) – Semester-wise", documentUrl: "" },
+        { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "" },
       ];
     }
     return [
-      { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-      { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "" },
+      { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "" },
+      { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "" },
+      { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "" },
+      { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "" },
+      { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "" },
     ];
   }, [curriculumByYear, selectedCurriculumYear, curriculumDocuments, isLanguageWing, langAdjective]);
 
@@ -484,7 +484,7 @@ export function DepartmentUpdateForm() {
         setDescription(data.description || "");
         setVision(data.vision || "");
         setMission(Array.isArray(data.mission) ? data.mission : []);
-        setOverviewDocUrl(data.overviewDocUrl || "/documents/DefaultFile_1.pdf");
+        setOverviewDocUrl(data.overviewDocUrl || "");
         
         // 1. Programmes
         if (Array.isArray(data.programmes) && data.programmes.length > 0) {
@@ -524,22 +524,22 @@ export function DepartmentUpdateForm() {
             setCurriculumDocuments(data.curriculumDocuments);
           } else {
             setCurriculumDocuments([
-              { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "/documents/DefaultFile_1.pdf" },
-              { sNo: 2, particular: `${langAdjective} Course-wise Syllabus`, documentUrl: "/documents/DefaultFile_1.pdf" },
-              { sNo: 3, particular: "Course Outcomes (COs) – Semester-wise", documentUrl: "/documents/DefaultFile_1.pdf" },
-              { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "/documents/DefaultFile_1.pdf" },
+              { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "" },
+              { sNo: 2, particular: `${langAdjective} Course-wise Syllabus`, documentUrl: "" },
+              { sNo: 3, particular: "Course Outcomes (COs) – Semester-wise", documentUrl: "" },
+              { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "" },
             ]);
           }
         } else if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
           setCurriculumDocuments(data.curriculumDocuments);
         } else {
           setCurriculumDocuments([
-            { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "/documents/DefaultFile_1.pdf" },
+            { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "" },
+            { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "" },
+            { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "" },
+            { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "" },
+            { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "" },
+            { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "" },
           ]);
         }
 
@@ -568,28 +568,21 @@ export function DepartmentUpdateForm() {
               discontinued: "-"
             })));
           } else {
-            setPassPercentage([
-              { sNo: 1, year: "2025–2026", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "310", passed: "304", percentage: "98.06%", intake: "-", admitted: "-", discontinued: "-" },
-              { sNo: 2, year: "2024–2025", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "295", passed: "288", percentage: "97.63%", intake: "-", admitted: "-", discontinued: "-" }
-            ]);
+            setPassPercentage([]);
           }
         } else if (Array.isArray(data.passPercentage) && data.passPercentage.length > 0) {
           setPassPercentage(data.passPercentage.map((p: any, i: number) => ({
             sNo: i + 1,
             year: p.year || "",
-            intake: p.intake ?? p.sanctionedIntake ?? "60",
-            admitted: p.admitted ?? p.admittedStudents ?? "-",
-            discontinued: p.discontinued ?? "-",
-            appeared: p.appeared ?? p.finalYearStudents ?? "-",
-            passed: p.passed ?? p.studentsPassed ?? "-",
-            percentage: p.percentage ?? p.passPct ?? ""
+            intake: (p.intake ?? p.sanctionedIntake ?? "").toString(),
+            admitted: (p.admitted ?? p.admittedStudents ?? "").toString(),
+            discontinued: (p.discontinued ?? "").toString(),
+            appeared: (p.appeared ?? p.finalYearStudents ?? "").toString(),
+            passed: (p.passed ?? p.studentsPassed ?? "").toString(),
+            percentage: (p.percentage ?? p.passPct ?? "").toString()
           })));
         } else {
-          setPassPercentage([
-            { sNo: 1, year: "2025–2026", intake: "60", admitted: "58", discontinued: "1", appeared: "57", passed: "56", percentage: "98.24%" },
-            { sNo: 2, year: "2024–2025", intake: "60", admitted: "60", discontinued: "2", appeared: "58", passed: "57", percentage: "98.27%" },
-            { sNo: 3, year: "2023–2024", intake: "60", admitted: "59", discontinued: "1", appeared: "58", passed: "58", percentage: "100.00%" }
-          ]);
+          setPassPercentage([]);
         }
 
         // 4. University Ranks - 9 cols
@@ -601,16 +594,13 @@ export function DepartmentUpdateForm() {
             studentName: r.studentName || r.name || "",
             programme: r.programme || r.prog || "",
             regNo: r.regNo || r.registerNumber || "—",
-            achievement: r.achievement || r.award || "University Gold Medal",
-            rank: r.rank || r.position || "1st Rank",
+            achievement: r.achievement || r.award || "",
+            rank: r.rank || r.position || "",
             university: r.university || r.uni || "Acharya Nagarjuna University",
-            certificateUrl: r.certificateUrl || r.docUrl || "/documents/DefaultFile_1.pdf"
+            certificateUrl: r.certificateUrl || r.docUrl || ""
           })));
         } else {
-          setUniversityRanks([
-            { sNo: 1, year: "2024–2025", studentName: "K. Sowmya", programme: "B.Sc. Honours", regNo: "Y21MATH012", achievement: "University Gold Medal", rank: "1st Rank", university: "Acharya Nagarjuna University", certificateUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, year: "2023–2024", studentName: "P. Bhavani", programme: "B.Sc. Honours", regNo: "Y20MATH045", achievement: "University Prathibha Award", rank: "2nd Rank", university: "Acharya Nagarjuna University", certificateUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setUniversityRanks([]);
         }
 
         // 5. Placements - 6 cols
@@ -618,17 +608,13 @@ export function DepartmentUpdateForm() {
           setPlacements(data.placements.map((p: any, i: number) => ({
             sNo: i + 1,
             year: p.year || "",
-            finalStudents: p.finalStudents ?? p.finalYearStudents ?? "58",
-            studentsPlaced: p.studentsPlaced ?? p.placed ?? "49",
-            percentage: p.percentage ?? p.pct ?? "84.48%",
-            docUrl: p.docUrl || p.supportingDocUrl || "/documents/DefaultFile_1.pdf"
+            finalStudents: (p.finalStudents ?? p.finalYearStudents ?? "").toString(),
+            studentsPlaced: (p.studentsPlaced ?? p.placed ?? "").toString(),
+            percentage: (p.percentage ?? p.pct ?? "").toString(),
+            docUrl: p.docUrl || p.supportingDocUrl || ""
           })));
         } else {
-          setPlacements([
-            { sNo: 1, year: "2025–2026", finalStudents: "58", studentsPlaced: "49", percentage: "84.48%", docUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, year: "2024–2025", finalStudents: "60", studentsPlaced: "51", percentage: "85.00%", docUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, year: "2023–2024", finalStudents: "57", studentsPlaced: "48", percentage: "84.21%", docUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setPlacements([]);
         }
 
         // 6. Higher Education - 7 cols
@@ -636,20 +622,14 @@ export function DepartmentUpdateForm() {
           setHigherEducation(data.higherEducation.map((h: any, i: number) => ({
             sNo: i + 1,
             year: h.year || "",
-            totalOutgoing: h.totalOutgoing || "58",
-            progressed: h.progressed || "18",
-            percentage: h.percentage || h.pct || "31.03%",
-            listDocUrl: h.listDocUrl || h.listDoc || "/documents/DefaultFile_1.pdf",
-            proofDocUrl: h.proofDocUrl || h.proofDoc || "/documents/DefaultFile_1.pdf"
+            totalOutgoing: (h.totalOutgoing ?? "").toString(),
+            progressed: (h.progressed ?? "").toString(),
+            percentage: (h.percentage ?? h.pct ?? "").toString(),
+            listDocUrl: h.listDocUrl || h.listDoc || "",
+            proofDocUrl: h.proofDocUrl || h.proofDoc || ""
           })));
         } else {
-          setHigherEducation([
-            { sNo: 1, year: "2025–2026", totalOutgoing: "58", progressed: "18", percentage: "31.03%", listDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, year: "2024–2025", totalOutgoing: "60", progressed: "20", percentage: "33.33%", listDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, year: "2023–2024", totalOutgoing: "57", progressed: "17", percentage: "29.82%", listDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 4, year: "2022–2023", totalOutgoing: "55", progressed: "16", percentage: "29.09%", listDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 5, year: "2021–2022", totalOutgoing: "54", progressed: "15", percentage: "27.78%", listDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setHigherEducation([]);
         }
 
         // 7. Competitive Exams - 6 cols
@@ -657,17 +637,13 @@ export function DepartmentUpdateForm() {
           setCompetitiveExams(data.competitiveExams.map((c: any, i: number) => ({
             sNo: i + 1,
             year: c.year || "",
-            qualified: c.qualified || "14",
-            listDocUrl: c.listDocUrl || c.listDoc || "/documents/DefaultFile_1.pdf",
-            certDocUrl: c.certDocUrl || c.certDoc || "/documents/DefaultFile_1.pdf",
-            proofDocUrl: c.proofDocUrl || c.proofDoc || "/documents/DefaultFile_1.pdf"
+            qualified: (c.qualified ?? "").toString(),
+            listDocUrl: c.listDocUrl || c.listDoc || "",
+            certDocUrl: c.certDocUrl || c.certDoc || "",
+            proofDocUrl: c.proofDocUrl || c.proofDoc || ""
           })));
         } else {
-          setCompetitiveExams([
-            { sNo: 1, year: "2025–2026", qualified: "14", listDocUrl: "/documents/DefaultFile_1.pdf", certDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, year: "2024–2025", qualified: "16", listDocUrl: "/documents/DefaultFile_1.pdf", certDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, year: "2023–2024", qualified: "12", listDocUrl: "/documents/DefaultFile_1.pdf", certDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setCompetitiveExams([]);
         }
 
         // 8. MOUs - 5 cols
@@ -676,15 +652,11 @@ export function DepartmentUpdateForm() {
             sNo: i + 1,
             organization: m.organization || m.title || "",
             duration: m.duration || "",
-            documentUrl: m.documentUrl || "/documents/DefaultFile_1.pdf",
-            reportUrl: m.reportUrl || "/documents/DefaultFile_1.pdf"
+            documentUrl: m.documentUrl || "",
+            reportUrl: m.reportUrl || ""
           })));
         } else {
-          setMous([
-            { sNo: 1, organization: "National Mathematics Research Academy", duration: "3 Years (2024–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, organization: "Centre for Data Science & Analytics Training", duration: "3 Years (2023–2026)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, organization: "APSSDC – Andhra Pradesh Skill Development Corporation", duration: "5 Years (2022–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setMous([]);
         }
 
         // 9. Best Practices - 7 cols
@@ -695,30 +667,11 @@ export function DepartmentUpdateForm() {
             title: b.title || "",
             objectives: b.objectives || "",
             outcomes: b.outcomes || "",
-            reportUrl: b.reportUrl || "/documents/DefaultFile_1.pdf",
-            docUrl: b.docUrl || "/documents/DefaultFile_1.pdf"
+            reportUrl: b.reportUrl || "",
+            docUrl: b.docUrl || ""
           })));
         } else {
-          setBestPractices([
-            { 
-              sNo: 1, 
-              year: "2025–2026", 
-              title: "Peer-Led Remedial Mathematics Clinics", 
-              objectives: "To strengthen analytical foundations and build computational confidence among non-mathematics and slow learners.",
-              outcomes: "Measurable 22% increase in semester pass percentages and elimination of mathematics anxiety.",
-              reportUrl: "/documents/DefaultFile_1.pdf", 
-              docUrl: "/documents/DefaultFile_1.pdf" 
-            },
-            { 
-              sNo: 2, 
-              year: "2024–2025", 
-              title: "Mathematical Coding with Python & LaTeX", 
-              objectives: "To bridge abstract mathematical formulas with applied algorithmic computing and modern scientific typesetting.",
-              outcomes: "100% of final-year students demonstrated computational project work and LaTeX thesis formulation.",
-              reportUrl: "/documents/DefaultFile_1.pdf", 
-              docUrl: "/documents/DefaultFile_1.pdf" 
-            }
-          ]);
+          setBestPractices([]);
         }
 
         // 10. Certificate Courses - 9 cols
@@ -730,15 +683,12 @@ export function DepartmentUpdateForm() {
             type: c.type || "Certificate Course",
             code: c.code || "",
             duration: c.duration || "",
-            enrolled: c.enrolled || "",
-            certified: c.certified || "",
-            reportUrl: c.reportUrl || "/documents/DefaultFile_1.pdf"
+            enrolled: (c.enrolled ?? "").toString(),
+            certified: (c.certified ?? "").toString(),
+            reportUrl: c.reportUrl || ""
           })));
         } else {
-          setCertificateCourses([
-            { sNo: 1, year: "2025–2026", name: "Certificate Course in Vedic Mathematics & Quick Calculation", type: "Certificate Course", code: "MAT-CC-01", duration: "36 Hours", enrolled: "45", certified: "45", reportUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, year: "2024–2025", name: "Value-Added Course in Statistical Modeling using R", type: "Value-Added Course", code: "MAT-VAC-02", duration: "40 Hours", enrolled: "42", certified: "42", reportUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setCertificateCourses([]);
         }
 
         // 11. Activities - 6 cols
@@ -749,15 +699,11 @@ export function DepartmentUpdateForm() {
             date: a.date || "",
             title: a.title || a.name || a.label || "",
             category: a.category || "Academic Celebration",
-            participants: a.participants || "",
-            reportUrl: a.reportUrl || a.documentUrl || "/documents/DefaultFile_1.pdf"
+            participants: (a.participants ?? "").toString(),
+            reportUrl: a.reportUrl || a.documentUrl || ""
           })));
         } else {
-          setActivities([
-            { sNo: 1, date: "22-12-2025", title: "National Mathematics Day Celebration & Srinivasa Ramanujan Memorial Lecture", category: "Academic Celebration", participants: "185", reportUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, date: "15-09-2025", title: "State-Level Inter-Collegiate Math Olympiad & Quantitative Quiz", category: "Competition", participants: "120", reportUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, date: "28-02-2025", title: "National Science Day – Workshop on Mathematical Modeling in Natural Sciences", category: "Workshop", participants: "140", reportUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setActivities([]);
         }
 
         // 12. Student External Achievements - 10 cols
@@ -780,13 +726,10 @@ export function DepartmentUpdateForm() {
               level: s.level || "State",
               org: s.org || "State Level Event",
               award: s.award || "First Prize",
-              certificateUrl: s.certificateUrl || s.docUrl || "/documents/DefaultFile_1.pdf"
+              certificateUrl: s.certificateUrl || s.docUrl || ""
             })));
           } else {
-            setStudentAchievements([
-              { sNo: 1, date: "18-01-2026", year: "2025–2026", studentName: "K. Sneha", programme: "II B.Sc. (MSCS)", achievement: "State Elocution Winner", eventName: "Inter-Collegiate Literary Fest", level: "State", org: "State Level Fest", award: "First Prize & Cash Award", certificateUrl: "/documents/DefaultFile_1.pdf" },
-              { sNo: 2, date: "12-11-2025", year: "2024–2025", studentName: "M. Harshitha", programme: "III B.Com. (CA)", achievement: "Essay Writing Excellence", eventName: "University Literary Celebrations", level: "University", org: "University Contest", award: "Outstanding Merit Certificate", certificateUrl: "/documents/DefaultFile_1.pdf" }
-            ]);
+            setStudentAchievements([]);
           }
         } else if (Array.isArray(data.studentAchievements) && data.studentAchievements.length > 0) {
           setStudentAchievements(data.studentAchievements.map((s: any, i: number) => ({
@@ -799,13 +742,10 @@ export function DepartmentUpdateForm() {
             level: s.level || "State Level",
             org: s.org || s.organizingInstitution || "",
             award: s.award || s.prize || "Gold Medal & Cash Prize",
-            certificateUrl: s.certificateUrl || s.docUrl || "/documents/DefaultFile_1.pdf"
+            certificateUrl: s.certificateUrl || s.docUrl || ""
           })));
         } else {
-          setStudentAchievements([
-            { sNo: 1, date: "18-01-2026", studentName: "M. Kavitha", programme: "III B.Sc.", achievement: "First Prize & Cash Award", eventName: "State Inter-Collegiate Math Quiz", level: "State Level", org: "Andhra Loyola College, Vijayawada", award: "Gold Medal & ₹5,000 Cash Prize", certificateUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, date: "12-11-2025", studentName: "R. Sai Tejaswi", programme: "II B.Sc.", achievement: "Second Prize in Paper Presentation", eventName: "National Seminar on Modern Algebra", level: "National Level", org: "PB Siddhartha College, Vijayawada", award: "Certificate of Merit & Trophy", certificateUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setStudentAchievements([]);
         }
 
         // 13. Annual Reports - 5 cols
@@ -814,16 +754,12 @@ export function DepartmentUpdateForm() {
           setAnnualReports(reports.map((r: any, i: number) => ({
             sNo: i + 1,
             year: r.year || "",
-            activitiesCount: r.activitiesCount || r.count || "",
-            reportUrl: r.reportUrl || r.documentUrl || "/documents/DefaultFile_1.pdf",
-            supportingDocUrl: r.supportingDocUrl || "/documents/DefaultFile_1.pdf"
+            activitiesCount: (r.activitiesCount || r.count || "").toString(),
+            reportUrl: r.reportUrl || r.documentUrl || "",
+            supportingDocUrl: r.supportingDocUrl || ""
           })));
         } else {
-          setAnnualReports([
-            { sNo: 1, year: "2025–2026", activitiesCount: "14", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 2, year: "2024–2025", activitiesCount: "16", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" },
-            { sNo: 3, year: "2023–2024", activitiesCount: "15", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" }
-          ]);
+          setAnnualReports([]);
         }
 
         // 14. Custom Tables
@@ -1531,7 +1467,7 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">1. Programmes Offered</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Programmes Offered</h2>
                 <p className="text-xs text-slate-500 font-medium">Undergraduate and postgraduate programmes offered under this department.</p>
               </div>
               <button
@@ -1659,7 +1595,7 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "1. Faculty Directory" : "2. Faculty Directory"}</h2>
+                  <h2 className="font-outfit font-black text-lg text-[#002147]">Faculty Directory</h2>
                   <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
                     Live Deduplicated &amp; Synced
                   </span>
@@ -1883,7 +1819,7 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <h2 className="font-outfit font-black text-lg text-[#002147]">
-                  {isLanguageWing ? "2. Curriculum & Learning Outcomes" : "3. Curriculum & Learning Outcomes"}
+                  Curriculum &amp; Learning Outcomes
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   {isLanguageWing
@@ -2009,7 +1945,7 @@ export function DepartmentUpdateForm() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <h2 className="font-outfit font-black text-lg text-[#002147]">
-                  {isLanguageWing ? "3. Student Strength, Results & Pass Percentage" : "4. Student Strength, Results & Pass Percentage"}
+                  Student Strength, Results &amp; Pass Percentage
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   {isLanguageWing
@@ -2022,8 +1958,8 @@ export function DepartmentUpdateForm() {
                 onClick={() => setPassPercentage([
                   ...passPercentage,
                   isLanguageWing
-                    ? { sNo: passPercentage.length + 1, year: "2025–2026", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "310", passed: "304", percentage: "98.06%" }
-                    : { sNo: passPercentage.length + 1, year: "2025–2026", intake: "60", admitted: "58", discontinued: "1", appeared: "57", passed: "56", percentage: "98.24%" }
+                    ? { sNo: passPercentage.length + 1, year: "2025–2026", courseName: `General ${languageName}`, programme: "B.Sc / B.Com / BCA", semester: "Semester I & II", appeared: "", passed: "", percentage: "" }
+                    : { sNo: passPercentage.length + 1, year: "2025–2026", intake: "", admitted: "", discontinued: "", appeared: "", passed: "", percentage: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -2273,14 +2209,14 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">5. University Ranks &amp; Academic Achievements</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">University Ranks &amp; Academic Achievements</h2>
                 <p className="text-xs text-slate-500 font-medium">Student university ranks, medals, prathibha awards, and certificates (9 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setUniversityRanks([
                   ...universityRanks,
-                  { sNo: universityRanks.length + 1, year: "2024–2025", studentName: "", programme: "B.Sc. Honours", regNo: "", achievement: "University Gold Medal", rank: "1st Rank", university: "Acharya Nagarjuna University", certificateUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: universityRanks.length + 1, year: "2024–2025", studentName: "", programme: "B.Sc. Honours", regNo: "", achievement: "University Gold Medal", rank: "1st Rank", university: "Acharya Nagarjuna University", certificateUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -2462,19 +2398,19 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 6: YEAR-WISE PLACEMENT SUMMARY (6 COLS)                */}
+          {/* SECTION 6: YEAR-WISE PLACEMENT SUMMARY                         */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">6. Year-wise Placement Summary</h2>
-                <p className="text-xs text-slate-500 font-medium">Outgoing students placed with verified placement offers &amp; percentage (6 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Year-wise Placement Summary</h2>
+                <p className="text-xs text-slate-500 font-medium">Outgoing students placed with verified placement offers &amp; percentage (5 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setPlacements([
                   ...placements,
-                  { sNo: placements.length + 1, year: "2025–2026", finalStudents: "58", studentsPlaced: "49", percentage: "84.48%", docUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: placements.length + 1, year: "2025–2026", finalStudents: "", studentsPlaced: "", percentage: "", docUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -2491,7 +2427,6 @@ export function DepartmentUpdateForm() {
                     <th className="py-3 px-4 text-center min-w-[160px] text-white border-r border-[#003366]">Final-Year Students</th>
                     <th className="py-3 px-4 text-center min-w-[150px] text-white border-r border-[#003366]">Students Placed</th>
                     <th className="py-3 px-4 text-center min-w-[140px] text-amber-300 font-bold border-r border-[#003366]">Placement %</th>
-                    <th className="py-3 px-4 min-w-[220px] text-white border-r border-[#003366]">Supporting Documents (PDF)</th>
                     <th className="py-3 px-3 text-center w-12 text-white">Del</th>
                   </tr>
                 </thead>
@@ -2551,45 +2486,6 @@ export function DepartmentUpdateForm() {
                           className="w-full text-center bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1.5 text-xs font-black text-[#002147] focus:outline-none"
                         />
                       </td>
-                      <td className="py-2 px-3 border-r border-slate-100">
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
-                            value={item.docUrl}
-                            onChange={(e) => {
-                              const next = [...placements];
-                              next[idx].docUrl = e.target.value;
-                              setPlacements(next);
-                            }}
-                            className="flex-1 bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs text-slate-700 focus:outline-none"
-                          />
-                          <label className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-[#002147] hover:text-white text-[#002147] rounded-lg text-[11px] font-bold transition cursor-pointer shadow-xs shrink-0">
-                            <Upload className="w-3 h-3" />
-                            <span>Upload</span>
-                            <input
-                              type="file"
-                              accept=".pdf,application/pdf"
-                              className="hidden"
-                              disabled={uploadingDocKey !== null}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleDocumentUpload(
-                                    file,
-                                    (url) => {
-                                      const next = [...placements];
-                                      next[idx].docUrl = url;
-                                      setPlacements(next);
-                                    },
-                                    `placementDoc_${idx}`
-                                  );
-                                }
-                              }}
-                            />
-                          </label>
-                        </div>
-                      </td>
                       <td className="py-2 px-2 text-center">
                         <button
                           type="button"
@@ -2603,7 +2499,7 @@ export function DepartmentUpdateForm() {
                   ))}
                   {placements.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="text-center py-6 text-slate-400 italic">
+                      <td colSpan={6} className="text-center py-6 text-slate-400 italic">
                         No placement records added yet. Click &apos;Add Placement Record&apos; above.
                       </td>
                     </tr>
@@ -2614,19 +2510,19 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 7: HIGHER EDUCATION PROGRESSION (7 COLS)                */}
+          {/* SECTION 7: HIGHER EDUCATION PROGRESSION                        */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">7. Student Progression to Higher Education – Year-wise Summary</h2>
-                <p className="text-xs text-slate-500 font-medium">Students progressing to postgraduate degrees (M.Sc, MCA, MBA, B.Ed) with student lists and admission proof (7 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Student Progression to Higher Education</h2>
+                <p className="text-xs text-slate-500 font-medium">Students progressing to postgraduate degrees (M.Sc, MCA, MBA, B.Ed) with student lists (6 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setHigherEducation([
                   ...higherEducation,
-                  { sNo: higherEducation.length + 1, year: "2025–2026", totalOutgoing: "58", progressed: "18", percentage: "31.03%", listDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: higherEducation.length + 1, year: "2025–2026", totalOutgoing: "", progressed: "", percentage: "", listDocUrl: "", proofDocUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -2644,7 +2540,6 @@ export function DepartmentUpdateForm() {
                     <th className="py-3 px-3 text-center min-w-[140px] text-white border-r border-[#003366]">Progressed to Higher Ed</th>
                     <th className="py-3 px-3 text-center min-w-[120px] text-amber-300 font-bold border-r border-[#003366]">Progression %</th>
                     <th className="py-3 px-3 min-w-[190px] text-white border-r border-[#003366]">Student List (PDF)</th>
-                    <th className="py-3 px-3 min-w-[190px] text-white border-r border-[#003366]">Supporting Proofs (PDF)</th>
                     <th className="py-3 px-2 text-center w-12 text-white">Del</th>
                   </tr>
                 </thead>
@@ -2708,7 +2603,7 @@ export function DepartmentUpdateForm() {
                         <div className="flex items-center gap-1">
                           <input
                             type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
+                            placeholder="Student List PDF"
                             value={item.listDocUrl}
                             onChange={(e) => {
                               const next = [...higherEducation];
@@ -2742,44 +2637,6 @@ export function DepartmentUpdateForm() {
                           </label>
                         </div>
                       </td>
-                      <td className="py-2 px-2 border-r border-slate-100">
-                        <div className="flex items-center gap-1">
-                          <input
-                            type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
-                            value={item.proofDocUrl}
-                            onChange={(e) => {
-                              const next = [...higherEducation];
-                              next[idx].proofDocUrl = e.target.value;
-                              setHigherEducation(next);
-                            }}
-                            className="flex-1 bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-0.5 text-xs text-slate-700 focus:outline-none"
-                          />
-                          <label className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-[#002147] hover:text-white text-[#002147] rounded-lg text-[10px] font-bold transition cursor-pointer shrink-0">
-                            <Upload className="w-3 h-3" />
-                            <input
-                              type="file"
-                              accept=".pdf,application/pdf"
-                              className="hidden"
-                              disabled={uploadingDocKey !== null}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleDocumentUpload(
-                                    file,
-                                    (url) => {
-                                      const next = [...higherEducation];
-                                      next[idx].proofDocUrl = url;
-                                      setHigherEducation(next);
-                                    },
-                                    `higherEdProof_${idx}`
-                                  );
-                                }
-                              }}
-                            />
-                          </label>
-                        </div>
-                      </td>
                       <td className="py-2 px-2 text-center">
                         <button
                           type="button"
@@ -2793,7 +2650,7 @@ export function DepartmentUpdateForm() {
                   ))}
                   {higherEducation.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="text-center py-6 text-slate-400 italic">
+                      <td colSpan={7} className="text-center py-6 text-slate-400 italic">
                         No progression records added yet. Click &apos;Add Progression Year&apos; above.
                       </td>
                     </tr>
@@ -2804,19 +2661,19 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 8: COMPETITIVE EXAMINATIONS (6 COLS)                    */}
+          {/* SECTION 8: COMPETITIVE EXAMINATIONS                            */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">8. Students Qualifying in Competitive Examinations – Year-wise Summary</h2>
-                <p className="text-xs text-slate-500 font-medium">Students qualifying in national and state competitive examinations with student lists, certificates, and supporting proof (6 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Students Qualifying in Competitive Examinations</h2>
+                <p className="text-xs text-slate-500 font-medium">Students qualifying in national and state competitive examinations with student lists and certificates (5 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setCompetitiveExams([
                   ...competitiveExams,
-                  { sNo: competitiveExams.length + 1, year: "2025–2026", qualified: "14", listDocUrl: "/documents/DefaultFile_1.pdf", certDocUrl: "/documents/DefaultFile_1.pdf", proofDocUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: competitiveExams.length + 1, year: "2025–2026", qualified: "", listDocUrl: "", certDocUrl: "", proofDocUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -2833,7 +2690,6 @@ export function DepartmentUpdateForm() {
                     <th className="py-3 px-3 text-center min-w-[150px] text-white border-r border-[#003366]">No. Qualified</th>
                     <th className="py-3 px-3 min-w-[180px] text-white border-r border-[#003366]">Student List (PDF)</th>
                     <th className="py-3 px-3 min-w-[180px] text-white border-r border-[#003366]">Qualifying Certificates (PDF)</th>
-                    <th className="py-3 px-3 min-w-[180px] text-white border-r border-[#003366]">Supporting Proofs (PDF)</th>
                     <th className="py-3 px-2 text-center w-12 text-white">Del</th>
                   </tr>
                 </thead>
@@ -2871,7 +2727,7 @@ export function DepartmentUpdateForm() {
                         <div className="flex items-center gap-1">
                           <input
                             type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
+                            placeholder="Student List PDF"
                             value={item.listDocUrl}
                             onChange={(e) => {
                               const next = [...competitiveExams];
@@ -2909,7 +2765,7 @@ export function DepartmentUpdateForm() {
                         <div className="flex items-center gap-1">
                           <input
                             type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
+                            placeholder="Certificates PDF"
                             value={item.certDocUrl}
                             onChange={(e) => {
                               const next = [...competitiveExams];
@@ -2943,44 +2799,6 @@ export function DepartmentUpdateForm() {
                           </label>
                         </div>
                       </td>
-                      <td className="py-2 px-2 border-r border-slate-100">
-                        <div className="flex items-center gap-1">
-                          <input
-                            type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
-                            value={item.proofDocUrl}
-                            onChange={(e) => {
-                              const next = [...competitiveExams];
-                              next[idx].proofDocUrl = e.target.value;
-                              setCompetitiveExams(next);
-                            }}
-                            className="flex-1 bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-0.5 text-xs text-slate-700 focus:outline-none"
-                          />
-                          <label className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-[#002147] hover:text-white text-[#002147] rounded-lg text-[10px] font-bold transition cursor-pointer shrink-0">
-                            <Upload className="w-3 h-3" />
-                            <input
-                              type="file"
-                              accept=".pdf,application/pdf"
-                              className="hidden"
-                              disabled={uploadingDocKey !== null}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleDocumentUpload(
-                                    file,
-                                    (url) => {
-                                      const next = [...competitiveExams];
-                                      next[idx].proofDocUrl = url;
-                                      setCompetitiveExams(next);
-                                    },
-                                    `compProof_${idx}`
-                                  );
-                                }
-                              }}
-                            />
-                          </label>
-                        </div>
-                      </td>
                       <td className="py-2 px-2 text-center">
                         <button
                           type="button"
@@ -2994,7 +2812,7 @@ export function DepartmentUpdateForm() {
                   ))}
                   {competitiveExams.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="text-center py-6 text-slate-400 italic">
+                      <td colSpan={6} className="text-center py-6 text-slate-400 italic">
                         No competitive exams added yet. Click &apos;Add Examination Year&apos; above.
                       </td>
                     </tr>
@@ -3013,14 +2831,14 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "8. Memoranda of Understanding (MoUs) & Collaborations" : "9. Memoranda of Understanding (MoUs) & Collaborations"}</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Memoranda of Understanding (MoUs) &amp; Collaborations</h2>
                 <p className="text-xs text-slate-500 font-medium">Industry and institutional partnerships signed by the department (6 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setMous([
                   ...mous,
-                  { sNo: mous.length + 1, year: "2025–2026", organization: "", duration: "3 Years (2024–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: mous.length + 1, year: "2025–2026", organization: "", duration: "3 Years (2024–2027)", documentUrl: "", reportUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3186,19 +3004,19 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 10: DEPARTMENTAL BEST PRACTICES (7 COLS)                */}
+          {/* SECTION 10: DEPARTMENTAL BEST PRACTICES                        */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "6. Departmental Best Practices" : "10. Departmental Best Practices"}</h2>
-                <p className="text-xs text-slate-500 font-medium">Distinctive departmental practices, institutional objectives, measurable outcomes, and reports (7 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Departmental Best Practices</h2>
+                <p className="text-xs text-slate-500 font-medium">Distinctive departmental practices, institutional objectives, measurable outcomes, and reports (6 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setBestPractices([
                   ...bestPractices,
-                  { sNo: bestPractices.length + 1, year: "2025–2026", title: "", objectives: "", outcomes: "", reportUrl: "/documents/DefaultFile_1.pdf", docUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: bestPractices.length + 1, year: "2025–2026", title: "", objectives: "", outcomes: "", reportUrl: "", docUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3216,7 +3034,6 @@ export function DepartmentUpdateForm() {
                     <th className="py-3 px-3 min-w-[200px] text-white border-r border-[#003366]">Objectives of Practice</th>
                     <th className="py-3 px-3 min-w-[200px] text-white border-r border-[#003366]">Outcomes / Impact</th>
                     <th className="py-3 px-3 min-w-[170px] text-white border-r border-[#003366]">Report (PDF)</th>
-                    <th className="py-3 px-3 min-w-[170px] text-white border-r border-[#003366]">Supporting Docs (PDF)</th>
                     <th className="py-3 px-2 text-center w-10 text-white">Del</th>
                   </tr>
                 </thead>
@@ -3280,7 +3097,7 @@ export function DepartmentUpdateForm() {
                         <div className="flex items-center gap-1">
                           <input
                             type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
+                            placeholder="Report PDF"
                             value={item.reportUrl}
                             onChange={(e) => {
                               const next = [...bestPractices];
@@ -3314,44 +3131,6 @@ export function DepartmentUpdateForm() {
                           </label>
                         </div>
                       </td>
-                      <td className="py-2 px-2 border-r border-slate-100">
-                        <div className="flex items-center gap-1">
-                          <input
-                            type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
-                            value={item.docUrl}
-                            onChange={(e) => {
-                              const next = [...bestPractices];
-                              next[idx].docUrl = e.target.value;
-                              setBestPractices(next);
-                            }}
-                            className="flex-1 bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-1.5 py-0.5 text-xs text-slate-700 focus:outline-none"
-                          />
-                          <label className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-[#002147] hover:text-white text-[#002147] rounded-lg text-[10px] font-bold transition cursor-pointer shrink-0">
-                            <Upload className="w-3 h-3" />
-                            <input
-                              type="file"
-                              accept=".pdf,application/pdf"
-                              className="hidden"
-                              disabled={uploadingDocKey !== null}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleDocumentUpload(
-                                    file,
-                                    (url) => {
-                                      const next = [...bestPractices];
-                                      next[idx].docUrl = url;
-                                      setBestPractices(next);
-                                    },
-                                    `bpDoc_${idx}`
-                                  );
-                                }
-                              }}
-                            />
-                          </label>
-                        </div>
-                      </td>
                       <td className="py-2 px-2 text-center">
                         <button
                           type="button"
@@ -3365,7 +3144,7 @@ export function DepartmentUpdateForm() {
                   ))}
                   {bestPractices.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="text-center py-6 text-slate-400 italic">
+                      <td colSpan={7} className="text-center py-6 text-slate-400 italic">
                         No best practices added yet. Click &apos;Add Best Practice&apos; above.
                       </td>
                     </tr>
@@ -3381,14 +3160,14 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "7. Departmental Add-on / Value-Added / Certificate Courses" : "11. Departmental Add-on / Value-Added / Certificate Courses"}</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Departmental Add-on / Certificate Courses</h2>
                 <p className="text-xs text-slate-500 font-medium">Departmental certificate and value-added courses with course code, duration, enrolled, and certified students (9 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setCertificateCourses([
                   ...certificateCourses,
-                  { sNo: certificateCourses.length + 1, year: "2025–2026", name: "", type: "Certificate Course", code: "MAT-CC-01", duration: "36 Hours", enrolled: "45", certified: "45", reportUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: certificateCourses.length + 1, year: "2025–2026", name: "", type: "Certificate Course", code: "", duration: "", enrolled: "", certified: "", reportUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3574,14 +3353,14 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "5. Departmental Activities, Events, Programmes & Celebrations" : "12. Departmental Activities, Events, Programmes & Celebrations"}</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Departmental Activities, Events &amp; Celebrations</h2>
                 <p className="text-xs text-slate-500 font-medium">Workshops, national seminars, guest lectures, and student festivals (7 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setActivities([
                   ...activities,
-                  { sNo: activities.length + 1, date: "", year: "2025–2026", title: "", category: "Academic Celebration", participants: "100", reportUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: activities.length + 1, date: "", year: "2025–2026", title: "", category: "Academic Celebration", participants: "", reportUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3742,8 +3521,8 @@ export function DepartmentUpdateForm() {
               <div>
                 <h2 className="font-outfit font-black text-lg text-[#002147]">
                   {isLanguageWing
-                    ? `4. Student Achievements in ${languageName} Language & Literary Activities`
-                    : "13. Student External Achievements, Participation & Representation"}
+                    ? `Student Achievements in ${languageName} Language & Literary Activities`
+                    : "Student External Achievements & Participation"}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   {isLanguageWing
@@ -3755,7 +3534,7 @@ export function DepartmentUpdateForm() {
                 type="button"
                 onClick={() => setStudentAchievements([
                   ...studentAchievements,
-                  { sNo: studentAchievements.length + 1, date: "18-01-2026", year: "2025–2026", studentName: "", programme: "III B.Sc.", achievement: "First Prize & Cash Award", eventName: "", level: "State Level", org: "", award: "Gold Medal & Cash Prize", certificateUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: studentAchievements.length + 1, date: "", year: "2025–2026", studentName: "", programme: "", achievement: "", eventName: "", level: "State Level", org: "", award: "", certificateUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3964,19 +3743,19 @@ export function DepartmentUpdateForm() {
           </div>
 
           {/* ============================================================== */}
-          {/* SECTION 14: YEAR-WISE ANNUAL ACTIVITY REPORTS (5 COLS)          */}
+          {/* SECTION 14: YEAR-WISE ANNUAL ACTIVITY REPORTS                  */}
           {/* ============================================================== */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "9. Year-wise Annual Activity Reports" : "14. Year-wise Annual Activity Reports"}</h2>
-                <p className="text-xs text-slate-500 font-medium">Consolidated annual department activity reports and supporting documents (5 columns).</p>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Year-wise Annual Activity Reports</h2>
+                <p className="text-xs text-slate-500 font-medium">Consolidated annual department activity reports (4 columns).</p>
               </div>
               <button
                 type="button"
                 onClick={() => setAnnualReports([
                   ...annualReports,
-                  { sNo: annualReports.length + 1, year: "2025–2026", activitiesCount: "14", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" }
+                  { sNo: annualReports.length + 1, year: "2025–2026", activitiesCount: "", reportUrl: "", supportingDocUrl: "" }
                 ])}
                 className="px-3.5 py-1.5 bg-[#002147] text-white hover:bg-[#00387a] rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs"
               >
@@ -3992,7 +3771,6 @@ export function DepartmentUpdateForm() {
                     <th className="py-3 px-4 min-w-[150px] text-white border-r border-[#003366]">Academic Year</th>
                     <th className="py-3 px-4 text-center min-w-[160px] text-white border-r border-[#003366]">Total No. of Activities</th>
                     <th className="py-3 px-4 min-w-[220px] text-white border-r border-[#003366]">Annual Activity Report (PDF)</th>
-                    <th className="py-3 px-4 min-w-[220px] text-white border-r border-[#003366]">Supporting Documents (PDF)</th>
                     <th className="py-3 px-3 text-center w-12 text-white">Del</th>
                   </tr>
                 </thead>
@@ -4030,7 +3808,7 @@ export function DepartmentUpdateForm() {
                         <div className="flex items-center gap-1.5">
                           <input
                             type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
+                            placeholder="Report PDF"
                             value={item.reportUrl}
                             onChange={(e) => {
                               const next = [...annualReports];
@@ -4065,45 +3843,6 @@ export function DepartmentUpdateForm() {
                           </label>
                         </div>
                       </td>
-                      <td className="py-2 px-3 border-r border-slate-100">
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="text"
-                            placeholder="/documents/DefaultFile_1.pdf"
-                            value={item.supportingDocUrl}
-                            onChange={(e) => {
-                              const next = [...annualReports];
-                              next[idx].supportingDocUrl = e.target.value;
-                              setAnnualReports(next);
-                            }}
-                            className="flex-1 bg-white border border-slate-200 focus:border-[#002147] rounded-lg px-2 py-1 text-xs text-slate-700 focus:outline-none"
-                          />
-                          <label className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-[#002147] hover:text-white text-[#002147] rounded-lg text-[11px] font-bold transition cursor-pointer shadow-xs shrink-0">
-                            <Upload className="w-3 h-3" />
-                            <span>Upload</span>
-                            <input
-                              type="file"
-                              accept=".pdf,application/pdf"
-                              className="hidden"
-                              disabled={uploadingDocKey !== null}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleDocumentUpload(
-                                    file,
-                                    (url) => {
-                                      const next = [...annualReports];
-                                      next[idx].supportingDocUrl = url;
-                                      setAnnualReports(next);
-                                    },
-                                    `annSupport_${idx}`
-                                  );
-                                }
-                              }}
-                            />
-                          </label>
-                        </div>
-                      </td>
                       <td className="py-2 px-2 text-center">
                         <button
                           type="button"
@@ -4117,7 +3856,7 @@ export function DepartmentUpdateForm() {
                   ))}
                   {annualReports.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="text-center py-6 text-slate-400 italic">
+                      <td colSpan={5} className="text-center py-6 text-slate-400 italic">
                         No annual reports added yet. Click &apos;Add Report Year&apos; above.
                       </td>
                     </tr>
@@ -4277,7 +4016,7 @@ export function DepartmentUpdateForm() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-outfit font-black text-lg text-[#002147]">{isLanguageWing ? "10. Photo Gallery" : "15. Photo Gallery"}</h2>
+                <h2 className="font-outfit font-black text-lg text-[#002147]">Photo Gallery</h2>
                 <p className="text-xs text-slate-500 font-medium">Upload photographs with academic year, event title, and date for the public photo gallery.</p>
               </div>
               <label className="px-3.5 py-1.5 bg-[#002147] hover:bg-[#00387a] text-white rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-xs cursor-pointer active:scale-95">

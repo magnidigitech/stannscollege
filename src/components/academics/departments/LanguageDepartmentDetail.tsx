@@ -369,7 +369,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              1. Faculty Directory
+              Faculty Directory
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -407,7 +407,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              2. Curriculum &amp; Learning Outcomes
+              Curriculum &amp; Learning Outcomes
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -500,7 +500,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              3. Student Strength, Results &amp; Pass Percentage
+              Student Strength, Results &amp; Pass Percentage
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
             <p className="text-xs text-slate-500 font-semibold mt-1">
@@ -574,7 +574,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              4. Student Achievements in {languageLabel} Language &amp; Literary Activities
+              Student Achievements in {languageLabel} Language &amp; Literary Activities
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
             <p className="text-xs text-slate-500 font-semibold mt-1">
@@ -660,7 +660,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              5. Departmental Activities, Events, Programmes &amp; Celebrations
+              Departmental Activities, Events &amp; Celebrations
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -735,7 +735,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              6. Departmental Best Practices
+              Departmental Best Practices
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -765,14 +765,13 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                   <th className="py-3 px-4 text-white font-black border-r border-[#003366]">Title of Best Practice</th>
                   <th className="py-3 px-5 text-blue-100 font-bold border-r border-[#003366]">Objectives of the Practice</th>
                   <th className="py-3 px-5 text-blue-100 font-bold border-r border-[#003366]">Outcomes / Impact</th>
-                  <th className="py-3 px-3 text-center w-28 text-blue-100 font-bold border-r border-[#003366]">Report</th>
-                  <th className="py-3 px-3 text-center w-28 text-blue-100 font-bold">Supporting Doc</th>
+                  <th className="py-3 px-3 text-center w-28 text-blue-100 font-bold">Report</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredBestPractices.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-6 text-center text-slate-500 font-medium">No best practices found.</td>
+                    <td colSpan={6} className="py-6 text-center text-slate-500 font-medium">No best practices found.</td>
                   </tr>
                 ) : (
                   filteredBestPractices.map((bp: any, idx: number) => (
@@ -782,21 +781,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-4 font-bold text-slate-800 border-r border-slate-200/80">{bp.title}</td>
                       <td className="py-3.5 px-5 font-normal text-slate-600 border-r border-slate-200/80">{bp.objectives}</td>
                       <td className="py-3.5 px-5 font-medium text-slate-700 border-r border-slate-200/80">{bp.outcomes}</td>
-                      <td className="py-3.5 px-3 text-center border-r border-slate-200/80">
+                      <td className="py-3.5 px-3 text-center">
                         <button
                           onClick={() => handleOpenPdf(bp.reportUrl || "/documents/DefaultFile_1.pdf", `${bp.title} - Best Practice Report`)}
                           className="inline-flex items-center gap-1 bg-[#002147] hover:bg-[#00387a] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
-                          <span>View PDF</span>
-                        </button>
-                      </td>
-                      <td className="py-3.5 px-3 text-center">
-                        <button
-                          onClick={() => handleOpenPdf(bp.proofUrl || "/documents/DefaultFile_1.pdf", `${bp.title} - Supporting Documents`)}
-                          className="inline-flex items-center gap-1 bg-[#002147] hover:bg-[#00387a] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
-                        >
-                          <FileCheck className="h-3.5 w-3.5" />
                           <span>View PDF</span>
                         </button>
                       </td>
@@ -816,7 +806,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              7. Departmental Add-on / Value-Added / Certificate Courses
+              Departmental Add-on / Certificate Courses
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -887,7 +877,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              8. Memoranda of Understanding (MoUs) &amp; Collaborations
+              Memoranda of Understanding (MoUs) &amp; Collaborations
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -950,7 +940,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              9. Year-wise Annual Activity Reports
+              Year-wise Annual Activity Reports
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
@@ -979,14 +969,13 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                   <th className="py-3 px-3 text-center w-14 text-blue-100 font-bold border-r border-[#003366]">S. No.</th>
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Academic Year</th>
                   <th className="py-3 px-4 text-center text-blue-100 font-bold border-r border-[#003366]">Total No. of Activities</th>
-                  <th className="py-3 px-4 text-center w-40 text-blue-100 font-bold border-r border-[#003366]">Annual Activity Report</th>
-                  <th className="py-3 px-4 text-center w-40 text-blue-100 font-bold">Supporting Documents</th>
+                  <th className="py-3 px-4 text-center w-40 text-blue-100 font-bold">Annual Activity Report</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredAnnualReports.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-6 text-center text-slate-500 font-medium">No annual reports found.</td>
+                    <td colSpan={4} className="py-6 text-center text-slate-500 font-medium">No annual reports found.</td>
                   </tr>
                 ) : (
                   filteredAnnualReports.map((ar: any, idx: number) => (
@@ -994,21 +983,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200/80">{idx + 1}</td>
                       <td className="py-3.5 px-4 text-center font-bold text-slate-800 border-r border-slate-200/80 whitespace-nowrap">{ar.year}</td>
                       <td className="py-3.5 px-4 text-center font-black text-slate-800 border-r border-slate-200/80">{ar.count || "12"}</td>
-                      <td className="py-3.5 px-4 text-center border-r border-slate-200/80">
+                      <td className="py-3.5 px-4 text-center">
                         <button
                           onClick={() => handleOpenPdf(ar.reportUrl || "/documents/DefaultFile_1.pdf", `${deptName} - Annual Activity Report (${ar.year})`)}
                           className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
-                          <span>View PDF</span>
-                        </button>
-                      </td>
-                      <td className="py-3.5 px-4 text-center">
-                        <button
-                          onClick={() => handleOpenPdf(ar.proofUrl || "/documents/DefaultFile_1.pdf", `${deptName} - Supporting Documents (${ar.year})`)}
-                          className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
-                        >
-                          <FileCheck className="h-3.5 w-3.5" />
                           <span>View PDF</span>
                         </button>
                       </td>
@@ -1028,7 +1008,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
             <h2 className="font-outfit text-lg sm:text-xl font-black text-[#002147] tracking-tight">
-              10. Photo Gallery
+              Photo Gallery
             </h2>
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
             <p className="text-xs text-slate-500 font-semibold mt-1">
