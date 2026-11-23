@@ -41,6 +41,7 @@ import {
   Star,
   ClipboardList,
   Image as ImageIcon,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -656,6 +657,53 @@ export default function HomePage() {
     });
   }, [sanityNotices]);
 
+  // Seamless loop list for continuous auto-scrolling feed
+  const displayNotices = React.useMemo(() => {
+    return sortedNotices.length > 3 ? [...sortedNotices, ...sortedNotices] : sortedNotices;
+  }, [sortedNotices]);
+
+  // Notice Board Auto-Scroll & Pause on hover
+  const noticeListRef = useRef<HTMLDivElement>(null);
+  const [isNoticePaused, setIsNoticePaused] = useState(false);
+
+  // Continuous seamless auto-scroll for Notice Board
+  useEffect(() => {
+    const el = noticeListRef.current;
+    if (!el || sortedNotices.length <= 3) return;
+
+    let animId: number;
+    let lastTime = performance.now();
+
+    const step = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      if (!isNoticePaused && el) {
+        el.scrollTop += 22 * dt;
+        const halfHeight = el.scrollHeight / 2;
+        if (el.scrollTop >= halfHeight) {
+          el.scrollTop -= halfHeight;
+        }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [isNoticePaused, sortedNotices.length]);
+
+  // Smooth scroll to target section with brief highlight animation
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      el.classList.add("ring-4", "ring-rose-400/60", "transition-all", "duration-500");
+      setTimeout(() => {
+        el.classList.remove("ring-4", "ring-rose-400/60");
+      }, 2000);
+    }
+  };
+
   // In-app PDF Viewer Modal state (opens PDF in a popup modal, not in another tab)
   const [viewingPdfModal, setViewingPdfModal] = useState<{
     title: string;
@@ -911,12 +959,66 @@ export default function HomePage() {
               </button>
             </>
           )}
+
+          {/* Floating Quick Jump & Notice Awareness Bar */}
+          <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-30 px-3 sm:px-6 pointer-events-auto">
+            <div className="max-w-4xl mx-auto bg-slate-950/85 backdrop-blur-md rounded-2xl sm:rounded-full border border-white/20 p-1.5 sm:p-2 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-2.5">
+              
+              {/* Left: Latest Notice Indicator / Ticker Preview */}
+              <div
+                onClick={() => scrollToSection("notice-board")}
+                className="flex items-center gap-2.5 px-3 py-1 cursor-pointer group/ticker min-w-0 flex-1 w-full sm:w-auto"
+                title="Click to jump down to Notice Board"
+              >
+                <span className="shrink-0 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-xs animate-pulse">
+                  <Bell className="w-2.5 h-2.5" />
+                  LATEST
+                </span>
+                <p className="text-[11px] sm:text-xs font-semibold text-white/90 group-hover/ticker:text-rose-300 truncate transition-colors">
+                  {sortedNotices[0]?.title || "Campus circulars & academic notices updated daily"}
+                </p>
+              </div>
+
+              {/* Right: Quick Jump Action Buttons */}
+              <div className="flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("notice-board")}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl sm:rounded-full bg-rose-600/90 hover:bg-rose-600 text-white font-bold text-[11px] sm:text-xs shadow-md transition-all active:scale-95 cursor-pointer border border-rose-400/40"
+                >
+                  <Bell className="w-3 h-3 text-rose-200" />
+                  <span>Notice Board</span>
+                  <ChevronDown className="w-3 h-3 text-rose-200" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("events-activities")}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl sm:rounded-full bg-indigo-600/90 hover:bg-indigo-600 text-white font-bold text-[11px] sm:text-xs shadow-md transition-all active:scale-95 cursor-pointer border border-indigo-400/40"
+                >
+                  <Calendar className="w-3 h-3 text-indigo-200" />
+                  <span>Events</span>
+                  <ChevronDown className="w-3 h-3 text-indigo-200" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("principal-welcome")}
+                  className="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl sm:rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] sm:text-xs transition-all active:scale-95 cursor-pointer border border-white/15"
+                >
+                  <span>Principal&apos;s Desk</span>
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+              </div>
+
+            </div>
+          </div>
         </section>
 
       {/* ----------------------------------------------------
           6. THREE-COLUMN HIGHLIGHTS: EVENTS, PRINCIPAL MESSAGE & NOTICES
           ---------------------------------------------------- */}
-      <section className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden transition-colors duration-300">
+      <section id="campus-highlights" className="pt-2 pb-10 sm:pt-3 sm:pb-14 bg-gradient-to-b from-slate-100/70 via-white to-slate-50/80 border-b border-slate-200/90 select-none relative overflow-hidden transition-colors duration-300">
         {/* Subtle atmospheric ambient glows */}
         <div className="absolute top-1/2 left-10 -translate-y-1/2 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -925,7 +1027,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
             
             {/* BOX 1: Events & Activities */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+            <div id="events-activities" className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -1108,7 +1210,7 @@ export default function HomePage() {
             </div>
 
             {/* BOX 2: Principal Profile & Leadership Message */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group">
+            <div id="principal-welcome" className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden p-3.5 sm:p-4 justify-between group">
               <div>
                 {/* Header Badge */}
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -1176,7 +1278,7 @@ export default function HomePage() {
             </div>
 
             {/* BOX 3: Notices */}
-            <div className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+            <div id="notice-board" className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -1193,49 +1295,81 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
-                <span className="relative z-10 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-white/10 backdrop-blur-md border border-white/20 text-rose-200 uppercase tracking-widest flex items-center gap-1 shadow-xs shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping" />
-                  Active
-                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsNoticePaused(!isNoticePaused)}
+                  title={isNoticePaused ? "Feed paused. Click to resume continuous scrolling." : "Live scrolling feed. Hover or click to pause."}
+                  className={`relative z-10 px-2 py-0.5 rounded-full text-[9px] font-extrabold backdrop-blur-md border uppercase tracking-widest flex items-center gap-1.5 shadow-xs shrink-0 cursor-pointer transition-colors ${
+                    isNoticePaused
+                      ? "bg-amber-500/20 border-amber-300/40 text-amber-200"
+                      : "bg-white/10 border-white/20 text-rose-200"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${isNoticePaused ? "bg-amber-400" : "bg-emerald-400 animate-pulse"}`} />
+                  <span>{isNoticePaused ? "Paused" : "Live Feed"}</span>
+                </button>
               </div>
 
-              {/* Items List matching client requested format - strictly sorted newest first */}
+              {/* Items List matching client requested format - strictly sorted newest first with auto-scrolling */}
               {sortedNotices.length > 0 ? (
-                <div className="flex-1 divide-y divide-slate-200 overflow-y-auto max-h-[460px] p-2 bg-white">
-                  {sortedNotices.map((item, idx) => (
-                    <div
-                      key={item._id || idx}
-                      className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
-                    >
-                      <div className="shrink-0 flex items-center justify-center min-w-[22px]">
-                        {isNoticeNew(item.date, item.newUntil, item.isNew) && <StarburstNewBadge />}
-                      </div>
-                      <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
-                          <span
-                            onClick={() => handleNoticeClick(item)}
-                            className="font-semibold text-slate-900 hover:text-[#002147] transition-colors cursor-pointer"
-                          >
-                            {item.title}
-                          </span>
-                          {item.date && (
-                            <span className="text-slate-600 font-normal"> ({item.date})</span>
+                <div
+                  ref={noticeListRef}
+                  onMouseEnter={() => setIsNoticePaused(true)}
+                  onMouseLeave={() => setIsNoticePaused(false)}
+                  onTouchStart={() => setIsNoticePaused(true)}
+                  onTouchEnd={() => setIsNoticePaused(false)}
+                  className="flex-1 divide-y divide-slate-200 overflow-y-auto max-h-[460px] p-2 bg-white select-text"
+                >
+                  {displayNotices.map((item, idx) => {
+                    const isNew = isNoticeNew(item.date, item.newUntil, item.isNew);
+                    return (
+                      <div
+                        key={`${item._id || "notice"}-${idx}`}
+                        className={`py-2.5 px-3 flex items-start gap-2.5 transition-all duration-300 group/item ${
+                          isNew
+                            ? "bg-gradient-to-r from-amber-50/70 via-rose-50/20 to-transparent border-l-[3.5px] border-l-rose-500 animate-[pulse_3.5s_ease-in-out_infinite]"
+                            : "hover:bg-rose-50/40 border-l-[3.5px] border-l-transparent"
+                        }`}
+                      >
+                        <div className="shrink-0 flex items-center justify-center min-w-[22px] relative">
+                          {isNew && (
+                            <>
+                              <span className="absolute -inset-1 rounded-full bg-amber-400/30 blur-xs animate-ping pointer-events-none" />
+                              <StarburstNewBadge />
+                            </>
                           )}
-                          {" "}
-                          <button
-                            type="button"
-                            onClick={() => handleNoticeClick(item)}
-                            className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-rose-50 hover:bg-[#002147] text-rose-800 hover:text-white border border-rose-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
-                            title="Click for more"
-                          >
-                            <FileText className="h-3 w-3 shrink-0 text-rose-600 group-hover/btn:text-white transition-colors" />
-                            <span>Click for more</span>
-                          </button>
+                        </div>
+                        <Mail className={`h-4 w-4 shrink-0 stroke-[1.75] mt-0.5 transition-colors ${
+                          isNew ? "text-rose-600 group-hover/item:text-[#002147]" : "text-slate-700 group-hover/item:text-[#002147]"
+                        }`} />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                            <span
+                              onClick={() => handleNoticeClick(item)}
+                              className={`font-semibold transition-colors cursor-pointer ${
+                                isNew ? "text-slate-950 hover:text-[#002147]" : "text-slate-900 hover:text-[#002147]"
+                              }`}
+                            >
+                              {item.title}
+                            </span>
+                            {item.date && (
+                              <span className="text-slate-600 font-normal"> ({item.date})</span>
+                            )}
+                            {" "}
+                            <button
+                              type="button"
+                              onClick={() => handleNoticeClick(item)}
+                              className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-rose-50 hover:bg-[#002147] text-rose-800 hover:text-white border border-rose-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
+                              title="Click for more"
+                            >
+                              <FileText className="h-3 w-3 shrink-0 text-rose-600 group-hover/btn:text-white transition-colors" />
+                              <span>Click for more</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 /* Coming Soon State */

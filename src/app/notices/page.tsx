@@ -304,18 +304,25 @@ export default function NoticesPage() {
             </div>
           ) : (
             <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm divide-y divide-slate-100 overflow-hidden">
-              {filteredNotices.map((n, idx) => (
+              {filteredNotices.map((n, idx) => {
+                const isNew = isNoticeNew(n.date, n.newUntil, n.isNew);
+                return (
                 <div
                   key={n._id || idx}
-                  className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-all duration-200 group"
+                  className={`p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all duration-300 group ${
+                    isNew
+                      ? "bg-gradient-to-r from-amber-50/70 via-rose-50/30 to-white border-l-4 border-l-rose-500 animate-[pulse_3.5s_ease-in-out_infinite]"
+                      : "hover:bg-slate-50/80 border-l-4 border-l-transparent"
+                  }`}
                 >
                   <div className="flex items-start gap-3.5 flex-1 min-w-0">
                     {/* Icon or New Badge: active until newUntil date or 2-week window */}
                     <div className="shrink-0 mt-0.5">
-                      {isNoticeNew(n.date, n.newUntil, n.isNew) ? (
-                        <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200 flex items-center gap-1 shadow-2xs">
-                          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-                          NEW
+                      {isNew ? (
+                        <span className="relative inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[9.5px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-xs">
+                          <span className="absolute -inset-0.5 rounded-md bg-rose-400/50 blur-xs animate-ping pointer-events-none" />
+                          <span className="relative w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                          <span className="relative">NEW</span>
                         </span>
                       ) : (
                         <div className="h-7 w-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:text-[#002147] transition-colors">
@@ -471,7 +478,8 @@ export default function NoticesPage() {
                     ) : null}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
