@@ -221,6 +221,14 @@ export default function NoticesPage() {
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
+      const isNewA = isNoticeNew(a.date, a.newUntil, a.isNew);
+      const isNewB = isNoticeNew(b.date, b.newUntil, b.isNew);
+
+      // 1. Primary: NEW notices at the top
+      if (isNewA && !isNewB) return -1;
+      if (!isNewA && isNewB) return 1;
+
+      // 2. Secondary: latest dates first
       const timeA = parseNoticeDateToTimestamp(a.date, a._createdAt);
       const timeB = parseNoticeDateToTimestamp(b.date, b._createdAt);
       return timeB - timeA;
@@ -309,11 +317,7 @@ export default function NoticesPage() {
                 return (
                 <div
                   key={n._id || idx}
-                  className={`p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all duration-300 group ${
-                    isNew
-                      ? "bg-gradient-to-r from-amber-50/70 via-rose-50/30 to-white border-l-4 border-l-rose-500 animate-[pulse_3.5s_ease-in-out_infinite]"
-                      : "hover:bg-slate-50/80 border-l-4 border-l-transparent"
-                  }`}
+                  className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-all duration-200 group"
                 >
                   <div className="flex items-start gap-3.5 flex-1 min-w-0">
                     {/* Icon or New Badge: active until newUntil date or 2-week window */}
@@ -346,7 +350,11 @@ export default function NoticesPage() {
                         )}
                       </div>
 
-                      <h2 className="font-outfit text-sm sm:text-base font-bold text-slate-800 group-hover:text-[#002147] transition-colors leading-snug">
+                      <h2 className={`font-outfit text-sm sm:text-base leading-snug transition-colors ${
+                        isNew
+                          ? "font-bold text-[#002147] animate-[pulse_2.5s_ease-in-out_infinite] group-hover:text-rose-600"
+                          : "font-bold text-slate-800 group-hover:text-[#002147]"
+                      }`}>
                         {n.title}
                       </h2>
 

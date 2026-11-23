@@ -646,10 +646,18 @@ export default function HomePage() {
     documents: { title: string; url: string; originalFilename?: string; fileType?: "pdf" | "image" }[];
   } | null>(null);
 
-  // Strictly sort notices descending by parsed date/time with latest at the top
+  // Two-tier priority sort: All active "NEW" notices grouped at the very top, followed by normal notices (both sorted latest-to-oldest)
   const sortedNotices = React.useMemo(() => {
     const list = sanityNotices.length > 0 ? sanityNotices : defaultNoticesList;
     return [...list].sort((a, b) => {
+      const isNewA = isNoticeNew(a.date, a.newUntil, a.isNew);
+      const isNewB = isNoticeNew(b.date, b.newUntil, b.isNew);
+
+      // 1. Primary: NEW notices at the top
+      if (isNewA && !isNewB) return -1;
+      if (!isNewA && isNewB) return 1;
+
+      // 2. Secondary: latest dates first
       const timeA = parseNoticeDateToTimestamp(a.date, a._createdAt);
       const timeB = parseNoticeDateToTimestamp(b.date, b._createdAt);
       return timeB - timeA;
@@ -665,24 +673,28 @@ export default function HomePage() {
   const noticeListRef = useRef<HTMLDivElement>(null);
   const [isNoticePaused, setIsNoticePaused] = useState(false);
 
-  // Continuous seamless auto-scroll for Notice Board
+  // Continuous seamless auto-scroll for Notice Board (with float accumulator)
   useEffect(() => {
     const el = noticeListRef.current;
     if (!el || sortedNotices.length <= 3) return;
 
     let animId: number;
     let lastTime = performance.now();
+    let scrollPos = el.scrollTop;
 
     const step = (now: number) => {
       const dt = (now - lastTime) / 1000;
       lastTime = now;
 
-      if (!isNoticePaused && el) {
-        el.scrollTop += 22 * dt;
+      if (isNoticePaused) {
+        scrollPos = el.scrollTop;
+      } else if (el) {
+        scrollPos += 24 * dt;
         const halfHeight = el.scrollHeight / 2;
-        if (el.scrollTop >= halfHeight) {
-          el.scrollTop -= halfHeight;
+        if (scrollPos >= halfHeight) {
+          scrollPos -= halfHeight;
         }
+        el.scrollTop = scrollPos;
       }
       animId = requestAnimationFrame(step);
     };
@@ -1040,78 +1052,11 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Two Segregated Sections: Conducted Events (Upper) & Upcoming Events (Bottom) */}
+              {/* Two Segregated Sections: Upcoming Events (Upper) & Conducted Events (Bottom) */}
               {visibleEvents.length > 0 ? (
                 <div className="flex-1 flex flex-col min-h-0 bg-white">
-                  {/* ── 1. UPPER PART: Conducted Events & Activities (with View Circular / Report) ── */}
+                  {/* ── 1. UPPER PART: Upcoming Events & Activities ── */}
                   <div className="flex-1 flex flex-col min-h-0">
-                    <div className="px-3.5 py-1.5 bg-slate-100/90 border-b border-slate-200/80 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-700 shrink-0" />
-                        <span className="font-outfit text-[11px] font-black text-slate-800 tracking-wider uppercase">
-                          Conducted Events &amp; Activities
-                        </span>
-                      </div>
-                      <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-slate-200 text-slate-700">
-                        {otherEvents.length} Recorded
-                      </span>
-                    </div>
-
-                    {/* Scroller 1: Conducted Events */}
-                    <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
-                      {otherEvents.length > 0 ? (
-                        otherEvents.map((item, idx) => {
-                          const lifecycle = getEventLifecycle(item);
-                          return (
-                            <div
-                              key={item._id || idx}
-                              className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-indigo-50/40 transition-colors group/item"
-                            >
-                              {/* Dynamic Badge: Starburst NEW for 3 days post-event */}
-                              <div className="shrink-0 flex items-center justify-center min-w-[24px]">
-                                {lifecycle.status === "new" ? (
-                                  <StarburstNewBadge />
-                                ) : null}
-                              </div>
-
-                              <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
-
-                              <div className="flex-1 min-w-0">
-                                <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
-                                  <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
-                                    {item.title}
-                                  </span>
-                                  {item.date && (
-                                    <span className="text-slate-600 font-normal"> ({item.date})</span>
-                                  )}
-                                  {" "}
-                                  <button
-                                    type="button"
-                                    onClick={() => handleEventDocClick(item)}
-                                    className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-indigo-50 hover:bg-[#002147] text-[#002147] hover:text-white border border-indigo-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
-                                    title="Click for more"
-                                  >
-                                    <FileText className="h-3 w-3 shrink-0 text-indigo-600 group-hover/btn:text-white transition-colors" />
-                                    <span>Click for more</span>
-                                  </button>
-                                </div>
-                                {item.organizer && (
-                                  <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
-                                    Organized by: {item.organizer}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })
-                      ) : (
-                        <p className="text-xs text-slate-400 p-4 text-center">No past events recorded</p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* ── 2. BOTTOM PART: Upcoming Events & Activities ── */}
-                  <div className="flex-1 flex flex-col min-h-0 border-t-2 border-slate-200">
                     <div className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-50/90 to-teal-50/80 border-b border-emerald-100 flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
@@ -1124,7 +1069,7 @@ export default function HomePage() {
                       </span>
                     </div>
 
-                    {/* Scroller 2: Upcoming Events */}
+                    {/* Scroller 1: Upcoming Events */}
                     <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
                       {upcomingEvents.length > 0 ? (
                         upcomingEvents.map((item, idx) => {
@@ -1133,6 +1078,9 @@ export default function HomePage() {
                               key={item._id || idx}
                               className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-emerald-50/30 transition-colors group/item"
                             >
+                              <div className="shrink-0 flex items-center justify-center min-w-[22px]">
+                                <UpcomingBadge />
+                              </div>
                               <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
 
                               <div className="flex-1 min-w-0">
@@ -1165,6 +1113,65 @@ export default function HomePage() {
                         })
                       ) : (
                         <p className="text-xs text-slate-400 p-4 text-center">No upcoming events scheduled</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ── 2. BOTTOM PART: Conducted Events & Activities (with View Circular / Report) ── */}
+                  <div className="flex-1 flex flex-col min-h-0 border-t-2 border-slate-200">
+                    <div className="px-3.5 py-1.5 bg-slate-100/90 border-b border-slate-200/80 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-700 shrink-0" />
+                        <span className="font-outfit text-[11px] font-black text-slate-800 tracking-wider uppercase">
+                          Conducted Events &amp; Activities
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-slate-200 text-slate-700">
+                        {otherEvents.length} Recorded
+                      </span>
+                    </div>
+
+                    {/* Scroller 2: Conducted Events */}
+                    <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
+                      {otherEvents.length > 0 ? (
+                        otherEvents.map((item, idx) => {
+                          return (
+                            <div
+                              key={item._id || idx}
+                              className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-indigo-50/40 transition-colors group/item"
+                            >
+                              <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
+
+                              <div className="flex-1 min-w-0">
+                                <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                                  <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
+                                    {item.title}
+                                  </span>
+                                  {item.date && (
+                                    <span className="text-slate-600 font-normal"> ({item.date})</span>
+                                  )}
+                                  {" "}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEventDocClick(item)}
+                                    className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-indigo-50 hover:bg-[#002147] text-[#002147] hover:text-white border border-indigo-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
+                                    title="Click for more"
+                                  >
+                                    <FileText className="h-3 w-3 shrink-0 text-indigo-600 group-hover/btn:text-white transition-colors" />
+                                    <span>Click for more</span>
+                                  </button>
+                                </div>
+                                {item.organizer && (
+                                  <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
+                                    Organized by: {item.organizer}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p className="text-xs text-slate-400 p-4 text-center">No past events recorded</p>
                       )}
                     </div>
                   </div>
@@ -1285,22 +1292,9 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setIsNoticePaused(!isNoticePaused)}
-                  title={isNoticePaused ? "Feed paused. Click to resume continuous scrolling." : "Live scrolling feed. Hover or click to pause."}
-                  className={`relative z-10 px-2 py-0.5 rounded-full text-[9px] font-extrabold backdrop-blur-md border uppercase tracking-widest flex items-center gap-1.5 shadow-xs shrink-0 cursor-pointer transition-colors ${
-                    isNoticePaused
-                      ? "bg-amber-500/20 border-amber-300/40 text-amber-200"
-                      : "bg-white/10 border-white/20 text-rose-200"
-                  }`}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${isNoticePaused ? "bg-amber-400" : "bg-emerald-400 animate-pulse"}`} />
-                  <span>{isNoticePaused ? "Paused" : "Live Feed"}</span>
-                </button>
               </div>
 
-              {/* Items List matching client requested format - strictly sorted newest first with auto-scrolling */}
+              {/* Items List matching client requested format - clean continuous list ("one after another") */}
               {sortedNotices.length > 0 ? (
                 <div
                   ref={noticeListRef}
@@ -1308,26 +1302,17 @@ export default function HomePage() {
                   onMouseLeave={() => setIsNoticePaused(false)}
                   onTouchStart={() => setIsNoticePaused(true)}
                   onTouchEnd={() => setIsNoticePaused(false)}
-                  className="flex-1 divide-y divide-slate-200 overflow-y-auto max-h-[460px] p-2 bg-white select-text"
+                  className="flex-1 divide-y divide-slate-100 overflow-y-auto max-h-[460px] p-2 bg-white select-text"
                 >
                   {displayNotices.map((item, idx) => {
                     const isNew = isNoticeNew(item.date, item.newUntil, item.isNew);
                     return (
                       <div
                         key={`${item._id || "notice"}-${idx}`}
-                        className={`py-2.5 px-3 flex items-start gap-2.5 transition-all duration-300 group/item ${
-                          isNew
-                            ? "bg-gradient-to-r from-amber-50/70 via-rose-50/20 to-transparent border-l-[3.5px] border-l-rose-500 animate-[pulse_3.5s_ease-in-out_infinite]"
-                            : "hover:bg-rose-50/40 border-l-[3.5px] border-l-transparent"
-                        }`}
+                        className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
                       >
-                        <div className="shrink-0 flex items-center justify-center min-w-[22px] relative">
-                          {isNew && (
-                            <>
-                              <span className="absolute -inset-1 rounded-full bg-amber-400/30 blur-xs animate-ping pointer-events-none" />
-                              <StarburstNewBadge />
-                            </>
-                          )}
+                        <div className="shrink-0 flex items-center justify-center min-w-[22px]">
+                          {isNew && <StarburstNewBadge />}
                         </div>
                         <Mail className={`h-4 w-4 shrink-0 stroke-[1.75] mt-0.5 transition-colors ${
                           isNew ? "text-rose-600 group-hover/item:text-[#002147]" : "text-slate-700 group-hover/item:text-[#002147]"
@@ -1336,8 +1321,10 @@ export default function HomePage() {
                           <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
                             <span
                               onClick={() => handleNoticeClick(item)}
-                              className={`font-semibold transition-colors cursor-pointer ${
-                                isNew ? "text-slate-950 hover:text-[#002147]" : "text-slate-900 hover:text-[#002147]"
+                              className={`cursor-pointer transition-all ${
+                                isNew
+                                  ? "text-[#002147] font-bold animate-[pulse_2.5s_ease-in-out_infinite] hover:text-rose-600"
+                                  : "font-semibold text-slate-900 hover:text-[#002147]"
                               }`}
                             >
                               {item.title}

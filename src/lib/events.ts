@@ -12,12 +12,82 @@ export interface EventLifecycleResult {
 }
 
 /**
+ * Helper to parse various event date formats (DD-MM-YYYY, YYYY-MM-DD, Month Names, etc.)
+ */
+export function parseEventDateToEndDate(event: any): Date | null {
+  let str = event.eventEndDate || event.eventDate;
+  if (str && typeof str === "string") {
+    const d = new Date(str.includes("T") ? str : `${str.trim()}T23:59:59`);
+    if (!isNaN(d.getTime())) return d;
+  }
+
+  if (event.date && typeof event.date === "string") {
+    const raw = event.date.trim();
+
+    // 1. Format: DD-MM-YYYY or DD/MM/YYYY (e.g. "22-11-2026" or "22/11/2026")
+    const dmy = raw.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+    if (dmy) {
+      const day = parseInt(dmy[1], 10);
+      const month = parseInt(dmy[2], 10) - 1;
+      const year = parseInt(dmy[3], 10);
+      return new Date(year, month, day, 23, 59, 59, 999);
+    }
+
+    // Month map
+    const months: Record<string, number> = {
+      jan: 0, january: 0,
+      feb: 1, february: 1,
+      mar: 2, march: 2,
+      apr: 3, april: 3,
+      may: 4,
+      jun: 5, june: 5,
+      jul: 6, july: 6,
+      aug: 7, august: 7,
+      sep: 8, sept: 8, september: 8,
+      oct: 9, october: 9,
+      nov: 10, november: 10,
+      dec: 11, december: 11,
+    };
+
+    // 2. Range match: "1–7 September 2026" or "21-23 November 2026"
+    const rangeMatch = raw.match(/[–-](\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i);
+    if (rangeMatch) {
+      const day = parseInt(rangeMatch[1], 10);
+      const mName = rangeMatch[2].toLowerCase();
+      const year = parseInt(rangeMatch[3], 10);
+      const month = months[mName] !== undefined ? months[mName] : 8;
+      return new Date(year, month, day, 23, 59, 59, 999);
+    }
+
+    // 3. Single match: "21 November 2026" or "5th September 2026"
+    const cleaned = raw.replace(/(\d+)(st|nd|rd|th)/i, "$1");
+    const singleMatch = cleaned.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i);
+    if (singleMatch) {
+      const day = parseInt(singleMatch[1], 10);
+      const mName = singleMatch[2].toLowerCase();
+      const year = parseInt(singleMatch[3], 10);
+      const month = months[mName] !== undefined ? months[mName] : 8;
+      return new Date(year, month, day, 23, 59, 59, 999);
+    }
+
+    // Fallback standard parse
+    const standardParse = Date.parse(raw);
+    if (!isNaN(standardParse)) {
+      const d = new Date(standardParse);
+      d.setHours(23, 59, 59, 999);
+      return d;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Event lifecycle rule:
  * 1) start date: date which tells us from when it should appear on website (if today < startDate => hidden)
- * 2) event date: date of when the event takes place
- *    - till the end of this date: status = "upcoming"
- *    - after this date: status = "new" for 3 days
- *    - later: status = "none" (nothing)
+ * 2) event date:
+ *    - till the end of event date: status = "upcoming" (Upcoming Events & Activities)
+ *    - after event date has passed: status = "none" (Conducted Events & Activities)
  */
 export function getEventLifecycle(event: any, currentDate = new Date()): EventLifecycleResult {
   // 1. Visibility check based on startDate
@@ -32,41 +102,19 @@ export function getEventLifecycle(event: any, currentDate = new Date()): EventLi
     }
   }
 
-  // 2. Determine end of event date
-  let eventEndStr = event.eventEndDate || event.eventDate;
-  if (!eventEndStr && event.date) {
-    const rangeMatch = event.date.match(/[–-](\d{1,2})\s+September\s+(\d{4})/i);
-    if (rangeMatch) {
-      eventEndStr = `${rangeMatch[2]}-09-${rangeMatch[1].padStart(2, "0")}`;
-    } else {
-      const singleMatch = event.date.match(/(\d{1,2})\s+September\s+(\d{4})/i);
-      if (singleMatch) {
-        eventEndStr = `${singleMatch[2]}-09-${singleMatch[1].padStart(2, "0")}`;
-      }
-    }
-  }
-
-  if (!eventEndStr) {
+  const endDay = parseEventDateToEndDate(event);
+  if (!endDay) {
     return { isVisible: true, status: "upcoming" };
   }
 
-  const endDay = new Date(
-    eventEndStr.includes("T") ? eventEndStr : `${eventEndStr}T23:59:59`
-  );
   const today = new Date(currentDate);
 
   // Till the end of event date: "Upcoming"
-  if (today <= endDay) {
+  if (today.getTime() <= endDay.getTime()) {
     return { isVisible: true, status: "upcoming" };
   }
 
-  // After this date: "New" for 3 days
-  const threeDaysAfter = new Date(endDay.getTime() + 3 * 24 * 60 * 60 * 1000);
-  if (today <= threeDaysAfter) {
-    return { isVisible: true, status: "new" };
-  }
-
-  // Later: nothing
+  // Once the event date has passed: Conducted / Completed
   return { isVisible: true, status: "none" };
 }
 
@@ -100,27 +148,8 @@ export function getEventDocuments(item: any): EventDocument[] {
  * Extracts a numeric timestamp for sorting events chronologically
  */
 export function getEventTimestamp(event: any): number {
-  let dateStr = event.eventEndDate || event.eventDate;
-  if (!dateStr && event.date) {
-    const rangeMatch = event.date.match(/[–-](\d{1,2})\s+September\s+(\d{4})/i);
-    if (rangeMatch) {
-      dateStr = `${rangeMatch[2]}-09-${rangeMatch[1].padStart(2, "0")}`;
-    } else {
-      const singleMatch = event.date.match(/(\d{1,2})\s+September\s+(\d{4})/i);
-      if (singleMatch) {
-        dateStr = `${singleMatch[2]}-09-${singleMatch[1].padStart(2, "0")}`;
-      }
-    }
-  }
-
-  if (dateStr) {
-    const d = new Date(dateStr.includes("T") ? dateStr : `${dateStr}T12:00:00`);
-    if (!isNaN(d.getTime())) {
-      return d.getTime();
-    }
-  }
-
-  return 0;
+  const d = parseEventDateToEndDate(event);
+  return d ? d.getTime() : 0;
 }
 
 export const fallbackEventsHistory = [
