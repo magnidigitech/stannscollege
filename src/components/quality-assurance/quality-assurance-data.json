@@ -10462,44 +10462,9 @@
   ],
   "aqarMasterReports": [
     {
-      "year": "2025–2026",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
-    },
-    {
-      "year": "2024–2025",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
-    },
-    {
       "year": "2023–2024",
       "aqarUrl": "/documents/DefaultFile_1.pdf",
       "supportingDocsAvailable": true
-    },
-    {
-      "year": "2022–2023",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
-    },
-    {
-      "year": "2021–2022",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
-    },
-    {
-      "year": "2020–2021",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
-    },
-    {
-      "year": "2019–2020",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
-    },
-    {
-      "year": "2018–2019",
-      "aqarUrl": "/documents/DefaultFile_1.pdf",
-      "supportingDocsAvailable": false
     }
   ]
 }

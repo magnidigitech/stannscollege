@@ -192,6 +192,55 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
     return allAnnualReports.filter((ar: any) => ar.year === annualReportsYear);
   }, [allAnnualReports, annualReportsYear]);
 
+  // Derived Year Arrays for Dynamic Filtering
+  const curriculumYears = useMemo(() => {
+    let years: string[] = [];
+    if (dynamicDept?.curriculumByYearJson) {
+      try {
+        const parsed = typeof dynamicDept.curriculumByYearJson === "string" ? JSON.parse(dynamicDept.curriculumByYearJson) : dynamicDept.curriculumByYearJson;
+        years = Object.keys(parsed);
+      } catch {}
+    } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+      years = Object.keys(dynamicDept.curriculumByYear);
+    } else if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
+      years = Array.from(new Set(dynamicDept.curriculumDocuments.map((d: any) => d.year).filter(Boolean))) as string[];
+    }
+    if (years.length === 0) {
+      years = ["2025–2026"];
+    }
+    return Array.from(new Set(years)).sort().reverse();
+  }, [dynamicDept]);
+
+  useEffect(() => {
+    if (curriculumYears.length > 0 && !curriculumYears.includes(curriculumYear)) {
+      setCurriculumYear(curriculumYears[0]);
+    }
+  }, [curriculumYears, curriculumYear]);
+
+  const resultsYears = useMemo(() => {
+    return Array.from(new Set(allResults.map((r: any) => r.year).filter(Boolean))).sort().reverse() as string[];
+  }, [allResults]);
+
+  const achievementsYears = useMemo(() => {
+    return Array.from(new Set(allAchievements.map((a: any) => a.year).filter(Boolean))).sort().reverse() as string[];
+  }, [allAchievements]);
+
+  const activitiesYears = useMemo(() => {
+    return Array.from(new Set(allActivities.map((act: any) => act.year).filter(Boolean))).sort().reverse() as string[];
+  }, [allActivities]);
+
+  const bestPracticesYears = useMemo(() => {
+    return Array.from(new Set(allBestPractices.map((bp: any) => bp.year).filter(Boolean))).sort().reverse() as string[];
+  }, [allBestPractices]);
+
+  const coursesYears = useMemo(() => {
+    return Array.from(new Set(allCourses.map((c: any) => c.year).filter(Boolean))).sort().reverse() as string[];
+  }, [allCourses]);
+
+  const annualReportsYears = useMemo(() => {
+    return Array.from(new Set(allAnnualReports.map((ar: any) => ar.year).filter(Boolean))).sort().reverse() as string[];
+  }, [allAnnualReports]);
+
   // --------------------------------------------------------------------------
   // TABLE 10: PHOTO GALLERY & LIGHTBOX
   // --------------------------------------------------------------------------
@@ -316,6 +365,10 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
     }
   }, [staticDept, deptName, isEnglish, isTelugu]);
 
+  const galleryYears = useMemo(() => {
+    return Array.from(new Set(uploadedPhotos.map(p => p.year).filter(Boolean))).sort().reverse() as string[];
+  }, [uploadedPhotos]);
+
   const filteredPhotos = useMemo(() => {
     if (galleryYear === "All") return uploadedPhotos;
     return uploadedPhotos.filter(p => p.year === galleryYear);
@@ -414,19 +467,25 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
 
           {/* Academic Year Selector */}
           <div className="flex items-center gap-2">
-            <label htmlFor="curriculumYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">
+            <span className="text-xs font-bold text-slate-700 whitespace-nowrap">
               Academic Year:
-            </label>
-            <select
-              id="curriculumYearSelect"
-              value={curriculumYear}
-              onChange={(e) => setCurriculumYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="2026–2027">2026–2027</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            </span>
+            {curriculumYears.length > 1 ? (
+              <select
+                id="curriculumYearSelect"
+                value={curriculumYear}
+                onChange={(e) => setCurriculumYear(e.target.value)}
+                className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+              >
+                {curriculumYears.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            ) : (
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {curriculumYears[0] || "2025–2026"}
+              </span>
+            )}
           </div>
         </div>
 
@@ -496,6 +555,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
       {/* ============================================================== */}
       {/* SECTION 3: STUDENT STRENGTH, RESULTS & PASS PERCENTAGE         */}
       {/* ============================================================== */}
+      {allResults.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -509,17 +569,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="resultsYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="resultsYearSelect"
-              value={resultsYear}
-              onChange={(e) => setResultsYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            {resultsYears.length > 1 ? (
+              <>
+                <label htmlFor="resultsYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="resultsYearSelect"
+                  value={resultsYear}
+                  onChange={(e) => setResultsYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {resultsYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : resultsYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {resultsYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -566,10 +638,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 4: STUDENT ACHIEVEMENTS IN LANGUAGE & LITERARY ACT.    */}
       {/* ============================================================== */}
+      {allAchievements.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -583,17 +657,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="achievementsYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="achievementsYearSelect"
-              value={achievementsYear}
-              onChange={(e) => setAchievementsYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            {achievementsYears.length > 1 ? (
+              <>
+                <label htmlFor="achievementsYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="achievementsYearSelect"
+                  value={achievementsYear}
+                  onChange={(e) => setAchievementsYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {achievementsYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : achievementsYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {achievementsYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -652,10 +738,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 5: DEPARTMENTAL ACTIVITIES & CELEBRATIONS              */}
       {/* ============================================================== */}
+      {allActivities.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -666,17 +754,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="activitiesYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="activitiesYearSelect"
-              value={activitiesYear}
-              onChange={(e) => setActivitiesYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            {activitiesYears.length > 1 ? (
+              <>
+                <label htmlFor="activitiesYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="activitiesYearSelect"
+                  value={activitiesYear}
+                  onChange={(e) => setActivitiesYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {activitiesYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : activitiesYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {activitiesYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -727,10 +827,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 6: DEPARTMENTAL BEST PRACTICES                         */}
       {/* ============================================================== */}
+      {allBestPractices.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -741,17 +843,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="bestPracticesYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="bestPracticesYearSelect"
-              value={bestPracticesYear}
-              onChange={(e) => setBestPracticesYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            {bestPracticesYears.length > 1 ? (
+              <>
+                <label htmlFor="bestPracticesYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="bestPracticesYearSelect"
+                  value={bestPracticesYear}
+                  onChange={(e) => setBestPracticesYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {bestPracticesYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : bestPracticesYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {bestPracticesYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -798,10 +912,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 7: ADD-ON / VALUE-ADDED / CERTIFICATE COURSES          */}
       {/* ============================================================== */}
+      {allCourses.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -812,17 +928,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="coursesYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="coursesYearSelect"
-              value={coursesYear}
-              onChange={(e) => setCoursesYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            {coursesYears.length > 1 ? (
+              <>
+                <label htmlFor="coursesYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="coursesYearSelect"
+                  value={coursesYear}
+                  onChange={(e) => setCoursesYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {coursesYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : coursesYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {coursesYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -869,10 +997,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 8: MOUS & COLLABORATIONS                              */}
       {/* ============================================================== */}
+      {mousList.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div>
@@ -932,10 +1062,12 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 9: YEAR-WISE ANNUAL ACTIVITY REPORTS                   */}
       {/* ============================================================== */}
+      {allAnnualReports.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -946,18 +1078,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="annualReportsYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="annualReportsYearSelect"
-              value={annualReportsYear}
-              onChange={(e) => setAnnualReportsYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
+            {annualReportsYears.length > 1 ? (
+              <>
+                <label htmlFor="annualReportsYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="annualReportsYearSelect"
+                  value={annualReportsYear}
+                  onChange={(e) => setAnnualReportsYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {annualReportsYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : annualReportsYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {annualReportsYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -1000,6 +1143,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 10: PHOTO GALLERY                                      */}
@@ -1017,17 +1161,29 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           </div>
 
           <div className="flex items-center gap-2">
-            <label htmlFor="galleryYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
-            <select
-              id="galleryYearSelect"
-              value={galleryYear}
-              onChange={(e) => setGalleryYear(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-            </select>
+            {galleryYears.length > 1 ? (
+              <>
+                <label htmlFor="galleryYearSelect" className="text-xs font-bold text-slate-700 whitespace-nowrap">Filter Year:</label>
+                <select
+                  id="galleryYearSelect"
+                  value={galleryYear}
+                  onChange={(e) => setGalleryYear(e.target.value)}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#002147] shadow-2xs"
+                >
+                  <option value="All">All Years</option>
+                  {galleryYears.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : galleryYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {galleryYears[0]}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
 

@@ -272,12 +272,40 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
     ];
   }, [staticDept, deptName]);
 
+  const galleryYears = useMemo(() => {
+    return Array.from(new Set(uploadedPhotos.map(p => p.year).filter(Boolean))) as string[];
+  }, [uploadedPhotos]);
+
   const filteredGallery = useMemo(() => {
     if (galleryYear === "All") return uploadedPhotos;
     return uploadedPhotos.filter(p => p.year === galleryYear);
   }, [uploadedPhotos, galleryYear]);
 
   // Dynamic Curriculum Documents for Table 2 (Curriculum & Learning Outcomes)
+  const table2Years = useMemo(() => {
+    let years: string[] = [];
+    if (dynamicDept?.curriculumByYearJson) {
+      try {
+        const parsed = typeof dynamicDept.curriculumByYearJson === "string" ? JSON.parse(dynamicDept.curriculumByYearJson) : dynamicDept.curriculumByYearJson;
+        years = Object.keys(parsed);
+      } catch {}
+    } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+      years = Object.keys(dynamicDept.curriculumByYear);
+    } else if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
+      years = Array.from(new Set(dynamicDept.curriculumDocuments.map((d: any) => d.year).filter(Boolean))) as string[];
+    }
+    if (years.length === 0) {
+      years = ["2025–2026"];
+    }
+    return Array.from(new Set(years)).sort().reverse();
+  }, [dynamicDept]);
+
+  useEffect(() => {
+    if (table2Years.length > 0 && !table2Years.includes(table2Year)) {
+      setTable2Year(table2Years[0]);
+    }
+  }, [table2Years, table2Year]);
+
   const activeCurriculumDocs = useMemo(() => {
     let yearMap: Record<string, any> = {};
     if (dynamicDept?.curriculumByYearJson) {
@@ -315,7 +343,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
   }, [dynamicDept, table2Year]);
 
   // Standard Baseline Data for Table 3 (Student Strength & Pass %)
-  const table3Data = useMemo(() => {
+  const table3AllData = useMemo(() => {
     let all: any[] = [];
     const dynPass = dynamicDept?.passPercentage || dynamicDept?.results || staticDept?.results;
     if (Array.isArray(dynPass) && dynPass.length > 0) {
@@ -330,12 +358,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         passPct: p.passPct ?? p.percentage ?? "—"
       }));
     }
-    if (table3Year === "All") return all;
-    return all.filter(r => r.year === table3Year);
-  }, [table3Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table3Years = useMemo(() => {
+    return Array.from(new Set(table3AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table3AllData]);
+
+  const table3Data = useMemo(() => {
+    if (table3Year === "All") return table3AllData;
+    return table3AllData.filter(r => r.year === table3Year);
+  }, [table3Year, table3AllData]);
 
   // Standard Baseline Data for Table 4 (University Ranks)
-  const table4Data = useMemo(() => {
+  const table4AllData = useMemo(() => {
     let all: any[] = [];
     const dynRanks = dynamicDept?.universityRanks || dynamicDept?.academicAchievements || staticDept?.achievements;
     if (Array.isArray(dynRanks) && dynRanks.length > 0) {
@@ -351,12 +387,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         docUrl: r.docUrl || r.certificateUrl || ""
       }));
     }
-    if (table4Year === "All") return all;
-    return all.filter(r => r.year === table4Year);
-  }, [table4Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table4Years = useMemo(() => {
+    return Array.from(new Set(table4AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table4AllData]);
+
+  const table4Data = useMemo(() => {
+    if (table4Year === "All") return table4AllData;
+    return table4AllData.filter(r => r.year === table4Year);
+  }, [table4Year, table4AllData]);
 
   // Standard Baseline Data for Table 5 (Placements)
-  const table5Data = useMemo(() => {
+  const table5AllData = useMemo(() => {
     let all: any[] = [];
     const dynPlacements = dynamicDept?.placements || (staticDept as any)?.placements;
     if (Array.isArray(dynPlacements) && dynPlacements.length > 0) {
@@ -369,12 +413,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         docUrl: p.docUrl || p.supportingDocUrl || ""
       }));
     }
-    if (table5Year === "All") return all;
-    return all.filter(r => r.year === table5Year);
-  }, [table5Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table5Years = useMemo(() => {
+    return Array.from(new Set(table5AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table5AllData]);
+
+  const table5Data = useMemo(() => {
+    if (table5Year === "All") return table5AllData;
+    return table5AllData.filter(r => r.year === table5Year);
+  }, [table5Year, table5AllData]);
 
   // Standard Baseline Data for Table 6 (Higher Education Progression)
-  const table6Data = useMemo(() => {
+  const table6AllData = useMemo(() => {
     let all: any[] = [];
     const dynHigher = dynamicDept?.higherEducation || (staticDept as any)?.higherEducation;
     if (Array.isArray(dynHigher) && dynHigher.length > 0) {
@@ -388,12 +440,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         proofDoc: h.proofDocUrl || h.proofDoc || ""
       }));
     }
-    if (table6Year === "All") return all;
-    return all.filter(r => r.year === table6Year);
-  }, [table6Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table6Years = useMemo(() => {
+    return Array.from(new Set(table6AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table6AllData]);
+
+  const table6Data = useMemo(() => {
+    if (table6Year === "All") return table6AllData;
+    return table6AllData.filter(r => r.year === table6Year);
+  }, [table6Year, table6AllData]);
 
   // Standard Baseline Data for Table 7 (Competitive Examinations)
-  const table7Data = useMemo(() => {
+  const table7AllData = useMemo(() => {
     let all: any[] = [];
     const dynExams = dynamicDept?.competitiveExams || (staticDept as any)?.competitiveExams;
     if (Array.isArray(dynExams) && dynExams.length > 0) {
@@ -406,12 +466,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         proofDoc: c.proofDocUrl || c.proofDoc || ""
       }));
     }
-    if (table7Year === "All") return all;
-    return all.filter(r => r.year === table7Year);
-  }, [table7Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table7Years = useMemo(() => {
+    return Array.from(new Set(table7AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table7AllData]);
+
+  const table7Data = useMemo(() => {
+    if (table7Year === "All") return table7AllData;
+    return table7AllData.filter(r => r.year === table7Year);
+  }, [table7Year, table7AllData]);
 
   // Standard Baseline Data for Table 8 (MoUs)
-  const table8Data = useMemo(() => {
+  const table8AllData = useMemo(() => {
     let all: any[] = [];
     const dynMous = dynamicDept?.mous || (staticDept as any)?.mous;
     if (Array.isArray(dynMous) && dynMous.length > 0) {
@@ -424,12 +492,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         reportUrl: m.reportUrl || ""
       }));
     }
-    if (table8Year === "All") return all;
-    return all.filter(r => r.year === table8Year);
-  }, [table8Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table8Years = useMemo(() => {
+    return Array.from(new Set(table8AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table8AllData]);
+
+  const table8Data = useMemo(() => {
+    if (table8Year === "All") return table8AllData;
+    return table8AllData.filter(r => r.year === table8Year);
+  }, [table8Year, table8AllData]);
 
   // Standard Baseline Data for Table 9 (Best Practices)
-  const table9Data = useMemo(() => {
+  const table9AllData = useMemo(() => {
     let all: any[] = [];
     const dynBest = dynamicDept?.bestPractices || (staticDept as any)?.bestPractices;
     if (Array.isArray(dynBest) && dynBest.length > 0) {
@@ -443,12 +519,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         docUrl: b.docUrl || ""
       }));
     }
-    if (table9Year === "All") return all;
-    return all.filter(r => r.year === table9Year);
-  }, [table9Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table9Years = useMemo(() => {
+    return Array.from(new Set(table9AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table9AllData]);
+
+  const table9Data = useMemo(() => {
+    if (table9Year === "All") return table9AllData;
+    return table9AllData.filter(r => r.year === table9Year);
+  }, [table9Year, table9AllData]);
 
   // Standard Baseline Data for Table 10 (Add-on / Certificate Courses)
-  const table10Data = useMemo(() => {
+  const table10AllData = useMemo(() => {
     let all: any[] = [];
     const dynCourses = dynamicDept?.certificateCourses || (staticDept as any)?.certificateCourses;
     if (Array.isArray(dynCourses) && dynCourses.length > 0) {
@@ -464,12 +548,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         reportUrl: c.reportUrl || ""
       }));
     }
-    if (table10Year === "All") return all;
-    return all.filter(r => r.year === table10Year);
-  }, [table10Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table10Years = useMemo(() => {
+    return Array.from(new Set(table10AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table10AllData]);
+
+  const table10Data = useMemo(() => {
+    if (table10Year === "All") return table10AllData;
+    return table10AllData.filter(r => r.year === table10Year);
+  }, [table10Year, table10AllData]);
 
   // Standard Baseline Data for Table 11 (Activities & Events)
-  const table11Data = useMemo(() => {
+  const table11AllData = useMemo(() => {
     let all: any[] = [];
     const dynActs = dynamicDept?.activities || dynamicDept?.activitiesList || (staticDept as any)?.activities;
     if (Array.isArray(dynActs) && dynActs.length > 0) {
@@ -483,12 +575,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         reportUrl: a.reportUrl || a.documentUrl || ""
       }));
     }
-    if (table11Year === "All") return all;
-    return all.filter(r => r.year === table11Year);
-  }, [table11Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table11Years = useMemo(() => {
+    return Array.from(new Set(table11AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table11AllData]);
+
+  const table11Data = useMemo(() => {
+    if (table11Year === "All") return table11AllData;
+    return table11AllData.filter(r => r.year === table11Year);
+  }, [table11Year, table11AllData]);
 
   // Standard Baseline Data for Table 12 (External Achievements)
-  const table12Data = useMemo(() => {
+  const table12AllData = useMemo(() => {
     let all: any[] = [];
     const dynAch = dynamicDept?.studentAchievements || staticDept?.achievements;
     if (Array.isArray(dynAch) && dynAch.length > 0) {
@@ -506,9 +606,17 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         docUrl: s.docUrl || s.certificateUrl || ""
       }));
     }
-    if (table12Year === "All") return all;
-    return all.filter(r => r.year === table12Year);
-  }, [table12Year, dynamicDept, staticDept]);
+    return all;
+  }, [dynamicDept, staticDept]);
+
+  const table12Years = useMemo(() => {
+    return Array.from(new Set(table12AllData.map(r => r.year).filter(Boolean))).sort().reverse();
+  }, [table12AllData]);
+
+  const table12Data = useMemo(() => {
+    if (table12Year === "All") return table12AllData;
+    return table12AllData.filter(r => r.year === table12Year);
+  }, [table12Year, table12AllData]);
 
   // Standard Baseline Data for Table 13 (Annual Activity Reports)
   const table13Data = useMemo(() => {
@@ -661,21 +769,32 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
 
           {/* Academic Year Dropdown for Table 2 */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <Calendar className="h-3 w-3 text-[#002147]" /> Year:
-              </span>
-              <select
-                value={table2Year}
-                onChange={(e) => setTable2Year(e.target.value)}
-                aria-label="Select Academic Year"
-                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-              >
-                <option value="2026–2027">2026–2027</option>
-                <option value="2025–2026">2025–2026</option>
-                <option value="2024–2025">2024–2025</option>
-              </select>
-            </div>
+            {table2Years.length > 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  <Calendar className="h-3 w-3 text-[#002147]" /> Year:
+                </span>
+                <select
+                  value={table2Year}
+                  onChange={(e) => setTable2Year(e.target.value)}
+                  aria-label="Select Academic Year"
+                  className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+                >
+                  {table2Years.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            ) : table2Years.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  <Calendar className="h-3 w-3 text-[#002147]" /> Year:
+                </span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {table2Years[0]}
+                </span>
+              </div>
+            ) : null}
 
             {programmes.length > 1 && (
               <div className="flex items-center gap-1.5">
@@ -746,7 +865,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 4: STUDENT STRENGTH, RESULTS & PASS PERCENTAGE (TABLE 3)*/}
       {/* ============================================================== */}
-      {table3Data.length > 0 && (
+      {table3AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -757,20 +876,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table3Year}
-              onChange={(e) => setTable3Year(e.target.value)}
-              aria-label="Filter Outgoing Batch Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table3Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table3Year}
+                onChange={(e) => setTable3Year(e.target.value)}
+                aria-label="Filter Outgoing Batch Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table3Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table3Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table3Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -789,18 +917,26 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table3Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.intake}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.admitted}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.discontinued}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.appeared}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.passed}</td>
-                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.passPct}</td>
+                {table3Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
+                    </td>
                   </tr>
-                ))}
+                ) : (
+                  table3Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.intake}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.admitted}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.discontinued}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.appeared}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.passed}</td>
+                      <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.passPct}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -811,7 +947,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 5: UNIVERSITY RANKS & ACHIEVEMENTS (TABLE 4 WITH YEAR) */}
       {/* ============================================================== */}
-      {table4Data.length > 0 && (
+      {table4AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -821,20 +957,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table4Year}
-              onChange={(e) => setTable4Year(e.target.value)}
-              aria-label="Filter University Ranks Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table4Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table4Year}
+                onChange={(e) => setTable4Year(e.target.value)}
+                aria-label="Filter University Ranks Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table4Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table4Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table4Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -854,26 +999,34 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table4Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{row.studentName}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.prog}</td>
-                    <td className="py-3 px-4 text-center font-mono font-medium text-slate-700 border-r border-slate-100">{row.regNo}</td>
-                    <td className="py-3 px-4 font-bold text-indigo-900 border-r border-slate-100">{row.achievement}</td>
-                    <td className="py-3 px-3 text-center font-black text-amber-700 border-r border-slate-100">{row.position}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.uni}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.docUrl, `Rank Certificate - ${row.studentName} (${row.year})`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
+                {table4Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table4Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{row.studentName}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.prog}</td>
+                      <td className="py-3 px-4 text-center font-mono font-medium text-slate-700 border-r border-slate-100">{row.regNo}</td>
+                      <td className="py-3 px-4 font-bold text-indigo-900 border-r border-slate-100">{row.achievement}</td>
+                      <td className="py-3 px-3 text-center font-black text-amber-700 border-r border-slate-100">{row.position}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.uni}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.docUrl, `Rank Certificate - ${row.studentName} (${row.year})`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -884,7 +1037,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 6: YEAR-WISE PLACEMENT SUMMARY (TABLE 5 WITH YEAR)     */}
       {/* ============================================================== */}
-      {table5Data.length > 0 && (
+      {table5AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -894,20 +1047,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table5Year}
-              onChange={(e) => setTable5Year(e.target.value)}
-              aria-label="Filter Placement Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table5Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table5Year}
+                onChange={(e) => setTable5Year(e.target.value)}
+                aria-label="Filter Placement Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table5Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table5Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table5Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -923,15 +1085,23 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table5Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.finalStudents}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.placed}</td>
-                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.pct}</td>
+                {table5Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
+                    </td>
                   </tr>
-                ))}
+                ) : (
+                  table5Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.finalStudents}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.placed}</td>
+                      <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80">{row.pct}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -942,7 +1112,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 7: STUDENT PROGRESSION TO HIGHER EDUCATION (TABLE 6)   */}
       {/* ============================================================== */}
-      {table6Data.length > 0 && (
+      {table6AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -952,22 +1122,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table6Year}
-              onChange={(e) => setTable6Year(e.target.value)}
-              aria-label="Filter Higher Education Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-              <option value="2022–2023">2022–2023</option>
-              <option value="2021–2022">2021–2022</option>
-            </select>
-          </div>
+          {table6Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table6Year}
+                onChange={(e) => setTable6Year(e.target.value)}
+                aria-label="Filter Higher Education Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table6Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table6Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table6Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -984,23 +1161,31 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table6Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.totalOutgoing}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.progressed}</td>
-                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.pct}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.listDoc, `Student List - Higher Education (${row.year})`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
+                {table6Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table6Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.totalOutgoing}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.progressed}</td>
+                      <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.pct}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.listDoc, `Student List - Higher Education (${row.year})`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1011,7 +1196,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 8: COMPETITIVE EXAMINATIONS SUMMARY (TABLE 7)          */}
       {/* ============================================================== */}
-      {table7Data.length > 0 && (
+      {table7AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1021,20 +1206,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table7Year}
-              onChange={(e) => setTable7Year(e.target.value)}
-              aria-label="Filter Competitive Exams Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table7Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table7Year}
+                onChange={(e) => setTable7Year(e.target.value)}
+                aria-label="Filter Competitive Exams Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table7Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table7Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table7Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -1050,29 +1244,37 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table7Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.qualified}</td>
-                    <td className="py-3 px-4 text-center border-r border-slate-100">
-                      <button
-                        onClick={() => handleOpenPdf(row.listDoc, `Qualified Students (${row.year}) - ${deptName}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.certDoc, `Certificates (${row.year}) - ${deptName}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
+                {table7Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table7Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-4 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.qualified}</td>
+                      <td className="py-3 px-4 text-center border-r border-slate-100">
+                        <button
+                          onClick={() => handleOpenPdf(row.listDoc, `Qualified Students (${row.year}) - ${deptName}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.certDoc, `Certificates (${row.year}) - ${deptName}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1083,7 +1285,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 9: MEMORANDA OF UNDERSTANDING (TABLE 8 WITH YEAR)      */}
       {/* ============================================================== */}
-      {table8Data.length > 0 && (
+      {table8AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1093,20 +1295,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table8Year}
-              onChange={(e) => setTable8Year(e.target.value)}
-              aria-label="Filter MoUs Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table8Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table8Year}
+                onChange={(e) => setTable8Year(e.target.value)}
+                aria-label="Filter MoUs Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table8Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table8Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table8Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -1122,29 +1333,37 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table8Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.org}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.duration}</td>
-                    <td className="py-3 px-4 text-center border-r border-slate-100">
-                      <button
-                        onClick={() => handleOpenPdf(row.docUrl, `MoU Document - ${row.org}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View MoU
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.reportUrl, `MoU Activity Report - ${row.org}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View Activity Report
-                      </button>
+                {table8Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table8Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.org}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.duration}</td>
+                      <td className="py-3 px-4 text-center border-r border-slate-100">
+                        <button
+                          onClick={() => handleOpenPdf(row.docUrl, `MoU Document - ${row.org}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View MoU
+                        </button>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.reportUrl, `MoU Activity Report - ${row.org}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View Activity Report
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1155,7 +1374,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 10: DEPARTMENTAL BEST PRACTICES (TABLE 9 WITH YEAR)    */}
       {/* ============================================================== */}
-      {table9Data.length > 0 && (
+      {table9AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1165,20 +1384,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table9Year}
-              onChange={(e) => setTable9Year(e.target.value)}
-              aria-label="Filter Best Practices Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table9Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table9Year}
+                onChange={(e) => setTable9Year(e.target.value)}
+                aria-label="Filter Best Practices Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table9Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table9Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table9Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -1195,23 +1423,31 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table9Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-4 font-black text-[#002147] border-r border-slate-100">{row.title}</td>
-                    <td className="py-3 px-5 text-xs text-slate-700 leading-relaxed border-r border-slate-100">{row.objectives}</td>
-                    <td className="py-3 px-5 text-xs text-slate-700 leading-relaxed border-r border-slate-100">{row.outcomes}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.reportUrl, `Best Practice Report - ${row.title}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
+                {table9Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table9Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-4 font-black text-[#002147] border-r border-slate-100">{row.title}</td>
+                      <td className="py-3 px-5 text-xs text-slate-700 leading-relaxed border-r border-slate-100">{row.objectives}</td>
+                      <td className="py-3 px-5 text-xs text-slate-700 leading-relaxed border-r border-slate-100">{row.outcomes}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.reportUrl, `Best Practice Report - ${row.title}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1222,7 +1458,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 11: ADD-ON / CERTIFICATE COURSES (TABLE 10)            */}
       {/* ============================================================== */}
-      {table10Data.length > 0 && (
+      {table10AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1232,20 +1468,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table10Year}
-              onChange={(e) => setTable10Year(e.target.value)}
-              aria-label="Filter Courses Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table10Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table10Year}
+                onChange={(e) => setTable10Year(e.target.value)}
+                aria-label="Filter Courses Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table10Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table10Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table10Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -1265,26 +1510,34 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table10Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
-                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.name}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.type}</td>
-                    <td className="py-3 px-4 text-center font-mono font-medium text-slate-700 border-r border-slate-100">{row.code}</td>
-                    <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.duration}</td>
-                    <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.enrolled}</td>
-                    <td className="py-3 px-3 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.certified}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.reportUrl, `Course Report - ${row.name}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
+                {table10Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table10Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-bold text-slate-900 border-r border-slate-100">{row.year}</td>
+                      <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.name}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.type}</td>
+                      <td className="py-3 px-4 text-center font-mono font-medium text-slate-700 border-r border-slate-100">{row.code}</td>
+                      <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.duration}</td>
+                      <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.enrolled}</td>
+                      <td className="py-3 px-3 text-center font-black text-[#002147] bg-blue-50/80 border-r border-slate-100">{row.certified}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.reportUrl, `Course Report - ${row.name}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1295,7 +1548,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 12: ACTIVITIES, EVENTS & PROGRAMMES (TABLE 11 WITH YEAR)*/}
       {/* ============================================================== */}
-      {table11Data.length > 0 && (
+      {table11AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1305,20 +1558,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table11Year}
-              onChange={(e) => setTable11Year(e.target.value)}
-              aria-label="Filter Activities Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table11Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table11Year}
+                onChange={(e) => setTable11Year(e.target.value)}
+                aria-label="Filter Activities Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table11Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table11Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table11Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -1335,23 +1597,31 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table11Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.date}</td>
-                    <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.name}</td>
-                    <td className="py-3 px-4 text-center font-medium text-indigo-900 bg-indigo-50/50 border-r border-slate-100">{row.category}</td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.participants}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.reportUrl, `Activity Report - ${row.name}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View Report
-                      </button>
+                {table11Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table11Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.date}</td>
+                      <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.name}</td>
+                      <td className="py-3 px-4 text-center font-medium text-indigo-900 bg-indigo-50/50 border-r border-slate-100">{row.category}</td>
+                      <td className="py-3 px-4 text-center font-medium text-slate-700 border-r border-slate-100">{row.participants}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.reportUrl, `Activity Report - ${row.name}`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View Report
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1362,7 +1632,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 13: STUDENT EXTERNAL ACHIEVEMENTS (TABLE 12 WITH YEAR) */}
       {/* ============================================================== */}
-      {table12Data.length > 0 && (
+      {table12AllData.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1372,20 +1642,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={table12Year}
-              onChange={(e) => setTable12Year(e.target.value)}
-              aria-label="Filter External Achievements Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {table12Years.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={table12Year}
+                onChange={(e) => setTable12Year(e.target.value)}
+                aria-label="Filter External Achievements Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {table12Years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : table12Years.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {table12Years[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
@@ -1406,27 +1685,35 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {table12Data.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                    <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                    <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.date}</td>
-                    <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{row.studentName}</td>
-                    <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.cls}</td>
-                    <td className="py-3 px-4 font-medium text-slate-800 border-r border-slate-100">{row.achievement}</td>
-                    <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{row.event}</td>
-                    <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.level}</td>
-                    <td className="py-3 px-4 text-xs text-slate-700 border-r border-slate-100">{row.org}</td>
-                    <td className="py-3 px-3 text-center font-black text-amber-700 border-r border-slate-100">{row.award}</td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleOpenPdf(row.docUrl, `Achievement Certificate - ${row.studentName} (${row.event})`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> View PDF
-                      </button>
+                {table12Data.length === 0 ? (
+                  <tr>
+                    <td colSpan={10} className="py-6 text-center text-slate-500 font-medium italic">
+                      No records found for the selected year.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  table12Data.map((row, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
+                      <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.date}</td>
+                      <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{row.studentName}</td>
+                      <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.cls}</td>
+                      <td className="py-3 px-4 font-medium text-slate-800 border-r border-slate-100">{row.achievement}</td>
+                      <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{row.event}</td>
+                      <td className="py-3 px-3 text-center font-medium text-slate-700 border-r border-slate-100">{row.level}</td>
+                      <td className="py-3 px-4 text-xs text-slate-700 border-r border-slate-100">{row.org}</td>
+                      <td className="py-3 px-3 text-center font-black text-amber-700 border-r border-slate-100">{row.award}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(row.docUrl, `Achievement Certificate - ${row.studentName} (${row.event})`)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" /> View PDF
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -1492,20 +1779,29 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
             <div className="h-0.5 w-12 bg-[#002147] rounded-full mt-1"></div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-            <select
-              value={galleryYear}
-              onChange={(e) => setGalleryYear(e.target.value)}
-              aria-label="Filter Photo Gallery Year"
-              className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-            >
-              <option value="All">All Years</option>
-              <option value="2025–2026">2025–2026</option>
-              <option value="2024–2025">2024–2025</option>
-              <option value="2023–2024">2023–2024</option>
-            </select>
-          </div>
+          {galleryYears.length > 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+              <select
+                value={galleryYear}
+                onChange={(e) => setGalleryYear(e.target.value)}
+                aria-label="Filter Photo Gallery Year"
+                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+              >
+                <option value="All">All Years</option>
+                {galleryYears.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+          ) : galleryYears.length === 1 ? (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+              <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                {galleryYears[0]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 mt-1">
