@@ -41,7 +41,6 @@ import {
   Star,
   ClipboardList,
   Image as ImageIcon,
-  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -692,15 +691,37 @@ export default function HomePage() {
     return () => cancelAnimationFrame(animId);
   }, [isNoticePaused, sortedNotices.length]);
 
-  // Smooth scroll to target section with brief highlight animation
-  const scrollToSection = (id: string) => {
+  // Smooth scroll to target section with sticky header offset & brief highlight animation
+  const scrollToSection = (id: string, ringClass = "ring-rose-500/70") => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      el.classList.add("ring-4", "ring-rose-400/60", "transition-all", "duration-500");
+      // Dynamically calculate the sticky header height
+      const header = document.getElementById("main-header");
+      let headerHeight = 0;
+      if (header) {
+        if (window.innerWidth >= 768) {
+          headerHeight = header.offsetHeight || 160;
+        } else {
+          const nav = header.querySelector("nav") || header.querySelector(".sticky");
+          headerHeight = (nav instanceof HTMLElement ? nav.offsetHeight : 0) || 60;
+        }
+      }
+
+      const elementRect = el.getBoundingClientRect();
+      const absoluteTop = elementRect.top + window.pageYOffset;
+      // Subtract headerHeight and add 24px breathing room so card headers are fully visible
+      const targetScroll = Math.max(0, absoluteTop - headerHeight - 24);
+
+      window.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
+
+      // Highlight target card with a soft glowing ring
+      el.classList.add("ring-4", ringClass, "transition-all", "duration-500");
       setTimeout(() => {
-        el.classList.remove("ring-4", "ring-rose-400/60");
-      }, 2000);
+        el.classList.remove("ring-4", ringClass);
+      }, 2500);
     }
   };
 
@@ -960,57 +981,26 @@ export default function HomePage() {
             </>
           )}
 
-          {/* Floating Quick Jump & Notice Awareness Bar */}
-          <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-30 px-3 sm:px-6 pointer-events-auto">
-            <div className="max-w-4xl mx-auto bg-slate-950/85 backdrop-blur-md rounded-2xl sm:rounded-full border border-white/20 p-1.5 sm:p-2 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-2.5">
-              
-              {/* Left: Latest Notice Indicator / Ticker Preview */}
-              <div
-                onClick={() => scrollToSection("notice-board")}
-                className="flex items-center gap-2.5 px-3 py-1 cursor-pointer group/ticker min-w-0 flex-1 w-full sm:w-auto"
-                title="Click to jump down to Notice Board"
+          {/* Floating Quick Jump Bar: Notice Board & Events */}
+          <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-30 px-3 sm:px-6 pointer-events-auto flex justify-center">
+            <div className="bg-slate-950/85 backdrop-blur-md rounded-full border border-white/20 p-1.5 shadow-2xl flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => scrollToSection("notice-board", "ring-rose-500/70")}
+                className="flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer border border-rose-400/40"
               >
-                <span className="shrink-0 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-xs animate-pulse">
-                  <Bell className="w-2.5 h-2.5" />
-                  LATEST
-                </span>
-                <p className="text-[11px] sm:text-xs font-semibold text-white/90 group-hover/ticker:text-rose-300 truncate transition-colors">
-                  {sortedNotices[0]?.title || "Campus circulars & academic notices updated daily"}
-                </p>
-              </div>
+                <Bell className="w-3.5 h-3.5 text-rose-200" />
+                <span>Notice Board</span>
+              </button>
 
-              {/* Right: Quick Jump Action Buttons */}
-              <div className="flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-end">
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("notice-board")}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl sm:rounded-full bg-rose-600/90 hover:bg-rose-600 text-white font-bold text-[11px] sm:text-xs shadow-md transition-all active:scale-95 cursor-pointer border border-rose-400/40"
-                >
-                  <Bell className="w-3 h-3 text-rose-200" />
-                  <span>Notice Board</span>
-                  <ChevronDown className="w-3 h-3 text-rose-200" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("events-activities")}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl sm:rounded-full bg-indigo-600/90 hover:bg-indigo-600 text-white font-bold text-[11px] sm:text-xs shadow-md transition-all active:scale-95 cursor-pointer border border-indigo-400/40"
-                >
-                  <Calendar className="w-3 h-3 text-indigo-200" />
-                  <span>Events</span>
-                  <ChevronDown className="w-3 h-3 text-indigo-200" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("principal-welcome")}
-                  className="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl sm:rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] sm:text-xs transition-all active:scale-95 cursor-pointer border border-white/15"
-                >
-                  <span>Principal&apos;s Desk</span>
-                  <ChevronDown className="w-3 h-3" />
-                </button>
-              </div>
-
+              <button
+                type="button"
+                onClick={() => scrollToSection("events-activities", "ring-indigo-500/70")}
+                className="flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer border border-indigo-400/40"
+              >
+                <Calendar className="w-3.5 h-3.5 text-indigo-200" />
+                <span>Events</span>
+              </button>
             </div>
           </div>
         </section>
@@ -1027,7 +1017,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
             
             {/* BOX 1: Events & Activities */}
-            <div id="events-activities" className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+            <div id="events-activities" className="scroll-mt-44 md:scroll-mt-52 flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
@@ -1278,7 +1268,7 @@ export default function HomePage() {
             </div>
 
             {/* BOX 3: Notices */}
-            <div id="notice-board" className="flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
+            <div id="notice-board" className="scroll-mt-44 md:scroll-mt-52 flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-indigo-950/10 hover:border-indigo-200/80 transition-all duration-500 overflow-hidden group">
               {/* Compact Sleek Header */}
               <div className="bg-gradient-to-r from-[#002147] via-[#002d5f] to-[#0a3d78] text-white px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between relative overflow-hidden border-b border-indigo-950/40">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)] pointer-events-none" />
