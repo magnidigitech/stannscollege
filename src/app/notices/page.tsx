@@ -14,8 +14,11 @@ import {
   Sparkles,
   ArrowRight,
   Mail,
+  Image as ImageIcon,
+  Eye,
 } from "lucide-react";
 import { getNotices } from "@/lib/sanity";
+import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 function isNoticeNew(dateStr?: string): boolean {
   if (!dateStr) return false;
@@ -40,6 +43,51 @@ function isNoticeNew(dateStr?: string): boolean {
   const twoWeeksMs = 14 * 24 * 60 * 60 * 1000;
 
   return diffMs <= twoWeeksMs && diffMs >= -twoWeeksMs;
+}
+
+// Helper: Parse date strings or timestamps into numeric milliseconds for sorting (latest first)
+function parseNoticeDateToTimestamp(dateStr?: string, createdAt?: string): number {
+  if (dateStr) {
+    let t = Date.parse(dateStr);
+    if (!isNaN(t)) return t;
+
+    // Clean ordinal suffixes (e.g. "20th September 2026" -> "20 September 2026")
+    const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/i, "$1").trim();
+    t = Date.parse(cleaned);
+    if (!isNaN(t)) return t;
+
+    const months: Record<string, number> = {
+      jan: 0, january: 0,
+      feb: 1, february: 1,
+      mar: 2, march: 2,
+      apr: 3, april: 3,
+      may: 4,
+      jun: 5, june: 5,
+      jul: 6, july: 6,
+      aug: 7, august: 7,
+      sep: 8, sept: 8, september: 8,
+      oct: 9, october: 9,
+      nov: 10, november: 10,
+      dec: 11, december: 11,
+    };
+    const parts = cleaned.match(/(\d{1,2})[-/ ]([A-Za-z]+|\d{1,2})[-/ ](\d{4})/);
+    if (parts) {
+      const day = parseInt(parts[1], 10);
+      const year = parseInt(parts[3], 10);
+      const monthPart = parts[2].toLowerCase();
+      if (months[monthPart] !== undefined) {
+        return new Date(year, months[monthPart], day).getTime();
+      } else {
+        const month = parseInt(parts[2], 10) - 1;
+        return new Date(year, month, day).getTime();
+      }
+    }
+  }
+  if (createdAt) {
+    const ct = Date.parse(createdAt);
+    if (!isNaN(ct)) return ct;
+  }
+  return 0;
 }
 
 // Official Notices (Extracted from NOTICES (1).docx)
@@ -116,6 +164,7 @@ export default function NoticesPage() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [previewModalFile, setPreviewModalFile] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -137,19 +186,25 @@ export default function NoticesPage() {
     load();
   }, []);
 
-  const filteredNotices = notices.filter((n) => {
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !q ||
-      (n.title && n.title.toLowerCase().includes(q)) ||
-      (n.description && n.description.toLowerCase().includes(q));
+  const filteredNotices = notices
+    .filter((n) => {
+      const q = searchQuery.toLowerCase();
+      const matchesSearch =
+        !q ||
+        (n.title && n.title.toLowerCase().includes(q)) ||
+        (n.description && n.description.toLowerCase().includes(q));
 
-    const matchesCategory =
-      selectedCategory === "all" ||
-      (n.category && n.category.toLowerCase() === selectedCategory.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "all" ||
+        (n.category && n.category.toLowerCase() === selectedCategory.toLowerCase());
 
-    return matchesSearch && matchesCategory;
-  });
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      const timeA = parseNoticeDateToTimestamp(a.date, a._createdAt);
+      const timeB = parseNoticeDateToTimestamp(b.date, b._createdAt);
+      return timeB - timeA;
+    });
 
   return (
     <div className="w-full bg-slate-50/50 min-h-screen selection:bg-[#002147]/10 selection:text-[#002147]">
@@ -276,8 +331,26 @@ export default function NoticesPage() {
                     </div>
                   </div>
 
-                  {/* Right Action: Web Links or Download PDF */}
+                  {/* Right Action: Web Links, Poster Flyer, or Documents */}
                   <div className="shrink-0 flex flex-wrap items-center gap-2">
+                    {/* Notice Poster / Flyer (Option C) */}
+                    {n.imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setPreviewModalFile({
+                            title: `${n.title} - Poster`,
+                            url: n.imageUrl,
+                          })
+                        }
+                        className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 border border-emerald-200 text-emerald-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 cursor-pointer group/poster"
+                      >
+                        <ImageIcon className="h-3.5 w-3.5 text-emerald-600 group-hover/poster:text-white transition-colors" />
+                        <span>View Poster</span>
+                        <Eye className="h-3.5 w-3.5 text-emerald-600 group-hover/poster:text-white transition-colors" />
+                      </button>
+                    )}
+
                     {/* Render all links if array exists, else single fallback */}
                     {Array.isArray(n.links) && n.links.length > 0 ? (
                       n.links.map((link: any, lIdx: number) => (
@@ -304,32 +377,77 @@ export default function NoticesPage() {
                       </a>
                     ) : null}
 
-                    {/* Render all documents if array exists, else single fallback */}
+                    {/* Render all documents (PDFs & Images) */}
                     {Array.isArray(n.documents) && n.documents.length > 0 ? (
-                      n.documents.map((doc: any, dIdx: number) => (
-                        <a
-                          key={doc._key || dIdx}
-                          href={doc.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-[#002147] border border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 group/btn"
+                      n.documents.map((doc: any, dIdx: number) => {
+                        const isDocImg =
+                          doc.fileType === "image" ||
+                          doc.mimeType?.startsWith("image/") ||
+                          /\.(jpe?g|png|webp|gif|svg)$/i.test(doc.url || doc.originalFilename || "");
+                        return (
+                          <div key={doc._key || dIdx} className="inline-flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPreviewModalFile({
+                                  title: doc.title || (isDocImg ? "Notice Image" : "Official Circular"),
+                                  url: doc.url,
+                                })
+                              }
+                              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl border font-bold text-xs shadow-2xs transition-all active:scale-95 cursor-pointer group/btn ${
+                                isDocImg
+                                  ? "bg-emerald-50 hover:bg-emerald-600 border-emerald-200 text-emerald-800 hover:text-white"
+                                  : "bg-rose-50 hover:bg-[#002147] border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white"
+                              }`}
+                            >
+                              {isDocImg ? (
+                                <ImageIcon className="h-3.5 w-3.5 text-emerald-600 group-hover/btn:text-white transition-colors" />
+                              ) : (
+                                <FileText className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
+                              )}
+                              <span>{doc.title || (isDocImg ? "View Image" : "View Circular")}</span>
+                              <Eye className="h-3.5 w-3.5 opacity-70 group-hover/btn:opacity-100 transition-opacity" />
+                            </button>
+                            <a
+                              href={doc.url}
+                              download
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200 shadow-2xs"
+                              title="Download Attachment"
+                            >
+                              <Download className="h-3.5 w-3.5" />
+                            </a>
+                          </div>
+                        );
+                      })
+                    ) : (n.pdfUrl || n.fileUrl) ? (
+                      <div className="inline-flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setPreviewModalFile({
+                              title: n.title || "Official Circular",
+                              url: n.pdfUrl || n.fileUrl,
+                            })
+                          }
+                          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-[#002147] border border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 cursor-pointer group/btn"
                         >
                           <FileText className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
-                          <span>{doc.title || "Download Circular"}</span>
-                          <Download className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
+                          <span>View Circular</span>
+                          <Eye className="h-3.5 w-3.5 opacity-70 group-hover/btn:opacity-100 transition-opacity" />
+                        </button>
+                        <a
+                          href={n.pdfUrl || n.fileUrl}
+                          download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200 shadow-2xs"
+                          title="Download Circular"
+                        >
+                          <Download className="h-3.5 w-3.5" />
                         </a>
-                      ))
-                    ) : (n.pdfUrl || n.fileUrl) ? (
-                      <a
-                        href={n.pdfUrl || n.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-[#002147] border border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 group/btn"
-                      >
-                        <FileText className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
-                        <span>Download Circular</span>
-                        <Download className="h-3.5 w-3.5 text-rose-600 group-hover/btn:text-white transition-colors" />
-                      </a>
+                      </div>
                     ) : null}
                   </div>
                 </div>
@@ -338,6 +456,14 @@ export default function NoticesPage() {
           )}
         </div>
       </section>
+
+      {/* In-app Document & Image Preview Modal */}
+      <FilePreviewModal
+        isOpen={!!previewModalFile}
+        onClose={() => setPreviewModalFile(null)}
+        fileUrl={previewModalFile?.url || ""}
+        title={previewModalFile?.title || "Document Preview"}
+      />
     </div>
   );
 }

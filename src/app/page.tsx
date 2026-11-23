@@ -40,6 +40,7 @@ import {
   CheckCircle,
   Star,
   ClipboardList,
+  Image as ImageIcon,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -508,6 +509,51 @@ function isNoticeNew(dateStr?: string): boolean {
   return diffMs <= twoWeeksMs && diffMs >= -twoWeeksMs;
 }
 
+// Helper: Parse date strings or timestamps into numeric milliseconds for sorting (latest first)
+function parseNoticeDateToTimestamp(dateStr?: string, createdAt?: string): number {
+  if (dateStr) {
+    let t = Date.parse(dateStr);
+    if (!isNaN(t)) return t;
+
+    // Clean ordinal suffixes (e.g. "20th September 2026" -> "20 September 2026")
+    const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/i, "$1").trim();
+    t = Date.parse(cleaned);
+    if (!isNaN(t)) return t;
+
+    const months: Record<string, number> = {
+      jan: 0, january: 0,
+      feb: 1, february: 1,
+      mar: 2, march: 2,
+      apr: 3, april: 3,
+      may: 4,
+      jun: 5, june: 5,
+      jul: 6, july: 6,
+      aug: 7, august: 7,
+      sep: 8, sept: 8, september: 8,
+      oct: 9, october: 9,
+      nov: 10, november: 10,
+      dec: 11, december: 11,
+    };
+    const parts = cleaned.match(/(\d{1,2})[-/ ]([A-Za-z]+|\d{1,2})[-/ ](\d{4})/);
+    if (parts) {
+      const day = parseInt(parts[1], 10);
+      const year = parseInt(parts[3], 10);
+      const monthPart = parts[2].toLowerCase();
+      if (months[monthPart] !== undefined) {
+        return new Date(year, months[monthPart], day).getTime();
+      } else {
+        const month = parseInt(parts[2], 10) - 1;
+        return new Date(year, month, day).getTime();
+      }
+    }
+  }
+  if (createdAt) {
+    const ct = Date.parse(createdAt);
+    if (!isNaN(ct)) return ct;
+  }
+  return 0;
+}
+
 // Client-approved Starburst NEW badge matching the official circulars / events layout
 const StarburstNewBadge = () => (
   <span className="relative inline-flex items-center justify-center shrink-0 w-5 h-5 sm:w-5.5 sm:h-5.5 select-none my-0.5 animate-pulse">
@@ -567,15 +613,26 @@ export default function HomePage() {
     documents: EventDocument[];
   } | null>(null);
 
-  // Notice popup modal for notice board items with details, links and pdfs
+  // Notice popup modal for notice board items with details, links, flyer image and attachments
   const [activeNoticeModal, setActiveNoticeModal] = useState<{
     title: string;
     date?: string;
     category?: string;
     description?: string;
+    imageUrl?: string;
     links: { title: string; url: string }[];
-    documents: { title: string; url: string; originalFilename?: string }[];
+    documents: { title: string; url: string; originalFilename?: string; fileType?: "pdf" | "image" }[];
   } | null>(null);
+
+  // Strictly sort notices descending by parsed date/time with latest at the top
+  const sortedNotices = React.useMemo(() => {
+    const list = sanityNotices.length > 0 ? sanityNotices : defaultNoticesList;
+    return [...list].sort((a, b) => {
+      const timeA = parseNoticeDateToTimestamp(a.date, a._createdAt);
+      const timeB = parseNoticeDateToTimestamp(b.date, b._createdAt);
+      return timeB - timeA;
+    });
+  }, [sanityNotices]);
 
   // In-app PDF Viewer Modal state (opens PDF in a popup modal, not in another tab)
   const [viewingPdfModal, setViewingPdfModal] = useState<{
@@ -636,21 +693,26 @@ export default function HomePage() {
       });
     }
 
-    const documents: { title: string; url: string; originalFilename?: string }[] = [];
+    const documents: { title: string; url: string; originalFilename?: string; fileType?: "pdf" | "image" }[] = [];
     if (item.pdfUrl) {
       documents.push({
         title: item.pdfTitle || "Official Circular (PDF)",
         url: item.pdfUrl,
         originalFilename: "Official_Circular.pdf",
+        fileType: "pdf",
       });
     }
     if (Array.isArray(item.documents)) {
       item.documents.forEach((d: any) => {
         if (d?.url && !documents.some((existing) => existing.url === d.url)) {
+          const isImg = d.fileType === "image" ||
+            d.mimeType?.startsWith("image/") ||
+            /\.(jpe?g|png|webp|gif|svg)$/i.test(d.url || d.originalFilename || "");
           documents.push({
-            title: d.title || d.originalFilename || "Notice Document",
+            title: d.title || d.originalFilename || (isImg ? "Attached Notice Image" : "Notice Document"),
             url: d.url,
             originalFilename: d.originalFilename,
+            fileType: isImg ? "image" : "pdf",
           });
         }
       });
@@ -661,6 +723,7 @@ export default function HomePage() {
       date: item.date,
       category: item.category,
       description: item.description,
+      imageUrl: item.imageUrl,
       links,
       documents,
     });
@@ -1112,10 +1175,10 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Items List matching client requested format */}
-              {(sanityNotices.length > 0 ? sanityNotices : defaultNoticesList).length > 0 ? (
+              {/* Items List matching client requested format - strictly sorted newest first */}
+              {sortedNotices.length > 0 ? (
                 <div className="flex-1 divide-y divide-slate-200 overflow-y-auto max-h-[460px] p-2 bg-white">
-                  {(sanityNotices.length > 0 ? sanityNotices : defaultNoticesList).map((item, idx) => (
+                  {sortedNotices.map((item, idx) => (
                     <div
                       key={item._id || idx}
                       className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
@@ -2361,6 +2424,50 @@ export default function HomePage() {
                 )}
               </div>
 
+              {/* Notice Poster / Circular Flyer (Option C) */}
+              {activeNoticeModal.imageUrl && (
+                <div className="bg-white rounded-2xl p-4 border border-emerald-200/90 shadow-2xs space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-emerald-900">
+                      <ImageIcon className="h-4 w-4 text-emerald-600" />
+                      <span>Official Notice Poster / Circular Flyer</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPreviewModalFile({
+                          title: `${activeNoticeModal.title} - Poster`,
+                          url: activeNoticeModal.imageUrl!,
+                        })
+                      }
+                      className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>Enlarge Poster</span>
+                    </button>
+                  </div>
+                  <div
+                    onClick={() =>
+                      setPreviewModalFile({
+                        title: `${activeNoticeModal.title} - Poster`,
+                        url: activeNoticeModal.imageUrl!,
+                      })
+                    }
+                    className="relative rounded-xl overflow-hidden border border-emerald-200 bg-slate-900/5 hover:bg-slate-900/10 transition-all cursor-pointer group/poster flex items-center justify-center max-h-96"
+                  >
+                    <img
+                      src={activeNoticeModal.imageUrl}
+                      alt={activeNoticeModal.title}
+                      className="w-full h-auto max-h-96 object-contain group-hover:scale-[1.01] transition-transform duration-200"
+                    />
+                    <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/poster:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-bold backdrop-blur-[1px]">
+                      <Eye className="h-4 w-4" />
+                      <span>Click to Zoom &amp; Pan Poster</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* ── SECTION FOR LINKS ── */}
               {activeNoticeModal.links && activeNoticeModal.links.length > 0 && (
                 <div>
@@ -2411,7 +2518,7 @@ export default function HomePage() {
                 <h5 className="text-xs font-black uppercase tracking-wider text-slate-600 mb-2.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <FileText className="h-3.5 w-3.5 text-rose-600" />
-                    <span>Attached Circulars &amp; PDFs ({activeNoticeModal.documents.length})</span>
+                    <span>Attached Documents &amp; Circulars ({activeNoticeModal.documents.length})</span>
                   </span>
                   <span className="text-[10px] font-bold text-rose-600 lowercase tracking-normal">
                     Click to view / download
@@ -2420,51 +2527,62 @@ export default function HomePage() {
 
                 {activeNoticeModal.documents.length > 0 ? (
                   <div className="space-y-2.5">
-                    {activeNoticeModal.documents.map((doc, idx) => (
-                      <div
-                        key={idx}
-                        className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-rose-50/40 border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-md transition-all group/doc"
-                      >
-                        <div className="flex items-center gap-3 min-w-0 pr-3">
-                          <div className="h-10 w-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center shrink-0 group-hover/doc:bg-rose-100 transition-colors">
-                            <FileText className="h-5 w-5 text-rose-600" />
+                    {activeNoticeModal.documents.map((doc, idx) => {
+                      const isDocImg = doc.fileType === "image" || /\.(jpe?g|png|webp|gif|svg)$/i.test(doc.url || doc.originalFilename || "");
+                      return (
+                        <div
+                          key={idx}
+                          className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-rose-50/40 border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-md transition-all group/doc"
+                        >
+                          <div className="flex items-center gap-3 min-w-0 pr-3">
+                            <div className={`h-10 w-10 rounded-xl border flex items-center justify-center shrink-0 transition-colors ${
+                              isDocImg ? "bg-emerald-50 border-emerald-100 group-hover/doc:bg-emerald-100" : "bg-rose-50 border-rose-100 group-hover/doc:bg-rose-100"
+                            }`}>
+                              {isDocImg ? (
+                                <ImageIcon className="h-5 w-5 text-emerald-600" />
+                              ) : (
+                                <FileText className="h-5 w-5 text-rose-600" />
+                              )}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/doc:text-[#002147] truncate">
+                                {doc.title || `Document ${idx + 1}`}
+                              </p>
+                              <p className="text-[11px] text-slate-400">
+                                {doc.originalFilename || (isDocImg ? "Click to view image attachment" : "Click to view PDF document")}
+                              </p>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/doc:text-[#002147] truncate">
-                              {doc.title || `Document ${idx + 1}`}
-                            </p>
-                            <p className="text-[11px] text-slate-400">
-                              {doc.originalFilename || "Click to view PDF document"}
-                            </p>
+                          <div className="shrink-0 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPreviewModalFile({
+                                  title: doc.title || (isDocImg ? "Notice Image" : "Notice Document PDF"),
+                                  url: doc.url,
+                                })
+                              }
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-white font-bold text-xs shadow-xs transition-colors cursor-pointer ${
+                                isDocImg ? "bg-emerald-600 hover:bg-emerald-700" : "bg-rose-600 hover:bg-[#002147]"
+                              }`}
+                            >
+                              <span>{isDocImg ? "View Image" : "View PDF"}</span>
+                              {isDocImg ? <ImageIcon className="h-3.5 w-3.5" /> : <FileText className="h-3.5 w-3.5" />}
+                            </button>
+                            <a
+                              href={doc.url}
+                              download
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200"
+                              title="Download Attachment"
+                            >
+                              <Download className="h-4 w-4" />
+                            </a>
                           </div>
                         </div>
-                        <div className="shrink-0 flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setPreviewModalFile({
-                                title: doc.title || "Notice Document PDF",
-                                url: doc.url,
-                              })
-                            }
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-[#002147] text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
-                          >
-                            <span>View PDF</span>
-                            <FileText className="h-3.5 w-3.5" />
-                          </button>
-                          <a
-                            href={doc.url}
-                            download
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200"
-                            title="Download PDF"
-                          >
-                            <Download className="h-4 w-4" />
-                          </a>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="bg-white rounded-2xl p-5 border border-slate-200 text-center">

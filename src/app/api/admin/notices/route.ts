@@ -31,8 +31,9 @@ function checkAdminAuth(req: NextRequest): boolean {
 export async function GET(req: NextRequest) {
   try {
     const client = getSanityClient();
-    const notices = await client.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(displayOrder asc, date desc, _createdAt desc) {
+    const notices = await client.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(date desc, _createdAt desc) {
       _id,
+      _createdAt,
       title,
       date,
       category,
@@ -46,6 +47,8 @@ export async function GET(req: NextRequest) {
       },
       isNew,
       displayOrder,
+      "imageUrl": coalesce(image.asset->url, imageUrl),
+      "imageAssetId": image.asset->_id,
       "pdfUrl": pdfFile.asset->url,
       "pdfAssetId": pdfFile.asset->_id,
       documents[]{
@@ -53,7 +56,8 @@ export async function GET(req: NextRequest) {
         title,
         "url": coalesce(asset->url, url),
         "originalFilename": asset->originalFilename,
-        "assetId": asset->_id
+        "assetId": asset->_id,
+        "mimeType": asset->mimeType
       }
     }`);
 
@@ -154,6 +158,22 @@ export async function POST(req: NextRequest) {
       isNew: notice.isNew !== undefined ? Boolean(notice.isNew) : true,
       displayOrder: Number(notice.displayOrder) || 10,
     };
+
+    // Process Notice Poster / Circular Flyer Image
+    if (notice.imageAssetId) {
+      docToSave.image = {
+        _type: "image",
+        asset: {
+          _type: "reference",
+          _ref: notice.imageAssetId,
+        },
+      };
+    } else if (notice.imageUrl && typeof notice.imageUrl === "string" && notice.imageUrl.trim() !== "") {
+      docToSave.imageUrl = notice.imageUrl.trim();
+    } else if (notice.imageUrl === "" || notice.imageUrl === null) {
+      docToSave.image = null;
+      docToSave.imageUrl = null;
+    }
 
     const savedDoc = await client.createOrReplace(docToSave);
 

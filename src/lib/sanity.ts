@@ -70,8 +70,9 @@ export async function getEvents() {
 
 export async function getNotices() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(displayOrder asc, date desc, _createdAt desc) {
+    const data = await sanityClient.fetch(`*[_type == "notice" && !(_id in path("drafts.**"))] | order(date desc, _createdAt desc) {
       _id,
+      _createdAt,
       title,
       date,
       category,
@@ -84,11 +85,15 @@ export async function getNotices() {
         title,
         url
       },
+      "imageUrl": coalesce(image.asset->url, imageUrl),
+      "imageAssetId": image.asset->_id,
       "pdfUrl": pdfFile.asset->url,
       documents[] {
         title,
-        "url": asset->url,
-        "originalFilename": asset->originalFilename
+        "url": coalesce(asset->url, url),
+        "originalFilename": asset->originalFilename,
+        "assetId": asset->_id,
+        "mimeType": asset->mimeType
       }
     }`);
     if (data && data.length > 0) return data;
