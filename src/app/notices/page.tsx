@@ -314,11 +314,26 @@ export default function NoticesPage() {
             <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm divide-y divide-slate-100 overflow-hidden">
               {filteredNotices.map((n, idx) => {
                 const isNew = isNoticeNew(n.date, n.newUntil, n.isNew);
+                const isFirstStandard =
+                  idx > 0 &&
+                  !isNew &&
+                  isNoticeNew(filteredNotices[idx - 1].date, filteredNotices[idx - 1].newUntil, filteredNotices[idx - 1].isNew);
+
                 return (
-                <div
-                  key={n._id || idx}
-                  className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-all duration-200 group"
-                >
+                <React.Fragment key={n._id || idx}>
+                  {isFirstStandard && (
+                    <div className="px-5 py-2.5 bg-slate-100/90 border-y border-slate-200/80 flex items-center justify-between select-none">
+                      <span className="font-outfit text-xs font-black text-slate-700 tracking-wider uppercase">
+                        Earlier Circulars &amp; Notices
+                      </span>
+                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-600">
+                        General Archive
+                      </span>
+                    </div>
+                  )}
+                  <div
+                    className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-all duration-200 group"
+                  >
                   <div className="flex items-start gap-3.5 flex-1 min-w-0">
                     {/* Icon or New Badge: active until newUntil date or 2-week window */}
                     <div className="shrink-0 mt-0.5">
@@ -486,6 +501,7 @@ export default function NoticesPage() {
                     ) : null}
                   </div>
                 </div>
+                </React.Fragment>
                 );
               })}
             </div>

@@ -664,16 +664,14 @@ export default function HomePage() {
     });
   }, [sanityNotices]);
 
-  // Seamless loop list for continuous auto-scrolling feed
-  const displayNotices = React.useMemo(() => {
-    return sortedNotices.length > 3 ? [...sortedNotices, ...sortedNotices] : sortedNotices;
-  }, [sortedNotices]);
+  // Use sorted notices directly without duplicating list so each notice appears strictly once (all NEW notices grouped at the top)
+  const displayNotices = sortedNotices;
 
   // Notice Board Auto-Scroll & Pause on hover
   const noticeListRef = useRef<HTMLDivElement>(null);
   const [isNoticePaused, setIsNoticePaused] = useState(false);
 
-  // Continuous seamless auto-scroll for Notice Board (with float accumulator)
+  // Smooth auto-scroll for Notice Board: glides down, pauses at bottom, and smoothly resets to top
   useEffect(() => {
     const el = noticeListRef.current;
     if (!el || sortedNotices.length <= 3) return;
@@ -681,6 +679,8 @@ export default function HomePage() {
     let animId: number;
     let lastTime = performance.now();
     let scrollPos = el.scrollTop;
+    let isResetting = false;
+    let pauseUntil = 0;
 
     const step = (now: number) => {
       const dt = (now - lastTime) / 1000;
@@ -688,13 +688,27 @@ export default function HomePage() {
 
       if (isNoticePaused) {
         scrollPos = el.scrollTop;
-      } else if (el) {
-        scrollPos += 24 * dt;
-        const halfHeight = el.scrollHeight / 2;
-        if (scrollPos >= halfHeight) {
-          scrollPos -= halfHeight;
+      } else if (now >= pauseUntil && !isResetting && el) {
+        const maxScroll = el.scrollHeight - el.clientHeight;
+        if (maxScroll > 10) {
+          scrollPos += 20 * dt;
+          if (scrollPos >= maxScroll) {
+            scrollPos = maxScroll;
+            el.scrollTop = maxScroll;
+            pauseUntil = now + 4000; // Pause 4 seconds at the bottom
+            isResetting = true;
+            setTimeout(() => {
+              if (el) {
+                el.scrollTo({ top: 0, behavior: "smooth" });
+                scrollPos = 0;
+                pauseUntil = performance.now() + 2500; // Pause 2.5s at top before restarting
+                isResetting = false;
+              }
+            }, 4000);
+          } else {
+            el.scrollTop = scrollPos;
+          }
         }
-        el.scrollTop = scrollPos;
       }
       animId = requestAnimationFrame(step);
     };
@@ -1306,45 +1320,61 @@ export default function HomePage() {
                 >
                   {displayNotices.map((item, idx) => {
                     const isNew = isNoticeNew(item.date, item.newUntil, item.isNew);
+                    const isFirstStandard =
+                      idx > 0 &&
+                      !isNew &&
+                      isNoticeNew(displayNotices[idx - 1].date, displayNotices[idx - 1].newUntil, displayNotices[idx - 1].isNew);
+
                     return (
-                      <div
-                        key={`${item._id || "notice"}-${idx}`}
-                        className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
-                      >
-                        <div className="shrink-0 flex items-center justify-center min-w-[22px]">
-                          {isNew && <StarburstNewBadge />}
-                        </div>
-                        <Mail className={`h-4 w-4 shrink-0 stroke-[1.75] mt-0.5 transition-colors ${
-                          isNew ? "text-rose-600 group-hover/item:text-[#002147]" : "text-slate-700 group-hover/item:text-[#002147]"
-                        }`} />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
-                            <span
-                              onClick={() => handleNoticeClick(item)}
-                              className={`cursor-pointer transition-all ${
-                                isNew
-                                  ? "text-[#002147] font-bold animate-[pulse_2.5s_ease-in-out_infinite] hover:text-rose-600"
-                                  : "font-semibold text-slate-900 hover:text-[#002147]"
-                              }`}
-                            >
-                              {item.title}
+                      <React.Fragment key={item._id || idx}>
+                        {isFirstStandard && (
+                          <div className="px-3.5 py-1.5 bg-slate-100/90 border-y border-slate-200/80 flex items-center justify-between select-none">
+                            <span className="font-outfit text-[10.5px] font-black text-slate-700 tracking-wider uppercase">
+                              Earlier Circulars &amp; Notices
                             </span>
-                            {item.date && (
-                              <span className="text-slate-600 font-normal"> ({item.date})</span>
-                            )}
-                            {" "}
-                            <button
-                              type="button"
-                              onClick={() => handleNoticeClick(item)}
-                              className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-rose-50 hover:bg-[#002147] text-rose-800 hover:text-white border border-rose-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
-                              title="Click for more"
-                            >
-                              <FileText className="h-3 w-3 shrink-0 text-rose-600 group-hover/btn:text-white transition-colors" />
-                              <span>Click for more</span>
-                            </button>
+                            <span className="text-[9.5px] font-bold px-2 py-0.2 rounded-full bg-slate-200 text-slate-600">
+                              General
+                            </span>
+                          </div>
+                        )}
+                        <div
+                          className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
+                        >
+                          <div className="shrink-0 flex items-center justify-center min-w-[22px]">
+                            {isNew && <StarburstNewBadge />}
+                          </div>
+                          <Mail className={`h-4 w-4 shrink-0 stroke-[1.75] mt-0.5 transition-colors ${
+                            isNew ? "text-rose-600 group-hover/item:text-[#002147]" : "text-slate-700 group-hover/item:text-[#002147]"
+                          }`} />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                              <span
+                                onClick={() => handleNoticeClick(item)}
+                                className={`cursor-pointer transition-all ${
+                                  isNew
+                                    ? "text-[#002147] font-bold animate-[pulse_2.5s_ease-in-out_infinite] hover:text-rose-600"
+                                    : "font-semibold text-slate-900 hover:text-[#002147]"
+                                }`}
+                              >
+                                {item.title}
+                              </span>
+                              {item.date && (
+                                <span className="text-slate-600 font-normal"> ({item.date})</span>
+                              )}
+                              {" "}
+                              <button
+                                type="button"
+                                onClick={() => handleNoticeClick(item)}
+                                className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-rose-50 hover:bg-[#002147] text-rose-800 hover:text-white border border-rose-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
+                                title="Click for more"
+                              >
+                                <FileText className="h-3 w-3 shrink-0 text-rose-600 group-hover/btn:text-white transition-colors" />
+                                <span>Click for more</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </React.Fragment>
                     );
                   })}
                 </div>
