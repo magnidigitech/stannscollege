@@ -1084,7 +1084,10 @@ export default function HomePage() {
                     </div>
 
                     {/* Scroller 1: Upcoming Events */}
-                    <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
+                    <div
+                      className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                    >
                       {upcomingEvents.length > 0 ? (
                         upcomingEvents.map((item, idx) => {
                           return (
@@ -1146,7 +1149,10 @@ export default function HomePage() {
                     </div>
 
                     {/* Scroller 2: Conducted Events */}
-                    <div className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white">
+                    <div
+                      className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                    >
                       {otherEvents.length > 0 ? (
                         otherEvents.map((item, idx) => {
                           return (
@@ -1316,7 +1322,8 @@ export default function HomePage() {
                   onMouseLeave={() => setIsNoticePaused(false)}
                   onTouchStart={() => setIsNoticePaused(true)}
                   onTouchEnd={() => setIsNoticePaused(false)}
-                  className="flex-1 divide-y divide-slate-100 overflow-y-auto max-h-[460px] p-2 bg-white select-text"
+                  className="flex-1 divide-y divide-slate-100 overflow-y-auto max-h-[460px] p-2 bg-white select-text no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                   {displayNotices.map((item, idx) => {
                     const isNew = isNoticeNew(item.date, item.newUntil, item.isNew);
