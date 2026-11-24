@@ -121,4 +121,5 @@ CHA_2140.JPG
 *.doc
 *.docx
 !public/images/research/**
+!public/images/placements/**
 

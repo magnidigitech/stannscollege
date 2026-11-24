@@ -31,11 +31,11 @@ function checkAdminAuth(req: NextRequest): boolean {
 export async function GET(req: NextRequest) {
   try {
     const client = getSanityClient();
-    const events = await client.fetch(`*[_type == "event" && !(_id in path("drafts.**"))] | order(eventDate desc, date desc, _createdAt desc) {
+    const events = await client.fetch(`*[_type == "event" && !(_id in path("drafts.**"))] | order(coalesce(eventDate, startDate) desc, date desc, _createdAt desc) {
       _id,
       title,
       startDate,
-      eventDate,
+      "eventDate": coalesce(eventDate, startDate),
       eventEndDate,
       date,
       organizer,
@@ -90,13 +90,43 @@ export async function POST(req: NextRequest) {
     const client = getSanityClient();
     const docId = event._id || `event-${Date.now()}`;
 
+    // 1. Process multiple PDF documents / circulars
+    const docsList: any[] = [];
+    if (Array.isArray(event.documents)) {
+      event.documents.forEach((d: any, idx: number) => {
+        if (d && (d.url?.trim() || d.assetId)) {
+          const docEntry: any = {
+            _type: "file",
+            _key: d._key || `doc-${Date.now()}-${idx}`,
+            title: d.title?.trim() || d.originalFilename || `Event Document ${idx + 1}`,
+          };
+          if (d.assetId) {
+            docEntry.asset = {
+              _type: "reference",
+              _ref: d.assetId,
+            };
+          }
+          if (d.url?.trim()) {
+            docEntry.url = d.url.trim();
+          }
+          docsList.push(docEntry);
+        }
+      });
+    } else if (event.pdfUrl && typeof event.pdfUrl === "string" && event.pdfUrl.trim() !== "") {
+      docsList.push({
+        _type: "file",
+        _key: `doc-primary-${Date.now()}`,
+        title: "Event Circular & Brochure (PDF)",
+        url: event.pdfUrl.trim(),
+      });
+    }
+
     const docToSave: { _id: string; _type: string; [key: string]: any } = {
       _id: docId,
       _type: "event",
       title: event.title.trim(),
       date: event.date?.trim() || "",
-      startDate: event.startDate || null,
-      eventDate: event.eventDate || null,
+      eventDate: event.eventDate || event.startDate || null,
       eventEndDate: event.eventEndDate || null,
       organizer: event.organizer?.trim() || "",
       location: event.location?.trim() || "",
@@ -105,7 +135,27 @@ export async function POST(req: NextRequest) {
       linkLabel: event.linkLabel?.trim() || null,
       isNew: Boolean(event.isNew),
       displayOrder: Number(event.displayOrder) || 10,
+      documents: docsList.length > 0 ? docsList : undefined,
+      pdfFile: docsList[0]?.asset ? { _type: "file", asset: docsList[0].asset } : undefined,
     };
+
+    // 2. Process Poster / Banner Image
+    if (event.bannerAssetId || event.imageAssetId) {
+      const assetRef = {
+        _type: "reference",
+        _ref: event.bannerAssetId || event.imageAssetId,
+      };
+      docToSave.banner = { _type: "image", asset: assetRef };
+      docToSave.image = { _type: "image", asset: assetRef };
+    } else if (event.bannerUrl && typeof event.bannerUrl === "string" && event.bannerUrl.trim() !== "") {
+      docToSave.bannerUrl = event.bannerUrl.trim();
+      docToSave.imageUrl = event.bannerUrl.trim();
+    } else if (event.bannerUrl === "" || event.bannerUrl === null) {
+      docToSave.banner = null;
+      docToSave.image = null;
+      docToSave.bannerUrl = null;
+      docToSave.imageUrl = null;
+    }
 
     const savedDoc = await client.createOrReplace(docToSave);
 

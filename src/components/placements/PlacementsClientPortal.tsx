@@ -854,61 +854,82 @@ export default function PlacementsClientPortal({
                         </ul>
                       </div>
 
-                      {/* Training & Placement Officer Box */}
-                      <div className="p-6 bg-[#002147] text-white rounded-3xl border border-blue-900 shadow-sm flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6">
-                        <div className="flex items-center gap-4">
-                          <div className="h-16 w-16 rounded-2xl overflow-hidden bg-white/10 border border-white/20 shrink-0 shadow-inner flex items-center justify-center">
-                            {currentTpo.photoUrl ? (
-                              <img
-                                src={currentTpo.photoUrl}
-                                alt={currentTpo.name}
-                                className="w-full h-full object-cover object-top"
-                                onError={(e) => {
-                                  (e.target as HTMLElement).style.display = "none";
-                                }}
-                              />
-                            ) : (
-                              <span className="font-outfit font-black text-2xl text-emerald-300">PR</span>
-                            )}
-                          </div>
-                          <div>
-                            <span className="text-[10px] font-black uppercase text-emerald-400 tracking-wider">TRAINING &amp; PLACEMENT OFFICER</span>
-                            <h5 className="font-outfit font-black text-xl text-white tracking-tight">{currentTpo.name}</h5>
-                            <p className="text-xs text-slate-200 font-medium">{currentTpo.degrees}</p>
-                            <p className="text-[11px] text-slate-300 font-medium mt-0.5">{currentTpo.designation}, {currentTpo.institution}</p>
-                          </div>
+                      {/* Training & Placement Officer Box - Edge-to-Edge Portrait Layout */}
+                      <div className="bg-[#002147] text-white rounded-3xl border border-blue-900 shadow-xl overflow-hidden flex flex-col md:flex-row items-stretch">
+                        {/* Edge-to-edge photo column: touches top, left, and bottom edges on desktop; top, left, right edges on mobile */}
+                        <div className="relative w-full md:w-56 lg:w-60 shrink-0 overflow-hidden md:border-r border-b md:border-b-0 border-white/15">
+                          <img
+                            src={
+                              currentTpo.photoUrl && !currentTpo.photoUrl.includes("e51fc6bdd34d43e095f1eeb43c95ba5e8704c932")
+                                ? currentTpo.photoUrl
+                                : "/images/placements/tpo-officer.jpg"
+                            }
+                            alt={currentTpo.name}
+                            className="w-full h-64 sm:h-72 md:h-full object-cover object-top"
+                            onError={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              if (img.src !== "/images/placements/tpo-officer.jpg") {
+                                img.src = "/images/placements/tpo-officer.jpg";
+                              }
+                            }}
+                          />
                         </div>
 
-                        {/* Contact Details Box (Restored to pill badge layout; click opens executive contact actions modal) */}
-                        <div
-                          onClick={() => setContactModalOpen(true)}
-                          className="bg-white/5 hover:bg-white/10 p-4 rounded-2xl border border-white/10 hover:border-emerald-400/40 w-full xl:w-auto cursor-pointer transition-all group flex flex-col gap-2.5 shadow-sm select-none"
-                          title="Click to view contact options (Call, Mail & Copy)"
-                        >
-                          <div className="flex items-center justify-between gap-4">
-                            <span className="text-[10px] font-black tracking-widest uppercase text-slate-300">
-                              PLACEMENT DESK
-                            </span>
-                            <span className="text-[10px] font-bold text-emerald-300 flex items-center gap-1 group-hover:text-emerald-200 transition-colors">
-                              <span>Connect / Copy</span>
-                              <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
-                            </span>
+                        {/* Officer credentials & interactive Placement Desk contact box */}
+                        <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between gap-6">
+                          {/* 1. First: Training & Placement Officer in one line */}
+                          <div className="space-y-2.5">
+                            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs sm:text-[13px] font-black uppercase tracking-wider whitespace-nowrap w-fit">
+                              <Sparkles className="h-3.5 w-3.5 text-emerald-300 shrink-0" />
+                              <span>Training &amp; Placement Officer</span>
+                            </div>
+
+                            {/* 2. Then: Name */}
+                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                              <h5 className="font-outfit font-black text-2xl sm:text-3xl lg:text-[32px] text-white tracking-tight whitespace-nowrap">
+                                {currentTpo.name}
+                              </h5>
+                              <span className="text-sm sm:text-base font-bold text-emerald-300">
+                                {currentTpo.degrees}
+                              </span>
+                            </div>
+
+                            {/* 3. Then: Designation */}
+                            <p className="text-xs sm:text-sm text-slate-200 font-medium">
+                              {currentTpo.designation}, {currentTpo.institution}
+                            </p>
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-2">
-                            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/25 border border-white/15 text-slate-100 text-xs font-semibold group-hover:border-white/30 transition-colors">
-                              <Phone className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                              <span>{currentTpo.mobile}</span>
+                          {/* 4. Then: Contact Box (with "Connect" instead of "Connect / Copy") */}
+                          <div
+                            onClick={() => setContactModalOpen(true)}
+                            className="bg-white/5 hover:bg-white/10 p-4 sm:p-5 rounded-2xl border border-white/15 hover:border-emerald-400/50 w-full cursor-pointer transition-all group flex flex-col gap-3 shadow-md select-none"
+                            title="Click to view contact options (Call, Mail & Copy)"
+                          >
+                            <div className="flex items-center justify-between gap-4">
+                              <span className="text-xs font-black tracking-widest uppercase text-slate-200">
+                                PLACEMENT DESK
+                              </span>
+                              <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5 group-hover:text-emerald-200 transition-colors">
+                                <span>Connect</span>
+                                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                              </span>
                             </div>
-                            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/25 border border-white/15 text-slate-100 text-xs font-semibold group-hover:border-white/30 transition-colors">
-                              <Phone className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                              <span>{currentTpo.landline}</span>
-                            </div>
-                          </div>
 
-                          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/25 border border-white/15 text-slate-100 text-xs font-semibold truncate group-hover:border-white/30 transition-colors">
-                            <Mail className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                            <span className="truncate">{currentTpo.placementEmail}</span>
+                            <div className="flex flex-wrap items-center gap-2.5">
+                              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/30 border border-white/15 text-slate-100 text-xs sm:text-sm font-semibold group-hover:border-white/30 transition-colors">
+                                <Phone className="h-4 w-4 text-emerald-400 shrink-0" />
+                                <span>{currentTpo.mobile}</span>
+                              </div>
+                              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/30 border border-white/15 text-slate-100 text-xs sm:text-sm font-semibold group-hover:border-white/30 transition-colors">
+                                <Phone className="h-4 w-4 text-emerald-400 shrink-0" />
+                                <span>{currentTpo.landline}</span>
+                              </div>
+                              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/30 border border-white/15 text-slate-100 text-xs sm:text-sm font-semibold truncate group-hover:border-white/30 transition-colors">
+                                <Mail className="h-4 w-4 text-emerald-400 shrink-0" />
+                                <span className="truncate">{currentTpo.placementEmail}</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

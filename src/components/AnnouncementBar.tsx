@@ -1,9 +1,103 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { Bell, Phone } from "lucide-react";
+import defaultData from "@/components/announcements-data.json";
+
+interface AnnouncementItem {
+  id: string;
+  text: string;
+  link?: string;
+  dotColor?: "sky" | "amber" | "emerald" | "rose" | "purple";
+  isActive: boolean;
+}
+
+interface PhoneNumberItem {
+  label: string;
+  number: string;
+}
+
+interface AnnouncementData {
+  enabled: boolean;
+  badgeText: string;
+  speedSeconds: number;
+  phoneNumbers: PhoneNumberItem[];
+  announcements: AnnouncementItem[];
+}
 
 export function AnnouncementBar() {
+  const [data, setData] = useState<AnnouncementData>(defaultData as AnnouncementData);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadLiveAnnouncements() {
+      try {
+        const res = await fetch("/api/admin/announcements");
+        const json = await res.json();
+        if (json.success && json.data && isMounted) {
+          setData(json.data);
+        }
+      } catch (err) {
+        // Fallback already in initial state
+      }
+    }
+    loadLiveAnnouncements();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!data.enabled) {
+    return null;
+  }
+
+  const activeAnnouncements = data.announcements.filter((a) => a.isActive);
+  if (activeAnnouncements.length === 0) {
+    return null;
+  }
+
+  const getDotClass = (color?: string) => {
+    switch (color) {
+      case "amber":
+        return "bg-amber-400 shadow-xs shadow-amber-400/50";
+      case "emerald":
+        return "bg-emerald-400 shadow-xs shadow-emerald-400/50";
+      case "rose":
+        return "bg-rose-400 shadow-xs shadow-rose-400/50";
+      case "purple":
+        return "bg-purple-400 shadow-xs shadow-purple-400/50";
+      case "sky":
+      default:
+        return "bg-sky-400 shadow-xs shadow-sky-400/50";
+    }
+  };
+
+  const renderContentBlock = (isAriaHidden = false) => (
+    <div
+      className="inline-flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 shrink-0"
+      aria-hidden={isAriaHidden}
+    >
+      {activeAnnouncements.map((item, idx) => (
+        <React.Fragment key={`${item.id || idx}-${isAriaHidden ? "dup" : "orig"}`}>
+          {item.link ? (
+            <Link
+              href={item.link}
+              className="tracking-wide text-slate-100 hover:text-amber-300 transition-colors hover:underline"
+            >
+              {item.text}
+            </Link>
+          ) : (
+            <span className="tracking-wide text-slate-100">{item.text}</span>
+          )}
+          <span
+            className={`h-1.5 w-1.5 rounded-full shrink-0 ${getDotClass(item.dotColor)}`}
+          />
+        </React.Fragment>
+      ))}
+    </div>
+  );
+
   return (
     <div
       id="top-announcement-bar"
@@ -11,10 +105,8 @@ export function AnnouncementBar() {
       style={{ backgroundColor: "#000080" }}
     >
       <div className="mx-auto max-w-[1780px] px-3 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between text-xs font-semibold gap-3 sm:gap-6">
-        
         {/* Left: Live Scrolling Announcement Ticker */}
         <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 overflow-hidden h-full">
-          
           {/* Eye-catching Stylish 'ANNOUNCEMENTS' Badge */}
           <div
             id="announcements-badge-box"
@@ -32,7 +124,7 @@ export function AnnouncementBar() {
 
             {/* Badge Text */}
             <span className="font-outfit tracking-wide drop-shadow-xs font-black text-slate-950">
-              ANNOUNCEMENTS
+              {data.badgeText || "ANNOUNCEMENTS"}
             </span>
           </div>
 
@@ -43,67 +135,36 @@ export function AnnouncementBar() {
           >
             <div
               className="animate-announcement-marquee flex items-center font-medium text-[12px] text-slate-100"
-              style={{ animationDuration: "32s" }}
+              style={{ animationDuration: `${data.speedSeconds || 32}s` }}
             >
               {/* Content Block 1 */}
-              <div className="inline-flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 shrink-0">
-                <span className="tracking-wide text-slate-100">
-                  Admissions are officially open for UG and PG programs for the 2026-2027 academic year.
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-sky-400 shrink-0 shadow-xs shadow-sky-400/50" />
-                <span className="tracking-wide text-slate-200">
-                  Accredited by NAAC with &apos;A&apos; Grade in the first cycle
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0 shadow-xs shadow-amber-400/50" />
-                <span className="tracking-wide text-slate-200">
-                  Celebrating 29+ Years of Academic Excellence (1997 - 2026)
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0 shadow-xs shadow-emerald-400/50" />
-              </div>
+              {renderContentBlock(false)}
 
               {/* Duplicate Content Block 2 for Seamless Infinite Loop */}
-              <div
-                className="inline-flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 shrink-0"
-                aria-hidden="true"
-              >
-                <span className="tracking-wide text-slate-100">
-                  Admissions are officially open for UG and PG programs for the 2026-2027 academic year.
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-sky-400 shrink-0 shadow-xs shadow-sky-400/50" />
-                <span className="tracking-wide text-slate-200">
-                  Accredited by NAAC with &apos;A&apos; Grade in the first cycle
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0 shadow-xs shadow-amber-400/50" />
-                <span className="tracking-wide text-slate-200">
-                  Celebrating 29+ Years of Academic Excellence (1997 - 2026)
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0 shadow-xs shadow-emerald-400/50" />
-              </div>
+              {renderContentBlock(true)}
             </div>
           </div>
         </div>
 
         {/* Right: Clickable Phone Numbers */}
-        <div className="flex items-center gap-1.5 sm:gap-2 text-slate-300 shrink-0 text-[11px] sm:text-xs">
-          <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400 shrink-0 animate-pulse" />
-          <span className="text-slate-300 font-medium hidden md:inline">Call Us:</span>
-          <a
-            href="tel:08632236470"
-            className="text-amber-300 hover:text-amber-200 font-semibold transition-colors hover:underline tracking-tight"
-            title="Click to call 0863-2236470"
-          >
-            0863-2236470
-          </a>
-          <span className="text-slate-500 font-normal">|</span>
-          <a
-            href="tel:7382104655"
-            className="text-amber-300 hover:text-amber-200 font-semibold transition-colors hover:underline tracking-tight"
-            title="Click to call 7382104655"
-          >
-            7382104655
-          </a>
-        </div>
-
+        {data.phoneNumbers && data.phoneNumbers.length > 0 && (
+          <div className="flex items-center gap-1.5 sm:gap-2 text-slate-300 shrink-0 text-[11px] sm:text-xs">
+            <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400 shrink-0 animate-pulse" />
+            {data.phoneNumbers.map((p, idx) => (
+              <React.Fragment key={idx}>
+                {idx > 0 && <span className="text-slate-500 font-normal">|</span>}
+                {p.label && <span className="text-slate-300 font-medium hidden md:inline">{p.label}:</span>}
+                <a
+                  href={`tel:${p.number.replace(/[^\d+]/g, "")}`}
+                  className="text-amber-300 hover:text-amber-200 font-semibold transition-colors hover:underline tracking-tight"
+                  title={`Click to call ${p.number}`}
+                >
+                  {p.number}
+                </a>
+              </React.Fragment>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

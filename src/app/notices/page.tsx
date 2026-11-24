@@ -24,16 +24,16 @@ import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
 // Client-approved Starburst NEW badge matching the official circulars / events layout
 const StarburstNewBadge = () => (
-  <span className="relative inline-flex items-center justify-center shrink-0 w-5 h-5 sm:w-5.5 sm:h-5.5 select-none my-0.5 animate-pulse">
-    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.18)]">
+  <span className="relative inline-flex items-center justify-center shrink-0 w-7 h-7 sm:w-8 sm:h-8 select-none my-0.5 animate-pulse drop-shadow-xs">
+    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_1px_2px_rgba(0,0,0,0.22)]">
       <polygon
         points="50,0 61,24 85,15 79,40 100,50 79,60 85,85 61,76 50,100 39,76 15,85 21,60 0,50 21,40 15,15 39,24"
         fill="#FFE600"
         stroke="#EAB308"
-        strokeWidth="3"
+        strokeWidth="3.5"
       />
     </svg>
-    <span className="absolute font-black text-[6.5px] sm:text-[7px] text-[#DC2626] tracking-tighter leading-none font-sans scale-90">
+    <span className="absolute font-black text-[9px] sm:text-[10px] text-[#DC2626] tracking-tighter leading-none font-sans scale-95">
       NEW
     </span>
   </span>
@@ -429,7 +429,7 @@ export default function NoticesPage() {
                     {/* Icon or New Badge: active until newUntil date or 2-week window */}
                     <div className="shrink-0 mt-0.5">
                       {isNew ? (
-                        <span className="relative inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[9.5px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-xs">
+                        <span className="relative inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[10.5px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-xs">
                           <span className="absolute -inset-0.5 rounded-md bg-rose-400/50 blur-xs animate-ping pointer-events-none" />
                           <span className="relative w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                           <span className="relative">NEW</span>

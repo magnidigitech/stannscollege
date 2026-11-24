@@ -1,0 +1,32 @@
+{
+  "enabled": true,
+  "badgeText": "ANNOUNCEMENTS",
+  "speedSeconds": 32,
+  "phoneNumbers": [
+    { "label": "Call Us", "number": "0863-2236470" },
+    { "label": "Mobile", "number": "7382104655" }
+  ],
+  "announcements": [
+    {
+      "id": "ann-1",
+      "text": "Admissions are officially open for UG and PG programs for the 2026-2027 academic year.",
+      "link": "/admissions",
+      "dotColor": "sky",
+      "isActive": true
+    },
+    {
+      "id": "ann-2",
+      "text": "Accredited by NAAC with 'A' Grade in the first cycle",
+      "link": "/quality-assurance",
+      "dotColor": "amber",
+      "isActive": true
+    },
+    {
+      "id": "ann-3",
+      "text": "Celebrating 29+ Years of Academic Excellence (1997 - 2026)",
+      "link": "/about-us",
+      "dotColor": "emerald",
+      "isActive": true
+    }
+  ]
+}

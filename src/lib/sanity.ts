@@ -42,11 +42,11 @@ export async function getFaculty() {
 
 export async function getEvents() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "event" && !(_id in path("drafts.**"))] | order(displayOrder asc, eventDate asc, date desc) {
+    const data = await sanityClient.fetch(`*[_type == "event" && !(_id in path("drafts.**"))] | order(displayOrder asc, coalesce(eventDate, startDate) asc, date desc) {
       _id,
       title,
       startDate,
-      eventDate,
+      "eventDate": coalesce(eventDate, startDate),
       eventEndDate,
       date,
       organizer,

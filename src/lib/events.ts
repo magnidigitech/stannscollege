@@ -15,7 +15,7 @@ export interface EventLifecycleResult {
  * Helper to parse various event date formats (DD-MM-YYYY, YYYY-MM-DD, Month Names, etc.)
  */
 export function parseEventDateToEndDate(event: any): Date | null {
-  let str = event.eventEndDate || event.eventDate;
+  let str = event.eventEndDate || event.eventDate || event.startDate;
   if (str && typeof str === "string") {
     const d = new Date(str.includes("T") ? str : `${str.trim()}T23:59:59`);
     if (!isNaN(d.getTime())) return d;
@@ -84,24 +84,11 @@ export function parseEventDateToEndDate(event: any): Date | null {
 
 /**
  * Event lifecycle rule:
- * 1) start date: date which tells us from when it should appear on website (if today < startDate => hidden)
- * 2) event date:
+ * - Event date (or eventEndDate / startDate fallback):
  *    - till the end of event date: status = "upcoming" (Upcoming Events & Activities)
  *    - after event date has passed: status = "none" (Conducted Events & Activities)
  */
 export function getEventLifecycle(event: any, currentDate = new Date()): EventLifecycleResult {
-  // 1. Visibility check based on startDate
-  if (event.startDate) {
-    const startVisDate = new Date(
-      event.startDate.includes("T") ? event.startDate : `${event.startDate}T00:00:00`
-    );
-    const todayZero = new Date(currentDate);
-    todayZero.setHours(0, 0, 0, 0);
-    if (todayZero < startVisDate) {
-      return { isVisible: false, status: "hidden" };
-    }
-  }
-
   const endDay = parseEventDateToEndDate(event);
   if (!endDay) {
     return { isVisible: true, status: "upcoming" };

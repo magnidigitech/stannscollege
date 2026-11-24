@@ -576,16 +576,16 @@ function parseNoticeDateToTimestamp(dateStr?: string, createdAt?: string): numbe
 
 // Client-approved Starburst NEW badge matching the official circulars / events layout
 const StarburstNewBadge = () => (
-  <span className="relative inline-flex items-center justify-center shrink-0 w-5 h-5 sm:w-5.5 sm:h-5.5 select-none my-0.5 animate-pulse">
-    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.18)]">
+  <span className="relative inline-flex items-center justify-center shrink-0 w-7 h-7 sm:w-8 sm:h-8 select-none my-0.5 animate-pulse drop-shadow-xs">
+    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_1px_2px_rgba(0,0,0,0.22)]">
       <polygon
         points="50,0 61,24 85,15 79,40 100,50 79,60 85,85 61,76 50,100 39,76 15,85 21,60 0,50 21,40 15,15 39,24"
         fill="#FFE600"
         stroke="#EAB308"
-        strokeWidth="3"
+        strokeWidth="3.5"
       />
     </svg>
-    <span className="absolute font-black text-[6.5px] sm:text-[7px] text-[#DC2626] tracking-tighter leading-none font-sans scale-90">
+    <span className="absolute font-black text-[9px] sm:text-[10px] text-[#DC2626] tracking-tighter leading-none font-sans scale-95">
       NEW
     </span>
   </span>
@@ -1007,27 +1007,18 @@ export default function HomePage() {
             </>
           )}
 
-          {/* Floating Quick Jump Bar: Notice Board & Events */}
-          <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 z-30 px-3 sm:px-6 pointer-events-auto flex justify-center">
-            <div className="bg-slate-950/85 backdrop-blur-md rounded-full border border-white/20 p-1.5 shadow-2xl flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollToSection("notice-board", "ring-rose-500/70")}
-                className="flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer border border-rose-400/40"
-              >
-                <Bell className="w-3.5 h-3.5 text-rose-200" />
-                <span>Notice Board</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => scrollToSection("events-activities", "ring-indigo-500/70")}
-                className="flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer border border-indigo-400/40"
-              >
-                <Calendar className="w-3.5 h-3.5 text-indigo-200" />
-                <span>Events</span>
-              </button>
-            </div>
+          {/* Floating Quick Jump: Notice Board & Events (Top-Right Fully Pulsating Button) */}
+          <div className="absolute top-3 right-3 sm:top-5 sm:right-6 z-30 pointer-events-auto">
+            <button
+              type="button"
+              onClick={() => scrollToSection("campus-highlights", "ring-rose-500/70")}
+              className="flex items-center gap-2 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-rose-600 via-red-500 to-indigo-700 hover:from-rose-500 hover:to-indigo-600 text-white font-black text-xs sm:text-sm shadow-xl shadow-rose-950/60 border border-white/40 backdrop-blur-md transition-all active:scale-95 cursor-pointer animate-pulse ring-4 ring-rose-400/60 hover:ring-rose-300 hover:animate-none select-none"
+              title="Jump to Notice Board & Upcoming Events"
+            >
+              <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
+              <span className="tracking-wide uppercase font-outfit whitespace-nowrap">Notice Board &amp; Events</span>
+              <ArrowRight className="w-3.5 h-3.5 text-white/90 shrink-0 hidden sm:inline" />
+            </button>
           </div>
         </section>
 
@@ -1347,7 +1338,7 @@ export default function HomePage() {
                         <div
                           className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-rose-50/40 transition-colors group/item"
                         >
-                          <div className="shrink-0 flex items-center justify-center min-w-[22px]">
+                          <div className="shrink-0 flex items-center justify-center min-w-[32px]">
                             {isNew && <StarburstNewBadge />}
                           </div>
                           <Mail className={`h-4 w-4 shrink-0 stroke-[1.75] mt-0.5 transition-colors ${

@@ -54,7 +54,7 @@ export const tpoOfficer: TPOOfficerInfo = {
   landline: "0863-2236470",
   placementEmail: "gntstannsplacementcell@gmail.com",
   institutionEmail: "st_anns_coll@yahoo.co.in",
-  photoUrl: "https://cdn.sanity.io/images/fhjwqub5/production/e51fc6bdd34d43e095f1eeb43c95ba5e8704c932-700x900.jpg"
+  photoUrl: "/images/placements/tpo-officer.jpg"
 };
 
 export const annualReportsList: AnnualReportDoc[] = [
