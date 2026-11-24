@@ -30,6 +30,8 @@ const DEFAULT_PASSWORDS: Record<string, string> = {
   "publications": "publications@2026",
   "events": "events@2026",
   "notices": "notices@2026",
+  "naac-aqar": "naac@2026",
+  "qa": "naac@2026",
 };
 
 const MASTER_PASSWORD = "Stannsf@2026";
@@ -61,14 +63,15 @@ export async function POST(req: NextRequest) {
     const expectedPassword = await getDepartmentPassword(departmentId);
 
     if (password === expectedPassword || password === MASTER_PASSWORD) {
-      const isCommittee = ["publications", "events", "notices"].includes(departmentId);
+      const isCommittee = ["publications", "events", "notices", "naac-aqar", "qa"].includes(departmentId);
       const sessionUser: SanityMemberUser = {
         id: `staff-${departmentId}`,
         email: `${departmentId}@stannscollegeforwomen.ac.in`,
         name: isCommittee 
           ? departmentId === "publications" ? "Publications & Media Team" 
           : departmentId === "events" ? "Events & Activities Coordinator"
-          : "Notice Board & Circulars Coordinator"
+          : departmentId === "notices" ? "Notice Board & Circulars Coordinator"
+          : "NAAC & AQAR Quality Cell Coordinator"
           : `${departmentId.replace("department-of-", "").replace(/-/g, " ")} Head`,
         role: isCommittee ? departmentId : "department-head",
       };

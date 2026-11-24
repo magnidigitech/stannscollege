@@ -1960,6 +1960,55 @@ export function QualityAssuranceManager({
 
       )}
 
+      {/* Category Switcher: IQAC / NAAC / AQAR */}
+      <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shadow-inner">
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("iqac");
+            onTabChange?.("iqac");
+          }}
+          className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs md:text-sm font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            activeTab === "iqac"
+              ? "bg-[#002147] text-white shadow-sm"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+          }`}
+        >
+          <Users className="w-4 h-4 shrink-0" />
+          <span>1. IQAC Initiatives & Governance</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("naac");
+            onTabChange?.("naac");
+          }}
+          className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs md:text-sm font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            activeTab === "naac"
+              ? "bg-[#002147] text-white shadow-sm"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+          }`}
+        >
+          <Award className="w-4 h-4 shrink-0" />
+          <span>2. NAAC Accreditation & Criteria</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("aqar");
+            onTabChange?.("aqar");
+          }}
+          className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs md:text-sm font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            activeTab === "aqar"
+              ? "bg-[#002147] text-white shadow-sm"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+          }`}
+        >
+          <BarChart3 className="w-4 h-4 shrink-0" />
+          <span>3. AQAR Annual Reports</span>
+        </button>
+      </div>
+
       {/* =========================================================================
 
           CATEGORY 1: IQAC & ITS INITIATIVES

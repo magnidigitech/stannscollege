@@ -7,13 +7,14 @@ import {
   Upload, Eye, ExternalLink, Save, ArrowLeft, RefreshCw, Lock,
   Users, BookOpen, Award, FileText, Handshake, Calendar, Image as ImageIcon,
   ChevronRight, Camera, X, Sparkles, HelpCircle, LogOut, GraduationCap, Briefcase, Trophy,
-  Newspaper, Bell, CalendarDays
+  Newspaper, Bell, CalendarDays, ShieldCheck
 } from "lucide-react";
 import { getDepartment } from "@/lib/sanity";
 import academicsData from "@/components/academics/academics-data.json";
 import QuickDrawersManager from "@/components/admin/QuickDrawersManager";
 import EventsManager from "@/components/admin/EventsManager";
 import NoticesManager from "@/components/admin/NoticesManager";
+import { QualityAssuranceManager } from "@/components/admin/QualityAssuranceManager";
 
 export interface CustomTableRow {
   _key?: string;
@@ -57,10 +58,17 @@ const DEPARTMENTS: DepartmentConfig[] = [
 
 const INSTITUTIONAL_COMMITTEES: DepartmentConfig[] = [
   {
-    id: "publications",
-    name: "College Publications & Media Cell",
-    subtitle: "Newsletters (The Chronicle), Magazines (Annite), Student Handbook & Brochures",
-    code: "PUB",
+    id: "naac-aqar",
+    name: "NAAC & AQAR Quality Cell (IQAC)",
+    subtitle: "Internal Quality Assurance Cell, NAAC Accreditation Criteria, and AQAR Annual Quality Reports",
+    code: "NAAC",
+    category: "committee"
+  },
+  {
+    id: "notices",
+    name: "Notice Board & Circulars Hub",
+    subtitle: "Official Announcements, Examination Circulars & Timetable Releases",
+    code: "NOTC",
     category: "committee"
   },
   {
@@ -71,10 +79,10 @@ const INSTITUTIONAL_COMMITTEES: DepartmentConfig[] = [
     category: "committee"
   },
   {
-    id: "notices",
-    name: "Notice Board & Circulars Hub",
-    subtitle: "Official Announcements, Examination Circulars & Timetable Releases",
-    code: "NOTC",
+    id: "publications",
+    name: "College Publications & Media Cell",
+    subtitle: "Newsletters (The Chronicle), Magazines (Annite), Student Handbook & Brochures",
+    code: "PUB",
     category: "committee"
   }
 ];
@@ -596,7 +604,7 @@ export function DepartmentUpdateForm() {
 
   // Load Department Data
   const loadDeptData = async () => {
-    if (["publications", "events", "notices"].includes(selectedDeptId)) {
+    if (["publications", "events", "notices", "naac-aqar", "qa"].includes(selectedDeptId)) {
       return;
     }
     setLoading(true);
@@ -1272,7 +1280,7 @@ export function DepartmentUpdateForm() {
   };
 
   const activeDept = ALL_PORTAL_ENTITIES.find(d => d.id === selectedDeptId) || DEPARTMENTS[0];
-  const isCommittee = ["publications", "events", "notices"].includes(selectedDeptId);
+  const isCommittee = ["publications", "events", "notices", "naac-aqar", "qa"].includes(selectedDeptId);
 
   // ─────────────────────────────────────────────────────────────
   // 1. LOGIN VIEW
@@ -1289,8 +1297,10 @@ export function DepartmentUpdateForm() {
                   <Newspaper className="h-8 w-8 text-amber-400" />
                 ) : selectedDeptId === "events" ? (
                   <CalendarDays className="h-8 w-8 text-amber-400" />
-                ) : (
+                ) : selectedDeptId === "notices" ? (
                   <Bell className="h-8 w-8 text-amber-400" />
+                ) : (
+                  <ShieldCheck className="h-8 w-8 text-amber-400" />
                 )
               ) : (
                 <Building className="h-8 w-8 text-amber-400" />
@@ -1322,7 +1332,7 @@ export function DepartmentUpdateForm() {
                     </option>
                   ))}
                 </optgroup>
-                <optgroup label="Institutional Committees & Media (3)">
+                <optgroup label="Institutional Committees & Cells (4)">
                   {INSTITUTIONAL_COMMITTEES.map(c => (
                     <option key={c.id} value={c.id}>
                       {c.name} ({c.code})
@@ -1432,8 +1442,10 @@ export function DepartmentUpdateForm() {
                     : selectedDeptId === "events"
                       ? "/campus-life/events"
                       : selectedDeptId === "notices"
-                        ? "/campus-life/events"
-                        : `/academics/departments/${selectedDeptId}`
+                        ? "/notices"
+                        : (selectedDeptId === "naac-aqar" || selectedDeptId === "qa")
+                          ? "/quality-assurance/aqar-reports/2023-2024"
+                          : `/academics/departments/${selectedDeptId}`
                 }
                 target="_blank"
                 className="text-blue-600 hover:underline inline-flex items-center gap-1 font-bold"
@@ -1502,6 +1514,10 @@ export function DepartmentUpdateForm() {
       ) : selectedDeptId === "notices" ? (
         <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200">
           <NoticesManager />
+        </div>
+      ) : (selectedDeptId === "naac-aqar" || selectedDeptId === "qa") ? (
+        <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200">
+          <QualityAssuranceManager />
         </div>
       ) : (
         <>
