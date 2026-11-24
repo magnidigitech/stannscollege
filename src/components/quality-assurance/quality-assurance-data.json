@@ -67,7 +67,13 @@
                 {
                   "number": "1.2.1",
                   "title": "-Number of Programmes in which Choice Based Credit System (CBCS)/ elective course system has been implemented Number of Programmes in which CBCS/ Elective course system implemented. File Description (Upload)",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Declaration of Programmes with Choice Based Credit System (CBCS) / Elective Course System",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/20c301da230e83d789c199a2ede1bbbe20f11cfb.pdf",
+                      "_key": "19b6af1b3194"
+                    }
+                  ],
                   "_key": "6917ea758808"
                 },
                 {
@@ -142,7 +148,28 @@
                 {
                   "number": "1.3.2",
                   "title": "-Number of courses that include experiential learning through project work/field work/internship during the year 1. Number of courses that include experiential learning through project work/field work/internship during the year",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "APSCHE Internship Guidelines",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ebbece46e0fb9b46411f6f88c06f1ca4cbf0860f.pdf",
+                      "_key": "4d5cede45d0b"
+                    },
+                    {
+                      "label": "Percentage of Students Undertaking Project Work / Internship",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/359a0e2c988fc7b6e528a480b6a14717c6f9c1ab.pdf",
+                      "_key": "efae70a37177"
+                    },
+                    {
+                      "label": "List of Students Who Undertook Projects & Internships with Place and Duration",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/795455e9f28592600dd32b48275579aafb13b076.pdf",
+                      "_key": "ca8438ebfe59"
+                    },
+                    {
+                      "label": "Details of Mentors & Mentees for Projects / Internships",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/23e0ba458b8c9b7c941f671825bddf8cf5cb67cb.pdf",
+                      "_key": "901a4e64676a"
+                    }
+                  ],
                   "_key": "d41289ca1adc"
                 },
                 {
@@ -162,7 +189,7 @@
                     },
                     {
                       "label": "- List of programmes and number of students undertaking project work/field work/ /internships (DataTemplate)",
-                      "documentUrl": "",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/e5f4f3155f7fd37c44818f63be0cf383f2b198ce.xlsx",
                       "subDocuments": [
                         {
                           "name": "III B. Sc (MPCs)",
@@ -1015,7 +1042,13 @@
                 {
                   "number": "4.1.4",
                   "title": "- Expenditure, excluding salary for infrastructure augmentation during the year(INR in Lakhs)",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Expenditure for Infrastructure Augmentation - Additional Information",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/0b857ff356f30db013822528bc0d074b0ceea259.pdf",
+                      "_key": "4b1c0109603b"
+                    }
+                  ],
                   "_key": "8c3087ed8998"
                 }
               ],
@@ -1045,7 +1078,13 @@
                 {
                   "number": "4.2.2",
                   "title": "- The institution has subscription for the following e-resources",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Details of Subscriptions for E-Resources (E-Journals, Databases)",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/332c6ed01bf5c7579e70deaae9b8fa4961896f54.pdf",
+                      "_key": "8f5214691ea1"
+                    }
+                  ],
                   "_key": "e1e810db8132"
                 },
                 {
@@ -1350,7 +1389,18 @@
                 {
                   "number": "5.2.3.1",
                   "title": "5.2.3.1 Number of students qualifying in state/ national/ international level examinations (eg: JAM/CLAT/NET/ SLET/ GATE/ GMAT/CAT/GRE/ TOEFL/ Civil Services/ State government examinations) during the year VIEW",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Qualifying Students - Additional Information",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/c2e97955ee88dcd45879baa6fd436e10411a39e2.pdf",
+                      "_key": "9eef150df6f6"
+                    },
+                    {
+                      "label": "Number of Students Qualifying - Data Template",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/b6bd16a61ba586aa7e78c7c306da7ae1c625fdc1.xlsx",
+                      "_key": "abc7c651c5d2"
+                    }
+                  ],
                   "_key": "123704fddb3c"
                 },
                 {
@@ -1657,7 +1707,28 @@
                 {
                   "number": "6.3.3",
                   "title": "- Number of professional development /administrative training programs organized by the institution for teaching and non-teaching staff during the year",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Annual Reports Highlighting Programmes Undertaken by Teachers",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/5187fc38ba44bd0371861f8856e220dc9e32183c.pdf",
+                      "_key": "8c59d8410ede"
+                    },
+                    {
+                      "label": "Copy of Certificates Attended by Teachers",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/8bc625cc9d3e0b5191e28ae7d9f53f44abc78dfd.pdf",
+                      "_key": "a160c27f60bb"
+                    },
+                    {
+                      "label": "List of Faculty Attended Professional Development Programmes",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/45c369fd6ae673016d3a3d217161b9566f9ab3e3.pdf",
+                      "_key": "eaec297ff59e"
+                    },
+                    {
+                      "label": "Professional Development Programmes - Data Template",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/86253ee77efcd5525ad056593b1ae5b2946dc1ef.xlsx",
+                      "_key": "c348bc319c7b"
+                    }
+                  ],
                   "_key": "bb5d4b010133"
                 },
                 {
@@ -1746,7 +1817,23 @@
                 {
                   "number": "6.5.2",
                   "title": "- The institution reviews its teaching learning process, structures & methodologies of operations and learning outcomes at periodic intervals through IQAC set up as per norms and recorded the incremental improvement in various activities",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Minutes of IQAC Meetings 2023-24",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/df8cee2411131f48efb3d3113d8a83d055f3f292.pdf",
+                      "_key": "001f9c0cc998"
+                    },
+                    {
+                      "label": "AAA & NIRF Reports with Follow-up Actions 2023-24",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/ac7e4dfa5f6e281397c0efc9d975b6d64b6466ce.pdf",
+                      "_key": "8d1a75996c0c"
+                    },
+                    {
+                      "label": "Quality Audit Reports & Institutional Review",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/9ff76a5615ecb991c337dc1385b9e7567dc4a3d3.pdf",
+                      "_key": "04db1317f0db"
+                    }
+                  ],
                   "_key": "950edd90e4a8"
                 },
                 {
@@ -1978,11 +2065,46 @@
                 {
                   "number": "7.2.1",
                   "title": "- Describe two best practices successfully implemented by the Institution as per NAAC format provided in the Manual.",
-                  "documents": [],
+                  "documents": [
+                    {
+                      "label": "Best Practice 1 - Institutional Best Practice Report",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/2feddfa3ca53f1e21de998bae2f6a092c29f8e93.pdf",
+                      "_key": "8cbbc49d6751"
+                    },
+                    {
+                      "label": "Best Practice 2 - Institutional Best Practice Report",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/12a3b33bbfc5e7f3c5948240b80e5422b58a28f3.pdf",
+                      "_key": "b074a6e1c29c"
+                    }
+                  ],
                   "_key": "b30bb9334258"
                 }
               ],
               "_key": "555560c97d9a"
+            },
+            {
+              "number": "7.3",
+              "title": "Key Indicator – 7.3 Institutional Distinctiveness",
+              "metrics": [
+                {
+                  "number": "7.3.1",
+                  "title": "Portray the performance of the Institution in one area distinctive to its priority and thrust within 200 words",
+                  "documents": [
+                    {
+                      "label": "Institutional Distinctiveness - Rural Women Development (Final Report)",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/778078c0baa6d39442a7d162358c15d250216d73.pdf",
+                      "_key": "26533a021ca3"
+                    },
+                    {
+                      "label": "Institutional Distinctiveness - Rural Women Development (Website Document)",
+                      "documentUrl": "https://cdn.sanity.io/files/fhjwqub5/production/8c1b777c5cbe19ebf65abd41459bf9695b7d5116.pdf",
+                      "_key": "61d74d286e8e"
+                    }
+                  ],
+                  "_key": "crit7_sec73_met731"
+                }
+              ],
+              "_key": "crit7_sec73"
             }
           ],
           "_key": "8dd34fa87d41"

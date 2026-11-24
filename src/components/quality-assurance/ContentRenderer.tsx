@@ -2401,25 +2401,45 @@ const CriterionViewer = ({
 
   const getFilteredSections = () => {
     if (!selectedCriterion) return [];
-    if (!searchQuery.trim()) return selectedCriterion.sections;
 
-    const query = searchQuery.toLowerCase();
-    return selectedCriterion.sections.map(section => {
-      const filteredMetrics = section.metrics.filter(metric => {
-        const titleMatch = metric.title.toLowerCase().includes(query);
-        const numberMatch = metric.number.toLowerCase().includes(query);
-        const docMatch = metric.documents.some(doc => 
-          doc.label.toLowerCase().includes(query) ||
-          (doc.subDocuments && doc.subDocuments.some(sub => sub.name.toLowerCase().includes(query)))
-        );
-        return titleMatch || numberMatch || docMatch;
-      });
+    const isExtendedProfile =
+      selectedCriterion.id === 8 ||
+      selectedCriterion.title.toLowerCase().includes("extended profile");
 
-      return {
-        ...section,
-        metrics: filteredMetrics
-      };
-    }).filter(section => section.metrics.length > 0);
+    const query = searchQuery.toLowerCase().trim();
+
+    return selectedCriterion.sections
+      .map(section => {
+        let filteredMetrics = section.metrics;
+
+        // In Extended Profile tab, keep only metrics that have files; make empty metrics invisible
+        if (isExtendedProfile) {
+          filteredMetrics = filteredMetrics.filter(metric => {
+            return (
+              Array.isArray(metric.documents) &&
+              metric.documents.some(doc => hasDocument(doc))
+            );
+          });
+        }
+
+        if (query) {
+          filteredMetrics = filteredMetrics.filter(metric => {
+            const titleMatch = metric.title.toLowerCase().includes(query);
+            const numberMatch = metric.number.toLowerCase().includes(query);
+            const docMatch = metric.documents?.some(doc => 
+              doc.label.toLowerCase().includes(query) ||
+              (doc.subDocuments && doc.subDocuments.some(sub => sub.name.toLowerCase().includes(query)))
+            );
+            return titleMatch || numberMatch || docMatch;
+          });
+        }
+
+        return {
+          ...section,
+          metrics: filteredMetrics
+        };
+      })
+      .filter(section => section.metrics.length > 0);
   };
 
   const filteredSections = getFilteredSections();
