@@ -2402,25 +2402,17 @@ const CriterionViewer = ({
   const getFilteredSections = () => {
     if (!selectedCriterion) return [];
 
-    const isExtendedProfile =
-      selectedCriterion.id === 8 ||
-      selectedCriterion.title.toLowerCase().includes("extended profile");
-
     const query = searchQuery.toLowerCase().trim();
 
     return selectedCriterion.sections
       .map(section => {
-        let filteredMetrics = section.metrics;
-
-        // In Extended Profile tab, keep only metrics that have files; make empty metrics invisible
-        if (isExtendedProfile) {
-          filteredMetrics = filteredMetrics.filter(metric => {
-            return (
-              Array.isArray(metric.documents) &&
-              metric.documents.some(doc => hasDocument(doc))
-            );
-          });
-        }
+        // Keep only metrics that have files; make empty metrics without documents invisible
+        let filteredMetrics = section.metrics.filter(metric => {
+          return (
+            Array.isArray(metric.documents) &&
+            metric.documents.some(doc => hasDocument(doc))
+          );
+        });
 
         if (query) {
           filteredMetrics = filteredMetrics.filter(metric => {

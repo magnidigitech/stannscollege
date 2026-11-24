@@ -16,9 +16,28 @@ import {
   Mail,
   Image as ImageIcon,
   Eye,
+  X,
+  Info,
 } from "lucide-react";
 import { getNotices } from "@/lib/sanity";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
+
+// Client-approved Starburst NEW badge matching the official circulars / events layout
+const StarburstNewBadge = () => (
+  <span className="relative inline-flex items-center justify-center shrink-0 w-5 h-5 sm:w-5.5 sm:h-5.5 select-none my-0.5 animate-pulse">
+    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.18)]">
+      <polygon
+        points="50,0 61,24 85,15 79,40 100,50 79,60 85,85 61,76 50,100 39,76 15,85 21,60 0,50 21,40 15,15 39,24"
+        fill="#FFE600"
+        stroke="#EAB308"
+        strokeWidth="3"
+      />
+    </svg>
+    <span className="absolute font-black text-[6.5px] sm:text-[7px] text-[#DC2626] tracking-tighter leading-none font-sans scale-90">
+      NEW
+    </span>
+  </span>
+);
 
 function isNoticeNew(dateStr?: string, newUntil?: string, isNewFlag?: boolean): boolean {
   if (isNewFlag === false) return false;
@@ -185,6 +204,78 @@ export default function NoticesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [previewModalFile, setPreviewModalFile] = useState<{ url: string; title: string } | null>(null);
+
+  // Active Notice Details Modal
+  const [activeNoticeModal, setActiveNoticeModal] = useState<{
+    title: string;
+    date?: string;
+    category?: string;
+    description?: string;
+    imageUrl?: string;
+    newUntil?: string;
+    isNew?: boolean;
+    links?: { title: string; url: string }[];
+    documents?: { title: string; url: string; originalFilename?: string; fileType?: "pdf" | "image" }[];
+  } | null>(null);
+
+  // Handler for clicking notice details: Opens the notice popup modal with full details, links, flyer and documents
+  const handleNoticeClick = (item: any) => {
+    const links: { title: string; url: string }[] = [];
+    if (item.linkUrl) {
+      links.push({
+        title: item.linkLabel || item.linkUrl,
+        url: item.linkUrl,
+      });
+    }
+    if (Array.isArray(item.links)) {
+      item.links.forEach((l: any) => {
+        if (l?.url && !links.some((existing) => existing.url === l.url)) {
+          links.push({
+            title: l.title || l.url,
+            url: l.url,
+          });
+        }
+      });
+    }
+
+    const documents: { title: string; url: string; originalFilename?: string; fileType?: "pdf" | "image" }[] = [];
+    if (item.pdfUrl || item.fileUrl) {
+      documents.push({
+        title: item.pdfTitle || "Official Circular (PDF)",
+        url: item.pdfUrl || item.fileUrl,
+        originalFilename: "Official_Circular.pdf",
+        fileType: "pdf",
+      });
+    }
+    if (Array.isArray(item.documents)) {
+      item.documents.forEach((d: any) => {
+        if (d?.url && !documents.some((existing) => existing.url === d.url)) {
+          const isImg =
+            d.fileType === "image" ||
+            d.mimeType?.startsWith("image/") ||
+            /\.(jpe?g|png|webp|gif|svg)$/i.test(d.url || d.originalFilename || "");
+          documents.push({
+            title: d.title || d.originalFilename || (isImg ? "Attached Notice Image" : "Notice Document"),
+            url: d.url,
+            originalFilename: d.originalFilename,
+            fileType: isImg ? "image" : "pdf",
+          });
+        }
+      });
+    }
+
+    setActiveNoticeModal({
+      title: item.title,
+      date: item.date,
+      category: item.category,
+      description: item.description,
+      imageUrl: item.imageUrl,
+      newUntil: item.newUntil,
+      isNew: item.isNew,
+      links,
+      documents,
+    });
+  };
 
   useEffect(() => {
     async function load() {
@@ -365,13 +456,27 @@ export default function NoticesPage() {
                         )}
                       </div>
 
-                      <h2 className={`font-outfit text-sm sm:text-base leading-snug transition-colors ${
-                        isNew
-                          ? "font-bold text-[#002147] animate-[pulse_2.5s_ease-in-out_infinite] group-hover:text-rose-600"
-                          : "font-bold text-slate-800 group-hover:text-[#002147]"
-                      }`}>
-                        {n.title}
-                      </h2>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2
+                          onClick={() => handleNoticeClick(n)}
+                          className={`font-outfit text-sm sm:text-base leading-snug transition-colors cursor-pointer inline ${
+                            isNew
+                              ? "font-bold text-[#002147] animate-[pulse_2.5s_ease-in-out_infinite] hover:text-rose-600"
+                              : "font-bold text-slate-800 hover:text-[#002147]"
+                          }`}
+                        >
+                          {n.title}
+                        </h2>
+                        <button
+                          type="button"
+                          onClick={() => handleNoticeClick(n)}
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-rose-50 hover:bg-[#002147] text-rose-800 hover:text-white border border-rose-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn select-none"
+                          title="Click for more"
+                        >
+                          <FileText className="h-3 w-3 shrink-0 text-rose-600 group-hover/btn:text-white transition-colors" />
+                          <span>Click for more</span>
+                        </button>
+                      </div>
 
                       {n.description && (
                         <p className="font-sans text-xs text-slate-600 mt-1 leading-relaxed whitespace-pre-line">
@@ -383,6 +488,17 @@ export default function NoticesPage() {
 
                   {/* Right Action: Web Links, Poster Flyer, or Documents */}
                   <div className="shrink-0 flex flex-wrap items-center gap-2">
+                    {/* Click for More Details Button */}
+                    <button
+                      type="button"
+                      onClick={() => handleNoticeClick(n)}
+                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-[#002147] border border-rose-200 hover:border-[#002147] text-rose-800 hover:text-white font-bold text-xs shadow-2xs transition-all active:scale-95 cursor-pointer group/more"
+                      title="View full notice details, documents & links"
+                    >
+                      <FileText className="h-3.5 w-3.5 text-rose-600 group-hover/more:text-white transition-colors" />
+                      <span>Click for more</span>
+                    </button>
+
                     {/* Notice Poster / Flyer (Option C) */}
                     {n.imageUrl && (
                       <button
@@ -508,6 +624,264 @@ export default function NoticesPage() {
           )}
         </div>
       </section>
+
+      {/* ── NOTICE DETAILS & DOCUMENTS POPUP MODAL ── */}
+      {activeNoticeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
+          {/* Backdrop click to close */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setActiveNoticeModal(null)}
+          />
+
+          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-scaleUp">
+            {/* Modal Top Header */}
+            <div className="flex items-center justify-between px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#001730] via-[#002147] to-[#0a3d78] text-white">
+              <div className="flex items-center gap-2.5">
+                <div className="h-7 w-7 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
+                  <Bell className="h-3.5 w-3.5 text-rose-300" />
+                </div>
+                <div>
+                  <h3 className="font-outfit text-sm sm:text-base font-bold leading-tight">
+                    Notice Details &amp; Circular
+                  </h3>
+                  <p className="text-[10px] sm:text-[10.5px] text-sky-200/80 leading-tight">
+                    St. Ann&apos;s College for Women • Official Notice Board
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveNoticeModal(null)}
+                className="h-7 w-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer border border-white/10 shrink-0"
+                aria-label="Close modal"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto bg-slate-50/50">
+              {/* Notice Info Card */}
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
+                {/* 1. Notice Title */}
+                <h4 className="font-outfit text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+                  {activeNoticeModal.title}
+                </h4>
+
+                {/* 2. Tags: Date, Category, NEW badge */}
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                  {isNoticeNew(activeNoticeModal.date, activeNoticeModal.newUntil, activeNoticeModal.isNew) && <StarburstNewBadge />}
+                  {activeNoticeModal.date && (
+                    <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200/60">
+                      <Calendar className="h-3.5 w-3.5 text-rose-600" />
+                      {activeNoticeModal.date}
+                    </span>
+                  )}
+                  {activeNoticeModal.category && (
+                    <span className="inline-flex items-center gap-1 font-medium text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 uppercase tracking-wider text-[10px]">
+                      {activeNoticeModal.category.replace(/-/g, " ")}
+                    </span>
+                  )}
+                </div>
+
+                {/* 3. Description / Notice Content */}
+                {activeNoticeModal.description && (
+                  <div className="pt-2 border-t border-slate-100">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                      <Info className="h-3 w-3 text-indigo-500" />
+                      <span>Official Notice Announcement</span>
+                    </div>
+                    <div className="bg-slate-50/90 rounded-xl p-3 border border-slate-200/70 border-l-4 border-l-[#002147] text-xs sm:text-[13px] text-slate-700 leading-relaxed shadow-2xs whitespace-pre-line">
+                      {activeNoticeModal.description}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Notice Poster / Circular Flyer (Option C) */}
+              {activeNoticeModal.imageUrl && (
+                <div className="bg-white rounded-2xl p-4 border border-emerald-200/90 shadow-2xs space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-emerald-900">
+                      <ImageIcon className="h-4 w-4 text-emerald-600" />
+                      <span>Official Notice Poster / Circular Flyer</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPreviewModalFile({
+                          title: `${activeNoticeModal.title} - Poster`,
+                          url: activeNoticeModal.imageUrl!,
+                        })
+                      }
+                      className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>Enlarge Poster</span>
+                    </button>
+                  </div>
+                  <div
+                    onClick={() =>
+                      setPreviewModalFile({
+                        title: `${activeNoticeModal.title} - Poster`,
+                        url: activeNoticeModal.imageUrl!,
+                      })
+                    }
+                    className="relative rounded-xl overflow-hidden border border-emerald-200 bg-slate-900/5 hover:bg-slate-900/10 transition-all cursor-pointer group/poster flex items-center justify-center max-h-96"
+                  >
+                    <img
+                      src={activeNoticeModal.imageUrl}
+                      alt={activeNoticeModal.title}
+                      className="w-full h-auto max-h-96 object-contain group-hover:scale-[1.01] transition-transform duration-200"
+                    />
+                    <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/poster:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-bold backdrop-blur-[1px]">
+                      <Eye className="h-4 w-4" />
+                      <span>Click to Zoom &amp; Pan Poster</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── SECTION FOR LINKS ── */}
+              {activeNoticeModal.links && activeNoticeModal.links.length > 0 && (
+                <div>
+                  <h5 className="text-xs font-black uppercase tracking-wider text-slate-600 mb-2.5 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <ExternalLink className="h-3.5 w-3.5 text-sky-600" />
+                      <span>Official Links &amp; Portals ({activeNoticeModal.links.length})</span>
+                    </span>
+                    <span className="text-[10px] font-bold text-sky-600 lowercase tracking-normal">
+                      Click to visit portal
+                    </span>
+                  </h5>
+
+                  <div className="space-y-2">
+                    {activeNoticeModal.links.map((link, idx) => (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full text-left flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 shadow-2xs hover:shadow-md transition-all group/link cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 pr-3">
+                          <div className="h-10 w-10 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center shrink-0 group-hover/link:bg-sky-100 transition-colors">
+                            <ExternalLink className="h-5 w-5 text-sky-600" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/link:text-[#002147] truncate">
+                              {link.title || link.url}
+                            </p>
+                            <p className="text-[11px] text-sky-600 underline font-mono truncate">
+                              {link.url}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#002147] group-hover/link:bg-sky-700 text-white font-bold text-xs shadow-xs transition-colors">
+                          <span>Open Link</span>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── SECTION FOR DOCUMENTS & PDFS ── */}
+              <div>
+                <h5 className="text-xs font-black uppercase tracking-wider text-slate-600 mb-2.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <FileText className="h-3.5 w-3.5 text-rose-600" />
+                    <span>Attached Documents &amp; Circulars ({activeNoticeModal.documents?.length || 0})</span>
+                  </span>
+                  <span className="text-[10px] font-bold text-rose-600 lowercase tracking-normal">
+                    Click to view / download
+                  </span>
+                </h5>
+
+                {activeNoticeModal.documents && activeNoticeModal.documents.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {activeNoticeModal.documents.map((doc, idx) => {
+                      const isDocImg = doc.fileType === "image" || /\.(jpe?g|png|webp|gif|svg)$/i.test(doc.url || doc.originalFilename || "");
+                      return (
+                        <div
+                          key={idx}
+                          className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-rose-50/40 border border-slate-200 hover:border-rose-300 shadow-2xs hover:shadow-md transition-all group/doc"
+                        >
+                          <div className="flex items-center gap-3 min-w-0 pr-3">
+                            <div className={`h-10 w-10 rounded-xl border flex items-center justify-center shrink-0 transition-colors ${
+                              isDocImg ? "bg-emerald-50 border-emerald-100 group-hover/doc:bg-emerald-100" : "bg-rose-50 border-rose-100 group-hover/doc:bg-rose-100"
+                            }`}>
+                              {isDocImg ? (
+                                <ImageIcon className="h-5 w-5 text-emerald-600" />
+                              ) : (
+                                <FileText className="h-5 w-5 text-rose-600" />
+                              )}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover/doc:text-[#002147] truncate">
+                                {doc.title || `Document ${idx + 1}`}
+                              </p>
+                              <p className="text-[11px] text-slate-400">
+                                {doc.originalFilename || (isDocImg ? "Click to view image attachment" : "Click to view PDF document")}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="shrink-0 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPreviewModalFile({
+                                  title: doc.title || (isDocImg ? "Notice Image" : "Notice Document PDF"),
+                                  url: doc.url,
+                                })
+                              }
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-white font-bold text-xs shadow-xs transition-colors cursor-pointer ${
+                                isDocImg ? "bg-emerald-600 hover:bg-emerald-700" : "bg-rose-600 hover:bg-[#002147]"
+                              }`}
+                            >
+                              <span>{isDocImg ? "View Image" : "View PDF"}</span>
+                              {isDocImg ? <ImageIcon className="h-3.5 w-3.5" /> : <FileText className="h-3.5 w-3.5" />}
+                            </button>
+                            <a
+                              href={doc.url}
+                              download
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-slate-200"
+                              title="Download Attachment"
+                            >
+                              <Download className="h-4 w-4" />
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl p-5 border border-slate-200 text-center">
+                    <FileText className="h-9 w-9 text-slate-300 mx-auto mb-1.5" />
+                    <p className="text-xs font-bold text-slate-700">Digital Announcement</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5 max-w-xs mx-auto">
+                      Official circular published online. No downloadable PDF attachment required.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-3.5 bg-slate-100 border-t border-slate-200 flex justify-end">
+              <button
+                onClick={() => setActiveNoticeModal(null)}
+                className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* In-app Document & Image Preview Modal */}
       <FilePreviewModal

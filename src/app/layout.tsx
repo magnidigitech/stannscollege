@@ -25,10 +25,52 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://stannscollegeforwomen.ac.in"),
-  title: "St. Ann's College for Women, Gorantla",
-  description: "Fostering premium education, empowerment, and academic excellence for women in Guntur, AP.",
+  title: {
+    default: "St. Ann's College for Women, Gorantla | Premier Women's Institution in Guntur",
+    template: "%s | St. Ann's College for Women",
+  },
+  description: "St. Ann's College for Women (Autonomous), Gorantla, Guntur — Premier women's higher education institution affiliated to Acharya Nagarjuna University, offering UG, PG, MBA & MCA programmes, NAAC accredited with excellence.",
+  keywords: [
+    "St. Ann's College for Women",
+    "St. Ann's College Guntur",
+    "St. Ann's Gorantla",
+    "Women's College Guntur",
+    "Best Degree College in Guntur",
+    "UG Programmes Guntur",
+    "PG Programmes Guntur",
+    "MBA MCA College Guntur",
+    "St Anns College",
+    "St Anns College for Women Gorantla",
+    "Society of St Anne Guntur",
+  ],
   alternates: {
     canonical: "./",
+  },
+  icons: {
+    icon: [
+      { url: "/images/Crest_Logo.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: [
+      { url: "/images/Crest_Logo.png", type: "image/png" },
+    ],
+    shortcut: "/images/Crest_Logo.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://stannscollegeforwomen.ac.in",
+    siteName: "St. Ann's College for Women",
+    title: "St. Ann's College for Women, Gorantla, Guntur",
+    description: "Fostering premium education, women empowerment, and academic excellence in Guntur, Andhra Pradesh.",
+    images: [
+      {
+        url: "/images/Crest_Logo.png",
+        width: 1200,
+        height: 630,
+        alt: "St. Ann's College for Women Emblem",
+      },
+    ],
   },
 };
 
@@ -39,6 +81,93 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} antialiased scroll-smooth`} suppressHydrationWarning>
+      <head>
+        {/* Google Sitelinks & Educational Organization Structured Data (JSON-LD) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": "https://stannscollegeforwomen.ac.in/#website",
+                  "url": "https://stannscollegeforwomen.ac.in",
+                  "name": "St. Ann's College for Women",
+                  "alternateName": [
+                    "St. Ann's College for Women, Gorantla",
+                    "St. Ann's College Guntur",
+                    "SACW Guntur"
+                  ],
+                  "description": "Premier higher education institution for women in Guntur, Andhra Pradesh, offering UG, PG, MBA & MCA programmes.",
+                  "inLanguage": "en-IN"
+                },
+                {
+                  "@type": "CollegeOrUniversity",
+                  "@id": "https://stannscollegeforwomen.ac.in/#college",
+                  "name": "St. Ann's College for Women",
+                  "alternateName": "St. Ann's College for Women, Gorantla",
+                  "url": "https://stannscollegeforwomen.ac.in",
+                  "logo": "https://stannscollegeforwomen.ac.in/images/Crest_Logo.png",
+                  "image": "https://stannscollegeforwomen.ac.in/images/Crest_Logo.png",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Gorantla",
+                    "addressLocality": "Guntur",
+                    "addressRegion": "Andhra Pradesh",
+                    "postalCode": "522034",
+                    "addressCountry": "IN"
+                  },
+                  "hasPart": [
+                    {
+                      "@type": "WebPage",
+                      "name": "About Us",
+                      "description": "History, mission, vision, and governing body of St. Ann's College for Women.",
+                      "url": "https://stannscollegeforwomen.ac.in/about/history"
+                    },
+                    {
+                      "@type": "WebPage",
+                      "name": "Admissions",
+                      "description": "Admissions process, eligibility criteria, and programmes offered.",
+                      "url": "https://stannscollegeforwomen.ac.in/admissions/programmes-offered"
+                    },
+                    {
+                      "@type": "WebPage",
+                      "name": "Courses & Academic Programmes",
+                      "description": "Undergraduate, postgraduate, and professional degree programmes.",
+                      "url": "https://stannscollegeforwomen.ac.in/courses"
+                    },
+                    {
+                      "@type": "WebPage",
+                      "name": "Placements Overview",
+                      "description": "Campus recruitment, placement statistics, training, and industry linkages.",
+                      "url": "https://stannscollegeforwomen.ac.in/placements/about-cell"
+                    },
+                    {
+                      "@type": "WebPage",
+                      "name": "Quality Assurance & NAAC",
+                      "description": "Internal Quality Assurance Cell (IQAC), NAAC accreditation, and AQAR reports.",
+                      "url": "https://stannscollegeforwomen.ac.in/quality-assurance/iqac"
+                    },
+                    {
+                      "@type": "WebPage",
+                      "name": "Notices & Circulars",
+                      "description": "Official college circulars, examination notifications, and university timetables.",
+                      "url": "https://stannscollegeforwomen.ac.in/notices"
+                    },
+                    {
+                      "@type": "WebPage",
+                      "name": "Contact Us",
+                      "description": "Location, campus address, telephone, and enquiry desk of St. Ann's College for Women.",
+                      "url": "https://stannscollegeforwomen.ac.in/contact"
+                    }
+                  ]
+                }
+              ]
+            })
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col justify-between selection:bg-indigo-50 selection:text-indigo-900" suppressHydrationWarning>
 
 
