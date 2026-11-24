@@ -148,14 +148,14 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
     normalizedSlug = "department-of-sanskrit-hindi";
   }
 
+  const [dynamicDept, setDynamicDept] = useState<any>(null);
+
   const staticDept = academicsData.departments.find((d: any) => d.id === normalizedSlug || d.id === itemSlug);
 
   const deptName = staticDept?.name || "Academic Department";
   const deptSubtext = departmentSubtextMap[normalizedSlug] || staticDept?.subtext || null;
-  const introParagraph = staticDept?.description || `The ${deptName} is committed to academic excellence, state-of-the-art experiential learning, and preparing women students for impactful leadership and distinguished careers.`;
-  const overviewPdf = staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
-
-  const [dynamicDept, setDynamicDept] = useState<any>(null);
+  const introParagraph = dynamicDept?.description || staticDept?.description || `The ${deptName} is committed to academic excellence, state-of-the-art experiential learning, and preparing women students for impactful leadership and distinguished careers.`;
+  const overviewPdf = dynamicDept?.overviewDocUrl || staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
 
   useEffect(() => {
     getDepartment(normalizedSlug).then((data) => {

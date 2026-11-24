@@ -43,11 +43,6 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
   const languageLabel = isEnglish ? "English" : isTelugu ? "Telugu" : "Sanskrit & Hindi";
   const languageAdjective = isEnglish ? "English Language" : isTelugu ? "Telugu Language" : "Sanskrit & Hindi Language";
 
-  const deptName = staticDept?.name || (isEnglish ? "English" : isTelugu ? "Telugu" : "Sanskrit & Hindi");
-  const deptSubtext = "(Under the Department of Oriental Languages)";
-  const introParagraph = staticDept?.description || "";
-  const overviewPdf = staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
-
   const [dynamicDept, setDynamicDept] = useState<any>(null);
 
   useEffect(() => {
@@ -57,6 +52,11 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
       })
       .catch((err) => console.error("Error loading department dynamic data:", err));
   }, [normalizedSlug]);
+
+  const deptName = staticDept?.name || (isEnglish ? "English" : isTelugu ? "Telugu" : "Sanskrit & Hindi");
+  const deptSubtext = "(Under the Department of Oriental Languages)";
+  const introParagraph = dynamicDept?.description || staticDept?.description || "";
+  const overviewPdf = dynamicDept?.overviewDocUrl || staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
 
   // Modals state
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

@@ -273,7 +273,7 @@ export async function getAisheCertifications() {
 
 export async function getDepartment(slug: string) {
   try {
-    const query = `*[_type == "department" && slug.current == $slug][0]{
+    const query = `*[_type == "department" && (slug.current == $slug || _id == $slug || _id == "department-" + $slug)] | order(_updatedAt desc)[0]{
       name,
       established,
       tagline,
@@ -283,6 +283,8 @@ export async function getDepartment(slug: string) {
       overviewDocUrl,
       programmes,
       curriculumDocuments,
+      curriculumByYear,
+      curriculumByYearJson,
       facultyMembers,
       passPercentage,
       placements,

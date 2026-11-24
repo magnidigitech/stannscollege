@@ -53,7 +53,7 @@ export function DepartmentOfCommerce() {
 
 
   const staticDept = academicsData.departments.find((d: any) => d.id === "department-of-commerce");
-  const overviewPdf = staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
+  const overviewPdf = dynamicDept?.overviewDocUrl || staticDept?.overviewDocUrl || "/documents/DefaultFile_1.pdf";
 
   const handleOpenPdf = (url: string, title: string) => {
     setPreviewUrl(url || "/documents/DefaultFile_1.pdf");

@@ -305,7 +305,11 @@ export async function POST(req: NextRequest) {
           if (idx !== -1) {
             json.departments[idx] = {
               ...json.departments[idx],
+              overviewDocUrl: departmentData.overviewDocUrl || json.departments[idx].overviewDocUrl,
+              tagline: departmentData.tagline || json.departments[idx].tagline,
               description: departmentData.description || json.departments[idx].description,
+              vision: departmentData.vision || json.departments[idx].vision,
+              mission: departmentData.mission || json.departments[idx].mission,
               results: departmentData.results || departmentData.passPercentage || json.departments[idx].results,
               achievements: departmentData.studentAchievements || json.departments[idx].achievements,
               activities: departmentData.activities || departmentData.activitiesList || json.departments[idx].activities,
