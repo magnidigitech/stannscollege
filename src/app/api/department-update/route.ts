@@ -301,15 +301,19 @@ export async function POST(req: NextRequest) {
         const raw = fs.readFileSync(filePath, "utf-8");
         const json = JSON.parse(raw);
         if (Array.isArray(json.departments)) {
-          const idx = json.departments.findIndex((d: any) => d.id === selectedDeptId);
+          const normId = selectedDeptId.replace(/^department-(of-)?/, "");
+          const idx = json.departments.findIndex((d: any) => 
+            d.id === selectedDeptId || 
+            (d.id && (d.id === normId || d.id.replace(/^department-(of-)?/, "") === normId))
+          );
           if (idx !== -1) {
             json.departments[idx] = {
               ...json.departments[idx],
-              overviewDocUrl: departmentData.overviewDocUrl || json.departments[idx].overviewDocUrl,
-              tagline: departmentData.tagline || json.departments[idx].tagline,
-              description: departmentData.description || json.departments[idx].description,
-              vision: departmentData.vision || json.departments[idx].vision,
-              mission: departmentData.mission || json.departments[idx].mission,
+              overviewDocUrl: departmentData.overviewDocUrl !== undefined ? departmentData.overviewDocUrl : json.departments[idx].overviewDocUrl,
+              tagline: departmentData.tagline !== undefined ? departmentData.tagline : json.departments[idx].tagline,
+              description: departmentData.description !== undefined ? departmentData.description : json.departments[idx].description,
+              vision: departmentData.vision !== undefined ? departmentData.vision : json.departments[idx].vision,
+              mission: departmentData.mission !== undefined ? departmentData.mission : json.departments[idx].mission,
               results: departmentData.results || departmentData.passPercentage || json.departments[idx].results,
               achievements: departmentData.studentAchievements || json.departments[idx].achievements,
               activities: departmentData.activities || departmentData.activitiesList || json.departments[idx].activities,

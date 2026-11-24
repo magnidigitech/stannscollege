@@ -603,17 +603,22 @@ export function DepartmentUpdateForm() {
     setStatusMsg({ type: "", text: "" });
     try {
       const data = await getDepartment(selectedDeptId);
-      if (data) {
-        setEstablished(data.established || "1997-98");
-        setTagline(data.tagline || "");
-        setDescription(data.description || "");
-        setVision(data.vision || "");
-        setMission(Array.isArray(data.mission) ? data.mission : []);
-        setOverviewDocUrl(data.overviewDocUrl || "");
+      const staticDept = (academicsData.departments as any[]).find((d: any) => d.id === selectedDeptId);
+      const effective = data || staticDept;
+      if (effective) {
+        setEstablished(effective.established || "1997-98");
+        setTagline(effective.tagline || staticDept?.tagline || "");
+        setDescription(effective.description || staticDept?.description || "");
+        setVision(effective.vision || staticDept?.vision || "");
+        setMission(Array.isArray(effective.mission) && effective.mission.length > 0 ? effective.mission : (Array.isArray(staticDept?.mission) ? staticDept.mission : []));
+        setOverviewDocUrl(effective.overviewDocUrl || staticDept?.overviewDocUrl || "");
 
         // 1. Programmes
-        if (Array.isArray(data.programmes) && data.programmes.length > 0) {
-          setProgrammes(data.programmes.map((p: any, i: number) => ({
+        const rawProgrammes = (Array.isArray(effective.programmes) && effective.programmes.length > 0)
+          ? effective.programmes
+          : (Array.isArray(staticDept?.programmes) && staticDept.programmes.length > 0 ? staticDept.programmes : []);
+        if (rawProgrammes.length > 0) {
+          setProgrammes(rawProgrammes.map((p: any, i: number) => ({
             sNo: i + 1,
             name: p.name || p.title || "",
             type: p.type || "UG Honours",
@@ -627,19 +632,19 @@ export function DepartmentUpdateForm() {
 
         // 2. Curriculum Documents & Curriculum By Year
         let loadedCurriculumByYear: Record<string, any> = {};
-        if (data.curriculumByYearJson) {
+        if (effective.curriculumByYearJson) {
           try {
-            loadedCurriculumByYear = typeof data.curriculumByYearJson === "string"
-              ? JSON.parse(data.curriculumByYearJson)
-              : data.curriculumByYearJson;
+            loadedCurriculumByYear = typeof effective.curriculumByYearJson === "string"
+              ? JSON.parse(effective.curriculumByYearJson)
+              : effective.curriculumByYearJson;
           } catch { }
-        } else if (data.curriculumByYear && typeof data.curriculumByYear === "object") {
-          loadedCurriculumByYear = data.curriculumByYear;
+        } else if (effective.curriculumByYear && typeof effective.curriculumByYear === "object") {
+          loadedCurriculumByYear = effective.curriculumByYear;
         }
 
         if (Object.keys(loadedCurriculumByYear).length === 0) {
-          if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
-            loadedCurriculumByYear["2025–2026"] = data.curriculumDocuments;
+          if (Array.isArray(effective.curriculumDocuments) && effective.curriculumDocuments.length > 0) {
+            loadedCurriculumByYear["2025–2026"] = effective.curriculumDocuments;
           }
         }
         setCurriculumByYear(loadedCurriculumByYear);
@@ -655,8 +660,14 @@ export function DepartmentUpdateForm() {
               ? "Telugu Language"
               : "Sanskrit & Hindi Language";
 
-          if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
-            setCurriculumDocuments(data.curriculumDocuments);
+          const rawCurriculum = (Array.isArray(effective.curriculumDocuments) && effective.curriculumDocuments.length > 0)
+            ? effective.curriculumDocuments
+            : (Array.isArray(staticDept?.curriculumDocuments) && staticDept.curriculumDocuments.length > 0
+              ? staticDept.curriculumDocuments
+              : []);
+
+          if (rawCurriculum.length > 0) {
+            setCurriculumDocuments(rawCurriculum);
           } else {
             setCurriculumDocuments([
               { sNo: 1, particular: `${langAdjective} Course Structure (Programme-wise / Semester-wise)`, documentUrl: "" },
@@ -665,27 +676,34 @@ export function DepartmentUpdateForm() {
               { sNo: 4, particular: "Teaching-Learning Resources and Materials", documentUrl: "" },
             ]);
           }
-        } else if (Array.isArray(data.curriculumDocuments) && data.curriculumDocuments.length > 0) {
-          setCurriculumDocuments(data.curriculumDocuments);
         } else {
-          setCurriculumDocuments([
-            { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "" },
-            { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "" },
-            { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "" },
-            { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "" },
-            { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "" },
-            { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "" },
-          ]);
+          const rawCurriculum = (Array.isArray(effective.curriculumDocuments) && effective.curriculumDocuments.length > 0)
+            ? effective.curriculumDocuments
+            : (Array.isArray(staticDept?.curriculumDocuments) && staticDept.curriculumDocuments.length > 0
+              ? staticDept.curriculumDocuments
+              : []);
+
+          if (rawCurriculum.length > 0) {
+            setCurriculumDocuments(rawCurriculum);
+          } else {
+            setCurriculumDocuments([
+              { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "" },
+              { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "" },
+              { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "" },
+              { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "" },
+              { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "" },
+              { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "" },
+            ]);
+          }
         }
 
         // 3. Results (Pass %) - 8 cols
         if (isLanguageWing) {
-          const staticDept = (academicsData.departments as any[]).find((d: any) => d.id === selectedDeptId);
-          const staticResults = staticDept?.results || [];
-          const sourceResults = (Array.isArray(data.passPercentage) && data.passPercentage.length > 0 && (data.passPercentage[0]?.courseName || data.passPercentage[0]?.semester))
-            ? data.passPercentage
-            : (Array.isArray(data.results) && data.results.length > 0)
-              ? data.results
+          const staticResults = staticDept?.results || staticDept?.passPercentage || [];
+          const sourceResults = (Array.isArray(effective.passPercentage) && effective.passPercentage.length > 0 && (effective.passPercentage[0]?.courseName || effective.passPercentage[0]?.semester))
+            ? effective.passPercentage
+            : (Array.isArray(effective.results) && effective.results.length > 0)
+              ? effective.results
               : staticResults;
 
           if (Array.isArray(sourceResults) && sourceResults.length > 0) {
@@ -705,23 +723,40 @@ export function DepartmentUpdateForm() {
           } else {
             setPassPercentage([]);
           }
-        } else if (Array.isArray(data.passPercentage) && data.passPercentage.length > 0) {
-          setPassPercentage(data.passPercentage.map((p: any, i: number) => ({
-            sNo: i + 1,
-            year: p.year || "",
-            intake: (p.intake ?? p.sanctionedIntake ?? "").toString(),
-            admitted: (p.admitted ?? p.admittedStudents ?? "").toString(),
-            discontinued: (p.discontinued ?? "").toString(),
-            appeared: (p.appeared ?? p.finalYearStudents ?? "").toString(),
-            passed: (p.passed ?? p.studentsPassed ?? "").toString(),
-            percentage: (p.percentage ?? p.passPct ?? "").toString()
-          })));
         } else {
-          setPassPercentage([]);
+          const rawPass = (Array.isArray(effective.passPercentage) && effective.passPercentage.length > 0)
+            ? effective.passPercentage
+            : (Array.isArray(effective.results) && effective.results.length > 0)
+              ? effective.results
+              : (Array.isArray(staticDept?.passPercentage) && staticDept.passPercentage.length > 0)
+                ? staticDept.passPercentage
+                : (Array.isArray(staticDept?.results) ? staticDept.results : []);
+
+          if (rawPass.length > 0) {
+            setPassPercentage(rawPass.map((p: any, i: number) => ({
+              sNo: i + 1,
+              year: p.year || "",
+              intake: (p.intake ?? p.sanctionedIntake ?? "").toString(),
+              admitted: (p.admitted ?? p.admittedStudents ?? "").toString(),
+              discontinued: (p.discontinued ?? "").toString(),
+              appeared: (p.appeared ?? p.finalYearStudents ?? "").toString(),
+              passed: (p.passed ?? p.studentsPassed ?? "").toString(),
+              percentage: (p.percentage ?? p.passPct ?? "").toString()
+            })));
+          } else {
+            setPassPercentage([]);
+          }
         }
 
         // 4. University Ranks - 9 cols
-        const ranks = data.universityRanks || data.academicAchievements || [];
+        const ranks = (Array.isArray(effective.universityRanks) && effective.universityRanks.length > 0)
+          ? effective.universityRanks
+          : (Array.isArray(effective.academicAchievements) && effective.academicAchievements.length > 0)
+            ? effective.academicAchievements
+            : (Array.isArray(staticDept?.universityRanks) && staticDept.universityRanks.length > 0)
+              ? staticDept.universityRanks
+              : (Array.isArray(staticDept?.academicAchievements) ? staticDept.academicAchievements : []);
+
         if (Array.isArray(ranks) && ranks.length > 0) {
           setUniversityRanks(ranks.map((r: any, i: number) => ({
             sNo: i + 1,
@@ -739,8 +774,12 @@ export function DepartmentUpdateForm() {
         }
 
         // 5. Placements - 6 cols
-        if (Array.isArray(data.placements) && data.placements.length > 0) {
-          setPlacements(data.placements.map((p: any, i: number) => ({
+        const rawPlacements = (Array.isArray(effective.placements) && effective.placements.length > 0)
+          ? effective.placements
+          : (Array.isArray(staticDept?.placements) ? staticDept.placements : []);
+
+        if (rawPlacements.length > 0) {
+          setPlacements(rawPlacements.map((p: any, i: number) => ({
             sNo: i + 1,
             year: p.year || "",
             finalStudents: (p.finalStudents ?? p.finalYearStudents ?? "").toString(),
@@ -753,8 +792,12 @@ export function DepartmentUpdateForm() {
         }
 
         // 6. Higher Education - 7 cols
-        if (Array.isArray(data.higherEducation) && data.higherEducation.length > 0) {
-          setHigherEducation(data.higherEducation.map((h: any, i: number) => ({
+        const rawHigherEd = (Array.isArray(effective.higherEducation) && effective.higherEducation.length > 0)
+          ? effective.higherEducation
+          : (Array.isArray(staticDept?.higherEducation) ? staticDept.higherEducation : []);
+
+        if (rawHigherEd.length > 0) {
+          setHigherEducation(rawHigherEd.map((h: any, i: number) => ({
             sNo: i + 1,
             year: h.year || "",
             totalOutgoing: (h.totalOutgoing ?? "").toString(),
@@ -768,8 +811,12 @@ export function DepartmentUpdateForm() {
         }
 
         // 7. Competitive Exams - 6 cols
-        if (Array.isArray(data.competitiveExams) && data.competitiveExams.length > 0) {
-          setCompetitiveExams(data.competitiveExams.map((c: any, i: number) => ({
+        const rawCompExams = (Array.isArray(effective.competitiveExams) && effective.competitiveExams.length > 0)
+          ? effective.competitiveExams
+          : (Array.isArray(staticDept?.competitiveExams) ? staticDept.competitiveExams : []);
+
+        if (rawCompExams.length > 0) {
+          setCompetitiveExams(rawCompExams.map((c: any, i: number) => ({
             sNo: i + 1,
             year: c.year || "",
             qualified: (c.qualified ?? "").toString(),
@@ -782,36 +829,48 @@ export function DepartmentUpdateForm() {
         }
 
         // 8. MOUs - 5 cols
-        if (Array.isArray(data.mous) && data.mous.length > 0) {
-          setMous(data.mous.map((m: any, i: number) => ({
+        const rawMous = (Array.isArray(effective.mous) && effective.mous.length > 0)
+          ? effective.mous
+          : (Array.isArray(staticDept?.mous) ? staticDept.mous : []);
+
+        if (rawMous.length > 0) {
+          setMous(rawMous.map((m: any, i: number) => ({
             sNo: i + 1,
             organization: m.organization || m.title || "",
             duration: m.duration || "",
-            documentUrl: m.documentUrl || "",
-            reportUrl: m.reportUrl || ""
+            documentUrl: m.documentUrl || m.mouDocUrl || m.docUrl || "",
+            reportUrl: m.reportUrl || m.activityReportUrl || ""
           })));
         } else {
           setMous([]);
         }
 
         // 9. Best Practices - 7 cols
-        if (Array.isArray(data.bestPractices) && data.bestPractices.length > 0) {
-          setBestPractices(data.bestPractices.map((b: any, i: number) => ({
+        const rawBestPractices = (Array.isArray(effective.bestPractices) && effective.bestPractices.length > 0)
+          ? effective.bestPractices
+          : (Array.isArray(staticDept?.bestPractices) ? staticDept.bestPractices : []);
+
+        if (rawBestPractices.length > 0) {
+          setBestPractices(rawBestPractices.map((b: any, i: number) => ({
             sNo: i + 1,
             year: b.year || "",
             title: b.title || "",
             objectives: b.objectives || "",
             outcomes: b.outcomes || "",
-            reportUrl: b.reportUrl || "",
-            docUrl: b.docUrl || ""
+            reportUrl: b.reportUrl || b.documentUrl || b.docUrl || "",
+            docUrl: b.docUrl || b.reportUrl || ""
           })));
         } else {
           setBestPractices([]);
         }
 
         // 10. Certificate Courses - 9 cols
-        if (Array.isArray(data.certificateCourses) && data.certificateCourses.length > 0) {
-          setCertificateCourses(data.certificateCourses.map((c: any, i: number) => ({
+        const rawCertCourses = (Array.isArray(effective.certificateCourses) && effective.certificateCourses.length > 0)
+          ? effective.certificateCourses
+          : (Array.isArray(staticDept?.certificateCourses) ? staticDept.certificateCourses : []);
+
+        if (rawCertCourses.length > 0) {
+          setCertificateCourses(rawCertCourses.map((c: any, i: number) => ({
             sNo: i + 1,
             year: c.year || "",
             name: c.name || "",
@@ -820,14 +879,21 @@ export function DepartmentUpdateForm() {
             duration: c.duration || "",
             enrolled: (c.enrolled ?? "").toString(),
             certified: (c.certified ?? "").toString(),
-            reportUrl: c.reportUrl || ""
+            reportUrl: c.reportUrl || c.documentUrl || c.docUrl || ""
           })));
         } else {
           setCertificateCourses([]);
         }
 
         // 11. Activities - 6 cols
-        const acts = data.activities || data.activitiesList || [];
+        const acts = (Array.isArray(effective.activities) && effective.activities.length > 0)
+          ? effective.activities
+          : (Array.isArray(effective.activitiesList) && effective.activitiesList.length > 0)
+            ? effective.activitiesList
+            : (Array.isArray(staticDept?.activities) && staticDept.activities.length > 0)
+              ? staticDept.activities
+              : (Array.isArray(staticDept?.activitiesList) ? staticDept.activitiesList : []);
+
         if (Array.isArray(acts) && acts.length > 0) {
           setActivities(acts.map((a: any, i: number) => ({
             sNo: i + 1,
@@ -835,7 +901,7 @@ export function DepartmentUpdateForm() {
             title: a.title || a.name || a.label || "",
             category: a.category || "Academic Celebration",
             participants: (a.participants ?? "").toString(),
-            reportUrl: a.reportUrl || a.documentUrl || ""
+            reportUrl: a.reportUrl || a.documentUrl || a.docUrl || ""
           })));
         } else {
           setActivities([]);
@@ -843,10 +909,9 @@ export function DepartmentUpdateForm() {
 
         // 12. Student External Achievements - 10 cols
         if (isLanguageWing) {
-          const staticDept = (academicsData.departments as any[]).find((d: any) => d.id === selectedDeptId);
-          const staticAchievements = staticDept?.achievements || [];
-          const sourceAchievements = (Array.isArray(data.studentAchievements) && data.studentAchievements.length > 0)
-            ? data.studentAchievements
+          const staticAchievements = staticDept?.achievements || staticDept?.studentAchievements || [];
+          const sourceAchievements = (Array.isArray(effective.studentAchievements) && effective.studentAchievements.length > 0)
+            ? effective.studentAchievements
             : staticAchievements;
 
           if (Array.isArray(sourceAchievements) && sourceAchievements.length > 0) {
@@ -861,36 +926,51 @@ export function DepartmentUpdateForm() {
               level: s.level || "State",
               org: s.org || "State Level Event",
               award: s.award || "First Prize",
-              certificateUrl: s.certificateUrl || s.docUrl || ""
+              certificateUrl: s.certificateUrl || s.docUrl || s.documentUrl || ""
             })));
           } else {
             setStudentAchievements([]);
           }
-        } else if (Array.isArray(data.studentAchievements) && data.studentAchievements.length > 0) {
-          setStudentAchievements(data.studentAchievements.map((s: any, i: number) => ({
-            sNo: i + 1,
-            date: s.date || "",
-            studentName: s.studentName || s.name || "",
-            programme: s.programme || s.cls || "III B.Sc.",
-            achievement: s.achievement || s.prize || "First Prize & Cash Award",
-            eventName: s.eventName || s.event || "",
-            level: s.level || "State Level",
-            org: s.org || s.organizingInstitution || "",
-            award: s.award || s.prize || "Gold Medal & Cash Prize",
-            certificateUrl: s.certificateUrl || s.docUrl || ""
-          })));
         } else {
-          setStudentAchievements([]);
+          const rawAchievements = (Array.isArray(effective.studentAchievements) && effective.studentAchievements.length > 0)
+            ? effective.studentAchievements
+            : (Array.isArray(staticDept?.studentAchievements) && staticDept.studentAchievements.length > 0)
+              ? staticDept.studentAchievements
+              : (Array.isArray(staticDept?.achievements) ? staticDept.achievements : []);
+
+          if (rawAchievements.length > 0) {
+            setStudentAchievements(rawAchievements.map((s: any, i: number) => ({
+              sNo: i + 1,
+              date: s.date || "",
+              studentName: s.studentName || s.name || "",
+              programme: s.programme || s.cls || "III B.Sc.",
+              achievement: s.achievement || s.prize || "First Prize & Cash Award",
+              eventName: s.eventName || s.event || "",
+              level: s.level || "State Level",
+              org: s.org || s.organizingInstitution || "",
+              award: s.award || s.prize || "Gold Medal & Cash Prize",
+              certificateUrl: s.certificateUrl || s.docUrl || s.documentUrl || ""
+            })));
+          } else {
+            setStudentAchievements([]);
+          }
         }
 
         // 13. Annual Reports - 5 cols
-        const reports = data.annualReports || data.activitiesSummary || [];
+        const reports = (Array.isArray(effective.annualReports) && effective.annualReports.length > 0)
+          ? effective.annualReports
+          : (Array.isArray(effective.activitiesSummary) && effective.activitiesSummary.length > 0)
+            ? effective.activitiesSummary
+            : (Array.isArray(staticDept?.annualReports) && staticDept.annualReports.length > 0)
+              ? staticDept.annualReports
+              : (Array.isArray(staticDept?.activitiesSummary) ? staticDept.activitiesSummary : []);
+
         if (Array.isArray(reports) && reports.length > 0) {
           setAnnualReports(reports.map((r: any, i: number) => ({
             sNo: i + 1,
             year: r.year || "",
             activitiesCount: (r.activitiesCount || r.count || "").toString(),
-            reportUrl: r.reportUrl || r.documentUrl || "",
+            reportUrl: r.reportUrl || r.documentUrl || r.proofUrl || "",
             supportingDocUrl: r.supportingDocUrl || ""
           })));
         } else {
@@ -898,8 +978,12 @@ export function DepartmentUpdateForm() {
         }
 
         // 14. Custom Tables
-        if (Array.isArray(data.customTables) && data.customTables.length > 0) {
-          setCustomTables(data.customTables.map((t: any, idx: number) => ({
+        const rawCustom = (Array.isArray(effective.customTables) && effective.customTables.length > 0)
+          ? effective.customTables
+          : (Array.isArray(staticDept?.customTables) ? staticDept.customTables : []);
+
+        if (rawCustom.length > 0) {
+          setCustomTables(rawCustom.map((t: any, idx: number) => ({
             id: t.id || t._key || `custom-table-${idx + 1}-${Date.now()}`,
             title: t.title || `Custom Table ${idx + 1}`,
             description: t.description || "",
@@ -915,8 +999,11 @@ export function DepartmentUpdateForm() {
         }
 
         // 15. Gallery
-        const gal = Array.isArray(data.gallery) ? data.gallery : [];
-        setGallery(gal.map((g: any) => ({
+        const rawGallery = (Array.isArray(effective.gallery) && effective.gallery.length > 0)
+          ? effective.gallery
+          : (Array.isArray(staticDept?.gallery) ? staticDept.gallery : []);
+
+        setGallery(rawGallery.map((g: any) => ({
           ...g,
           url: g.image?.asset?.url || g.url || "",
           year: g.year || "2025–2026",

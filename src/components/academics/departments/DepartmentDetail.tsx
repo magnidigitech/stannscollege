@@ -178,8 +178,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
   const [previewTitle, setPreviewTitle] = useState<string>("");
 
   const handleOpenPdf = (url?: string, title?: string) => {
-    if (!url) return;
-    setPreviewUrl(url);
+    setPreviewUrl(url || "/documents/DefaultFile_1.pdf");
     setPreviewTitle(title || "Document Preview");
   };
 
@@ -398,7 +397,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         achievement: r.achievement || r.award || "University Rank",
         position: r.position || r.rank || "Rank",
         uni: r.uni || r.university || "Acharya Nagarjuna University",
-        docUrl: r.docUrl || r.certificateUrl || ""
+        docUrl: r.docUrl || r.certificateUrl || r.documentUrl || ""
       }));
     }
     return all;
@@ -502,8 +501,8 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         year: m.year || "2025–2026",
         org: m.organization || m.title || m.org || "",
         duration: m.duration || "—",
-        docUrl: m.documentUrl || m.docUrl || "",
-        reportUrl: m.reportUrl || ""
+        docUrl: m.documentUrl || m.docUrl || m.mouDocUrl || "",
+        reportUrl: m.reportUrl || m.activityReportUrl || ""
       }));
     }
     return all;
@@ -617,7 +616,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
         level: s.level || "College Level",
         org: s.org || s.organizer || "—",
         award: s.award || s.prize || "Certificate",
-        docUrl: s.docUrl || s.certificateUrl || ""
+        docUrl: s.docUrl || s.certificateUrl || s.documentUrl || ""
       }));
     }
     return all;
@@ -772,6 +771,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 3: CURRICULUM & LEARNING OUTCOMES (TABLE 2 WITH YEAR)  */}
       {/* ============================================================== */}
+      {renderedCurriculumDocs.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div>
@@ -853,7 +853,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                   </tr>
                 ) : (
                   renderedCurriculumDocs.map((row: any, idx: number) => {
-                    const docUrl = row.documentUrl || "/documents/DefaultFile_1.pdf";
+                    const docUrl = row.documentUrl || row.docUrl || row.url || "/documents/DefaultFile_1.pdf";
                     return (
                       <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
                         <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo || idx + 1}</td>
@@ -875,6 +875,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 4: STUDENT STRENGTH, RESULTS & PASS PERCENTAGE (TABLE 3)*/}
@@ -1784,6 +1785,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       {/* ============================================================== */}
       {/* SECTION 15: PHOTO GALLERY (WITH YEAR & CAPTIONS)               */}
       {/* ============================================================== */}
+      {uploadedPhotos.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -1854,6 +1856,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
           ))}
         </div>
       </div>
+      )}
 
       {/* PDF Document Preview Modal */}
       <FilePreviewModal

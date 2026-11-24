@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
 import { cache } from "react";
+import academicsData from "@/components/academics/academics-data.json";
 
 export const sanityClient = createClient({
   projectId: "fhjwqub5",
@@ -271,9 +272,105 @@ export async function getAisheCertifications() {
   return [];
 }
 
+const DEPT_SLUG_ALIASES: Record<string, string[]> = {
+  "department-of-bca": [
+    "department-of-bca",
+    "department-of-computer-applications-bca",
+    "department-department-of-computer-applications-bca",
+    "bca"
+  ],
+  "department-of-computer-applications-bca": [
+    "department-of-bca",
+    "department-of-computer-applications-bca",
+    "department-department-of-computer-applications-bca"
+  ],
+  "department-of-artificial-intelligence": [
+    "department-of-artificial-intelligence",
+    "department-of-computer-science-cs-artificial-intelligence",
+    "department-department-of-computer-science-cs-artificial-intelligence",
+    "ai"
+  ],
+  "department-of-computer-science-cs-artificial-intelligence": [
+    "department-of-artificial-intelligence",
+    "department-of-computer-science-cs-artificial-intelligence",
+    "department-department-of-computer-science-cs-artificial-intelligence"
+  ],
+  "department-of-computer-science": [
+    "department-of-computer-science",
+    "department-of-computer-science-applications",
+    "department-department-of-computer-science-applications",
+    "cs"
+  ],
+  "department-of-computer-science-applications": [
+    "department-of-computer-science",
+    "department-of-computer-science-applications",
+    "department-department-of-computer-science-applications"
+  ],
+  "department-of-telugu": [
+    "department-of-telugu",
+    "department-of-telugu-wing",
+    "department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-of-oriental-languages",
+    "telugu"
+  ],
+  "department-of-telugu-wing": [
+    "department-of-telugu",
+    "department-of-telugu-wing",
+    "department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-of-oriental-languages"
+  ],
+  "department-of-sanskrit-hindi": [
+    "department-of-sanskrit-hindi",
+    "department-of-sanskrit-hindi-wing",
+    "department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-of-oriental-languages",
+    "sanskirthindi"
+  ],
+  "department-of-sanskrit-hindi-wing": [
+    "department-of-sanskrit-hindi",
+    "department-of-sanskrit-hindi-wing",
+    "department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-of-oriental-languages"
+  ],
+  "department-of-oriental-languages": [
+    "department-of-oriental-languages",
+    "department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-of-telugu",
+    "department-of-sanskrit-hindi"
+  ],
+  "department-of-oriental-languages-telugu-sanskrit-hindi": [
+    "department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-department-of-oriental-languages-telugu-sanskrit-hindi",
+    "department-of-oriental-languages",
+    "department-of-telugu",
+    "department-of-sanskrit-hindi"
+  ],
+  "department-of-english": [
+    "department-of-english",
+    "english"
+  ]
+};
+
 export async function getDepartment(slug: string) {
+  const rawSlug = (slug || "").trim();
+  const aliases = DEPT_SLUG_ALIASES[rawSlug] || [];
+  const slugList = Array.from(new Set([
+    rawSlug,
+    `department-${rawSlug}`,
+    `department-department-${rawSlug.replace(/^department-/, "")}`,
+    `department-${rawSlug.replace(/^department-/, "")}`,
+    rawSlug.replace(/^department-/, ""),
+    rawSlug.replace(/^department-of-/, ""),
+    ...aliases
+  ])).filter(Boolean);
+
   try {
-    const query = `*[_type == "department" && (slug.current == $slug || _id == $slug || _id == "department-" + $slug)] | order(_updatedAt desc)[0]{
+    const query = `*[_type == "department" && (slug.current in $slugList || _id in $slugList)] | order(_updatedAt desc)[0]{
       name,
       established,
       tagline,
@@ -303,168 +400,25 @@ export async function getDepartment(slug: string) {
       customTables,
       gallery
     }`;
-    const data = await sanityClient.fetch(query, { slug });
+    const data = await sanityClient.fetch(query, { slugList });
     if (data && data.name) return data;
   } catch (err) {
     console.error("Sanity fetch error (department):", err);
   }
 
-  const STANDARD_CURRICULUM_DOCS = [
-    { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
-    { sNo: 2, particular: "Course Syllabi", documentUrl: "/documents/DefaultFile_1.pdf" },
-    { sNo: 3, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-    { sNo: 4, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-    { sNo: 5, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
-    { sNo: 6, particular: "Academic Regulations & Evaluation Guidelines", documentUrl: "/documents/DefaultFile_1.pdf" },
-  ];
-
-  const ALL_DEPARTMENT_PROGRAMMES: Record<string, Array<{ sNo: number; name: string; intake: string | number; counseling: string | number; management: string | number }>> = {
-    "department-of-commerce": [
-      { sNo: 1, name: "B.Com. Honours – General", intake: 20, counseling: 14, management: 6 },
-      { sNo: 2, name: "B.Com. Honours – Computer Applications", intake: 105, counseling: 74, management: 31 },
-      { sNo: 3, name: "Bachelor of Business Administration (BBA)", intake: "-", counseling: "-", management: "-" },
-    ],
-    "department-of-computer-science-applications": [
-      { sNo: 1, name: "BCA Honours – Computer Applications", intake: 60, counseling: 42, management: 18 },
-      { sNo: 2, name: "B.Sc. Honours – Computer Science", intake: 35, counseling: 25, management: 10 },
-      { sNo: 3, name: "B.Sc. Honours – Artificial Intelligence", intake: 60, counseling: 42, management: 18 }
-    ],
-    "department-of-mathematics": [
-      { sNo: 1, name: "B.Sc. Honours – Mathematics", intake: 25, counseling: 18, management: 7 }
-    ],
-    "department-of-physics": [
-      { sNo: 1, name: "B.Sc. Honours – Physics", intake: 25, counseling: 18, management: 7 }
-    ],
-    "department-of-statistics": [
-      { sNo: 1, name: "B.Sc. Honours – Statistics", intake: 25, counseling: 18, management: 7 }
-    ],
-    "department-of-biotechnology": [
-      { sNo: 1, name: "B.Sc. Honours – Biotechnology", intake: 25, counseling: 18, management: 7 }
-    ],
-    "department-of-microbiology": [
-      { sNo: 1, name: "B.Sc. Honours – Microbiology", intake: 25, counseling: 18, management: 7 }
-    ],
-    "department-of-botany": [
-      { sNo: 1, name: "B.Sc. Honours – Botany", intake: "-", counseling: "-", management: "-" }
-    ],
-    "department-of-chemistry": [
-      { sNo: 1, name: "B.Sc. Honours – Chemistry", intake: 20, counseling: 14, management: 6 }
-    ],
-    "department-of-english": [
-      { sNo: 1, name: "B.A. Honours – English Literature", intake: "-", counseling: "-", management: "-" }
-    ],
-    "department-of-oriental-languages": [
-      { sNo: 1, name: "Language Programmes (Telugu, Sanskrit, Hindi)", intake: "-", counseling: "-", management: "-" }
-    ],
-    "department-of-mca": [
-      { sNo: 1, name: "MCA – Master of Computer Applications", intake: 60, counseling: 42, management: 18 }
-    ],
-    "department-of-mba": [
-      { sNo: 1, name: "MBA – Master of Business Administration", intake: 60, counseling: 42, management: 18 }
-    ]
-  };
-
-  // Fallback static data map
-  if (slug === "department-of-commerce") {
+  // Fallback to local academics-data.json
+  const staticDept = (academicsData.departments as any[]).find(
+    (d: any) => slugList.includes(d.id) || d.id === rawSlug
+  );
+  if (staticDept) {
     return {
-      name: "Department of Commerce",
-      established: "1997-98",
-      tagline: "Commerce Wonder World – Emphasizing Holistic Student Development",
-      description: "The Department of Commerce was established in the academic year 1997–98 in response to the growing demand for commerce education. It initially offered the B.Com (General) programme and later introduced the restructured curriculum in 1999–2000, aligning with evolving academic and industry needs. The department is committed to delivering quality education with a strong practical orientation, preparing students for careers in business, finance, entrepreneurship, and research.",
-      vision: "To achieve academic excellence with a strong commitment to providing quality education in commerce, management, and related fields, while fostering a holistic approach towards life, environment, and global competitiveness.",
-      mission: [
-        "To empower students with knowledge, skills, and practical training",
-        "To nurture entrepreneurial spirit and enhance employability",
-        "To promote learning through doing methodologies",
-        "To develop socially responsible individuals with global outlook",
-        "To prepare students to meet modern challenges with confidence and competence",
-      ],
-      overviewDocUrl: "/documents/DefaultFile_1.pdf",
-      programmes: ALL_DEPARTMENT_PROGRAMMES["department-of-commerce"],
-      curriculumDocuments: STANDARD_CURRICULUM_DOCS,
-      facultyMembers: [
-        { name: "Mrs. M. Prameela", designation: "Head of the Department & Assistant Professor", qualification: "M.Com, MBA, (Ph.D)", experience: "18 Years", email: "commerce.hod@stannscollege.org" },
-        { name: "Dr. K. Srilatha", designation: "Assistant Professor", qualification: "M.Com, Ph.D", experience: "12 Years", email: "srilatha.k@stannscollege.org" }
-      ],
-      passPercentage: [
-        { sNo: 1, year: "2024-2025", finalYearStudents: "98", studentsPassed: "94", percentage: "95.9%" },
-        { sNo: 2, year: "2023-2024", finalYearStudents: "92", studentsPassed: "89", percentage: "96.7%" },
-        { sNo: 3, year: "2022-2023", finalYearStudents: "88", studentsPassed: "85", percentage: "96.5%" }
-      ],
-      placements: [
-        { sNo: 1, year: "2024-2025", studentsPlaced: "68", highestSalary: "6.5 LPA", averageSalary: "3.2 LPA", percentage: "80%" },
-        { sNo: 2, year: "2023-2024", studentsPlaced: "60", highestSalary: "5.8 LPA", averageSalary: "3.0 LPA", percentage: "77%" }
-      ],
-      mous: [
-        { sNo: 1, organization: "Sri Venkateswara Accounting Solutions", duration: "3 Years (2024–2027)", documentUrl: "/documents/DefaultFile_1.pdf", reportUrl: "/documents/DefaultFile_1.pdf" }
-      ],
-      activities: [
-        { sNo: 1, title: "State-Level Commerce Fest 'VANIJYA 2025'", date: "18-01-2025", participants: "240", reportUrl: "/documents/DefaultFile_1.pdf" },
-        { sNo: 2, title: "Workshop on GST E-Filing & Compliance", date: "12-10-2024", participants: "115", reportUrl: "/documents/DefaultFile_1.pdf" }
-      ],
-      studentAchievements: [
-        { sNo: 1, studentName: "K. Divya Teja", eventName: "National Commerce Olympiad", level: "National", prize: "1st Prize", certificateUrl: "/documents/DefaultFile_1.pdf" }
-      ],
-      universityRanks: [
-        { sNo: 1, studentName: "P. Lakshmi Prasanna", programme: "B.Com Honours (CA)", rank: "1st Rank (Gold Medal)", year: "2023-2024", certificateUrl: "/documents/DefaultFile_1.pdf" }
-      ],
-      annualReports: [
-        { sNo: 1, year: "2024-2025", activitiesCount: "14", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" }
-      ],
-      customTables: [],
-      gallery: []
+      ...staticDept,
+      curriculumByYear: staticDept.curriculumByYear,
+      curriculumByYearJson: staticDept.curriculumByYearJson || (staticDept.curriculumByYear ? JSON.stringify(staticDept.curriculumByYear) : undefined),
     };
   }
 
-  // Generic Fallback for all other 12 departments
-  const normalizedDeptSlug = slug === "department-of-computer-applications-bca" || slug === "department-of-computer-science-cs-artificial-intelligence"
-    ? "department-of-computer-science-applications"
-    : slug === "department-of-oriental-languages-telugu-sanskrit-hindi"
-    ? "department-of-oriental-languages"
-    : slug;
-
-  const prettyName = normalizedDeptSlug
-    .replace("department-of-", "")
-    .split("-")
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-
-  const defaultDeptProgrammes = ALL_DEPARTMENT_PROGRAMMES[normalizedDeptSlug] || [
-    { sNo: 1, name: `${prettyName} Honours Programme`, intake: "-", counseling: "-", management: "-" }
-  ];
-
-  return {
-    name: `Department of ${prettyName === "Mca" ? "MCA" : prettyName === "Mba" ? "MBA" : prettyName}`,
-    established: "1997-98",
-    tagline: "Facilitating holistic student empowerment & development",
-    description: `The Department of ${prettyName === "Mca" ? "MCA" : prettyName === "Mba" ? "MBA" : prettyName} is dedicated to providing high-quality education, state-of-the-art experiential learning, and preparing women students for impactful leadership and distinguished careers.`,
-    vision: "To achieve academic excellence with a strong commitment to quality education, skill development, and holistic empowerment of women.",
-    mission: [
-      "To empower students with deep theoretical foundations and practical competencies",
-      "To nurture analytical thinking, entrepreneurial mindset, and research capability",
-      "To foster ethical values, leadership qualities, and global competitiveness"
-    ],
-    overviewDocUrl: "/documents/DefaultFile_1.pdf",
-    programmes: defaultDeptProgrammes,
-    curriculumDocuments: STANDARD_CURRICULUM_DOCS,
-    facultyMembers: [],
-    passPercentage: [
-      { sNo: 1, year: "2024-2025", finalYearStudents: "45", studentsPassed: "42", percentage: "93.3%" },
-      { sNo: 2, year: "2023-2024", finalYearStudents: "40", studentsPassed: "38", percentage: "95.0%" }
-    ],
-    placements: [
-      { sNo: 1, year: "2024-2025", studentsPlaced: "32", highestSalary: "5.5 LPA", averageSalary: "3.2 LPA", percentage: "75%" }
-    ],
-    mous: [],
-    activities: [],
-    studentAchievements: [],
-    universityRanks: [],
-    annualReports: [
-      { sNo: 1, year: "2024-2025", activitiesCount: "8", reportUrl: "/documents/DefaultFile_1.pdf", supportingDocUrl: "/documents/DefaultFile_1.pdf" }
-    ],
-    customTables: [],
-    gallery: []
-  };
+  return null;
 }
 
 export async function getFacultyMembers() {

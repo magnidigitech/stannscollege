@@ -99,6 +99,9 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
     if (dynamicDept?.passPercentage && Array.isArray(dynamicDept.passPercentage) && dynamicDept.passPercentage.length > 0) {
       return dynamicDept.passPercentage;
     }
+    if (dynamicDept?.results && Array.isArray(dynamicDept.results) && dynamicDept.results.length > 0) {
+      return dynamicDept.results;
+    }
     return (staticDept as any)?.results || [];
   }, [dynamicDept, staticDept]);
 
@@ -126,8 +129,9 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
   // TABLE 5: DEPARTMENTAL ACTIVITIES, EVENTS, PROGRAMMES & CELEBRATIONS
   // --------------------------------------------------------------------------
   const allActivities = useMemo(() => {
-    if (dynamicDept?.activitiesList && Array.isArray(dynamicDept.activitiesList) && dynamicDept.activitiesList.length > 0) {
-      return dynamicDept.activitiesList;
+    const acts = dynamicDept?.activitiesList || dynamicDept?.activities;
+    if (Array.isArray(acts) && acts.length > 0) {
+      return acts;
     }
     return (staticDept as any)?.activities || [];
   }, [dynamicDept, staticDept]);
@@ -216,6 +220,40 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
       setCurriculumYear(curriculumYears[0]);
     }
   }, [curriculumYears, curriculumYear]);
+
+  const activeCurriculumDocs = useMemo(() => {
+    let yearMap: Record<string, any> = {};
+    if (dynamicDept?.curriculumByYearJson) {
+      try {
+        yearMap = typeof dynamicDept.curriculumByYearJson === "string"
+          ? JSON.parse(dynamicDept.curriculumByYearJson)
+          : dynamicDept.curriculumByYearJson;
+      } catch {}
+    } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+      yearMap = dynamicDept.curriculumByYear;
+    }
+
+    const normalizeY = (y: string) => (y || "").replace(/[\u2013\u2014]/g, "-").trim();
+    const targetYearNorm = normalizeY(curriculumYear);
+
+    let yearList = yearMap[curriculumYear];
+    if (!yearList) {
+      for (const key of Object.keys(yearMap)) {
+        if (normalizeY(key) === targetYearNorm) {
+          yearList = yearMap[key];
+          break;
+        }
+      }
+    }
+
+    if (Array.isArray(yearList)) return yearList;
+    if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
+      const yearMatch = dynamicDept.curriculumDocuments.filter((d: any) => normalizeY(d.year) === targetYearNorm);
+      if (yearMatch.length > 0) return yearMatch;
+      return dynamicDept.curriculumDocuments;
+    }
+    return curriculumDocs;
+  }, [dynamicDept, curriculumYear, curriculumDocs]);
 
   const resultsYears = useMemo(() => {
     return Array.from(new Set(allResults.map((r: any) => r.year).filter(Boolean))).sort().reverse() as string[];
@@ -456,6 +494,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
       {/* ============================================================== */}
       {/* SECTION 2: CURRICULUM & LEARNING OUTCOMES                       */}
       {/* ============================================================== */}
+      {activeCurriculumDocs.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -500,73 +539,32 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {(() => {
-                  let yearMap: Record<string, any> = {};
-                  if (dynamicDept?.curriculumByYearJson) {
-                    try {
-                      yearMap = typeof dynamicDept.curriculumByYearJson === "string"
-                        ? JSON.parse(dynamicDept.curriculumByYearJson)
-                        : dynamicDept.curriculumByYearJson;
-                    } catch {}
-                  } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
-                    yearMap = dynamicDept.curriculumByYear;
-                  }
-
-                  const normalizeY = (y: string) => (y || "").replace(/[\u2013\u2014]/g, "-").trim();
-                  const targetYearNorm = normalizeY(curriculumYear);
-
-                  let yearList = yearMap[curriculumYear];
-                  if (!yearList) {
-                    for (const key of Object.keys(yearMap)) {
-                      if (normalizeY(key) === targetYearNorm) {
-                        yearList = yearMap[key];
-                        break;
-                      }
-                    }
-                  }
-
-                  const docsToRender = Array.isArray(yearList)
-                    ? yearList
-                    : Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0
-                    ? dynamicDept.curriculumDocuments
-                    : curriculumDocs;
-
-                  if (docsToRender.length === 0) {
-                    return (
-                      <tr>
-                        <td colSpan={3} className="py-6 text-center text-slate-500 font-medium italic">
-                          No curriculum documents found for {curriculumYear}.
-                        </td>
-                      </tr>
-                    );
-                  }
-
-                  return docsToRender.map((item: any, idx: number) => {
-                    const targetDoc = item.documentUrl || "/documents/DefaultFile_1.pdf";
-                    return (
-                      <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                        <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200/80">{item.sNo || idx + 1}</td>
-                        <td className="py-3.5 px-5 font-semibold text-slate-800 border-r border-slate-200/80">
-                          {item.particular} ({curriculumYear})
-                        </td>
-                        <td className="py-3.5 px-4 text-center">
-                          <button
-                            onClick={() => handleOpenPdf(targetDoc, `${deptName} - ${item.particular} (${curriculumYear})`)}
-                            className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
-                          >
-                            <FileText className="h-3.5 w-3.5" />
-                            <span>View PDF</span>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  });
-                })()}
+                {activeCurriculumDocs.map((item: any, idx: number) => {
+                  const targetDoc = item.documentUrl || item.docUrl || item.url || "/documents/DefaultFile_1.pdf";
+                  return (
+                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                      <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200/80">{item.sNo || idx + 1}</td>
+                      <td className="py-3.5 px-5 font-semibold text-slate-800 border-r border-slate-200/80">
+                        {item.particular || item.title || item.name} ({curriculumYear})
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(targetDoc, `${deptName} - ${item.particular || item.title || item.name} (${curriculumYear})`)}
+                          className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>View PDF</span>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* SECTION 3: STUDENT STRENGTH, RESULTS & PASS PERCENTAGE         */}
@@ -739,7 +737,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       </td>
                       <td className="py-3.5 px-3 text-center">
                         <button
-                          onClick={() => handleOpenPdf(ach.docUrl || "/documents/DefaultFile_1.pdf", `${ach.studentName} - Achievement Certificate`)}
+                          onClick={() => handleOpenPdf(ach.certificateUrl || ach.docUrl || ach.documentUrl || "/documents/DefaultFile_1.pdf", `${ach.studentName || ach.name} - Achievement Certificate`)}
                           className="inline-flex items-center gap-1 bg-[#002147] hover:bg-[#00387a] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
@@ -828,7 +826,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-3 text-center font-bold text-slate-800 border-r border-slate-200/80">{act.participants || "—"}</td>
                       <td className="py-3.5 px-4 text-center">
                         <button
-                          onClick={() => handleOpenPdf(act.reportUrl || "/documents/DefaultFile_1.pdf", `${act.title} - Activity Report`)}
+                          onClick={() => handleOpenPdf(act.reportUrl || act.documentUrl || act.docUrl || "/documents/DefaultFile_1.pdf", `${act.title || act.name} - Activity Report`)}
                           className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
@@ -913,7 +911,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-5 font-medium text-slate-700 border-r border-slate-200/80">{bp.outcomes}</td>
                       <td className="py-3.5 px-3 text-center">
                         <button
-                          onClick={() => handleOpenPdf(bp.reportUrl || "/documents/DefaultFile_1.pdf", `${bp.title} - Best Practice Report`)}
+                          onClick={() => handleOpenPdf(bp.reportUrl || bp.documentUrl || bp.docUrl || "/documents/DefaultFile_1.pdf", `${bp.title} - Best Practice Report`)}
                           className="inline-flex items-center gap-1 bg-[#002147] hover:bg-[#00387a] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
@@ -982,13 +980,14 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                   <th className="py-3 px-3 text-center text-blue-100 font-bold border-r border-[#003366]">Course Code</th>
                   <th className="py-3 px-3 text-center text-blue-100 font-bold border-r border-[#003366]">Duration</th>
                   <th className="py-3 px-3 text-center text-blue-100 font-bold border-r border-[#003366]">Enrolled</th>
-                  <th className="py-3 px-3 text-center bg-[#001733] text-amber-300 font-black">Certified</th>
+                  <th className="py-3 px-3 text-center bg-[#001733] text-amber-300 font-black border-r border-[#003366]">Certified</th>
+                  <th className="py-3 px-3 text-center text-blue-100 font-bold w-28">Report</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredCourses.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-6 text-center text-slate-500 font-medium">No courses found.</td>
+                    <td colSpan={9} className="py-6 text-center text-slate-500 font-medium">No courses found.</td>
                   </tr>
                 ) : (
                   filteredCourses.map((c: any, idx: number) => (
@@ -1004,7 +1003,16 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-3 text-center font-mono font-bold text-slate-700 border-r border-slate-200/80">{c.courseCode || "—"}</td>
                       <td className="py-3.5 px-3 text-center font-medium text-slate-700 border-r border-slate-200/80">{c.duration || "30 Hours"}</td>
                       <td className="py-3.5 px-3 text-center font-bold text-slate-800 border-r border-slate-200/80">{c.enrolled || "—"}</td>
-                      <td className="py-3.5 px-3 text-center font-black text-amber-800 bg-amber-50/40">{c.certified || "—"}</td>
+                      <td className="py-3.5 px-3 text-center font-black text-amber-800 bg-amber-50/40 border-r border-slate-200/80">{c.certified || "—"}</td>
+                      <td className="py-3.5 px-3 text-center">
+                        <button
+                          onClick={() => handleOpenPdf(c.reportUrl || c.documentUrl || c.docUrl || "/documents/DefaultFile_1.pdf", `${c.courseName || c.title || "Certificate Course"} - Course Report`)}
+                          className="inline-flex items-center gap-1 bg-[#002147] hover:bg-[#00387a] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>View PDF</span>
+                        </button>
+                      </td>
                     </tr>
                   ))
                 )}
@@ -1054,7 +1062,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-4 text-center font-semibold text-slate-700 border-r border-slate-200/80">{m.duration || "3 Years"}</td>
                       <td className="py-3.5 px-4 text-center border-r border-slate-200/80">
                         <button
-                          onClick={() => handleOpenPdf(m.mouDocUrl || "/documents/DefaultFile_1.pdf", `${m.organization} - MoU Document`)}
+                          onClick={() => handleOpenPdf(m.documentUrl || m.mouDocUrl || m.docUrl || "/documents/DefaultFile_1.pdf", `${m.organization || m.name} - MoU Document`)}
                           className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
@@ -1063,7 +1071,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       </td>
                       <td className="py-3.5 px-4 text-center">
                         <button
-                          onClick={() => handleOpenPdf(m.reportUrl || "/documents/DefaultFile_1.pdf", `${m.organization} - Activity Report`)}
+                          onClick={() => handleOpenPdf(m.reportUrl || m.activityReportUrl || "/documents/DefaultFile_1.pdf", `${m.organization || m.name} - Activity Report`)}
                           className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileCheck className="h-3.5 w-3.5" />
@@ -1144,7 +1152,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                       <td className="py-3.5 px-4 text-center font-black text-slate-800 border-r border-slate-200/80">{ar.count || "12"}</td>
                       <td className="py-3.5 px-4 text-center">
                         <button
-                          onClick={() => handleOpenPdf(ar.reportUrl || "/documents/DefaultFile_1.pdf", `${deptName} - Annual Activity Report (${ar.year})`)}
+                          onClick={() => handleOpenPdf(ar.reportUrl || ar.documentUrl || ar.proofUrl || "/documents/DefaultFile_1.pdf", `${deptName} - Annual Activity Report (${ar.year})`)}
                           className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
@@ -1164,6 +1172,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
       {/* ============================================================== */}
       {/* SECTION 10: PHOTO GALLERY                                      */}
       {/* ============================================================== */}
+      {uploadedPhotos.length > 0 && (
       <div className="flex flex-col gap-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div>
@@ -1230,6 +1239,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
           ))}
         </div>
       </div>
+      )}
 
       {/* ============================================================== */}
       {/* LIGHTBOX MODAL                                                 */}
