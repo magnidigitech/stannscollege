@@ -904,22 +904,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Commerce is committed to imparting quality education in commerce, accounting, finance, taxation and business management.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-commerce",
       "name": "Department of Commerce",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -932,23 +940,31 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The BCA programme under the Department of Computer Science & Applications provides industry-aligned computing education, software development skills, full-stack programming, and cloud technologies.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-bca",
       "name": "BCA – Bachelor of Computer Applications",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "subtext": "(Under the Department of Computer Science & Applications)"
+      "subtext": "(Under the Department of Computer Science & Applications)",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -961,23 +977,31 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Computer Science wing fosters algorithmic thinking, software engineering, databases, networking, and core computer science fundamentals for modern technological careers.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-computer-science",
       "name": "Computer Science",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "subtext": "(Under the Department of Computer Science & Applications)"
+      "subtext": "(Under the Department of Computer Science & Applications)",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -990,23 +1014,31 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Artificial Intelligence wing equips students with deep expertise in machine learning, neural networks, natural language processing, computer vision, and intelligent automated systems.",
       "established": "2023",
       "galleryImages": [],
       "id": "department-of-artificial-intelligence",
       "name": "Artificial Intelligence (AI)",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
-      "subtext": "(Under the Department of Computer Science & Applications)"
+      "subtext": "(Under the Department of Computer Science & Applications)",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1019,22 +1051,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Mathematics is committed to fostering mathematical knowledge, analytical thinking and problem-solving skills among students. The department aims to develop logical reasoning, quantitative aptitude and computational abilities through effective teaching and experiential learning.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-mathematics",
       "name": "Department of Mathematics",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1047,22 +1087,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Physics provides comprehensive exposure to classical mechanics, thermodynamics, quantum physics, electronics, optics, and experimental laboratory sciences.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-physics",
       "name": "Department of Physics",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1075,22 +1123,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Statistics empowers students in probability theory, statistical inference, data analytics, biostatistics, and quantitative decision-making methodologies.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-statistics",
       "name": "Department of Statistics",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1131,22 +1187,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Microbiology provides rigorous scientific training in microbial genetics, immunology, virology, industrial microbiology, and diagnostic procedures.",
       "established": "2003",
       "galleryImages": [],
       "id": "department-of-microbiology",
       "name": "Department of Microbiology",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1159,22 +1223,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Botany specializes in plant taxonomy, physiology, ecology, phytochemistry, herbal science, and biodiversity conservation.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-botany",
       "name": "Department of Botany",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1187,22 +1259,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Chemistry imparts robust foundational and advanced knowledge in organic, inorganic, physical, and analytical chemistry with hands-on laboratory experimentation.",
       "established": "1997",
       "galleryImages": [],
       "id": "department-of-chemistry",
       "name": "Department of Chemistry",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1215,22 +1295,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Master of Computer Applications (MCA) provides advanced post-graduate education in enterprise application development, software engineering, cloud computing, and AI architectures.",
       "established": "2001",
       "galleryImages": [],
       "id": "department-of-mca",
       "name": "MCA – Master of Computer Applications",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1243,22 +1331,30 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2025–2026"
-        },
-        {
-          "docUrl": "/documents/DefaultFile_1.pdf",
-          "year": "2024–2025"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Master of Business Administration (MBA) nurtures visionary business leaders, strategic thinkers, and finance, marketing, and human resource executives.",
       "established": "2008",
       "galleryImages": [],
       "id": "department-of-mba",
       "name": "MBA – Master of Business Administration",
-      "overviewDocUrl": "/documents/DefaultFile_1.pdf"
+      "overviewDocUrl": "/documents/DefaultFile_1.pdf",
+      "results": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "mous": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "activities": [],
+      "activitiesList": [],
+      "achievements": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1271,29 +1367,7 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "count": "12",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "count": "14",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 3,
-          "year": "2023–2024",
-          "count": "11",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of English plays an important role in developing students’ English language proficiency, communication skills and literary appreciation. The department aims to enhance students’ listening, speaking, reading and writing skills through effective teaching and interactive learning practices. It encourages critical thinking, creative expression, vocabulary development and confidence in communication. Through literary activities, seminars, workshops, language-based competitions and other academic initiatives, the department strives to equip students with essential language skills for higher education, professional growth and everyday communication.",
       "established": "1997",
       "galleryImages": [],
@@ -1301,139 +1375,23 @@
       "name": "Department of English",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
       "subtext": "(Under the Department of Oriental Languages)",
-      "results": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "courseName": "General English (Communicative English)",
-          "programme": "B.Sc / B.Com / BCA",
-          "semester": "Semester I & II",
-          "appeared": 310,
-          "passed": 304,
-          "passPercentage": "98.06%"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "courseName": "General English (Language & Literature)",
-          "programme": "B.Sc / B.Com / BCA",
-          "semester": "Semester I & II",
-          "appeared": 295,
-          "passed": 288,
-          "passPercentage": "97.63%"
-        }
-      ],
-      "achievements": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "studentName": "K. Sneha",
-          "programme": "II B.Sc. (MSCS)",
-          "achievement": "State Elocution Winner",
-          "event": "Inter-Collegiate Literary Fest",
-          "level": "State",
-          "award": "First Prize & Cash Award",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "studentName": "M. Harshitha",
-          "programme": "III B.Com. (CA)",
-          "achievement": "Essay Writing Excellence",
-          "event": "University Literary Celebrations",
-          "level": "University",
-          "award": "Outstanding Merit Certificate",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "activities": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "date": "18/09/2025",
-          "title": "One-Day Workshop on Advanced Business English & Corporate Communication",
-          "category": "Workshop",
-          "participants": 145,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2025–2026",
-          "date": "23/04/2025",
-          "title": "Shakespeare Day Literary Contests & Drama Fest",
-          "category": "Literary Celebration",
-          "participants": 190,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 3,
-          "year": "2024–2025",
-          "date": "12/12/2024",
-          "title": "Guest Lecture on Phonetics, Stress Patterns & Accent Neutralization",
-          "category": "Guest Lecture",
-          "participants": 120,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "bestPractices": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "title": "Word-A-Day & Campus English Speaking Circle",
-          "objectives": "To inculcate daily vocabulary enrichment and eliminate English communication hesitation among rural students.",
-          "outcomes": "Enhanced conversational confidence, improved placement interview performance, and active student participation.",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "title": "Digital Language Lab Self-Paced Phonetics Training",
-          "objectives": "To train students in accurate pronunciation, stress patterns, and verbal articulation using digital audio modules.",
-          "outcomes": "Significant improvement in listening comprehension and verbal clarity across all first-year cohorts.",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "certificateCourses": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "courseName": "Certificate Course in Communicative English & Soft Skills",
-          "courseType": "Certificate Course",
-          "courseCode": "ENG-CC-01",
-          "duration": "30 Hours",
-          "enrolled": 68,
-          "certified": 65
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "courseName": "Value-Added Course on English for Competitive Examinations",
-          "courseType": "Value-Added Course",
-          "courseCode": "ENG-VAC-02",
-          "duration": "36 Hours",
-          "enrolled": 74,
-          "certified": 72
-        }
-      ],
-      "mous": [
-        {
-          "sNo": 1,
-          "organization": "Cambridge English Assessment Centre / RELO Partner Academy",
-          "duration": "3 Years (2024–2027)",
-          "mouDocUrl": "/documents/DefaultFile_1.pdf",
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "organization": "ELT@I (English Language Teachers' Association of India)",
-          "duration": "5 Years (2023–2028)",
-          "mouDocUrl": "/documents/DefaultFile_1.pdf",
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ]
+      "results": [],
+      "achievements": [],
+      "activities": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "mous": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "activitiesList": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1446,29 +1404,7 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "count": "12",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "count": "14",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 3,
-          "year": "2023–2024",
-          "count": "11",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Telugu under Oriental Languages promotes Telugu language, literature and cultural heritage among students. It aims to enhance students’ reading, writing and communication skills while encouraging literary appreciation, creative expression and moral values. Through literary competitions, essay writing, elocution, poetry recitation and cultural activities, the department fosters linguistic abilities and preserves the richness of Telugu language and traditions.",
       "established": "1997",
       "galleryImages": [],
@@ -1476,139 +1412,23 @@
       "name": "Telugu",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
       "subtext": "(Under the Department of Oriental Languages)",
-      "results": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "courseName": "General Telugu (Sahithi Sourabham)",
-          "programme": "B.Sc / B.Com / BCA",
-          "semester": "Semester I & II",
-          "appeared": 260,
-          "passed": 256,
-          "passPercentage": "98.46%"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "courseName": "General Telugu (Pracheena & Aadhunika Kavithvam)",
-          "programme": "B.Sc / B.Com / BCA",
-          "semester": "Semester I & II",
-          "appeared": 248,
-          "passed": 244,
-          "passPercentage": "98.39%"
-        }
-      ],
-      "achievements": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "studentName": "T. Bhavana",
-          "programme": "II B.Com. (General)",
-          "achievement": "Telugu Bhasha Dinotsavam Poetry Winner",
-          "event": "State Level Sahitya Sammelan",
-          "level": "State",
-          "award": "First Prize (Gold Medal)",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "studentName": "G. Pavani",
-          "programme": "III B.Sc. (MPC)",
-          "achievement": "Elocution on Classical Poetry",
-          "event": "District Literary Competitions",
-          "level": "District",
-          "award": "Second Prize",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "activities": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "date": "29/08/2025",
-          "title": "Telugu Bhasha Dinotsavam (Gidugu Ramamurthy Jayanthi Celebrations)",
-          "category": "Cultural Celebration",
-          "participants": 210,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2025–2026",
-          "date": "10/11/2025",
-          "title": "Workshop on Telugu Journalism and Creative Content Writing",
-          "category": "Workshop",
-          "participants": 135,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 3,
-          "year": "2024–2025",
-          "date": "21/02/2025",
-          "title": "International Mother Language Day Celebrations & Kavi Sammelanam",
-          "category": "Literary Event",
-          "participants": 175,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "bestPractices": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "title": "Maa Bhasha - Mana Samskruthi (Manuscript & Heritage Club)",
-          "objectives": "To foster love for mother tongue, folk traditions, Telugu poetry recitation, and classical literature among modern youth.",
-          "outcomes": "Active publication of student poetry collections and preservation of Telugu classical heritage.",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "title": "Sahithi Sourabham - Peer-Led Literary Discussions",
-          "objectives": "To encourage critical reading habits, essay composition, and oratory skills in Telugu.",
-          "outcomes": "Over 180 students participated with published articles in college magazine and local periodicals.",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "certificateCourses": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "courseName": "Certificate Course in Telugu Creative Writing & Proof-Reading",
-          "courseType": "Certificate Course",
-          "courseCode": "TEL-CC-01",
-          "duration": "30 Hours",
-          "enrolled": 55,
-          "certified": 53
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "courseName": "Value-Added Course in Functional Telugu for Media & Journalism",
-          "courseType": "Value-Added Course",
-          "courseCode": "TEL-VAC-02",
-          "duration": "32 Hours",
-          "enrolled": 60,
-          "certified": 58
-        }
-      ],
-      "mous": [
-        {
-          "sNo": 1,
-          "organization": "Andhra Saraswatha Parishathu / Telugu Bhasha Samiti",
-          "duration": "3 Years (2024–2027)",
-          "mouDocUrl": "/documents/DefaultFile_1.pdf",
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "organization": "Sahitya Academy Regional Cultural Chapter",
-          "duration": "3 Years (2023–2026)",
-          "mouDocUrl": "/documents/DefaultFile_1.pdf",
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ]
+      "results": [],
+      "achievements": [],
+      "activities": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "mous": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "activitiesList": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     },
     {
       "activityReports": [
@@ -1621,29 +1441,7 @@
           "year": "2024–2025"
         }
       ],
-      "annualReports": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "count": "12",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "count": "14",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 3,
-          "year": "2023–2024",
-          "count": "11",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
+      "annualReports": [],
       "description": "The Department of Sanskrit & Hindi under Oriental Languages promotes classical Sanskrit and national language Hindi literature, philosophy and cultural heritage among students. It aims to enhance students’ reading, writing and communication skills while encouraging literary appreciation, creative expression, moral values and linguistic excellence. Through literary competitions, recitation, cultural celebrations and academic initiatives, the department fosters linguistic proficiency and preserves the richness of classical Sanskrit and Hindi traditions.",
       "established": "1997",
       "galleryImages": [],
@@ -1651,139 +1449,23 @@
       "name": "Sanskrit & Hindi",
       "overviewDocUrl": "/documents/DefaultFile_1.pdf",
       "subtext": "(Under the Department of Oriental Languages)",
-      "results": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "courseName": "General Sanskrit / Hindi (Classical Literature & Vyakaran)",
-          "programme": "B.Sc / B.Com / BCA",
-          "semester": "Semester I & II",
-          "appeared": 65,
-          "passed": 65,
-          "passPercentage": "100%"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "courseName": "General Sanskrit / Hindi (Poetry & Grammar)",
-          "programme": "B.Sc / B.Com / BCA",
-          "semester": "Semester I & II",
-          "appeared": 58,
-          "passed": 58,
-          "passPercentage": "100%"
-        }
-      ],
-      "achievements": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "studentName": "V. Sai Tejaswini",
-          "programme": "II BCA",
-          "achievement": "Geetha Jayanthi Sloka Recitation",
-          "event": "State Sanskrit Parishad Competitions",
-          "level": "State",
-          "award": "First Prize & Certificate",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "studentName": "D. Ananya",
-          "programme": "II B.Sc.",
-          "achievement": "Hindi Diwas Elocution & Essay Contest",
-          "event": "Inter-Collegiate Hindi Sammelan",
-          "level": "State",
-          "award": "Special Commendation Award",
-          "docUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "activities": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "date": "14/09/2025",
-          "title": "Hindi Diwas Celebrations & National Language Literary Meet",
-          "category": "Cultural Celebration",
-          "participants": 160,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2025–2026",
-          "date": "19/08/2025",
-          "title": "Sanskrit Dinotsavam (World Sanskrit Day) & Vedic Chanting",
-          "category": "Heritage Event",
-          "participants": 110,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 3,
-          "year": "2024–2025",
-          "date": "05/01/2025",
-          "title": "Workshop on Spoken Sanskrit (Samskrita Sambhashana Sibiram)",
-          "category": "Workshop",
-          "participants": 95,
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "bestPractices": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "title": "Samskrita Sambhashana Sibiram (Conversational Sanskrit Camps)",
-          "objectives": "To demystify classical Sanskrit and enable students to speak fluent conversational Sanskrit in daily life.",
-          "outcomes": "Over 90 students gained basic conversational fluency and Sanskrit chanting mastery.",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "title": "Hindi Bhasha Pravah (Bilingual Translation & Creative Writing Forum)",
-          "objectives": "To build Hindi communicative proficiency and functional translation skills for national competitiveness.",
-          "outcomes": "Students successfully completed bilingual translation projects and national language assessments.",
-          "reportUrl": "/documents/DefaultFile_1.pdf",
-          "proofUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ],
-      "certificateCourses": [
-        {
-          "sNo": 1,
-          "year": "2025–2026",
-          "courseName": "Certificate Course in Spoken Sanskrit & Bhagavad Gita Chanting",
-          "courseType": "Certificate Course",
-          "courseCode": "SAN-CC-01",
-          "duration": "30 Hours",
-          "enrolled": 45,
-          "certified": 45
-        },
-        {
-          "sNo": 2,
-          "year": "2024–2025",
-          "courseName": "Value-Added Course in Functional Hindi & Office Correspondence",
-          "courseType": "Value-Added Course",
-          "courseCode": "HIN-VAC-02",
-          "duration": "30 Hours",
-          "enrolled": 48,
-          "certified": 46
-        }
-      ],
-      "mous": [
-        {
-          "sNo": 1,
-          "organization": "Samskrita Bharati Regional Centre",
-          "duration": "3 Years (2024–2027)",
-          "mouDocUrl": "/documents/DefaultFile_1.pdf",
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        },
-        {
-          "sNo": 2,
-          "organization": "Dakshina Bharat Hindi Prachar Sabha",
-          "duration": "5 Years (2023–2028)",
-          "mouDocUrl": "/documents/DefaultFile_1.pdf",
-          "reportUrl": "/documents/DefaultFile_1.pdf"
-        }
-      ]
+      "results": [],
+      "achievements": [],
+      "activities": [],
+      "bestPractices": [],
+      "certificateCourses": [],
+      "mous": [],
+      "passPercentage": [],
+      "placements": [],
+      "higherEducation": [],
+      "competitiveExams": [],
+      "activitiesList": [],
+      "studentAchievements": [],
+      "universityRanks": [],
+      "academicAchievements": [],
+      "activitiesSummary": [],
+      "customTables": [],
+      "gallery": []
     }
   ],
   "teachingLearning": {
