@@ -331,7 +331,7 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
       }
     }
 
-    if (Array.isArray(matchedDocs) && matchedDocs.length > 0) {
+    if (Array.isArray(matchedDocs)) {
       return matchedDocs;
     }
     if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
@@ -341,6 +341,20 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
     }
     return null;
   }, [dynamicDept, table2Year]);
+
+  const renderedCurriculumDocs = useMemo(() => {
+    if (Array.isArray(activeCurriculumDocs)) {
+      return activeCurriculumDocs;
+    }
+    return [
+      { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "/documents/DefaultFile_1.pdf" }
+    ];
+  }, [activeCurriculumDocs]);
 
   // Standard Baseline Data for Table 3 (Student Strength & Pass %)
   const table3AllData = useMemo(() => {
@@ -831,31 +845,31 @@ export function DepartmentDetail({ itemSlug }: DepartmentDetailProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {[
-                  { sNo: 1, particular: "Programme Structure & Curriculum", btnText: "View PDF" },
-                  { sNo: 2, particular: "Programme Outcomes (POs)", btnText: "View PDF" },
-                  { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", btnText: "View PDF" },
-                  { sNo: 4, particular: "Course Structure & Syllabus", btnText: "View Syllabus" },
-                  { sNo: 5, particular: "Course Outcomes (COs)", btnText: "View PDF" },
-                  { sNo: 6, particular: "CO–PO–PSO Mapping", btnText: "View PDF" }
-                ].map((row) => {
-                  const docItem = activeCurriculumDocs?.find((d: any) => d.sNo === row.sNo || d.particular?.trim().toLowerCase() === row.particular?.trim().toLowerCase()) || activeCurriculumDocs?.[row.sNo - 1];
-                  const docUrl = docItem?.documentUrl || "/documents/DefaultFile_1.pdf";
-                  return (
-                    <tr key={row.sNo} className={row.sNo % 2 === 1 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                      <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo}</td>
-                      <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.particular}</td>
-                      <td className="py-3 px-4 text-center">
-                        <button
-                          onClick={() => handleOpenPdf(docUrl, `${row.particular} (${table2Year}) - ${deptName}`)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                        >
-                          <FileText className="h-3.5 w-3.5" /> {row.btnText}
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {renderedCurriculumDocs.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="py-6 text-center text-slate-500 font-medium italic">
+                      No curriculum documents found for the selected year.
+                    </td>
+                  </tr>
+                ) : (
+                  renderedCurriculumDocs.map((row: any, idx: number) => {
+                    const docUrl = row.documentUrl || "/documents/DefaultFile_1.pdf";
+                    return (
+                      <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                        <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo || idx + 1}</td>
+                        <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.particular}</td>
+                        <td className="py-3 px-4 text-center">
+                          <button
+                            onClick={() => handleOpenPdf(docUrl, `${row.particular} (${table2Year}) - ${deptName}`)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                          >
+                            <FileText className="h-3.5 w-3.5" /> View PDF
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

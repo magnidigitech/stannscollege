@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { 
   Building, GraduationCap, Users, BookOpen, FileText, Handshake, 
@@ -37,6 +37,73 @@ export function DepartmentOfCommerce() {
       if (data) setDynamicDept(data);
     }).catch((err) => console.error("Error loading commerce dynamic data:", err));
   }, []);
+
+  const commerceCurriculumYears = useMemo(() => {
+    let years: string[] = [];
+    if (dynamicDept?.curriculumByYearJson) {
+      try {
+        const parsed = typeof dynamicDept.curriculumByYearJson === "string" ? JSON.parse(dynamicDept.curriculumByYearJson) : dynamicDept.curriculumByYearJson;
+        years = Object.keys(parsed);
+      } catch {}
+    } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+      years = Object.keys(dynamicDept.curriculumByYear);
+    } else if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
+      years = Array.from(new Set(dynamicDept.curriculumDocuments.map((d: any) => d.year).filter(Boolean))) as string[];
+    }
+    if (years.length === 0) {
+      years = ["2025–2026"];
+    }
+    return Array.from(new Set(years)).sort().reverse();
+  }, [dynamicDept]);
+
+  useEffect(() => {
+    if (commerceCurriculumYears.length > 0 && !commerceCurriculumYears.includes(curriculumYear)) {
+      setCurriculumYear(commerceCurriculumYears[0]);
+    }
+  }, [commerceCurriculumYears, curriculumYear]);
+
+  const activeCurriculumDocs = useMemo(() => {
+    let yearMap: Record<string, any> = {};
+    if (dynamicDept?.curriculumByYearJson) {
+      try {
+        yearMap = typeof dynamicDept.curriculumByYearJson === "string"
+          ? JSON.parse(dynamicDept.curriculumByYearJson)
+          : dynamicDept.curriculumByYearJson;
+      } catch {}
+    } else if (dynamicDept?.curriculumByYear && typeof dynamicDept.curriculumByYear === "object") {
+      yearMap = dynamicDept.curriculumByYear;
+    }
+
+    const normalizeY = (y: string) => (y || "").replace(/[\u2013\u2014]/g, "-").trim();
+    const targetYearNorm = normalizeY(curriculumYear);
+
+    let matchedDocs = yearMap[curriculumYear];
+    if (!matchedDocs) {
+      for (const key of Object.keys(yearMap)) {
+        if (normalizeY(key) === targetYearNorm) {
+          matchedDocs = yearMap[key];
+          break;
+        }
+      }
+    }
+
+    if (Array.isArray(matchedDocs)) {
+      return matchedDocs;
+    }
+    if (Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0) {
+      const yearMatch = dynamicDept.curriculumDocuments.filter((d: any) => normalizeY(d.year) === targetYearNorm);
+      if (yearMatch.length > 0) return yearMatch;
+      return dynamicDept.curriculumDocuments;
+    }
+    return [
+      { sNo: 1, particular: "Programme Structure & Curriculum", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 2, particular: "Programme Outcomes (POs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 3, particular: "Programme Specific Outcomes (PSOs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 4, particular: "Course Structure & Syllabus", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 5, particular: "Course Outcomes (COs)", documentUrl: "/documents/DefaultFile_1.pdf" },
+      { sNo: 6, particular: "CO–PO–PSO Mapping", documentUrl: "/documents/DefaultFile_1.pdf" }
+    ];
+  }, [dynamicDept, curriculumYear]);
 
   const defaultProgrammes = [
     { sNo: 1, name: "B.Com. Honours – General", intake: "20", counseling: "14", management: "6" },
@@ -230,19 +297,28 @@ export function DepartmentOfCommerce() {
 
           {/* 2 Cascading Dropdowns */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
-              <select
-                value={curriculumYear}
-                onChange={(e) => setCurriculumYear(e.target.value)}
-                aria-label="Select Academic Year"
-                className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
-              >
-                <option value="2026–2027">2026–2027</option>
-                <option value="2025–2026">2025–2026</option>
-                <option value="2024–2025">2024–2025</option>
-              </select>
-            </div>
+            {commerceCurriculumYears.length > 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Year:</span>
+                <select
+                  value={curriculumYear}
+                  onChange={(e) => setCurriculumYear(e.target.value)}
+                  aria-label="Select Academic Year"
+                  className="bg-white border-2 border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147] shadow-xs cursor-pointer focus:outline-none focus:border-[#002147]"
+                >
+                  {commerceCurriculumYears.map((y: string) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            ) : commerceCurriculumYears.length === 1 ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Academic Year:</span>
+                <span className="bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-[#002147]">
+                  {commerceCurriculumYears[0]}
+                </span>
+              </div>
+            ) : null}
 
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Programme:</span>
@@ -259,7 +335,7 @@ export function DepartmentOfCommerce() {
           </div>
         </div>
 
-        {/* 6-Row Document Table (Table 2) with Option 1 Banner */}
+        {/* Dynamic Document Table (Table 2) with Option 1 Banner */}
         <div className="bg-white border-2 border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
           <div className="p-3 px-4 sm:px-5 border-b border-[#001733] bg-[#002147] text-white">
             <span className="text-xs font-black text-white uppercase tracking-wider">
@@ -276,78 +352,31 @@ export function DepartmentOfCommerce() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                <tr className="bg-white hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">1</td>
-                  <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">Programme Structure &amp; Curriculum</td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Programme Structure & Curriculum - ${curriculumProg} (${curriculumYear})`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="h-3.5 w-3.5" /> View PDF
-                    </button>
-                  </td>
-                </tr>
-                <tr className="bg-slate-50/60 hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">2</td>
-                  <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">Programme Outcomes (POs)</td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Programme Outcomes (POs) - ${curriculumProg} (${curriculumYear})`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="h-3.5 w-3.5" /> View PDF
-                    </button>
-                  </td>
-                </tr>
-                <tr className="bg-white hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">3</td>
-                  <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">Programme Specific Outcomes (PSOs)</td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Programme Specific Outcomes (PSOs) - ${curriculumProg} (${curriculumYear})`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="h-3.5 w-3.5" /> View PDF
-                    </button>
-                  </td>
-                </tr>
-                <tr className="bg-slate-50/60 hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">4</td>
-                  <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">Course Structure &amp; Syllabus</td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Course Structure & Syllabus - ${curriculumProg} (${curriculumYear})`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="h-3.5 w-3.5" /> View Syllabus
-                    </button>
-                  </td>
-                </tr>
-                <tr className="bg-white hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">5</td>
-                  <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">Course Outcomes (COs)</td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `Course Outcomes (COs) - ${curriculumProg} (${curriculumYear})`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="h-3.5 w-3.5" /> View PDF
-                    </button>
-                  </td>
-                </tr>
-                <tr className="bg-slate-50/60 hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">6</td>
-                  <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">CO–PO–PSO Mapping</td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => handleOpenPdf("/documents/DefaultFile_1.pdf", `CO–PO–PSO Mapping - ${curriculumProg} (${curriculumYear})`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
-                    >
-                      <FileText className="h-3.5 w-3.5" /> View PDF
-                    </button>
-                  </td>
-                </tr>
+                {activeCurriculumDocs.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="py-6 text-center text-slate-500 font-medium italic">
+                      No curriculum documents found for the selected year.
+                    </td>
+                  </tr>
+                ) : (
+                  activeCurriculumDocs.map((row: any, idx: number) => {
+                    const docUrl = row.documentUrl || "/documents/DefaultFile_1.pdf";
+                    return (
+                      <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                        <td className="py-3 px-3 text-center font-bold text-slate-500 border-r border-slate-100">{row.sNo || idx + 1}</td>
+                        <td className="py-3 px-5 font-bold text-slate-900 border-r border-slate-100">{row.particular}</td>
+                        <td className="py-3 px-4 text-center">
+                          <button
+                            onClick={() => handleOpenPdf(docUrl, `${row.particular} - ${curriculumProg} (${curriculumYear})`)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors cursor-pointer shadow-xs"
+                          >
+                            <FileText className="h-3.5 w-3.5" /> View PDF
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

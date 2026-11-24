@@ -500,7 +500,7 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {curriculumDocs.map((item, idx) => {
+                {(() => {
                   let yearMap: Record<string, any> = {};
                   if (dynamicDept?.curriculumByYearJson) {
                     try {
@@ -525,27 +525,43 @@ export function LanguageDepartmentDetail({ itemSlug }: LanguageDepartmentDetailP
                     }
                   }
 
-                  const docItem = yearList?.find((d: any) => d.sNo === item.sNo)
-                    || (Array.isArray(dynamicDept?.curriculumDocuments) && (dynamicDept.curriculumDocuments.find((d: any) => normalizeY(d.year) === targetYearNorm && d.sNo === item.sNo) || dynamicDept.curriculumDocuments[idx]));
-                  const targetDoc = docItem?.documentUrl || "/documents/DefaultFile_1.pdf";
-                  return (
-                    <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
-                      <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200/80">{item.sNo}</td>
-                      <td className="py-3.5 px-5 font-semibold text-slate-800 border-r border-slate-200/80">
-                        {item.particular} ({curriculumYear})
-                      </td>
-                      <td className="py-3.5 px-4 text-center">
-                        <button
-                          onClick={() => handleOpenPdf(targetDoc, `${deptName} - ${item.particular} (${curriculumYear})`)}
-                          className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
-                        >
-                          <FileText className="h-3.5 w-3.5" />
-                          <span>{item.btnText}</span>
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
+                  const docsToRender = Array.isArray(yearList)
+                    ? yearList
+                    : Array.isArray(dynamicDept?.curriculumDocuments) && dynamicDept.curriculumDocuments.length > 0
+                    ? dynamicDept.curriculumDocuments
+                    : curriculumDocs;
+
+                  if (docsToRender.length === 0) {
+                    return (
+                      <tr>
+                        <td colSpan={3} className="py-6 text-center text-slate-500 font-medium italic">
+                          No curriculum documents found for {curriculumYear}.
+                        </td>
+                      </tr>
+                    );
+                  }
+
+                  return docsToRender.map((item: any, idx: number) => {
+                    const targetDoc = item.documentUrl || "/documents/DefaultFile_1.pdf";
+                    return (
+                      <tr key={idx} className={idx % 2 === 0 ? "bg-white hover:bg-blue-50/40 transition-colors" : "bg-slate-50/60 hover:bg-blue-50/40 transition-colors"}>
+                        <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200/80">{item.sNo || idx + 1}</td>
+                        <td className="py-3.5 px-5 font-semibold text-slate-800 border-r border-slate-200/80">
+                          {item.particular} ({curriculumYear})
+                        </td>
+                        <td className="py-3.5 px-4 text-center">
+                          <button
+                            onClick={() => handleOpenPdf(targetDoc, `${deptName} - ${item.particular} (${curriculumYear})`)}
+                            className="inline-flex items-center gap-1.5 bg-[#002147] hover:bg-[#00387a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
+                          >
+                            <FileText className="h-3.5 w-3.5" />
+                            <span>View PDF</span>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  });
+                })()}
               </tbody>
             </table>
           </div>
