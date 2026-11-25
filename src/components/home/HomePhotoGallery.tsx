@@ -2,10 +2,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Camera, Sparkles, X, ChevronLeft, ChevronRight, Maximize2, Play, ExternalLink, Video } from "lucide-react";
+import { extractYouTubeId } from "@/lib/youtube";
+import defaultCampusLife from "@/data/campus-life.json";
 
 export interface GalleryImageItem {
+  id?: string;
   caption?: string;
   imageUrl: string;
+  category?: string;
 }
 
 export interface HomeGalleryDoc {
@@ -16,17 +20,89 @@ export interface HomeGalleryDoc {
   images: GalleryImageItem[];
 }
 
-interface HomePhotoGalleryProps {
-  galleries: HomeGalleryDoc[];
+export interface CampusVideoItem {
+  id: string;
+  title: string;
+  youtubeUrl: string;
+  youtubeId: string;
+  caption?: string;
+  isActive: boolean;
 }
 
-export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
-  // Flatten all images across gallery documents
-  const allImages = galleries.flatMap((g) => g.images || []).filter((img) => img.imageUrl);
-  
-  // Filter out images 1, 2, 3, 7, 8, 9 (indices 0, 1, 2, 6, 7, 8) as requested,
-  // since the YouTube video takes their 2-row x 3-column place
-  const displayImages = allImages.filter((_, idx) => ![0, 1, 2, 6, 7, 8].includes(idx));
+export interface CampusGalleryItem {
+  id: string;
+  imageUrl: string;
+  caption?: string;
+  category?: string;
+  displayOrder: number;
+}
+
+export interface CampusLifeData {
+  sectionTitle: string;
+  sectionSubtitle: string;
+  sectionDescription: string;
+  videos: CampusVideoItem[];
+  gallery: CampusGalleryItem[];
+}
+
+interface HomePhotoGalleryProps {
+  galleries?: HomeGalleryDoc[];
+}
+
+export default function HomePhotoGallery({ galleries = [] }: HomePhotoGalleryProps) {
+  const [campusData, setCampusData] = useState<CampusLifeData>(defaultCampusLife as CampusLifeData);
+
+  // Fetch latest dynamic campus life data from API
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCampusLife() {
+      try {
+        const res = await fetch("/api/admin/campus-life");
+        const json = await res.json();
+        if (isMounted && json.success && json.data) {
+          setCampusData(json.data);
+        }
+      } catch (err) {
+        // Keep defaultCampusLife fallback
+      }
+    }
+    loadCampusLife();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Determine active video (defaulting to the first active video or initial)
+  const activeVideo =
+    campusData?.videos?.find((v) => v.isActive) ||
+    campusData?.videos?.[0] ||
+    defaultCampusLife.videos[0];
+
+  const [selectedModalVideo, setSelectedModalVideo] = useState<CampusVideoItem | null>(null);
+  const currentVideo = selectedModalVideo || activeVideo;
+  const ytId = extractYouTubeId(currentVideo.youtubeId || currentVideo.youtubeUrl);
+
+  // Flatten images from Sanity or fallback to dynamic campusData.gallery
+  const allImages: GalleryImageItem[] = React.useMemo(() => {
+    if (galleries && galleries.length > 0) {
+      const sanityImgs = galleries.flatMap((g) => g.images || []).filter((img) => img.imageUrl);
+      if (sanityImgs.length > 0) return sanityImgs;
+    }
+    if (campusData?.gallery && campusData.gallery.length > 0) {
+      return campusData.gallery.map((g) => ({
+        imageUrl: g.imageUrl,
+        caption: g.caption,
+        category: g.category,
+      }));
+    }
+    return defaultCampusLife.gallery.map((g) => ({
+      imageUrl: g.imageUrl,
+      caption: g.caption,
+      category: g.category,
+    }));
+  }, [galleries, campusData]);
+
+  const displayImages = allImages;
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -83,9 +159,10 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [ytId]);
 
   const handleOpenVideoModal = () => {
+    setSelectedModalVideo(activeVideo);
     let currentSec = 0;
     try {
       if (playerRef.current && typeof playerRef.current.getCurrentTime === "function") {
@@ -111,6 +188,7 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
 
   const handleCloseVideoModal = () => {
     setIsVideoModalOpen(false);
+    setSelectedModalVideo(null);
     try {
       playerRef.current?.playVideo?.();
     } catch (e) {}
@@ -127,8 +205,6 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  if (allImages.length === 0) return null;
 
   const currentImage = lightboxIndex !== null ? displayImages[lightboxIndex] : null;
 
@@ -149,18 +225,18 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div className="flex flex-col items-start gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 px-3.5 py-1 text-xs font-black text-indigo-300 uppercase tracking-wider">
-              <Camera className="h-3.5 w-3.5 text-indigo-400" /> Event Highlights &amp; Campus Life
+              <Camera className="h-3.5 w-3.5 text-indigo-400" /> {campusData?.sectionSubtitle || "Event Highlights & Campus Life"}
             </span>
             <h2 className="font-outfit text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-              Life at St. Ann&apos;s College
+              {campusData?.sectionTitle || "Life at St. Ann's College"}
             </h2>
             <p className="font-sans text-xs md:text-sm text-slate-300 font-semibold max-w-2xl">
-              Glimpses of academic conventions, cultural festivities, sports meets, and student initiatives on campus.
+              {campusData?.sectionDescription || "Glimpses of academic conventions, cultural festivities, sports meets, and student initiatives on campus."}
             </p>
           </div>
         </div>
 
-        {/* Dynamic Grid: Video takes 3 cols x 2 rows in place of images 1, 2, 3, 7, 8, 9 */}
+        {/* Dynamic Grid: Video takes 3 cols x 2 rows */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           
           {/* YouTube Video Feature Block (Video playing live inside the card) */}
@@ -172,9 +248,10 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
             <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
               <iframe
                 id="stanns-yt-preview-iframe"
+                key={ytId}
                 className="w-full h-full scale-[1.35] origin-center"
-                src="https://www.youtube.com/embed/2E7IGyhdQeg?autoplay=1&mute=1&loop=1&playlist=2E7IGyhdQeg&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1"
-                title="St. Ann's College for Women Campus Tour Video Preview"
+                src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1`}
+                title={activeVideo.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             </div>
@@ -183,7 +260,7 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/40 pointer-events-none" />
             <div className="absolute inset-0 bg-rose-950/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-            {/* Top Bar with Badge (No 'Click to Pop Up' badge) */}
+            {/* Top Bar with Badge */}
             <div className="relative z-10 p-4 sm:p-5 flex items-center justify-between pointer-events-none">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-600/90 text-white backdrop-blur-md shadow-md border border-rose-400/30">
                 <Video className="h-3.5 w-3.5" />
@@ -191,17 +268,19 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
               </span>
             </div>
 
-            {/* Center Area: Clean, video is visibly playing smoothly without buttons */}
+            {/* Center Area */}
             <div className="relative z-10 my-auto pointer-events-none" />
 
             {/* Bottom Title & Description Overlay */}
             <div className="relative z-10 p-4 sm:p-5 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent border-t border-white/10 pointer-events-none">
               <h3 className="font-outfit text-base sm:text-lg font-black text-white leading-tight line-clamp-2 drop-shadow-sm group-hover:text-rose-200 transition-colors">
-                St. Ann&apos;s College for Women, Gorantla | Institutional Campus Tour
+                {activeVideo.title}
               </h3>
-              <p className="text-xs text-slate-300 font-medium mt-1 line-clamp-1">
-                Quality Education, Infrastructure &amp; Campus Life
-              </p>
+              {activeVideo.caption && (
+                <p className="text-xs text-slate-300 font-medium mt-1 line-clamp-1">
+                  {activeVideo.caption}
+                </p>
+              )}
             </div>
           </div>
 
@@ -252,8 +331,8 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
             <div className="w-full aspect-video rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black border border-white/20 bg-black">
               <iframe
                 className="w-full h-full"
-                src={`https://www.youtube.com/embed/2E7IGyhdQeg?autoplay=1&start=${startSecond}&si=fZWEqHKVbRpS6iaH&rel=0`}
-                title="St. Ann's College for Women Campus Tour Video"
+                src={`https://www.youtube.com/embed/${ytId}?autoplay=1&start=${startSecond}&rel=0`}
+                title={currentVideo.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
@@ -264,14 +343,14 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
             <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-4 px-2">
               <div>
                 <h3 className="font-outfit text-base sm:text-lg font-bold text-white leading-snug">
-                  St. Ann&apos;s College for Women, Gorantla | Institutional Campus Tour
+                  {currentVideo.title}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-400 font-medium mt-0.5">
-                  Official Institutional Video • St. Ann&apos;s College for Women, Guntur
+                  {currentVideo.caption || "Official Campus Video • St. Ann's College for Women, Guntur"}
                 </p>
               </div>
               <a
-                href="https://youtu.be/2E7IGyhdQeg?si=jS6iLt1Qrg47NRsS"
+                href={currentVideo.youtubeUrl || `https://www.youtube.com/watch?v=${ytId}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-all shadow-md active:scale-95 shrink-0"
@@ -280,6 +359,31 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
             </div>
+
+            {/* Playlist switcher if multiple videos are configured */}
+            {campusData?.videos && campusData.videos.length > 1 && (
+              <div className="w-full mt-4 pt-4 border-t border-white/10 flex items-center gap-2 overflow-x-auto pb-1">
+                <span className="text-[11px] font-bold text-slate-400 shrink-0">Other Videos:</span>
+                {campusData.videos.map((vid) => (
+                  <button
+                    key={vid.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedModalVideo(vid);
+                      setStartSecond(0);
+                    }}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 ${
+                      currentVideo.id === vid.id
+                        ? "bg-rose-600 text-white"
+                        : "bg-white/10 hover:bg-white/20 text-slate-300"
+                    }`}
+                  >
+                    <Play className="w-3 h-3 fill-current" />
+                    <span>{vid.title}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -330,4 +434,3 @@ export default function HomePhotoGallery({ galleries }: HomePhotoGalleryProps) {
     </section>
   );
 }
-

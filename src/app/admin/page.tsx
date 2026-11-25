@@ -18,12 +18,14 @@ import { AdmissionsManager } from "@/components/admin/AdmissionsManager";
 import { AcademicsManager } from "@/components/admin/AcademicsManager";
 import { QualityAssuranceManager } from "@/components/admin/QualityAssuranceManager";
 import QuickDrawersManager from "@/components/admin/QuickDrawersManager";
+import CampusLifeManager from "@/components/admin/CampusLifeManager";
 import {
   Calendar,
   Bell,
   Compass,
   FileText,
   Image as ImageIcon,
+  Video,
   LogOut,
   ExternalLink,
   Sparkles,
@@ -97,6 +99,14 @@ const ADMIN_NAV_GROUPS: AdminNavGroup[] = [
         icon: ImageIcon,
         description: "Manage, reorder, preview, and upload 16:6 widescreen homepage hero banners directly synced to Sanity.",
         component: HeroBannersManager,
+      },
+      {
+        id: "home-campus-life",
+        label: "Campus Life & Video Gallery",
+        badge: "Photos & Video",
+        icon: Video,
+        description: "Manage campus life event photo gallery and homepage YouTube video showcase.",
+        component: CampusLifeManager,
       },
       {
         id: "drawers-newsletters",

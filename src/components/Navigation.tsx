@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import {
   GraduationCap,
@@ -33,6 +34,7 @@ import {
   Calendar,
   Image as ImageIcon,
   ChevronRight,
+  ChevronDown,
   FlaskConical,
   Rocket,
   Compass,
@@ -61,6 +63,7 @@ export function toSlug(text: string) {
 
 
 export default function Navigation() {
+  const pathname = usePathname();
   // Desktop Menu Click State
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
@@ -1741,589 +1744,208 @@ export default function Navigation() {
       </div>
 
       {/* ============================================================== */}
-      {/* MOBILE RESPONSIVE DRAWER & TRIGGER                             */}
+      {/* MOBILE RESPONSIVE QUICK NAV & DIRECT MORE SHEET                */}
       {/* ============================================================== */}
 
-      {/* Mobile Top Header (Visible only on mobile screens when sticky nav is active) */}
+      {/* Mobile Quick-Links Strip (Visible only on mobile screens) */}
       <div
-        className="flex md:hidden items-center justify-between h-14 w-full select-none relative z-40 px-4 transition-colors duration-200 border-b border-white/10"
+        className="flex md:hidden items-center justify-between h-11 w-full select-none relative z-40 px-2 sm:px-3 transition-colors duration-200 border-b border-white/10 gap-1"
         style={{ backgroundColor: "#001738" }}
       >
-        <Link
-          href="/"
-          className="font-outfit font-black text-base uppercase tracking-tight leading-none text-white"
-        >
-          St. Ann&apos;s College
-        </Link>
+        {/* Direct Quick Links (Instant 1-tap navigation to top 4 pages) */}
+        <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+          <Link
+            href="/"
+            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+              pathname === "/"
+                ? "bg-white/20 text-white shadow-xs"
+                : "text-slate-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            href="/about"
+            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+              pathname.startsWith("/about")
+                ? "bg-white/20 text-white shadow-xs"
+                : "text-slate-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            About
+          </Link>
+          <Link
+            href="/academics"
+            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+              pathname.startsWith("/academics")
+                ? "bg-white/20 text-white shadow-xs"
+                : "text-slate-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            Academics
+          </Link>
+          <Link
+            href="/admissions"
+            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+              pathname.startsWith("/admissions")
+                ? "bg-white/20 text-white shadow-xs"
+                : "text-slate-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            Admissions
+          </Link>
+        </div>
+
+        {/* "More ▾" Button with Arrow Icon to open direct pages sheet */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all cursor-pointer text-white"
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-extrabold transition-all cursor-pointer shrink-0 border border-amber-400/40 ${
+            mobileOpen
+              ? "bg-amber-400 text-slate-950 shadow-xs"
+              : "bg-white/10 hover:bg-white/20 text-amber-300"
+          }`}
+          title="View remaining pages"
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <span>More</span>
+          {mobileOpen ? (
+            <X className="h-3.5 w-3.5 text-slate-950" />
+          ) : (
+            <ChevronDown className="h-3.5 w-3.5 text-amber-300" />
+          )}
         </button>
       </div>
 
-      {/* Mobile Sidebar Navigation Overlay & Drawer */}
+      {/* Mobile Direct Pages Sheet / Drawer */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex select-none animate-fadeIn">
-          {/* Transparent Backdrop */}
-          <div className="absolute inset-0 bg-slate-900/35 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-slate-950/60 backdrop-blur-xs"
+            onClick={() => setMobileOpen(false)}
+          />
 
           {/* Sliding Drawer Container */}
-          <div className="absolute right-0 top-0 bottom-0 w-[85vw] max-w-sm bg-white shadow-2xl flex flex-col h-full overflow-hidden border-l border-slate-100 animate-slideIn">
+          <div className="absolute right-0 top-0 bottom-0 w-[88vw] max-w-sm bg-white shadow-2xl flex flex-col h-full overflow-hidden border-l border-slate-200 animate-slideIn">
 
             {/* Drawer Header */}
-            <div className="flex items-center justify-between p-5 border-b border-slate-100 shrink-0 bg-slate-50/40">
-              <span className="font-outfit font-black text-sm text-[#002147] uppercase tracking-wider">Navigation Menu</span>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 shrink-0 bg-slate-50">
+              <div className="flex flex-col">
+                <span className="font-outfit font-black text-sm text-[#002147] uppercase tracking-wider">
+                  All College Pages
+                </span>
+                <span className="text-[10px] text-slate-500 font-medium">
+                  Tap any page to visit directly
+                </span>
+              </div>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-2 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+                aria-label="Close menu"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Scrollable Navigation Items */}
-            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-2">
-
-              {/* Primary Direct Links */}
-              <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">
-                <span>1. Home</span>
-              </Link>
-
-              {/* 2. About Us Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMAbout(!mAbout)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>2. About Us</span>
-                  {mAbout ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mAbout && (
-                  <div className="flex flex-col gap-4 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/about"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit About Us Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {aboutCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={item.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
-                          >
-                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
-                          </Link>
-                        ))}
+            {/* Direct Navigation Links (Every link goes directly to page in 1 tap) */}
+            <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-1.5">
+              {[
+                { name: "1. Home", href: "/", icon: Home, desc: "Main Campus & Portal" },
+                { name: "2. About Us", href: "/about", icon: Building, desc: "History, Vision, Leadership & Governance" },
+                { name: "3. Academics", href: "/academics", icon: GraduationCap, desc: "Curricula, Regulations & Programs" },
+                { name: "4. Admissions", href: "/admissions", icon: BookOpen, desc: "Eligibility, Fee Structure & Guidelines" },
+                { name: "5. Infrastructure", href: "/infrastructure", icon: Building2, desc: "Campus, Labs, Library & Hostels" },
+                { name: "6. Faculty", href: "/faculty", icon: Users, desc: "Teaching Faculty, Profiles & Departments" },
+                { name: "7. Student Support", href: "/student-support-services", icon: HeartHandshake, desc: "Mentoring, NCC, NSS & Clubs" },
+                { name: "8. Placements", href: "/placements", icon: Briefcase, desc: "Recruiters, TPO Desk & Statistics" },
+                { name: "9. Research & Innovation", href: "/research-innovation", icon: FlaskConical, desc: "Projects, Publications & IPR Cell" },
+                { name: "10. Alumni", href: "/alumni", icon: Handshake, desc: "Alumnae Network & Distinguished Members" },
+                { name: "11. Quality Assurance (IQAC)", href: "/quality-assurance", icon: ShieldCheck, desc: "NAAC, NIRF, AQAR & Accreditations" },
+                { name: "12. Mandatory Disclosures", href: "/mandatory-disclosures", icon: FileCheck, desc: "Statutory Compliance & AICTE Approvals" },
+                { name: "13. Strategic Plans", href: "/strategic-plan", icon: Compass, desc: "Institutional Perspective & 2030 Roadmap" },
+                { name: "14. Contact Us", href: "/contact", icon: Phone, desc: "Campus Location, Numbers & Enquiry" },
+              ].map((item, idx) => {
+                const IconComponent = item.icon;
+                const isCurrent = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={idx}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center justify-between p-2.5 rounded-xl transition-all border ${
+                      isCurrent
+                        ? "bg-[#002147] text-white border-[#002147] shadow-xs"
+                        : "bg-white hover:bg-slate-50 text-slate-700 border-slate-100 hover:border-slate-200"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div
+                        className={`p-1.5 rounded-lg shrink-0 ${
+                          isCurrent ? "bg-white/10 text-white" : "bg-blue-50 text-[#002147]"
+                        }`}
+                      >
+                        <IconComponent className="h-4 w-4" />
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 3. Academics Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMAcademics(!mAcademics)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>3. Academics</span>
-                  {mAcademics ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mAcademics && (
-                  <div className="flex flex-col gap-4 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/academics"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Academics Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {academicsCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={item.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
-                          >
-                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
-                          </Link>
-                        ))}
+                      <div className="flex flex-col min-w-0 text-left">
+                        <span className={`text-xs font-bold leading-tight truncate ${isCurrent ? "text-white" : "text-slate-800"}`}>
+                          {item.name}
+                        </span>
+                        <span className={`text-[10px] leading-tight truncate mt-0.5 ${isCurrent ? "text-blue-200" : "text-slate-500"}`}>
+                          {item.desc}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    </div>
+                    <ChevronRight
+                      className={`h-3.5 w-3.5 shrink-0 ${
+                        isCurrent ? "text-white" : "text-slate-400"
+                      }`}
+                    />
+                  </Link>
+                );
+              })}
 
-              {/* 4. Admissions Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMAdmissions(!mAdmissions)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>4. Admissions</span>
-                  {mAdmissions ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mAdmissions && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/admissions"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Admissions Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {admissionsCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={item.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
-                          >
-                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 5. Infrastructure Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMInfra(!mInfra)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>5. Infrastructure</span>
-                  {mInfra ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mInfra && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/infrastructure"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Infrastructure Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {infraColumns.map((col, colIdx) => (
-                      <div key={colIdx} className="flex flex-col gap-2">
-                        {col.map((cat, i) => (
-                          <div key={i} className="flex flex-col gap-1">
-                            <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">{cat.title}</span>
-                            {cat.items.map((item, idx) => (
-                              <Link key={idx} href={`/infrastructure/${item.slug}`} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 6. Faculty Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMFaculty(!mFaculty)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>6. Faculty</span>
-                  {mFaculty ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mFaculty && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    {facultyCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[11px] font-black uppercase text-indigo-700 tracking-wider hover:underline"
-                        >
-                          {cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={`/faculty/${item.slug}`}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
-                          >
-                            • {item.text}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 7. Student Support Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMSupport(!mSupport)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>7. Student Support Services</span>
-                  {mSupport ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mSupport && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/student-support"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Student Support Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {supportCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={item.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
-                          >
-                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 8. Placements Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMPlacements(!mPlacements)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>8. Placements & Industry Linkages</span>
-                  {mPlacements ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mPlacements && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/placements"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Placements Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {placementsCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link
-                            key={idx}
-                            href={item.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="text-xs font-semibold text-slate-500 hover:text-[#002147] py-0.5"
-                          >
-                            {item.text.startsWith("•") || item.text.startsWith("✦") ? item.text : `• ${item.text}`}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 9. Research Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMResearch(!mResearch)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>9. Research & Innovation</span>
-                  {mResearch ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mResearch && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/research-innovation"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Research Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {researchCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 10. Alumni Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMAlumni(!mAlumni)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>10. Alumni</span>
-                  {mAlumni ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mAlumni && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/alumni"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Alumni Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {alumniCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 11. IQAC Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMIqac(!mIqac)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>11. IQAC & Accreditation</span>
-                  {mIqac ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mIqac && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/quality-assurance"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit IQAC Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {iqacCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 12. Mandatory Disclosures Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMMandatory(!mMandatory)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>12. Mandatory Disclosures</span>
-                  {mMandatory ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mMandatory && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    <Link
-                      href="/mandatory-disclosures"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-xs font-bold text-[#002147] bg-slate-100/90 hover:bg-[#002147] hover:text-white px-3 py-2 rounded-xl flex items-center justify-between transition-all"
-                    >
-                      <span>Visit Disclosures Main Page</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    {mandatoryCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 13. Strategic Plans Accordion */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
-                <button
-                  onClick={() => setMStrategic(!mStrategic)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
-                >
-                  <span>13. Strategic Plans</span>
-                  {mStrategic ? <Minus className="h-4 w-4 text-slate-400" /> : <Plus className="h-4 w-4 text-slate-400" />}
-                </button>
-                {mStrategic && (
-                  <div className="flex flex-col gap-3 pl-4 py-2 border-l-2 border-indigo-100 ml-3">
-                    {strategicCategories.map((cat, i) => (
-                      <div key={i} className="flex flex-col gap-1.5">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-[10px] font-black uppercase text-[#002147] tracking-wider hover:underline"
-                        >
-                          {cat.fullTitle || cat.title}
-                        </Link>
-                        {cat.items.map((item, idx) => (
-                          <Link key={idx} href={item.href} onClick={() => setMobileOpen(false)} className="text-xs font-semibold text-slate-500 py-1">• {item.text}</Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 14. Contact Us (Direct Link) */}
-              <div className="flex flex-col gap-1 border-t border-slate-50 pt-1">
+              {/* Admin Portal Direct Link */}
+              <div className="pt-2 mt-1 border-t border-slate-100">
                 <Link
-                  href="/contact"
+                  href="/admin/login"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all border border-slate-800 shadow-xs"
                 >
-                  <span>14. Contact Us</span>
-                  <ArrowRight className="h-4 w-4 text-slate-400" />
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="p-1.5 rounded-lg bg-white/10 text-amber-400 shrink-0">
+                      <ShieldAlert className="h-4 w-4" />
+                    </div>
+                    <div className="flex flex-col min-w-0 text-left">
+                      <span className="text-xs font-bold leading-tight text-white">
+                        Admin Portal
+                      </span>
+                      <span className="text-[10px] leading-tight text-slate-400 mt-0.5">
+                        Faculty &amp; Staff Administration
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-3.5 w-3.5 text-amber-400 shrink-0" />
                 </Link>
               </div>
 
-              {/* Mobile Quick Publications & Handbooks */}
-              <div className="flex flex-col gap-2 border-t border-slate-100 pt-3 mt-2">
-                <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider px-2">
-                  Publications &amp; Resources
-                </span>
-                <div className="grid grid-cols-2 gap-2 px-1">
-                  <Link
-                    href="/mandatory-disclosures"
-                    onClick={() => setMobileOpen(false)}
-                    className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px] font-bold text-slate-700 hover:text-[#002147] hover:bg-blue-50/50 flex items-center gap-2"
-                  >
-                    <BookOpen className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
-                    <span className="truncate">Disclosures</span>
-                  </Link>
-                  <Link
-                    href="/admissions"
-                    onClick={() => setMobileOpen(false)}
-                    className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px] font-bold text-slate-700 hover:text-[#002147] hover:bg-blue-50/50 flex items-center gap-2"
-                  >
-                    <Compass className="h-3.5 w-3.5 text-sky-600 shrink-0" />
-                    <span className="truncate">Prospectus</span>
-                  </Link>
-                </div>
+              {/* Social Channels */}
+              <div className="flex items-center justify-center gap-3 pt-3 pb-1 border-t border-slate-100 mt-1">
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="h-7 w-7 rounded-lg bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="Facebook">
+                  <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noreferrer" className="h-7 w-7 rounded-lg bg-[#FF0000] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="YouTube">
+                  <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/stannscollegeforwomengnt" target="_blank" rel="noreferrer" className="h-7 w-7 rounded-lg bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="Instagram">
+                  <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://whatsapp.com/channel/0029Vb9FPmy0bIdpHlLFXY3c" target="_blank" rel="noreferrer" className="h-7 w-7 rounded-lg bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="WhatsApp">
+                  <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </a>
               </div>
-
-              {/* Mobile Social Links */}
-              <div className="flex flex-col gap-2 border-t border-slate-100 pt-3 mt-1 pb-2">
-                <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider px-2">
-                  Connect With Us
-                </span>
-                <div className="flex items-center gap-2 px-2">
-                  <a href="https://youtube.com/@stannscollegeforwomenguntur" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-lg bg-[#FF0000] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="YouTube">
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                  </a>
-                  <a href="https://www.facebook.com/profile.php?id=61593155107273" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-lg bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="Facebook">
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                  </a>
-                  <a href="https://www.instagram.com/stannscollegeforwomengnt" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-lg bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="Instagram">
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                  </a>
-                  <a href="https://whatsapp.com/channel/0029Vb9FPmy0bIdpHlLFXY3c" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-lg bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="WhatsApp">
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                  </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="h-8 w-8 rounded-lg bg-[#0A66C2] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="LinkedIn">
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  </a>
-                </div>
-              </div>
-
             </div>
 
             {/* Apply Now in mobile drawer footer */}
-            <div className="p-5 border-t border-slate-100 bg-slate-50/40 shrink-0 flex flex-col gap-2.5">
+            <div className="p-3.5 border-t border-slate-100 bg-slate-50 shrink-0">
               <button
                 type="button"
                 onClick={() => {
@@ -2332,15 +1954,16 @@ export default function Navigation() {
                     window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
                   }
                 }}
-                className="w-full flex items-center justify-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-500 px-6 py-3 font-bold text-white text-xs tracking-wider uppercase hover:shadow-xl hover:shadow-emerald-600/20 transition-all duration-300 cursor-pointer border border-emerald-400/30"
+                className="w-full flex items-center justify-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 font-bold text-white text-xs tracking-wider uppercase hover:shadow-lg transition-all active:scale-95 cursor-pointer border border-emerald-500/30"
               >
-                Apply Now <ArrowRight className="h-4 w-4" />
+                <span>Apply Now</span>
+                <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>
 
           </div>
         </div>
-      )}
+            )}
 
     </div>
   );

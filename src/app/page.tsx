@@ -914,7 +914,11 @@ export default function HomePage() {
       if (sectionRef.current) {
         const rect = sectionRef.current.getBoundingClientRect();
         const sectionTop = rect.top + window.scrollY;
-        const availableHeight = Math.max(340, window.innerHeight - sectionTop);
+        const isMobile = window.innerWidth < 640;
+        // On mobile, keep banner at a balanced proportion (65vh max) so notices below are quickly reachable
+        const availableHeight = isMobile
+          ? Math.min(Math.round(window.innerHeight * 0.65), Math.max(300, window.innerHeight - sectionTop))
+          : Math.max(340, window.innerHeight - sectionTop);
         setBannerHeight(`${availableHeight}px`);
       }
     };
@@ -959,12 +963,21 @@ export default function HomePage() {
             {heroSlides.map((slide, index) => {
               const isActive = index === currentSlide;
               const slideImg = (
-                <div className="relative w-full h-full overflow-hidden">
-                  {/* Full-bleed banner image filling the banner container completely with no top cropping */}
+                <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
+                  {/* Ambient Blurred Backdrop (Mobile only: smoothly fills side margins without black bars) */}
+                  <img
+                    src={slide.imageUrl}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-45 scale-125 select-none pointer-events-none sm:hidden"
+                  />
+                  <div className="absolute inset-0 bg-slate-950/30 pointer-events-none sm:hidden" />
+
+                  {/* Foreground banner image: 100% uncropped with object-contain on mobile, edge-to-edge on desktop */}
                   <img
                     src={slide.imageUrl}
                     alt={slide.title || `St. Ann's College Banner ${index + 1}`}
-                    className="w-full h-full object-cover object-top"
+                    className="relative z-10 w-full h-full object-contain object-center sm:object-cover sm:object-top select-none drop-shadow-md"
                   />
                 </div>
               );
@@ -1411,13 +1424,11 @@ export default function HomePage() {
       </section>
 
       {/* ----------------------------------------------------
-          7. DYNAMIC CAMPUS PHOTO GALLERY
+          7. DYNAMIC CAMPUS PHOTO GALLERY & VIDEO
           ---------------------------------------------------- */}
-      {galleries.length > 0 && (
-        <div className="transition-colors duration-300">
-          <HomePhotoGallery galleries={galleries} />
-        </div>
-      )}
+      <div className="transition-colors duration-300">
+        <HomePhotoGallery galleries={galleries} />
+      </div>
 
       {/* ----------------------------------------------------
           8. TOP RECRUITERS & CORPORATE PLACEMENT PARTNERS (FLOATING LTR)

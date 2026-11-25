@@ -1,0 +1,87 @@
+{
+  "sectionTitle": "Life at St. Ann's College",
+  "sectionSubtitle": "Event Highlights & Campus Life",
+  "sectionDescription": "Glimpses of academic conventions, cultural festivities, sports meets, and student initiatives on campus.",
+  "videos": [
+    {
+      "id": "vid-campus-tour-1",
+      "title": "St. Ann's College for Women, Gorantla | Institutional Campus Tour",
+      "youtubeUrl": "https://www.youtube.com/watch?v=2E7IGyhdQeg",
+      "youtubeId": "2E7IGyhdQeg",
+      "caption": "Quality Education, Infrastructure & Campus Life",
+      "isActive": true
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gal-1",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-1.jpg",
+      "caption": "Annual Cultural Celebrations & Stage Performances",
+      "category": "Cultural",
+      "displayOrder": 1
+    },
+    {
+      "id": "gal-2",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-2.jpg",
+      "caption": "Traditional Dance Festivities & Student Ensembles",
+      "category": "Cultural",
+      "displayOrder": 2
+    },
+    {
+      "id": "gal-3",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-3.jpg",
+      "caption": "College Day Auditorium Festivities & Academic Honors",
+      "category": "Events",
+      "displayOrder": 3
+    },
+    {
+      "id": "gal-4",
+      "imageUrl": "/images/infrastructure/sports-games/img-1.jpg",
+      "caption": "Inter-Collegiate Sports Tournament & Athletic Meet",
+      "category": "Sports",
+      "displayOrder": 4
+    },
+    {
+      "id": "gal-5",
+      "imageUrl": "/images/infrastructure/sports-games/img-2.jpg",
+      "caption": "Volleyball Championship & Outdoor Games",
+      "category": "Sports",
+      "displayOrder": 5
+    },
+    {
+      "id": "gal-6",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-4.jpg",
+      "caption": "Youth Festival Art Exhibition & Creative Displays",
+      "category": "Arts",
+      "displayOrder": 6
+    },
+    {
+      "id": "gal-7",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-5.jpg",
+      "caption": "Literary Competitions & Oratory Debates",
+      "category": "Academic",
+      "displayOrder": 7
+    },
+    {
+      "id": "gal-8",
+      "imageUrl": "/images/infrastructure/green-campus/img-1.jpg",
+      "caption": "Eco-Club Plantation Drive & Green Campus Initiative",
+      "category": "Environment",
+      "displayOrder": 8
+    },
+    {
+      "id": "gal-9",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-6.jpg",
+      "caption": "National Service Scheme (NSS) Community Outreach",
+      "category": "Social Service",
+      "displayOrder": 9
+    },
+    {
+      "id": "gal-10",
+      "imageUrl": "/images/infrastructure/cultural-recreation/img-7.jpg",
+      "caption": "Graduation Day Ceremony & Felicitations",
+      "category": "Events",
+      "displayOrder": 10
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   Calendar,
@@ -10,6 +10,7 @@ import {
   ExternalLink,
   Search,
   ChevronRight,
+  ChevronDown,
   Sparkles,
   Filter,
   Clock,
@@ -29,11 +30,29 @@ import {
 } from "@/lib/events";
 import { FilePreviewModal } from "@/components/ui/FilePreviewModal";
 
+const MONTH_NAMES = [
+  { key: "all", label: "All Months", short: "All Months" },
+  { key: "JAN", label: "January", short: "Jan" },
+  { key: "FEB", label: "February", short: "Feb" },
+  { key: "MAR", label: "March", short: "Mar" },
+  { key: "APR", label: "April", short: "Apr" },
+  { key: "MAY", label: "May", short: "May" },
+  { key: "JUN", label: "June", short: "Jun" },
+  { key: "JUL", label: "July", short: "Jul" },
+  { key: "AUG", label: "August", short: "Aug" },
+  { key: "SEP", label: "September", short: "Sep" },
+  { key: "OCT", label: "October", short: "Oct" },
+  { key: "NOV", label: "November", short: "Nov" },
+  { key: "DEC", label: "December", short: "Dec" },
+];
+
 export default function EventsPage() {
   const [events, setEvents] = useState<any[]>(fallbackEventsHistory);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState<string>("all");
+  const [selectedMonth, setSelectedMonth] = useState<string>("all");
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   // Document popup modal for events with documents and details
   const [activeDocModal, setActiveDocModal] = useState<{
@@ -120,7 +139,22 @@ export default function EventsPage() {
     return { day: "—", month: "SEP", year: "2026" };
   };
 
-  // Filter events by search query, year, and visibility (startDate)
+  // Extract available years dynamically from events list
+  const availableYears = useMemo(() => {
+    const yearsSet = new Set<string>();
+    events.forEach((evt) => {
+      const parsed = parseEventDate(evt.date);
+      if (parsed.year && /^\d{4}$/.test(parsed.year)) {
+        yearsSet.add(parsed.year);
+      }
+    });
+    yearsSet.add("2026");
+    yearsSet.add("2025");
+    yearsSet.add("2024");
+    return ["all", ...Array.from(yearsSet).sort((a, b) => b.localeCompare(a))];
+  }, [events]);
+
+  // Filter events by search query, year, month, and visibility (startDate)
   const filteredEvents = events.filter((evt) => {
     const lifecycle = getEventLifecycle(evt);
     if (!lifecycle.isVisible) return false;
@@ -133,11 +167,17 @@ export default function EventsPage() {
       (evt.location && evt.location.toLowerCase().includes(q)) ||
       (evt.organizer && evt.organizer.toLowerCase().includes(q));
 
+    const parsed = parseEventDate(evt.date);
     const matchesYear =
       selectedYear === "all" ||
+      parsed.year === selectedYear ||
       (evt.date && evt.date.includes(selectedYear));
 
-    return matchesSearch && matchesYear;
+    const matchesMonth =
+      selectedMonth === "all" ||
+      parsed.month === selectedMonth;
+
+    return matchesSearch && matchesYear && matchesMonth;
   });
 
   return (
@@ -184,22 +224,143 @@ export default function EventsPage() {
               />
             </div>
 
-            <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-              <Filter className="h-4 w-4 text-slate-500" />
-              <span className="text-xs font-bold text-slate-600 mr-1">Year:</span>
-              {["all", "2026", "2025", "2024"].map((year) => (
+            {/* Calendar Filter (Year & Month Selector) */}
+            <div className="flex items-center gap-2 w-full md:w-auto justify-end flex-wrap sm:flex-nowrap">
+              <div className="relative">
                 <button
-                  key={year}
-                  onClick={() => setSelectedYear(year)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    selectedYear === year
-                      ? "bg-[#002147] text-white shadow-xs"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  type="button"
+                  onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-xs ${
+                    selectedYear !== "all" || selectedMonth !== "all"
+                      ? "bg-[#002147] text-white border-[#002147] ring-2 ring-[#002147]/20"
+                      : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                   }`}
                 >
-                  {year === "all" ? "All Years" : year}
+                  <Calendar className="h-4 w-4 text-amber-500" />
+                  <span>
+                    {selectedYear === "all" && selectedMonth === "all"
+                      ? "Calendar Filter (Month & Year)"
+                      : `${selectedMonth !== "all" ? MONTH_NAMES.find(m => m.key === selectedMonth)?.short : "All Months"} ${selectedYear !== "all" ? selectedYear : "All Years"}`}
+                  </span>
+                  <ChevronDown className="h-3.5 w-3.5 opacity-70" />
                 </button>
-              ))}
+
+                {/* Calendar Dropdown Popover */}
+                {isCalendarOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setIsCalendarOpen(false)}
+                    />
+                    <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 z-50 animate-fadeIn">
+                      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <span className="font-outfit font-black text-xs text-[#002147] uppercase tracking-wider flex items-center gap-1.5">
+                          <Calendar className="h-3.5 w-3.5 text-blue-600" /> Filter Events by Date
+                        </span>
+                        {(selectedYear !== "all" || selectedMonth !== "all") && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedYear("all");
+                              setSelectedMonth("all");
+                            }}
+                            className="text-[10.5px] font-bold text-rose-600 hover:text-rose-700 hover:underline cursor-pointer"
+                          >
+                            Reset Filter
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Year Selector */}
+                      <div className="py-2.5">
+                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block mb-1.5">
+                          1. Select Year
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {availableYears.map((yr) => (
+                            <button
+                              key={yr}
+                              type="button"
+                              onClick={() => setSelectedYear(yr)}
+                              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                selectedYear === yr
+                                  ? "bg-[#002147] text-white shadow-xs"
+                                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                              }`}
+                            >
+                              {yr === "all" ? "All Years" : yr}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Month Grid */}
+                      <div className="py-2.5 border-t border-slate-100">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                            2. Select Month
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedMonth("all")}
+                            className={`text-[10.5px] font-bold cursor-pointer ${
+                              selectedMonth === "all" ? "text-blue-600 underline font-black" : "text-slate-500 hover:text-slate-800"
+                            }`}
+                          >
+                            All Months
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-4 gap-1.5">
+                          {MONTH_NAMES.filter(m => m.key !== "all").map((m) => (
+                            <button
+                              key={m.key}
+                              type="button"
+                              onClick={() => setSelectedMonth(m.key)}
+                              className={`py-1.5 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer ${
+                                selectedMonth === m.key
+                                  ? "bg-[#002147] text-white shadow-xs"
+                                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-100"
+                              }`}
+                            >
+                              {m.short}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Done Button */}
+                      <div className="pt-2.5 border-t border-slate-100 mt-1 flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-slate-500">
+                          {filteredEvents.length} events found
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setIsCalendarOpen(false)}
+                          className="px-4 py-1.5 rounded-lg bg-[#002147] text-white text-xs font-bold hover:bg-[#001730] transition-colors cursor-pointer"
+                        >
+                          Apply Filter
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Quick Clear Filter Pill if Active */}
+              {(selectedYear !== "all" || selectedMonth !== "all") && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedYear("all");
+                    setSelectedMonth("all");
+                  }}
+                  className="flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs font-bold bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 transition-colors cursor-pointer shadow-xs"
+                  title="Clear calendar filter"
+                >
+                  <X className="h-3.5 w-3.5" />
+                  <span>Clear Filter</span>
+                </button>
+              )}
             </div>
           </div>
 
