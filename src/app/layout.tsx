@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
@@ -8,6 +8,14 @@ import { TopLogoBar } from "@/components/TopLogoBar";
 import { CustomizationProvider } from "@/components/CustomizationProvider";
 import { FooterLastUpdated } from "@/components/FooterLastUpdated";
 import { Award, Sparkles, Bell, ArrowRight } from "lucide-react";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#000080",
+};
 
 const inter = Inter({
   subsets: ["latin"],

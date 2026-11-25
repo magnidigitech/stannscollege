@@ -146,24 +146,37 @@ export function AnnouncementBar() {
           </div>
         </div>
 
-        {/* Right: Clickable Phone Numbers */}
+        {/* Right: Clickable Phone Numbers (Desktop) & One-Tap Call Button (Mobile) */}
         {data.phoneNumbers && data.phoneNumbers.length > 0 && (
-          <div className="flex items-center gap-1.5 sm:gap-2 text-slate-300 shrink-0 text-[11px] sm:text-xs">
-            <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400 shrink-0 animate-pulse" />
-            {data.phoneNumbers.map((p, idx) => (
-              <React.Fragment key={idx}>
-                {idx > 0 && <span className="text-slate-500 font-normal">|</span>}
-                {p.label && <span className="text-slate-300 font-medium hidden md:inline">{p.label}:</span>}
-                <a
-                  href={`tel:${p.number.replace(/[^\d+]/g, "")}`}
-                  className="text-amber-300 hover:text-amber-200 font-semibold transition-colors hover:underline tracking-tight"
-                  title={`Click to call ${p.number}`}
-                >
-                  {p.number}
-                </a>
-              </React.Fragment>
-            ))}
-          </div>
+          <>
+            {/* Mobile: One-Tap Quick Calling Icon Button */}
+            <a
+              href={`tel:${data.phoneNumbers[0]?.number.replace(/[^\d+]/g, "") || "08632236470"}`}
+              className="flex sm:hidden items-center justify-center h-7 w-7 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-sm shrink-0 transition-transform active:scale-90 ring-2 ring-amber-300/80"
+              title={`Call College Desk: ${data.phoneNumbers[0]?.number || "0863-2236470"}`}
+              aria-label="Call College Desk"
+            >
+              <Phone className="h-3.5 w-3.5 text-slate-950 animate-pulse" />
+            </a>
+
+            {/* Tablet & Desktop: Full Clickable Numbers */}
+            <div className="hidden sm:flex items-center gap-1.5 sm:gap-2 text-slate-300 shrink-0 text-[11px] sm:text-xs">
+              <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400 shrink-0 animate-pulse" />
+              {data.phoneNumbers.map((p, idx) => (
+                <React.Fragment key={idx}>
+                  {idx > 0 && <span className="text-slate-500 font-normal">|</span>}
+                  {p.label && <span className="text-slate-300 font-medium hidden md:inline">{p.label}:</span>}
+                  <a
+                    href={`tel:${p.number.replace(/[^\d+]/g, "")}`}
+                    className="text-amber-300 hover:text-amber-200 font-semibold transition-colors hover:underline tracking-tight"
+                    title={`Click to call ${p.number}`}
+                  >
+                    {p.number}
+                  </a>
+                </React.Fragment>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
