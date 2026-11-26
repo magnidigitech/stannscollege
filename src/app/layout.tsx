@@ -199,7 +199,7 @@ export default function RootLayout({
               borderColor: "rgba(255, 255, 255, 0.12)"
             }}
           >
-            <div className="mx-auto max-w-[1780px] px-4 sm:px-6 lg:px-8 w-full relative">
+            <div className="mx-auto max-w-[1780px] px-0 md:px-6 lg:px-8 w-full relative">
               <Navigation />
             </div>
           </div>

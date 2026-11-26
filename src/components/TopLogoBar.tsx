@@ -38,25 +38,19 @@ export function TopLogoBar() {
             className="h-[42px] xs:h-[48px] sm:h-[64px] md:h-[82px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0 py-0"
           />
 
-          {/* Institutional Typography (Desktop Full / Mobile Compact) */}
+          {/* Institutional Typography (Fully present on all screens with scaled typography) */}
           <div className="flex flex-col justify-center select-none py-0 min-w-0">
-            <h1 className="font-black text-[13px] xs:text-[15px] sm:text-[18px] md:text-[22px] tracking-tight leading-tight uppercase select-none text-[#800000] font-outfit truncate md:whitespace-normal">
+            <h1 className="font-black text-[11px] xs:text-[13px] sm:text-[17px] md:text-[22px] tracking-tight leading-tight uppercase select-none text-[#800000] font-outfit">
               ST. ANN’S COLLEGE FOR WOMEN
             </h1>
 
-            {/* Mobile Compact Subtitle (Single clean line) */}
-            <span className="font-bold text-[9px] xs:text-[10px] tracking-tight leading-tight text-blue-900 md:hidden truncate">
-              Autonomous • NAAC &apos;A+&apos; • 29+ Years
-            </span>
-
-            {/* Desktop Full Institutional Lines */}
-            <span className="font-bold text-[11px] sm:text-[12px] tracking-normal leading-tight mt-0.5 text-blue-900 hidden md:block">
+            <span className="font-bold text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[12px] tracking-normal leading-tight mt-0.5 text-blue-900">
               Run by The Society of St Anne
             </span>
-            <span className="font-semibold text-[10px] sm:text-[11px] tracking-normal leading-tight mt-0.5 text-slate-700 hidden md:block">
-              Affiliated to Acharya Nagarjuna University • Recognized under 2(f) of UGC Act 1956
+            <span className="font-semibold text-[7.5px] xs:text-[8.5px] sm:text-[10px] md:text-[11px] tracking-normal leading-tight mt-0.5 text-slate-700">
+              Affiliated to Acharya Nagarjuna University • Recognized under 2(f) of UGC Act
             </span>
-            <span className="font-bold text-[10.5px] sm:text-[11.5px] tracking-tight leading-tight mt-0.5 text-[#800000] hidden md:block">
+            <span className="font-bold text-[7.5px] xs:text-[8.5px] sm:text-[10px] md:text-[11.5px] tracking-tight leading-tight mt-0.5 text-[#800000]">
               Amaravathi Road, Gorantla, Guntur–522034, AP, India.
             </span>
           </div>

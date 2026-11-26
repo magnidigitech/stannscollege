@@ -1747,85 +1747,80 @@ export default function Navigation() {
       {/* MOBILE RESPONSIVE QUICK NAV & DIRECT MORE SHEET                */}
       {/* ============================================================== */}
 
-      {/* Mobile Quick-Links Strip (Visible only on mobile screens) */}
+      {/* Mobile Quick-Links Strip (Seamlessly integrated in top nav) */}
       <div
-        className="flex md:hidden items-center justify-between h-11 w-full select-none relative z-40 px-2 sm:px-3 transition-colors duration-200 border-b border-white/10 gap-1"
-        style={{ backgroundColor: "#001738" }}
+        className="flex md:hidden items-center justify-between h-10 w-full select-none relative z-40 px-3 transition-colors duration-200"
+        style={{ backgroundColor: "transparent" }}
       >
-        {/* Direct Quick Links (Instant 1-tap navigation to top 4 pages) */}
-        <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+        {/* Direct Quick Links (Seamless top nav text styling without nested boxes) */}
+        <div className="flex items-center gap-3 xs:gap-3.5 sm:gap-4 min-w-0">
           <Link
             href="/"
-            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
               pathname === "/"
-                ? "bg-white/20 text-white shadow-xs"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
+                ? "border-amber-400 text-white font-black"
+                : "border-transparent text-white/80 hover:text-white"
             }`}
           >
             Home
           </Link>
           <Link
             href="/about"
-            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
               pathname.startsWith("/about")
-                ? "bg-white/20 text-white shadow-xs"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
+                ? "border-amber-400 text-white font-black"
+                : "border-transparent text-white/80 hover:text-white"
             }`}
           >
             About
           </Link>
           <Link
             href="/academics"
-            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
               pathname.startsWith("/academics")
-                ? "bg-white/20 text-white shadow-xs"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
+                ? "border-amber-400 text-white font-black"
+                : "border-transparent text-white/80 hover:text-white"
             }`}
           >
             Academics
           </Link>
           <Link
             href="/admissions"
-            className={`px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-bold transition-all whitespace-nowrap ${
+            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
               pathname.startsWith("/admissions")
-                ? "bg-white/20 text-white shadow-xs"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
+                ? "border-amber-400 text-white font-black"
+                : "border-transparent text-white/80 hover:text-white"
             }`}
           >
             Admissions
           </Link>
         </div>
 
-        {/* "More ▾" Button with Arrow Icon to open direct pages sheet */}
+        {/* Just Down Arrow Icon button (no 'More' text) */}
         <button
+          type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11.5px] xs:text-xs font-extrabold transition-all cursor-pointer shrink-0 border border-amber-400/40 ${
+          className={`flex items-center justify-center h-8 w-8 rounded-lg transition-all cursor-pointer shrink-0 ml-auto ${
             mobileOpen
               ? "bg-amber-400 text-slate-950 shadow-xs"
-              : "bg-white/10 hover:bg-white/20 text-amber-300"
+              : "text-amber-300 hover:text-white hover:bg-white/10"
           }`}
-          title="View remaining pages"
+          title="View all 14 college pages"
+          aria-label="View all pages"
         >
-          <span>More</span>
           {mobileOpen ? (
-            <X className="h-3.5 w-3.5 text-slate-950" />
+            <X className="h-4.5 w-4.5" />
           ) : (
-            <ChevronDown className="h-3.5 w-3.5 text-amber-300" />
+            <ChevronDown className="h-5 w-5" />
           )}
         </button>
       </div>
 
-      {/* Mobile Direct Pages Sheet / Drawer */}
+      {/* Mobile Direct Pages Full-Width Drawer */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden flex select-none animate-fadeIn">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-slate-950/60 backdrop-blur-xs"
-            onClick={() => setMobileOpen(false)}
-          />
-
-          {/* Sliding Drawer Container */}
-          <div className="absolute right-0 top-0 bottom-0 w-[88vw] max-w-sm bg-white shadow-2xl flex flex-col h-full overflow-hidden border-l border-slate-200 animate-slideIn">
+        <div className="fixed inset-0 z-50 md:hidden flex select-none animate-fadeIn bg-slate-950/80 backdrop-blur-sm">
+          {/* Full Screen Drawer Container */}
+          <div className="w-full bg-white shadow-2xl flex flex-col h-full overflow-hidden animate-slideIn">
 
             {/* Drawer Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 shrink-0 bg-slate-50">
