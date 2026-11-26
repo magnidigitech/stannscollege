@@ -113,9 +113,10 @@ export async function GET(
             imgBuffer = Buffer.from(arrayBuf);
           }
         } else {
-          const cleanLocal = photoUrl.replace(/^\/+/, "");
-          const localPath = path.join(process.cwd(), "public", cleanLocal);
-          if (fs.existsSync(localPath) && fs.statSync(localPath).isFile()) {
+          const publicRoot = path.resolve(process.cwd(), "public");
+          const cleanLocal = path.normalize(photoUrl.replace(/^\/+/, "")).replace(/^(\.\.[\/\\])+/, "");
+          const localPath = path.resolve(publicRoot, cleanLocal);
+          if (localPath.startsWith(publicRoot + path.sep) && fs.existsSync(localPath) && fs.statSync(localPath).isFile()) {
             imgBuffer = fs.readFileSync(localPath);
           }
         }

@@ -26,9 +26,26 @@ let membersCache: {
 
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
+let ephemeralSecret: string | null = null;
+
 function getAuthSecret(): string {
-  const secret = process.env.SANITY_WRITE_TOKEN || "st-anns-admin-auth-secret-key-2026";
-  return secret;
+  const configured =
+    process.env.ADMIN_AUTH_SECRET ||
+    process.env.ADMIN_JWT_SECRET ||
+    process.env.SANITY_WRITE_TOKEN;
+
+  if (configured && configured.trim().length > 0) {
+    return configured.trim();
+  }
+
+  // Cryptographically secure runtime fallback (prevents static secret exploitation)
+  if (!ephemeralSecret) {
+    ephemeralSecret = crypto.randomBytes(32).toString("hex");
+    console.warn(
+      "[admin-auth] No ADMIN_AUTH_SECRET configured in environment. Using ephemeral runtime secret."
+    );
+  }
+  return ephemeralSecret;
 }
 
 /**

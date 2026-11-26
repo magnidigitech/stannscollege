@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
+import { verifyAdminSessionToken } from "@/lib/admin-auth";
 import fs from "fs";
 import path from "path";
 
 const PROJECT_ID = "fhjwqub5";
+const ALLOWED_MIME_TYPES = new Set([
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]);
+
+const ALLOWED_EXTENSIONS = new Set([".pdf", ".jpg", ".jpeg", ".png", ".webp"]);
+const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB
+
+function checkAuth(req: NextRequest): boolean {
+  const token = req.cookies.get("stanns_admin_session")?.value;
+  if (!token) return false;
+  return verifyAdminSessionToken(token) !== null;
+}
 
 function getWriteClient() {
   const token = process.env.SANITY_WRITE_TOKEN;
@@ -22,6 +38,13 @@ function getWriteClient() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!checkAuth(req)) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized: Active session required to upload files." },
+      { status: 401 }
+    );
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
@@ -31,10 +54,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "No file provided" }, { status: 400 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const isImage = file.type.startsWith("image/");
-    const isPdf = file.type === "application/pdf" || file.name.endsWith(".pdf");
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      return NextResponse.json(
+        { success: false, error: "File exceeds maximum size limit of 25MB." },
+        { status: 400 }
+      );
+    }
+
+    const fileExt = path.extname(file.name).toLowerCase();
+    const isImage = file.type.startsWith("image/") && file.type !== "image/svg+xml";
+    const isPdf = file.type === "application/pdf" || fileExt === ".pdf";
+
+    if (!ALLOWED_MIME_TYPES.has(file.type) && !ALLOWED_EXTENSIONS.has(fileExt)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid file type. Only PDF and image files (JPG, PNG, WebP) are permitted." },
+        { status: 400 }
+      );
+    }
 
     // 1. Try uploading to Sanity first
     const client = getWriteClient();

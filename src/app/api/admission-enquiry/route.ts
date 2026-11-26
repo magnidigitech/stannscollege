@@ -1,8 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+// In-memory rate limiting map (IP -> count & resetTime)
+const ipRateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+function isRateLimited(ip: string, maxRequests = 5, windowMs = 60 * 1000): boolean {
+  const now = Date.now();
+  const entry = ipRateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetTime) {
+    ipRateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
+    return false;
+  }
+
+  if (entry.count >= maxRequests) {
+    return true;
+  }
+
+  entry.count += 1;
+  return false;
+}
+
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return req.headers.get("x-real-ip") || "unknown";
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const clientIp = getClientIp(req);
+
+    // Apply Rate Limiting (5 requests per minute per IP)
+    if (isRateLimited(clientIp, 5, 60 * 1000)) {
+      return NextResponse.json(
+        { error: "Too many enquiry requests. Please wait a moment before trying again." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const {
       studentName,
@@ -14,7 +50,32 @@ export async function POST(req: NextRequest) {
       levelOfStudy,
       programmeInterested,
       informationRequired,
+      honeypot,
+      website,
     } = body;
+
+    // Silent drop for automated spam bots filling hidden honeypot fields
+    if ((honeypot && String(honeypot).trim().length > 0) || (website && String(website).trim().length > 0)) {
+      console.warn(`[Admission Enquiry API] Bot honeypot triggered from IP: ${clientIp}`);
+      return NextResponse.json({
+        success: true,
+        referenceNumber: "SACW/ENQ/2026/0000",
+        message: "Your admission enquiry has been successfully submitted.",
+      });
+    }
+
+    // Input length caps
+    if (
+      studentName?.length > 150 ||
+      email?.length > 150 ||
+      mobileNumber?.length > 30 ||
+      districtCity?.length > 150
+    ) {
+      return NextResponse.json(
+        { error: "Input text exceeds maximum allowed length." },
+        { status: 400 }
+      );
+    }
 
     // Validate required fields
     if (!studentName?.trim()) {

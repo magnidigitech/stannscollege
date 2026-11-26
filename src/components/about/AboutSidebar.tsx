@@ -82,7 +82,7 @@ export default function AboutSidebar({
   children
 }: AboutSidebarProps) {
   const activeCategories = categories || ABOUT_CATEGORIES;
-  const [headerHeight, setHeaderHeight] = React.useState<number>(225);
+  const [headerHeight, setHeaderHeight] = React.useState<number>(140);
 
   useEffect(() => {
     const updateHeaderHeight = () => {

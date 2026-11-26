@@ -47,6 +47,30 @@ export async function GET(
     // Case 1: External URL (e.g. Sanity CDN: https://cdn.sanity.io/...)
     if (targetUrl && (targetUrl.startsWith("http://") || targetUrl.startsWith("https://"))) {
       try {
+        const parsedUrl = new URL(targetUrl);
+        const host = parsedUrl.hostname.toLowerCase();
+
+        // Allowed hostnames for external PDF fetching (SSRF protection)
+        const isAllowedHost =
+          host === "cdn.sanity.io" ||
+          host.endsWith(".sanity.io") ||
+          host === "stannscollegeforwomen.ac.in" ||
+          host.endsWith(".stannscollegeforwomen.ac.in");
+
+        // Disallow private / local network targets
+        const isPrivateHost =
+          host === "localhost" ||
+          host === "127.0.0.1" ||
+          host === "::1" ||
+          host.startsWith("10.") ||
+          host.startsWith("192.168.") ||
+          host.startsWith("169.254.");
+
+        if (!isAllowedHost || isPrivateHost) {
+          console.warn(`[PDF Proxy] Blocked unauthorized remote URL request to host: ${host}`);
+          return serveFallbackPdf(asciiFilename, dispositionType);
+        }
+
         const response = await fetch(targetUrl, {
           headers: {
             Accept: "application/pdf,*/*",
@@ -79,7 +103,16 @@ export async function GET(
       localRelativePath = decodeURIComponent(localRelativePath);
     } catch {}
 
-    const publicPath = path.join(process.cwd(), "public", localRelativePath);
+    const publicRoot = path.resolve(process.cwd(), "public");
+    const safeRelative = path.normalize(localRelativePath).replace(/^(\.\.[\/\\])+/, "");
+    const publicPath = path.resolve(publicRoot, safeRelative);
+
+    // Guard against Path Traversal: ensure resolved path remains strictly within public directory
+    if (!publicPath.startsWith(publicRoot + path.sep)) {
+      console.warn(`[PDF Proxy] Path traversal blocked: ${localRelativePath}`);
+      return serveFallbackPdf(asciiFilename, dispositionType);
+    }
+
     if (fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
       const fileBuffer = fs.readFileSync(publicPath);
       return new Response(fileBuffer, {

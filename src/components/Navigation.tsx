@@ -1144,10 +1144,10 @@ export default function Navigation() {
           {
             title: "Welfare & Services",
             items: [
-              { name: "Services Overview", href: "/student-support-services" },
-              { name: "Mentoring & Guidance", href: "/student-support-services#mentoring" },
-              { name: "NCC & NSS Units", href: "/student-support-services#ncc-nss" },
-              { name: "Clubs & Associations", href: "/student-support-services#clubs" },
+              { name: "Services Overview", href: "/student-support" },
+              { name: "Mentoring & Guidance", href: "/student-support/mentor-mentee" },
+              { name: "NCC & NSS Units", href: "/student-support/nss-activities" },
+              { name: "Clubs & Associations", href: "/student-support/eco-club" },
             ]
           }
         ]
@@ -2274,7 +2274,7 @@ export default function Navigation() {
                 {
                   id: "support",
                   name: "7. Student Support",
-                  href: "/student-support-services",
+                  href: "/student-support",
                   icon: HeartHandshake,
                   desc: "Mentoring, NCC, NSS & Clubs",
                   hasChildren: true,
@@ -2282,7 +2282,7 @@ export default function Navigation() {
                     {
                       title: "Student Welfare & Support",
                       items: [
-                        { text: "Support Services Overview", href: "/student-support-services" },
+                        { text: "Support Services Overview", href: "/student-support" },
                         { text: "Grievance Redressal / Ombudsperson", href: "/student-support/grievance-redressal" },
                         { text: "Internal Complaints Committee (ICC)", href: "/student-support/internal-complaints" },
                         { text: "Women Empowerment Cell", href: "/student-support/women-empowerment" },

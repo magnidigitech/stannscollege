@@ -34,7 +34,7 @@ const DEFAULT_PASSWORDS: Record<string, string> = {
   "notices": "notices@2026",
 };
 
-const MASTER_PASSWORD = "Stannsf@2026";
+const MASTER_PASSWORD = process.env.STAFF_MASTER_PASSWORD || process.env.DEPARTMENT_MASTER_PASSWORD || "Stannsf@2026";
 
 async function getDepartmentPassword(deptId: string): Promise<string> {
   try {

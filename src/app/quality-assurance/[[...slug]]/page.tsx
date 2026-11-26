@@ -98,6 +98,37 @@ export default function QualityAssurancePage({ params }: PageProps) {
   const [aqarExpanded, setAqarExpanded] = useState<boolean>(() => isAqarActive);
   const [naacExpanded, setNaacExpanded] = useState<boolean>(() => isNaacActive);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState<number>(140);
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const header = document.getElementById("main-header");
+      if (header) {
+        const height = header.getBoundingClientRect().height || header.offsetHeight;
+        if (height > 0) {
+          setHeaderHeight(Math.ceil(height));
+        }
+      }
+    };
+
+    updateHeaderHeight();
+
+    let observer: ResizeObserver | null = null;
+    const header = document.getElementById("main-header");
+    if (header && typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(() => updateHeaderHeight());
+      observer.observe(header);
+    }
+
+    window.addEventListener("resize", updateHeaderHeight);
+    window.addEventListener("scroll", updateHeaderHeight, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      window.removeEventListener("scroll", updateHeaderHeight);
+      if (observer) observer.disconnect();
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#fafbfc] font-sans text-slate-900 selection:bg-[#002147] selection:text-white">
@@ -110,8 +141,8 @@ export default function QualityAssurancePage({ params }: PageProps) {
             <div
               className="sticky select-none h-fit overflow-y-auto no-scrollbar border-2 border-slate-200/90 p-4 sm:p-5 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-6"
               style={{
-                top: "calc(var(--main-header-height, 185px) + 16px)",
-                maxHeight: "calc(100vh - var(--main-header-height, 185px) - 32px)",
+                top: `${headerHeight + 16}px`,
+                maxHeight: `calc(100vh - ${headerHeight + 32}px)`,
                 backgroundColor: "var(--sidebar-container-bg, #eaeff5)",
                 scrollbarWidth: "none",
                 msOverflowStyle: "none"

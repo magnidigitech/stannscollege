@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
 import crypto from "crypto";
 
-const DEFAULT_PASSWORD = "Stannsf@2026";
+const DEFAULT_PASSWORD = process.env.FACULTY_DEFAULT_PASSWORD || "Stannsf@2026";
 const PROJECT_ID = "fhjwqub5";
 
 function hashPassword(password: string): string {

@@ -1,10 +1,63 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+// In-memory rate limiting map (IP -> count & resetTime)
+const ipRateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+function isRateLimited(ip: string, maxRequests = 5, windowMs = 60 * 1000): boolean {
+  const now = Date.now();
+  const entry = ipRateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetTime) {
+    ipRateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
+    return false;
+  }
+
+  if (entry.count >= maxRequests) {
+    return true;
+  }
+
+  entry.count += 1;
+  return false;
+}
+
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return req.headers.get("x-real-ip") || "unknown";
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const clientIp = getClientIp(req);
+
+    // Apply Rate Limiting (5 requests per minute per IP)
+    if (isRateLimited(clientIp, 5, 60 * 1000)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment before trying again." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
-    const { name, email, phone, subject, message } = body;
+    const { name, email, phone, subject, message, honeypot, website } = body;
+
+    // Silent drop for automated spam bots filling hidden honeypot fields
+    if ((honeypot && String(honeypot).trim().length > 0) || (website && String(website).trim().length > 0)) {
+      console.warn(`[Contact API] Bot honeypot triggered from IP: ${clientIp}`);
+      return NextResponse.json({
+        success: true,
+        message: "Your inquiry has been submitted successfully.",
+      });
+    }
+
+    // Input length caps to protect server memory and email body size
+    if (name?.length > 150 || email?.length > 150 || subject?.length > 200 || message?.length > 5000) {
+      return NextResponse.json(
+        { error: "Input text exceeds maximum allowed length." },
+        { status: 400 }
+      );
+    }
 
     // Validate required fields
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
