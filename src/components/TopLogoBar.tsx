@@ -38,20 +38,20 @@ export function TopLogoBar() {
             className="h-[42px] xs:h-[48px] sm:h-[64px] md:h-[82px] w-auto object-contain select-none hover:scale-105 transition-all duration-300 drop-shadow-xs shrink-0 py-0"
           />
 
-          {/* Institutional Typography (Fully present on all screens with scaled typography) */}
+          {/* Institutional Typography (Strictly 4 crisp lines on all screens without wrapping) */}
           <div className="flex flex-col justify-center select-none py-0 min-w-0">
-            <h1 className="font-black text-[11px] xs:text-[13px] sm:text-[17px] md:text-[22px] tracking-tight leading-tight uppercase select-none text-[#800000] font-outfit">
+            <h1 className="font-black text-[10px] xs:text-[12px] sm:text-[16px] md:text-[22px] tracking-tight leading-none uppercase select-none text-[#800000] font-outfit whitespace-nowrap">
               ST. ANN’S COLLEGE FOR WOMEN
             </h1>
 
-            <span className="font-bold text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[12px] tracking-normal leading-tight mt-0.5 text-blue-900">
+            <span className="font-bold text-[7.5px] xs:text-[9px] sm:text-[11px] md:text-[12px] tracking-normal leading-tight mt-0.5 text-blue-900 whitespace-nowrap">
               Run by The Society of St Anne
             </span>
-            <span className="font-semibold text-[7.5px] xs:text-[8.5px] sm:text-[10px] md:text-[11px] tracking-normal leading-tight mt-0.5 text-slate-700">
-              Affiliated to Acharya Nagarjuna University • Recognized under 2(f) of UGC Act
+            <span className="font-semibold text-[7px] xs:text-[8px] sm:text-[10px] md:text-[11px] tracking-normal leading-tight mt-0.5 text-slate-700 whitespace-nowrap">
+              Affiliated to <span className="sm:hidden">ANU</span><span className="hidden sm:inline">Acharya Nagarjuna University</span> • Recognized under 2(f) of UGC Act
             </span>
-            <span className="font-bold text-[7.5px] xs:text-[8.5px] sm:text-[10px] md:text-[11.5px] tracking-tight leading-tight mt-0.5 text-[#800000]">
-              Amaravathi Road, Gorantla, Guntur–522034, AP, India.
+            <span className="font-bold text-[7px] xs:text-[8px] sm:text-[10px] md:text-[11.5px] tracking-tight leading-tight mt-0.5 text-[#800000] whitespace-nowrap">
+              Amaravathi Road, Gorantla, Guntur–522034, AP<span className="hidden sm:inline">, India.</span>
             </span>
           </div>
         </Link>

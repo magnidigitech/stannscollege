@@ -195,17 +195,17 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
 
     return (
       <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+        <div className="mx-auto max-w-[1600px] px-3 sm:px-6 lg:px-12 pt-3 pb-8 sm:py-10 md:py-12 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 md:gap-12">
             {/* Desktop Sidebar */}
-            <div className="lg:col-span-3">
+            <div className="hidden lg:block lg:col-span-3">
               <AboutSidebar currentCatSlug="statutory-affiliations-recognitions" currentItemSlug={itemSlug || "anu"} />
             </div>
 
             {/* Unified Section B Content */}
-            <div className="lg:col-span-9 mb-16 flex flex-col justify-between">
+            <div className="lg:col-span-9 mb-8 sm:mb-16 flex flex-col justify-between">
               <div>
-                <SubtextBox subtext={pageSubtext} className="mb-8" />
+                <SubtextBox subtext={pageSubtext} className="mb-4 sm:mb-6" />
                 <StatutoryAffiliations
                   anuAffiliations={anuAffiliationsList}
                   aicteApprovals={aicteApprovalsList}
@@ -225,19 +225,19 @@ export default async function AboutPage({ params }: { params: Promise<{ slug?: s
 
     return (
       <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 py-8 sm:py-12 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+        <div className="mx-auto max-w-[1600px] px-3 sm:px-6 lg:px-12 pt-3 pb-8 sm:py-10 md:py-12 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 md:gap-12">
 
             {/* Desktop Sidebar with All Pages */}
-            <div className="lg:col-span-3">
+            <div className="hidden lg:block lg:col-span-3">
               <AboutSidebar currentCatSlug={catSlug} currentItemSlug={itemSlug} />
             </div>
 
             {/* Individual Section Content */}
-            <div className="lg:col-span-9 mb-16 flex flex-col justify-between">
+            <div className="lg:col-span-9 mb-8 sm:mb-16 flex flex-col justify-between">
               <div>
                 {/* Sub-text Box */}
-                <SubtextBox subtext={pageSubtext} className="mb-8" />
+                <SubtextBox subtext={pageSubtext} className="mb-4 sm:mb-6" />
                 <div>
                   {catSlug === "the-institution" && (
                     <>

@@ -671,6 +671,11 @@ export default function HomePage() {
   const noticeListRef = useRef<HTMLDivElement>(null);
   const [isNoticePaused, setIsNoticePaused] = useState(false);
 
+  // Events Auto-Scroll & Pause on hover
+  const eventsListRef = useRef<HTMLDivElement>(null);
+  const conductedSeparatorRef = useRef<HTMLDivElement>(null);
+  const [isEventPaused, setIsEventPaused] = useState(false);
+
   // Smooth auto-scroll for Notice Board: glides down, pauses at bottom, and smoothly resets to top
   useEffect(() => {
     const el = noticeListRef.current;
@@ -949,6 +954,61 @@ export default function HomePage() {
     .filter((item) => getEventLifecycle(item).status === "upcoming")
     .sort((a, b) => getEventTimestamp(a) - getEventTimestamp(b));
 
+  // Combined Events List: Upcoming events first, followed by Conducted / Earlier events
+  const displayEvents = [...upcomingEvents, ...otherEvents];
+
+  // Smooth auto-scroll for Events & Activities: glides down, pauses when upcoming events are out of sight, and smoothly resets to top
+  useEffect(() => {
+    const el = eventsListRef.current;
+    if (!el || displayEvents.length <= 3) return;
+
+    let animId: number;
+    let lastTime = performance.now();
+    let scrollPos = el.scrollTop;
+    let isResetting = false;
+    let pauseUntil = 0;
+
+    const step = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      if (isEventPaused) {
+        scrollPos = el.scrollTop;
+      } else if (now >= pauseUntil && !isResetting && el) {
+        const separatorEl = conductedSeparatorRef.current;
+        const maxScroll = el.scrollHeight - el.clientHeight;
+        // When upcoming events are out of sight: separator has reached top (separatorEl.offsetTop)
+        const scrollLimit = separatorEl
+          ? Math.min(separatorEl.offsetTop, maxScroll)
+          : maxScroll;
+
+        if (scrollLimit > 10) {
+          if (scrollPos >= scrollLimit) {
+            scrollPos = scrollLimit;
+            el.scrollTop = scrollLimit;
+            pauseUntil = now + 4000; // Pause 4 seconds when upcoming ones are out of sight
+            isResetting = true;
+            setTimeout(() => {
+              if (el) {
+                el.scrollTo({ top: 0, behavior: "smooth" });
+                scrollPos = 0;
+                pauseUntil = performance.now() + 2500; // Pause 2.5s at top before restarting
+                isResetting = false;
+              }
+            }, 4000);
+          } else {
+            scrollPos += 20 * dt;
+            el.scrollTop = scrollPos;
+          }
+        }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [isEventPaused, displayEvents.length]);
+
   return (
     <div className="flex flex-col w-full bg-slate-50/30 overflow-x-hidden selection:bg-[#002147]/10 selection:text-[#002147]">
       {/* ----------------------------------------------------
@@ -1025,7 +1085,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => scrollToSection("campus-highlights", "ring-amber-400/80")}
-              className="flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-[11px] sm:text-sm shadow-xl shadow-amber-950/50 border-2 border-white/95 backdrop-blur-md transition-all active:scale-95 cursor-pointer animate-pulse ring-2 sm:ring-4 ring-amber-400/80 hover:ring-yellow-300 hover:animate-none select-none"
+              className="flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-[11px] sm:text-sm border-2 border-white/95 transition-all active:scale-95 cursor-pointer animate-notice-pulse-high hover:scale-105 select-none"
               title="Jump to Notice Board & Upcoming Events"
             >
               <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-950 fill-amber-200 shrink-0" />
@@ -1070,135 +1130,91 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Two Segregated Sections: Upcoming Events (Upper) & Conducted Events (Bottom) */}
-              {visibleEvents.length > 0 ? (
-                <div className="flex-1 flex flex-col min-h-0 bg-white">
-                  {/* ── 1. UPPER PART: Upcoming Events & Activities ── */}
-                  <div className="flex-1 flex flex-col min-h-0">
-                    <div className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-50/90 to-teal-50/80 border-b border-emerald-100 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                        <span className="font-outfit text-[11px] font-black text-emerald-950 tracking-wider uppercase">
-                          Upcoming Events &amp; Activities
-                        </span>
-                      </div>
-                      <span className="text-[10px] font-extrabold px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                        {upcomingEvents.length} Scheduled
-                      </span>
-                    </div>
+              {/* Single Continuous Items List matching Notice Board format - clean continuous list ("one after another") */}
+              {displayEvents.length > 0 ? (
+                <div
+                  ref={eventsListRef}
+                  onMouseEnter={() => setIsEventPaused(true)}
+                  onMouseLeave={() => setIsEventPaused(false)}
+                  onTouchStart={() => setIsEventPaused(true)}
+                  onTouchEnd={() => setIsEventPaused(false)}
+                  className="flex-1 divide-y divide-slate-100 overflow-y-auto max-h-[460px] p-2 bg-white select-text no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  {displayEvents.map((item, idx) => {
+                    const isUpcoming = getEventLifecycle(item).status === "upcoming";
+                    const isFirstConducted =
+                      idx > 0 &&
+                      !isUpcoming &&
+                      getEventLifecycle(displayEvents[idx - 1]).status === "upcoming";
 
-                    {/* Scroller 1: Upcoming Events */}
-                    <div
-                      className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                    >
-                      {upcomingEvents.length > 0 ? (
-                        upcomingEvents.map((item, idx) => {
-                          return (
-                            <div
-                              key={item._id || idx}
-                              className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-emerald-50/30 transition-colors group/item"
-                            >
-                              <div className="shrink-0 flex items-center justify-center min-w-[22px]">
-                                <UpcomingBadge />
-                              </div>
-                              <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
-
-                              <div className="flex-1 min-w-0">
-                                <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
-                                  <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
-                                    {item.title}
-                                  </span>
-                                  {item.date && (
-                                    <span className="text-slate-600 font-normal"> ({item.date})</span>
-                                  )}
-                                  {" "}
-                                  <button
-                                    type="button"
-                                    onClick={() => handleEventDocClick(item)}
-                                    className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-emerald-50 hover:bg-[#002147] text-emerald-800 hover:text-white border border-emerald-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
-                                    title="Click for more"
-                                  >
-                                    <FileText className="h-3 w-3 shrink-0 text-emerald-600 group-hover/btn:text-white transition-colors" />
-                                    <span>Click for more</span>
-                                  </button>
-                                </div>
-                                {item.organizer && (
-                                  <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
-                                    Organized by: {item.organizer}
-                                  </p>
-                                )}
-                              </div>
+                    return (
+                      <React.Fragment key={item._id || idx}>
+                        {isFirstConducted && (
+                          <div
+                            ref={conductedSeparatorRef}
+                            className="px-3.5 py-1.5 bg-slate-100/90 border-y border-slate-200/80 flex items-center justify-between select-none"
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-indigo-700 shrink-0" />
+                              <span className="font-outfit text-[10.5px] font-black text-slate-700 tracking-wider uppercase">
+                                Conducted Events &amp; Activities
+                              </span>
                             </div>
-                          );
-                        })
-                      ) : (
-                        <p className="text-xs text-slate-400 p-4 text-center">No upcoming events scheduled</p>
-                      )}
-                    </div>
-                  </div>
+                            <span className="text-[9.5px] font-bold px-2 py-0.2 rounded-full bg-slate-200 text-slate-600">
+                              Archive
+                            </span>
+                          </div>
+                        )}
+                        <div
+                          className={`py-2.5 px-3 flex items-start gap-2.5 transition-colors group/item ${
+                            isUpcoming ? "hover:bg-emerald-50/30" : "hover:bg-indigo-50/40"
+                          }`}
+                        >
+                          <div className="shrink-0 flex items-center justify-center min-w-[22px]">
+                            {isUpcoming ? (
+                              <UpcomingBadge />
+                            ) : (
+                              <CheckCircle2 className="h-3.5 w-3.5 text-indigo-400 mt-0.5 shrink-0" />
+                            )}
+                          </div>
+                          <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
 
-                  {/* ── 2. BOTTOM PART: Conducted Events & Activities (with View Circular / Report) ── */}
-                  <div className="flex-1 flex flex-col min-h-0 border-t-2 border-slate-200">
-                    <div className="px-3.5 py-1.5 bg-slate-100/90 border-b border-slate-200/80 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-700 shrink-0" />
-                        <span className="font-outfit text-[11px] font-black text-slate-800 tracking-wider uppercase">
-                          Conducted Events &amp; Activities
-                        </span>
-                      </div>
-                      <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-slate-200 text-slate-700">
-                        {otherEvents.length} Recorded
-                      </span>
-                    </div>
-
-                    {/* Scroller 2: Conducted Events */}
-                    <div
-                      className="flex-1 overflow-y-auto max-h-[210px] divide-y divide-slate-100 p-2 bg-white no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                    >
-                      {otherEvents.length > 0 ? (
-                        otherEvents.map((item, idx) => {
-                          return (
-                            <div
-                              key={item._id || idx}
-                              className="py-2.5 px-3 flex items-start gap-2.5 hover:bg-indigo-50/40 transition-colors group/item"
-                            >
-                              <Mail className="h-4 w-4 text-slate-700 shrink-0 stroke-[1.75] mt-0.5 group-hover/item:text-[#002147] transition-colors" />
-
-                              <div className="flex-1 min-w-0">
-                                <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
-                                  <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
-                                    {item.title}
-                                  </span>
-                                  {item.date && (
-                                    <span className="text-slate-600 font-normal"> ({item.date})</span>
-                                  )}
-                                  {" "}
-                                  <button
-                                    type="button"
-                                    onClick={() => handleEventDocClick(item)}
-                                    className="inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold bg-indigo-50 hover:bg-[#002147] text-[#002147] hover:text-white border border-indigo-200 hover:border-[#002147] transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn"
-                                    title="Click for more"
-                                  >
-                                    <FileText className="h-3 w-3 shrink-0 text-indigo-600 group-hover/btn:text-white transition-colors" />
-                                    <span>Click for more</span>
-                                  </button>
-                                </div>
-                                {item.organizer && (
-                                  <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
-                                    Organized by: {item.organizer}
-                                  </p>
-                                )}
-                              </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs sm:text-[13px] font-medium text-slate-800 leading-snug">
+                              <span className="font-semibold text-slate-900 group-hover/item:text-[#002147] transition-colors">
+                                {item.title}
+                              </span>
+                              {item.date && (
+                                <span className="text-slate-600 font-normal"> ({item.date})</span>
+                              )}
+                              {" "}
+                              <button
+                                type="button"
+                                onClick={() => handleEventDocClick(item)}
+                                className={`inline-flex items-center gap-1 ml-1 px-2 py-0.5 rounded-md text-[10px] sm:text-[10.5px] font-bold transition-all duration-200 shadow-2xs cursor-pointer align-baseline group/btn ${
+                                  isUpcoming
+                                    ? "bg-emerald-50 hover:bg-[#002147] text-emerald-800 hover:text-white border border-emerald-200 hover:border-[#002147]"
+                                    : "bg-indigo-50 hover:bg-[#002147] text-[#002147] hover:text-white border border-indigo-200 hover:border-[#002147]"
+                                }`}
+                                title="Click for more"
+                              >
+                                <FileText className={`h-3 w-3 shrink-0 transition-colors ${
+                                  isUpcoming ? "text-emerald-600 group-hover/btn:text-white" : "text-indigo-600 group-hover/btn:text-white"
+                                }`} />
+                                <span>Click for more</span>
+                              </button>
                             </div>
-                          );
-                        })
-                      ) : (
-                        <p className="text-xs text-slate-400 p-4 text-center">No past events recorded</p>
-                      )}
-                    </div>
-                  </div>
+                            {item.organizer && (
+                              <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
+                                Organized by: {item.organizer}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
               ) : (
                 /* Coming Soon State */

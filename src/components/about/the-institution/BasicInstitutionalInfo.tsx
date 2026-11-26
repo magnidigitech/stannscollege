@@ -41,43 +41,43 @@ export function BasicInstitutionalInfo() {
   ];
 
   return (
-    <div className="flex flex-col gap-12 font-sans select-none animate-fadeIn">
+    <div className="flex flex-col gap-4 sm:gap-6 md:gap-10 font-sans select-none animate-fadeIn">
       {/* Banner Component Card with Badge */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#001730] via-[#002147] to-[#1e1b4b] p-4 sm:p-6 md:p-10 text-white shadow-xl border border-indigo-950/20 select-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent)] pointer-events-none"></div>
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
           <div>
-            <h2 className="mt-4 font-outfit text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
+            <h2 className="mt-1 font-outfit text-xl sm:text-2xl md:text-3xl font-black tracking-tight leading-tight select-none">
               Basic Institutional Information
             </h2>
-            <p className="mt-2 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
+            <p className="mt-1.5 text-indigo-100/80 text-xs md:text-sm max-w-xl font-normal leading-relaxed">
               Official profiles, legal mandates, and recognized affiliations of St. Ann&apos;s College for Women.
             </p>
           </div>
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
+          <span className="hidden sm:flex h-12 w-12 md:h-14 md:w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-400/30 text-indigo-200 backdrop-blur-md shadow-inner">
             <Award className="h-6 w-6 animate-pulse" />
           </span>
         </div>
       </div>
 
       {/* Primary Characteristics Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 md:gap-6">
         {details.map((card, i) => (
           <div
             key={i}
-            className={`flex items-start gap-4 p-5 bg-gradient-to-br ${card.color} border border-slate-200/60 hover:border-indigo-400/30 hover:bg-white hover:shadow-lg hover:shadow-slate-100 hover:-translate-y-0.5 rounded-2xl transition-all duration-300 cursor-default group`}
+            className={`flex items-start gap-3.5 p-3.5 sm:p-5 bg-gradient-to-br ${card.color} border border-slate-200/60 hover:border-indigo-400/30 hover:bg-white hover:shadow-lg hover:shadow-slate-100 hover:-translate-y-0.5 rounded-xl sm:rounded-2xl transition-all duration-300 cursor-default group`}
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50 text-indigo-600 shadow-sm group-hover:scale-105 transition-all">
+            <span className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50 text-indigo-600 shadow-sm group-hover:scale-105 transition-all">
               <card.icon className="h-4 w-4" />
             </span>
             <div>
-              <span className="text-xs font-black text-indigo-600/80 tracking-widest uppercase">
+              <span className="text-[10px] sm:text-xs font-black text-indigo-600/80 tracking-widest uppercase">
                 {card.label}
               </span>
-              <p className="font-outfit text-base font-black text-slate-800 tracking-tight leading-snug mt-0.5">
+              <p className="font-outfit text-sm sm:text-base font-black text-slate-800 tracking-tight leading-snug mt-0.5">
                 {card.val}
               </p>
-              <p className="font-sans text-xs font-semibold text-slate-400 mt-0.5 leading-normal">
+              <p className="font-sans text-[11px] sm:text-xs font-semibold text-slate-400 mt-0.5 leading-normal">
                 {card.desc}
               </p>
             </div>
@@ -86,12 +86,12 @@ export function BasicInstitutionalInfo() {
       </div>
 
       {/* Recognitions & Accreditations Block */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-all">
-        <h3 className="font-outfit text-lg font-black text-slate-800 border-b border-slate-100 pb-3 mb-4 select-none">
+      <div className="bg-white border border-slate-200/60 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-md transition-all">
+        <h3 className="font-outfit text-base sm:text-lg font-black text-slate-800 border-b border-slate-100 pb-2.5 mb-3.5 select-none">
           Approvals, Recognitions & Accreditations
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl hover:bg-white hover:border-indigo-100 transition-all flex flex-col justify-between h-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          <div className="p-3.5 sm:p-4 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-2xl hover:bg-white hover:border-indigo-100 transition-all flex flex-col justify-between h-full">
             <div>
               <span className="text-xs font-black text-indigo-600 uppercase tracking-wider">AICTE Approved</span>
               <p className="mt-1 font-sans text-xs md:text-sm text-slate-600 font-normal leading-relaxed">
@@ -99,7 +99,7 @@ export function BasicInstitutionalInfo() {
               </p>
             </div>
           </div>
-          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl hover:bg-white hover:border-indigo-100 transition-all flex flex-col justify-between h-full">
+          <div className="p-3.5 sm:p-4 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-2xl hover:bg-white hover:border-indigo-100 transition-all flex flex-col justify-between h-full">
             <div>
               <span className="text-xs font-black text-indigo-600 uppercase tracking-wider">UGC Recognition</span>
               <p className="mt-1 font-sans text-xs md:text-sm text-slate-600 font-normal leading-relaxed">
@@ -107,7 +107,7 @@ export function BasicInstitutionalInfo() {
               </p>
             </div>
           </div>
-          <div className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl hover:bg-white hover:border-indigo-100 transition-all flex flex-col justify-between h-full">
+          <div className="p-3.5 sm:p-4 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-2xl hover:bg-white hover:border-indigo-100 transition-all flex flex-col justify-between h-full">
             <div>
               <span className="text-xs font-black text-indigo-600 uppercase tracking-wider">NAAC Accredited</span>
               <p className="mt-1 font-sans text-xs md:text-sm text-slate-600 font-normal leading-relaxed">
@@ -119,7 +119,7 @@ export function BasicInstitutionalInfo() {
       </div>
 
       {/* Advanced Addresses & Logistics Card */}
-      <div className="bg-white border border-slate-200/60 p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-slate-100/50 hover:border-slate-200 transition-all duration-300 select-none">
+      <div className="bg-white border border-slate-200/60 p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl hover:shadow-slate-100/50 hover:border-slate-200 transition-all duration-300 select-none">
         <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 border border-indigo-100 shadow-sm">
             <Phone className="h-5 w-5 animate-pulse" />

@@ -498,8 +498,8 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
   return (
     <div className="bg-slate-50/40 min-h-screen select-none animate-fadeIn font-sans">
-      <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-12 pt-4 sm:pt-6 pb-12 sm:pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+      <div className="mx-auto max-w-[1600px] w-full px-3 sm:px-6 lg:px-12 pt-3 pb-8 sm:py-10 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 md:gap-12">
           
           {/* Left Navigation Sidebar for Desktop */}
           <div
@@ -620,64 +620,6 @@ export default function AcademicsDynamicPage({ params }: PageProps) {
 
           {/* Main Dynamic Right Component */}
           <div className={`lg:col-span-9 mb-16 flex flex-col ${catSlug === "departments" ? "gap-3.5" : "gap-8"}`}>
-            {/* Mobile Section Switcher Bar */}
-            <div className="block lg:hidden bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-2">
-              <button
-                type="button"
-                onClick={() => setMobileNavOpen(!mobileNavOpen)}
-                className="w-full px-4 py-3 bg-[#002147] text-white flex items-center justify-between gap-3 text-left transition-colors cursor-pointer select-none"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 text-white shrink-0">
-                    <GraduationCap className="h-4 w-4" />
-                  </span>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-[10px] uppercase font-bold text-blue-200 tracking-wider">
-                      Academics Navigation
-                    </span>
-                    <span className="text-xs font-black text-white truncate">
-                      {pageTitle || "Select Academic Module"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 shrink-0 bg-white/15 px-2.5 py-1 rounded-lg text-[11px] font-bold">
-                  <span>{mobileNavOpen ? "Close Menu" : "Switch Topic"}</span>
-                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${mobileNavOpen ? "rotate-180" : ""}`} />
-                </div>
-              </button>
-
-              {mobileNavOpen && (
-                <div className="p-3.5 max-h-[60vh] overflow-y-auto bg-slate-50 border-t border-slate-200 flex flex-col gap-3.5 animate-fadeIn">
-                  {navigationStructure.map((group) => (
-                    <div key={group.catSlug} className="flex flex-col gap-1.5">
-                      <span className="font-outfit text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">
-                        {group.title}
-                      </span>
-                      <div className="flex flex-col gap-1">
-                        {group.items.map((item) => {
-                          const isActive = catSlug === group.catSlug && itemSlug === item.slug;
-                          return (
-                            <Link
-                              key={item.slug}
-                              href={`/academics/${group.catSlug}/${item.slug}`}
-                              onClick={() => setMobileNavOpen(false)}
-                              className={`font-sans text-xs p-2.5 rounded-xl transition-all flex items-center justify-between ${
-                                isActive
-                                  ? "bg-[#002147] text-white font-black shadow-xs"
-                                  : "text-slate-600 hover:bg-slate-100 font-bold"
-                              }`}
-                            >
-                              <span className="truncate pr-2 leading-tight">{item.text}</span>
-                              {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white shrink-0 animate-pulse"></span>}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
 
             {/* Sub-text Box (suppressed for all departments because departments render their own heading box first, then quote box) */}
             {catSlug !== "departments" && (

@@ -101,19 +101,10 @@ export default function Navigation() {
 
   // Mobile Drawer & Accordion States
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mAbout, setMAbout] = useState(false);
-  const [mAcademics, setMAcademics] = useState(false);
-  const [mAdmissions, setMAdmissions] = useState(false);
-  const [mInfra, setMInfra] = useState(false);
-  const [mFaculty, setMFaculty] = useState(false);
-  const [mSupport, setMSupport] = useState(false);
-  const [mPlacements, setMPlacements] = useState(false);
-  const [mResearch, setMResearch] = useState(false);
-  const [mAlumni, setMAlumni] = useState(false);
-  const [mIqac, setMIqac] = useState(false);
-  const [mMandatory, setMMandatory] = useState(false);
-  const [mStrategic, setMStrategic] = useState(false);
-  const [mContact, setMContact] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const toggleSection = (id: string) => {
+    setExpandedSection((prev) => (prev === id ? null : id));
+  };
 
   const researchCategories = [
     {
@@ -982,6 +973,244 @@ export default function Navigation() {
     [academicsCategories[6]]
   ];
 
+  const getActiveSectionInfo = () => {
+    if (pathname.startsWith("/about")) {
+      return {
+        title: "About Us",
+        badge: "In this Section: About Us",
+        groups: [
+          {
+            title: "A. The Institution",
+            items: [
+              { name: "Basic Institutional Information", href: "/about/the-institution/basic-institutional-information" },
+              { name: "History & Milestones", href: "/about/the-institution/history-of-the-college" },
+              { name: "Vision, Mission & Core Values", href: "/about/the-institution/vision-mission-and-core-values" },
+              { name: "Awards & Recognitions", href: "/about/the-institution/institutional-awards-recognitions" },
+              { name: "Student Laurels", href: "/about/the-institution/student-laurels" },
+              { name: "Head of Institution", href: "/about/the-institution/head-of-the-institution" },
+              { name: "Legacy of Leadership", href: "/about/the-institution/legacy-of-leadership" },
+            ]
+          },
+          {
+            title: "B. Affiliations & Recognitions",
+            items: [
+              { name: "Affiliated to ANU", href: "/about/statutory-affiliations-recognitions#anu" },
+              { name: "Approved by AICTE", href: "/about/statutory-affiliations-recognitions#aicte" },
+              { name: "Recognised under UGC 2(f)", href: "/about/statutory-affiliations-recognitions#ugc" },
+              { name: "Accredited by NAAC", href: "/about/statutory-affiliations-recognitions#naac" },
+            ]
+          },
+          {
+            title: "C. Governance & Administration",
+            items: [
+              { name: "Governing Body", href: "/about/governance-administration/governing-body" },
+              { name: "Organogram", href: "/about/governance-administration/organogram" },
+              { name: "Key Functionaries", href: "/about/governance-administration/key-functionaries" },
+              { name: "Committees", href: "/about/governance-administration/statutory-non-statutory-committees" },
+              { name: "Institutional Policies", href: "/about/governance-administration/institutional-policies" },
+              { name: "Strategic Development Plan", href: "/strategic-plans-and-future-directions" },
+              { name: "Code of Conduct", href: "/about/governance-administration/code-of-conduct" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/academics")) {
+      return {
+        title: "Academics",
+        badge: "In this Section: Academics",
+        groups: [
+          {
+            title: "A. Programmes",
+            items: [
+              { name: "Undergraduate (UG) Programmes", href: "/academics/academic-programmes/undergraduate-programmes" },
+              { name: "Postgraduate (PG) Programmes", href: "/academics/academic-programmes/postgraduate-programmes" },
+            ]
+          },
+          {
+            title: "B. Regulations & Resources",
+            items: [
+              { name: "Academic Calendar", href: "/academics/curriculum-academic-planning/academic-calendar" },
+              { name: "Time Tables", href: "/academics/curriculum-academic-planning/timetables" },
+              { name: "Curriculum & Syllabus", href: "/academics/curriculum-academic-planning/curriculum-syllabus" },
+              { name: "Academic Regulations", href: "/academics/curriculum-academic-planning/academic-regulations" },
+              { name: "ILMS – LMS System", href: "/academics/curriculum-academic-planning/ilms-system" },
+            ]
+          },
+          {
+            title: "C. Academic Departments",
+            items: [
+              { name: "View All Departments (Hub)", href: "/academics/departments" },
+              { name: "Dept. of Commerce", href: "/academics/departments/department-of-commerce" },
+              { name: "BCA – Computer Applications", href: "/academics/departments/department-of-bca" },
+              { name: "Computer Science", href: "/academics/departments/department-of-computer-science" },
+              { name: "Artificial Intelligence (AI)", href: "/academics/departments/department-of-artificial-intelligence" },
+              { name: "Dept. of Mathematics", href: "/academics/departments/department-of-mathematics" },
+              { name: "Dept. of Physics", href: "/academics/departments/department-of-physics" },
+              { name: "Dept. of Chemistry", href: "/academics/departments/department-of-chemistry" },
+              { name: "Dept. of MCA", href: "/academics/departments/department-of-mca" },
+              { name: "Dept. of MBA", href: "/academics/departments/department-of-mba" },
+              { name: "Dept. of English", href: "/academics/departments/department-of-english" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/admissions")) {
+      return {
+        title: "Admissions",
+        badge: "In this Section: Admissions",
+        groups: [
+          {
+            title: "Admissions Directory",
+            items: [
+              { name: "Admissions Overview & Guidelines", href: "/admissions" },
+              { name: "Programmes Offered & Intake", href: "/admissions#programmes" },
+              { name: "Eligibility Criteria", href: "/admissions#eligibility" },
+              { name: "Fee Structure", href: "/admissions#fee-structure" },
+              { name: "Application Procedures", href: "/admissions#procedure" },
+              { name: "Scholarships & Financial Aid", href: "/admissions#scholarships" },
+              { name: "Helpdesk & Enquiry Desk", href: "/admissions#contact" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/quality-assurance")) {
+      return {
+        title: "Quality Assurance",
+        badge: "In this Section: Quality Assurance (IQAC)",
+        groups: [
+          {
+            title: "IQAC Directory",
+            items: [
+              { name: "IQAC Overview", href: "/quality-assurance" },
+              { name: "NAAC Accreditation & SSR", href: "/quality-assurance#naac" },
+              { name: "NIRF Reports", href: "/quality-assurance#nirf" },
+              { name: "AQAR Annual Reports", href: "/quality-assurance#aqar" },
+              { name: "IQAC Composition", href: "/quality-assurance#composition" },
+              { name: "Quality Initiatives", href: "/quality-assurance#initiatives" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/infrastructure")) {
+      return {
+        title: "Infrastructure",
+        badge: "In this Section: Infrastructure",
+        groups: [
+          {
+            title: "Infrastructure Facilities",
+            items: [
+              { name: "Campus Overview", href: "/infrastructure" },
+              { name: "Laboratories & Equipment", href: "/infrastructure#labs" },
+              { name: "Central Library", href: "/infrastructure#library" },
+              { name: "Sports & Fitness", href: "/infrastructure#sports" },
+              { name: "Hostel & Dining", href: "/infrastructure#hostel" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/placements")) {
+      return {
+        title: "Placements",
+        badge: "In this Section: Placements",
+        groups: [
+          {
+            title: "TPO & Career Cell",
+            items: [
+              { name: "Placements Overview", href: "/placements" },
+              { name: "Recruiters & Partners", href: "/placements#recruiters" },
+              { name: "Placement Records & Statistics", href: "/placements#statistics" },
+              { name: "TPO Desk & Contact", href: "/placements#contact" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/student-support")) {
+      return {
+        title: "Student Support",
+        badge: "In this Section: Student Support",
+        groups: [
+          {
+            title: "Welfare & Services",
+            items: [
+              { name: "Services Overview", href: "/student-support-services" },
+              { name: "Mentoring & Guidance", href: "/student-support-services#mentoring" },
+              { name: "NCC & NSS Units", href: "/student-support-services#ncc-nss" },
+              { name: "Clubs & Associations", href: "/student-support-services#clubs" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/alumni")) {
+      return {
+        title: "Alumni Connect",
+        badge: "In this Section: Alumni Connect",
+        groups: [
+          {
+            title: "Alumnae Network",
+            items: [
+              { name: "Alumni Engagement & Vision", href: "/alumni#sec-about" },
+              { name: "Alumni Committee", href: "/alumni#sec-committee" },
+              { name: "Registered Association", href: "/alumni#sec-association" },
+              { name: "Distinguished Alumni", href: "/alumni#sec-contributions" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/research-innovation")) {
+      return {
+        title: "Research & Innovation",
+        badge: "In this Section: Research & Innovation",
+        groups: [
+          {
+            title: "RDC & Innovations",
+            items: [
+              { name: "Research Development Cell (RDC)", href: "/research-innovation#sec-rdc" },
+              { name: "Policy & Ethics", href: "/research-innovation#sec-policy" },
+              { name: "Publications & Citations", href: "/research-innovation#sec-publications" },
+              { name: "Patents & Innovations", href: "/research-innovation#sec-patents" },
+              { name: "IPR Cell", href: "/research-innovation#sec-ipr" },
+            ]
+          }
+        ]
+      };
+    }
+
+    if (pathname.startsWith("/mandatory-disclosures")) {
+      return {
+        title: "Disclosures",
+        badge: "In this Section: Mandatory Disclosures",
+        groups: [
+          {
+            title: "Statutory Disclosures",
+            items: [
+              { name: "AICTE Mandatory Disclosures", href: "/mandatory-disclosures" },
+              { name: "University Affiliation Orders", href: "/mandatory-disclosures#affiliation" },
+              { name: "Audit & Financial Reports", href: "/mandatory-disclosures#finance" },
+            ]
+          }
+        ]
+      };
+    }
+
+    return null;
+  };
+
   return (
     <div ref={navContainerRef} className="w-full flex flex-col font-sans select-none relative">
 
@@ -1744,186 +1973,619 @@ export default function Navigation() {
       </div>
 
       {/* ============================================================== */}
-      {/* MOBILE RESPONSIVE QUICK NAV & DIRECT MORE SHEET                */}
+      {/* MOBILE RESPONSIVE STICKY 3-LINE MENU & UNIFIED DRAWER          */}
       {/* ============================================================== */}
 
-      {/* Mobile Quick-Links Strip (Seamlessly integrated in top nav) */}
+      {/* Mobile Sticky Top Header (Clean 3-Line Menu Header) */}
       <div
-        className="flex md:hidden items-center justify-between h-10 w-full select-none relative z-40 px-3 transition-colors duration-200"
-        style={{ backgroundColor: "transparent" }}
+        className="flex md:hidden items-center justify-between h-11 w-full select-none relative z-40 px-3.5 transition-colors duration-200"
+        style={{ backgroundColor: "#000080" }}
       >
-        {/* Direct Quick Links (Seamless top nav text styling without nested boxes) */}
-        <div className="flex items-center gap-3 xs:gap-3.5 sm:gap-4 min-w-0">
-          <Link
-            href="/"
-            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
-              pathname === "/"
-                ? "border-amber-400 text-white font-black"
-                : "border-transparent text-white/80 hover:text-white"
-            }`}
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
-              pathname.startsWith("/about")
-                ? "border-amber-400 text-white font-black"
-                : "border-transparent text-white/80 hover:text-white"
-            }`}
-          >
-            About
-          </Link>
-          <Link
-            href="/academics"
-            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
-              pathname.startsWith("/academics")
-                ? "border-amber-400 text-white font-black"
-                : "border-transparent text-white/80 hover:text-white"
-            }`}
-          >
-            Academics
-          </Link>
-          <Link
-            href="/admissions"
-            className={`py-1 text-[12px] xs:text-xs font-bold transition-all whitespace-nowrap border-b-2 ${
-              pathname.startsWith("/admissions")
-                ? "border-amber-400 text-white font-black"
-                : "border-transparent text-white/80 hover:text-white"
-            }`}
-          >
-            Admissions
-          </Link>
-        </div>
-
-        {/* Just Down Arrow Icon button (no 'More' text) */}
-        <button
-          type="button"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className={`flex items-center justify-center h-8 w-8 rounded-lg transition-all cursor-pointer shrink-0 ml-auto ${
-            mobileOpen
-              ? "bg-amber-400 text-slate-950 shadow-xs"
-              : "text-amber-300 hover:text-white hover:bg-white/10"
-          }`}
-          title="View all 14 college pages"
-          aria-label="View all pages"
+        {/* Left: Brand / Active Section Indicator */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 group min-w-0"
         >
-          {mobileOpen ? (
-            <X className="h-4.5 w-4.5" />
-          ) : (
-            <ChevronDown className="h-5 w-5" />
-          )}
-        </button>
+          <img
+            src="/images/Crest_Logo.png?v=full_v5"
+            alt="St. Ann's Crest"
+            className="h-6 w-auto object-contain shrink-0 drop-shadow-xs"
+          />
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="font-outfit font-black text-[13px] text-white tracking-tight uppercase leading-none truncate">
+              St. Ann’s College
+            </span>
+            {(() => {
+              const sec = getActiveSectionInfo();
+              return sec ? (
+                <>
+                  <span className="text-white/40 text-[11px] font-bold">/</span>
+                  <span className="text-amber-300 font-extrabold text-[11px] truncate max-w-[130px] xs:max-w-[170px]">
+                    {sec.title}
+                  </span>
+                </>
+              ) : null;
+            })()}
+          </div>
+        </Link>
+
+        {/* Right: Quick Apply button + 3-Line Hamburger Menu Toggle */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
+              }
+            }}
+            className="flex items-center gap-1 rounded-full bg-emerald-600 hover:bg-emerald-500 px-2.5 py-1 text-[10.5px] font-bold text-white shadow-xs cursor-pointer active:scale-95 transition-all"
+          >
+            <span>Apply</span>
+            <ArrowRight className="h-2.5 w-2.5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className={`flex items-center justify-center h-8 w-8 rounded-lg transition-all cursor-pointer border ${
+              mobileOpen
+                ? "bg-amber-400 text-slate-950 border-amber-300 shadow-sm"
+                : "bg-white/10 hover:bg-white/20 text-white border-white/20"
+            }`}
+            title={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileOpen ? (
+              <X className="h-4.5 w-4.5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Direct Pages Full-Width Drawer */}
+      {/* Mobile Side Panel (Drawer) with Blurred Left Gap */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden flex select-none animate-fadeIn bg-slate-950/80 backdrop-blur-sm">
-          {/* Full Screen Drawer Container */}
-          <div className="w-full bg-white shadow-2xl flex flex-col h-full overflow-hidden animate-slideIn">
+        <div className="fixed inset-0 z-50 md:hidden flex select-none animate-fadeIn">
+          {/* Blurred Backdrop on Left Gap: Tapping closes the drawer */}
+          <div
+            className="flex-1 bg-slate-950/60 backdrop-blur-sm transition-opacity cursor-pointer"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu backdrop"
+          />
+
+          {/* Sliding Drawer Container: ~84vw width leaving the left blurred gap */}
+          <div className="w-[84vw] max-w-sm bg-white shadow-2xl flex flex-col h-full overflow-hidden border-l border-slate-200 animate-slideIn shrink-0">
 
             {/* Drawer Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 shrink-0 bg-slate-50">
-              <div className="flex flex-col">
-                <span className="font-outfit font-black text-sm text-[#002147] uppercase tracking-wider">
-                  All College Pages
-                </span>
-                <span className="text-[10px] text-slate-500 font-medium">
-                  Tap any page to visit directly
-                </span>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 shrink-0 bg-[#001738] text-white">
+              <div className="flex items-center gap-2.5">
+                <img
+                  src="/images/Crest_Logo.png?v=full_v5"
+                  alt="St. Ann's Crest"
+                  className="h-8 w-auto object-contain bg-white/10 p-1 rounded-lg"
+                />
+                <div className="flex flex-col">
+                  <span className="font-outfit font-black text-sm text-white uppercase tracking-wider leading-tight">
+                    St. Ann’s College
+                  </span>
+                  <span className="text-[10px] text-blue-200 font-medium leading-tight">
+                    College Menu &amp; Directory
+                  </span>
+                </div>
               </div>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Direct Navigation Links (Every link goes directly to page in 1 tap) */}
+            {/* Scrollable 14-Items Accordion Menu */}
             <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-1.5">
               {[
-                { name: "1. Home", href: "/", icon: Home, desc: "Main Campus & Portal" },
-                { name: "2. About Us", href: "/about", icon: Building, desc: "History, Vision, Leadership & Governance" },
-                { name: "3. Academics", href: "/academics", icon: GraduationCap, desc: "Curricula, Regulations & Programs" },
-                { name: "4. Admissions", href: "/admissions", icon: BookOpen, desc: "Eligibility, Fee Structure & Guidelines" },
-                { name: "5. Infrastructure", href: "/infrastructure", icon: Building2, desc: "Campus, Labs, Library & Hostels" },
-                { name: "6. Faculty", href: "/faculty", icon: Users, desc: "Teaching Faculty, Profiles & Departments" },
-                { name: "7. Student Support", href: "/student-support-services", icon: HeartHandshake, desc: "Mentoring, NCC, NSS & Clubs" },
-                { name: "8. Placements", href: "/placements", icon: Briefcase, desc: "Recruiters, TPO Desk & Statistics" },
-                { name: "9. Research & Innovation", href: "/research-innovation", icon: FlaskConical, desc: "Projects, Publications & IPR Cell" },
-                { name: "10. Alumni", href: "/alumni", icon: Handshake, desc: "Alumnae Network & Distinguished Members" },
-                { name: "11. Quality Assurance (IQAC)", href: "/quality-assurance", icon: ShieldCheck, desc: "NAAC, NIRF, AQAR & Accreditations" },
-                { name: "12. Mandatory Disclosures", href: "/mandatory-disclosures", icon: FileCheck, desc: "Statutory Compliance & AICTE Approvals" },
-                { name: "13. Strategic Plans", href: "/strategic-plan", icon: Compass, desc: "Institutional Perspective & 2030 Roadmap" },
-                { name: "14. Contact Us", href: "/contact", icon: Phone, desc: "Campus Location, Numbers & Enquiry" },
-              ].map((item, idx) => {
+                {
+                  id: "home",
+                  name: "1. Home",
+                  href: "/",
+                  icon: Home,
+                  desc: "Main Campus & Portal",
+                  hasChildren: false,
+                },
+                {
+                  id: "about",
+                  name: "2. About Us",
+                  href: "/about",
+                  icon: Building,
+                  desc: "History, Vision, Leadership & Governance",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "A. The Institution",
+                      items: [
+                        { text: "Basic Institutional Information", href: "/about/the-institution/basic-institutional-information" },
+                        { text: "History & Milestones", href: "/about/the-institution/history-of-the-college" },
+                        { text: "Emblem, Vision, Mission & Values", href: "/about/the-institution/vision-mission-and-core-values" },
+                        { text: "Institutional Awards & Recognitions", href: "/about/the-institution/institutional-awards-recognitions" },
+                        { text: "Student Achievements & Laurels", href: "/about/the-institution/student-laurels" },
+                        { text: "Head of the Institution", href: "/about/the-institution/head-of-the-institution" },
+                        { text: "Legacy of Leadership", href: "/about/the-institution/legacy-of-leadership" },
+                      ]
+                    },
+                    {
+                      title: "B. Affiliations & Recognitions",
+                      items: [
+                        { text: "Affiliated to ANU", href: "/about/statutory-affiliations-recognitions#anu" },
+                        { text: "Approved by AICTE", href: "/about/statutory-affiliations-recognitions#aicte" },
+                        { text: "Recognised under UGC Section 2(f)", href: "/about/statutory-affiliations-recognitions#ugc" },
+                        { text: "Accredited by NAAC", href: "/about/statutory-affiliations-recognitions#naac" },
+                      ]
+                    },
+                    {
+                      title: "C. Governance & Administration",
+                      items: [
+                        { text: "Governing Body", href: "/about/governance-administration/governing-body" },
+                        { text: "Organogram", href: "/about/governance-administration/organogram" },
+                        { text: "Key Functionaries", href: "/about/governance-administration/key-functionaries" },
+                        { text: "Statutory & Non-Statutory Committees", href: "/about/governance-administration/statutory-non-statutory-committees" },
+                        { text: "Institutional Policies", href: "/about/governance-administration/institutional-policies" },
+                        { text: "Strategic Development Plan", href: "/strategic-plans-and-future-directions" },
+                        { text: "Code of Conduct", href: "/about/governance-administration/code-of-conduct" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "academics",
+                  name: "3. Academics",
+                  href: "/academics",
+                  icon: GraduationCap,
+                  desc: "Curricula, Regulations & Programs",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "A. Academic Programmes",
+                      items: [
+                        { text: "Undergraduate (UG) Programmes", href: "/academics/academic-programmes/undergraduate-programmes" },
+                        { text: "Postgraduate (PG) Programmes", href: "/academics/academic-programmes/postgraduate-programmes" },
+                      ]
+                    },
+                    {
+                      title: "B. Academic Regulations & Resources",
+                      items: [
+                        { text: "Academic Calendar", href: "/academics/curriculum-academic-planning/academic-calendar" },
+                        { text: "Time Tables", href: "/academics/curriculum-academic-planning/timetables" },
+                        { text: "Curriculum & Syllabus", href: "/academics/curriculum-academic-planning/curriculum-syllabus" },
+                        { text: "Academic Regulations", href: "/academics/curriculum-academic-planning/academic-regulations" },
+                        { text: "ILMS – Learning Management", href: "/academics/curriculum-academic-planning/ilms-system" },
+                      ]
+                    },
+                    {
+                      title: "C. Academic Departments",
+                      items: [
+                        { text: "All Departments Hub", href: "/academics/departments" },
+                        { text: "1. Dept. of Commerce", href: "/academics/departments/department-of-commerce" },
+                        { text: "2. BCA – Computer Applications", href: "/academics/departments/department-of-bca" },
+                        { text: "3. Computer Science", href: "/academics/departments/department-of-computer-science" },
+                        { text: "4. Artificial Intelligence (AI)", href: "/academics/departments/department-of-artificial-intelligence" },
+                        { text: "5. Dept. of Mathematics", href: "/academics/departments/department-of-mathematics" },
+                        { text: "6. Dept. of Physics", href: "/academics/departments/department-of-physics" },
+                        { text: "7. Dept. of Statistics", href: "/academics/departments/department-of-statistics" },
+                        { text: "8. Dept. of Biotechnology", href: "/academics/departments/department-of-biotechnology" },
+                        { text: "9. Dept. of Microbiology", href: "/academics/departments/department-of-microbiology" },
+                        { text: "10. Dept. of Botany", href: "/academics/departments/department-of-botany" },
+                        { text: "11. Dept. of Chemistry", href: "/academics/departments/department-of-chemistry" },
+                        { text: "12. Dept. of MCA", href: "/academics/departments/department-of-mca" },
+                        { text: "13. Dept. of MBA", href: "/academics/departments/department-of-mba" },
+                        { text: "14. Dept. of English", href: "/academics/departments/department-of-english" },
+                        { text: "15. Dept. of Telugu", href: "/academics/departments/department-of-telugu" },
+                        { text: "16. Dept. of Sanskrit & Hindi", href: "/academics/departments/department-of-sanskrit-hindi" },
+                      ]
+                    },
+                    {
+                      title: "D. Teaching & Learning",
+                      items: [
+                        { text: "Teaching-Learning Practices", href: "/academics/teaching-learning/teaching-learning-practices" },
+                        { text: "Innovative Teaching Practices", href: "/academics/teaching-learning/innovative-teaching-practices" },
+                        { text: "Experiential & Participative Learning", href: "/academics/teaching-learning/experiential-participative-learning" },
+                        { text: "ICT-Enabled Teaching", href: "/academics/teaching-learning/ict-enabled-teaching" },
+                        { text: "Student-Centric Learning", href: "/academics/teaching-learning/student-centric-learning" },
+                      ]
+                    },
+                    {
+                      title: "E. Examination & Evaluation",
+                      items: [
+                        { text: "Examination System", href: "/academics/examination-evaluation/examination-system" },
+                        { text: "Continuous Internal Assessment (CIA)", href: "/academics/examination-evaluation/continuous-internal-assessment" },
+                        { text: "University Examinations", href: "/academics/examination-evaluation/university-examinations" },
+                        { text: "Results & Performance", href: "/academics/examination-evaluation/results-performance" },
+                        { text: "Examination Regulations", href: "/academics/examination-evaluation/examination-regulations" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "admissions",
+                  name: "4. Admissions",
+                  href: "/admissions",
+                  icon: BookOpen,
+                  desc: "Eligibility, Fee Structure & Guidelines",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Admissions Information",
+                      items: [
+                        { text: "Admissions Overview & Guidelines", href: "/admissions" },
+                        { text: "Programmes Offered & Intake", href: "/admissions#programmes" },
+                        { text: "Eligibility Criteria", href: "/admissions#eligibility" },
+                        { text: "Fee Structure", href: "/admissions#fee-structure" },
+                        { text: "Admission Procedure & Steps", href: "/admissions#procedure" },
+                        { text: "Scholarships & Financial Aid", href: "/admissions#scholarships" },
+                        { text: "Admissions Helpdesk & Contact", href: "/admissions#contact" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "infra",
+                  name: "5. Infrastructure",
+                  href: "/infrastructure",
+                  icon: Building2,
+                  desc: "Campus, Labs, Library & Hostels",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Campus Facilities",
+                      items: [
+                        { text: "1. Campus & Buildings", href: "/infrastructure/campus-buildings" },
+                        { text: "2. Classrooms & Seminar Halls", href: "/infrastructure/classrooms" },
+                        { text: "3. Central Library & Info Centre", href: "/infrastructure/library" },
+                        { text: "4. ICT & Digital Infrastructure", href: "/infrastructure/ict-digital" },
+                        { text: "5. Laboratories & Instrumentation", href: "/infrastructure/laboratories" },
+                        { text: "6. Sports & Fitness Grounds", href: "/infrastructure/sports-facilities" },
+                        { text: "7. Hostel & Dining Amenities", href: "/infrastructure/hostel-amenities" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "faculty",
+                  name: "6. Faculty",
+                  href: "/faculty",
+                  icon: Users,
+                  desc: "Teaching Faculty, Profiles & Departments",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Faculty Directory",
+                      items: [
+                        { text: "Teaching Staff Directory", href: "/faculty/teaching-staff" },
+                        { text: "Department-Wise Faculty Profiles", href: "/faculty/department-wise" },
+                        { text: "Non-Teaching & Admin Staff", href: "/faculty/non-teaching-staff" },
+                        { text: "Visiting & Adjunct Professors", href: "/faculty/visiting-professors" },
+                        { text: "Recruitment Policy & Process", href: "/faculty/recruitment-policy" },
+                        { text: "Faculty Development (FDP)", href: "/faculty/faculty-development" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "support",
+                  name: "7. Student Support",
+                  href: "/student-support-services",
+                  icon: HeartHandshake,
+                  desc: "Mentoring, NCC, NSS & Clubs",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Student Welfare & Support",
+                      items: [
+                        { text: "Support Services Overview", href: "/student-support-services" },
+                        { text: "Grievance Redressal / Ombudsperson", href: "/student-support/grievance-redressal" },
+                        { text: "Internal Complaints Committee (ICC)", href: "/student-support/internal-complaints" },
+                        { text: "Women Empowerment Cell", href: "/student-support/women-empowerment" },
+                        { text: "Student Counselling & Wellness", href: "/student-support/student-counselling" },
+                        { text: "Mentor–Mentee System", href: "/student-support/mentor-mentee" },
+                        { text: "Parent Association", href: "/student-support/parent-association" },
+                        { text: "Scholarships & Welfare", href: "/student-support/scholarships-welfare" },
+                        { text: "Sports Facilities & Physical Education", href: "/student-support/sports-facilities" },
+                        { text: "National Service Scheme (NSS)", href: "/student-support/nss-activities" },
+                        { text: "National Cadet Corps (NCC)", href: "/student-support/ncc-activities" },
+                        { text: "Clubs & Cultural Forums", href: "/student-support/eco-club" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "placements",
+                  name: "8. Placements",
+                  href: "/placements",
+                  icon: Briefcase,
+                  desc: "Recruiters, TPO Desk & Statistics",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Career & Training Cell",
+                      items: [
+                        { text: "Training & Placement Cell Overview", href: "/placements" },
+                        { text: "Training Programmes & Skill Matrix", href: "/placements#training" },
+                        { text: "Major Recruiters & Corporate Partners", href: "/placements#recruiters" },
+                        { text: "Placement Statistics & Track Record", href: "/placements#statistics" },
+                        { text: "TPO Desk & Contact Information", href: "/placements#contact" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "research",
+                  name: "9. Research & Innovation",
+                  href: "/research-innovation",
+                  icon: FlaskConical,
+                  desc: "Projects, Publications & IPR Cell",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Research & Development",
+                      items: [
+                        { text: "Research Promotion Policy & Ethics", href: "/research-innovation#sec-policy" },
+                        { text: "Research & Development Cell (RDC)", href: "/research-innovation#sec-rdc" },
+                        { text: "Research Infrastructure & Labs", href: "/research-innovation#sec-infra" },
+                        { text: "Research Publications & Books", href: "/research-innovation#sec-publications" },
+                        { text: "Patents, Start-ups & Innovations", href: "/research-innovation#sec-patents" },
+                        { text: "Intellectual Property Rights (IPR) Cell", href: "/research-innovation#sec-ipr" },
+                        { text: "Innovation & Start-Up Centre (EDC)", href: "/research-innovation#sec-edc" },
+                        { text: "Institution Innovation Council (IIC)", href: "/research-innovation#sec-iic" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "alumni",
+                  name: "10. Alumni",
+                  href: "/alumni",
+                  icon: Handshake,
+                  desc: "Alumnae Network & Distinguished Members",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Alumnae Network",
+                      items: [
+                        { text: "About Alumni Engagement & Objectives", href: "/alumni#sec-about" },
+                        { text: "College-Level Alumni Committee", href: "/alumni#sec-committee" },
+                        { text: "Registered Alumni Association", href: "/alumni#sec-association" },
+                        { text: "Alumni Contributions & Support", href: "/alumni#sec-contributions" },
+                        { text: "Distinguished Alumnae Profiles", href: "/alumni#sec-distinguished" },
+                        { text: "Alumni Registration & Portal", href: "/alumni#sec-register" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "iqac",
+                  name: "11. Quality Assurance (IQAC)",
+                  href: "/quality-assurance",
+                  icon: ShieldCheck,
+                  desc: "NAAC, NIRF, AQAR & Accreditations",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "IQAC & Accreditations",
+                      items: [
+                        { text: "IQAC Overview & Objectives", href: "/quality-assurance" },
+                        { text: "NAAC Accreditation & SSR Documents", href: "/quality-assurance#naac" },
+                        { text: "NIRF Reports & Rankings", href: "/quality-assurance#nirf" },
+                        { text: "Annual Quality Assurance Reports (AQAR)", href: "/quality-assurance#aqar" },
+                        { text: "IQAC Composition & Meeting Minutes", href: "/quality-assurance#composition" },
+                        { text: "Quality Initiatives & Institutional Audits", href: "/quality-assurance#initiatives" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "mandatory",
+                  name: "12. Mandatory Disclosures",
+                  href: "/mandatory-disclosures",
+                  icon: FileCheck,
+                  desc: "Statutory Compliance & AICTE Approvals",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Statutory & Regulatory Disclosures",
+                      items: [
+                        { text: "AICTE Mandatory Disclosures", href: "/mandatory-disclosures#sec-statutory" },
+                        { text: "Institutional Profile & Programs", href: "/mandatory-disclosures#sec-institutional-profile" },
+                        { text: "ANU Affiliation Orders – UG & PG", href: "/mandatory-disclosures#sec-anu-affiliations" },
+                        { text: "AICTE Approval & EoA Letters", href: "/mandatory-disclosures#sec-aicte-approval" },
+                        { text: "UGC Section 2(f) Recognition", href: "/mandatory-disclosures#sec-ugc-recognition" },
+                        { text: "Right to Information (RTI) Information", href: "/mandatory-disclosures#sec-rti" },
+                        { text: "Audited Financial Statements & Budget", href: "/mandatory-disclosures#sec-financial" },
+                        { text: "Annual Reports & Statistics", href: "/mandatory-disclosures#sec-reports" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "strategic",
+                  name: "13. Strategic Plans",
+                  href: "/strategic-plans-and-future-directions",
+                  icon: Compass,
+                  desc: "Institutional Perspective & 2030 Roadmap",
+                  hasChildren: true,
+                  groups: [
+                    {
+                      title: "Strategic Perspective",
+                      items: [
+                        { text: "Strategic Development Plan Overview", href: "/strategic-plans-and-future-directions" },
+                        { text: "Strategic Priorities (Academic, Infra, Financial)", href: "/strategic-plans-and-future-directions#sec-priority-academic" },
+                        { text: "Stakeholder Engagement & Feedback", href: "/strategic-plans-and-future-directions#stakeholder-engagement" },
+                        { text: "Vision for 2047: Viksit Bharat", href: "/strategic-plans-and-future-directions#vision-2047" },
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: "contact",
+                  name: "14. Contact Us",
+                  href: "/contact",
+                  icon: Phone,
+                  desc: "Campus Location, Numbers & Enquiry",
+                  hasChildren: false,
+                },
+              ].map((item) => {
                 const IconComponent = item.icon;
                 const isCurrent = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={idx}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center justify-between p-2.5 rounded-xl transition-all border ${
-                      isCurrent
-                        ? "bg-[#002147] text-white border-[#002147] shadow-xs"
-                        : "bg-white hover:bg-slate-50 text-slate-700 border-slate-100 hover:border-slate-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div
-                        className={`p-1.5 rounded-lg shrink-0 ${
-                          isCurrent ? "bg-white/10 text-white" : "bg-blue-50 text-[#002147]"
-                        }`}
-                      >
-                        <IconComponent className="h-4 w-4" />
+                const isExpanded = expandedSection === item.id;
+
+                if (!item.hasChildren) {
+                  return (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center justify-between p-2.5 rounded-xl transition-all border ${
+                        pathname === item.href
+                          ? "bg-[#002147] text-white border-[#002147] shadow-xs"
+                          : "bg-white hover:bg-slate-50 text-slate-700 border-slate-100 hover:border-slate-200"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div
+                          className={`p-1.5 rounded-lg shrink-0 ${
+                            pathname === item.href ? "bg-white/10 text-white" : "bg-blue-50 text-[#002147]"
+                          }`}
+                        >
+                          <IconComponent className="h-4 w-4" />
+                        </div>
+                        <div className="flex flex-col min-w-0 text-left">
+                          <span className={`text-xs font-bold leading-tight truncate ${pathname === item.href ? "text-white" : "text-slate-800"}`}>
+                            {item.name}
+                          </span>
+                          <span className={`text-[10px] leading-tight truncate mt-0.5 ${pathname === item.href ? "text-blue-200" : "text-slate-400"}`}>
+                            {item.desc}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-col min-w-0 text-left">
-                        <span className={`text-xs font-bold leading-tight truncate ${isCurrent ? "text-white" : "text-slate-800"}`}>
-                          {item.name}
-                        </span>
-                        <span className={`text-[10px] leading-tight truncate mt-0.5 ${isCurrent ? "text-blue-200" : "text-slate-500"}`}>
-                          {item.desc}
+                      <ChevronRight className={`h-3.5 w-3.5 shrink-0 ${pathname === item.href ? "text-white" : "text-slate-400"}`} />
+                    </Link>
+                  );
+                }
+
+                return (
+                  <div key={item.id} className="flex flex-col">
+                    <div
+                      onClick={() => toggleSection(item.id)}
+                      className={`flex items-center justify-between p-2.5 rounded-xl transition-all border cursor-pointer select-none ${
+                        isExpanded
+                          ? "bg-[#002147] text-white border-[#002147] shadow-xs"
+                          : isCurrent
+                            ? "bg-blue-50/80 text-[#002147] border-blue-200"
+                            : "bg-white hover:bg-slate-50 text-slate-700 border-slate-100 hover:border-slate-200"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div
+                          className={`p-1.5 rounded-lg shrink-0 ${
+                            isExpanded
+                              ? "bg-white/10 text-white"
+                              : isCurrent
+                                ? "bg-[#002147] text-white"
+                                : "bg-blue-50 text-[#002147]"
+                          }`}
+                        >
+                          <IconComponent className="h-4 w-4" />
+                        </div>
+                        <div className="flex flex-col min-w-0 text-left">
+                          <span
+                            className={`text-xs font-bold leading-tight truncate ${
+                              isExpanded
+                                ? "text-white"
+                                : isCurrent
+                                  ? "text-[#002147] font-black"
+                                  : "text-slate-800"
+                            }`}
+                          >
+                            {item.name}
+                          </span>
+                          <span
+                            className={`text-[10px] leading-tight truncate mt-0.5 ${
+                              isExpanded ? "text-blue-200" : "text-slate-400"
+                            }`}
+                          >
+                            {item.desc}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Right Down Arrow for Accordion */}
+                      <div className="flex items-center gap-1 shrink-0 ml-2">
+                        <span
+                          className={`flex items-center justify-center h-6 w-6 rounded-md transition-all ${
+                            isExpanded
+                              ? "bg-amber-400 text-slate-950"
+                              : "text-slate-400 hover:text-slate-600"
+                          }`}
+                        >
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform duration-200 ${
+                              isExpanded ? "rotate-180" : ""
+                            }`}
+                          />
                         </span>
                       </div>
                     </div>
-                    <ChevronRight
-                      className={`h-3.5 w-3.5 shrink-0 ${
-                        isCurrent ? "text-white" : "text-slate-400"
-                      }`}
-                    />
-                  </Link>
+
+                    {/* Expanded Accordion Content: When one opens, all others close */}
+                    {isExpanded && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 my-1.5 mx-1 flex flex-col gap-2.5 animate-fadeIn">
+                        {/* Landing Link */}
+                        <Link
+                          href={item.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-blue-100/70 hover:bg-blue-200/80 text-[#002147] text-xs font-bold transition-all"
+                        >
+                          <span>Visit {item.name.replace(/^\d+\.\s*/, "")} Hub →</span>
+                          <ChevronRight className="h-3 w-3 shrink-0" />
+                        </Link>
+
+                        {item.groups?.map((group, gIdx) => (
+                          <div key={gIdx} className="flex flex-col gap-1">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1.5">
+                              {group.title}
+                            </span>
+                            <div className="flex flex-col gap-0.5">
+                              {group.items.map((sub, sIdx) => {
+                                const isSubActive = pathname === sub.href;
+                                return (
+                                  <Link
+                                    key={sIdx}
+                                    href={sub.href}
+                                    onClick={() => setMobileOpen(false)}
+                                    className={`px-2 py-1.5 rounded-lg text-[11.5px] font-medium flex items-center justify-between transition-all ${
+                                      isSubActive
+                                        ? "bg-[#002147] text-white font-bold shadow-xs"
+                                        : "text-slate-700 hover:bg-white hover:text-[#002147]"
+                                    }`}
+                                  >
+                                    <span className="truncate pr-1.5 leading-snug">{sub.text}</span>
+                                    <ChevronRight
+                                      className={`h-3 w-3 shrink-0 ${isSubActive ? "text-white" : "opacity-35"}`}
+                                    />
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
 
-              {/* Admin Portal Direct Link */}
-              <div className="pt-2 mt-1 border-t border-slate-100">
-                <Link
-                  href="/admin/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all border border-slate-800 shadow-xs"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="p-1.5 rounded-lg bg-white/10 text-amber-400 shrink-0">
-                      <ShieldAlert className="h-4 w-4" />
-                    </div>
-                    <div className="flex flex-col min-w-0 text-left">
-                      <span className="text-xs font-bold leading-tight text-white">
-                        Admin Portal
-                      </span>
-                      <span className="text-[10px] leading-tight text-slate-400 mt-0.5">
-                        Faculty &amp; Staff Administration
-                      </span>
-                    </div>
-                  </div>
-                  <ArrowRight className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-                </Link>
-              </div>
-
               {/* Social Channels */}
-              <div className="flex items-center justify-center gap-3 pt-3 pb-1 border-t border-slate-100 mt-1">
+              <div className="flex items-center justify-center gap-3 pt-4 pb-3 border-t border-slate-100 mt-2">
                 <a href="https://facebook.com" target="_blank" rel="noreferrer" className="h-7 w-7 rounded-lg bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 shadow-xs" title="Facebook">
                   <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 </a>
@@ -1939,26 +2601,9 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Apply Now in mobile drawer footer */}
-            <div className="p-3.5 border-t border-slate-100 bg-slate-50 shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  if (typeof window !== "undefined") {
-                    window.dispatchEvent(new CustomEvent("open-admission-enquiry"));
-                  }
-                }}
-                className="w-full flex items-center justify-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 font-bold text-white text-xs tracking-wider uppercase hover:shadow-lg transition-all active:scale-95 cursor-pointer border border-emerald-500/30"
-              >
-                <span>Apply Now</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
-
           </div>
         </div>
-            )}
+      )}
 
     </div>
   );

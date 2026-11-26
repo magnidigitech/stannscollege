@@ -100,7 +100,7 @@ export function SubtextBox({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl p-6 sm:p-8 shadow-xs transition-all duration-300 ${
+      className={`relative overflow-hidden rounded-xl sm:rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs transition-all duration-300 ${
         isTricolor
           ? "border-2 border-amber-200/70"
           : "border-2 border-blue-200/80"
